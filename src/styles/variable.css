@@ -1,0 +1,21 @@
+:root {
+  --ant-success-color: #52c41a;
+  --ant-success-color-hover: #73d13d;
+  --ant-success-color-active: #389e0d;
+
+  --ant-warning-color: #faad14;
+  --ant-warning-color-active: #d48806;
+  --ant-warning-color-hover: #ffc53d;
+
+  --ant-warning-color: #faad14;
+  --ant-warning-color-hover: #ffc53d;
+  --ant-warning-color-active: #d48806;
+
+  --ant-error-color: #ff4d4f;
+  --ant-error-color-hover: #ff7875;
+  --ant-error-color-active: #d9363e;
+
+  --ant-info-color: #86909c;
+  --ant-info-color-hover: #a9aeb8;
+  --ant-info-color-active: #6b7785;
+}

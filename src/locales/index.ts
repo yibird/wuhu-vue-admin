@@ -1,0 +1,1 @@
+export { setupI18n } from './setupI18n'

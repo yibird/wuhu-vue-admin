@@ -1,0 +1,123 @@
+ 
+/* button */
+.ant-btn > span{
+  display: inline-flex!important;
+  align-items: center;
+}
+.ant-btn.ant-btn-success {
+  color: #fff;
+  background: var(--ant-success-color);
+  border-color: var(--ant-success-color);
+  text-shadow: 0 -1px 0 rgb(0 0 0 / 12%);
+  box-shadow: 0 2px 0 rgb(0 0 0 / 5%);
+}
+.ant-btn.ant-btn-success:hover,
+.ant-btn.ant-btn-success:focus {
+  color: #fff;
+  background: var(--ant-success-color-hover);
+  border-color: var(--ant-success-color-hover);
+}
+.ant-btn.ant-btn-success:active {
+  color: #fff;
+  border-color: var(--ant-success-color-active);
+  background: var(--ant-success-color-active);
+}
+
+.ant-btn.ant-btn-warning {
+  color: #fff;
+  background: var(--ant-warning-color);
+  border-color: var(--ant-warning-color);
+  text-shadow: 0 -1px 0 rgb(0 0 0 / 12%);
+  box-shadow: 0 2px 0 rgb(0 0 0 / 5%);
+}
+.ant-btn.ant-btn-warning:hover,
+.ant-btn.ant-btn-warning:focus {
+  color: #fff;
+  background: var(--ant-warning-color-hover);
+  border-color: var(--ant-warning-color-hover);
+}
+.ant-btn.ant-btn-warning:active {
+  color: #fff;
+  border-color: var(--ant-warning-color-active);
+  background: var(--ant-warning-color-active);
+}
+
+.ant-btn.ant-btn-error {
+  color: #fff;
+  background: var(--ant-error-color);
+  border-color: var(--ant-error-color);
+  text-shadow: 0 -1px 0 rgb(0 0 0 / 12%);
+  box-shadow: 0 2px 0 rgb(0 0 0 / 5%);
+}
+.ant-btn.ant-btn-error:hover,
+.ant-btn.ant-btn-error:focus {
+  color: #fff;
+  background: var(--ant-error-color-hover);
+  border-color: var(--ant-error-color-hover);
+}
+.ant-btn.ant-btn-error:active {
+  color: #fff;
+  border-color: var(--ant-error-color-active);
+  background: var(--ant-error-color-active);
+}
+
+.ant-btn.ant-btn-info {
+  color: #fff;
+  background: var(--ant-info-color);
+  border-color: var(--ant-info-color);
+  text-shadow: 0 -1px 0 rgb(0 0 0 / 12%);
+  box-shadow: 0 2px 0 rgb(0 0 0 / 5%);
+}
+.ant-btn.ant-btn-info:hover,
+.ant-btn.ant-btn-info:focus {
+  color: #fff;
+  background: var(--ant-info-color-hover);
+  border-color: var(--ant-info-color-hover);
+}
+.ant-btn.ant-btn-info:active {
+  color: #fff;
+  border-color: var(--ant-info-color-active);
+  background: var(--ant-info-color-active);
+}
+
+/* tabs */
+.ant-tabs-top > .ant-tabs-nav,
+.ant-tabs-bottom > .ant-tabs-nav,
+.ant-tabs-top > div > .ant-tabs-nav,
+.ant-tabs-bottom > div > .ant-tabs-nav {
+  margin: 0 !important;
+}
+.ant-tabs .ant-tabs-content-holder .ant-tabs-content {
+  height: 100%;
+}
+ 
+
+/* menu */
+.ant-menu-submenu ul li {
+  display: flex;
+  align-items: center;
+}
+
+.ant-card-head::before {
+  display: inline !important;
+}
+
+.ant-message-notice-content {
+  padding: 8px 16px;
+}
+.ant-message-custom-content {
+  display: inline-flex;
+  align-items: center;
+}
+
+.ant-pagination-prev .ant-pagination-item-link,
+.ant-pagination-next .ant-pagination-item-link {
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 补充样式 */
+.ant-popover-custom .ant-popover-inner-content {
+  padding: 0 !important;
+}

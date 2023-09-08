@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "composite": true,
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "allowSyntheticDefaultImports": true,
+    "types": ["unplugin-vue-macros/macros-global"]
+  },
+  "include": ["vite.config.ts", "build/**/*.ts"]
+}

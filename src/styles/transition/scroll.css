@@ -1,0 +1,75 @@
+/** scroll-y */
+.scroll-y-transition-enter-active,
+.scroll-y-transition-leave-active {
+  transition: 0.3s cubic-bezier(0.25, 0.8, 0.5, 1) !important;
+}
+.scroll-y-transition-move {
+  transition: transform 0.4s;
+}
+.scroll-y-transition-enter-from,
+.scroll-y-transition-leave-to {
+  opacity: 0;
+}
+.scroll-y-transition-enter-from {
+  transform: translateY(-15px);
+}
+.scroll-y-transition-leave-to {
+  transform: translateY(15px);
+}
+
+/** scroll-y-reverse */
+.scroll-y-reverse-transition-enter-active,
+.scroll-y-reverse-transition-leave-active {
+  transition: 0.3s cubic-bezier(0.25, 0.8, 0.5, 1) !important;
+}
+.scroll-y-reverse-transition-move {
+  transition: transform 0.4s;
+}
+.scroll-y-reverse-transition-enter-from,
+.scroll-y-reverse-transition-leave-to {
+  opacity: 0;
+}
+.scroll-y-reverse-transition-enter-from {
+  transform: translateY(15px);
+}
+.scroll-y-reverse-transition-leave-to {
+  transform: translateY(-15px);
+}
+
+/** scroll-x */
+.scroll-x-transition-enter-active,
+.scroll-x-transition-leave-active {
+  transition: 0.3s cubic-bezier(0.25, 0.8, 0.5, 1) !important;
+}
+.scroll-x-transition-move {
+  transition: transform 0.4s;
+}
+.scroll-x-transition-enter-from,
+.scroll-x-transition-leave-to {
+  opacity: 0;
+}
+.scroll-x-transition-enter-from {
+  transform: translateX(-15px);
+}
+.scroll-x-transition-leave-to {
+  transform: translateX(15px);
+}
+
+/** scroll-x-reverse */
+.scroll-x-reverse-transition-enter-active,
+.scroll-x-reverse-transition-leave-active {
+  transition: 0.3s cubic-bezier(0.25, 0.8, 0.5, 1) !important;
+}
+.scroll-x-reverse-transition-move {
+  transition: transform 0.4s;
+}
+.scroll-x-reverse-transition-enter-from,
+.scroll-x-reverse-transition-leave-to {
+  opacity: 0;
+}
+.scroll-x-reverse-transition-enter-from {
+  transform: translateX(15px);
+}
+.scroll-x-reverse-transition-leave-to {
+  transform: translateX(-15px);
+}
