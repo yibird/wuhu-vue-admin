@@ -50,37 +50,39 @@
 </script>
 <style scoped>
   .tabs {
-    @apply flex h-[40px] bg-[#F0F2F5];
+    @apply flex h-40 bg-[#F0F2F5];
   }
   .tabs-wrapper {
     @apply flex-1;
   }
   .tabs-wrapper ul {
-    @apply relative flex h-30 my-5 items-center gap-[8px] 
+    @apply relative flex h-30 my-5 items-center gap-8
     whitespace-nowrap transition-all;
   }
   .tabs-wrapper ul li {
-    @apply flex-y-center h-full bg-white px-[10px] rounded-[4px] cursor-pointer;
+    @apply flex items-center h-full bg-white 
+      px-10 cursor-pointer rounded-[4px];
   }
 
   .tabs-control {
-    @apply w-40 h-full cursor-pointer flex-center;
-  }
-  .tabs-control i {
-    font-size: 20px;
+    @apply w-40 h-full cursor-pointer flex justify-center items-center;
   }
   .tab-close {
     @apply ml-6 text-[15px] transition-all hover:text-[red] font-[600];
   }
-  .tab-active {
-    @apply relative text-[#2d8cf0] font-[600] !pl-28 shadow-sm transition-all
-    before:absolute
-    before:content-[''] 
-    before:w-8 before:h-8 
-    before:left-10
-    before:rounded-[50%] 
-    before:bg-[#2d8cf0] 
-    before:top-[50%] 
-    before:translate-y-[-50%];
+
+  .tab-active{
+    @apply relative text-[#2d8cf0] font-[600] !pl-28 shadow-sm transition-all;
+  }
+  .tab-active::before {
+    content: '';
+    position: absolute;
+    width: 8px;
+    height:8px;
+    left:10px;
+    top: 50%;
+    border-radius: 50%;
+    background-color: #2d8cf0;
+    transform: translateY(-50%);
   }
 </style>

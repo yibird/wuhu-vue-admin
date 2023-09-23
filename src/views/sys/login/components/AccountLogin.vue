@@ -12,7 +12,7 @@
         placeholder="请输入账号(wuhu_1)"
       >
         <template #prefix>
-          <Icon name="ri-user-5-line" color="#333" :size="16" />
+          <Icon name="ri-user-5-line" color="#666" :size="18" />
         </template>
       </a-input>
     </a-form-item>
@@ -23,20 +23,20 @@
         placeholder="请输入密码(123123)"
       >
         <template #prefix>
-          <Icon name="ri-lock-line" color="#333" :size="16" />
+          <Icon name="ri-lock-line" color="#666" :size="18" />
         </template>
       </a-input-password>
     </a-form-item>
     <div class="text-right">
-      <a-button class="!p-0" type="link" size="small">忘记密码?</a-button>
+      <a-button type="link" size="small">忘记密码?</a-button>
     </div>
     <div class="mt-15 mb-20">
       <a-button size="large" type="primary" block @click="loginHandle"
         >登录</a-button
       >
     </div>
-    <div class="flex-y-center justify-between">
-      <div class="flex-y-center">
+    <div class="flex items-center justify-between">
+      <div class="flex items-center">
         <span>其他登录账号</span>
         <a-space class="px-5">
           <a-tooltip placement="bottom" v-for="item in modes" :key="item.icon">

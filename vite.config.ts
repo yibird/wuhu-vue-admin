@@ -1,7 +1,6 @@
 import { ConfigEnv, UserConfig } from "vite";
 import { resolve } from "path";
 import { createPlugin } from "./build";
-import postcss from "./postcss.config.js";
 
 const pathResolve = (dir: string) => resolve(process.cwd(), ".", dir);
 const resolveConfig = () => {
@@ -28,8 +27,6 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
       port: 9999
     },
     envDir: "env",
-    css: {
-      postcss,
-    },
+    css: {},
   };
 };

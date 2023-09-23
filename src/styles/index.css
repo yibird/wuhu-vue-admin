@@ -1,6 +1,5 @@
-@import url("ant-design-vue/dist/reset.css");
 @import url("./base.css");
-@import url("./tailwind.css");
+@import '@unocss/reset/normalize.css';
 @import url("./variable.css");
 @import url("remixicon/fonts/remixicon.css");
 @import url("./transition/index.css");

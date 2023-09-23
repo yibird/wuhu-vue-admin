@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <section
     :class="[fullscreen ? 'full-loading' : 'container-loading', 'loading']"
     :style="[background ? `background-color: ${background}` : '']"
@@ -36,4 +36,6 @@
   .full-loading {
     position: fixed;
   }
-</style>
+</style> -->
+
+<template></template>

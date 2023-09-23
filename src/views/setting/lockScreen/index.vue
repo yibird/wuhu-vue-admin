@@ -34,7 +34,7 @@
 </script>
 <style scoped>
   .content {
-    @apply flex-y-center flex-col py-[50px] text-[24px];
+    @apply flex items-center flex-col py-[50px] text-[24px];
   }
   .footer {
     @apply absolute bottom-[20px] w-full p-20 flex justify-between;

@@ -68,7 +68,7 @@
 </script>
 <style scoped>
   .tabs-control {
-    @apply w-40 h-full cursor-pointer flex-center;
+    @apply w-40 h-full cursor-pointer flex justify-center items-center;
   }
   .tabs-control i {
     font-size: 20px;

@@ -1,10 +1,11 @@
 <template>
-  <div class="h-full bg-white flex-x-center">
+  <div class="h-full bg-white flex-row-center">
     <a-empty
       :image="image"
       :image-style="{
         height: '200px',
         width: '500px',
+        margin: 'auto',
       }"
       class="pt-[80px]"
     >

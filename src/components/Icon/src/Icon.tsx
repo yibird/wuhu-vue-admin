@@ -18,7 +18,7 @@ const iconProps = {
 };
 
 export default defineComponent({
-  name: "icon",
+  name: "Icon",
   props: iconProps,
   setup(props) {
     return () => {

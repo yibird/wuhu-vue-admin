@@ -1,12 +1,20 @@
 <template>
   <div class="full bg-[#F3F7FA] grid-center">
-    <div class="login-container shadow-xl">
-      <div class="w-240 h-full bg-[#1890FF]"></div>
-      <div class="bg-white h-full">
-        <div class="text-center py-15">
-          <div class="text-[18px] font-[500] text-[#1890FF]">wuhu-admin</div>
-          <div class="text-[#999] text-[13px]">一个还不错的Admin</div>
+    <div class="login-container">
+      <div class="flex flex-col w-280 h-full px-30 bg-white border-0 border-solid border-r-1 border-[#eee]">
+        <div class="py-20">
+          <div class="flex-center">
+            <img src="https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg"
+            class="w-30 h-30" />
+          <span class="ml-10 text-18">Wuhu-vue-admin</span>
+          </div>
+          <p class="py-10 text-center text-[#999] font-light">一个还不错的Admin</p>
         </div>
+        <div class="flex-1 flex-col-center" >
+          <img class="h-280" src="/@/assets/images/login-bg.png"/>
+        </div>
+      </div>
+      <div class="flex-center h-full bg-white">
         <div class="px-100">
           <a-tabs v-model:activeKey="activeMode" centered class="h-full w-300">
             <a-tab-pane
@@ -52,7 +60,7 @@ const actionHandle = (key: string) => {
 </script>
 <style>
 .login-container {
-  @apply flex-center h-[500px];
+  @apply flex items-center h-500 shadow-xl overflow-hidden rounded-[6px];
 }
 .login-container .ant-tabs .ant-tabs-content {
   height: 100%;

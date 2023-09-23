@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <div :style="getStyle"></div>
 </template>
 <script setup lang="ts">
@@ -107,4 +107,6 @@
       backgroundImage: `url(${base64Url.value})`,
     };
   });
-</script>
+</script> -->
+
+<template></template>

@@ -1,5 +1,5 @@
 <template>
-  <div class="h-full bg-white flex-x-center">
+  <div class="h-full bg-white flex-row-center">
     <a-empty
       :image="image"
       :image-style="{
