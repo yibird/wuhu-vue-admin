@@ -1,3 +1,10 @@
+import {
+  MenuModeEnum,
+  MenuTypeEnum,
+  TopMenuAlignEnum,
+  TriggerEnum,
+  MixSidebarTriggerEnum,
+} from '/@/enums/menuEnum';
 import type {
   MenuSetting,
   MultiTabsSetting,
@@ -5,14 +12,8 @@ import type {
   TransitionSetting,
   ProjectConfig,
   GlobConfig,
-} from "/#/config";
-import {
-  MenuModeEnum,
-  MenuTypeEnum,
-  TopMenuAlignEnum,
-  TriggerEnum,
-  MixSidebarTriggerEnum,
-} from "/@/enums/menuEnum";
+} from '/#/config';
+
 import {
   ThemeEnum,
   RouterTransitionEnum,
@@ -20,11 +21,11 @@ import {
   PermissionModeEnum,
   SessionTimeoutProcessingEnum,
   ContentEnum,
-} from "/@/enums/appEnum";
-import { CacheTypeEnum } from "/@/enums/cacheEnum";
+} from '/@/enums/appEnum';
+import { CacheTypeEnum } from '/@/enums/cacheEnum';
 
 const menuSetting: MenuSetting = {
-  bgColor: "",
+  bgColor: '',
   fixed: true,
   collapsed: false,
   canDrag: false,
@@ -55,7 +56,7 @@ const multiTabsSetting: MultiTabsSetting = {
 };
 
 const headerSetting: HeaderSetting = {
-  bgColor: "#fff",
+  bgColor: '#fff',
   fixed: true,
   show: true,
   theme: ThemeEnum.Light,
@@ -82,7 +83,7 @@ export const config: ProjectConfig = {
   sessionTimeoutProcessing: SessionTimeoutProcessingEnum.ROUTE_JUMP,
   grayMode: false,
   colorWeak: false,
-  themeColor: "#1890FF",
+  themeColor: '#1890FF',
 
   fullContent: false,
   contentMode: ContentEnum.FULL,
@@ -104,9 +105,9 @@ export const config: ProjectConfig = {
 };
 
 export const globConfig: GlobConfig = {
-  title: "wuhu-vue-admin",
-  apiUrl: "",
-  uploadUrl: "",
-  urlPrefix: "",
-  shortName: "wuhu",
+  title: 'wuhu-vue-admin',
+  apiUrl: '',
+  uploadUrl: '',
+  urlPrefix: '',
+  shortName: 'wuhu',
 };

@@ -1,5 +1,10 @@
 <template>
-  <a-modal :visible="visible" title="修改密码" @cancel="cancelHandle" @ok="okHandle">
+  <a-modal
+    :open="visible"
+    title="修改密码"
+    @cancel="cancelHandle"
+    @ok="okHandle"
+  >
     <a-form
       ref="formRef"
       :model="model"
@@ -8,13 +13,22 @@
       :wrapperCol="{ span: 20 }"
     >
       <a-form-item label="旧密码" name="password">
-        <a-input-password v-model:value="model.password" placeholder="请求输入旧密码" />
+        <a-input-password
+          v-model:value="model.password"
+          placeholder="请求输入旧密码"
+        />
       </a-form-item>
       <a-form-item label="新密码" name="newPassword">
-        <a-input-password v-model:value="model.newPassword" placeholder="请输入新密码" />
+        <a-input-password
+          v-model:value="model.newPassword"
+          placeholder="请输入新密码"
+        />
       </a-form-item>
       <a-form-item label="确认密码" name="confirmPassword">
-        <a-input-password v-model:value="model.confirmPassword" placeholder="请输入确认密码" />
+        <a-input-password
+          v-model:value="model.confirmPassword"
+          placeholder="请输入确认密码"
+        />
       </a-form-item>
     </a-form>
   </a-modal>

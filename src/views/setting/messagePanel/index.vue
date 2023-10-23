@@ -1,6 +1,11 @@
 <!-- MessagePanel -->
 <template>
-  <a-drawer title="消息面板" :visible="visible" @close="closeHandle" :bodyStyle="{ padding: 0 }">
+  <a-drawer
+    title="消息面板"
+    :open="open"
+    @close="closeHandle"
+    :bodyStyle="{ padding: 0 }"
+  >
     <a-tabs centered class="h-full">
       <a-tab-pane v-for="item in list" :key="item.key" :tab="item.title">
         <component :is="item.component" />
@@ -14,7 +19,7 @@
   import TodoList from './components/TodoList.vue';
 
   interface Emits {
-    (e: 'update:visible', visible: boolean): void;
+    (e: 'update:open', open: boolean): void;
   }
   const list = [
     {
@@ -34,9 +39,9 @@
     },
   ];
 
-  const { visible = false } = defineProps<{ visible: boolean }>();
+  const { open = false } = defineProps<{ open: boolean }>();
   const emit = defineEmits<Emits>();
   const closeHandle = () => {
-    emit('update:visible', false);
+    emit('update:open', false);
   };
 </script>

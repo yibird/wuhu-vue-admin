@@ -4,7 +4,7 @@
     "module": "ESNext",
     "moduleResolution": "Node",
     "allowSyntheticDefaultImports": true,
-    "types": ["unplugin-vue-macros/macros-global"]
+    "types": []
   },
   "include": ["vite.config.ts", "build/**/*.ts"]
 }

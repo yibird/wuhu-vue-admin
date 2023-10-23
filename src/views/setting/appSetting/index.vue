@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-drawer title="项目配置" :visible="visible" @close="closeHandle">
+    <a-drawer title="项目配置" :open="open" @close="closeHandle">
       <a-divider>主题</a-divider>
       <Theme />
       <a-divider>导航栏模式</a-divider>
@@ -28,25 +28,22 @@
   </div>
 </template>
 <script setup lang="ts">
-  import Theme from "./components/Theme.vue";
-  import SysTheme from "./components/SysTheme.vue";
-  import NavbarMode from "./components/NavbarMode.vue";
-  import NavbarStyle from "./components/NavbarStyle.vue";
-  import UIFunction from "./components/UIFunction.vue";
-  import UIDisplay from "./components/UIDisplay.vue";
-  import Animation from "./components/Animation.vue";
+  import Theme from './components/Theme.vue';
+  import SysTheme from './components/SysTheme.vue';
+  import NavbarMode from './components/NavbarMode.vue';
+  import NavbarStyle from './components/NavbarStyle.vue';
+  import UIFunction from './components/UIFunction.vue';
+  import UIDisplay from './components/UIDisplay.vue';
+  import Animation from './components/Animation.vue';
 
-  interface Props {
-    visible?: boolean;
-  }
   interface Emits {
-    (e: "update:visible", visible: boolean): void;
+    (e: 'update:open', open: boolean): void;
   }
 
-  const { visible = false } = defineProps<Props>();
+  const { open = false } = defineProps<{ open?: boolean }>();
   const emit = defineEmits<Emits>();
 
   const closeHandle = () => {
-    emit("update:visible", false);
+    emit('update:open', false);
   };
 </script>

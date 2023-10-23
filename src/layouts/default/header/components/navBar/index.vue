@@ -1,13 +1,15 @@
 <template>
-  <ul class="h-full flex">
+  <ul class="flex-col-center">
     <li @click="setCollapsed"><icon :size="18" name="ri-align-justify" /></li>
-    <li @click="reloadPageHandle"><icon :size="18" name="ri-restart-line" /></li>
+    <li @click="reloadPageHandle"
+      ><icon :size="18" name="ri-restart-line"
+    /></li>
     <Breadcrumb />
   </ul>
 </template>
 <script setup lang="ts">
-  import { useAppStore } from "/@/store";
-  import Breadcrumb from "./Breadcrumb.vue";
+  import { useAppStore } from '/@/store';
+  import Breadcrumb from './Breadcrumb.vue';
 
   const appStore = useAppStore();
   const setCollapsed = () => {

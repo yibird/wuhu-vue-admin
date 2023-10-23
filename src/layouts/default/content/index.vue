@@ -1,7 +1,6 @@
 <template>
   <a-layout-content class="flex flex-col">
-    <LayoutMultiTabs />
-    <div class="px-10 pb-10 flex-1 overflow-y-auto">
+    <div class="p-10 flex-1 overflow-y-auto">
       <RouterView>
         <template #default="{ Component, route }">
           <transition name="fade" mode="out-in" appear>
@@ -12,6 +11,4 @@
     </div>
   </a-layout-content>
 </template>
-<script setup lang="ts">
-  import LayoutMultiTabs from '../multiTabs/index.vue';
-</script>
+<script setup lang="ts"></script>

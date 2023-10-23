@@ -1,120 +1,136 @@
 import { defineStore } from 'pinia';
-import { unref } from 'vue';
+import { reactive, unref } from 'vue';
 import { RouteLocationNormalized, Router } from 'vue-router';
 import { usePermissionStore } from './permission';
 import { useGo, useRedo } from '/@/hooks/web/usePage';
-import { Menu } from '/@/router/types';
+import { MenuItem } from '/@/router/types';
+import { useRouter } from 'vue-router';
 
-type State = {
-  tabList: Menu[];
-  currentTab: Menu | null;
-  cacheTabList: Set<string>;
-};
+interface State {
+  /**
+   * @desc tab列表项数组
+   * @default []
+   */
+  tabItems: MenuItem[];
+  /**
+   * @desc 当前选中tab索引
+   * @default -1
+   */
+  current: number;
+  cacheTabItems: Set<string>;
+}
 
 const initialState = (): State => {
   return {
-    tabList: [],
-    currentTab: null,
-    cacheTabList: new Set(),
+    tabItems: [],
+    current: -1,
+    cacheTabItems: new Set(),
   };
 };
 
 export const useMultipleTabStore = defineStore('multipleTab', {
   state: initialState,
   getters: {
-    getTabList(): Menu[] {
-      return this.tabList;
+    getTabItems(): MenuItem[] {
+      return this.tabItems;
     },
-    getCacheTabList(): Array<string> {
-      return Array.from(this.cacheTabList);
+    getCacheTabItems(): Array<string> {
+      return Array.from(this.cacheTabItems);
     },
-    getCurrentTab(): Menu | null {
-      return this.currentTab;
+    getCurrent(): number {
+      return this.current;
     },
-    getCurrentIndex(): number {
-      if (this.getTabList.length === 1) return -1;
-      return this.tabList.findIndex((item) => item.id === this.currentTab?.id);
+    getCurrentTab(): MenuItem | undefined {
+      const itemsLen = this.getTabItems.length;
+      if (
+        this.getCurrent === -1 ||
+        itemsLen === 0 ||
+        this.getCurrent > itemsLen
+      ) {
+        return;
+      }
+      return this.getTabItems[this.current];
     },
   },
   actions: {
+    // 跳转对应页面
+    toPage(router: Router) {
+      if (!this.getCurrentTab) return;
+      const { push } = router;
+      push(this.getCurrentTab.path);
+    },
+
     // 刷新当前页面
     async refreshPage(router: Router) {
-      const { currentRoute } = router;
-      const route = unref(currentRoute);
-      const cacheTab = this.getCacheTabList.find((item) => item === route.name);
-      if (cacheTab) {
-        this.cacheTabList.delete(cacheTab);
-      }
-      const redo = useRedo(router);
-      await redo();
+      // const { currentRoute } = router;
+      // const route = unref(currentRoute);
+      // const cacheTab = this.getTabItems.find(
+      //   (item) => item.name === route.name,
+      // );
+      // if (cacheTab) {
+      //   this.cacheTabList.delete(cacheTab);
+      // }
+      // const redo = useRedo(router);
+      // await redo();
     },
-    // 跳转对应页面
-    toPage(router: Router, path?: string) {
-      const go = useGo(router);
-      go(path || this.currentTab?.path);
+    // 根据索引选择tab
+    handleChangeTab(index: number, router: Router) {
+      if (index < 0 || index > this.tabItems.length - 1) return;
+      this.current = index;
+      this.toPage(router);
     },
     // 添加tab
-    addTab(tab: Menu, router: Router) {
-      const permiStore = usePermissionStore();
-      const go = useGo(router);
-      // const menus = permiStore.getFlatFrontMenus;
-      const index = this.tabList.findIndex((item) => item.id === tab.id);
+    handleAddTab(tabItem: MenuItem, router: Router) {
+      const { tabItems, current } = this;
+      const index = tabItems.findIndex((item) => item.id === tabItem.id);
       if (index === -1) {
-        this.tabList.push(tab);
+        this.tabItems.push(tabItem);
       }
-      this.currentTab = tab;
-      go(this.currentTab.path);
+      this.handleChangeTab(index > -1 ? index : current + 1, router);
     },
-    addTabById(id: string) {
-      const permiStore = usePermissionStore();
-      const isExist = this.tabList.some((item) => item.id === Number(id));
-      const tab = permiStore.getFlatFrontMenus.find((item) => item.id === Number(id));
-      if (!tab) return;
-      if (!isExist) {
-        this.tabList.push(tab);
-      }
-      this.currentTab = tab;
+    // 根据索引关闭tab
+    handleCloseTab(index: number, router: Router) {
+      const { tabItems, current } = this;
+      if (index < 0 || index > tabItems.length - 1) return;
+      this.tabItems.splice(index, 1);
+      this.current = index <= current ? index - 1 : current;
+      this.toPage(router);
     },
     // 关闭当前tab
-    closeCurrentTab(router: Router) {
-      if (this.getCurrentIndex === -1) return;
-      this.tabList.splice(this.getCurrentIndex, 1);
-      this.currentTab = this.tabList[this.getCurrentIndex === 0 ? 0 : this.getCurrentIndex - 1];
+    handleCloseCurrentTab(router: Router) {
+      if (this.getCurrent === -1) return;
+      const { current } = this;
+      this.tabItems.splice(current, 1);
+      this.current = current === 0 ? 0 : current - 1;
       this.toPage(router);
     },
     // 关闭当前tab左侧所有tab
-    closeLeftTab() {
-      if (this.tabList.length === 1) return;
-      const index = this.tabList.findIndex((item) => item.id === this.currentTab?.id);
-      if (index === -1) return;
-      const tabList = this.tabList.slice(index);
-      tabList.length && (this.tabList = tabList);
+    handleCloseLeftTab() {
+      const { tabItems, current } = this;
+      if (tabItems.length === 1) return;
+      this.tabItems = tabItems.slice(current);
+      this.current = 0;
     },
     // 关闭当前tab右侧所有tab
-    closeRightTab() {
-      if (this.tabList.length === 1) return;
-      const index = this.tabList.findIndex((item) => item.id === this.currentTab?.id);
-      if (index === -1) return;
-      const tabList = this.tabList.slice(0, index + 1);
-      tabList.length && (this.tabList = tabList);
+    handleCloseRightTab() {
+      const { tabItems, current } = this;
+      if (tabItems.length === 1 || current === tabItems.length - 1) return;
+      this.tabItems = this.tabItems.slice(0, current + 1);
     },
     // 关闭其他tab
-    closeOtherTab() {
-      if (this.tabList.length === 1) return;
-      const index = this.tabList.findIndex((item) => item.id === this.currentTab?.id);
-      if (index === -1) return;
-      this.tabList = this.tabList.slice(index, index + 1);
+    handleCloseOtherTab() {
+      const { tabItems, current } = this;
+      if (tabItems.length === 1) return;
+      this.tabItems = tabItems.filter((_, index) => index === current);
+      this.current = 0;
     },
     // 关闭所有tab
-    closeAllTab(router: Router) {
-      if (this.tabList.length === 1) return;
-      const index = this.tabList.findIndex((item) => item.id === this.currentTab?.id);
-      if (index === -1) return;
-      this.tabList = this.tabList.slice(index, index + 1);
-      this.toPage(router);
+    handleCloseAllTab() {
+      this.tabItems = [];
+      this.current = 0;
     },
     clearCacheTabs() {
-      this.cacheTabList = new Set();
+      this.cacheTabItems = new Set();
     },
   },
 });

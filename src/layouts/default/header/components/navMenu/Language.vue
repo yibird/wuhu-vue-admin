@@ -8,7 +8,7 @@
       </a-menu>
     </template>
     <li>
-      <icon name="ri-translate" />
+      <icon :size="18" name="ri-translate" />
     </li>
   </a-dropdown>
 </template>

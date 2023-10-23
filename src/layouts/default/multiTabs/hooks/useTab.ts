@@ -1,34 +1,61 @@
-import { computed, unref } from 'vue';
-import { Router, useRouter } from 'vue-router';
+import { Router } from 'vue-router';
 import { Menu } from '/@/router/types';
 import { useMultipleTabStore } from '/@/store/module/multipleTab';
+import { storeToRefs } from 'pinia';
 
-export default function useTab(router: Router) {
-  const { currentRoute } = router;
-  const tabStore = useMultipleTabStore();
+export function useTab(router: Router) {
+  const store = useMultipleTabStore();
+  const {
+    handleAddTab,
+    handleChangeTab,
+    handleCloseTab,
+    handleCloseCurrentTab,
+    handleCloseLeftTab,
+    handleCloseRightTab,
+    handleCloseOtherTab,
+    handleCloseAllTab,
+    refreshPage,
+  } = store;
 
-  const { refreshPage, closeCurrentTab, closeLeftTab, closeRightTab, closeOtherTab } = tabStore;
-
-  const activeKey = computed(() => tabStore.currentTab?.id);
-
-  // 获取当前tab
-  function getCurrentTab() {
-    const route = unref(currentRoute);
-    return tabStore.getTabList.find((item) => item.path === route?.fullPath);
-  }
+  const { tabItems, current, getCurrentTab } = storeToRefs(store);
 
   function addTab(item: Menu) {
-    tabStore.addTab(item, router!);
+    handleAddTab(item, router);
+  }
+  function changeTab(index: number) {
+    handleChangeTab(index, router);
+  }
+  function closeTab(index: number) {
+    handleCloseTab(index, router);
+  }
+  function closeCurrentTab() {
+    handleCloseCurrentTab(router);
+  }
+  function closeLeftTab() {
+    handleCloseLeftTab();
+  }
+  function closeRightTab() {
+    handleCloseRightTab();
+  }
+  function closeOtherTab() {
+    handleCloseOtherTab();
+  }
+  function closeAllTab() {
+    handleCloseAllTab(router);
   }
 
   return {
-    activeKey,
+    tabItems,
+    current,
+    currentTab: getCurrentTab,
     addTab,
+    changeTab,
+    closeTab,
+    closeCurrentTab,
+    closeLeftTab,
+    closeRightTab,
+    closeOtherTab,
+    closeAllTab,
     refreshPage: () => refreshPage(router!),
-    closeCurrentPage: () => closeCurrentTab(router),
-    closeLeftPage: () => closeLeftTab(),
-    closeRightPage: () => closeRightTab(),
-    closeOtherPage: () => closeOtherTab(),
-    // closeAllPage: () => tabActionHandle(TabActionEnum.CLOSE_ALL),
   };
 }

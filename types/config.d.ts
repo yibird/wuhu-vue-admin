@@ -4,16 +4,79 @@ import {
   TopMenuAlignEnum,
   TriggerEnum,
   MixSidebarTriggerEnum,
-} from "/@/enums/menuEnum";
+} from '/@/enums/menuEnum';
 
 import {
   ThemeEnum,
   SettingButtonPositionEnum,
   RouterTransitionEnum,
   PermissionModeEnum,
-} from "/@/enums/appEnum";
+} from '/@/enums/appEnum';
 
-import { CacheTypeEnum } from "/@/enums/cacheEnum";
+import { CacheTypeEnum } from '/@/enums/cacheEnum';
+
+export interface MenuItem {
+  /**
+   * @desc 菜单项Id
+   * @default
+   */
+  id: number;
+  /**
+   * @desc 菜单名称
+   * @default
+   */
+  name: string;
+  /**
+   * @desc 菜单类型,0目录、1菜单、2权限按钮
+   * @default
+   */
+  type: number;
+  /**
+   * @desc 当前菜单项父菜单Id
+   * @default
+   */
+  parentId?: number | null;
+  /**
+   * @desc 菜单路由Path,以 / 开头表示内部路由,https表示外链
+   * @default
+   */
+  path: string;
+  /**
+   * @desc 父级层级路径,以'-'分割父级id
+   * @default
+   */
+  levelPath: string;
+  /**
+   * @desc 菜单路径参数
+   * @default
+   */
+  paramPath?: string;
+  /**
+   * @desc 菜单Icon
+   * @default
+   */
+  icon?: string;
+  /**
+   * @desc 是否隐藏菜单
+   * @default
+   */
+  hidden?: boolean;
+  /**
+   * @desc 是否禁用菜单
+   * @default
+   */
+  disabled?: boolean;
+  /**
+   * @desc 排序序号
+   * @default
+   */
+  orderNo?: number;
+  /**
+   * @desc  菜单路由元信息
+   * @default
+   */
+  meta?: Partial<RouteMeta>;
+}
 
 // 菜单设置
 export interface MenuSetting {

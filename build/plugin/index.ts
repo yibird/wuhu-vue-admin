@@ -1,5 +1,5 @@
 import Vue from '@vitejs/plugin-vue';
-import unoCSSPlugin from './unocss'
+import unoCSSPlugin from './unocss';
 import createAutoImportPlugin from './autoImport';
 // import createMockPlugin from './mock';
 import createVueJsx from './vueJsx';
@@ -13,9 +13,7 @@ export function createPlugin() {
     createAutoImportPlugin(),
     // createMockPlugin(),
     createVueJsx(),
-    Vue({
-      reactivityTransform: true,
-    }),
+    Vue({}),
     // createTypeImport(),
   ];
 }

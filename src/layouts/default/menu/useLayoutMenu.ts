@@ -1,30 +1,22 @@
 import { computed } from 'vue';
 import { useRouter } from 'vue-router';
-import { Menu } from '/@/router/types';
-import { useMultipleTabStore } from '/@/store';
+import { useTab } from '../multiTabs/hooks/useTab';
 
 export function useLayoutMenu() {
-  const tabStore = useMultipleTabStore();
-  const selectedKeys = computed(() => [String(tabStore.currentTab?.id)]);
+  const router = useRouter();
+  const { currentTab, addTab } = useTab(router);
+  const selectedKeys = computed(() => {
+    if (!currentTab.value) return [];
+    return currentTab.value.levelPath.split('-');
+  });
   const openKeys = computed(() => {
-    return tabStore.currentTab?.levelPath.split('-');
+    if (!currentTab.value) return [];
+    return currentTab.value.levelPath.split('-');
   });
 
-  const router = useRouter();
-  function init() {
-    tabStore.addTabById('11');
-  }
-  function addItem(menu: Menu) {
-    tabStore.addTab(menu, router);
-  }
-  function addItemById(id: string) {
-    tabStore.addTabById(id);
-  }
   return {
     openKeys,
     selectedKeys,
-    init,
-    addItem,
-    addItemById,
+    addTab,
   };
 }
