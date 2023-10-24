@@ -1,14 +1,16 @@
-import { AxiosTransform, CreateAxiosOptions } from "./axiosTransform";
-import { AxiosRequestConfig, AxiosResponse } from "axios";
-import { RequestOptions } from "/#/axios";
-import UAxios from "./axios";
-import { ContentTypeEnum } from "../../enums/httpEnum";
-import { clone } from "lodash-es";
-import { deepMerge } from "/@/utils";
+import { AxiosTransform, CreateAxiosOptions } from './axiosTransform';
+import { AxiosRequestConfig, AxiosResponse } from 'axios';
+import { RequestOptions } from '/#/axios';
+import UAxios from './axios';
+import { ContentTypeEnum } from '/@/enums/httpEnum';
+import { clone } from 'lodash-es';
+import { deepMerge } from '/@/utils';
+
+const baseURL = import.meta.env.API_BASE_URL;
 
 // 获取用户token
 function getToken() {
-  return "token:xxxxx";
+  return 'token:xxxxx';
 }
 
 const transform: AxiosTransform = {
@@ -42,13 +44,13 @@ const transform: AxiosTransform = {
 
 // 默认请求配置
 const defaultRequestOptions: CreateAxiosOptions = {
-  authenticationScheme: "",
+  authenticationScheme: '',
   // 超时时间,默认10s
   timeout: 10 * 1000,
   // 请求基础URL
-  baseURL: "",
+  baseURL,
   // 请求头,默认请求类型为 ContentTypeEnum.JSON
-  headers: { "Content-Type": ContentTypeEnum.JSON },
+  headers: { 'Content-Type': ContentTypeEnum.JSON },
   // 数据处理方式
   transform: clone(transform),
   // 请求配置项
@@ -64,11 +66,11 @@ const defaultRequestOptions: CreateAxiosOptions = {
     // 格式化提交参数时间
     formatDate: true,
     // 消息提示类型
-    errorMessageMode: "message",
+    errorMessageMode: 'message',
     // 接口地址
-    apiUrl: "",
+    apiUrl: '',
     // 接口拼接地址
-    urlPrefix: "",
+    urlPrefix: '',
     //  是否加入时间戳
     joinTime: true,
     // 忽略重复请求
