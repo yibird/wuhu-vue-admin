@@ -24,11 +24,14 @@ dependencies:
     specifier: ^10.5.0
     version: 10.5.0(vue@3.3.6)
   ant-design-vue:
-    specifier: ^4.0.3
-    version: 4.0.3(vue@3.3.6)
+    specifier: ^4.0.6
+    version: 4.0.6(vue@3.3.6)
   axios:
     specifier: ^1.5.0
     version: 1.5.0
+  dayjs:
+    specifier: ^1.11.10
+    version: 1.11.10
   lodash-es:
     specifier: ^4.17.21
     version: 4.17.21
@@ -2243,8 +2246,8 @@ packages:
     dependencies:
       color-convert: 2.0.1
 
-  /ant-design-vue@4.0.3(vue@3.3.6):
-    resolution: {integrity: sha512-fbgZbbirLx7rc19ytaGxApwS01CKLRzvEZmH0TVF06niQA9ekx7xkvfQGlmiSaCs4b8nWZi4Bo7gUzRNRt5YJA==}
+  /ant-design-vue@4.0.6(vue@3.3.6):
+    resolution: {integrity: sha512-6kh3b8Ito9SAbOKTW0wyfcCnd859uhQQlttjo8RjMj6YjLK52yNO2TdgYRwed06scUm5RwEnQ2JKMxYYoeG1MA==}
     engines: {node: '>=12.22.0'}
     peerDependencies:
       vue: '>=3.2.0'

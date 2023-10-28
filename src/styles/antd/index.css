@@ -1,7 +1,6 @@
- 
 /* button */
-.ant-btn > span{
-  display: inline-flex!important;
+.ant-btn > span {
+  display: inline-flex !important;
   align-items: center;
 }
 .ant-btn.ant-btn-success {
@@ -90,7 +89,6 @@
 .ant-tabs .ant-tabs-content-holder .ant-tabs-content {
   height: 100%;
 }
- 
 
 /* menu */
 .ant-menu-submenu ul li {
@@ -117,7 +115,19 @@
   align-items: center;
 }
 
-/* 补充样式 */
-.ant-popover-custom .ant-popover-inner-content {
-  padding: 0 !important;
+/* table */
+.ant-table-pagination.ant-pagination {
+  margin: 0 !important;
+  margin-top: 10px !important;
+}
+.ant-table-pagination .ant-select {
+  min-width: 60px;
+  width: auto;
+}
+.ant-table-pagination .ant-pagination-item-active {
+  background-color: #1677ff;
+}
+.ant-table-pagination .ant-pagination-item-active a,
+.ant-table-pagination .ant-pagination-item-active:hover a {
+  color: #fff;
 }

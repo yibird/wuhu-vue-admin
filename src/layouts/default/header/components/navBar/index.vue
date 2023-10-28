@@ -13,7 +13,7 @@
 
   const appStore = useAppStore();
   const setCollapsed = () => {
-    const { setMenuSetting, getMenuSetting } = $(appStore);
+    const { setMenuSetting, getMenuSetting } = appStore;
     const { collapsed } = getMenuSetting;
     setMenuSetting({ ...getMenuSetting, collapsed: !collapsed });
   };

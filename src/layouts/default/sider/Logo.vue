@@ -1,7 +1,9 @@
 <template>
-  <div class="flex-center h-50 text-base text-white cursor-pointer">
+  <div class="flex-center h-50 cursor-pointer">
     <img :src="imgUrl" class="w-36 h-32 mr-5" />
-    <span v-if="!collapsed" class="truncate">{{ appName }}</span>
+    <span v-if="!collapsed" class="truncate text-sm text-white">
+      {{ appName }}
+    </span>
   </div>
 </template>
 <script setup lang="ts">

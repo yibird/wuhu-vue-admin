@@ -1,6 +1,9 @@
+import { Ref } from 'vue';
+
 declare type Nullable<T> = T | null;
 declare type Key = keyof any;
 declare type Recordable<T = any> = Record<Key, T>;
+declare type VoidFunc = () => void;
 declare type EmptyFunc<T = any> = () => T;
 declare type NotUndefined<T> = T extends undefined ? never : T;
 declare type Expand<T> = T extends infer S ? { [K in keyof S]: S[K] } : never;
@@ -14,3 +17,7 @@ declare type UnionToIntersection<U> = (
 
 // 深度参数可选
 declare type DeepPartial<T> = { [P in keyof T]?: DeepPartial<T[P]> };
+// 使用Ref包装类型中所有属性
+declare type WrapWithRef<T> = {
+  [K in keyof T]: Ref<T[K]>;
+};

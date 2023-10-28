@@ -16,7 +16,10 @@
 </script>
 <style scoped>
   .icon {
+    position: relative;
+    top: -1.5px;
     display: inline-block;
     vertical-align: middle;
+    cursor: pointer;
   }
 </style>

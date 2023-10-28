@@ -1,21 +1,19 @@
 <template>
-  <a-config-provider :locale="locale">
+  <a-config-provider :locale="locale" :theme="theme">
     <RouterView />
   </a-config-provider>
 </template>
 <script setup lang="ts">
   import { reactive } from 'vue';
-  import { ConfigProvider } from 'ant-design-vue';
   import zh_CN from 'ant-design-vue/es/locale/zh_CN';
 
-  const { locale } = reactive({
+  const { locale, theme } = reactive({
     locale: zh_CN,
-  });
-
-  ConfigProvider.config({
     theme: {
-      primaryColor: '',
+      token: {
+        colorPrimary: '#1677ff',
+        borderRadius: '4px',
+      },
     },
   });
 </script>
-<style scoped></style>

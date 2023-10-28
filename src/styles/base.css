@@ -1,4 +1,3 @@
-
 :root {
   font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
   font-size: 14px;
@@ -24,6 +23,7 @@ body,
   height: 100%;
   width: 100%;
   position: relative;
+  color: #333;
 }
 img {
   width: 100%;

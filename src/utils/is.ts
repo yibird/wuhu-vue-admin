@@ -3,19 +3,19 @@ function isType(val: unknown, type: string) {
 }
 
 function isString(value: unknown): value is string {
-  return isType(value, "String");
+  return isType(value, 'String');
 }
 
 function isNumber(value: unknown): value is number {
-  return isType(value, "Number");
+  return isType(value, 'Number');
 }
 
 function isBool(value: unknown): value is boolean {
-  return isType(value, "Boolean");
+  return isType(value, 'Boolean');
 }
 
 function isDef<T = unknown>(value?: T): value is T {
-  return typeof value !== "undefined";
+  return typeof value !== 'undefined';
 }
 
 function isUnDef<T = unknown>(value?: T): value is T {
@@ -27,15 +27,15 @@ function isNull(value: unknown): value is null {
 }
 
 function isSymbol(value: unknown): value is symbol {
-  return isType(value, "Symbol");
+  return isType(value, 'Symbol');
 }
 
 function isBigint(value: unknown): value is bigint {
-  return isType(value, "Bigint");
+  return isType(value, 'Bigint');
 }
 
 function isFunc(value: Function): value is Function {
-  return isType(value, "Function");
+  return isType(value, 'Function');
 }
 
 function isArray(value?: any): value is Array<any> {
@@ -43,20 +43,20 @@ function isArray(value?: any): value is Array<any> {
 }
 
 function isObject(val?: any): val is Record<any, any> {
-  return val !== null && typeof val === "object";
+  return val !== null && typeof val === 'object';
 }
 
 function isDate(val?: unknown): val is Date {
-  return isType(val, "Date");
+  return isType(val, 'Date');
 }
 
 function isRegExp(val?: unknown): val is RegExp {
-  return isType(val, "RegExp");
+  return isType(val, 'RegExp');
 }
 
 function isPromise<T = any>(val?: unknown): val is Promise<T> {
   return (
-    isType(val, "Promise") &&
+    isType(val, 'Promise') &&
     isObject(val) &&
     isFunc(val.then) &&
     isFunc(val.catch)
@@ -64,15 +64,15 @@ function isPromise<T = any>(val?: unknown): val is Promise<T> {
 }
 
 function isMap(val: unknown): val is Map<any, any> {
-  return isType(val, "Map");
+  return isType(val, 'Map');
 }
 
 function isSet(val: unknown): val is Set<any> {
-  return isType(val, "Set");
+  return isType(val, 'Set');
 }
 
 function isWindow(val: any): val is Window {
-  return typeof window !== "undefined" && isType(val, "Window");
+  return typeof window !== 'undefined' && isType(val, 'Window');
 }
 
 function isElement(val: unknown): val is Element {
@@ -102,7 +102,7 @@ function isNullOrUnDef(val: unknown): val is null | undefined {
 
 function isBrowser() {
   return !!(
-    typeof window !== "undefined" &&
+    typeof window !== 'undefined' &&
     window.document &&
     window.document.createElement
   );

@@ -1,23 +1,20 @@
 <template>
-  <div class="header">
-    <div class="header-title">12312312 </div>
-    <TableSetting class="header-setting" />
+  <div class="flex justify-between items-center pb-10 px-10">
+    <div class="flex items-center flex-1">
+      <slot v-if="slots.title" name="title" />
+      <TableTitle v-else />
+      <slot v-if="slots.action" name="action" />
+      <TableAction v-else />
+    </div>
+    <slot v-if="slots.setting" name="setting" />
+    <TableSetting v-else />
   </div>
 </template>
 <script setup lang="ts">
-  import { BasicTableProps } from "../types";
-  import TableSetting from "./settings/index.vue";
-</script>
+  import TableTitle from './TableTitle.vue';
+  import TableAction from './TableAction.vue';
+  import TableSetting from './setting/index.vue';
+  import { TablePlusSlots } from '../types';
 
-<style scoped>
-  .header {
-    @apply flex justify-between items-center mb-[10px];
-    border: 1px solid red;
-  }
-  .header-title {
-    @apply inline-flex items-center;
-  }
-  .header-setting {
-    @apply text-[16px] text-[#333] font-bold mr-[10px] cursor-pointer;
-  }
-</style>
+  const slots = defineSlots<Omit<TablePlusSlots, 'header'>>();
+</script>

@@ -1,6 +1,6 @@
 <template>
   <a-layout-content class="flex flex-col">
-    <div class="p-10 flex-1 overflow-y-auto">
+    <div class="flex-1 m-10 p-10 bg-white overflow-y-auto">
       <RouterView>
         <template #default="{ Component, route }">
           <transition name="fade" mode="out-in" appear>

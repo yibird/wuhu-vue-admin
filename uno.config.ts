@@ -4,6 +4,7 @@ import presetUno from '@unocss/preset-uno';
 import presetRemToPx from '@unocss/preset-rem-to-px';
 import transformerVariantGroup from '@unocss/transformer-variant-group';
 import transformerDirectives from '@unocss/transformer-directives';
+import type { Rule } from 'unocss';
 
 const baseShortcuts = {
   full: 'w-full h-full',
