@@ -1,0 +1,22 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": [
+    "eslint",
+    "typescript",
+    "unicorn",
+    "import",
+    "jsx-a11y",
+    "promise",
+    "vue"
+  ],
+  "env": {
+    "browser": true
+  },
+  "settings": {},
+  "rules": {
+    "import/no-cycle": "off",
+    "no-unused-expressions": "off"
+  },
+  "overrides": [],
+  "ignorePatterns": ["node_modules", "dist", "build"]
+}

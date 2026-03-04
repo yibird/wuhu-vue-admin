@@ -1,0 +1,6 @@
+export { default as TabNext } from './tab-next.vue'
+export { default as TabPrev } from './tab-prev.vue'
+export { default as TabHome } from './tab-home.vue'
+export { default as TabList } from './tab-list.vue'
+export { default as TabRefresh } from './tab-refresh.vue'
+export { default as TabAction } from './tab-action.vue'

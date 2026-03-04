@@ -1,0 +1,7 @@
+export { default as SearchModal } from './search-modal/index.vue'
+export { default as Setting } from './setting/index.vue'
+export { default as NoticeCenter } from './notice-center/index.vue'
+export { default as DownloadCenter } from './download-center/index.vue'
+export { default as NoteBookModal } from './note-book-modal/index.vue'
+export { default as ChatModal } from './chat-modal/index.vue'
+export { default as ChangePassword } from './change-password/index.vue'

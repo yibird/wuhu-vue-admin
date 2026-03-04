@@ -1,0 +1,108 @@
+.layout-tabs-block {
+  height: 40px;
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.08);
+
+  .layout-tabs-list {
+    margin: 0 130px 0 90px;
+    height: 32px;
+  }
+
+  .tab-control {
+    height: 30px;
+    width: 30px;
+    top: 50%;
+    transform: translateY(-50%);
+    border-radius: 50%;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+
+    &:hover {
+      background-color: #f8f8f8;
+    }
+
+    &:active {
+      background-color: #e2e2e2;
+    }
+
+    &-prev {
+      left: 10px;
+    }
+
+    &-home {
+      left: 50px;
+      padding: 0 !important;
+    }
+
+    &-next {
+      right: 90px;
+    }
+
+    &-refresh {
+      right: 50px;
+    }
+
+    &-action {
+      right: 10px;
+    }
+  }
+
+  .tab-item {
+    height: 100%;
+    padding: 0 5px 0 10px;
+    background-color: #fff;
+    margin-right: 10px;
+    border-radius: 4px;
+    border: 1px solid #eee;
+    box-sizing: border-box;
+    user-select: none;
+    appearance: none;
+    transition: all 0.3s;
+
+    &:last-child {
+      margin-right: 0;
+    }
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 10px;
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      overflow: hidden;
+      transform: translateY(-50%);
+      opacity: 0;
+      background-color: rgb(var(--w-primary-color));
+    }
+
+    &-active {
+      padding: 0 5px 0 25px;
+
+      &::before {
+        opacity: 1;
+      }
+    }
+
+    &__close {
+      display: flex;
+      align-items: center;
+      margin-left: 8px;
+      color: #c2c2c2;
+      border: none;
+      outline: none;
+      padding: 0;
+      background: transparent;
+      cursor: pointer;
+      user-select: none;
+      appearance: none;
+
+      &:hover {
+        color: #292b34;
+      }
+    }
+  }
+}

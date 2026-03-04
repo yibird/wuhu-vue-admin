@@ -1,0 +1,87 @@
+.layout-tabs-card {
+  height: 40px;
+  .tab-control {
+    border-left: 1px solid var(--w-tabs-control-border-color);
+    width: 40px;
+    height: 100%;
+    user-select: none;
+    &-prev {
+      border-left: none;
+    }
+
+    &:hover {
+      background-color: var(--w-tabs-control-hover-bg-color);
+    }
+
+    &:active {
+      background-color: var(--w-tabs-control-active-bg-color);
+    }
+
+    &-home {
+      border-right: 1px solid var(--w-tabs-control-border-color);
+
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 0;
+        height: 3px;
+        background-color: #292b34;
+        transition: all 0.2s;
+        -webkit-transition: all 0.2s;
+      }
+    }
+  }
+
+  .layout-tabs-list {
+    height: 100%;
+    margin: 0 120px 0 80px;
+  }
+
+  .tab-item {
+    height: 100%;
+    padding: 0 15px;
+    border-right: 1px solid #f2f2f2;
+    cursor: pointer;
+    overflow: hidden;
+    transition: all 0.3s ease;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 1px;
+      width: 0;
+      height: 3px;
+      background-color: var(--w-tabs-item-active-line-color);
+      transition: all 0.2s;
+      -webkit-transition: all 0.2s;
+    }
+
+    &-active::before {
+      width: 100%;
+    }
+
+    &:hover::before {
+      width: 100%;
+    }
+
+    &__close {
+      width: 18px;
+      height: 18px;
+      min-width: 18px;
+      min-height: 18px;
+      margin-left: 12px;
+      background-color: transparent;
+      color: #c2c2c2;
+      border-radius: 50%;
+      transition: all 0.2s;
+
+      &:hover {
+        background-color: rgb(var(--w-primary-color));
+        color: #fff;
+      }
+    }
+  }
+}

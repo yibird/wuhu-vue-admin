@@ -1,0 +1,16 @@
+/* 翻页滚动 */
+.flip-x-enter-from,
+.flip-x-leave-to {
+  transform: rotateY(90deg);
+  opacity: 0;
+}
+.flip-x-enter-to,
+.flip-x-leave-from {
+  transform: rotateY(0deg);
+  opacity: 1;
+}
+.flip-x-enter-active,
+.flip-x-leave-active {
+  transition: all 0.2s cubic-bezier(0.3, 0, 0.2, 1);
+  transform-origin: center;
+}

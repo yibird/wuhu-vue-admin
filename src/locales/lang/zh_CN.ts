@@ -1,0 +1,35 @@
+export default {
+  common: {
+    ok: '确定',
+    cancel: '取消',
+    validate: {
+      mobileFormatMessage: '请输入正确的手机号格式',
+    },
+  },
+  login: {
+    title: 'Hi!欢迎登录 🙌',
+    description: '输入您的账号和密码登录',
+    rememberMe: '记住我',
+    forgetPassword: '忘记密码',
+    submit: '登录',
+    accountLogin: '账号登录',
+    mobileLogin: '手机号登录',
+    scanLogin: '扫码登录',
+    loginMode: '其他登录方式',
+    noAccount: '还没有账号?',
+    register: '注册账号',
+    inputAccount: '请输入账号',
+    inputPassword: '请输入密码',
+    inputMobile: '请输入手机号',
+    inputCode: '请输入验证码',
+    sendCode: '发送验证码',
+    resendCode: '重新发送验证码',
+    refreshQrcode: '刷新二维码',
+    banner: {
+      title: '开箱即用的 Vue3 中后台前端解决方案',
+      description: '简洁优雅、功能齐全、工程化最佳实践',
+    },
+    success: '登录成功',
+    error: '登录失败',
+  },
+}
