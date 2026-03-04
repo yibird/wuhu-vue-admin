@@ -10,7 +10,6 @@ pnpm-lock.yaml
 
 # ---- Build outputs ----
 dist/
-build/
 .cache/
 .temp/
 tmp/
