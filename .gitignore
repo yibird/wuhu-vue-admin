@@ -18,7 +18,6 @@ out/
 
 # ---- Editor directories and files ----
 .idea/
-.vscode/
 *.suo
 *.ntvs*
 *.njsproj
@@ -26,11 +25,6 @@ out/
 *.sw?
 .DS_Store
 Thumbs.db
-
-# ---- Env files (keep a sample if needed) ----
-.env
-.env.local
-.env.*.local
 
 # ---- Coverage / test ----
 coverage/
@@ -52,6 +46,3 @@ test-results/
 *.tar.gz
 *.rar
 
-# ---- Optional: VS Code settings but keep workspace configs ----
-!.vscode/extensions.json
-!.vscode/settings.json
