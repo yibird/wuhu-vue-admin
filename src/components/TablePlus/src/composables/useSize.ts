@@ -1,4 +1,5 @@
-import elementResizeDetectorMaker from 'element-resize-detector'
+import { ref, isRef, onMounted, type Ref } from 'vue'
+import { useResizeObserver } from '@vueuse/core'
 import { throttle } from 'es-toolkit'
 import { getElementSize, getElSpacing } from '@/utils'
 
@@ -9,84 +10,58 @@ const N_PAGINATION_CLASS_NAME = '.n-data-table__pagination'
 const N_BORDER_CLASS_NAME = '.n-data-table--bordered'
 
 interface UseSizeOptions {
-  /**
-   * 是否开启自动计算 size
-   * @default true
-   */
   autoSize?: boolean | Ref<boolean | undefined>
-  /**
-   * 是否监听目标元素 resize 时重新计算 size
-   * @default true
-   */
   resize?: boolean
 }
 
 export function useSize(
-  target?: Ref<HTMLElement | undefined> | HTMLElement | (() => HTMLElement),
-  options: UseSizeOptions = {
-    autoSize: true,
-    resize: true
-  }
+  target: Ref<HTMLElement | undefined> | HTMLElement | (() => HTMLElement),
+  options: UseSizeOptions = { autoSize: true, resize: true }
 ) {
   const height = ref(200)
   const width = ref<number>()
-  const erdInstance = ref<elementResizeDetectorMaker.Erd | null>()
 
   const getTargetEl = () =>
     isRef(target) ? target.value : typeof target === 'function' ? target() : target
 
-  const calculateSize = throttle(function () {
-    nextTick(() => {
-      const el = getTargetEl()
-      if (!el) return
+  const calculateSize = throttle(() => {
+    const el = getTargetEl()
+    if (!el) return
 
-      const tablePlusEl = el.closest<HTMLElement>(TABLE_PLUS_CLASS_NAME)
-      if (!tablePlusEl) return
+    const tablePlusEl = el.closest<HTMLElement>(TABLE_PLUS_CLASS_NAME)
+    if (!tablePlusEl) return
 
-      const tablePlusHeaderEl = tablePlusEl.querySelector<HTMLElement>(HEADER_CLASS_NAME)
-      const nTableHeaderEl = el.querySelector<HTMLElement>(N_HEADER_CLASS_NAME)
-      const nPaginationEl = el.querySelector<HTMLElement>(N_PAGINATION_CLASS_NAME)
+    const tablePlusHeaderEl = tablePlusEl.querySelector<HTMLElement>(HEADER_CLASS_NAME)
+    const nTableHeaderEl = el.querySelector<HTMLElement>(N_HEADER_CLASS_NAME)
+    const nPaginationEl = el.querySelector<HTMLElement>(N_PAGINATION_CLASS_NAME)
+    const hasBordered = !!el.querySelector(N_BORDER_CLASS_NAME)
 
-      const tablePlusElHeight = tablePlusEl.clientHeight ?? 0
-      const tablePlusElWidth = tablePlusEl.clientWidth ?? 0
-      const tablePlusHeaderHeight = tablePlusHeaderEl?.clientHeight ?? 0
+    const tablePlusElHeight = tablePlusEl.clientHeight ?? 0
+    const tablePlusElWidth = tablePlusEl.clientWidth ?? 0
+    const tablePlusHeaderHeight = tablePlusHeaderEl?.clientHeight ?? 0
 
-      const { x: tablePlusSpacingX, y: tablePlusSpacingY } = getElSpacing(el)
-      const { height: nTableHeaderHeight } = getElementSize(nTableHeaderEl)
-      const { height: nPaginationHeight } = getElementSize(nPaginationEl)
+    const { x: spacingX, y: spacingY } = getElSpacing(el)
+    const { height: nHeaderH } = getElementSize(nTableHeaderEl)
+    const { height: nPaginationH } = getElementSize(nPaginationEl)
 
-      const hasBordered = !!el.querySelector(N_BORDER_CLASS_NAME)
+    const newHeight = tablePlusElHeight - spacingY - tablePlusHeaderHeight - nHeaderH - nPaginationH
+    const newWidth = tablePlusElWidth - spacingX - (hasBordered ? 2 : 0)
 
-      height.value =
-        tablePlusElHeight -
-        tablePlusSpacingY -
-        tablePlusHeaderHeight -
-        nTableHeaderHeight -
-        nPaginationHeight
-      width.value = tablePlusElWidth - tablePlusSpacingX - (hasBordered ? 2 : 0)
-    })
-  }, 20)
+    if (height.value !== newHeight) height.value = newHeight
+    if (width.value !== newWidth) width.value = newWidth
+  }, 1000)  
 
   onMounted(() => {
-    if (options.autoSize) {
+    if (unref(options.autoSize)) {
       calculateSize()
-    }
-    erdInstance.value = elementResizeDetectorMaker()
-    if (options.resize) {
-      const el = getTargetEl()
-      if (!el) return
-      erdInstance.value.listenTo(el, calculateSize)
     }
   })
 
-  onUnmounted(() => {
-    if (erdInstance.value) {
-      const el = getTargetEl()
-      if (!el) return
-      erdInstance.value.uninstall(el)
-      erdInstance.value = null
-    }
-  })
+  if (options.resize) {
+    useResizeObserver(target, () => {
+      calculateSize()
+    })
+  }
 
   return { height, width, calculateSize }
 }

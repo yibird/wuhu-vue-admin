@@ -24,6 +24,7 @@ import { proxyRefs } from 'vue'
 import { useRowProps, useSize } from '../composables'
 import ContextMenu from './context-menu.vue'
 import { useTablePlusInject } from '../context'
+
 import type { TablePlusColumn, TablePlusContextMenuInstance } from '../types'
 
 const context = useTablePlusInject<T>()
