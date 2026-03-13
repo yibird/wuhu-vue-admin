@@ -46,3 +46,6 @@ test-results/
 *.tar.gz
 *.rar
 
+
+auto-imports.d.ts
+components.d.ts
