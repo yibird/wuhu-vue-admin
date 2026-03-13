@@ -5,5 +5,15 @@ export default defineConfig({
   resolve: createResolve(),
   server: createServer(),
   plugins: [createPlugin()],
-  envDir: 'env'
+  envDir: 'env',
+  optimizeDeps: {
+    include: [
+      'vue',
+      'vue-i18n',
+      'naive-ui',
+      'vue-router',
+      'pinia',
+      '@visactor/vchart',
+    ],
+  },
 })

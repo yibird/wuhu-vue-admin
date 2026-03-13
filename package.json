@@ -88,8 +88,10 @@
     "vite": "8.0.0",
     "vite-plugin-cdn-import": "^1.0.1",
     "vite-plugin-compression2": "^2.5.0",
+    "vite-plugin-external-cdn": "^1.1.1",
     "vite-plugin-image-optimizer": "^2.0.3",
     "vite-plugin-inspect": "^11.3.3",
+    "vite-plugin-lazy-import": "^1.0.7",
     "vite-plugin-mock-dev-server": "^2.1.0",
     "vite-plugin-vue-devtools": "^8.0.7",
     "vue-tsc": "^3.2.5"
