@@ -1,7 +1,7 @@
-import transformExternalCDN, { autoComplete } from 'vite-plugin-external-cdn'
+import { importToCDN, autoComplete } from 'vite-plugin-external-cdn'
 
 export function cdnImportPlugin() {
-  return transformExternalCDN({
+  return importToCDN({
     modules: [
       autoComplete('vue'),
       autoComplete('vue-router'),
