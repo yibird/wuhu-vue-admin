@@ -52,7 +52,9 @@
             </div>
           </div>
           <div class="flex justify-end px-15 py-10">
-            <n-button type="primary" size="small" @click="onReset">重置</n-button>
+            <n-button type="primary" size="small" @click="onReset"
+              >重置</n-button
+            >
           </div>
         </div>
       </div>
@@ -61,82 +63,79 @@
 </template>
 
 <script lang="ts" setup>
-import { onClickOutside } from '@vueuse/core';
-import { cloneDeep } from 'es-toolkit';
-import { useDragAndDrop } from 'fluid-dnd/vue';
-import { useTablePlusInject } from '../../context';
-import type { TablePlusColumn } from '../../types';
+import { onClickOutside } from '@vueuse/core'
+import { cloneDeep } from 'es-toolkit'
+import { useTablePlusInject } from '../../context'
+import type { TablePlusColumn } from '../../types'
 
-const { columns, selectionCol, indexCol } = useTablePlusInject();
+const { columns, selectionCol, indexCol } = useTablePlusInject()
 
-const columnsClone = ref(cloneDeep(columns.value));
-const settingColumns = ref(columns.value);
-const showColumn = ref(true);
+const columnsClone = ref(cloneDeep(columns.value))
+const settingColumns = ref(columns.value)
+const showColumn = ref(true)
 
-const show = ref(false);
-const popover = ref<HTMLDivElement>();
-const position = reactive({ left: '0px', top: '0px' });
-
-const [parent] = useDragAndDrop(columns, {});
+const show = ref(false)
+const popover = ref<HTMLDivElement>()
+const position = reactive({ left: '0px', top: '0px' })
 
 const getTitle = (title: TablePlusColumn['title']) => {
-  return typeof title === 'function' ? title() : title;
-};
+  return typeof title === 'function' ? title() : title
+}
 
 const onAllChecked = (checked: boolean) => {
-  columns.value = checked ? columnsClone.value : [];
+  columns.value = checked ? columnsClone.value : []
   settingColumns.value = settingColumns.value.map((item) => {
-    return { ...item, show: checked };
-  });
-};
+    return { ...item, show: checked }
+  })
+}
 
 const onChecked = (index: number, checked: boolean) => {
-  settingColumns.value[index].show = checked;
-  const column = settingColumns.value[index];
-  const include = columns.value.find((item) => item.key === column.key);
+  settingColumns.value[index].show = checked
+  const column = settingColumns.value[index]
+  const include = columns.value.find((item) => item.key === column.key)
   if (!include) {
-    columns.value.push({ ...column, show: checked });
+    columns.value.push({ ...column, show: checked })
   } else {
-    columns.value[index].show = checked;
+    columns.value[index].show = checked
   }
-  showColumn.value = settingColumns.value.some((item) => item.show);
-};
+  showColumn.value = settingColumns.value.some((item) => item.show)
+}
 
 const onMoveUp = (index: number) => {
-  if (index === 0) return;
-  const item = columns.value[index];
-  columns.value.splice(index, 1);
-  columns.value.splice(index - 1, 0, item);
-};
+  if (index === 0) return
+  const item = columns.value[index]
+  columns.value.splice(index, 1)
+  columns.value.splice(index - 1, 0, item)
+}
 
 const onMoveDown = (index: number) => {
-  if (index === columns.value.length - 1) return;
-  const item = columns.value[index];
-  columns.value.splice(index, 1);
-  columns.value.splice(index + 1, 0, item);
-};
+  if (index === columns.value.length - 1) return
+  const item = columns.value[index]
+  columns.value.splice(index, 1)
+  columns.value.splice(index + 1, 0, item)
+}
 
 const onReset = () => {
-  columns.value = columnsClone.value;
-  settingColumns.value = columnsClone.value;
-};
+  columns.value = columnsClone.value
+  settingColumns.value = columnsClone.value
+}
 
-onClickOutside(popover, () => (show.value = false));
+onClickOutside(popover, () => (show.value = false))
 
 const onShow = (e: Event) => {
-  show.value = true;
+  show.value = true
   nextTick(() => {
-    const buttonEl = e.currentTarget as HTMLElement;
-    const containerEl = popover.value;
-    if (!containerEl) return;
-    const top = `${buttonEl.clientHeight + 5}px`;
-    const left = `${-containerEl.clientWidth + buttonEl.clientWidth}px`;
+    const buttonEl = e.currentTarget as HTMLElement
+    const containerEl = popover.value
+    if (!containerEl) return
+    const top = `${buttonEl.clientHeight + 5}px`
+    const left = `${-containerEl.clientWidth + buttonEl.clientWidth}px`
     Object.assign(position, {
       left,
       top,
-    });
-  });
-};
+    })
+  })
+}
 </script>
 <style scoped>
 .popover {
