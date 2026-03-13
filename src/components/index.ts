@@ -1,5 +1,5 @@
 import { Icon } from './Icon'
-import type { App } from 'vue'
+import type { App, Plugin, Component } from 'vue'
 
 export * from './Icon'
 export * from './Loading'
@@ -9,11 +9,14 @@ export * from './FormPlus'
 export * from './JsonView'
 export * from './ErrorBoundary'
 
-const globalComponents = [Icon]
+const components: Record<string, Component> = {
+  Icon,
+}
 
-export function setupRegisterGlobalComponents(app: App) {
-  globalComponents.forEach((component) => {
-    const name = component.name || (component as any).__name
-    app.component(name, component)
-  })
+export const setupComponents: Plugin = {
+  install(app: App) {
+    Object.keys(components).forEach((key) => {
+      app.component(key, components[key])
+    })
+  },
 }
