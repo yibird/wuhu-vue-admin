@@ -1,5 +1,5 @@
 import { Icon } from './Icon'
-import type { App, Plugin, Component } from 'vue'
+import type { App, Component } from 'vue'
 
 export * from './Icon'
 export * from './Loading'
@@ -13,7 +13,7 @@ const components: Record<string, Component> = {
   Icon,
 }
 
-export const setupComponents: Plugin = {
+export const globalComponents = {
   install(app: App) {
     Object.keys(components).forEach((key) => {
       app.component(key, components[key])

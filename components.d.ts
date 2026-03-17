@@ -11,7 +11,6 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
-    ' types': typeof import('./src/components/Popover/src/ types.ts')['default']
     AApp: typeof import('ant-design-vue/es')['App']
     AAvatar: typeof import('ant-design-vue/es')['Avatar']
     AAvatarGroup: typeof import('ant-design-vue/es')['AvatarGroup']
@@ -62,7 +61,7 @@ declare module 'vue' {
     ContextMenu: typeof import('./src/components/TablePlus/src/components/context-menu.vue')['default']
     Error: typeof import('./src/components/Exception/src/error.vue')['default']
     ErrorBoundary: typeof import('./src/components/ErrorBoundary/index.ts')['default']
-    Exception: typeof import('./src/components/Exception/index.ts')['default']
+    Exception: typeof import('./src/components/Exception/src/exception.vue')['default']
     FormPlus: typeof import('./src/components/FormPlus/index.ts')['default']
     Fullscreen: typeof import('./src/components/TablePlus/src/components/toolbar/fullscreen.vue')['default']
     Header: typeof import('./src/components/TablePlus/src/components/header.vue')['default']
@@ -137,6 +136,7 @@ declare module 'vue' {
     NTooltip: typeof import('naive-ui')['NTooltip']
     NTree: typeof import('naive-ui')['NTree']
     Popover: typeof import('./src/components/Popover/index.ts')['default']
+    QueryButton: typeof import('./src/components/FormPlus/src/components/query-button.vue')['default']
     Refresh: typeof import('./src/components/TablePlus/src/components/toolbar/refresh.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']

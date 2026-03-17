@@ -15,8 +15,9 @@ import type {
   TimePickerProps,
   AutoCompleteProps,
   CascaderProps,
-  FormInst
+  FormInst,
 } from 'naive-ui'
+import type { QueryButtonProps } from './components'
 
 export interface FormPlusOptions extends FormProps {
   /**
@@ -29,15 +30,6 @@ export interface FormPlusOptions extends FormProps {
    * @default false
    */
   formChange?: boolean
-  /**
-   * @desc 搜索按钮配置
-   * @default
-   */
-  searchButton?: {
-    show?: boolean
-    buttons?: Array<'search' | 'reset'>
-    gridItemProps?: GridItemProps
-  }
 }
 
 export type ComponentType =
@@ -53,6 +45,7 @@ export type ComponentType =
   | 'timePicker'
   | 'autoComplete'
   | 'cascader'
+  | 'query-button'
 
 // 创建类型映射
 export type ComponentPropsMap = {
@@ -68,12 +61,12 @@ export type ComponentPropsMap = {
   timePicker: TimePickerProps
   autoComplete: AutoCompleteProps
   cascader: CascaderProps
+  'query-button': QueryButtonProps
 }
 
 // 根据 type 动态选择 componentProps 类型
-export type ComponentProps<T extends ComponentType> = T extends keyof ComponentPropsMap
-  ? ComponentPropsMap[T]
-  : never
+export type ComponentProps<T extends ComponentType> =
+  T extends keyof ComponentPropsMap ? ComponentPropsMap[T] : never
 
 export interface NFormItemComponent {}
 
@@ -102,6 +95,8 @@ export type FormPlusItem = {
 export interface FormPlusProps {
   options?: FormPlusOptions
   items?: FormPlusItem[]
+
+  showQueryButton?: boolean
 }
 
 export interface FormPlusFormEmits {

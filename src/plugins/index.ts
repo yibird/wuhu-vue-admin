@@ -1,7 +1,8 @@
 import { vChartPlugin } from './vchart'
-
 import type { App } from 'vue'
 
-export function setupPlugins(app: App) {
-  vChartPlugin()
+export const plugins = {
+  install(app: App) {
+    vChartPlugin()
+  },
 }

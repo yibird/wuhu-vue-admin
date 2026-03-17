@@ -2,7 +2,7 @@ import { permission } from './permission'
 import { copy } from './copy'
 import { debounce } from './debounce'
 
-import type { App, Plugin, Directive } from 'vue'
+import type { App, Directive } from 'vue'
 
 const directives: Record<string, Directive> = {
   permission,
@@ -10,7 +10,7 @@ const directives: Record<string, Directive> = {
   copy,
 }
 
-export const setupDirectives: Plugin = {
+export const globalDirectives = {
   install(app: App) {
     Object.keys(directives).forEach((key) => {
       app.directive(key, directives[key])

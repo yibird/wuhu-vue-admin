@@ -25,9 +25,9 @@ import {
   TablePlus,
   useTable,
   FormPlus,
-  type NFormProps,
+  type FormPlusProps,
   type TablePlusColumn,
-  type NFormInstance,
+  type FormPlusInstance,
 } from '@/components'
 import { NTag, type TagProps } from 'naive-ui'
 
@@ -100,8 +100,8 @@ const {
 })
 console.log('asdASD:', dataSource)
 
-const formRef = ref<NFormInstance>()
-const formOptions = ref<NFormProps['options']>({
+const formRef = ref<FormPlusInstance>()
+const formOptions = ref<FormPlusProps['options']>({
   inline: true,
   labelPlacement: 'left',
   grid: { xGap: 24 },
@@ -110,7 +110,7 @@ const formOptions = ref<NFormProps['options']>({
     test2: '123',
   },
 })
-const formItems = ref<NFormProps['items']>([
+const formItems = ref<FormPlusProps['items']>([
   {
     label: '测试1',
     type: 'input',

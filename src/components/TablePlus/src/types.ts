@@ -1,13 +1,14 @@
 import type { ToRefs, VNodeChild } from 'vue'
 import type { DataTableColumn, DataTableProps, MenuOption } from 'naive-ui'
 
-export type TablePlusColumn<T = Record<string, unknown>> = DataTableColumn<T> & {
-  key?: string | number
-  title?: string | (() => VNodeChild)
-  show?: boolean
-}
+export type TablePlusColumn<T = Record<string, unknown>> =
+  DataTableColumn<T> & {
+    key?: string | number
+    title?: string | (() => VNodeChild)
+    show?: boolean
+  }
 
-export interface VDataTableProps {
+export interface NDataTableProps {
   allowCheckingNotLoaded?: DataTableProps['allowCheckingNotLoaded']
   bordered?: DataTableProps['bordered']
   bottomBordered?: DataTableProps['bottomBordered']
@@ -55,7 +56,7 @@ export interface VDataTableProps {
   virtualScrollX?: DataTableProps['virtualScrollX']
 }
 
-export interface TablePlusProps<T = object> extends VDataTableProps {
+export interface TablePlusProps<T = object> extends NDataTableProps {
   columns?: TablePlusColumn<T>[]
   /**
    * @desc 是否自动计算table大小(height和width)
@@ -89,7 +90,10 @@ export interface TablePlusEmits<T> {
     e: 'update:checked-row-keys',
     keys: Array<string | number>,
     rows: T[],
-    meta: { row: T | undefined; action: 'check' | 'uncheck' | 'checkAll' | 'uncheckAll' }
+    meta: {
+      row: T | undefined
+      action: 'check' | 'uncheck' | 'checkAll' | 'uncheckAll'
+    }
   ): void
   (e: 'refresh'): void
 }

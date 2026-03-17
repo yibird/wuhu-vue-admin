@@ -25,10 +25,16 @@
   </Motion>
 </template>
 <script lang="ts" setup generic="T extends Record<string, any>">
-import { Motion } from 'motion-v';
-import { TableHeader, TableContent } from './components';
-import { useTablePlusProvider } from './context';
-import type { TablePlusProps, TablePlusEmits, TablePlusProvide, TablePlusSlots } from './types';
+import { Motion } from 'motion-v'
+import { TableHeader, TableContent } from './components'
+import { useTablePlusProvider } from './context'
+
+import type {
+  TablePlusProps,
+  TablePlusEmits,
+  TablePlusProvide,
+  TablePlusSlots,
+} from './types'
 
 const props = withDefaults(defineProps<TablePlusProps<T>>(), {
   autoSize: true,
@@ -40,21 +46,21 @@ const props = withDefaults(defineProps<TablePlusProps<T>>(), {
   singleLine: false,
   striped: false,
   size: 'small',
-});
-const emits = defineEmits<TablePlusEmits<T>>();
-const slots = defineSlots<TablePlusSlots>();
-const tRef = ref<HTMLDivElement>();
+})
+const emits = defineEmits<TablePlusEmits<T>>()
+const slots = defineSlots<TablePlusSlots>()
+const tRef = ref<HTMLDivElement>()
 
 const initialConlumns = props.columns.map((item) => {
-  return { ...item, show: typeof item.show === 'undefined' ? true : item.show };
-}) as NonNullable<TablePlusProps['columns']>;
+  return { ...item, show: typeof item.show === 'undefined' ? true : item.show }
+}) as NonNullable<TablePlusProps['columns']>
 
-const fullScreen = ref(false);
-const striped = ref(props.striped);
-const size = ref<NonNullable<TablePlusProps['size']>>(props.size);
-const columns = ref(initialConlumns);
-const selectionCol = ref<boolean>(props.selectionCol);
-const indexCol = ref<boolean>(props.indexCol);
+const fullScreen = ref(false)
+const striped = ref(props.striped)
+const size = ref<NonNullable<TablePlusProps['size']>>(props.size)
+const columns = ref(initialConlumns)
+const selectionCol = ref<boolean>(props.selectionCol)
+const indexCol = ref<boolean>(props.indexCol)
 
 const contextValue = {
   ...toRefs(props),
@@ -65,7 +71,7 @@ const contextValue = {
   selectionCol,
   indexCol,
   emits,
-} as TablePlusProvide<T>;
+} as TablePlusProvide<T>
 
-useTablePlusProvider(contextValue);
+useTablePlusProvider(contextValue)
 </script>

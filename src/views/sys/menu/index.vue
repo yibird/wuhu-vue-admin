@@ -15,7 +15,7 @@
         <FormPlus
           ref="formRef"
           :options="formOptions"
-          :items="formItems"
+          :items="formItems as FormPlusItem[]"
           :show-feedback="false"
           @search="onSearch"
         />
@@ -32,7 +32,7 @@ import { createDiscreteApi } from 'naive-ui'
 import { MenuModal } from './components'
 import { getRolePageListApi, type RoleResp } from '@/apis'
 import { FormPlus, TablePlus, useTable } from '@/components'
-import type { FormPlusProps, TablePlusColumn } from '@/components'
+import type { FormPlusItem, FormPlusProps, TablePlusColumn } from '@/components'
 
 interface FormState {
   roleName?: string
@@ -58,7 +58,7 @@ const formItems = ref<FormPlusProps['items']>([
       clearable: true,
       placeholder: '请输入菜单标题',
     },
-    span: '24 xs:24 s:24 m:12 l:8 xl:4 xxl:4',
+    span: '24 xs:24 s:24 m:12 l:8 xl:5 xxl:5',
   },
   {
     label: '路由地址',
@@ -68,7 +68,7 @@ const formItems = ref<FormPlusProps['items']>([
       clearable: true,
       placeholder: '请输入路由地址',
     },
-    span: '24 xs:24 s:24 m:12 l:8 xl:4 xxl:4',
+    span: '24 xs:24 s:24 m:12 l:8 xl:5 xxl:5',
   },
   {
     label: '权限标识',
@@ -78,7 +78,7 @@ const formItems = ref<FormPlusProps['items']>([
       clearable: true,
       placeholder: '请输入权限标识',
     },
-    span: '24 xs:24 s:24 m:12 l:8 xl:4 xxl:4',
+    span: '24 xs:24 s:24 m:12 l:8 xl:5 xxl:5',
   },
 ])
 

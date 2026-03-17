@@ -4,7 +4,7 @@
       <FormPlus
         ref="formRef"
         :options="formOptions"
-        :items="formItems"
+        :items="formItems as FormPlusItem[]"
         :show-feedback="false"
         @search="onSearch"
       />
@@ -23,10 +23,11 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { getRolePageListApi, type RoleResp } from '@/apis'
-import { FormPlus, TablePlus, useTable } from '@/components'
-import type { FormPlusProps, TablePlusColumn } from '@/components'
 import { createDiscreteApi } from 'naive-ui'
+import { FormPlus, TablePlus, useTable } from '@/components'
+import { getRolePageListApi, type RoleResp } from '@/apis'
+
+import type { FormPlusItem, FormPlusProps, TablePlusColumn } from '@/components'
 
 interface FormState {
   roleName?: string
@@ -36,13 +37,13 @@ const formOptions = ref<FormPlusProps['options']>({
   inline: true,
   labelPlacement: 'left',
   labelWidth: 80,
-  grid: { xGap: 0, yGap: 10 },
+  grid: { xGap: 10, yGap: 10 },
   model: {
     roleName: '123123',
     test2: '',
   },
 })
-const formItems = ref<FormPlusProps['items']>([
+const formItems = ref<FormPlusItem[]>([
   {
     label: '用户名称',
     type: 'input',
@@ -51,13 +52,13 @@ const formItems = ref<FormPlusProps['items']>([
       clearable: true,
       placeholder: '请输入用户名称',
     },
-    span: '24 s:12 m:8 l:6 xl:4 xxl:3',
+    span: '24 s:12 m:8 l:6 xl:4 xxl:4',
   },
   {
     label: '是否启用',
     type: 'input',
     path: 'test2',
-    span: '24 s:12 m:8 l:6 xl:4 xxl:3',
+    span: '24 s:12 m:8 l:6 xl:4 xxl:4',
   },
 ])
 

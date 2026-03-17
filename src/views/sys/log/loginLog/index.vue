@@ -15,7 +15,7 @@
         <FormPlus
           ref="formRef"
           :options="formOptions"
-          :items="formItems"
+          :items="formItems as FormPlusItem[]"
           :show-feedback="false"
           @search="onSearch"
         />
@@ -26,7 +26,7 @@
 <script lang="ts" setup>
 import { getRolePageListApi, type RoleResp } from '@/apis'
 import { FormPlus, TablePlus, useTable } from '@/components'
-import type { FormPlusProps, TablePlusColumn } from '@/components'
+import type { FormPlusItem, FormPlusProps, TablePlusColumn } from '@/components'
 import { createDiscreteApi } from 'naive-ui'
 
 interface FormState {
@@ -74,7 +74,7 @@ const formItems = ref<FormPlusProps['items']>([
       clearable: true,
       placeholder: '请输入登录时间',
     },
-    span: '24 xs:24 s:24 m:12 l:8 xl:5 xxl:4',
+    span: '24 xs:24 s:24 m:12 l:8 xl:5 xxl:6',
   },
 ])
 

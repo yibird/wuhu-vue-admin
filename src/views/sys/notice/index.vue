@@ -15,7 +15,7 @@
         <FormPlus
           ref="formRef"
           :options="formOptions"
-          :items="formItems"
+          :items="formItems as FormPlusItem[]"
           :show-feedback="false"
           @search="onSearch"
         />
@@ -29,7 +29,7 @@
 <script lang="ts" setup>
 import { getRolePageListApi, type RoleResp } from '@/apis'
 import { FormPlus, TablePlus, useTable } from '@/components'
-import type { FormPlusProps, TablePlusColumn } from '@/components'
+import type { FormPlusItem, FormPlusProps, TablePlusColumn } from '@/components'
 import { createDiscreteApi } from 'naive-ui'
 
 interface FormState {
@@ -39,7 +39,7 @@ interface FormState {
 const formOptions = ref<FormPlusProps['options']>({
   inline: true,
   labelPlacement: 'left',
-  grid: { xGap: 20, yGap: 10 },
+  grid: { xGap: 10, yGap: 10 },
   model: {
     roleName: '123123',
     test2: '',

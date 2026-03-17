@@ -2,7 +2,11 @@
   <n-form v-bind="opt" ref="formRef">
     <template v-if="opt?.grid">
       <n-grid v-bind="gridProps">
-        <n-form-item-gi v-for="(item, index) in items" :key="index" v-bind="item">
+        <n-form-item-gi
+          v-for="(item, index) in renderItems"
+          :key="index"
+          v-bind="item"
+        >
           <component
             v-if="item.type"
             :is="COMPONENT_MAPPING[item.type]"
@@ -10,12 +14,6 @@
             :value="getModelValue(item.path)"
             @update:value="(val: unknown) => setModelValue(item.path, val)"
           />
-        </n-form-item-gi>
-        <n-form-item-gi v-if="opt?.searchButton?.show" class="ml-10">
-          <div class="flex gap-10">
-            <n-button v-if="showSearchButton" type="primary" @click="onSearch">搜索</n-button>
-            <n-button v-if="showResetButton" @click="onReset">重置</n-button>
-          </div>
         </n-form-item-gi>
       </n-grid>
     </template>
@@ -27,64 +25,34 @@
   </n-form>
 </template>
 <script lang="ts" setup>
-import {
-  NAutoComplete,
-  NCascader,
-  NCheckbox,
-  NCheckboxGroup,
-  NDatePicker,
-  NInput,
-  NInputNumber,
-  NRadio,
-  NRadioGroup,
-  NSelect,
-  NSwitch,
-  NTimePicker
-} from 'naive-ui'
 import { cloneDeep, toMerged } from 'es-toolkit'
 import type { FormInst, GridProps } from 'naive-ui'
 import type {
-  ComponentType,
   FormPlusProps,
   FormPlusFormEmits,
   FormPlusInstance,
-  FormPlusItem
+  FormPlusItem,
 } from './types'
+import { COMPONENT_MAPPING } from './options'
 
-const COMPONENT_MAPPING: Record<ComponentType, any> = {
-  input: NInput,
-  inputNumber: NInputNumber,
-  select: NSelect,
-  checkbox: NCheckbox,
-  checkboxGroup: NCheckboxGroup,
-  radio: NRadio,
-  radioGroup: NRadioGroup,
-  switch: NSwitch,
-  datePicker: NDatePicker,
-  timePicker: NTimePicker,
-  autoComplete: NAutoComplete,
-  cascader: NCascader
-}
-
-const defaultopt: FormPlusProps['options'] = {
-  searchButton: {
-    show: true,
-    buttons: ['search', 'reset']
-  }
-}
+const defaultOpt: FormPlusProps['options'] = {}
 const defaultGridProps: GridProps = {
   cols: 24,
   xGap: 0,
   yGap: 0,
   responsive: 'screen',
-  itemResponsive: true
+  itemResponsive: true,
 }
 
-const { options = {}, items = [] } = defineProps<FormPlusProps>()
+const {
+  options = {},
+  items = [],
+  showQueryButton = true,
+} = defineProps<FormPlusProps>()
 const emits = defineEmits<FormPlusFormEmits>()
 const formRef = ref<FormInst>()
 
-const opt = toMerged(defaultopt, options)
+const opt = toMerged(defaultOpt, options)
 const initialModel = ref(cloneDeep(opt?.model || {}))
 const initialItems = ref<FormPlusItem[]>(cloneDeep(items))
 
@@ -95,12 +63,22 @@ const gridProps = computed<GridProps>(() => {
   return { ...defaultGridProps, ...(opt?.grid as GridProps) }
 })
 
-const showSearchButton = computed(() => {
-  return opt?.searchButton?.buttons?.includes('search')
-})
-
-const showResetButton = computed(() => {
-  return opt?.searchButton?.buttons?.includes('reset')
+const queryButtonItem: FormPlusItem = {
+  type: 'query-button',
+  componentProps: {
+    onSearch() {
+      emits('search', getFiledValues())
+    },
+    onReset() {
+      formRef.value?.restoreValidation()
+      emits('reset')
+    },
+  },
+}
+const renderItems = computed(() => {
+  return showQueryButton
+    ? ([...items, queryButtonItem] as FormPlusItem[])
+    : items
 })
 
 const getModelValue = (path?: string) => {
@@ -124,16 +102,8 @@ const setModelValue = (path?: string, value?: unknown) => {
   }
 }
 
-const getFiledValues = <T = unknown,>(): T | undefined => {
+const getFiledValues = <T = unknown>(): T | undefined => {
   return options?.model ? (cloneDeep(options?.model) as T) : undefined
-}
-
-const onSearch = () => {
-  emits('search', getFiledValues())
-}
-const onReset = () => {
-  formRef.value?.restoreValidation()
-  emits('reset')
 }
 
 defineExpose<FormPlusInstance>({
@@ -145,7 +115,9 @@ defineExpose<FormPlusInstance>({
     return items.find((item) => item.path === path)
   },
   resetFiled(path: string) {
-    const index = initialItems.value.findIndex((item) => (item as FormPlusItem).path === path)
+    const index = initialItems.value.findIndex(
+      (item) => (item as FormPlusItem).path === path
+    )
     if (index === -1) return
     const record = initialItems.value[index] as FormPlusItem
     const newItems = items.map((item) => (item.path === path ? record : item))
@@ -185,7 +157,6 @@ defineExpose<FormPlusInstance>({
 
     target[lastKey] = cloneDeep(initialValue)
 
-    // 如果需要触发 change 事件
     if (options?.formChange === true) {
       emits('change', options.model)
     }
@@ -195,6 +166,9 @@ defineExpose<FormPlusInstance>({
   },
   restoreValidation() {
     formRef.value?.restoreValidation()
-  }
+  },
+  invalidateLabelWidth() {
+    formRef.value?.invalidateLabelWidth()
+  },
 })
 </script>
