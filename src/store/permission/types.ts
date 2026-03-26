@@ -10,5 +10,3 @@ export interface PermissionState {
   // 权限列表
   permissions: string[]
 }
-export interface PermissionGetters {}
-export interface PermissionAction {}

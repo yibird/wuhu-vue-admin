@@ -1,5 +1,3 @@
-import type { IMenu } from '#/config'
-
 export interface LogoProps {
   /**
    * @desc 收缩状态

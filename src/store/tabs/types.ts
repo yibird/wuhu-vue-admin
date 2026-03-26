@@ -1,4 +1,4 @@
-import type { IMenu, ITab } from '#/config'
+import type { ITab } from '#/config'
 
 export type TabOption = string | number | ITab
 
