@@ -16,4 +16,7 @@ export default defineConfig({
       '@visactor/vchart',
     ],
   },
+  devtools: {
+    enabled: true,
+  },
 })

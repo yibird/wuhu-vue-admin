@@ -5,7 +5,6 @@ import { jsxPlugin } from './jsx'
 import { vuePlugin } from './vue'
 import { autoImportPlugin } from './auto-import'
 import { mockPlugin } from './mock'
-import { inspectPlugin } from './inspect'
 import { visualizerPlugin } from './visualizer'
 import { compressionPlugin } from './compression'
 import { lazyImportPlugin } from './lazy-import'
@@ -20,7 +19,6 @@ export function createPlugin() {
     jsxPlugin(),
     vuePlugin(),
     mockPlugin(),
-    inspectPlugin(),
     visualizerPlugin(),
     compressionPlugin(),
     lazyImportPlugin(),

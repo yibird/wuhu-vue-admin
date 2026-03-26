@@ -1,5 +1,5 @@
 import { defineConfig } from 'unocss'
-import { presets, shortcuts, rules, transformers, safelist } from './uno'
+import { presets, shortcuts, rules, transformers, safelist } from './unocss'
 import { createRemToPxProcessor } from '@unocss/preset-wind4/utils'
 
 export default defineConfig({
@@ -9,15 +9,6 @@ export default defineConfig({
     },
   },
   theme: {
-    breakpoints: {
-      xxs: '0px',
-      xs: '320px',
-      sm: '480px',
-      md: '768px',
-      lg: '1024px',
-      xl: '1280px',
-      xxl: '1600px',
-    },
     colors: {
       primary: 'rgb(var(--w-color-primary))',
       success: 'rgb(var(--w-color-success))',
