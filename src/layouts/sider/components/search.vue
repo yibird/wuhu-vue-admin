@@ -39,7 +39,6 @@
 import { storeToRefs } from 'pinia'
 import { appStore } from '@/store'
 import type { SearchEmits } from './types'
-import { ref } from 'vue'
 
 const { sider } = storeToRefs(appStore())
 

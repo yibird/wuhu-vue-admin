@@ -1,8 +1,8 @@
-import { BProgress } from '@bprogress/core';
+import topbar from 'topbar'
 import type { Router } from 'vue-router'
 
 export function setupGlobalAfterEachRouteGuard(router: Router) {
   router.afterEach((to, from) => {
-    BProgress.done();
+    topbar.hide()
   })
 }

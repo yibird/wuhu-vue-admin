@@ -5,6 +5,6 @@
   </div>
 </template>
 <script lang="ts" setup>
-import Collapsed from './Collapsed.vue';
-import Breadcrumb from './Breadcrumb.vue';
+import Collapsed from './collapsed.vue'
+import Breadcrumb from './breadcrumb.vue'
 </script>

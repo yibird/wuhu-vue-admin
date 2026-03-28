@@ -1,6 +1,12 @@
 import { defineConfig } from 'unocss'
-import { presets, shortcuts, rules, transformers, safelist } from './unocss'
-import { createRemToPxProcessor } from '@unocss/preset-wind4/utils'
+import {
+  presets,
+  shortcuts,
+  rules,
+  transformers,
+  safelist,
+  postprocess,
+} from './unocss'
 
 export default defineConfig({
   content: {
@@ -8,7 +14,9 @@ export default defineConfig({
       include: [/\.(vue|tsx)$/],
     },
   },
+
   theme: {
+    colorMix: false,
     colors: {
       primary: 'rgb(var(--w-color-primary))',
       success: 'rgb(var(--w-color-success))',
@@ -36,5 +44,5 @@ export default defineConfig({
   rules,
   safelist,
   transformers,
-  postprocess: [createRemToPxProcessor(4)],
+  postprocess,
 })

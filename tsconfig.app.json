@@ -20,7 +20,6 @@
     }
   },
   "include": [
-    "*.ts",
     "typings/*.d.ts",
     "build/**/*.d.ts",
     "src/**/*.ts",

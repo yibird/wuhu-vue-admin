@@ -6,22 +6,19 @@
     :date-locale="dateLocale"
     class="full"
   >
-    <ProgressProvider class="full">
-      <n-message-provider>
-        <n-dialog-provider>
-          <n-notification-provider>
-            <RouterView />
-          </n-notification-provider>
-        </n-dialog-provider>
-      </n-message-provider>
-      <n-global-style />
-    </ProgressProvider>
+    <n-message-provider>
+      <n-dialog-provider>
+        <n-notification-provider>
+          <RouterView />
+        </n-notification-provider>
+      </n-dialog-provider>
+    </n-message-provider>
+    <n-global-style />
   </n-config-provider>
 </template>
 <script lang="ts" setup>
-import { useTheme } from '@/composables'
+import { useTheme } from '@/theme'
 import { useLocale } from '@/locales'
-import { ProgressProvider } from '@bprogress/vue'
 
 const { theme, themeConfig } = useTheme()
 const { locale, dateLocale } = useLocale()

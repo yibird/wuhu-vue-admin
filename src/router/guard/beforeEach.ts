@@ -1,7 +1,6 @@
 import { useTitle } from '@vueuse/core'
+import topbar from 'topbar'
 import { useRegisterRoutes } from '../composable'
-import { BProgress } from '@bprogress/core'
-
 
 import type { RouteLocationNormalizedGeneric, Router } from 'vue-router'
 import type { IRouteMeta } from '../types'
@@ -21,6 +20,6 @@ export async function setupGlobalBeforeEachRouteGuard(router: Router) {
   }
   router.beforeEach(async (to, from) => {
     setTitle(to)
-    BProgress.start()
+    topbar.show()
   })
 }

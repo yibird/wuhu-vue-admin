@@ -9,7 +9,7 @@
   </button>
 </template>
 <script setup lang="ts">
-import { useTheme } from '@/composables'
+import { useTheme } from '@/theme'
 import { ThemeMode } from '@/constant'
 
 const { themeMode, toggleThemeMode } = useTheme()
