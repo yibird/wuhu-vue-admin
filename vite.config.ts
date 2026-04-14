@@ -17,6 +17,6 @@ export default defineConfig({
     ],
   },
   devtools: {
-    enabled: true,
+    enabled: false,
   },
 })
