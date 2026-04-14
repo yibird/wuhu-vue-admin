@@ -1,4 +1,5 @@
 export * from './guard'
 export * from './composable'
 export * from './setup'
+export * from './plugins'
 export type * from './types'

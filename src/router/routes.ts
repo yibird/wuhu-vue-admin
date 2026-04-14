@@ -1,4 +1,4 @@
-import type { IRoute } from './types';
+import type { IRoute } from './types'
 
 export const routes: IRoute[] = [
   {
@@ -16,4 +16,4 @@ export const routes: IRoute[] = [
     path: '/:catchAll(.*)',
     component: () => import(`@/components/Exception/src/not-found.vue`),
   },
-];
+]

@@ -20,6 +20,16 @@ export async function setupGlobalBeforeEachRouteGuard(router: Router) {
   }
   router.beforeEach(async (to, from) => {
     setTitle(to)
+    topbar.config({
+      autoRun: false,
+      barThickness: 2,
+      barColors: {
+        '0.2': 'rgba(24, 144, 255,  .75)',
+        '0.6': 'rgba(24, 144, 255,  .85)',
+        '1.0': 'rgba(24, 144, 255,  1)',
+      },
+      shadowBlur: 0,
+    })
     topbar.show()
   })
 }

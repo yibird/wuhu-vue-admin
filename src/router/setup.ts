@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { routes } from './routes'
-import { setupGlobalRouteGuard } from './guard'
-
+import { useRegisterRoutes } from './composable'
+import { plugins, setupRouterPlugins } from './plugins'
 import type { App } from 'vue'
 
 export const router = createRouter({
@@ -10,6 +10,10 @@ export const router = createRouter({
 })
 
 export async function setupRouter(app: App) {
-  await setupGlobalRouteGuard(router)
+  const { isRegister, registerRoutes } = useRegisterRoutes(router)
+  if (!isRegister.value) {
+    await registerRoutes()
+  }
+  setupRouterPlugins(router, plugins)
   app.use(router)
 }
