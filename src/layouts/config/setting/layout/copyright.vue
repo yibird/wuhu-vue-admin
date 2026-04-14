@@ -2,7 +2,11 @@
   <div>
     <n-divider>版权</n-divider>
     <ConfigItem title="启用版权">
-      <n-switch v-model:value="copyright.show" :disabled="!footer.show" />
+      <n-switch
+        v-model:value="copyright.show"
+        :disabled="!footer.show"
+        :round="false"
+      />
     </ConfigItem>
     <ConfigItem title="公司名称">
       <n-input
@@ -47,9 +51,9 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { storeToRefs } from 'pinia';
-import { appStore } from '@/store';
-import ConfigItem from '../config-item.vue';
+import { storeToRefs } from 'pinia'
+import { appStore } from '@/store'
+import ConfigItem from '../config-item.vue'
 
-const { footer, copyright } = storeToRefs(appStore());
+const { footer, copyright } = storeToRefs(appStore())
 </script>

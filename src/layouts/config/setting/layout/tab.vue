@@ -2,16 +2,28 @@
   <div>
     <n-divider>选项卡</n-divider>
     <ConfigItem title="显示标签页">
-      <n-switch v-model:value="tabs.show" />
+      <n-switch v-model:value="tabs.show" :round="false" />
     </ConfigItem>
     <ConfigItem title="持久化标签页">
-      <n-switch :disabled="!tabs.show" v-model:value="tabs.enablePersist" />
+      <n-switch
+        :disabled="!tabs.show"
+        v-model:value="tabs.enablePersist"
+        :round="false"
+      />
     </ConfigItem>
     <ConfigItem title="启动拖拽排序">
-      <n-switch :disabled="!tabs.show" v-model:value="tabs.enableDrag" />
+      <n-switch
+        :disabled="!tabs.show"
+        v-model:value="tabs.enableDrag"
+        :round="false"
+      />
     </ConfigItem>
     <ConfigItem title="显示标签栏图标">
-      <n-switch :disabled="!tabs.show" v-model:value="tabs.showIcon" />
+      <n-switch
+        :disabled="!tabs.show"
+        v-model:value="tabs.showIcon"
+        :round="false"
+      />
     </ConfigItem>
     <ConfigItem title="标签页主题">
       <n-select

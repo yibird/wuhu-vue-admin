@@ -32,7 +32,11 @@ const initialState: AppState = {
     show: false,
     fixed: false,
   },
-  animation: {},
+  animation: {
+    enableProgressBar: true,
+    enablePageLoading: true,
+    pageAnimation: 'slide-left',
+  },
   lockscreen: {},
   app: {
     name: 'Wuhu-admin',
@@ -53,6 +57,12 @@ const initialState: AppState = {
     icpNo: '粤ICP备2023000000号',
     icpUrl: 'https://beian.miit.gov.cn/',
     date: '2025',
+  },
+  shortcutKey: {
+    enabled: true,
+    search: true,
+    logout: true,
+    lockScreen: true,
   },
 }
 

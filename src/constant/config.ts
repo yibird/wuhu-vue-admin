@@ -48,12 +48,14 @@ export const SiderTheme = {
 export const HeaderWidget = {
   Search: 'search',
   DownloadCenter: 'downloadCenter',
+  NoteBook: 'noteBook',
   Theme: 'theme',
   Notice: 'notice',
   Translate: 'translate',
   FullScreen: 'fullScreen',
   LockScreen: 'lockPage',
   Setting: 'setting',
+  AI: 'ai',
 } as const
 
 export const TabsTheme = {
@@ -68,3 +70,5 @@ export type MenuModeType = (typeof MenuMode)[keyof typeof MenuMode]
 export type SiderThemeType = (typeof SiderTheme)[keyof typeof SiderTheme]
 export type HeaderWidgetType = (typeof HeaderWidget)[keyof typeof HeaderWidget]
 export type TabsThemeType = (typeof TabsTheme)[keyof typeof TabsTheme]
+
+export type PageAnimationType = 'fade' | 'slide-left'

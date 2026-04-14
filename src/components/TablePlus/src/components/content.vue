@@ -15,7 +15,6 @@
         },
       }"
       class="selection-container"
-      style="border: 1px solid red"
       @start="onStart"
       @move="onMove"
       @stop="onStop"
@@ -249,6 +248,7 @@ const onStop = ({ store }: SelectionEvent) => {
 :deep(.n-data-table-td.selected::after) {
   content: '';
   position: absolute;
+  width: 100%;
   /* 对于 sticky 元素，absolute 也是相对于它定位的 */
   top: 0;
   left: 0;
@@ -270,6 +270,7 @@ const onStop = ({ store }: SelectionEvent) => {
   border-left: var(--s-w) solid var(--s-color);
 }
 :deep(.n-data-table-td.selected.b-r::after) {
+  width: calc(100% - 1px);
   border-right: var(--s-w) solid var(--s-color);
 }
 </style>

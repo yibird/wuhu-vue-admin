@@ -5,6 +5,7 @@ import type {
   LocaleType,
   HeaderWidgetType,
   TabsThemeType,
+  PageAnimationType,
 } from '@/constant'
 
 export interface IMenu {
@@ -221,15 +222,31 @@ export interface FooterConfig {
    * @desc 是否显示footer
    * @default false
    */
-  show?: boolean
+  show: boolean
   /**
    * @desc 是否固定footer
    * @default false
    */
-  fixed?: boolean
+  fixed: boolean
 }
 
-export interface AnimationConfig {}
+export interface AnimationConfig {
+  /**
+   * @desc 是否启用页面切换进度条
+   * @default true
+   */
+  enableProgressBar: boolean
+  /**
+   * @desc 是否启用页面切换loading
+   * @default true
+   */
+  enablePageLoading?: boolean
+  /**
+   * @desc 页面切换动画
+   * @default ''
+   */
+  pageAnimation?: PageAnimationType
+}
 
 export interface LockscreenConfig {}
 
@@ -238,32 +255,32 @@ export interface CopyrightConfig {
    * @desc 是否显示版权信息,仅在显示footer时生效
    * @default false
    */
-  show?: boolean
+  show: boolean
   /**
    * @desc 公司名称
    * @default
    */
-  companyName?: string
+  companyName: string
   /**
    * @desc 公司主页
    * @default
    */
-  companyUrl?: string
+  companyUrl: string
   /**
    * @desc 日期
    * @default
    */
-  date?: string
+  date: string
   /**
    * @desc icp备案号
    * @default
    */
-  icpNo?: string
+  icpNo: string
   /**
    * @desc icp备案号
    * @default
    */
-  icpUrl?: string
+  icpUrl: string
 }
 
 export interface AppConfig {
@@ -327,7 +344,28 @@ export interface AppConfig {
    */
   greyMode?: boolean
 }
-
+export interface ShortcutKey {
+  /**
+   * @desc 是否启用快捷键
+   * @default true
+   */
+  enabled: boolean
+  /**
+   * @desc 是否启用全局搜索快捷键(Ctrl K)
+   * @default true
+   */
+  search: boolean
+  /**
+   * @desc 是否启用退出登录快捷键(Alt Q)
+   * @default true
+   */
+  logout: boolean
+  /**
+   * @desc 是否启用锁定屏幕快捷键(Alt L)
+   * @default true
+   */
+  lockScreen: boolean
+}
 export interface ProjectConfig {
   sider: SiderConfig
   header: HeaderConfig
@@ -337,4 +375,5 @@ export interface ProjectConfig {
   lockscreen: LockscreenConfig
   app: AppConfig
   copyright: CopyrightConfig
+  shortcutKey: ShortcutKey
 }

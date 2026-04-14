@@ -9,13 +9,14 @@ export function useKeepAlive() {
   const store = tabsStore()
 
   const cachedTabs = computed(() => store.getCachedTabs)
+  const renderRouteView = computed(() => store.renderRouteView)
   const routes = computed(
     () => router.getRoutes().filter((item) => item.meta) as IRoute[]
   )
 
   const include = computed(() => {
-    return intersectionWith(routes.value, cachedTabs.value, (item1, item2) => {
-      return String(item1.meta?.id) === String(item2)
+    return intersectionWith(routes.value, cachedTabs.value, (v1, v2) => {
+      return String(v1.meta?.id) === String(v2)
     })
       .filter((item) => item.meta?.componentName)
       .map((item) => item.meta!.componentName) as string[]
@@ -24,5 +25,5 @@ export function useKeepAlive() {
   watch(store.tabs, () => {
     store.updateCachedTabs()
   })
-  return { include }
+  return { renderRouteView, include }
 }

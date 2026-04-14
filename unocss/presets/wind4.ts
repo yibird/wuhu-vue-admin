@@ -1,4 +1,4 @@
-import presetWind4 from '@unocss/preset-wind4'
+import { presetWind4 } from 'unocss'
 import { createRemToPxProcessor } from '@unocss/preset-wind4/utils'
 import type { Preset } from 'unocss'
 

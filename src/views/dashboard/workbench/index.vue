@@ -45,6 +45,8 @@ const swapy = ref<Swapy>()
 const container = ref<HTMLDivElement>()
 const enabled = ref(false)
 
+await new Promise((resolve) => setTimeout(resolve, 2000))
+
 onMounted(() => {
   const el = container.value
   if (el) {
@@ -62,9 +64,4 @@ onBeforeUnmount(() => {
 watch(enabled, (val) => {
   swapy.value?.enable(val)
 })
-
-const instance = getCurrentInstance()
-// 获取组件名
-const componentName = instance?.type.name || instance?.type.__name
-console.log('组件名称是:', componentName)
 </script>

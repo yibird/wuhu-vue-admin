@@ -5,10 +5,10 @@
       <n-input-number disabled :min="0" :max="20" />
     </ConfigItem>
     <ConfigItem title="色弱模式">
-      <n-switch disabled />
+      <n-switch disabled :round="false" />
     </ConfigItem>
     <ConfigItem title="灰色模式">
-      <n-switch disabled />
+      <n-switch disabled :round="false" />
     </ConfigItem>
   </div>
 </template>

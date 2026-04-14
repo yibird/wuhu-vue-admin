@@ -10,7 +10,7 @@
       />
     </ConfigItem>
     <ConfigItem title="开启水印">
-      <n-switch />
+      <n-switch v-model:value="app.showWatermark" :round="false" />
     </ConfigItem>
   </div>
 </template>
@@ -18,6 +18,8 @@
 import { Locale } from '@/constant'
 import ConfigItem from '../config-item.vue'
 import { useLocale } from '@/locales'
+import { appStore } from '@/store'
+import { storeToRefs } from 'pinia'
 
 const localeOptions = [
   {
@@ -30,5 +32,6 @@ const localeOptions = [
   },
 ]
 
+const { app } = storeToRefs(appStore())
 const { appLocale, changeLocale } = useLocale()
 </script>
