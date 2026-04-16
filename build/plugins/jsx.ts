@@ -1,8 +1,5 @@
-import VueJsxVapor from 'vue-jsx-vapor/vite';
+import VueJsx from '@vitejs/plugin-vue-jsx'
 
 export function jsxPlugin() {
-  return VueJsxVapor({
-    exclude: ['*/vdom.tsx', '*/interop.tsx'],
-    macros: true,
-  });
+  return VueJsx({})
 }

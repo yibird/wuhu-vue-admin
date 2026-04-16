@@ -1,4 +1,3 @@
-import { vueDevToolsPlugin } from './devTools'
 import { unocssPlugin } from './unocss'
 import { componentsPlugin } from './components'
 import { jsxPlugin } from './jsx'
@@ -12,7 +11,6 @@ import { cdnImportPlugin } from './cdn'
 
 export function createPlugin() {
   return [
-    vueDevToolsPlugin(),
     componentsPlugin(),
     unocssPlugin(),
     autoImportPlugin(),
