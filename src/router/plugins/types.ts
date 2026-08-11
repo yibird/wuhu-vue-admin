@@ -1,4 +1,4 @@
-import type { Router, RouteLocationNormalized } from 'vue-router'
+import type { RouteLocationNormalized } from 'vue-router'
 
 /**
  * Router Plugin Hooks
@@ -29,6 +29,8 @@ export interface RouterPlugin {
   name: string
   /** Plugin hooks */
   hooks: RouterPluginHooks
+  /** Optional cleanup called when router is disposed */
+  onDispose?: () => void
 }
 
 /**

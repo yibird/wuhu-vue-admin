@@ -1,10 +1,12 @@
-import type { AfterResponseHook } from 'ky';
+import { type AfterResponseHook } from 'ky'
+import { router } from '@/router'
+import { notifySessionExpired } from '../sessionEvents'
 
-const dataResponseHook: AfterResponseHook = (_req, _options, res) => {
-	// if (!res.ok && res.status === 401) {
-	// 	// 可跳转登录页
-	// }
-	return res.json();
-};
+const dataResponseHook: AfterResponseHook = async ({ response: res }) => {
+  if (res.status === 401) {
+    notifySessionExpired()
+    router.replace('/login')
+  }
+}
 
-export const afterResponse: AfterResponseHook[] = [dataResponseHook];
+export const afterResponse: AfterResponseHook[] = [dataResponseHook]

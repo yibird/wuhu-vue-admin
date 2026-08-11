@@ -1,12 +1,18 @@
-import ky, { type Input, type Options } from 'ky'
+import ky, { type Input } from 'ky'
+import { ContentType, HttpHeader } from '@/constants'
 import { beforeRequest, beforeError, beforeRetry, afterResponse } from './hooks'
+import {
+  buildRequestDedupKey,
+  dedupeRequest,
+  type ApiRequestOptions,
+} from './dedupe'
 
 export const kyInstance = ky.create({
-  prefixUrl: import.meta.env.VITE_API_BASE_URL,
+  prefix: import.meta.env.VITE_API_BASE_URL,
   timeout: 10_000,
   method: 'post',
   headers: {
-    'Content-Type': 'application/json',
+    [HttpHeader.ContentType]: ContentType.Json,
   },
   hooks: {
     beforeRequest,
@@ -16,7 +22,23 @@ export const kyInstance = ky.create({
   },
 })
 
-export async function apiRequest<T>(url: Input, options?: Options) {
-  const res = await kyInstance<T>(url, options)
-  return res.json()
+export function apiRequest<T>(
+  url: Input,
+  options?: ApiRequestOptions
+): Promise<T> {
+  return dedupeRequest(buildRequestDedupKey(url, options), () =>
+    kyInstance<T>(url, options).then(
+      (response) => response.json() as Promise<T>
+    )
+  )
 }
+
+export { useRequest } from './composables'
+export type {
+  RequestContext,
+  Service,
+  UseRequestOptions,
+  UseRequestReturn,
+} from './composables'
+export type { ApiRequestOptions } from './dedupe'
+export { getToken, setToken, removeToken } from './util'

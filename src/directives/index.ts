@@ -1,13 +1,17 @@
 import { permission } from './permission'
 import { copy } from './copy'
 import { debounce } from './debounce'
+import { throttle } from './throttle'
+import { clickOutside } from './clickOutside'
 
 import type { App, Directive } from 'vue'
 
 const directives: Record<string, Directive> = {
   permission,
   debounce,
+  throttle,
   copy,
+  clickOutside,
 }
 
 export const globalDirectives = {
@@ -18,4 +22,4 @@ export const globalDirectives = {
   },
 }
 
-export { permission, copy, debounce }
+export { permission, copy, debounce, throttle, clickOutside }

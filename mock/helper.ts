@@ -1,4 +1,4 @@
-import { ApiCode, type ApiCodeType } from '@/constant'
+import { ApiCode, type ApiCodeType } from '@/constants'
 import type { BaseQuery, PageResult, Result } from '#/http'
 
 const API_CODE_MAPPING = {

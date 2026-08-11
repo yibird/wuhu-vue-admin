@@ -1,27 +1,35 @@
 import { apiRequest } from '@/utils'
-import { RequestMethod } from '@/constant'
+import { RequestMethod } from '@/constants'
 
 import type { PageResult, Result } from '#/http'
 
+function toSearchParams(data?: object) {
+  if (!data) return undefined
+
+  const searchParams = new URLSearchParams()
+  Object.entries(data).forEach(([key, value]) => {
+    if (value !== undefined) searchParams.set(key, String(value))
+  })
+  return searchParams
+}
+
 export function getBaseApi<
-  T extends Record<string, any> = object,
-  R extends Record<string, any> = object,
-  C extends Record<string, any> = object,
-  U extends Record<string, any> = object,
+  T extends object = Record<string, never>,
+  R extends object = Record<string, never>,
+  C extends object = Record<string, never>,
+  U extends object = Record<string, never>,
 >(apiPrefix: string) {
   return {
-    getPageListApi<Q>(data?: Q extends Record<string, any> ? Q : never) {
+    getPageListApi<Q extends object = Record<string, never>>(data?: Q) {
       return apiRequest<Result<PageResult<T>>>(`${apiPrefix}/getPageList`, {
         method: RequestMethod.GET,
-        searchParams: data,
+        searchParams: toSearchParams(data),
       })
     },
-    getRecordApi<Q>(
-      data?: Q extends Record<string, any> ? Q : never
-    ): Promise<any> {
+    getRecordApi<Q extends object = Record<string, never>>(data?: Q) {
       return apiRequest<Result<R>>(`${apiPrefix}/getRecord`, {
         method: RequestMethod.GET,
-        searchParams: data,
+        searchParams: toSearchParams(data),
       })
     },
     createApi<V = number>(data: C) {

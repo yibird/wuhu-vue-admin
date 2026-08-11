@@ -1,47 +1,33 @@
-import { storeToRefs } from 'pinia'
-import {
-  zhCN,
-  dateZhCN,
-  enGB,
-  dateEnUS,
-  type ConfigProviderProps,
-} from 'naive-ui'
-import { appStore } from '@/store'
+import zhCN from 'antdv-next/locale/zh_CN'
+import enGB from 'antdv-next/locale/en_GB'
+import type { Locale as AntdvLocale } from 'antdv-next/dist/locale'
+import { useAppStore } from '@/store'
 
-import { Locale, type LocaleType } from '@/constant'
+import { Locale, type LocaleType } from '@/constants'
 import { useI18n } from 'vue-i18n'
 
 const locales: Record<
   LocaleType,
   {
-    locale: ConfigProviderProps['locale']
-    dateLocale: ConfigProviderProps['dateLocale']
+    locale: AntdvLocale
   }
 > = {
   [Locale.ZH_CN]: {
     locale: zhCN,
-    dateLocale: dateZhCN,
   },
   [Locale.EN]: {
     locale: enGB,
-    dateLocale: dateEnUS,
   },
 }
 
 export function useLocale() {
-  const { app } = storeToRefs(appStore())
+  const { app } = useAppStore()
   const { locale: i18nLocale } = useI18n()
-
   const appLocale = computed(() => app.value.locale)
 
   const locale = computed(() => {
     const item = locales[appLocale.value] ?? locales[Locale.ZH_CN]
     return item.locale
-  })
-
-  const dateLocale = computed(() => {
-    const item = locales[appLocale.value] ?? locales[Locale.ZH_CN]
-    return item.dateLocale
   })
 
   const changeLocale = (newLocale: LocaleType) => {
@@ -55,7 +41,6 @@ export function useLocale() {
 
   return {
     locale,
-    dateLocale,
     appLocale,
     changeLocale,
   }

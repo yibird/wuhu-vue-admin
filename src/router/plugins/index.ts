@@ -1,9 +1,14 @@
 import { progressBarPlugin } from './progressBar'
+import { syncTabPlugin } from './syncTab'
 import { titlePlugin } from './title'
 import type { Router } from 'vue-router'
 import type { RouterPlugin } from './types'
 
-export const plugins: RouterPlugin[] = [progressBarPlugin, titlePlugin]
+export const plugins: RouterPlugin[] = [
+  progressBarPlugin,
+  titlePlugin,
+  syncTabPlugin,
+]
 
 export function setupRouterPlugins(
   router: Router,
@@ -40,6 +45,18 @@ export function setupRouterPlugins(
       }
     }
   })
+
+  return {
+    dispose() {
+      for (const plugin of plugins) {
+        plugin.onDispose?.()
+      }
+    },
+  }
 }
 
-export * from './types'
+export type {
+  RouterPlugin,
+  RouterPluginHooks,
+  RouterPluginOptions,
+} from './types'

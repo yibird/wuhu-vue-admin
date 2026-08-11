@@ -1,21 +1,22 @@
 import { getToken, isWhiteListed } from '../util'
 import { TOKEN_PREFIX } from '../constant'
+import { router } from '@/router'
 
 import type { BeforeRequestHook } from 'ky'
 
-const tokenRequestHook: BeforeRequestHook = (req) => {
+const tokenRequestHook: BeforeRequestHook = ({ request: req }) => {
   if (isWhiteListed(req.url)) return
   const token = getToken()
   if (!token) {
+    router.replace('/login')
     throw new Error('NO_AUTH_TOKEN')
   }
-  req.headers.set('Authorization', `${TOKEN_PREFIX} ${token}`)
+  req.headers.set('Authorization', `${TOKEN_PREFIX}${token}`)
   return req
 }
 
-const traceIdRequestHook: BeforeRequestHook = (req) => {
-  const traceId = crypto.randomUUID()
-  req.headers.set('X-Trace-Id', traceId)
+const traceIdRequestHook: BeforeRequestHook = ({ request: req }) => {
+  req.headers.set('X-Trace-Id', crypto.randomUUID())
 }
 
 export const beforeRequest: BeforeRequestHook[] = [

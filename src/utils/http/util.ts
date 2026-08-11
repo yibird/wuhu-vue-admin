@@ -1,4 +1,4 @@
-import { RequestMethod } from '@/constant'
+import { RequestMethod } from '@/constants'
 import { AUTH_WHITE_LIST, TOKEN_KEY } from './constant'
 
 export function isWhiteListed(url: string) {
@@ -11,7 +11,7 @@ export function isWhiteListed(url: string) {
 }
 
 /**
- * 解析url 将 '/xxxx/xxx'或'POST /xxxx/xxx'解析为一个包含method和url的对象
+ * 解析url，将 '/xxxx/xxx' 或 'POST /xxxx/xxx' 解析为一个包含 method 和 url 的对象
  * @param url 待解析的url
  * @returns 解析后的对象(包含method和url,method表示请求方法,url表示请求url)
  */
@@ -33,13 +33,16 @@ export function parseUrl(url?: string) {
 }
 
 export function getToken() {
+  if (typeof localStorage === 'undefined') return null
   return localStorage.getItem(TOKEN_KEY)
 }
 
 export function setToken(token: string) {
+  if (typeof localStorage === 'undefined') return
   localStorage.setItem(TOKEN_KEY, token)
 }
 
 export function removeToken() {
+  if (typeof localStorage === 'undefined') return
   localStorage.removeItem(TOKEN_KEY)
 }

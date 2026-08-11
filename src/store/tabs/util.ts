@@ -12,8 +12,8 @@ export function menuToTab(menu: IMenu): ITab {
     name: String(menu.id),
     path: menu.path!,
     ...omit(menu, ['children']),
-    fixed: false,
-    home: false,
+    fixed: menu.fixed ?? false,
+    home: menu.home ?? false,
     keepAlive: menu.keepAlive ?? true,
   }
 }

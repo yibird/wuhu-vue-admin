@@ -1,57 +1,81 @@
-import { defineStore } from 'pinia'
+import { defineStore, storeToRefs } from 'pinia'
+import { nextTick } from 'vue'
 import { permissionStore } from '../permission'
 import { menuToTab } from './util'
 
 import type { TabOption, TabState } from './types'
 import type { IMenu, ITab } from '#/config'
 
-const initialState: TabState = {
+const initialState = (): TabState => ({
   current: -1,
   tabs: [],
   topMenu: undefined,
   rootId: undefined,
   renderRouteView: true,
-  cachedTabs: new Set(),
-  excludeCachedTabs: new Set(),
-}
+  cachedTabs: [],
+  _homeTabCache: undefined,
+})
 
-export const tabsStore = defineStore('tabs', {
-  state: () => initialState,
+export const tabStore = defineStore('tab', {
+  state: initialState,
   getters: {
     currentTab(state): Maybe<ITab> {
       return this.current === -1 ? this.homeTab : state.tabs[state.current]
     },
-    homeTab() {
-      const flatMenus = permissionStore().flatMenus
-      if (flatMenus.length === 0) return
-      let menu: IMenu | null = null
-      for (const item of flatMenus) {
-        if (!menu && item.type === 1) {
-          menu = item
-        }
-        if (item.home && [1, 2].includes(item.type)) {
-          return menuToTab(item)
+    homeTab(): Maybe<ITab> {
+      // 返回缓存的 homeTab
+      if (this._homeTabCache) return this._homeTabCache
+      const { flatMenus, flatMenusCache } = permissionStore()
+      if (flatMenus.length === 0) return undefined
+      let result: ITab | undefined
+      // 优先从缓存中找标记了 home 的菜单
+      for (const [, menu] of flatMenusCache) {
+        if (menu.home && [1, 2].includes(menu.type)) {
+          result = menuToTab(menu)
+          break
         }
       }
-      return menu ? menuToTab(menu) : undefined
+      if (!result) {
+        const first = flatMenus.find((m) => m.type === 1)
+        if (first) result = menuToTab(first)
+      }
+      this._homeTabCache = result
+      return result
     },
     getCachedTabs(): string[] {
-      if (this.homeTab && this.homeTab.keepAlive) {
-        return [this.homeTab.name, ...Array.from(this.cachedTabs)]
-      }
-      return Array.from(this.cachedTabs)
+      const homeName = this.homeTab?.keepAlive ? this.homeTab.name : undefined
+      return homeName ? [homeName, ...this.cachedTabs] : [...this.cachedTabs]
     },
   },
   actions: {
     _getMenu(menu: TabOption) {
       if (typeof menu === 'object') return menu as IMenu
-      const flatMenus = permissionStore().flatMenus
+      const { flatMenus } = permissionStore()
       return flatMenus.find((item) => String(item.id) === String(menu))
     },
     _getTabIndex(tab: TabOption) {
       if (typeof tab === 'number') return tab
       const name = typeof tab === 'string' ? tab : tab.name
       return this.tabs.findIndex((item) => item.name === name)
+    },
+    _getTabName(tab: TabOption) {
+      if (typeof tab === 'number') return this.tabs[tab]?.name
+      return typeof tab === 'string' ? tab : tab.name
+    },
+    _setCurrentIndex(name?: string) {
+      if (!name) {
+        this.current = -1
+        return
+      }
+      const index = this.tabs.findIndex((tab) => tab.name === name)
+      this.current = index
+    },
+    _getNextTabNameAfterClose(index: number) {
+      if (index !== this.current) return this.currentTab?.name
+      return this.tabs[index - 1]?.name ?? this.tabs[index + 1]?.name
+    },
+    _invalidateHomeTabCache() {
+      this._homeTabCache = undefined
     },
     openHomeTab() {
       this.current = -1
@@ -64,13 +88,17 @@ export const tabsStore = defineStore('tabs', {
       }
       const menu = this._getMenu(tab)
       if (!menu) return
+      if (menu.isExternal && menu.externalTarget === '_blank') {
+        window.open(menu.path, '_blank')
+        return
+      }
       const targetTab = menuToTab(menu)
       if (targetTab.name === this.homeTab?.name) {
         this.openHomeTab()
         return
       }
       this.tabs.push(targetTab)
-      this.current = this.tabs.length - 1
+      this._sortTabsInPlace(targetTab)
     },
     openTabByName(name: string) {
       this.openTab(name)
@@ -80,76 +108,139 @@ export const tabsStore = defineStore('tabs', {
     },
     closeTab(tab: TabOption) {
       const index = this._getTabIndex(tab)
-      if (index <= this.current) {
-        this.current--
-      }
+      if (index < 0 || index >= this.tabs.length) return
+      if (this.tabs[index]?.fixed) return
+
+      const nextName = this._getNextTabNameAfterClose(index)
       this.tabs.splice(index, 1)
+      this._setCurrentIndex(nextName)
+      // 更新缓存
+      this._updateCachedTabs()
     },
     closeByName(name: string) {
       this.closeTab(name)
     },
     closeByIndex(index: number) {
-      if (this.current < 0 || this.current > this.tabs.length - 1) return
       this.closeTab(index)
     },
     closeCurrentTab() {
       this.closeByIndex(this.current)
     },
     closeLeftTab() {
-      if (this.current < 1) return
       if (this.current === -1) {
-        this.tabs = []
+        this.closeAllTab()
         return
       }
-      const newTabs = this.tabs.slice(this.current, this.tabs.length)
-      this.tabs = [...newTabs]
-      this.current = 0
+
+      const currentName = this.currentTab?.name
+      this.tabs = this.tabs.filter((tab, index) => {
+        return tab.fixed || index >= this.current
+      })
+      this._setCurrentIndex(currentName)
+      this._updateCachedTabs()
     },
     closeRightTab() {
-      if (this.current === this.tabs.length - 1) return
       if (this.current === -1) {
-        this.tabs = []
+        this.closeAllTab()
         return
       }
-      const newTabs = this.tabs.slice(this.current + 1)
-      this.tabs = newTabs
+
+      const currentName = this.currentTab?.name
+      this.tabs = this.tabs.filter((tab, index) => {
+        return tab.fixed || index <= this.current
+      })
+      this._setCurrentIndex(currentName)
+      this._updateCachedTabs()
     },
     closeOtherTab() {
-      if (this.currentTab?.home) {
-        this.current = -1
+      if (this.current === -1 || this.currentTab?.home) {
+        this.closeAllTab()
         return
       }
-      if (this.tabs.length === 0 || this.current >= this.tabs.length - 1) {
-        return
-      }
-      this.tabs = [this.tabs[this.current]!]
-      this.current = 0
+
+      const currentName = this.currentTab?.name
+      this.tabs = this.tabs.filter((tab) => {
+        return tab.fixed || tab.name === currentName
+      })
+      this._setCurrentIndex(currentName)
+      this._updateCachedTabs()
     },
     closeAllTab() {
-      this.current = -1
-      this.tabs = []
+      const currentName = this.currentTab?.fixed
+        ? this.currentTab.name
+        : undefined
+      this.tabs = this.tabs.filter((tab) => tab.fixed)
+      this._setCurrentIndex(currentName)
+      this._updateCachedTabs()
     },
-    sortTabs() {},
-    pinTab(tab: TabOption) {},
-    unpinTab(tab: TabOption) {},
-    togglePinTab(tab: TabOption) {},
+    /**
+     * 原地排序，减少数组重建
+     */
+    _sortTabsInPlace(activeTab?: TabOption) {
+      const activeName =
+        activeTab === undefined
+          ? this.currentTab?.name
+          : this._getTabName(activeTab)
+      // 将 fixed 项移动到最前面，其余项保持相对顺序
+      this.tabs.sort((a, b) => {
+        if (a.fixed === b.fixed) return 0
+        return a.fixed ? -1 : 1
+      })
+
+      this._setCurrentIndex(activeName)
+    },
+    sortTabs(activeTab?: TabOption) {
+      this._sortTabsInPlace(activeTab)
+    },
+    pinTab(tab: TabOption) {
+      const index = this._getTabIndex(tab)
+      const targetTab = this.tabs[index]
+      if (!targetTab) return
+      targetTab.fixed = true
+      this._sortTabsInPlace()
+    },
+    unpinTab(tab: TabOption) {
+      const index = this._getTabIndex(tab)
+      const targetTab = this.tabs[index]
+      if (!targetTab) return
+      targetTab.fixed = false
+      this._sortTabsInPlace()
+    },
+    togglePinTab(tab: TabOption, fixed?: boolean) {
+      const index = this._getTabIndex(tab)
+      const targetTab = this.tabs[index]
+      if (!targetTab) return
+      if (fixed ?? !targetTab.fixed) {
+        this.pinTab(index)
+        return
+      }
+      this.unpinTab(index)
+    },
+    /**
+     * 显式重建 route-view，避免通过 _t query 生成额外 KeepAlive 缓存。
+     */
     async refreshTab() {
       this.renderRouteView = false
-      await new Promise((resolve) => {
-        setTimeout(resolve, 200)
-      })
+      await nextTick()
       this.renderRouteView = true
     },
-
-    updateCachedTabs() {
-      const newCachedTabs = new Set<string>()
-      for (const tab of this.tabs) {
-        if (tab.keepAlive) {
-          newCachedTabs.add(tab.name)
-        }
-      }
-      this.cachedTabs = newCachedTabs
+    _updateCachedTabs() {
+      this.cachedTabs = this.tabs
+        .filter((tab) => tab.keepAlive)
+        .map((tab) => tab.name)
+    },
+    /**
+     * 重置 homeTab 缓存（当菜单数据变化时调用）
+     */
+    refreshHomeTabCache() {
+      this._invalidateHomeTabCache()
+      // 触发 homeTab getter 重新计算
+      void this.homeTab
     },
   },
-  persist: true,
 })
+
+export const useTabStore = () => {
+  const store = tabStore()
+  return { ...store, ...storeToRefs(store) }
+}

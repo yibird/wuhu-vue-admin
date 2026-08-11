@@ -30,12 +30,12 @@ export interface TabState {
   renderRouteView: boolean
   /**
    * @desc 当前打开的标签页列表缓存
-   * @default
+   * @default []
    */
-  cachedTabs: Set<string>
+  cachedTabs: string[]
   /**
-   * @desc 排除缓存的标签页路径列表
-   * @default
+   * @desc homeTab 缓存
+   * @default undefined
    */
-  excludeCachedTabs: Set<string>
+  _homeTabCache?: ITab
 }

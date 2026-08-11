@@ -1,6 +1,6 @@
 import { createI18n } from 'vue-i18n'
 import { zh_CN, en } from './lang'
-import { Locale, type LocaleType } from '@/constant'
+import { Locale, type LocaleType } from '@/constants'
 
 type MessageSchema = typeof zh_CN
 

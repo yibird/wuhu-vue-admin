@@ -1,3 +1,4 @@
+export { toPx } from './toPx'
 export {
   getElSpacingInfo,
   getElSpacing,
@@ -6,5 +7,5 @@ export {
   getElementSize,
   getElementTotalHeight,
   getElementTotalWidth,
-} from './getElementSpacing';
-export { waitForAnimations } from './waitForAnimations';
+} from './getElementSpacing'
+export { waitForAnimations } from './waitForAnimations'

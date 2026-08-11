@@ -1,6 +1,7 @@
 import topbar, { type TopbarConfigOptions } from 'topbar'
-import { appStore } from '@/store'
+import { useAppStore } from '@/store'
 import type { RouterPlugin } from './types'
+import type { WatchStopHandle } from 'vue'
 
 const defaultOptions: TopbarConfigOptions = {
   barThickness: 2,
@@ -20,35 +21,54 @@ export function createProgressBarPlugin(
     ...options,
   }
 
+  let stopThemeColorWatcher: WatchStopHandle | undefined
+
+  const createBarColors = (themeColor?: string) => {
+    const color = themeColor?.trim()
+    if (!color) return mergedOptions.barColors
+
+    return {
+      '0.2': `rgba(${color}, .75)`,
+      '0.6': `rgba(${color}, .85)`,
+      '1.0': `rgba(${color}, 1)`,
+    }
+  }
+
+  const applyTopbarConfig = (themeColor?: string) => {
+    topbar.config({
+      ...mergedOptions,
+      barColors: createBarColors(themeColor),
+    })
+  }
+
+  const ensureThemeColorWatcher = () => {
+    if (stopThemeColorWatcher) return
+
+    const { app } = useAppStore()
+    stopThemeColorWatcher = watch(
+      () => app.value.themeColor,
+      applyTopbarConfig,
+      { immediate: true }
+    )
+  }
+
   return {
     name: 'progress-bar',
     hooks: {
       onBeforeEach() {
-        const store = appStore()
-        const enableProgressBar = store.animation.enableProgressBar
+        const { animation } = useAppStore()
+        const enableProgressBar = animation.value.enableProgressBar
         if (!enableProgressBar) return
-        const themeColor = store.app.themeColor
-        watch(
-          () => themeColor,
-          () => {
-            topbar.config({
-              ...mergedOptions,
-              barColors: themeColor
-                ? {
-                    '0.2': `rgba(${themeColor}, .75)`,
-                    '0.6': `rgba(${themeColor}, .85)`,
-                    '1.0': `rgba(${themeColor}, 1)`,
-                  }
-                : mergedOptions.barColors,
-            })
-          },
-          { immediate: true }
-        )
+        ensureThemeColorWatcher()
         topbar.show()
       },
       onAfterEach() {
         topbar.hide()
       },
+    },
+    onDispose() {
+      stopThemeColorWatcher?.()
+      stopThemeColorWatcher = undefined
     },
   }
 }

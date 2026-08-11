@@ -3,11 +3,7 @@ import type { RouteLocationRaw, Router } from 'vue-router'
 
 export function useGo(instance: Router = router) {
   function to(path: RouteLocationRaw, replace?: boolean) {
-    if (replace) {
-      instance.replace(path)
-      return
-    }
-    instance.push(path)
+    return replace ? instance.replace(path) : instance.push(path)
   }
   const back = () => {
     instance.back()
