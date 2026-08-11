@@ -1,0 +1,1378 @@
+{
+  "componentIndex": {
+    "alert": {
+      "keys": [
+        "alert"
+      ],
+      "leafCount": 7
+    },
+    "anchor": {
+      "keys": [
+        "anchor"
+      ],
+      "leafCount": 4
+    },
+    "auto-complete": {
+      "keys": [
+        "autoComplete"
+      ],
+      "leafCount": 9
+    },
+    "badge": {
+      "keys": [
+        "badge",
+        "ribbon"
+      ],
+      "leafCount": 5
+    },
+    "breadcrumb": {
+      "keys": [
+        "breadcrumb"
+      ],
+      "leafCount": 3
+    },
+    "button": {
+      "keys": [
+        "button"
+      ],
+      "leafCount": 3
+    },
+    "calendar": {
+      "keys": [
+        "calendar"
+      ],
+      "leafCount": 6
+    },
+    "card": {
+      "keys": [
+        "card"
+      ],
+      "leafCount": 7
+    },
+    "cascader": {
+      "keys": [
+        "cascader"
+      ],
+      "leafCount": 13
+    },
+    "checkbox": {
+      "keys": [
+        "checkbox"
+      ],
+      "leafCount": 3
+    },
+    "collapse": {
+      "keys": [
+        "collapse"
+      ],
+      "leafCount": 5
+    },
+    "color-picker": {
+      "keys": [
+        "colorPicker"
+      ],
+      "leafCount": 5
+    },
+    "date-picker": {
+      "keys": [
+        "datePicker"
+      ],
+      "leafCount": 11
+    },
+    "descriptions": {
+      "keys": [
+        "descriptions"
+      ],
+      "leafCount": 6
+    },
+    "divider": {
+      "keys": [
+        "divider"
+      ],
+      "leafCount": 3
+    },
+    "drawer": {
+      "keys": [
+        "drawer"
+      ],
+      "leafCount": 10
+    },
+    "dropdown": {
+      "keys": [
+        "dropdown"
+      ],
+      "leafCount": 5
+    },
+    "empty": {
+      "keys": [
+        "empty"
+      ],
+      "leafCount": 4
+    },
+    "float-button": {
+      "keys": [
+        "floatButton",
+        "floatButtonGroup"
+      ],
+      "leafCount": 11
+    },
+    "form": {
+      "keys": [
+        "form"
+      ],
+      "leafCount": 6
+    },
+    "image": {
+      "keys": [
+        "image"
+      ],
+      "leafCount": 9
+    },
+    "input": {
+      "keys": [
+        "input",
+        "input:password",
+        "inputSearch",
+        "otp",
+        "textArea"
+      ],
+      "leafCount": 25
+    },
+    "input-number": {
+      "keys": [
+        "inputNumber"
+      ],
+      "leafCount": 6
+    },
+    "masonry": {
+      "keys": [
+        "masonry"
+      ],
+      "leafCount": 2
+    },
+    "mentions": {
+      "keys": [
+        "mentions"
+      ],
+      "leafCount": 4
+    },
+    "menu": {
+      "keys": [
+        "menu"
+      ],
+      "leafCount": 12
+    },
+    "message": {
+      "keys": [
+        "message"
+      ],
+      "leafCount": 6
+    },
+    "modal": {
+      "keys": [
+        "modal"
+      ],
+      "leafCount": 9
+    },
+    "notification": {
+      "keys": [
+        "notification"
+      ],
+      "leafCount": 11
+    },
+    "pagination": {
+      "keys": [
+        "pagination"
+      ],
+      "leafCount": 2
+    },
+    "popconfirm": {
+      "keys": [
+        "popconfirm"
+      ],
+      "leafCount": 6
+    },
+    "popover": {
+      "keys": [
+        "popover"
+      ],
+      "leafCount": 5
+    },
+    "progress": {
+      "keys": [
+        "progress"
+      ],
+      "leafCount": 5
+    },
+    "qr-code": {
+      "keys": [
+        "qrCode"
+      ],
+      "leafCount": 2
+    },
+    "radio": {
+      "keys": [
+        "radio"
+      ],
+      "leafCount": 3
+    },
+    "result": {
+      "keys": [
+        "result"
+      ],
+      "leafCount": 6
+    },
+    "segmented": {
+      "keys": [
+        "segmented"
+      ],
+      "leafCount": 4
+    },
+    "select": {
+      "keys": [
+        "select"
+      ],
+      "leafCount": 13
+    },
+    "skeleton": {
+      "keys": [
+        "skeleton",
+        "skeleton:element"
+      ],
+      "leafCount": 8
+    },
+    "slider": {
+      "keys": [
+        "slider"
+      ],
+      "leafCount": 5
+    },
+    "space": {
+      "keys": [
+        "space"
+      ],
+      "leafCount": 3
+    },
+    "spin": {
+      "keys": [
+        "spin"
+      ],
+      "leafCount": 2
+    },
+    "splitter": {
+      "keys": [
+        "splitter"
+      ],
+      "leafCount": 3
+    },
+    "statistic": {
+      "keys": [
+        "statistic"
+      ],
+      "leafCount": 7
+    },
+    "steps": {
+      "keys": [
+        "steps"
+      ],
+      "leafCount": 10
+    },
+    "switch": {
+      "keys": [
+        "switch"
+      ],
+      "leafCount": 3
+    },
+    "table": {
+      "keys": [
+        "table"
+      ],
+      "leafCount": 13
+    },
+    "tabs": {
+      "keys": [
+        "tabs"
+      ],
+      "leafCount": 7
+    },
+    "tag": {
+      "keys": [
+        "tag"
+      ],
+      "leafCount": 4
+    },
+    "time-picker": {
+      "keys": [
+        "timePicker"
+      ],
+      "leafCount": 9
+    },
+    "timeline": {
+      "keys": [
+        "timeline"
+      ],
+      "leafCount": 9
+    },
+    "tooltip": {
+      "keys": [
+        "tooltip"
+      ],
+      "leafCount": 3
+    },
+    "tour": {
+      "keys": [
+        "tour"
+      ],
+      "leafCount": 12
+    },
+    "transfer": {
+      "keys": [
+        "transfer"
+      ],
+      "leafCount": 13
+    },
+    "tree": {
+      "keys": [
+        "tree"
+      ],
+      "leafCount": 5
+    },
+    "tree-select": {
+      "keys": [
+        "treeSelect"
+      ],
+      "leafCount": 13
+    },
+    "typography": {
+      "keys": [
+        "typography"
+      ],
+      "leafCount": 4
+    },
+    "upload": {
+      "keys": [
+        "upload"
+      ],
+      "leafCount": 3
+    }
+  },
+  "entries": [
+    {
+      "component": "alert",
+      "key": "alert",
+      "leafCount": 7,
+      "semantics": {
+        "actions": "Actions element with layout and spacing styles for action buttons",
+        "close": "Close button element with basic button styling",
+        "description": "Description element with font-size and line-height styles for additional content",
+        "icon": "Icon element with color, line-height, and margin styles, supporting different status icon types",
+        "root": "Root element with border, background, padding, border-radius, and positioning styles for the alert container",
+        "section": "Content element with flex layout controlling content area typography and minimum width",
+        "title": "Title element with text color and font styling for the alert title"
+      },
+      "sourceDemo": "docs/src/pages/components/alert/demo/_semantic.vue",
+      "variant": null
+    },
+    {
+      "component": "anchor",
+      "key": "anchor",
+      "leafCount": 4,
+      "semantics": {
+        "indicator": "Indicator element with width, height, background color, position changes, transition animations and other styles",
+        "item": "Link item element with padding, text color, hover states, transition animations and other styles",
+        "itemTitle": "Title text element with font styles, color changes, text decoration, transition effects and other styles",
+        "root": "Root element with layout positioning, padding, margin, background color and other basic styles"
+      },
+      "sourceDemo": "docs/src/pages/components/anchor/demo/_semantic.vue",
+      "variant": null
+    },
+    {
+      "component": "auto-complete",
+      "key": "autoComplete",
+      "leafCount": 9,
+      "semantics": {
+        "clear": "Clear button element with layout, styling and interactive effects for clear button",
+        "content": "Multiple selection container with layout, spacing, and wrapping styles for selected items",
+        "input": "Input element with search input styling, cursor control, font inheritance and other search-related styles. Remove border styles",
+        "placeholder": "Placeholder element with font styles and colors for placeholder text",
+        "popup": {
+          "list": "Popup list element with option list layout, scrolling, max-height and other list container styles",
+          "listItem": "Popup item element with option item padding, hover effects, selected states, disabled states and other option interactive styles",
+          "root": "Popup element with popup layer positioning, z-index, background, border, box-shadow and other popup container styles"
+        },
+        "prefix": "Prefix element with layout and styling for prefix content",
+        "root": "Root element with relative positioning, inline-flex layout, cursor styles, transitions, border and other basic selector container styles"
+      },
+      "sourceDemo": "docs/src/pages/components/auto-complete/demo/_semantic.vue",
+      "variant": null
+    },
+    {
+      "component": "badge",
+      "key": "badge",
+      "leafCount": 2,
+      "semantics": {
+        "indicator": "Indicator element with positioning, z-index, dimensions, colors, fonts, text alignment, background, border-radius, box-shadow, and transition animations for complete badge styling",
+        "root": "Root element with relative positioning, inline-block display, and fit-content width for basic layout"
+      },
+      "sourceDemo": "docs/src/pages/components/badge/demo/_semantic.vue",
+      "variant": null
+    },
+    {
+      "component": "breadcrumb",
+      "key": "breadcrumb",
+      "leafCount": 3,
+      "semantics": {
+        "item": "Item element with text color, link color transitions, hover effects, padding, border-radius, height, and margin styles",
+        "root": "Root element with text color, font size, icon size and other basic styles, using flex layout with ordered list",
+        "separator": "Separator element with margin and color styles for the divider"
+      },
+      "sourceDemo": "docs/src/pages/components/breadcrumb/demo/_semantic.vue",
+      "variant": null
+    },
+    {
+      "component": "button",
+      "key": "button",
+      "leafCount": 3,
+      "semantics": {
+        "content": "Content element that wraps button text with typography styles including nowrap, text-align center, and Chinese character spacing optimization",
+        "icon": "Icon element with font-size, color inheritance, and SVG style reset for proper icon display",
+        "root": "Root element with comprehensive button styling including border, background, padding, border-radius, box-shadow, transitions, cursor, font-weight, alignment, and layout properties"
+      },
+      "sourceDemo": "docs/src/pages/components/button/demo/_semantic.vue",
+      "variant": null
+    },
+    {
+      "component": "calendar",
+      "key": "calendar",
+      "leafCount": 6,
+      "semantics": {
+        "body": "Body element with padding and layout control for the calendar table that contains the calendar grid",
+        "content": "Content element with width, height and table styling control for the calendar table",
+        "header": "Header element with layout and style control for year selector, month selector and mode switcher",
+        "item": "Item element with background, border, hover state, selected state and other interactive styles for calendar cells",
+        "itemContent": "Item content element with layout and styles for the calendar cell content area",
+        "root": "Root element containing background, border, border-radius and overall layout structure of the calendar component"
+      },
+      "sourceDemo": "docs/src/pages/components/calendar/demo/_semantic.vue",
+      "variant": null
+    },
+    {
+      "component": "card",
+      "key": "card",
+      "leafCount": 7,
+      "semantics": {
+        "actions": "Card bottom action group with flex layout, list-style reset, background, top border and bottom border-radius for action buttons container",
+        "body": "Card content area with padding, font-size and other content display styles",
+        "cover": "Title cover with styles for cover image display and layout",
+        "extra": "Card extra operation area in top-right corner with text color and layout styles for additional content",
+        "header": "Card header area with flex layout, min-height, padding, text color, font-weight, font-size, background, bottom border and top border-radius",
+        "root": "Card root element with positioning, background, border, border-radius, box-shadow, padding and other container styles",
+        "title": "Card title with inline-block display, flex-grow, text ellipsis and other title display styles"
+      },
+      "sourceDemo": "docs/src/pages/components/card/demo/_semantic.vue",
+      "variant": null
+    },
+    {
+      "component": "cascader",
+      "key": "cascader",
+      "leafCount": 13,
+      "semantics": {
+        "clear": "Clear button element with layout, styling and interactive effects for clear button式",
+        "content": "Multiple selection container with layout, spacing, and wrapping styles for selected items",
+        "input": "Input element with search input styling, cursor control, font inheritance and other search-related styles. Remove border styles",
+        "item": "Multiple selection item element with border, background, padding, and margin styles",
+        "itemContent": "Multiple selection item content area with text ellipsis styles",
+        "itemRemove": "Multiple selection item remove button with font-related styles式",
+        "placeholder": "Placeholder element with font styles and colors for placeholder text",
+        "popup": {
+          "list": "Popup list element with option list layout, scrolling, max-height and other list container styles",
+          "listItem": "Popup item element with option item padding, hover effects, selected states, disabled states and other option interactive styles",
+          "root": "Popup element with popup layer positioning, z-index, background, border, box-shadow and other popup container styles"
+        },
+        "prefix": "Prefix element with layout and styling for prefix content",
+        "root": "Root element with relative positioning, inline-flex layout, cursor styles, transitions, border and other basic selector container styles",
+        "suffix": "Suffix element with layout and styling for suffix content like clear button, arrow icon, etc."
+      },
+      "sourceDemo": "docs/src/pages/components/cascader/demo/_semantic.vue",
+      "variant": null
+    },
+    {
+      "component": "checkbox",
+      "key": "checkbox",
+      "leafCount": 3,
+      "semantics": {
+        "icon": "Checkbox icon element with size, direction, background, border, border-radius, transitions, and checked state checkmark styles",
+        "label": "Label text element with padding and spacing styles relative to the checkbox",
+        "root": "Root element with inline-flex layout, baseline alignment, cursor style, reset styles and other basic checkbox container styles"
+      },
+      "sourceDemo": "docs/src/pages/components/checkbox/demo/_semantic.vue",
+      "variant": null
+    },
+    {
+      "component": "collapse",
+      "key": "collapse",
+      "leafCount": 5,
+      "semantics": {
+        "body": "Body element with padding, color, background color and other styles for panel content area display",
+        "header": "Header element with flex layout, padding, color, line-height, cursor style, transition animations and other interactive styles for panel headers",
+        "icon": "Icon element with font size, transition animations, rotation transforms and other styles and animations for expand/collapse arrows",
+        "root": "Root element with border, border-radius, background color and container styles that control the overall layout and appearance of collapse panels",
+        "title": "Title element with flex auto layout and margin styles for title text layout and typography"
+      },
+      "sourceDemo": "docs/src/pages/components/collapse/demo/_semantic.vue",
+      "variant": null
+    },
+    {
+      "component": "color-picker",
+      "key": "colorPicker",
+      "leafCount": 5,
+      "semantics": {
+        "body": "Color block container with background color, border styles",
+        "content": "Color block element with actual selected color styles",
+        "description": "Description text content with font styles and color",
+        "popup": {
+          "root": "Popup panel root container with background color, shadow effects, color selection panel, slider controls and preset colors"
+        },
+        "root": "Trigger container with border styles, transition animations, size controls, displaying color block and text content"
+      },
+      "sourceDemo": "docs/src/pages/components/color-picker/demo/_semantic.vue",
+      "variant": null
+    },
+    {
+      "component": "date-picker",
+      "key": "datePicker",
+      "leafCount": 11,
+      "semantics": {
+        "input": "Input element with relative positioning, width, color, font, line-height, transition animations and other core interactive styles for input field",
+        "popup": {
+          "body": "Popup body element with container layout and styles for date panel table",
+          "container": "Container element, set background color, padding, border radius, shadow, border and content display styles",
+          "content": "Popup content element with width, border, cell and other content display styles for date table",
+          "footer": "Popup footer element with layout styles for bottom operation area including confirm/cancel buttons and shortcuts",
+          "header": "Popup header element with navigation buttons, month/year selectors and other header control area layout and styles",
+          "item": "Popup item element with size, background, border-radius, hover state, selected state and other interactive styles for date cells",
+          "root": "Popup element"
+        },
+        "prefix": "Prefix element with flex layout and margin styles for prefix content layout",
+        "root": "Root element with relative positioning, inline-flex layout, padding, border-radius, transition animations and other basic styles for date picker container",
+        "suffix": "Suffix element with flex layout, color, line-height, pointer events, transition animations and other styles for suffix content"
+      },
+      "sourceDemo": "docs/src/pages/components/date-picker/demo/_semantic.vue",
+      "variant": null
+    },
+    {
+      "component": "descriptions",
+      "key": "descriptions",
+      "leafCount": 6,
+      "semantics": {
+        "content": "Content element with table cell layout, color, font size, line height, word break and other content display styles",
+        "extra": "Extra content element with left margin, color, font size and other styles for additional operation area",
+        "header": "Header element with flex layout, alignment, bottom margin and other layout and style controls for header area",
+        "label": "Label element with color, font weight, font size, line height, text align, colon styles and other label text styles",
+        "root": "Root element with basic styles, reset styles, border styles, layout direction and other overall styles for description list container",
+        "title": "Title element with text ellipsis, flex ratio, color, font weight, font size, line height and other title text styles"
+      },
+      "sourceDemo": "docs/src/pages/components/descriptions/demo/_semantic.vue",
+      "variant": null
+    },
+    {
+      "component": "divider",
+      "key": "divider",
+      "leafCount": 3,
+      "semantics": {
+        "content": "Content element with inline-block display, padding and other divider text content styles",
+        "rail": "Background rail element with border-top style and other divider connection line styles",
+        "root": "Root element with border-top style, divider styling and other basic divider container styles"
+      },
+      "sourceDemo": "docs/src/pages/components/divider/demo/_semantic.vue",
+      "variant": null
+    },
+    {
+      "component": "drawer",
+      "key": "drawer",
+      "leafCount": 10,
+      "semantics": {
+        "body": "Body element with flex ratio, minimum size, padding, overflow scroll and other content area display and layout styles",
+        "close": "Close button element with basic button styling",
+        "dragger": "Dragger element used to resize the drawer, with absolute positioning, transparent background, pointer events control, hover state styles, and dragging state styles",
+        "extra": "Extra element with flex fixed layout and other additional operation content style controls",
+        "footer": "Footer element with flex shrink, padding, top border and other bottom operation area styles",
+        "header": "Header element with flex layout, alignment, padding, font size, line height, bottom border and other header area styles",
+        "mask": "Mask element with absolute positioning, z-index, background color, pointer events and other mask layer styles and interaction controls",
+        "root": "Root element with fixed positioning, z-index control, pointer events, color and other basic styles and layout control for drawer container",
+        "section": "Drawer container element with flex layout, width/height, overflow control, background color, pointer events and other drawer body styles",
+        "title": "Title element with flex ratio, margin, font weight, font size, line height and other title text styles"
+      },
+      "sourceDemo": "docs/src/pages/components/drawer/demo/_semantic.vue",
+      "variant": null
+    },
+    {
+      "component": "dropdown",
+      "key": "dropdown",
+      "leafCount": 5,
+      "semantics": {
+        "item": "Individual dropdown option element, sets interaction states and background styles",
+        "itemContent": "Main content area of dropdown option, sets content layout and link styles",
+        "itemIcon": "Icon area of dropdown option, sets icon size and spacing styles",
+        "itemTitle": "Title content area of dropdown option, sets layout and text styles",
+        "root": "Root element of dropdown, sets positioning, z-index and container styles"
+      },
+      "sourceDemo": "docs/src/pages/components/dropdown/demo/_semantic.vue",
+      "variant": null
+    },
+    {
+      "component": "empty",
+      "key": "empty",
+      "leafCount": 4,
+      "semantics": {
+        "description": "Description element, sets text color styles",
+        "footer": "Footer element, sets top margin and action button styles",
+        "image": "Image element, sets height, opacity, margin and image styles",
+        "root": "Root element, sets text alignment, font and line height styles"
+      },
+      "sourceDemo": "docs/src/pages/components/empty/demo/_semantic.vue",
+      "variant": null
+    },
+    {
+      "component": "float-button",
+      "key": "floatButton",
+      "leafCount": 3,
+      "semantics": {
+        "content": "Content element with button text content font size, color, alignment, line wrap and other text display styles",
+        "icon": "Icon element with button icon size, color, line height, alignment and other icon display styles",
+        "root": "Root element with float button base styles, shape size, type theme, fixed positioning, z-index, shadow, spacing and other container styles"
+      },
+      "sourceDemo": "docs/src/pages/components/float-button/demo/_semantic.vue",
+      "variant": null
+    },
+    {
+      "component": "float-button",
+      "key": "floatButtonGroup",
+      "leafCount": 8,
+      "semantics": {
+        "item": "Item element with individual float button styles, size, shape, type, state, icon content and other button base styles",
+        "itemContent": "Item content element with float button text content, badge, description and other content area styles",
+        "itemIcon": "Item icon element with float button icon size, color, alignment and other icon display styles",
+        "list": "List element with button group list flex layout, border radius, shadow, animation transition, vertical alignment and other list container styles",
+        "root": "Root element with float button group container styles, fixed positioning, z-index, padding, gap, direction mode and other combined layout styles",
+        "trigger": "Trigger element with menu mode trigger button styles, shape, icon, hover state, expand/collapse state and other interaction styles",
+        "triggerContent": "Trigger content element with trigger button content area text, identifier, state indicator and other content styles",
+        "triggerIcon": "Trigger icon element with trigger button icon styles, rotation animation, toggle state and other icon interaction styles"
+      },
+      "sourceDemo": "docs/src/pages/components/float-button/demo/_semantic_group.vue",
+      "variant": "group"
+    },
+    {
+      "component": "form",
+      "key": "form",
+      "leafCount": 6,
+      "semantics": {
+        "content": "Content element with form content area layout, styling and control container related styles",
+        "extra": "Extra prompt container element with spacing, color, and typography styles for supplementary text",
+        "help": "Help container element with spacing, motion, and presentation styles for help and validation areas",
+        "helpItem": "Single help message item with typography styles for prompt, error, and warning text",
+        "label": "Label element with flex layout, overflow hidden, whitespace nowrap, text alignment, vertical alignment, plus label color, font size, height, required marks and other label display styles",
+        "root": "Root element with form item margin-bottom, vertical-align, transitions, hidden states, error/warning states and other basic form item container styles"
+      },
+      "sourceDemo": "docs/src/pages/components/form/demo/_semantic.vue",
+      "variant": null
+    },
+    {
+      "component": "image",
+      "key": "image",
+      "leafCount": 9,
+      "semantics": {
+        "cover": "Image hover display prompt element, sets absolute positioning, background color, opacity and transition animation styles",
+        "image": "Image element, sets width, height and vertical alignment styles",
+        "popup": {
+          "actions": "Preview actions group element, sets flex layout, background color, border radius and action button styles",
+          "body": "Preview body element, sets flex layout, center alignment and pointer event styles",
+          "close": "Preview close button element, sets basic button styles",
+          "footer": "Preview footer element, sets absolute positioning, center layout and bottom operation area styles",
+          "mask": "Preview mask element, sets absolute positioning and semi-transparent background styles",
+          "root": "Preview root element, sets fixed positioning, z-index and background mask styles"
+        },
+        "root": "Root element, sets relative positioning and inline-block layout styles"
+      },
+      "sourceDemo": "docs/src/pages/components/image/demo/_semantic.vue",
+      "variant": null
+    },
+    {
+      "component": "input",
+      "key": "input",
+      "leafCount": 6,
+      "semantics": {
+        "clear": "Clear button element with color, size, hover state and transition animation styles",
+        "count": "Character count element with font and color styles for count display",
+        "input": "Input element with core interactive styles and text input related styling",
+        "prefix": "Prefix wrapper element with layout and styling for prefix content",
+        "root": "Root element with relative positioning, inline-block display, width, min-width, padding, colors, fonts, line-height, border-radius, transitions and other input container basic styles",
+        "suffix": "Suffix wrapper element with layout and styling for suffix content"
+      },
+      "sourceDemo": "docs/src/pages/components/input/demo/_semantic.vue",
+      "variant": null
+    },
+    {
+      "component": "input",
+      "key": "input:password",
+      "leafCount": 5,
+      "semantics": {
+        "count": "Character count element with font and color styles for count display",
+        "input": "Input element with core interactive styles and text input related styling",
+        "prefix": "Prefix wrapper element with layout and styling for prefix content",
+        "root": "Root element with relative positioning, inline-block display, width, min-width, padding, colors, fonts, line-height, border-radius, transitions and other input container basic styles",
+        "suffix": "Suffix wrapper element with layout and styling for suffix content"
+      },
+      "sourceDemo": "docs/src/pages/components/input/demo/_semantic-password.vue",
+      "variant": "password"
+    },
+    {
+      "component": "input-number",
+      "key": "inputNumber",
+      "leafCount": 6,
+      "semantics": {
+        "action": "Single action button element, sets button styling, hover effects and click interactions",
+        "actions": "Actions element, sets absolute positioning, width, flex layout and number adjustment button styles",
+        "input": "Input element, sets font, line height, text input and interaction styles",
+        "prefix": "Prefix wrapper element, sets flex layout, alignment and right margin styles",
+        "root": "Root element, sets inline-block layout, width, border radius and reset styles",
+        "suffix": "Suffix wrapper element, sets flex layout, margin and transition animation styles"
+      },
+      "sourceDemo": "docs/src/pages/components/input-number/demo/_semantic.vue",
+      "variant": null
+    },
+    {
+      "component": "input",
+      "key": "inputSearch",
+      "leafCount": 8,
+      "semantics": {
+        "button": {
+          "content": "Search button content element with text styles, hover effects and click interactions",
+          "icon": "Search button icon element with icon styles, hover effects and click interactions",
+          "root": "Search button root element with button styles, hover effects and click interactions"
+        },
+        "count": "Character count element with font and color styles for count display",
+        "input": "Input element with core interactive styles and text input related styling",
+        "prefix": "Prefix wrapper element with layout and styling for prefix content",
+        "root": "Root element with relative positioning, inline-block display, width, min-width, padding, colors, fonts, line-height, border-radius, transitions and other input container basic styles",
+        "suffix": "Suffix wrapper element with layout and styling for suffix content"
+      },
+      "sourceDemo": "docs/src/pages/components/input/demo/_semantic-search.vue",
+      "variant": "search"
+    },
+    {
+      "component": "masonry",
+      "key": "masonry",
+      "leafCount": 2,
+      "semantics": {
+        "item": "Item element, sets absolute positioning, width calculation, transition animation and masonry item styles",
+        "root": "Root element, sets relative positioning, flex layout and masonry container styles"
+      },
+      "sourceDemo": "docs/src/pages/components/masonry/demo/_semantic.vue",
+      "variant": null
+    },
+    {
+      "component": "mentions",
+      "key": "mentions",
+      "leafCount": 4,
+      "semantics": {
+        "popup": "Popup element, set absolute positioning, z-index, background color, border radius, shadow and dropdown options styles",
+        "root": "Root element, set inline flex layout, relative positioning, padding and border styles",
+        "suffix": "Suffix element with layout and styling for suffix content like clear button, etc.",
+        "textarea": "Textarea element, set font, line height, text input and background styles"
+      },
+      "sourceDemo": "docs/src/pages/components/mentions/demo/_semantic.vue",
+      "variant": null
+    },
+    {
+      "component": "menu",
+      "key": "menu",
+      "leafCount": 12,
+      "semantics": {
+        "item": "Item element with relative positioning, block display, margins, whitespace handling, cursor styles, transitions and other basic interactive styles for menu items",
+        "itemContent": "Item content element with layout and typography styles for menu item content",
+        "itemIcon": "Icon element with min-width, font-size, transitions, icon reset styles, and spacing control with text",
+        "itemTitle": "Item title element (no effect in horizontal mode) with title text styles and layout",
+        "list": "Menu list element (no effect in horizontal mode) with menu list layout and container styles",
+        "popup": "Popup menu element (no effect in inline mode) with popup layer positioning, z-index, background and other styles",
+        "root": "Root element with basic menu container styles and layout",
+        "subMenu": {
+          "item": "Submenu item element with submenu item styles and interactive effects",
+          "itemContent": "Submenu item content element with submenu content layout and typography",
+          "itemIcon": "Submenu item icon element with submenu icon size and styles",
+          "itemTitle": "Submenu title element with submenu title styles and interactive effects",
+          "list": "Submenu list element with submenu list layout and container styles"
+        }
+      },
+      "sourceDemo": "docs/src/pages/components/menu/demo/_semantic.vue",
+      "variant": null
+    },
+    {
+      "component": "message",
+      "key": "message",
+      "leafCount": 6,
+      "semantics": {
+        "icon": "Icon element, set font size, line height and status color styles",
+        "list": "Message list root element, set positioning, z-index, width, scroll area and placement styles",
+        "listContent": "Message list content element, set notice layout, gap and height transition styles",
+        "root": "Message item root element, set background color, border radius, shadow, padding and animation styles",
+        "title": "Title element, set text color, font size, line height and content display styles",
+        "wrapper": "Wrapper element for icon and title, set content layout, gap and alignment styles"
+      },
+      "sourceDemo": "docs/src/pages/components/message/demo/_semantic.vue",
+      "variant": null
+    },
+    {
+      "component": "modal",
+      "key": "modal",
+      "leafCount": 9,
+      "semantics": {
+        "body": "Body element with content area background color, padding and other content display styles",
+        "close": "Close button element with base button styles, positioning and interaction effects",
+        "container": "Modal container element with relative positioning, background, background-clip, border, border-radius, box-shadow, pointer-events, padding and other modal body styles",
+        "footer": "Footer element with footer background color, padding, top border, border-radius and other footer area styles",
+        "header": "Header element with padding, bottom border and other header area styles",
+        "mask": "Mask element with fixed positioning, z-index, background color, animation transitions and other mask layer styles",
+        "root": "Root element with relative positioning, top position, width, max-width, margins, bottom padding and other basic layout styles for modal container",
+        "title": "Title element with margin, color, font-weight, font-size, line-height, word-wrap and other title text styles",
+        "wrapper": "Wrapper element used for motion container with animation and transition effect styles"
+      },
+      "sourceDemo": "docs/src/pages/components/modal/demo/_semantic.vue",
+      "variant": null
+    },
+    {
+      "component": "notification",
+      "key": "notification",
+      "leafCount": 11,
+      "semantics": {
+        "actions": "Actions element, set float right, top margin and action button layout styles",
+        "close": "Close button element, set position, size and interaction styles",
+        "description": "Description element, set font size, color and margin styles",
+        "icon": "Icon element, set absolute positioning, font size, line height and status color styles",
+        "list": "Notification list root element, set positioning, z-index, width, scroll area and placement styles",
+        "listContent": "Notification list content element, set notice layout, gap and height transition styles",
+        "progress": "Progress element, set progress styles for auto-closing notifications",
+        "root": "Notice root element, set background color, border radius, shadow, padding and animation styles",
+        "section": "Content section element that contains title and description",
+        "title": "Title element, set color, font size, line height and margin styles",
+        "wrapper": "Wrapper element for icon and content with content layout styles"
+      },
+      "sourceDemo": "docs/src/pages/components/notification/demo/_semantic.vue",
+      "variant": null
+    },
+    {
+      "component": "input",
+      "key": "otp",
+      "leafCount": 3,
+      "semantics": {
+        "input": "Input element with core interactive styles and text input related styling",
+        "root": "Root element with relative positioning, inline-block display, width, min-width, padding, colors, fonts, line-height, border-radius, transitions and other input container basic styles",
+        "separator": "Separator element, set separator display styles between OTP input boxes"
+      },
+      "sourceDemo": "docs/src/pages/components/input/demo/_semantic-otp.vue",
+      "variant": "otp"
+    },
+    {
+      "component": "pagination",
+      "key": "pagination",
+      "leafCount": 2,
+      "semantics": {
+        "item": "Item element, set size, padding, border, background color, hover state and active state styles",
+        "root": "Root element, set flex layout, alignment, flex wrap and list styles"
+      },
+      "sourceDemo": "docs/src/pages/components/pagination/demo/_semantic.vue",
+      "variant": null
+    },
+    {
+      "component": "popconfirm",
+      "key": "popconfirm",
+      "leafCount": 6,
+      "semantics": {
+        "arrow": "Arrow element with width, height, position, color and border styles",
+        "container": "Container element, set background color, padding, border radius, shadow, border and content display styles",
+        "content": "Description element, set content text styles and layout",
+        "icon": "Icon element, set icon size, color and margin styles",
+        "root": "Root element, set absolute positioning, z-index, transform origin, arrow direction and popover container styles",
+        "title": "Title element, set title text styles and spacing"
+      },
+      "sourceDemo": "docs/src/pages/components/popconfirm/demo/_semantic.vue",
+      "variant": null
+    },
+    {
+      "component": "popover",
+      "key": "popover",
+      "leafCount": 5,
+      "semantics": {
+        "arrow": "Arrow element with width, height, position, color and border styles",
+        "container": "Container element, set background color, padding, border radius, shadow, border and content display styles",
+        "content": "Content element, set content text styles and layout",
+        "root": "Root element, set absolute positioning, z-index, transform origin, arrow direction and popover container styles",
+        "title": "Title element, set title text styles and spacing"
+      },
+      "sourceDemo": "docs/src/pages/components/popover/demo/_semantic.vue",
+      "variant": null
+    },
+    {
+      "component": "progress",
+      "key": "progress",
+      "leafCount": 5,
+      "semantics": {
+        "body": "Body element, set progress bar layout and size styles",
+        "indicator": "Indicator element, set percentage text or icon position and font styles",
+        "rail": "Rail element, set background track color and border radius styles. Not exist in steps mode",
+        "root": "Root element, set relative positioning and basic container styles",
+        "track": "Track element, set progress fill color and transition animation styles"
+      },
+      "sourceDemo": "docs/src/pages/components/progress/demo/_semantic.vue",
+      "variant": null
+    },
+    {
+      "component": "qr-code",
+      "key": "qrCode",
+      "leafCount": 2,
+      "semantics": {
+        "cover": "Cover element, set absolute positioning, z-index, background color and loading state overlay styles",
+        "root": "Root element, set flex layout, padding, background color, border, border radius and relative positioning styles"
+      },
+      "sourceDemo": "docs/src/pages/components/qr-code/demo/_semantic.vue",
+      "variant": null
+    },
+    {
+      "component": "radio",
+      "key": "radio",
+      "leafCount": 3,
+      "semantics": {
+        "icon": "Icon element with border radius, transition animations, border styles, hover states, focus states and other interactive styles",
+        "label": "Label element with padding, text color, disabled states, alignment and other text styles",
+        "root": "Root element with layout styles, cursor styles, disabled text color and other basic container styles"
+      },
+      "sourceDemo": "docs/src/pages/components/radio/demo/_semantic.vue",
+      "variant": null
+    },
+    {
+      "component": "result",
+      "key": "result",
+      "leafCount": 6,
+      "semantics": {
+        "body": "Content element with margin, padding, background color and other content area styles",
+        "extra": "Action area element with margin, text alignment, inner element spacing and other layout styles",
+        "icon": "Icon element with margin, text alignment, font size, status colors and other icon styles",
+        "root": "Root element with text alignment, layout styles and other basic container styles",
+        "subTitle": "Subtitle element with font size, text color, line height and other text styles",
+        "title": "Title element with font size, text color, line height, text alignment and other text styles"
+      },
+      "sourceDemo": "docs/src/pages/components/result/demo/_semantic.vue",
+      "variant": null
+    },
+    {
+      "component": "badge",
+      "key": "ribbon",
+      "leafCount": 3,
+      "semantics": {
+        "content": "Content element, set text color and ribbon content display styles",
+        "indicator": "Indicator element, set absolute positioning, padding, background color, border radius and ribbon styles",
+        "root": "Root element, set relative positioning and wrapper container styles"
+      },
+      "sourceDemo": "docs/src/pages/components/badge/demo/_semantic_ribbon.vue",
+      "variant": "ribbon"
+    },
+    {
+      "component": "segmented",
+      "key": "segmented",
+      "leafCount": 4,
+      "semantics": {
+        "icon": "Icon element with icon size, color and text spacing styles",
+        "item": "Option element with relative positioning, text alignment, cursor style, transition, selected state background and hover styles",
+        "label": "Label content element with min height, line height, padding, text ellipsis and content layout styles",
+        "root": "Root element with inline-block layout, padding, background, border radius, transition and container styles"
+      },
+      "sourceDemo": "docs/src/pages/components/segmented/demo/_semantic.vue",
+      "variant": null
+    },
+    {
+      "component": "select",
+      "key": "select",
+      "leafCount": 13,
+      "semantics": {
+        "clear": "Clear button element with layout, styling and interactive effects for clear button",
+        "content": "Multiple selection container with layout, spacing, and wrapping styles for selected items",
+        "input": "Input element with search input styling, cursor control, font inheritance and other search-related styles. Remove border styles",
+        "item": "Multiple selection item element with border, background, padding, and margin styles",
+        "itemContent": "Multiple selection item content area with text ellipsis styles",
+        "itemRemove": "Multiple selection item remove button with font-related styless",
+        "placeholder": "Placeholder element with font styles and colors for placeholder text",
+        "popup": {
+          "list": "Popup list element with option list layout, scrolling, max-height and other list container styles",
+          "listItem": "Popup item element with option item padding, hover effects, selected states, disabled states and other option interactive styles",
+          "root": "Popup element with popup layer positioning, z-index, background, border, box-shadow and other popup container styles"
+        },
+        "prefix": "Prefix element with layout and styling for prefix content",
+        "root": "Root element with relative positioning, inline-flex layout, cursor styles, transitions, border and other basic selector container styles",
+        "suffix": "Suffix element with layout and styling for suffix content like clear button, arrow icon, etc."
+      },
+      "sourceDemo": "docs/src/pages/components/select/demo/_semantic.vue",
+      "variant": null
+    },
+    {
+      "component": "skeleton",
+      "key": "skeleton",
+      "leafCount": 6,
+      "semantics": {
+        "avatar": "Avatar element with inline-block display, vertical alignment, background color, size, border radius and other avatar placeholder styles",
+        "header": "Header element with table cell, padding, vertical alignment and other avatar placeholder area layout styles",
+        "paragraph": "Paragraph element with padding, list item styles, background color, border radius and other paragraph placeholder styles",
+        "root": "Root element with table display, width, animation effects, border radius and other skeleton container basic styles",
+        "section": "Section element with skeleton content area layout styles",
+        "title": "Title element with width, height, background color, border radius and other title placeholder styles"
+      },
+      "sourceDemo": "docs/src/pages/components/skeleton/demo/_semantic.vue",
+      "variant": null
+    },
+    {
+      "component": "skeleton",
+      "key": "skeleton:element",
+      "leafCount": 2,
+      "semantics": {
+        "content": "Content element",
+        "root": "Root element"
+      },
+      "sourceDemo": "docs/src/pages/components/skeleton/demo/_semantic_element.vue",
+      "variant": "element"
+    },
+    {
+      "component": "slider",
+      "key": "slider",
+      "leafCount": 5,
+      "semantics": {
+        "handle": "Slider handle control element with absolute positioning, size, outline, user selection, background color, border shadow, border radius, cursor style and transition animation",
+        "rail": "Background rail element with absolute positioning, background color, border radius and transition animation styles",
+        "root": "Root element with relative positioning, height, margin, padding, cursor style and touch action control",
+        "track": "Track selection bar element with absolute positioning, background color, border radius and transition animation styles",
+        "tracks": "Multi-segment track container element with absolute positioning and transition animation styles"
+      },
+      "sourceDemo": "docs/src/pages/components/slider/demo/_semantic.vue",
+      "variant": null
+    },
+    {
+      "component": "space",
+      "key": "space",
+      "leafCount": 3,
+      "semantics": {
+        "item": "Wrapped item element with spacing item layout and styles, providing wrapper for each child element for inline alignment",
+        "root": "Root element with flex layout, gap settings, alignment, wrap and other spacing container basic styles",
+        "separator": "Separator element with divider styling"
+      },
+      "sourceDemo": "docs/src/pages/components/space/demo/_semantic.vue",
+      "variant": null
+    },
+    {
+      "component": "spin",
+      "key": "spin",
+      "leafCount": 2,
+      "semantics": {
+        "indicator": "Indicator element with width, height, font size, inline-block display, transition animation, transform origin, line height and color",
+        "root": "Root element with absolute positioning, display control, color, font size, text alignment, vertical alignment, opacity and transition animation (effective when fullscreen is false)"
+      },
+      "sourceDemo": "docs/src/pages/components/spin/demo/_semantic.vue",
+      "variant": null
+    },
+    {
+      "component": "splitter",
+      "key": "splitter",
+      "leafCount": 3,
+      "semantics": {
+        "dragger": "Drag control element with absolute positioning, user selection, z-index, center alignment, background color, hover and active states styles",
+        "panel": "Panel element with flex basis, grow ratio and panel container styles",
+        "root": "Root element with flex layout, width and height, alignment and stretch styles"
+      },
+      "sourceDemo": "docs/src/pages/components/splitter/demo/_semantic.vue",
+      "variant": null
+    },
+    {
+      "component": "statistic",
+      "key": "statistic",
+      "leafCount": 7,
+      "semantics": {
+        "content": "Content element with text color, font size, font family and other numeric content display styles",
+        "header": "Header element with bottom padding and title area layout styles",
+        "prefix": "Prefix element with inline-block display, right margin and other prefix content layout styles",
+        "root": "Root element with reset styles and overall container styles for statistic component",
+        "suffix": "Suffix element with inline-block display, left margin and other suffix content layout styles",
+        "title": "Title element with text color, font size and other title text display styles",
+        "value": "Value element with text color, font size, font family and other statistic number display styles"
+      },
+      "sourceDemo": "docs/src/pages/components/statistic/demo/_semantic.vue",
+      "variant": null
+    },
+    {
+      "component": "steps",
+      "key": "steps",
+      "leafCount": 10,
+      "semantics": {
+        "item": "Step item element with flex layout, relative positioning and other basic step item container styles",
+        "itemContent": "Step item content element with color, font-size, line-height, word-break, transitions and other content text styles",
+        "itemHeader": "Step item header element with flex layout, nowrap, alignment and other header area layout styles",
+        "itemIcon": "Step item icon element with icon size, positioning, font-size and other icon display related styles",
+        "itemRail": "Step item rail element with border-style, border-width, transitions and other connecting line styles",
+        "itemSection": "Step item section element with step content area layout and styling",
+        "itemSubtitle": "Step item subtitle element with color, font-weight, font-size, line-height, margin, word-break and other subtitle styles",
+        "itemTitle": "Step item title element with color, font-size, line-height, word-break, transitions and other title text styles",
+        "itemWrapper": "Step item wrapper element with flex layout, nowrap, top padding and other step content wrapping styles",
+        "root": "Root element with flex layout, nowrap, alignment, CSS variables and other basic step container styles"
+      },
+      "sourceDemo": "docs/src/pages/components/steps/demo/_semantic.vue",
+      "variant": null
+    },
+    {
+      "component": "switch",
+      "key": "switch",
+      "leafCount": 3,
+      "semantics": {
+        "content": "Content element with block display, overflow hidden, border radius, height, padding, transition animations and other switch content area layout and styles",
+        "indicator": "Indicator element with absolute positioning, width, height, background color, border radius, shadow, transition animations and other switch handle styles and interactive effects",
+        "root": "Root element with min-width, height, line-height, vertical alignment, background color, border, border radius, cursor style, transition animations, user selection and other basic switch container styles"
+      },
+      "sourceDemo": "docs/src/pages/components/switch/demo/_semantic.vue",
+      "variant": null
+    },
+    {
+      "component": "table",
+      "key": "table",
+      "leafCount": 13,
+      "semantics": {
+        "body": {
+          "cell": "Body cell element with relative positioning, padding, word-wrap and other basic data cell styles",
+          "row": "Body row element with hover effects, selected states, expanded states and other interactive row styles",
+          "wrapper": "Body wrapper element with table body layout and container styles"
+        },
+        "content": "Content element with table content area styling and layout",
+        "footer": "Footer element with table footer background color, text color and other footer styles",
+        "header": {
+          "cell": "Header cell element with relative positioning, padding, word-wrap, background, text color, font-weight and other header cell styles",
+          "row": "Header row element with table header row layout and styling",
+          "wrapper": "Header wrapper element with table header layout and container styles"
+        },
+        "pagination": {
+          "item": "Pagination item element with pagination item styling and interactive effects",
+          "root": "Pagination root element with pagination component basic styles and layout"
+        },
+        "root": "Root element with font-size, background, border-radius, scrollbar-color and other basic table container styles",
+        "section": "Container element with clear-fix, max-width, scrollbar background and other table wrapper styles",
+        "title": "Title element with table title styling and layout"
+      },
+      "sourceDemo": "docs/src/pages/components/table/demo/_semantic.vue",
+      "variant": null
+    },
+    {
+      "component": "tabs",
+      "key": "tabs",
+      "leafCount": 7,
+      "semantics": {
+        "body": "Body element with tab panel container layout, animation and size control styles",
+        "content": "Content element with single tab panel layout, padding and other content display styles",
+        "header": "Header element with tab navigation header layout, background, borders and other styles",
+        "indicator": "Indicator element with indicator bar color, position, dimensions, transitions and other active state indication styles",
+        "item": "Item element with relative positioning, padding, colors, text ellipsis, border-radius, transitions and other tab item styles and interactive effects",
+        "popup": {
+          "root": "Popup menu element with dropdown absolute positioning, z-index, display control, max-height, scrolling and other styles"
+        },
+        "root": "Root element with basic tab container styles, layout and direction control"
+      },
+      "sourceDemo": "docs/src/pages/components/tabs/demo/_semantic.vue",
+      "variant": null
+    },
+    {
+      "component": "tag",
+      "key": "tag",
+      "leafCount": 4,
+      "semantics": {
+        "close": "Close element with close button layout, cursor styles, transition animations and other interaction styles",
+        "content": "Content element with text content color, font styles and other content area styles",
+        "icon": "Icon element with font size, color, cursor style, transition animations and other icon display styles",
+        "root": "Root element with inline-block display, auto height, padding, font size, line height, nowrap, background color, border, border radius, opacity, transition animations, text alignment, relative positioning and other basic tag styles"
+      },
+      "sourceDemo": "docs/src/pages/components/tag/demo/_semantic.vue",
+      "variant": null
+    },
+    {
+      "component": "input",
+      "key": "textArea",
+      "leafCount": 3,
+      "semantics": {
+        "count": "Count element with character count display position, font, color and numeric statistics styles",
+        "root": "Root element with textarea wrapper styles, border, border radius, transition animation and state control",
+        "textarea": "Textarea element with font, line height, padding, color, background, border, text input and multi-line text display styles"
+      },
+      "sourceDemo": "docs/src/pages/components/input/demo/_semantic-textarea.vue",
+      "variant": "textarea"
+    },
+    {
+      "component": "timeline",
+      "key": "timeline",
+      "leafCount": 9,
+      "semantics": {
+        "item": "Item element with single timeline node relative positioning, margin, padding, font size, finish state, color theme, layout direction and other node basic styles",
+        "itemContent": "Item content element with node detail content relative positioning, top offset, left margin, text color, word break and other content styles",
+        "itemHeader": "Item header element with header area layout containing title and rail, alignment, text direction and other styles",
+        "itemIcon": "Item icon element with node head icon absolute positioning, width/height size, background color, border, border radius, wave animation and other icon styles",
+        "itemRail": "Item rail element with timeline node connection track line absolute positioning, top offset, left offset, height, border color, width, style and other connection line styles",
+        "itemSection": "Item section element with section container containing header and content flex layout, wrap, gap and other layout styles",
+        "itemTitle": "Item title element with node title text font size, line height, color and other text styles",
+        "itemWrapper": "Item wrapper element with timeline node content wrapping container styles",
+        "root": "Root element with timeline container list style reset, vertical layout, dot icon, outlined style, alternate layout and other basic container styles"
+      },
+      "sourceDemo": "docs/src/pages/components/timeline/demo/_semantic.vue",
+      "variant": null
+    },
+    {
+      "component": "time-picker",
+      "key": "timePicker",
+      "leafCount": 9,
+      "semantics": {
+        "input": "Input element with relative positioning, width, color, font, line-height, transition animations and other core interactive styles for input field",
+        "popup": {
+          "container": "Container element, set background color, padding, border radius, shadow, border and content display styles",
+          "content": "Popup content element with width, border, cell and other content display styles for time list",
+          "footer": "Popup footer element with layout styles for bottom operation area including confirm/cancel buttons",
+          "item": "Popup item element with size, background, border-radius, hover state, selected state and other interactive styles for time cells",
+          "root": "Popup element"
+        },
+        "prefix": "Prefix element with flex layout and margin styles for prefix content layout",
+        "root": "Root element with relative positioning, inline-flex layout, padding, border-radius, transition animations and other basic styles for time picker container",
+        "suffix": "Suffix element with flex layout, color, line-height, pointer events, transition animations and other styles for suffix content"
+      },
+      "sourceDemo": "docs/src/pages/components/time-picker/demo/_semantic.vue",
+      "variant": null
+    },
+    {
+      "component": "tooltip",
+      "key": "tooltip",
+      "leafCount": 3,
+      "semantics": {
+        "arrow": "Arrow element with width, height, position, color and border styles",
+        "container": "Content element with min width and height, padding, color, text alignment, background color, border radius, shadow and border styles",
+        "root": "Root element (including arrows, content elements) with absolute positioning, z-index, block display, max width, visibility, transform origin and arrow background color"
+      },
+      "sourceDemo": "docs/src/pages/components/tooltip/demo/_semantic.vue",
+      "variant": null
+    },
+    {
+      "component": "tour",
+      "key": "tour",
+      "leafCount": 12,
+      "semantics": {
+        "actions": "Action button group container with left auto margin, button spacing and other button group layout styles",
+        "close": "Close button element with absolute positioning, size, color, hover state and interaction feedback styles",
+        "cover": "Card cover area with text center alignment, padding, image width and other image display styles",
+        "description": "Guide description text with padding, word wrap and other description text styles",
+        "footer": "Card bottom action area with padding, text right alignment, border radius, flex layout and other bottom container styles",
+        "header": "Card header area with padding, width calculation, word break and other header container styles",
+        "indicator": "Single indicator element with width/height size, inline-block display, border radius, background color, right margin, active state and other dot styles",
+        "indicators": "Indicator group container with inline-block display and other indicator container styles",
+        "mask": "Mask layer element with fixed positioning, full screen coverage, z-index, pointer events, transition animation and other mask styles",
+        "root": "Tour root container with absolute positioning, z-index control, max width, visibility, arrow background color variable, theme styles and other container styles",
+        "section": "Card main content area with text alignment, border radius, box shadow, relative positioning, background color, border, background clip and other card styles",
+        "title": "Guide title text with font weight and other title text styles"
+      },
+      "sourceDemo": "docs/src/pages/components/tour/demo/_semantic.vue",
+      "variant": null
+    },
+    {
+      "component": "transfer",
+      "key": "transfer",
+      "leafCount": 13,
+      "semantics": {
+        "actions": "Actions element with transfer button group styles, layout and interaction states",
+        "body": "Body element with list main area container styles and layout control",
+        "footer": "Footer element with bottom operation area styles and layout",
+        "header": "Header element with flex layout, alignment, height, padding, color, background color, bottom border, border radius and other header area styles",
+        "item": "List item element with relative positioning, padding, border, hover state, selected state, disabled state and other list item interaction styles",
+        "itemContent": "List item content element with text ellipsis, padding and other list item text content display styles",
+        "itemIcon": "List item icon element with checkbox and other icon styles and interaction states",
+        "list": "List element with list content styles, layout and scroll control",
+        "root": "Root element with flex layout, transfer container base styles and layout control",
+        "section": "Section element with flex layout, width, height, min height, border, border radius and other single-side transfer container styles",
+        "source": "Source-side (left) overrides nested under the same shared semantic keys (section/header/title/body/list/item/itemIcon/itemContent/footer); only the source list picks them up",
+        "target": "Target-side (right) overrides nested under the same shared semantic keys (section/header/title/body/list/item/itemIcon/itemContent/footer); only the target list picks them up",
+        "title": "Title element with text ellipsis, flex ratio, text alignment, auto left margin and other title text layout and styles"
+      },
+      "sourceDemo": "docs/src/pages/components/transfer/demo/_semantic.vue",
+      "variant": null
+    },
+    {
+      "component": "tree",
+      "key": "tree",
+      "leafCount": 5,
+      "semantics": {
+        "item": "Item element with tree node base styles, drag state, role attributes, indentation, switcher, content wrapper and other node structure",
+        "itemIcon": "Icon element with tree node icon styles, size and state display",
+        "itemSwitcher": "Switcher element with tree node expand/collapse button styles and background",
+        "itemTitle": "Title element with tree node title text display styles and text content",
+        "root": "Root element with tree control base styles, layout and container control"
+      },
+      "sourceDemo": "docs/src/pages/components/tree/demo/_semantic.vue",
+      "variant": null
+    },
+    {
+      "component": "tree-select",
+      "key": "treeSelect",
+      "leafCount": 13,
+      "semantics": {
+        "content": "Multiple selection container with layout, spacing, and wrapping styles for selected items",
+        "input": "Input element with text input, search, selected value display and other input core interaction styles",
+        "item": "Multiple selection item element with border, background, padding, and margin styles",
+        "itemContent": "Multiple selection item content area with text ellipsis styles",
+        "itemRemove": "Multiple selection item remove button with font-related styles",
+        "placeholder": "Placeholder element with font styles and colors for placeholder text",
+        "popup": {
+          "item": "Popup item element with tree node option styles, hover state, selected state and other interaction states",
+          "itemSwitcher": "Popup switcher element with tree node expand/collapse button styles and background",
+          "itemTitle": "Popup title element with tree node title text display styles",
+          "root": "Popup element with dropdown tree selection panel positioning, z-index, background, border, shadow and other popup layer styles"
+        },
+        "prefix": "Prefix element with prefix content layout and styles",
+        "root": "Root element with tree selector base styles, border, border radius container styles",
+        "suffix": "Suffix element with suffix content, clear button, dropdown arrow and other suffix area styles"
+      },
+      "sourceDemo": "docs/src/pages/components/tree-select/demo/_semantic.vue",
+      "variant": null
+    },
+    {
+      "component": "typography",
+      "key": "typography",
+      "leafCount": 4,
+      "semantics": {
+        "action": "Individual action button element including copy, edit, expand, collapse button styles like padding, border radius, colors, etc.",
+        "actions": "Actions element with layout and spacing styles for copy, edit, expand/collapse buttons",
+        "root": "Root element with base typography styles, layout, and positioning",
+        "textarea": "TextArea element in editable mode, used to customize className and inline styles for the edit input"
+      },
+      "sourceDemo": "docs/src/pages/components/typography/demo/_semantic.vue",
+      "variant": null
+    },
+    {
+      "component": "upload",
+      "key": "upload",
+      "leafCount": 3,
+      "semantics": {
+        "item": "File item element with padding, background color, border styles, hover effects, status colors, transition animations and other styles",
+        "list": "File list container with layout arrangement, transition animations, spacing control and other styles",
+        "root": "Root container element with layout styles, disabled text color, user-select control, cursor styles and other basic styles"
+      },
+      "sourceDemo": "docs/src/pages/components/upload/demo/_semantic.vue",
+      "variant": null
+    }
+  ],
+  "generatedAt": "2026-07-03T07:22:57.530Z",
+  "language": "en-US",
+  "source": {
+    "componentsDir": "docs/src/pages/components",
+    "repo": "repos/antdv-next"
+  },
+  "totals": {
+    "components": 58,
+    "entries": 65,
+    "semanticNodes": 392
+  },
+  "version": 1
+}

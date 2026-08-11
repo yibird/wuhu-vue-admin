@@ -1,0 +1,240 @@
+---
+title: Modal
+description: Display a modal dialog box, providing a title, content area, and action buttons.
+---
+
+## When To Use 
+When requiring users to interact with the application, but without jumping to a new page and interrupting the user's workflow, you can use `Modal` to create a new floating layer over the current page to get user feedback or display information.
+
+Additionally, if you need to show a simple confirmation dialog, you can use [`App.useApp`](../app/docs.md/) hooks.
+
+## Demos
+
+| Demo | Path |
+| --- | --- |
+| Basic | demo/basic.md |
+| Asynchronously close | demo/async.md |
+| Customized Footer | demo/footer.md |
+| mask | demo/mask.md |
+| Loading | demo/loading.md |
+| Customized Footer render function | demo/footer-render.md |
+| Use hooks to get context | demo/hooks.md |
+| Internationalization | demo/locale.md |
+| Manual to update destroy | demo/manual.md |
+| To customize the position of modal | demo/position.md |
+| Customize footer buttons props | demo/button-props.md |
+| Custom modal content render | demo/modal-render.md |
+| To customize the width of modal | demo/width.md |
+| Static Method | demo/static-info.md |
+| Static confirmation | demo/confirm.md |
+| destroy confirmation modal dialog | demo/confirm-router.md |
+| Custom semantic dom styling | demo/style-class.md |
+
+## API
+
+Common props ref：[Common props](../../docs/vue/common-props.md)
+
+### Props
+
+| Property | Description | Type | Default | Version | [Global Config](../config-provider/docs.md#component-config) |
+| --- | --- | --- | --- | --- | --- |
+| afterClose | Specify a function that will be called when modal is closed completely | () => void | - | - | × |
+| afterOpenChange | Callback when the animation ends when Modal is turned on and off | (open: boolean) => void | - | - | × |
+| cancelButtonProps | The cancel button props | ButtonProps | - | - | ✓ |
+| cancelText | Text of the Cancel button | VueNode | `Cancel` | - | × |
+| centered | Centered Modal | boolean | false | - | ✓ |
+| classes | Customize class for each semantic structure inside the Modal component. Supports object or function. | ModalClassNamesType | - | - | ✓ |
+| closable | Whether a close (x) button is visible on top right or not | boolean \| [ClosableType](#closabletype) | true | - | ✓ |
+| closeIcon | Custom close icon. Close button will be hidden when setting to `null` or `false` | VueNode | &lt;CloseOutlined /> | - | ✓ |
+| confirmLoading | Whether to apply loading visual effect for OK button or not | boolean | false | - | × |
+| destroyOnHidden | Whether to unmount child components on close | boolean | false | - | × |
+| focusTriggerAfterClose | Whether need to focus trigger element after dialog is closed | boolean | true | - | × |
+| footer | Footer content, set as `footer={null}` when you don't need default buttons | VueNode \| (params: { originNode: VueNode, extra: { OkBtn: any, CancelBtn: any } }) => any | (OK and Cancel buttons) | - | × |
+| forceRender | Force render Modal | boolean | false | - | × |
+| focusable | Configuration for focus management in the Modal | `{ trap?: boolean, focusTriggerAfterClose?: boolean }` | - | - | ✓ |
+| getContainer | The mounted node for Modal but still display at fullscreen | string \| HTMLElement \| (() => HTMLElement) \| false | document.body | - | × |
+| keyboard | Whether support press esc to close | boolean | true | - | × |
+| loading | Show the skeleton | boolean | false | - | × |
+| mask | Mask effect | boolean \| `{enabled?: boolean, blur?: boolean, closable?: boolean}` | true | mask.closable: 1.0.3 | ✓ |
+| ~~maskClosable~~ | Whether to close the modal dialog when the mask (area outside the modal) is clicked | boolean | true |  | × |
+| modalRender | Custom modal content render | (node: any) => any | - | - | × |
+| mousePosition | Set animation start position | MousePosition | - | - | × |
+| okButtonProps | The ok button props | ButtonProps | - | - | ✓ |
+| okText | Text of the OK button | VueNode | `OK` | - | × |
+| okType | Button `type` of the OK button | LegacyButtonType | `primary` | - | × |
+| open | Whether the modal dialog is visible or not, support `v-model:open` | boolean | false | - | × |
+| rootClass | Root container class | string | - | - | × |
+| rootStyle | Root container style | CSSProperties | - | - | × |
+| scrollLock | Whether to lock body scroll when modal opens | boolean | true | 1.4.0 | × |
+| styles | Customize inline style for each semantic structure inside the Modal component. Supports object or function. | ModalStylesType | - | - | ✓ |
+| title | The modal dialog's title | VueNode | - | - | × |
+| transitionName | Transition name of dialog | string | - | - | × |
+| maskTransitionName | Transition name of mask | string | - | - | × |
+| width | Width of the modal dialog | string \| number \| Partial<Record<Breakpoint, string \| number>> | 520 | - | × |
+| wrapClassName | The class name of the container of the modal dialog | string | - | - | × |
+| wrapProps | Wrapper element props | Record<string, any> | - | - | × |
+| zIndex | The `z-index` of the Modal | number | 1000 | - | × |
+
+### Events 
+| Event | Description | Type | Version |
+| --- | --- | --- | --- |
+| ok | Callback when the OK button is clicked | (e: MouseEvent) => void | - |
+| cancel | Callback when the mask, close button or Cancel button is clicked | (e: MouseEvent) => void | - |
+
+### Slots 
+| Slot | Description | Type | Version |
+| --- | --- | --- | --- |
+| default | Modal content | () => any | - |
+| title | Title | () => any | - |
+| footer | Footer content | (params: { originNode: VueNode, extra: { OkBtn: any, CancelBtn: any } }) => any | - |
+| okText | OK button text | () => any | - |
+| cancelText | Cancel button text | () => any | - |
+| closeIcon | Custom close icon | () => any | - |
+| modalRender | Custom modal content render | (node: any) => any | - |
+
+### Note
+
+- The state of Modal will be preserved at its component lifecycle by default, if you wish to open it with a brand new state every time, set `destroyOnHidden` on it.
+- If you use Form in Modal, and need to clear fields when closing, set `<a-form :preserve="false" />`.
+- `Modal.method()` RTL mode only supports hooks usage.
+
+### Modal.method() 
+There are five ways to display the information based on the content's nature:
+
+- `Modal.info`
+- `Modal.success`
+- `Modal.error`
+- `Modal.warning`
+- `Modal.confirm`
+
+The items listed above are all functions, expecting a settings object as parameter. The properties of the object are follows:
+
+| Property | Description | Type | Default | Version |
+| --- | --- | --- | --- | --- |
+| afterClose | Specify a function that will be called when modal is closed completely | () => void | - | - |
+| autoFocusButton | Specify which button to autofocus | null \| `ok` \| `cancel` | `ok` | - |
+| cancelButtonProps | The cancel button props | ButtonProps | - | - |
+| cancelText | Text of the Cancel button with Modal.confirm | string | `Cancel` | - |
+| centered | Centered Modal | boolean | false | - |
+| class | Container class | string | - | - |
+| rootClass | Root container class | string | - | - |
+| closable | Whether a close (x) button is visible on top right of the confirm dialog or not | boolean \| [ClosableType](#closabletype) | false | - |
+| closeIcon | Custom close icon | VueNode | - | - |
+| content | Content | VueNode | - | - |
+| footer | Footer content, set as `footer: null` when you don't need default buttons | VueNode \| (params: { originNode: VueNode, extra: { OkBtn: any, CancelBtn: any } }) => any | - | - |
+| getContainer | Return the mount node for Modal | string \| HTMLElement \| (() => HTMLElement) \| false | document.body | - |
+| icon | Custom icon | VueNode | &lt;ExclamationCircleFilled /> | - |
+| keyboard | Whether support press esc to close | boolean | true | - |
+| mask | Mask effect | boolean \| [MaskType](#masktype) | true | - |
+| maskClosable | Whether to close the modal dialog when the mask is clicked | boolean | false | - |
+| okButtonProps | The ok button props | ButtonProps | - | - |
+| okText | Text of the OK button | string | `OK` | - |
+| okType | Button `type` of the OK button | LegacyButtonType | `primary` | - |
+| scrollLock | Whether to lock body scroll when modal opens | boolean | true | 1.4.0 |
+| style | Style of floating layer, typically used at least for adjusting the position | CSSProperties | - | - |
+| title | Title | VueNode | - | - |
+| type | Dialog type | `info` \| `success` \| `error` \| `warn` \| `warning` \| `confirm` | `confirm` | - |
+| width | Width of the modal dialog | string \| number | 416 | - |
+| wrapClassName | The class name of the container of the modal dialog | string | - | - |
+| zIndex | The `z-index` of the Modal | number | 1000 | - |
+| onCancel | Click to onCancel callback, the parameter is the closing function | (close?: () => void) => void | - | - |
+| onOk | Click to onOk callback, the parameter is the closing function | (close?: () => void) => void | - | - |
+
+All the `Modal.method`s will return a reference, and then we can update and close the modal dialog by the reference.
+
+### ClosableType 
+| Property | Description | Type | Default | Version |
+| --- | --- | --- | --- | --- |
+| afterClose | Specify a function that will be called when modal is closed completely | () => void | - | - |
+| closeIcon | Custom close icon | VueNode | undefined | - |
+| disabled | Whether disabled close icon | boolean | false | - |
+| onClose | Trigger when modal close | () => void | undefined | - |
+
+### MaskType 
+| Property | Description | Type | Default | Version |
+| --- | --- | --- | --- | --- |
+| enabled | Do you want to enable masking | boolean | true | - |
+| blur | Whether to enable virtualization effect | boolean | false | - |
+| closable | Whether to close the modal dialog when the mask is clicked, When using functional calls, the default value is `false` | boolean | true | - |
+
+```ts
+const modal = Modal.info()
+
+modal.update({
+  title: 'Updated title',
+  content: 'Updated content',
+})
+
+modal.update(prevConfig => ({
+  ...prevConfig,
+  title: `${prevConfig.title} (New)`,
+}))
+
+modal.destroy()
+```
+
+- `Modal.destroyAll`
+
+`Modal.destroyAll()` could destroy all confirmation modal dialogs. Usually, you can use it in router change event to destroy confirm modal dialog automatically.
+
+### Modal.useModal() 
+When you need using Context, you can use `contextHolder` which created by `Modal.useModal` to insert into children. Modal created by hooks will get all the context where `contextHolder` are. Created `modal` has the same creating function with `Modal.method`.
+
+```vue
+<script setup lang="ts">
+import { Modal } from 'antdv-next'
+import { onMounted } from 'vue'
+
+const [modal, ContextHolder] = Modal.useModal()
+
+onMounted(() => {
+  modal.confirm({
+    title: 'Confirm',
+    content: 'content',
+  })
+})
+</script>
+
+<template>
+  <ContextHolder />
+</template>
+```
+
+`modal.confirm` return method:
+
+- `destroy`: Destroy current modal
+- `update`: Update current modal
+- `then`: (Hooks only) Promise chain call, support `await` operation
+
+```ts
+const confirmed = await modal.confirm({ ... })
+```
+
+## Semantic DOM
+
+| _semantic | demo/_semantic.md |
+
+## FAQ
+
+### Why content not update when Modal closed? 
+Modal will use memo to avoid content jumping when closed. Also, if you use Form in Modal, you can reset `initialValues` by calling `resetFields` in effect.
+
+### Why I can not access context in Modal.xxx? 
+Modal static methods create an instance without context connection. When you need context info (like ConfigProvider context), you can use `Modal.useModal` to get `modal` instance and `contextHolder` node.
+
+If you still need to use `Modal.xxx` static methods and want them to read `locale`, `theme`, or other ConfigProvider settings, configure a global `holderRender` once:
+
+```ts
+import { App, ConfigProvider } from 'antdv-next'
+import { h } from 'vue'
+import zhCN from 'antdv-next/locale/zh_CN'
+
+ConfigProvider.config({
+  holderRender: children =>
+    h(ConfigProvider, { locale: zhCN }, {
+      default: () => h(App, null, () => children),
+    }),
+})
+```
+
+Then `Modal.confirm`, `Modal.info` and other static methods will render with that wrapped context.

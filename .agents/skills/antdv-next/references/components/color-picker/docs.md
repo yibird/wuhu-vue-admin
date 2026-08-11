@@ -1,0 +1,122 @@
+---
+title: ColorPicker
+description: Used for color selection.
+---
+
+## When To Use 
+Used when the user needs to make a customized color selection.
+
+## Demos
+
+| Demo | Path |
+| --- | --- |
+| Basic Usage | demo/basic.md |
+| Trigger size | demo/size.md |
+| controlled mode | demo/controlled.md |
+| Line Gradient | demo/line-gradient.md |
+| Rendering Trigger Text | demo/text-render.md |
+| Disable | demo/disabled.md |
+| Disabled Alpha | demo/disabled-alpha.md |
+| Clear Color | demo/allow-clear.md |
+| Custom Trigger | demo/trigger.md |
+| Custom Trigger Event | demo/trigger-event.md |
+| Color Format | demo/format.md |
+| Value Format | demo/value-format.md |
+| Preset Colors | demo/presets.md |
+| Custom Render Panel | demo/panel-render.md |
+| Custom semantic dom styling | demo/style-class.md |
+
+## API
+
+Common props ref：[Common props](../../docs/vue/common-props.md)
+
+### Props
+
+| Property | Description | Type | Default | Version | [Global Config](../config-provider/docs.md#component-config) |
+| --- | --- | --- | --- | --- | --- |
+| allowClear | Allow clearing color selected | boolean | false | - | × |
+| arrow | Configuration for popup arrow | boolean \| &#123; pointAtCenter: boolean &#125; | true | - | ✓ |
+| autoAdjustOverflow | Auto adjust placement when popup is invisible | boolean \| AdjustOverflow | - | - | × |
+| classes | Customize class for each semantic structure inside the component. Supports object or function. | ColorPickerClassNamesType | - | - | ✓ |
+| defaultFormat | Default format of color | ColorFormatType | `hex` | - | × |
+| defaultValue | Default value of color | [ColorValueType](#colorvaluetype) | - | - | × |
+| destroyOnHidden | Whether destroy dom when close | boolean | false | - | × |
+| disabled | Disable ColorPicker | boolean | false | - | × |
+| disabledAlpha | Disable Alpha | boolean | false | - | × |
+| disabledFormat | Disable format of color | boolean | false | - | × |
+| format | Format of color, support `v-model:format` | ColorFormatType | - | - | × |
+| getPopupContainer | Specify container for popup | (triggerNode: HTMLElement) => HTMLElement | - | - | × |
+| mode | Configure single or gradient color | ModeType \| ModeType[] | `single` | - | × |
+| open | Whether to show popup, support `v-model:open` | boolean | - | - | × |
+| placement | Placement of popup | TriggerPlacement | `bottomLeft` | - | × |
+| presets | Preset colors | [PresetsItem](#presetsitem)[] | - | - | × |
+| panelRender | Custom Render Panel | (params: &#123; panel: any, extra: &#123; components: &#123; Picker: any, Presets: any &#125; &#125; &#125;) => any | - | - | × |
+| rootClass | Root container class | string | - | - | × |
+| showText | Show color text | boolean \| ((params: &#123; color: Color &#125;) => any) | false | - | × |
+| size | Setting the trigger size | SizeType | `middle` | - | × |
+| styles | Customize inline style for each semantic structure inside the component. Supports object or function. | ColorPickerStylesType | - | - | ✓ |
+| trigger | ColorPicker trigger mode | TriggerType | `click` | - | × |
+| valueFormat | Set the output format of color value, supporting `hex`, `rgb`, and `hsb`. After setting, `v-model:value` returns strings in the selected format. Demo: [Value Format](#color-picker-demo-value-format) | ColorFormatType | - | - | × |
+| value | Value of color, support `v-model:value` | [ColorValueType](#colorvaluetype) | - | - | × |
+
+### Events
+
+| Event | Description | Type | Version |
+| --- | --- | --- | --- |
+| change | Callback when `value` is changed | (value: Color, css: string) => void | - |
+| clear | Called when clear | () => void | - |
+| changeComplete | Called when color pick ends | (value: Color) => void | - |
+| openChange | Callback when `open` is changed | (open: boolean) => void | - |
+| formatChange | Callback when `format` is changed | (format?: ColorFormatType) => void | - |
+
+### Slots
+
+| Slot | Description | Type | Version |
+| --- | --- | --- | --- |
+| default | Trigger content | () => any | - |
+| panelRender | Custom Render Panel | (params: &#123; panel: any, extra: &#123; components: &#123; Picker: any, Presets: any &#125; &#125; &#125;) => any | - |
+| showText | Custom text rendering | (params: &#123; color: Color &#125;) => any | - |
+
+## Types
+
+#### ColorValueType
+
+```ts
+type ColorValueType
+  = | string
+    | Color
+    | { color: string | Color, percent: number }[]
+    | null
+```
+
+#### PresetsItem
+
+```ts
+interface PresetsItem {
+  label: VueNode
+  colors: ColorValueType[]
+  defaultOpen?: boolean
+  key?: Key
+}
+```
+
+### Color
+
+| Property | Description | Type | Version |
+| --- | --- | --- | --- |
+| toCssString | Convert to CSS support format | () => string | - |
+| toHex | Convert to `hex` format characters, the return type like: `1677ff` | () => string | - |
+| toHexString | Convert to `hex` format color string, the return type like: `#1677ff` | () => string | - |
+| toHsb | Convert to `hsb` object | () => &#123; h: number, s: number, b: number, a: number &#125; | - |
+| toHsbString | Convert to `hsb` format color string, the return type like: `hsb(215, 91%, 100%)` | () => string | - |
+| toRgb | Convert to `rgb` object | () => &#123; r: number, g: number, b: number, a: number &#125; | - |
+| toRgbString | Convert to `rgb` format color string, the return type like: `rgb(22, 119, 255)` | () => string | - |
+
+## Semantic DOM
+
+| _semantic | demo/_semantic.md |
+
+## FAQ
+
+### Questions about color assignment 
+The value of the color selector supports both string color values and selector-generated `Color` objects. However, since there is a precision error when converting color strings of different formats to each other, it is recommended to use selector-generated `Color` objects for assignment operations in controlled scenarios, so that the precision problem can be avoided and the values are guaranteed to be accurate and the selector can work as expected.
