@@ -1,34 +1,32 @@
 import {
-  NAutoComplete,
-  NCascader,
-  NCheckbox,
-  NCheckboxGroup,
-  NDatePicker,
-  NInput,
-  NInputNumber,
-  NRadio,
-  NRadioGroup,
-  NSelect,
-  NSwitch,
-  NTimePicker,
-} from 'naive-ui'
-import { QueryButton } from './components'
+  Input,
+  InputNumber,
+  Select,
+  Checkbox,
+  CheckboxGroup,
+  Radio,
+  RadioGroup,
+  Switch,
+  DatePicker,
+  TimePicker,
+  AutoComplete,
+  Cascader,
+} from 'antdv-next'
 
 import type { ComponentType } from './types'
+import type { Component } from 'vue'
 
-export const COMPONENT_MAPPING: Record<ComponentType, any> = {
-  input: NInput,
-  inputNumber: NInputNumber,
-  select: NSelect,
-  checkbox: NCheckbox,
-  checkboxGroup: NCheckboxGroup,
-  radio: NRadio,
-  radioGroup: NRadioGroup,
-  switch: NSwitch,
-  datePicker: NDatePicker,
-  timePicker: NTimePicker,
-  autoComplete: NAutoComplete,
-  cascader: NCascader,
-
-  'query-button': QueryButton,
+export const COMPONENT_MAPPING: Record<ComponentType, Component> = {
+  input: Input,
+  inputNumber: InputNumber,
+  select: Select,
+  checkbox: Checkbox,
+  checkboxGroup: CheckboxGroup,
+  radio: Radio,
+  radioGroup: RadioGroup,
+  switch: Switch,
+  datePicker: DatePicker,
+  timePicker: TimePicker,
+  autoComplete: AutoComplete,
+  cascader: Cascader,
 }

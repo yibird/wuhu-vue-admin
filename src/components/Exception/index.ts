@@ -1,3 +1,5 @@
-export { default as Error } from './src/error.vue';
-export { default as NotFound } from './src/not-found.vue';
-export { default as NotAuthorized } from './src/not-authorized.vue';
+export { default as Error } from './src/Error.vue'
+export { default as NotFound } from './src/NotFound.vue'
+export { default as NotAuthorized } from './src/NotAuthorized.vue'
+export { default as ClientError } from './src/ClientError.vue'
+export type { ExceptionProps } from './src/types'

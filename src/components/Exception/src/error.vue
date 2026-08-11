@@ -7,7 +7,7 @@
 </template>
 <script lang="ts" setup>
 import { useTabs } from '@/composables'
-import Exception from './exception.vue'
+import Exception from './Exception.vue'
 import errorSvg from '@/assets/svg/500.svg'
 
 const { openHomeTab } = useTabs()

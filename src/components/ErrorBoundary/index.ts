@@ -1,2 +1,6 @@
 export { default as ErrorBoundary } from './src/index.vue'
-export type * from './src/types'
+export type {
+  ErrorBoundaryErrorPayload,
+  ErrorBoundaryInstance,
+  ErrorBoundaryProps,
+} from './src/types'

@@ -1,10 +1,8 @@
-import type { PaginationProps } from 'naive-ui'
-
-interface UsePaginationOptions {
+export interface UsePaginationOptions {
   /**
    * 分页的初始值
    */
-  initial?: PaginationProps
+  initial?: any
   /**
    * @desc 总条数
    * @default 0
@@ -19,14 +17,14 @@ interface UsePaginationOptions {
   onPaginate?: (page: number, pageSize: number) => void
 }
 
-const defaultPagination: PaginationProps = {
+const defaultPagination: any = {
   pageSizes: [10, 20, 30, 50, 100, 200],
   pageSize: 10,
   page: 1,
   showQuickJumpDropdown: true,
   showQuickJumper: true,
   showSizePicker: true,
-  prefix(info) {
+  prefix(info: any) {
     return h('div', [
       h('span', '共'),
       h(
@@ -43,7 +41,7 @@ export function usePagination(options?: UsePaginationOptions) {
   const { itemCount = ref(0), onPaginate } = options || {}
 
   const initialPagination = { ...defaultPagination, ...options?.initial }
-  const pagination = reactive<PaginationProps>(initialPagination)
+  const pagination = reactive<any>(initialPagination)
 
   const changePage = (page: number) => {
     Object.assign(pagination, {
@@ -72,7 +70,7 @@ export function usePagination(options?: UsePaginationOptions) {
   pagination.onUpdatePageSize = changePageSize
 
   return {
-    pagination: pagination as PaginationProps,
+    pagination: pagination as any,
     changePage,
     changePageSize,
   }

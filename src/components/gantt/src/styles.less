@@ -1,0 +1,91 @@
+.w-gantt {
+  --g-bar-color: rgb(var(--w-color-primary) / 82%);
+  --g-bar-progress-color: rgb(var(--w-color-primary));
+  --g-arrow-color: rgb(var(--w-border-color-3));
+  --g-weekend-highlight-color: rgb(var(--w-text-muted) / 8%);
+  --g-tick-color-thick: rgb(var(--w-border-color-3));
+  --g-tick-color: rgb(var(--w-border-color-2));
+  --g-grid-line-color: rgb(var(--w-border-color-2));
+  --g-container-border-color: transparent;
+  --g-text-muted: rgb(var(--w-text-secondary));
+  --g-bar-label-color: 255 255 255;
+}
+
+.w-gantt :deep(.gantt-container) {
+  width: 100%;
+  height: 100%;
+  scrollbar-gutter: stable;
+  background: transparent;
+  border: 0;
+}
+
+.w-gantt :deep(.gantt) {
+  display: block;
+  min-width: 100%;
+}
+
+.w-gantt :deep(.grid-background) {
+  pointer-events: none;
+  fill: transparent;
+}
+
+.w-gantt :deep(.grid-row),
+.w-gantt :deep(.row-line),
+.w-gantt :deep(.tick),
+.w-gantt :deep(.today-highlight),
+.w-gantt :deep(.holiday-highlight) {
+  pointer-events: none;
+}
+
+.w-gantt :deep(.grid-header) {
+  fill: rgb(var(--w-fill-quaternary));
+}
+
+.w-gantt :deep(.lower-text),
+.w-gantt :deep(.upper-text) {
+  font-size: 12px;
+  font-weight: 500;
+  fill: var(--g-text-muted);
+}
+
+.w-gantt :deep(.bar-label) {
+  font-size: 12px;
+  font-weight: 600;
+  fill: rgb(var(--g-bar-label-color));
+}
+
+.w-gantt :deep(.bar-wrapper) {
+  cursor: grab;
+}
+
+.w-gantt :deep(.bar-wrapper:active) {
+  cursor: grabbing;
+}
+
+.w-gantt :deep(.handle) {
+  opacity: 1;
+}
+
+.w-gantt :deep(.bar-wrapper.w-gantt-status-done .bar) {
+  fill: rgb(var(--w-color-success) / 86%);
+}
+
+.w-gantt :deep(.bar-wrapper.w-gantt-status-done .bar-progress) {
+  fill: rgb(var(--w-color-success));
+}
+
+.w-gantt :deep(.bar-wrapper.w-gantt-status-paused .bar) {
+  fill: rgb(var(--w-color-warning) / 86%);
+}
+
+.w-gantt :deep(.bar-wrapper.w-gantt-status-paused .bar-progress) {
+  fill: rgb(var(--w-color-warning));
+}
+
+.w-gantt :deep(.bar-wrapper.w-gantt-status-overdue .bar) {
+  fill: rgb(var(--w-color-error) / 86%);
+}
+
+.w-gantt :deep(.bar-wrapper.w-gantt-status-overdue .bar-progress) {
+  fill: rgb(var(--w-color-error));
+}

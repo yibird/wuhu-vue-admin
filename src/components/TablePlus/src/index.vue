@@ -7,14 +7,14 @@
       damping: 30,
     }"
     :class="[
-      'table-plus w-full h-full flex flex-col',
+      'table-plus full flex flex-col',
       {
-        'fixed inset-0 bg-white z-1000': contextValue.fullScreen?.value,
+        'fixed inset-0 bg-container z-1000': contextValue.fullScreen?.value,
       },
     ]"
     ref="tRef"
   >
-    <div class="flex flex-col bg-white overflow-hidden">
+    <div class="flex flex-col overflow-hidden bg-container">
       <TableHeader>
         <template v-for="(_, key) in slots" :key="key" v-slot:[key]>
           <slot :name="key"></slot>
@@ -49,7 +49,7 @@ const props = withDefaults(defineProps<TablePlusProps<T>>(), {
 })
 const emits = defineEmits<TablePlusEmits<T>>()
 const slots = defineSlots<TablePlusSlots>()
-const tRef = ref<HTMLDivElement>()
+// const tRef = ref<HTMLDivElement>()
 
 const initialConlumns = props.columns.map((item) => {
   return { ...item, show: typeof item.show === 'undefined' ? true : item.show }

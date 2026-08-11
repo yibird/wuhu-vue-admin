@@ -1,6 +1,6 @@
 <template>
   <div
-    class="group flex gap-10 [&_.toolbar-item]:(span-button size-32 flex-center rounded-8 cursor-pointer bg-[#f5f5f5]) [&.toolbar-item:hover]:(bg-[#e8e8e8] text-theme)"
+    class="group flex gap-10 [&_.toolbar-item]:(span-button size-32 flex-center rounded-8 bg-hover cursor-pointer) [&_.toolbar-item:hover]:(bg-active text-primary)"
   >
     <Setting />
     <Refresh />

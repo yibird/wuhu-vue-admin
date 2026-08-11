@@ -1,29 +1,16 @@
+import type { VNode } from 'vue'
+
 export interface ExceptionProps {
-  /**
-   * @desc 异常图片
-   * @default
-   */
   image?: string
-  /**
-   * @desc 异常标题
-   * @default
-   */
+  imageAlt?: string
   title?: string
-  /**
-   * @desc 异常描述
-   * @default
-   */
   description?: string
-  /**
-   * @desc 是否显示返回首页按钮
-   * @default true
-   */
+  buttonText?: string
   showBtn?: boolean
-  /**
-   * 点击返回首页按钮时触发
-   * @returns void
-   */
-  onClick?: () => void
+}
+
+export interface ExceptionEmits {
+  click: []
 }
 
 export interface ExceptionSlots {

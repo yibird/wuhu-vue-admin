@@ -1,2 +1,12 @@
 export { default as FormPlus } from './src/index.vue'
-export type * from './src/types'
+export type {
+  ComponentType,
+  FormContextState,
+  FormPlusContext,
+  FormPlusControlProps,
+  FormPlusInstance,
+  FormPlusItem,
+  FormPlusModel,
+  FormPlusProps,
+  FormPlusValue,
+} from './src/types'

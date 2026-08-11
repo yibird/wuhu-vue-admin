@@ -1,63 +1,32 @@
 import type { ToRefs, VNodeChild } from 'vue'
-import type { DataTableColumn, DataTableProps, MenuOption } from 'naive-ui'
 
-export type TablePlusColumn<T = Record<string, unknown>> =
-  DataTableColumn<T> & {
-    key?: string | number
-    title?: string | (() => VNodeChild)
-    show?: boolean
-  }
+import type { TableProps } from 'antdv-next'
 
-export interface NDataTableProps {
-  allowCheckingNotLoaded?: DataTableProps['allowCheckingNotLoaded']
-  bordered?: DataTableProps['bordered']
-  bottomBordered?: DataTableProps['bottomBordered']
-  checkedRowKeys?: DataTableProps['checkedRowKeys']
-  cascade?: DataTableProps['cascade']
-  childrenKey?: DataTableProps['childrenKey']
-  data?: DataTableProps['data']
-  defaultCheckedRowKeys?: DataTableProps['defaultCheckedRowKeys']
-  defaultExpandedRowKeys?: DataTableProps['defaultExpandedRowKeys']
-  defaultExpandAll?: DataTableProps['defaultExpandAll']
-  expandedRowKeys?: DataTableProps['expandedRowKeys']
-  filterIconPopoverProps?: DataTableProps['filterIconPopoverProps']
-  flexHeight?: DataTableProps['flexHeight']
-  getCsvCell?: DataTableProps['getCsvCell']
-  getCsvHeader?: DataTableProps['getCsvHeader']
-  headerHeight?: DataTableProps['headerHeight']
-  heightForRow?: DataTableProps['heightForRow']
-  indent?: DataTableProps['indent']
-  loading?: DataTableProps['loading']
-  maxHeight?: DataTableProps['maxHeight']
-  minHeight?: DataTableProps['minHeight']
-  minRowHeight?: DataTableProps['minRowHeight']
-  paginateSinglePage?: DataTableProps['paginateSinglePage']
-  pagination?: DataTableProps['pagination']
-  paginationBehaviorOnFilter?: DataTableProps['paginationBehaviorOnFilter']
-  remote?: DataTableProps['remote']
-  renderCell?: DataTableProps['renderCell']
-  renderExpandIcon?: DataTableProps['renderExpandIcon']
-  rowClassName?: DataTableProps['rowClassName']
-  rowKey?: DataTableProps['rowKey']
-  rowProps?: DataTableProps['rowProps']
-  scrollX?: DataTableProps['scrollX']
-  scrollbarProps?: DataTableProps['scrollbarProps']
-  singleColumn?: DataTableProps['singleColumn']
-  singleLine?: DataTableProps['singleLine']
-  size?: DataTableProps['size']
-  spinProps?: DataTableProps['spinProps']
-  stickyExpandedRows?: DataTableProps['stickyExpandedRows']
-  striped?: DataTableProps['striped']
-  summary?: DataTableProps['summary']
-  summaryPlacement?: DataTableProps['summaryPlacement']
-  tableLayout?: DataTableProps['tableLayout']
-  virtualScroll?: DataTableProps['virtualScroll']
-  virtualScrollHeader?: DataTableProps['virtualScrollHeader']
-  virtualScrollX?: DataTableProps['virtualScrollX']
+export type TablePlusColumn<T = Record<string, unknown>> = {
+  _t?: T
+  key?: string | number
+  dataIndex?: string | number
+  title?: string | (() => VNodeChild)
+  show?: boolean
+  customRender?: (opt: {
+    text: any
+    record: T
+    index: number
+    column: any
+  }) => VNodeChild
+  [key: string]: any
 }
 
-export interface TablePlusProps<T = object> extends NDataTableProps {
+export interface TablePlusProps<T = any> extends Omit<
+  TableProps<T>,
+  'columns' | 'rowSelection'
+> {
+  checkedRowKeys?: Array<string | number>
+  customRow?: (record: T, index: number) => any
   columns?: TablePlusColumn<T>[]
+  striped?: boolean
+  singleColumn?: boolean
+  singleLine?: boolean
   /**
    * @desc 是否自动计算table大小(height和width)
    * @default true
@@ -82,10 +51,10 @@ export interface TablePlusProps<T = object> extends NDataTableProps {
    * @desc 右击菜单,扩展自DataTable rowProps
    * @default
    */
-  contextMenu?: MenuOption[] | ((row: T, rowIndex: number) => MenuOption[])
+  contextMenu?: any[] | ((row: T, rowIndex: number) => any[])
 }
 
-export interface TablePlusEmits<T> {
+export interface TablePlusEmits<T = any> {
   (
     e: 'update:checked-row-keys',
     keys: Array<string | number>,
@@ -115,6 +84,6 @@ export type TablePlusProvide<T extends Record<string, any>> = ToRefs<
 export interface TablePlusContext {}
 
 export interface TablePlusContextMenuInstance {
-  show: (e: MouseEvent, menuOptions?: MenuOption[]) => void
+  show: (e: MouseEvent, menuOptions?: any[]) => void
   hide: () => void
 }

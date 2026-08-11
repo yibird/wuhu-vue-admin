@@ -1,27 +1,33 @@
 export interface IconProps {
   /**
-   * @desc icon 名称
-   * @default
+   * @desc icon name
    */
   name: string
   /**
-   * @desc icon 大小
+   * @desc icon size
    * @default 14
    */
   size?: number | string
   /**
-   * @desc icon颜色
-   * @default
+   * @desc icon color
    */
   color?: string
   /**
-   * @desc icon前缀
-   * @default "i-ri:"
+   * @desc icon prefix
    */
   prefix?: string
   /**
-   * @desc 渲染的 HTML 标签
+   * @desc 是否为纯装饰图标。非装饰图标需要同时提供 label。
+   * @default true
+   */
+  decorative?: boolean
+  /**
+   * @desc 非装饰图标的可访问名称
+   */
+  label?: string
+  /**
+   * @desc rendered HTML tag
    * @default "i"
    */
-  tag?: string
+  tag?: keyof HTMLElementTagNameMap
 }

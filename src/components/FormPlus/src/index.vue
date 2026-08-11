@@ -1,174 +1,149 @@
 <template>
-  <n-form v-bind="opt" ref="formRef">
-    <template v-if="opt?.grid">
-      <n-grid v-bind="gridProps">
-        <n-form-item-gi
-          v-for="(item, index) in renderItems"
-          :key="index"
-          v-bind="item"
-        >
-          <component
-            v-if="item.type"
-            :is="COMPONENT_MAPPING[item.type]"
-            v-bind="item.componentProps"
-            :value="getModelValue(item.path)"
-            @update:value="(val: unknown) => setModelValue(item.path, val)"
-          />
-        </n-form-item-gi>
-      </n-grid>
-    </template>
-    <template v-else>
-      <n-form-item v-for="(item, index) in items" :key="index" v-bind="item">
-        <n-input />
-      </n-form-item>
-    </template>
-  </n-form>
+  <div class="form-plus">
+    <a-form
+      ref="formRef"
+      :model="model"
+      :label-col="labelCol"
+      :wrapper-col="wrapperCol"
+      :layout="options.labelPlacement === 'top' ? 'vertical' : 'horizontal'"
+    >
+      <template v-if="options.grid">
+        <a-row :gutter="[options.grid.xGap ?? 0, options.grid.yGap ?? 0]">
+          <a-col
+            v-for="item in options.items"
+            :key="item.field"
+            :span="item.props?.span ?? 24"
+          >
+            <a-form-item :label="item.label" :name="item.field">
+              <component
+                :is="COMPONENT_MAPPING[item.type]"
+                v-model:value="model[item.field]"
+                v-bind="normalizeControlProps(item.props)"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col>
+            <a-form-item>
+              <QueryButton @search="onSubmit" @reset="onReset" />
+            </a-form-item>
+          </a-col>
+        </a-row>
+      </template>
+      <template v-else>
+        <div class="flex flex-wrap gap-16">
+          <a-form-item
+            v-for="item in options.items"
+            :key="item.field"
+            :label="item.label"
+            :name="item.field"
+          >
+            <component
+              :is="COMPONENT_MAPPING[item.type]"
+              v-model:value="model[item.field]"
+              v-bind="normalizeControlProps(item.props)"
+            />
+          </a-form-item>
+          <a-form-item>
+            <QueryButton @search="onSubmit" @reset="onReset" />
+          </a-form-item>
+        </div>
+      </template>
+    </a-form>
+  </div>
 </template>
-<script lang="ts" setup>
-import { cloneDeep, toMerged } from 'es-toolkit'
-import type { FormInst, GridProps } from 'naive-ui'
+
+<script setup lang="ts">
+import { computed, ref, useTemplateRef, watch } from 'vue'
 import type {
-  FormPlusProps,
-  FormPlusFormEmits,
+  FormPlusControlProps,
   FormPlusInstance,
-  FormPlusItem,
+  FormPlusModel,
+  FormPlusProps,
+  FormPlusValue,
 } from './types'
 import { COMPONENT_MAPPING } from './options'
+import QueryButton from './components/QueryButton.vue'
 
-const defaultOpt: FormPlusProps['options'] = {}
-const defaultGridProps: GridProps = {
-  cols: 24,
-  xGap: 0,
-  yGap: 0,
-  responsive: 'screen',
-  itemResponsive: true,
+interface ResettableForm {
+  resetFields: () => void
 }
 
-const {
-  options = {},
-  items = [],
-  showQueryButton = true,
-} = defineProps<FormPlusProps>()
-const emits = defineEmits<FormPlusFormEmits>()
-const formRef = ref<FormInst>()
+const props = defineProps<FormPlusProps>()
+const emits = defineEmits<{
+  (e: 'submit', values: FormPlusModel): void
+  (e: 'reset'): void
+}>()
 
-const opt = toMerged(defaultOpt, options)
-const initialModel = ref(cloneDeep(opt?.model || {}))
-const initialItems = ref<FormPlusItem[]>(cloneDeep(items))
+const formRef = useTemplateRef<ResettableForm>('formRef')
+const model = ref<FormPlusModel>({})
 
-const gridProps = computed<GridProps>(() => {
-  if (typeof opt?.grid === 'boolean' && opt?.grid) {
-    return defaultGridProps
-  }
-  return { ...defaultGridProps, ...(opt?.grid as GridProps) }
+const labelCol = computed(() => {
+  if (props.options.labelWidth === 'auto') return { flex: 'auto' }
+  return { style: { width: `${props.options.labelWidth}px` } }
+})
+const wrapperCol = computed(() => {
+  return { flex: '1' }
 })
 
-const queryButtonItem: FormPlusItem = {
-  type: 'query-button',
-  componentProps: {
-    onSearch() {
-      emits('search', getFiledValues())
-    },
-    onReset() {
-      formRef.value?.restoreValidation()
-      emits('reset')
-    },
+const normalizeControlProps = (controlProps?: FormPlusControlProps) => {
+  if (!controlProps) return undefined
+
+  const { clearable } = controlProps
+  const controlAttrs: Record<string, unknown> = { ...controlProps }
+  delete controlAttrs.clearable
+  delete controlAttrs.span
+  if (clearable === undefined) return controlAttrs
+
+  return { ...controlAttrs, allowClear: clearable }
+}
+
+const itemFields = computed(() => props.options.items.map((item) => item.field))
+
+// Initialize model based on fields while preserving existing values.
+watch(
+  itemFields,
+  (fields) => {
+    const previousModel = model.value
+    model.value = Object.fromEntries(
+      fields.map((field) => [field, previousModel[field]])
+    )
   },
-}
-const renderItems = computed(() => {
-  return showQueryButton
-    ? ([...items, queryButtonItem] as FormPlusItem[])
-    : items
-})
+  { immediate: true }
+)
 
-const getModelValue = (path?: string) => {
-  return path?.split('.').reduce((obj, key) => {
-    return obj ? obj[key] : undefined
-  }, options?.model)
+const onSubmit = () => {
+  emits('submit', getFieldsValue())
 }
-const setModelValue = (path?: string, value?: unknown) => {
-  if (!path || !options?.model) return
-  const keys = path.split('.')
-  const lastKey = keys.pop()
-  if (!lastKey) return
-  const target = keys.reduce((obj, key) => {
-    return obj![key]
-  }, options?.model)
-  console.log('asdasdasd', target)
-  const oldValue = target![lastKey]
-  target![lastKey] = value
-  if (oldValue !== value && opt?.formChange === true) {
-    emits('change', options.model)
+
+const onReset = () => {
+  formRef.value?.resetFields()
+  emits('reset')
+}
+
+const setFieldValue = (field: string, value: FormPlusValue) => {
+  model.value = {
+    ...model.value,
+    [field]: value,
   }
 }
 
-const getFiledValues = <T = unknown>(): T | undefined => {
-  return options?.model ? (cloneDeep(options?.model) as T) : undefined
+const getFieldValue = (field: string) => model.value[field]
+
+const setFieldsValue = (values: FormPlusModel) => {
+  model.value = {
+    ...model.value,
+    ...values,
+  }
 }
+
+const getFieldsValue = () => ({ ...model.value })
 
 defineExpose<FormPlusInstance>({
-  setFiled(path: string, filed: FormPlusItem) {
-    const newItems = items.map((item) => (item.path === path ? filed : item))
-    emits('update:items', newItems)
-  },
-  getFiled(path: string): FormPlusItem | undefined {
-    return items.find((item) => item.path === path)
-  },
-  resetFiled(path: string) {
-    const index = initialItems.value.findIndex(
-      (item) => (item as FormPlusItem).path === path
-    )
-    if (index === -1) return
-    const record = initialItems.value[index] as FormPlusItem
-    const newItems = items.map((item) => (item.path === path ? record : item))
-    emits('update:items', newItems)
-  },
-  getFiledValues,
-  setFiledValues(values: Record<string, any>) {
-    if (!options?.model) return
-    options.model = values
-  },
-
-  resetFiledValues() {
-    if (!options?.model) return
-    options.model = cloneDeep(initialModel.value)
-  },
-
-  setFiledValue: function (path: string, value: unknown): void {
-    setModelValue(path, value)
-  },
-  getFiledValue: function (path: string): unknown {
-    return getModelValue(path)
-  },
-  resetFiledValue: function (path: string): void {
-    if (!path || !opt?.model) return
-    // 初始值
-    const initialValue = path.split('.').reduce((obj, key) => {
-      return obj ? obj[key] : undefined
-    }, initialModel.value)
-
-    const keys = path.split('.')
-    const lastKey = keys.pop()
-    if (!lastKey) return
-
-    const target = keys.reduce((obj, key) => {
-      return obj[key]
-    }, opt.model)
-
-    target[lastKey] = cloneDeep(initialValue)
-
-    if (options?.formChange === true) {
-      emits('change', options.model)
-    }
-  },
-  validate(...args) {
-    return formRef.value!.validate(...args)
-  },
-  restoreValidation() {
-    formRef.value?.restoreValidation()
-  },
-  invalidateLabelWidth() {
-    formRef.value?.invalidateLabelWidth()
-  },
+  submit: onSubmit,
+  reset: onReset,
+  setFieldValue,
+  getFieldValue,
+  setFieldsValue,
+  getFieldsValue,
 })
 </script>

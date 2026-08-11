@@ -7,13 +7,13 @@
       <div v-show="show" ref="popover" :class="['popover']" :style="position">
         <div class="min-w-200 relative">
           <div class="h-40 flex items-center px-15 whitespace-nowrap">
-            <n-checkbox
+            <a-checkbox
               v-model:checked="showColumn"
               label="列显示"
               @update:checked="onAllChecked"
             />
-            <n-checkbox v-model:checked="selectionCol" label="选项列" />
-            <n-checkbox v-model:checked="indexCol" label="序号列" />
+            <a-checkbox v-model:checked="selectionCol" label="选项列" />
+            <a-checkbox v-model:checked="indexCol" label="序号列" />
           </div>
           <div
             v-if="settingColumns.length > 0"
@@ -28,11 +28,11 @@
             >
               <div>
                 <Icon name="i-lucide:grip-vertical" :size="18" />
-                <n-checkbox
+                <a-checkbox
                   class="ml-10"
                   :checked="item.show"
-                  @update-checked="(checked) => onChecked(index, checked)"
-                  >{{ getTitle(item.title) }}</n-checkbox
+                  @change="(e: any) => onChecked(index, e.target.checked)"
+                  >{{ getTitle(item.title) }}</a-checkbox
                 >
               </div>
               <div class="opacity-0 group-hover:opacity-100">
@@ -52,8 +52,8 @@
             </div>
           </div>
           <div class="flex justify-end px-15 py-10">
-            <n-button type="primary" size="small" @click="onReset"
-              >重置</n-button
+            <a-button type="primary" size="small" @click="onReset"
+              >重置</a-button
             >
           </div>
         </div>
@@ -140,13 +140,13 @@ const onShow = (e: Event) => {
 <style scoped>
 .popover {
   position: absolute;
+  z-index: 2000;
   background-color: #fff;
   border-radius: 2px;
-  z-index: 2000;
   box-shadow:
-    0 3px 6px -4px rgba(0, 0, 0, 0.12),
-    0 6px 16px 0 rgba(0, 0, 0, 0.08),
-    0 9px 28px 8px rgba(0, 0, 0, 0.05);
+    0 3px 6px -4px rgb(0 0 0 / 12%),
+    0 6px 16px 0 rgb(0 0 0 / 8%),
+    0 9px 28px 8px rgb(0 0 0 / 5%);
 }
 
 .fade-enter-active,
@@ -155,11 +155,13 @@ const onShow = (e: Event) => {
     opacity 0.2s ease,
     transform 0.2s ease;
 }
+
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
   transform: scale(0.9);
 }
+
 .fade-enter-to,
 .fade-leave-from {
   opacity: 1;

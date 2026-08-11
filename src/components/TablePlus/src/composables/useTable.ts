@@ -1,10 +1,9 @@
-import { useRequest } from 'vue-request'
+import { useRequest } from '@/utils'
 import { apiRequest } from '@/utils'
-import { useRowSelection } from '../..'
 import { usePagination } from './usePagination'
+import { useRowSelection } from './useRowSelection'
 
 import type { Result, PageResult } from '#/http'
-import type { PaginationProps } from 'naive-ui'
 
 type Data<T> = Result<PageResult<T>>
 type Api<T, P> = string | ((params: P) => Promise<Data<T>>) | Promise<Data<T>>
@@ -24,13 +23,13 @@ export interface UseTableOptions<T, P> {
    * @desc rowKey属性
    * @default
    */
-  rowKey?: (row: T) => string | number
+  rowKey?: (row: T) => string
 
   /**
    * @desc 分页的初始值
    * @default
    */
-  initialPagination?: PaginationProps
+  initialPagination?: any
 
   /**
    * 数据转换函数
@@ -67,13 +66,20 @@ function getPromise<T, P>(
       })
     }
   }
-  return () => api
+  // api 是 Promise，缓存解析结果以支持 refresh 等重复调用
+  let cached: Promise<Data<T>> | undefined
+  return () => {
+    if (!cached) {
+      cached = api.then((data) => data)
+    }
+    return cached
+  }
 }
 
 export function useTable<
-  T extends Record<string, any>,
-  P extends Record<string, any> | undefined = undefined,
->(options: UseTableOptions<T, P>) {
+  T extends Record<string, any> = any,
+  P extends Record<string, any> | undefined = any,
+>(options: UseTableOptions<T, P> = { api: '' as any }) {
   const {
     api,
     params,
@@ -106,8 +112,15 @@ export function useTable<
     onPaginate,
   })
 
-  const { rowSelection, selectedAll, selectedKeys, selectedRows, handleCheck } =
-    useRowSelection<T>({ rowKey })
+  const {
+    rowSelection,
+    selectedAll,
+    selectedKeys,
+    selectedRows,
+    handleCheck,
+    unSelectedAll,
+    toggleAll,
+  } = useRowSelection<T>({ rowKey })
 
   const dataSource = computed(() => {
     if (typeof transformData === 'function' && data.value) {
@@ -115,6 +128,10 @@ export function useTable<
     }
     return data.value?.data?.list ?? []
   })
+
+  const onCheckedRowKeys = (keys: any[], rows: any[], meta: any) => {
+    handleCheck(keys, rows, meta)
+  }
 
   return {
     loading,
@@ -136,6 +153,9 @@ export function useTable<
     selectedKeys,
     selectedRows,
     handleCheck,
+    unSelectedAll,
+    toggleAll,
+    onCheckedRowKeys,
     rowKey,
   }
 }

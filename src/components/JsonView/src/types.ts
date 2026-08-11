@@ -1,8 +1,15 @@
 import type { VNode } from 'vue'
 import type { NodeDataType } from 'vue-json-pretty/types/components/TreeNode'
 
+export type JsonPrimitive = string | number | boolean | null
+export type JsonValue =
+  | JsonPrimitive
+  | { [key: string]: JsonValue }
+  | JsonValue[]
+export type JsonSelectedValue = string | string[]
+
 export type JsonViewProps = {
-  data?: Record<string, any>
+  data?: JsonValue
 
   indent?: number
   deep?: number
@@ -22,13 +29,25 @@ export type JsonViewProps = {
   selectOnClickNode?: boolean
   highlightSelectedNode?: boolean
   collapsedOnClickBrackets?: boolean
-  renderNodeKey?: ({ node, defaultKey }: { node: NodeDataType; defaultKey: string }) => VNode
-  renderNodeValue?: ({ node, defaultValue }: { node: NodeDataType; defaultValue: string }) => VNode
+  renderNodeKey?: ({
+    node,
+    defaultKey,
+  }: {
+    node: NodeDataType
+    defaultKey: string
+  }) => VNode
+  renderNodeValue?: ({
+    node,
+    defaultValue,
+  }: {
+    node: NodeDataType
+    defaultValue: string
+  }) => VNode
   renderNodeActions?:
     | boolean
     | (({
         node,
-        defaultActions
+        defaultActions,
       }: {
         node: NodeDataType
         defaultActions: {
@@ -56,6 +75,10 @@ export interface JsonViewEmits {
   (e: 'nodeMouseover', node: NodeDataType): void
   (e: 'bracketsClick', collapsed: boolean, node: NodeDataType): void
   (e: 'iconClick', collapsed: boolean, node: NodeDataType): void
-  (e: 'selectedChange', newVal: Record<string, any>, oldVal: Record<string, any>): void
+  (
+    e: 'selectedChange',
+    newVal: JsonSelectedValue,
+    oldVal: JsonSelectedValue
+  ): void
   (e: 'copy', data: JsonViewProps['data']): void
 }

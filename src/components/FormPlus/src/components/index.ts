@@ -1,3 +1,3 @@
-export { default as QueryButton } from './query-button.vue'
+export { default as QueryButton } from './QueryButton.vue'
 
 export type * from './types'
