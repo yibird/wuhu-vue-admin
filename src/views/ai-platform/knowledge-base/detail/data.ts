@@ -1,0 +1,687 @@
+import type {
+  KnowledgeDetailSectionKey,
+  KnowledgeNavItem,
+  KnowledgeSectionWorkspace,
+} from './types'
+
+export const knowledgeNavItems: KnowledgeNavItem[] = [
+  {
+    key: 'documents',
+    title: '文档管理',
+    description: '导入、同步和审核知识源',
+    icon: 'i-lucide:files',
+    badge: '286',
+  },
+  {
+    key: 'chunks',
+    title: '分段管理',
+    description: '维护 Chunk 策略和质量',
+    icon: 'i-lucide:scissors-line-dashed',
+    badge: '1.8k',
+  },
+  {
+    key: 'recall',
+    title: '召回测试',
+    description: '调试检索命中和排序',
+    icon: 'i-lucide:search-check',
+  },
+  {
+    key: 'annotations',
+    title: '标注管理',
+    description: '沉淀正负样本和问法',
+    icon: 'i-lucide:badge-check',
+    badge: '64',
+  },
+  {
+    key: 'glossary',
+    title: '术语表',
+    description: '统一业务口径和同义词',
+    icon: 'i-lucide:book-type',
+  },
+  {
+    key: 'hitStats',
+    title: '命中统计',
+    description: '分析召回质量和使用热度',
+    icon: 'i-lucide:chart-no-axes-combined',
+  },
+  {
+    key: 'retrievalLogs',
+    title: '检索日志',
+    description: '追踪查询、结果和反馈',
+    icon: 'i-lucide:logs',
+  },
+  {
+    key: 'settings',
+    title: '知识库设置',
+    description: '配置模型、权限和同步规则',
+    icon: 'i-lucide:sliders-horizontal',
+  },
+]
+
+// 详情区先以配置驱动渲染，后续接入接口时保持 section key 稳定即可。
+export const knowledgeSectionMap: Record<
+  KnowledgeDetailSectionKey,
+  KnowledgeSectionWorkspace
+> = {
+  documents: {
+    key: 'documents',
+    title: '文档管理',
+    subtitle:
+      '集中管理 PDF、Word、网页、表格和 FAQ，支持同步、审核、重建索引。',
+    icon: 'i-lucide:files',
+    primaryAction: '导入文档',
+    secondaryAction: '同步全部',
+    metrics: [
+      {
+        label: '有效文档',
+        value: '286',
+        helper: '近 7 天新增 18 篇',
+        tone: 'primary',
+      },
+      {
+        label: '同步成功率',
+        value: '99.1%',
+        helper: '最近一次 2 分钟前',
+        tone: 'success',
+      },
+      {
+        label: '待审核',
+        value: '12',
+        helper: '高优先级 3 篇',
+        tone: 'warning',
+      },
+      {
+        label: '失效链接',
+        value: '4',
+        helper: '需要重新抓取',
+      },
+    ],
+    items: [
+      {
+        title: '低代码设计器使用手册',
+        description: '覆盖组件 Schema、容器嵌套、AI 生成和属性面板配置。',
+        meta: '产品文档 · 42 个分段 · 今天 09:20',
+        status: '已索引',
+        icon: 'i-lucide:file-text',
+        tone: 'success',
+      },
+      {
+        title: '审批流条件配置规范',
+        description: '说明节点类型、条件表达式、会签规则和异常处理策略。',
+        meta: '流程制度 · 31 个分段 · 昨天 18:12',
+        status: '待审核',
+        icon: 'i-lucide:workflow',
+        tone: 'warning',
+      },
+      {
+        title: '经营指标口径说明',
+        description: '统一销售额、毛利率、库存周转和客户留存的计算规则。',
+        meta: '数据治理 · 86 个分段 · 2026-08-01',
+        status: '已发布',
+        icon: 'i-lucide:database',
+        tone: 'primary',
+      },
+    ],
+    insightTitle: '文档治理建议',
+    insights: [
+      {
+        label: '高频更新',
+        value: '产品手册',
+        description: '建议开启每日自动同步，避免 Agent 使用旧版本回答。',
+      },
+      {
+        label: '质量风险',
+        value: '12 篇',
+        description: '缺少负责人或版本号，发布前需要补齐元数据。',
+      },
+      {
+        label: '最佳实践',
+        value: '来源可信',
+        description: '生产环境建议保留原文链接、上传人和审批记录。',
+      },
+    ],
+  },
+  chunks: {
+    key: 'chunks',
+    title: '分段管理',
+    subtitle: '管理分段策略、重叠长度、语义边界和低质量片段，提升召回稳定性。',
+    icon: 'i-lucide:scissors-line-dashed',
+    primaryAction: '重建分段',
+    secondaryAction: '质量扫描',
+    metrics: [
+      {
+        label: '分段总数',
+        value: '1,824',
+        helper: '平均 386 字',
+        tone: 'primary',
+      },
+      {
+        label: '低质分段',
+        value: '37',
+        helper: '重复、过短或缺少上下文',
+        tone: 'warning',
+      },
+      {
+        label: '覆盖率',
+        value: '96%',
+        helper: '核心文档已覆盖',
+        tone: 'success',
+      },
+      {
+        label: '重叠策略',
+        value: '80 字',
+        helper: '适合制度类文档',
+      },
+    ],
+    items: [
+      {
+        title: '按标题层级分段',
+        description: '优先保留 H2/H3 结构，适用于产品手册、制度文档。',
+        meta: '默认策略 · overlap 80 · max 600',
+        status: '启用中',
+        icon: 'i-lucide:list-tree',
+        tone: 'success',
+      },
+      {
+        title: '表格行合并策略',
+        description: '将字段解释、枚举值和示例行合并为完整语义片段。',
+        meta: '表格文档 · overlap 40 · max 420',
+        status: '试运行',
+        icon: 'i-lucide:table-properties',
+        tone: 'primary',
+      },
+      {
+        title: 'FAQ 问答对分段',
+        description: '保持问题、答案、适用范围、相关链接在同一分段内。',
+        meta: 'FAQ · overlap 0 · max 500',
+        status: '启用中',
+        icon: 'i-lucide:message-circle-question',
+        tone: 'success',
+      },
+    ],
+    insightTitle: '质量控制',
+    insights: [
+      {
+        label: '推荐策略',
+        value: '语义边界',
+        description: '避免固定长度切断审批条件、财务条款等长句。',
+      },
+      {
+        label: '召回影响',
+        value: '+18%',
+        description: '标题层级和同义词扩展通常能显著提升首条命中率。',
+      },
+      {
+        label: '性能建议',
+        value: '批量重建',
+        description: '大文档重建索引建议异步队列执行，避免阻塞页面。',
+      },
+    ],
+  },
+  recall: {
+    key: 'recall',
+    title: '召回测试',
+    subtitle:
+      '用真实问法测试向量召回、关键词召回和重排序效果，定位回答不准的问题。',
+    icon: 'i-lucide:search-check',
+    primaryAction: '运行测试',
+    secondaryAction: '保存样本',
+    metrics: [
+      {
+        label: 'Top1 命中率',
+        value: '82%',
+        helper: '近 7 天 +6%',
+        tone: 'success',
+      },
+      {
+        label: '平均得分',
+        value: '0.78',
+        helper: '低于 0.6 需人工复核',
+        tone: 'primary',
+      },
+      {
+        label: '无结果查询',
+        value: '23',
+        helper: '建议补充术语',
+        tone: 'warning',
+      },
+      {
+        label: '平均耗时',
+        value: '126ms',
+        helper: '重排序开启',
+      },
+    ],
+    items: [
+      {
+        title: '如何配置审批流条件？',
+        description: '命中「审批流条件配置规范」第 4.2 节，得分 0.91。',
+        meta: '向量召回 + BM25 + 重排序',
+        status: '强相关',
+        icon: 'i-lucide:target',
+        tone: 'success',
+      },
+      {
+        title: '低代码容器支持嵌套吗？',
+        description: '命中「低代码设计器使用手册」容器组件章节，得分 0.86。',
+        meta: '向量召回 · Top2',
+        status: '相关',
+        icon: 'i-lucide:blocks',
+        tone: 'primary',
+      },
+      {
+        title: '报表导出 CSV 乱码怎么办？',
+        description: '命中分数 0.58，需要补充编码格式和 Excel 打开方式。',
+        meta: '关键词召回 · Top5',
+        status: '待优化',
+        icon: 'i-lucide:file-warning',
+        tone: 'warning',
+      },
+    ],
+    insightTitle: '召回调优',
+    insights: [
+      {
+        label: '主流做法',
+        value: '混合检索',
+        description: '向量召回适合语义泛化，BM25 对专有名词和编号更稳。',
+      },
+      {
+        label: '排序策略',
+        value: 'Rerank',
+        description: '生产环境建议将重排序结果和用户反馈一起用于评估。',
+      },
+      {
+        label: '样本沉淀',
+        value: '黄金集',
+        description: '把高频问题转成固定评测集，模型或分段变更后自动回归。',
+      },
+    ],
+  },
+  annotations: {
+    key: 'annotations',
+    title: '标注管理',
+    subtitle:
+      '沉淀问题、标准答案、正负样本和人工反馈，用于持续评估知识库质量。',
+    icon: 'i-lucide:badge-check',
+    primaryAction: '新增标注',
+    secondaryAction: '导入样本',
+    metrics: [
+      {
+        label: '标注样本',
+        value: '64',
+        helper: '覆盖 8 个业务域',
+        tone: 'primary',
+      },
+      {
+        label: '正样本',
+        value: '48',
+        helper: '可用于回归测试',
+        tone: 'success',
+      },
+      {
+        label: '负样本',
+        value: '16',
+        helper: '帮助降低误召回',
+        tone: 'warning',
+      },
+      {
+        label: '待复核',
+        value: '9',
+        helper: '来自用户反馈',
+      },
+    ],
+    items: [
+      {
+        title: '报销审批是否支持跨月？',
+        description: '标准答案引用财务制度第 3.1 条，并要求检查预算周期。',
+        meta: '财务制度 · 正样本 · 林佳',
+        status: '已确认',
+        icon: 'i-lucide:thumbs-up',
+        tone: 'success',
+      },
+      {
+        title: '客户黑名单如何解除？',
+        description: '现有召回缺少审批人要求，需要补充 SOP 文档。',
+        meta: '客户管理 · 负样本 · 叶舟',
+        status: '需补文档',
+        icon: 'i-lucide:thumbs-down',
+        tone: 'warning',
+      },
+      {
+        title: '库存盘点差异如何处理？',
+        description: '标准答案需区分盘盈、盘亏和批次差异。',
+        meta: '仓储 SOP · 正样本 · 赵敏',
+        status: '复核中',
+        icon: 'i-lucide:clipboard-check',
+        tone: 'primary',
+      },
+    ],
+    insightTitle: '标注闭环',
+    insights: [
+      {
+        label: '反馈入口',
+        value: 'Agent 会话',
+        description: '用户点赞、点踩和追问都应进入标注队列。',
+      },
+      {
+        label: '样本类型',
+        value: '正负样本',
+        description: '负样本比正样本更能暴露误召回和歧义问题。',
+      },
+      {
+        label: '评估方式',
+        value: '自动回归',
+        description: '知识更新后自动跑黄金集，失败项进入人工复核。',
+      },
+    ],
+  },
+  glossary: {
+    key: 'glossary',
+    title: '术语表',
+    subtitle: '统一企业专有名词、同义词、缩写和指标口径，减少召回歧义。',
+    icon: 'i-lucide:book-type',
+    primaryAction: '新增术语',
+    secondaryAction: '批量导入',
+    metrics: [
+      {
+        label: '术语数',
+        value: '156',
+        helper: '含 42 个缩写',
+        tone: 'primary',
+      },
+      {
+        label: '同义词',
+        value: '428',
+        helper: '用于查询改写',
+        tone: 'success',
+      },
+      {
+        label: '冲突项',
+        value: '5',
+        helper: '不同部门口径不一致',
+        tone: 'warning',
+      },
+      {
+        label: '覆盖领域',
+        value: '12',
+        helper: 'CRM、WMS、财务等',
+      },
+    ],
+    items: [
+      {
+        title: 'GMV / 销售额',
+        description: '统一为含税成交金额，退款按发生月份冲减。',
+        meta: '经营指标 · 同义词 7 个',
+        status: '已发布',
+        icon: 'i-lucide:sigma',
+        tone: 'success',
+      },
+      {
+        title: 'SKU / 商品编码',
+        description: '兼容 ERP 商品档案、WMS 货品编码和电商平台编码。',
+        meta: '仓储 · 同义词 5 个',
+        status: '已发布',
+        icon: 'i-lucide:barcode',
+        tone: 'primary',
+      },
+      {
+        title: '有效客户',
+        description: '销售、运营、财务三个部门口径存在差异，待确认。',
+        meta: 'CRM · 冲突项',
+        status: '待治理',
+        icon: 'i-lucide:users',
+        tone: 'warning',
+      },
+    ],
+    insightTitle: '术语治理',
+    insights: [
+      {
+        label: '查询改写',
+        value: '同义词扩展',
+        description: '用户输入缩写时自动扩展为完整业务词。',
+      },
+      {
+        label: '冲突管理',
+        value: '负责人机制',
+        description: '跨部门指标必须指定口径 owner 和生效时间。',
+      },
+      {
+        label: 'Agent 输出',
+        value: '术语解释',
+        description: '涉及专业词时建议追加简短定义，降低沟通成本。',
+      },
+    ],
+  },
+  hitStats: {
+    key: 'hitStats',
+    title: '命中统计',
+    subtitle: '观察知识库调用趋势、命中质量、热点问题和低质量回答。',
+    icon: 'i-lucide:chart-no-axes-combined',
+    primaryAction: '导出统计',
+    secondaryAction: '查看看板',
+    metrics: [
+      {
+        label: '近 7 天查询',
+        value: '9.6k',
+        helper: '环比 +12%',
+        tone: 'primary',
+      },
+      {
+        label: '引用率',
+        value: '78%',
+        helper: '回答包含来源',
+        tone: 'success',
+      },
+      {
+        label: '低置信度',
+        value: '184',
+        helper: '需要补充知识',
+        tone: 'warning',
+      },
+      {
+        label: '平均耗时',
+        value: '138ms',
+        helper: 'P95 312ms',
+      },
+    ],
+    items: [
+      {
+        title: '审批流配置',
+        description: '近 7 天命中 1,240 次，主要来自实施顾问和产品经理。',
+        meta: 'Top1 热点 · 引用率 86%',
+        status: '高频',
+        icon: 'i-lucide:flame',
+        tone: 'primary',
+      },
+      {
+        title: 'CSV 导出编码',
+        description: '低置信度占比 22%，建议补充 Excel 打开方式说明。',
+        meta: '质量风险 · 无结果 18 次',
+        status: '待优化',
+        icon: 'i-lucide:triangle-alert',
+        tone: 'warning',
+      },
+      {
+        title: '低代码容器嵌套',
+        description: '回答采纳率 91%，文档质量稳定。',
+        meta: '优质知识 · 点赞 128',
+        status: '稳定',
+        icon: 'i-lucide:badge-check',
+        tone: 'success',
+      },
+    ],
+    insightTitle: '运营洞察',
+    insights: [
+      {
+        label: '热点趋势',
+        value: '实施问题',
+        description: '产品上线期实施类问题会显著增加，建议提前维护 FAQ。',
+      },
+      {
+        label: '质量指标',
+        value: '引用率',
+        description:
+          '企业知识问答应优先看引用率和人工采纳率，而不只看命中次数。',
+      },
+      {
+        label: '治理动作',
+        value: '低置信度队列',
+        description: '将低分查询自动转为待补充知识和待标注任务。',
+      },
+    ],
+  },
+  retrievalLogs: {
+    key: 'retrievalLogs',
+    title: '检索日志',
+    subtitle:
+      '记录每次查询、召回片段、得分、用户反馈和关联 Agent，便于审计追踪。',
+    icon: 'i-lucide:logs',
+    primaryAction: '导出日志',
+    secondaryAction: '筛选异常',
+    metrics: [
+      {
+        label: '今日日志',
+        value: '1,286',
+        helper: '实时写入',
+        tone: 'primary',
+      },
+      {
+        label: '用户反馈',
+        value: '94',
+        helper: '点赞 71 / 点踩 23',
+        tone: 'success',
+      },
+      {
+        label: '异常查询',
+        value: '18',
+        helper: '无结果或超时',
+        tone: 'warning',
+      },
+      {
+        label: '日志保留',
+        value: '30 天',
+        helper: '支持脱敏导出',
+      },
+    ],
+    items: [
+      {
+        title: '如何新增审批节点？',
+        description: '召回 5 条，Top1 得分 0.88，用户已采纳。',
+        meta: '审批助手 Agent · 11:04:28 · 周然',
+        status: '已采纳',
+        icon: 'i-lucide:search',
+        tone: 'success',
+      },
+      {
+        title: '发票跨月还能报销吗？',
+        description: '召回 4 条，Top1 得分 0.74，触发财务权限校验。',
+        meta: '财务核对 Agent · 10:48:12 · 林佳',
+        status: '已授权',
+        icon: 'i-lucide:shield-check',
+        tone: 'primary',
+      },
+      {
+        title: '如何修改系统菜单？',
+        description: '召回为空，疑似知识库未覆盖系统配置章节。',
+        meta: '客服回复 Agent · 10:16:02 · 王若溪',
+        status: '无结果',
+        icon: 'i-lucide:circle-alert',
+        tone: 'warning',
+      },
+    ],
+    insightTitle: '审计能力',
+    insights: [
+      {
+        label: '可追溯',
+        value: 'Query + Chunk',
+        description: '保留查询、召回结果、重排序得分和最终回答引用。',
+      },
+      {
+        label: '隐私保护',
+        value: '字段脱敏',
+        description: '手机号、金额、客户姓名等敏感字段导出前应脱敏。',
+      },
+      {
+        label: '问题发现',
+        value: '无结果聚类',
+        description: '定期聚类无结果查询，快速发现知识盲区。',
+      },
+    ],
+  },
+  settings: {
+    key: 'settings',
+    title: '知识库设置',
+    subtitle: '配置解析器、Embedding 模型、检索策略、权限范围和同步计划。',
+    icon: 'i-lucide:sliders-horizontal',
+    primaryAction: '保存设置',
+    secondaryAction: '恢复默认',
+    metrics: [
+      {
+        label: 'Embedding',
+        value: 'text-embedding-3-large',
+        helper: '向量维度 3072',
+        tone: 'primary',
+      },
+      {
+        label: '检索策略',
+        value: 'Hybrid',
+        helper: '向量 + BM25 + Rerank',
+        tone: 'success',
+      },
+      {
+        label: '同步频率',
+        value: '每日',
+        helper: '02:00 自动同步',
+      },
+      {
+        label: '权限模型',
+        value: 'RBAC',
+        helper: '继承部门和角色权限',
+        tone: 'warning',
+      },
+    ],
+    items: [
+      {
+        title: '解析器配置',
+        description: 'PDF 使用版面解析，表格保留行列关系，图片启用 OCR。',
+        meta: 'Parser · OCR 已开启 · 表格增强',
+        status: '已启用',
+        icon: 'i-lucide:file-scan',
+        tone: 'success',
+      },
+      {
+        title: '检索策略',
+        description: 'TopK 5，得分阈值 0.62，开启重排序和引用去重。',
+        meta: 'Hybrid Search · Rerank · Deduplicate',
+        status: '生产策略',
+        icon: 'i-lucide:sliders-horizontal',
+        tone: 'primary',
+      },
+      {
+        title: '权限与同步',
+        description: '继承文档来源权限，每日增量同步，失败后自动重试。',
+        meta: 'RBAC · Cron 02:00 · Retry 3',
+        status: '需审计',
+        icon: 'i-lucide:lock-keyhole',
+        tone: 'warning',
+      },
+    ],
+    insightTitle: '生产建议',
+    insights: [
+      {
+        label: '权限同步',
+        value: '源权限继承',
+        description: '知识库权限要跟文档源保持一致，避免越权召回。',
+      },
+      {
+        label: '索引生命周期',
+        value: '灰度重建',
+        description: '模型或分段策略变更后，建议新索引灰度验证后切换。',
+      },
+      {
+        label: '成本控制',
+        value: '增量更新',
+        description: '只对变更文档重新解析和向量化，降低大库维护成本。',
+      },
+    ],
+  },
+}
