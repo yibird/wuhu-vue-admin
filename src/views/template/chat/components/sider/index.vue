@@ -1,150 +1,184 @@
 <template>
   <aside
-    class="w-280 min-w-280 h-full border-r-1 border-solid border-[#E8E8E8] bg-white"
+    class="chat-sidebar relative h-full shrink-0 border-r-1 border-r-solid border-color-1 bg-container"
+    :class="{ 'is-resizing': resizing }"
   >
-    <ConversationList
-      v-if="activeKey === 'conversation'"
-      :conversations="conversations"
-      :active-conversation-id="activeConversationId"
-      @select="handleConversationSelect"
+    <Transition name="sidebar-view" mode="out-in">
+      <ConversationList
+        v-if="activeKey === 'conversation'"
+        key="conversation"
+        :conversations="conversations"
+        :active-conversation-id="activeConversationId"
+        @select="handleConversationSelect"
+        @create-group="emit('open-create-group')"
+        @add-contact="emit('open-add-contact')"
+        @open-global-search="emit('open-global-search')"
+        @delete="(conversation) => emit('delete-conversation', conversation)"
+        @mute="(conversation) => emit('mute-conversation', conversation)"
+        @pin="(conversation) => emit('pin-conversation', conversation)"
+        @mark-unread="(conversation) => emit('mark-unread', conversation)"
+        @archive="(conversation) => emit('archive-conversation', conversation)"
+      />
+      <ContactList
+        v-else-if="activeKey === 'contact'"
+        key="contact"
+        :contacts="contacts"
+        @select="(contact) => emit('show-contact', contact)"
+        @chat="handleContactChat"
+        @create-group="emit('open-create-group')"
+        @add-contact="emit('open-add-contact')"
+        @open-global-search="emit('open-global-search')"
+      />
+      <GroupList
+        v-else-if="activeKey === 'group'"
+        key="group"
+        :groups="groups"
+        @select="handleConversationSelect"
+        @create-group="emit('open-create-group')"
+        @add-contact="emit('open-add-contact')"
+        @open-global-search="emit('open-global-search')"
+      />
+    </Transition>
+    <button
+      type="button"
+      class="chat-sidebar-resize-handle"
+      :class="{ 'is-active': resizing }"
+      aria-label="调整侧边栏宽度"
+      title="拖拽调整侧边栏宽度"
+      @pointerdown="$emit('resize-start', $event)"
     />
-    <ContactList v-else-if="activeKey === 'contact'" :contacts="contacts" />
-    <GroupList v-else-if="activeKey === 'group'" :groups="groups" />
-    <div
-      v-else-if="activeKey === 'setting'"
-      class="h-full flex items-center justify-center text-regular"
-    >
-      设置功能开发中
-    </div>
   </aside>
 </template>
-<script lang="ts" setup>
-import ConversationList from './conversation-list.vue'
-import ContactList from './contact-list.vue'
-import GroupList from './group-list.vue'
-import type { Contact, Conversation } from '../types'
 
-const { activeKey } = defineProps<{ activeKey?: string }>()
+<script lang="ts" setup>
+import ConversationList from './ConversationList.vue'
+import ContactList from './ContactList.vue'
+import GroupList from './GroupList.vue'
+import type { Contact, Conversation, NavType } from '../types'
+
+withDefaults(
+  defineProps<{
+    activeKey?: NavType
+    conversations?: Conversation[]
+    contacts?: Contact[]
+    groups?: Conversation[]
+    resizing?: boolean
+  }>(),
+  {
+    activeKey: 'conversation',
+    conversations: () => [],
+    contacts: () => [],
+    groups: () => [],
+    resizing: false,
+  }
+)
 
 const emit = defineEmits<{
   select: [conversation: Conversation]
+  chat: [contact: Contact]
+  'show-contact': [contact: Contact]
+  'open-create-group': []
+  'open-add-contact': []
+  'open-global-search': []
+  'delete-conversation': [conversation: Conversation]
+  'mute-conversation': [conversation: Conversation]
+  'pin-conversation': [conversation: Conversation]
+  'mark-unread': [conversation: Conversation]
+  'archive-conversation': [conversation: Conversation]
+  'resize-start': [event: PointerEvent]
 }>()
 
-const activeConversationId = defineModel<string>('activeConversationId', { default: '' })
-
+const activeConversationId = defineModel<string>('activeConversationId', {
+  default: '',
+})
 function handleConversationSelect(conversation: Conversation) {
   activeConversationId.value = conversation.id
   emit('select', conversation)
 }
 
-// Mock data
-const conversations = ref<Conversation[]>([
-  {
-    id: '1',
-    type: 'private',
-    title: '张三',
-    avatar: 'https://i.pravatar.cc/100?img=1',
-    lastMessage: '好的，明天见！',
-    lastMessageTime: '10:30',
-    unreadCount: 2,
-    pinned: true,
-    userInfo: {
-      id: '1',
-      name: '张三',
-      status: 'online',
-      avatar: 'https://i.pravatar.cc/100?img=1',
-    },
-  },
-  {
-    id: '2',
-    type: 'private',
-    title: '李四',
-    avatar: 'https://i.pravatar.cc/100?img=2',
-    lastMessage: '项目进展如何？',
-    lastMessageTime: '09:15',
-    unreadCount: 0,
-    userInfo: {
-      id: '2',
-      name: '李四',
-      status: 'offline',
-      avatar: 'https://i.pravatar.cc/100?img=2',
-    },
-  },
-  {
-    id: '3',
-    type: 'group',
-    title: '产品研发群',
-    avatar: 'https://i.pravatar.cc/100?img=3',
-    lastMessage: '王五：代码已提交',
-    lastMessageTime: '昨天',
-    unreadCount: 5,
-    groupInfo: { id: '3', name: '产品研发群', memberCount: 28 },
-  },
-  {
-    id: '4',
-    type: 'private',
-    title: '王五',
-    avatar: 'https://i.pravatar.cc/100?img=4',
-    lastMessage: '辛苦了，早点休息',
-    lastMessageTime: '昨天',
-    unreadCount: 0,
-    muted: true,
-    userInfo: {
-      id: '4',
-      name: '王五',
-      status: 'away',
-      avatar: 'https://i.pravatar.cc/100?img=4',
-    },
-  },
-])
-
-const contacts = ref<Contact[]>([
-  {
-    id: '1',
-    name: '张三',
-    avatar: 'https://i.pravatar.cc/100?img=1',
-    status: 'online',
-  },
-  {
-    id: '2',
-    name: '李四',
-    avatar: 'https://i.pravatar.cc/100?img=2',
-    status: 'offline',
-  },
-  {
-    id: '3',
-    name: '王五',
-    avatar: 'https://i.pravatar.cc/100?img=3',
-    status: 'busy',
-  },
-  {
-    id: '4',
-    name: '赵六',
-    avatar: 'https://i.pravatar.cc/100?img=4',
-    status: 'away',
-  },
-])
-
-const groups = ref<Conversation[]>([
-  {
-    id: 'g1',
-    type: 'group',
-    title: '产品研发群',
-    avatar: 'https://i.pravatar.cc/100?img=5',
-    lastMessage: '代码审查完成',
-    lastMessageTime: '10:30',
-    unreadCount: 0,
-    groupInfo: { id: 'g1', name: '产品研发群', memberCount: 28 },
-  },
-  {
-    id: 'g2',
-    type: 'group',
-    title: '产品汪群',
-    avatar: 'https://i.pravatar.cc/100?img=6',
-    lastMessage: '明天评审',
-    lastMessageTime: '昨天',
-    unreadCount: 3,
-    groupInfo: { id: 'g2', name: '产品汪群', memberCount: 15 },
-  },
-])
+function handleContactChat(contact: Contact) {
+  emit('chat', contact)
+}
 </script>
+
+<style scoped>
+.chat-sidebar {
+  min-width: 260px;
+  max-width: 440px;
+}
+
+.sidebar-view-enter-active,
+.sidebar-view-leave-active {
+  transition:
+    opacity 180ms ease,
+    transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.sidebar-view-enter-from {
+  opacity: 0;
+  transform: translateX(10px);
+}
+
+.sidebar-view-leave-to {
+  opacity: 0;
+  transform: translateX(-8px);
+}
+
+.chat-sidebar-resize-handle {
+  position: absolute;
+  top: 0;
+  right: -4px;
+  z-index: 5;
+  width: 8px;
+  height: 100%;
+  padding: 0;
+  cursor: col-resize;
+  background: transparent;
+  border: 0;
+}
+
+.chat-sidebar-resize-handle::before {
+  position: absolute;
+  top: 12px;
+  right: 3px;
+  bottom: 12px;
+  width: 2px;
+  content: '';
+  background: transparent;
+  border-radius: 999px;
+  transition:
+    background-color 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.chat-sidebar-resize-handle:hover::before,
+.chat-sidebar-resize-handle.is-active::before,
+.chat-sidebar.is-resizing .chat-sidebar-resize-handle::before {
+  background: rgb(var(--w-color-primary));
+  box-shadow: 0 0 0 3px rgb(var(--w-color-primary) / 12%);
+}
+
+:global(body.chat-sidebar-resizing),
+:global(body.chat-sidebar-resizing *) {
+  cursor: col-resize !important;
+  user-select: none !important;
+}
+
+@media (width <= 900px) {
+  .chat-sidebar {
+    width: 260px !important;
+    min-width: 260px;
+  }
+
+  .chat-sidebar-resize-handle {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sidebar-view-enter-active,
+  .sidebar-view-leave-active {
+    transition-duration: 1ms;
+  }
+}
+</style>

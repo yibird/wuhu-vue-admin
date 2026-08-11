@@ -1,143 +1,285 @@
 <template>
-  <div class="full p-10">
-    <div class="h-full flex bg-white rounded-4 overflow-hidden">
-      <Nav v-model:active-key="activeKey" />
+  <WView class="chat-page">
+    <div class="h-full min-h-0 flex overflow-hidden bg-container">
+      <Nav
+        v-model:active-key="activeKey"
+        :unread-count="totalUnreadCount"
+        @open-settings="openSettingsModal"
+      />
       <Sider
         :active-key="activeKey"
+        :conversations="conversations"
+        :contacts="contacts"
+        :groups="groups"
+        :resizing="isSidebarResizing"
+        :style="sidebarStyle"
         v-model:active-conversation-id="activeConversationId"
         @select="handleConversationSelect"
+        @chat="handleContactQuickChat"
+        @show-contact="openUserDetail"
+        @open-create-group="openCreateGroupModal"
+        @open-add-contact="openAddContactModal"
+        @delete-conversation="handleConversationDelete"
+        @mute-conversation="toggleConversationMuted"
+        @pin-conversation="toggleConversationPinned"
+        @mark-unread="markConversationUnread"
+        @archive-conversation="toggleConversationArchived"
+        @open-global-search="openGlobalSearch"
+        @resize-start="startSidebarResize"
       />
       <MessageArea
         :conversation="activeConversation"
+        :favorite-message-ids="favoriteMessageIds"
+        :messages="activeMessages"
+        :typing="isCurrentConversationTyping"
+        :settings="chatSettings"
         @send="handleMessageSend"
         @typing="handleTyping"
         @stop-typing="handleStopTyping"
+        @retry-message="handleMessageRetry"
+        @recall-message="handleMessageRecall"
+        @delete-message="handleMessageDelete"
+        @copy-message="handleMessageCopy"
+        @toggle-favorite="toggleMessageFavorite"
+        @reaction-message="handleMessageReaction"
+        @preview-image="handleImagePreview"
+        @download-message="handleMessageDownload"
+        @show-user="openUserDetail"
+        @call="handleCall"
+        @toggle-pin="toggleConversationPinned"
+        @toggle-mute="toggleConversationMuted"
+        @clear-messages="handleMessagesClear"
+        @open-group-panel="openGroupPanel"
       />
     </div>
-  </div>
+
+    <CallFloatingWindow
+      v-model:open="callOpen"
+      :type="callType"
+      :conversation="callConversation"
+    />
+
+    <UserDetailModal
+      :open="userDetailOpen"
+      :user="selectedUser"
+      @close="closeUserDetail"
+      @chat="startPrivateChat"
+    />
+
+    <SettingsModal
+      v-model:open="settingsModalOpen"
+      v-model:settings="chatSettings"
+    />
+
+    <GroupDrawer
+      v-model:open="groupDrawerOpen"
+      v-model:active-tab="groupPanelTab"
+      :conversation="activeConversation"
+      @show-user="openUserDetail"
+      @update-announcement="updateGroupAnnouncement"
+    />
+
+    <CreateGroupModal
+      v-model:open="createGroupModalOpen"
+      :contacts="contacts"
+      @submit="createGroup"
+    />
+
+    <AddContactOrGroupModal
+      v-model:open="addContactModalOpen"
+      :contacts="contacts"
+      :groups="groups"
+      :candidates="directoryCandidates"
+      @add-user="addDirectoryUser"
+      @add-group="addDirectoryGroup"
+    />
+
+    <GlobalSearchModal
+      v-model:open="globalSearchOpen"
+      :contacts="contacts"
+      :groups="groups"
+      :conversations="conversations"
+      :messages-by-conversation="messagesByConversation"
+      @select-contact="handleGlobalContactSelect"
+      @select-group="handleGlobalGroupSelect"
+      @select-message="selectGlobalMessage"
+    />
+
+    <a-modal
+      v-model:open="imagePreviewOpen"
+      title="图片预览"
+      :footer="null"
+      centered
+    >
+      <img
+        v-if="previewImageUrl"
+        :src="previewImageUrl"
+        alt="聊天图片"
+        class="max-h-[70vh] w-full rounded-6 object-contain"
+      />
+    </a-modal>
+  </WView>
 </template>
 
 <script setup lang="ts">
+import { computed, onBeforeUnmount, onMounted, shallowRef, watch } from 'vue'
 import { Nav, Sider, MessageArea } from './components'
-import type { Conversation, NavType, MessageType } from './components/types'
+import CallFloatingWindow from './components/call/FloatingWindow.vue'
+import AddContactOrGroupModal from './components/discovery/AddContactOrGroupModal.vue'
+import CreateGroupModal from './components/discovery/CreateGroupModal.vue'
+import GlobalSearchModal from './components/GlobalSearchModal.vue'
+import GroupDrawer from './components/group/Drawer.vue'
+import SettingsModal from './components/settings/Modal.vue'
+import UserDetailModal from './components/user/DetailModal.vue'
+import { useChat } from './composables/useChat'
+import type {
+  Contact,
+  Conversation,
+  GroupPanelTab,
+  UserInfo,
+} from './components/types'
 
-const activeKey = ref<NavType>('conversation')
-const activeConversationId = ref()
-const activeConversation = ref<Conversation>()
-const typingConversations = ref<Set<string>>(new Set())
+const {
+  activeKey,
+  activeConversationId,
+  activeConversation,
+  isSidebarResizing,
+  sidebarStyle,
+  imagePreviewOpen,
+  previewImageUrl,
+  callOpen,
+  callType,
+  callConversation,
+  chatSettings,
+  conversations,
+  contacts,
+  groups,
+  directoryCandidates,
+  messagesByConversation,
+  favoriteMessageIds,
+  activeMessages,
+  totalUnreadCount,
+  isCurrentConversationTyping,
+  startSidebarResize,
+  handleConversationSelect,
+  handleGlobalMessageSelect: selectGlobalMessage,
+  handleContactChat,
+  handleMessageSend,
+  handleTyping,
+  handleStopTyping,
+  handleMessageRetry,
+  handleMessageRecall,
+  handleMessageDelete,
+  handleMessageCopy,
+  toggleMessageFavorite,
+  handleMessageReaction,
+  handleImagePreview,
+  handleMessageDownload,
+  handleCall,
+  toggleConversationPinned,
+  toggleConversationMuted,
+  markConversationUnread,
+  toggleConversationArchived,
+  handleConversationDelete,
+  handleMessagesClear,
+  updateGroupAnnouncement,
+  createGroup,
+  addDirectoryUser,
+  addDirectoryGroup,
+} = useChat()
 
-// Mock data
-const conversations = ref<Conversation[]>([
-  {
-    id: '1',
-    type: 'private',
-    title: '张三',
-    avatar: 'https://i.pravatar.cc/100?img=1',
-    lastMessage: '好的，明天见！',
-    lastMessageTime: '10:30',
-    unreadCount: 2,
-    pinned: true,
-    userInfo: {
-      id: '1',
-      name: '张三',
-      status: 'online',
-      avatar: 'https://i.pravatar.cc/100?img=1',
-    },
-  },
-  {
-    id: '2',
-    type: 'private',
-    title: '李四',
-    avatar: 'https://i.pravatar.cc/100?img=2',
-    lastMessage: '项目进展如何？',
-    lastMessageTime: '09:15',
-    unreadCount: 0,
-    userInfo: {
-      id: '2',
-      name: '李四',
-      status: 'offline',
-      avatar: 'https://i.pravatar.cc/100?img=2',
-    },
-  },
-  {
-    id: '3',
-    type: 'group',
-    title: '产品研发群',
-    avatar: 'https://i.pravatar.cc/100?img=3',
-    lastMessage: '王五：代码已提交',
-    lastMessageTime: '昨天',
-    unreadCount: 5,
-    groupInfo: { id: '3', name: '产品研发群', memberCount: 28 },
-  },
-  {
-    id: '4',
-    type: 'private',
-    title: '王五',
-    avatar: 'https://i.pravatar.cc/100?img=4',
-    lastMessage: '辛苦了，早点休息',
-    lastMessageTime: '昨天',
-    unreadCount: 0,
-    muted: true,
-    userInfo: {
-      id: '4',
-      name: '王五',
-      status: 'away',
-      avatar: 'https://i.pravatar.cc/100?img=4',
-    },
-  },
-])
+const selectedUser = shallowRef<UserInfo | null>(null)
+const settingsModalOpen = shallowRef(false)
+const createGroupModalOpen = shallowRef(false)
+const addContactModalOpen = shallowRef(false)
+const globalSearchOpen = shallowRef(false)
+const groupDrawerOpen = shallowRef(false)
+const groupPanelTab = shallowRef<GroupPanelTab>('announcement')
+const userDetailOpen = computed(() => Boolean(selectedUser.value))
 
-// Conversation handlers
-function handleConversationSelect(conversation: Conversation) {
-  activeConversation.value = conversation
-  conversation.unreadCount = 0
+function openSettingsModal() {
+  settingsModalOpen.value = true
 }
 
-// Message handlers
-function handleMessageSend(payload: { type: MessageType; content: string }) {
-  if (!activeConversation.value) return
+function openCreateGroupModal() {
+  createGroupModalOpen.value = true
+}
 
-  activeConversation.value.lastMessage =
-    payload.type === 'text'
-      ? payload.content
-      : payload.type === 'image'
-        ? '[图片]'
-        : payload.type === 'emoji'
-          ? payload.content
-          : '[文件]'
-  activeConversation.value.lastMessageTime = new Date().toLocaleTimeString(
-    'zh-CN',
-    {
-      hour: '2-digit',
-      minute: '2-digit',
+function openAddContactModal() {
+  addContactModalOpen.value = true
+}
+
+function openGlobalSearch() {
+  globalSearchOpen.value = true
+}
+
+function openGroupPanel(tab: GroupPanelTab) {
+  if (activeConversation.value?.type !== 'group') return
+  groupPanelTab.value = tab
+  groupDrawerOpen.value = true
+}
+
+function handleGlobalContactSelect(contact: Contact) {
+  handleContactChat(contact)
+}
+
+function handleGlobalGroupSelect(group: Conversation) {
+  activeKey.value = 'conversation'
+  handleConversationSelect(group)
+}
+
+function openUserDetail(user: UserInfo) {
+  const contact = contacts.value.find((item) => item.id === user.id)
+  const conversationUser = conversations.value.find(
+    (item) => item.userInfo?.id === user.id
+  )?.userInfo
+
+  selectedUser.value = {
+    ...conversationUser,
+    ...contact,
+    ...user,
+  }
+}
+
+function closeUserDetail() {
+  selectedUser.value = null
+}
+
+function handleContactQuickChat(contact: Contact) {
+  handleContactChat(contact, false)
+}
+
+function startPrivateChat(user: UserInfo) {
+  const navigateToConversation = activeKey.value !== 'contact'
+  closeUserDetail()
+  groupDrawerOpen.value = false
+  handleContactChat(user, navigateToConversation)
+}
+
+function handleGlobalSearchShortcut(event: KeyboardEvent) {
+  if (event.defaultPrevented) return
+  if (!(event.ctrlKey || event.metaKey) || event.key.toLowerCase() !== 'k') {
+    return
+  }
+
+  event.preventDefault()
+  openGlobalSearch()
+}
+
+watch(
+  () => activeConversation.value?.id,
+  () => {
+    if (activeConversation.value?.type !== 'group') {
+      groupDrawerOpen.value = false
     }
-  )
-
-  if (!activeConversation.value.pinned) {
-    const index = conversations.value.findIndex(
-      (c) => c.id === activeConversation.value!.id
-    )
-    if (index > -1) {
-      const conv = conversations.value.splice(index, 1)[0]
-      const insertIndex = conversations.value.findIndex((c) => c.pinned)
-      if (insertIndex > -1) {
-        conversations.value.splice(insertIndex, 0, conv)
-      } else {
-        conversations.value.unshift(conv)
-      }
-    }
   }
-}
+)
 
-function handleTyping() {
-  if (activeConversation.value) {
-    typingConversations.value.add(activeConversation.value.id)
-  }
-}
+onMounted(() => {
+  window.addEventListener('keydown', handleGlobalSearchShortcut, true)
+})
 
-function handleStopTyping() {
-  if (activeConversation.value) {
-    typingConversations.value.delete(activeConversation.value.id)
-  }
-}
+onBeforeUnmount(() => {
+  window.removeEventListener('keydown', handleGlobalSearchShortcut, true)
+})
 </script>

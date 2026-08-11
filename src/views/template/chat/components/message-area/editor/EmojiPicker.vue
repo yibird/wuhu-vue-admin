@@ -2,30 +2,25 @@
   <div class="p-10 w-300">
     <!-- Search -->
     <div class="mb-10">
-      <n-input
-        v-model:value="searchValue"
-        placeholder="搜索表情"
-        size="small"
-        clearable
-      >
+      <a-input v-model:value="searchValue" placeholder="搜索表情" allow-clear>
         <template #prefix>
           <Icon name="i-lucide:search" :size="14" class="text-regular" />
         </template>
-      </n-input>
+      </a-input>
     </div>
 
     <!-- Tabs -->
     <div
-      class="mb-10 flex gap-5 border-b-1 border-solid border-[#e8e8e8] pb-10"
+      class="mb-10 flex gap-5 border-b-1 border-b-solid border-color-1 pb-10"
     >
       <button
         v-for="tab in tabs"
         :key="tab.key"
-        class="px-10 py-6 text-sm rounded-4 transition-all"
+        class="px-10 py-6 text-sm rounded-4 cursor-pointer transition-colors"
         :class="[
           activeTab === tab.key
             ? 'bg-primary/10 text-primary'
-            : 'text-regular hover:bg-[#f5f5f5]',
+            : 'text-regular hover:bg-hover',
         ]"
         @click="activeTab = tab.key"
       >
@@ -34,7 +29,7 @@
     </div>
 
     <!-- Emoji grid -->
-    <div class="max-h-200 overflow-y-auto">
+    <Scrollbar class="max-h-200">
       <!-- Recently used -->
       <div v-if="activeTab === 'recent' && recentEmojis.length > 0">
         <div class="mb-10">
@@ -43,7 +38,7 @@
             <button
               v-for="emoji in recentEmojis"
               :key="emoji"
-              class="size-40 flex items-center justify-center text-lg rounded-4 cursor-pointer hover:bg-[#f5f5f5] transition-colors"
+              class="size-40 flex items-center justify-center text-lg rounded-4 cursor-pointer hover:bg-hover transition-colors"
               @click="handleSelect(emoji)"
             >
               <span>{{ emoji }}</span>
@@ -60,7 +55,7 @@
             <button
               v-for="emoji in smileyEmojis"
               :key="emoji"
-              class="size-40 flex items-center justify-center text-lg rounded-4 cursor-pointer hover:bg-[#f5f5f5] transition-colors"
+              class="size-40 flex items-center justify-center text-lg rounded-4 cursor-pointer hover:bg-hover transition-colors"
               @click="handleSelect(emoji)"
             >
               {{ emoji }}
@@ -77,7 +72,7 @@
             <button
               v-for="emoji in gestureEmojis"
               :key="emoji"
-              class="size-40 flex items-center justify-center text-lg rounded-4 cursor-pointer hover:bg-[#f5f5f5] transition-colors"
+              class="size-40 flex items-center justify-center text-lg rounded-4 cursor-pointer hover:bg-hover transition-colors"
               @click="handleSelect(emoji)"
             >
               {{ emoji }}
@@ -94,7 +89,7 @@
             <button
               v-for="emoji in objectEmojis"
               :key="emoji"
-              class="size-40 flex items-center justify-center text-lg rounded-4 cursor-pointer hover:bg-[#f5f5f5] transition-colors"
+              class="size-40 flex items-center justify-center text-lg rounded-4 cursor-pointer hover:bg-hover transition-colors"
               @click="handleSelect(emoji)"
             >
               {{ emoji }}
@@ -111,7 +106,7 @@
             <button
               v-for="emoji in symbolEmojis"
               :key="emoji"
-              class="size-40 flex items-center justify-center text-lg rounded-4 cursor-pointer hover:bg-[#f5f5f5] transition-colors"
+              class="size-40 flex items-center justify-center text-lg rounded-4 cursor-pointer hover:bg-hover transition-colors"
               @click="handleSelect(emoji)"
             >
               {{ emoji }}
@@ -128,7 +123,7 @@
             <button
               v-for="emoji in filteredEmojis"
               :key="emoji"
-              class="size-40 flex items-center justify-center text-lg rounded-4 cursor-pointer hover:bg-[#f5f5f5] transition-colors"
+              class="size-40 flex items-center justify-center text-lg rounded-4 cursor-pointer hover:bg-hover transition-colors"
               @click="handleSelect(emoji)"
             >
               {{ emoji }}
@@ -143,7 +138,7 @@
       >
         未找到表情
       </div>
-    </div>
+    </Scrollbar>
   </div>
 </template>
 

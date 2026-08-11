@@ -9,7 +9,11 @@
         {{ fileSize }}
       </div>
     </div>
-    <button class="p-4 hover:bg-[#000]/10 rounded-4 ml-10" @click="$emit('download')">
+    <button
+      type="button"
+      class="button ml-10 size-26 rounded-4 hover:bg-hover"
+      @click="$emit('download')"
+    >
       <Icon name="i-lucide:download" :size="14" />
     </button>
   </div>

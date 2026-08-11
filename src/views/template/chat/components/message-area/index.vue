@@ -1,7 +1,6 @@
 <template>
-  <main class="flex-1 h-full">
-    <div class="h-full flex flex-col bg-white">
-      <!-- Empty state -->
+  <main class="h-full min-w-0 flex-1">
+    <div class="h-full flex flex-col bg-container">
       <div v-if="!conversation" class="flex-1 flex items-center justify-center">
         <div class="text-center text-regular">
           <Icon
@@ -14,15 +13,13 @@
         </div>
       </div>
 
-      <!-- Chat area -->
       <template v-else>
-        <!-- Header -->
         <div
-          class="h-60 px-15 flex items-center justify-between border-b-1 border-solid border-[#E8E8E8]"
+          class="h-60 flex items-center justify-between border-b-1 border-b-solid border-color-1 px-15"
         >
-          <div class="flex items-center gap-10">
+          <div class="min-w-0 flex items-center gap-10">
             <div class="relative">
-              <n-avatar
+              <a-avatar
                 :src="conversation.avatar"
                 :size="40"
                 round
@@ -30,64 +27,131 @@
               />
               <span
                 v-if="conversation.userInfo?.status"
-                class="absolute bottom-0 right-0 w-8 h-8 rounded-full border-2 border-white"
+                class="absolute bottom-0 right-0 size-8 rounded-full border-2 border-container"
                 :class="{
                   'bg-success': conversation.userInfo.status === 'online',
-                  'bg-regular': conversation.userInfo.status === 'offline',
+                  'bg-fill': conversation.userInfo.status === 'offline',
                   'bg-error': conversation.userInfo.status === 'busy',
                   'bg-warning': conversation.userInfo.status === 'away',
                 }"
               />
             </div>
-            <div>
-              <div class="font-500 text-main">{{ conversation.title }}</div>
-              <div class="text-xs text-regular">
-                {{ statusText(conversation.userInfo?.status) }}
+            <div class="min-w-0">
+              <div class="truncate text-main font-500">
+                {{ conversation.title }}
+              </div>
+              <div
+                class="mt-3 flex flex-wrap items-center gap-6 text-xs text-regular"
+              >
+                <span>{{ conversationStatus }}</span>
+                <span v-if="conversation.pinned" class="conversation-chip">
+                  <Icon name="i-lucide:pin" :size="11" />
+                  置顶
+                </span>
+                <span v-if="conversation.muted" class="conversation-chip">
+                  <Icon name="i-lucide:bell-off" :size="11" />
+                  免打扰
+                </span>
+                <span
+                  v-if="conversation.mentioned"
+                  class="conversation-chip text-error"
+                >
+                  <Icon name="i-lucide:at-sign" :size="11" />
+                  有人提到你
+                </span>
               </div>
             </div>
           </div>
 
           <div class="flex items-center gap-5">
             <button
-              class="size-40 flex items-center justify-center text-regular rounded-full cursor-pointer hover:bg-[#f5f5f5]"
+              v-if="conversation.type === 'group'"
+              type="button"
+              class="button size-40 rounded-full text-secondary hover:(bg-hover text-primary)"
+              title="群公告"
+              aria-label="打开群公告"
+              @click="emit('openGroupPanel', 'announcement')"
+            >
+              <Icon name="i-lucide:megaphone" :size="18" />
+            </button>
+            <button
+              v-if="conversation.type === 'group'"
+              type="button"
+              class="button size-40 rounded-full text-secondary hover:(bg-hover text-primary)"
+              title="群成员"
+              aria-label="打开群成员列表"
+              @click="emit('openGroupPanel', 'members')"
+            >
+              <Icon name="i-lucide:users" :size="18" />
+            </button>
+            <button
+              type="button"
+              class="button size-40 rounded-full text-secondary hover:(bg-hover text-primary)"
               title="语音通话"
+              aria-label="发起语音通话"
+              @click="emit('call', 'voice')"
             >
               <Icon name="i-lucide:phone" :size="18" />
             </button>
             <button
-              class="size-40 flex items-center justify-center text-regular rounded-full cursor-pointer hover:bg-[#f5f5f5]"
+              type="button"
+              class="button size-40 rounded-full text-secondary hover:(bg-hover text-primary)"
               title="视频通话"
+              aria-label="发起视频通话"
+              @click="emit('call', 'video')"
             >
               <Icon name="i-lucide:video" :size="18" />
             </button>
-            <button
-              class="size-40 flex items-center justify-center text-regular rounded-full cursor-pointer hover:bg-[#f5f5f5]"
-              title="更多"
+            <a-dropdown
+              :trigger="['click']"
+              :menu="{ items: headerActionItems, onClick: handleHeaderAction }"
             >
-              <Icon name="i-lucide:more-vertical" :size="18" />
-            </button>
+              <button
+                type="button"
+                class="button size-40 rounded-full text-secondary hover:(bg-hover text-primary)"
+                title="更多"
+                aria-label="打开会话更多操作"
+              >
+                <Icon name="i-lucide:more-vertical" :size="18" />
+              </button>
+            </a-dropdown>
           </div>
         </div>
 
-        <!-- Message list -->
-        <div class="flex-1 overflow-hidden">
-          <MessageList
-            ref="messageListRef"
-            :messages="messages"
-            @retry="handleRetry"
-            @recall="handleRecall"
-            @reaction="handleReaction"
-            @scroll-to-bottom="handleScrollToBottom"
-          />
-        </div>
+        <Transition name="conversation-content" mode="out-in">
+          <div :key="conversation.id" class="flex-1 overflow-hidden">
+            <MessageList
+              ref="messageListRef"
+              :favorite-message-ids="favoriteMessageIds"
+              :messages="messages"
+              :typing="typing"
+              :compact="settings.compactMode"
+              @retry="handleRetry"
+              @recall="handleRecall"
+              @delete="(message) => emit('deleteMessage', message)"
+              @copy="(message) => emit('copyMessage', message)"
+              @reply="handleReply"
+              @edit="handleEdit"
+              @favorite="(message) => emit('toggleFavorite', message)"
+              @reaction="handleReaction"
+              @preview-image="(url) => emit('previewImage', url)"
+              @download="(message) => emit('downloadMessage', message)"
+              @show-user="(user) => emit('showUser', user)"
+              @scroll-to-bottom="handleScrollToBottom"
+            />
+          </div>
+        </Transition>
 
-        <!-- Editor -->
-        <div class="border-t-1 border-solid border-[#E8E8E8]">
+        <div class="border-t-1 border-t-solid border-color-1">
           <MessageEditor
             ref="editorRef"
+            :reply-message="replyMessage"
+            :edit-message="editMessage"
+            :settings="settings"
             @send="handleSend"
             @typing="handleTyping"
             @stop-typing="handleStopTyping"
+            @cancel-compose="clearComposeContext"
           />
         </div>
       </template>
@@ -98,166 +162,118 @@
 <script setup lang="ts">
 import MessageList from './list/index.vue'
 import MessageEditor from './editor/index.vue'
-import type { Conversation, Message, MessageType, UserInfo } from '../types'
+import { h } from 'vue'
+import type { MenuProps } from 'antdv-next'
+import { Icon } from '@/components'
+import type {
+  ChatSendPayload,
+  ChatSettings,
+  Conversation,
+  GroupPanelTab,
+  Message,
+  UserInfo,
+} from '../types'
+import { statusText } from '../../utils'
 
 interface Props {
   conversation?: Conversation
+  favoriteMessageIds?: string[]
+  messages?: Message[]
+  typing?: boolean
+  settings?: ChatSettings
 }
 
-const props = defineProps<Props>()
+const props = withDefaults(defineProps<Props>(), {
+  messages: () => [],
+  favoriteMessageIds: () => [],
+  typing: false,
+  settings: () => ({
+    enterToSend: true,
+    desktopNotify: true,
+    messageSound: true,
+    readReceipt: true,
+    dnd: false,
+    compactMode: false,
+    autoArchiveDays: 30,
+  }),
+})
 
 const emit = defineEmits<{
-  send: [message: { type: MessageType; content: string }]
+  send: [message: ChatSendPayload]
   typing: []
   stopTyping: []
+  retryMessage: [message: Message]
+  recallMessage: [message: Message]
+  deleteMessage: [message: Message]
+  copyMessage: [message: Message]
+  previewImage: [url: string]
+  downloadMessage: [message: Message]
+  showUser: [user: UserInfo]
+  toggleFavorite: [message: Message]
+  reactionMessage: [message: Message, emoji: string]
+  call: [type: 'voice' | 'video']
+  togglePin: [conversation: Conversation]
+  toggleMute: [conversation: Conversation]
+  clearMessages: [conversation: Conversation]
+  openGroupPanel: [tab: GroupPanelTab]
 }>()
 
 const messageListRef = ref<InstanceType<typeof MessageList>>()
 const editorRef = ref<InstanceType<typeof MessageEditor>>()
+const replyMessage = ref<Message | null>(null)
+const editMessage = ref<Message | null>(null)
 
-// Mock messages - in real app would be loaded from store/API
-const messages = ref<Message[]>([
+const headerActionItems = computed<MenuProps['items']>(() => [
   {
-    id: '1',
-    conversationId: '1',
-    type: 'text',
-    content: '你好，最近项目进展如何？',
-    senderId: '1',
-    senderInfo: {
-      id: '1',
-      name: '张三',
-      avatar: 'https://i.pravatar.cc/100?img=1',
-    },
-    timestamp: '10:30',
-    status: 'read',
+    key: 'pin',
+    label: props.conversation?.pinned ? '取消置顶' : '置顶会话',
+    icon: renderMenuIcon(
+      props.conversation?.pinned ? 'i-lucide:pin-off' : 'i-lucide:pin'
+    ),
   },
   {
-    id: '2',
-    conversationId: '1',
-    type: 'text',
-    content: '挺好的，已经完成了第一阶段的开发！',
-    senderId: 'me',
-    senderInfo: {
-      id: 'me',
-      name: '我',
-      avatar: 'https://i.pravatar.cc/100?img=10',
-    },
-    timestamp: '10:31',
-    status: 'read',
+    key: 'mute',
+    label: props.conversation?.muted ? '取消免打扰' : '消息免打扰',
+    icon: renderMenuIcon(
+      props.conversation?.muted ? 'i-lucide:bell' : 'i-lucide:bell-off'
+    ),
   },
   {
-    id: '3',
-    conversationId: '1',
-    type: 'image',
-    content: 'https://i.pravatar.cc/300?img=5',
-    senderId: '1',
-    senderInfo: {
-      id: '1',
-      name: '张三',
-      avatar: 'https://i.pravatar.cc/100?img=1',
-    },
-    timestamp: '10:32',
-    status: 'read',
+    type: 'divider',
   },
   {
-    id: '4',
-    conversationId: '1',
-    type: 'emoji',
-    content: '👍',
-    senderId: 'me',
-    senderInfo: {
-      id: 'me',
-      name: '我',
-      avatar: 'https://i.pravatar.cc/100?img=10',
-    },
-    timestamp: '10:33',
-    status: 'read',
-    reactions: [{ emoji: '👍', count: 1, users: ['1'] }],
-  },
-  {
-    id: '5',
-    conversationId: '1',
-    type: 'text',
-    content: '太棒了！明天开会讨论下阶段计划？',
-    senderId: '1',
-    senderInfo: {
-      id: '1',
-      name: '张三',
-      avatar: 'https://i.pravatar.cc/100?img=1',
-    },
-    timestamp: '10:35',
-    status: 'read',
+    key: 'clear',
+    label: '清空消息',
+    danger: true,
+    icon: renderMenuIcon('i-lucide:eraser'),
   },
 ])
 
-const isMine = (senderId: string) => senderId === 'me'
-
-function statusText(status?: UserInfo['status']) {
-  switch (status) {
-    case 'online':
-      return '在线'
-    case 'offline':
-      return '离线'
-    case 'busy':
-      return '忙碌'
-    case 'away':
-      return '离开'
-    default:
-      return ''
+const conversationStatus = computed(() => {
+  if (props.typing) return '正在输入…'
+  if (props.conversation?.type === 'group') {
+    const count = props.conversation.groupInfo?.memberCount ?? 0
+    return count > 0 ? `${count} 位成员` : '群聊'
   }
-}
+  return statusText(props.conversation?.userInfo?.status)
+})
 
-function handleSend(payload: { type: MessageType; content: string }) {
-  const newMessage: Message = {
-    id: Date.now().toString(),
-    conversationId: props.conversation?.id || '',
-    type: payload.type,
-    content: payload.content,
-    senderId: 'me',
-    senderInfo: {
-      id: 'me',
-      name: '我',
-      avatar: 'https://i.pravatar.cc/100?img=10',
-    },
-    timestamp: new Date().toLocaleTimeString('zh-CN', {
-      hour: '2-digit',
-      minute: '2-digit',
-    }),
-    status: 'sending',
-  }
-  messages.value.push(newMessage)
-
-  // Scroll to bottom
-  setTimeout(() => {
-    messageListRef.value?.scrollToBottom()
-  }, 50)
-
+function handleSend(payload: ChatSendPayload) {
   emit('send', payload)
+  clearComposeContext()
+  nextTick(() => messageListRef.value?.scrollToBottom())
 }
 
 function handleRetry(message: Message) {
-  message.status = 'sending'
-  // Retry logic would go here
+  emit('retryMessage', message)
 }
 
 function handleRecall(message: Message) {
-  // Recall logic would go here
+  emit('recallMessage', message)
 }
 
 function handleReaction(message: Message, emoji: string) {
-  const reaction = message.reactions?.find((r) => r.emoji === emoji)
-  if (reaction) {
-    if (reaction.users.includes('me')) {
-      reaction.count--
-      reaction.users = reaction.users.filter((u) => u !== 'me')
-    } else {
-      reaction.count++
-      reaction.users.push('me')
-    }
-  } else {
-    message.reactions = message.reactions || []
-    message.reactions.push({ emoji, count: 1, users: ['me'] })
-  }
+  emit('reactionMessage', message, emoji)
 }
 
 function handleTyping() {
@@ -271,4 +287,77 @@ function handleStopTyping() {
 function handleScrollToBottom() {
   messageListRef.value?.scrollToBottom()
 }
+
+function handleReply(message: Message) {
+  replyMessage.value = message
+  editMessage.value = null
+  nextTick(() => editorRef.value?.setReply())
+}
+
+function handleEdit(message: Message) {
+  editMessage.value = message
+  replyMessage.value = null
+  nextTick(() => editorRef.value?.setEdit(message))
+}
+
+function clearComposeContext() {
+  replyMessage.value = null
+  editMessage.value = null
+}
+
+function renderMenuIcon(name: string) {
+  return () => h(Icon, { name, size: 15 })
+}
+
+function handleHeaderAction({ key }: { key: string }) {
+  if (!props.conversation) return
+
+  switch (key) {
+    case 'pin':
+      emit('togglePin', props.conversation)
+      break
+    case 'mute':
+      emit('toggleMute', props.conversation)
+      break
+    case 'clear':
+      emit('clearMessages', props.conversation)
+      break
+  }
+}
 </script>
+
+<style scoped>
+.conversation-chip {
+  display: inline-flex;
+  gap: 3px;
+  align-items: center;
+  padding: 1px 5px;
+  color: rgb(var(--w-text-secondary));
+  background-color: rgb(var(--w-bg-fill-1));
+  border-radius: 4px;
+}
+
+.conversation-content-enter-active,
+.conversation-content-leave-active {
+  transition:
+    opacity 180ms ease,
+    transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.conversation-content-enter-from {
+  opacity: 0;
+  transform: translateX(10px);
+}
+
+.conversation-content-leave-to {
+  opacity: 0;
+  transform: translateX(-8px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .conversation-content-enter-active,
+  .conversation-content-leave-active {
+    transition-duration: 1ms;
+  }
+}
+</style>

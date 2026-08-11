@@ -1,0 +1,603 @@
+import type {
+  Contact,
+  Conversation,
+  DirectoryItem,
+  GroupMember,
+  Message,
+} from './components/types'
+
+const generatedMemberFamilyNames = [
+  '陈',
+  '林',
+  '周',
+  '徐',
+  '孙',
+  '胡',
+  '朱',
+  '高',
+  '何',
+  '郭',
+] as const
+const generatedMemberGivenNames = [
+  '晨',
+  '悦',
+  '宇',
+  '宁',
+  '思远',
+  '嘉怡',
+  '子涵',
+  '文博',
+  '雨桐',
+  '浩然',
+] as const
+const generatedMemberTitles = [
+  '前端工程师',
+  '后端工程师',
+  '产品经理',
+  '体验设计师',
+  '测试工程师',
+  '数据分析师',
+] as const
+const generatedMemberDepartments = [
+  '研发中心',
+  '产品中心',
+  '体验设计部',
+  '质量保障部',
+  '数据智能部',
+] as const
+const generatedMemberStatuses = ['online', 'offline', 'busy', 'away'] as const
+
+export function createGroupMembers(
+  groupId: string,
+  memberCount: number,
+  contacts: Contact[] = createInitialContacts()
+): GroupMember[] {
+  const count = Math.max(1, Math.floor(memberCount))
+  const currentUser: GroupMember = {
+    id: 'me',
+    name: '我',
+    avatar: 'https://i.pravatar.cc/100?img=10',
+    status: 'online',
+    title: '产品经理',
+    department: '产品中心',
+    role: 'owner',
+  }
+  const knownMembers = contacts
+    .slice(0, count - 1)
+    .map<GroupMember>((contact, index) => ({
+      ...contact,
+      role: index === 0 ? 'admin' : 'member',
+    }))
+  const members = [currentUser, ...knownMembers]
+  const seed = [...groupId].reduce(
+    (total, character) => total + character.charCodeAt(0),
+    0
+  )
+
+  for (let index = members.length; index < count; index += 1) {
+    const value = seed + index
+    const familyName =
+      generatedMemberFamilyNames[value % generatedMemberFamilyNames.length]
+    const givenName =
+      generatedMemberGivenNames[
+        Math.floor(value / generatedMemberFamilyNames.length) %
+          generatedMemberGivenNames.length
+      ]
+
+    members.push({
+      id: `${groupId}-member-${index}`,
+      name: `${familyName}${givenName}`,
+      status: generatedMemberStatuses[value % generatedMemberStatuses.length],
+      title: generatedMemberTitles[value % generatedMemberTitles.length],
+      department:
+        generatedMemberDepartments[value % generatedMemberDepartments.length],
+      role: index === 2 ? 'admin' : 'member',
+    })
+  }
+
+  return members
+}
+
+export function createInitialConversations(): Conversation[] {
+  return [
+    {
+      id: '1',
+      type: 'private',
+      title: '张三',
+      avatar: 'https://i.pravatar.cc/100?img=1',
+      lastMessage: '好的，明天见！',
+      lastMessageTime: '10:30',
+      unreadCount: 2,
+      pinned: true,
+      userInfo: {
+        id: '1',
+        name: '张三',
+        status: 'online',
+        avatar: 'https://i.pravatar.cc/100?img=1',
+        title: '前端负责人',
+        department: '研发中心 / 前端平台组',
+        company: '悟乎科技',
+        email: 'zhangsan@wuhu.dev',
+        phone: '138 0000 1001',
+        location: '杭州总部 12F',
+        bio: '负责中后台框架、组件体系和性能体验建设。',
+        remark: '项目 A 技术负责人',
+        tags: ['前端', '项目 A', '核心成员'],
+        joinedAt: '2023-04-12',
+        lastActiveAt: '刚刚在线',
+      },
+    },
+    {
+      id: '2',
+      type: 'private',
+      title: '李四',
+      avatar: 'https://i.pravatar.cc/100?img=2',
+      lastMessage: '项目进展如何？',
+      lastMessageTime: '09:15',
+      unreadCount: 0,
+      userInfo: {
+        id: '2',
+        name: '李四',
+        status: 'offline',
+        avatar: 'https://i.pravatar.cc/100?img=2',
+        title: '后端工程师',
+        department: '研发中心 / 服务端组',
+        company: '悟乎科技',
+        email: 'lisi@wuhu.dev',
+        phone: '138 0000 1002',
+        location: '上海分部 8F',
+        bio: '负责业务 API、权限服务和接口联调。',
+        remark: '本周负责接口联调',
+        tags: ['后端', '接口', '项目 A'],
+        joinedAt: '2022-11-08',
+        lastActiveAt: '昨天 18:42',
+      },
+    },
+    {
+      id: '3',
+      type: 'group',
+      title: '产品研发群',
+      avatar: 'https://i.pravatar.cc/100?img=3',
+      lastMessage: '王五：代码已提交',
+      lastMessageTime: '昨天',
+      unreadCount: 5,
+      mentioned: true,
+      groupInfo: {
+        id: '3',
+        name: '产品研发群',
+        memberCount: 28,
+        members: createGroupMembers('3', 28),
+        announcement: {
+          content:
+            '本周四 15:00 进行版本评审，请各模块负责人提前更新进度和风险项。',
+          updatedAt: '今天 09:30',
+          updatedBy: '张三',
+        },
+      },
+    },
+    {
+      id: '4',
+      type: 'private',
+      title: '王五',
+      avatar: 'https://i.pravatar.cc/100?img=4',
+      lastMessage: '辛苦了，早点休息',
+      lastMessageTime: '昨天',
+      unreadCount: 0,
+      muted: true,
+      archived: true,
+      userInfo: {
+        id: '4',
+        name: '王五',
+        status: 'away',
+        avatar: 'https://i.pravatar.cc/100?img=4',
+        title: '测试负责人',
+        department: '质量保障部',
+        company: '悟乎科技',
+        email: 'wangwu@wuhu.dev',
+        phone: '138 0000 1004',
+        location: '杭州总部 9F',
+        bio: '关注发布质量、自动化测试和回归流程。',
+        remark: '发布前请同步测试计划',
+        tags: ['测试', '质量', '发布'],
+        joinedAt: '2021-09-18',
+        lastActiveAt: '今天 09:20',
+      },
+    },
+  ]
+}
+
+export function createInitialContacts(): Contact[] {
+  return [
+    {
+      id: '1',
+      name: '张三',
+      avatar: 'https://i.pravatar.cc/100?img=1',
+      status: 'online',
+      title: '前端负责人',
+      department: '研发中心 / 前端平台组',
+      company: '悟乎科技',
+      email: 'zhangsan@wuhu.dev',
+      phone: '138 0000 1001',
+      location: '杭州总部 12F',
+      bio: '负责中后台框架、组件体系和性能体验建设。',
+      remark: '项目 A 技术负责人',
+      tags: ['前端', '项目 A', '核心成员'],
+      joinedAt: '2023-04-12',
+      lastActiveAt: '刚刚在线',
+    },
+    {
+      id: '2',
+      name: '李四',
+      avatar: 'https://i.pravatar.cc/100?img=2',
+      status: 'offline',
+      title: '后端工程师',
+      department: '研发中心 / 服务端组',
+      company: '悟乎科技',
+      email: 'lisi@wuhu.dev',
+      phone: '138 0000 1002',
+      location: '上海分部 8F',
+      bio: '负责业务 API、权限服务和接口联调。',
+      remark: '本周负责接口联调',
+      tags: ['后端', '接口', '项目 A'],
+      joinedAt: '2022-11-08',
+      lastActiveAt: '昨天 18:42',
+    },
+    {
+      id: '3',
+      name: '王五',
+      avatar: 'https://i.pravatar.cc/100?img=3',
+      status: 'busy',
+      title: '后端负责人',
+      department: '研发中心 / 架构组',
+      company: '悟乎科技',
+      email: 'wangwu.dev@wuhu.dev',
+      phone: '138 0000 1003',
+      location: '深圳分部 6F',
+      bio: '维护核心服务稳定性，推进服务治理和代码审查。',
+      remark: '代码审查请提前预约',
+      tags: ['后端', '架构', 'Code Review'],
+      joinedAt: '2021-07-20',
+      lastActiveAt: '10 分钟前',
+    },
+    {
+      id: '4',
+      name: '赵六',
+      avatar: 'https://i.pravatar.cc/100?img=4',
+      status: 'away',
+      title: '测试负责人',
+      department: '质量保障部',
+      company: '悟乎科技',
+      email: 'zhaoliu@wuhu.dev',
+      phone: '138 0000 1004',
+      location: '杭州总部 9F',
+      bio: '关注发布质量、自动化测试和回归流程。',
+      remark: '发布前请同步测试计划',
+      tags: ['测试', '质量', '发布'],
+      joinedAt: '2021-09-18',
+      lastActiveAt: '今天 09:20',
+    },
+    {
+      id: '5',
+      name: 'Alice',
+      avatar: 'https://i.pravatar.cc/100?img=11',
+      status: 'online',
+      title: '产品设计师',
+      department: '体验设计部',
+      company: '悟乎科技',
+      email: 'alice@wuhu.dev',
+      phone: '138 0000 1005',
+      location: '远程 / 新加坡',
+      bio: '负责跨端体验设计、设计规范和海外用户研究。',
+      remark: '海外版本设计负责人',
+      tags: ['设计', '海外'],
+      joinedAt: '2024-02-01',
+      lastActiveAt: '刚刚在线',
+    },
+    {
+      id: '6',
+      name: 'Bob',
+      avatar: 'https://i.pravatar.cc/100?img=12',
+      status: 'busy',
+      title: '数据产品经理',
+      department: '数据智能部',
+      company: '悟乎科技',
+      email: 'bob@wuhu.dev',
+      phone: '138 0000 1006',
+      location: '北京分部 15F',
+      bio: '负责数据看板、指标体系和业务分析需求。',
+      remark: '数据看板负责人',
+      tags: ['数据', '看板', '产品'],
+      joinedAt: '2020-05-14',
+      lastActiveAt: '今天 11:08',
+    },
+    {
+      id: '7',
+      name: '陈明',
+      avatar: 'https://i.pravatar.cc/100?img=13',
+      status: 'online',
+      title: '测试工程师',
+      department: '质量保障部',
+      company: '悟乎科技',
+      email: 'chenming@wuhu.dev',
+      phone: '138 0000 1007',
+      location: '杭州总部 9F',
+      bio: '负责自动化用例维护和缺陷跟踪。',
+      tags: ['测试'],
+      joinedAt: '2023-12-04',
+      lastActiveAt: '刚刚在线',
+    },
+    {
+      id: '8',
+      name: '高远',
+      avatar: 'https://i.pravatar.cc/100?img=14',
+      status: 'offline',
+      title: '运维工程师',
+      department: '平台工程部',
+      company: '悟乎科技',
+      email: 'gaoyuan@wuhu.dev',
+      phone: '138 0000 1008',
+      location: '成都分部 5F',
+      bio: '负责发布环境、监控告警和稳定性保障。',
+      remark: '紧急发布窗口联系人',
+      tags: ['运维', '发布', '监控'],
+      joinedAt: '2022-03-22',
+      lastActiveAt: '昨天 20:16',
+    },
+  ]
+}
+
+export function createInitialGroups(): Conversation[] {
+  return [
+    {
+      id: 'g1',
+      type: 'group',
+      title: '产品研发群',
+      avatar: 'https://i.pravatar.cc/100?img=5',
+      lastMessage: '代码审查完成',
+      lastMessageTime: '10:30',
+      unreadCount: 0,
+      groupInfo: {
+        id: 'g1',
+        name: '产品研发群',
+        memberCount: 28,
+        members: createGroupMembers('g1', 28),
+        announcement: {
+          content: '代码冻结时间为周五 18:00，合并前请完成自测并关联对应需求。',
+          updatedAt: '昨天 17:20',
+          updatedBy: '王五',
+        },
+      },
+    },
+    {
+      id: 'g2',
+      type: 'group',
+      title: '产品汪群',
+      avatar: 'https://i.pravatar.cc/100?img=6',
+      lastMessage: '明天评审',
+      lastMessageTime: '昨天',
+      unreadCount: 3,
+      groupInfo: {
+        id: 'g2',
+        name: '产品汪群',
+        memberCount: 15,
+        members: createGroupMembers('g2', 15),
+        announcement: {
+          content: '明天上午 10:00 评审下季度路线图，请提前补充用户反馈。',
+          updatedAt: '昨天 16:40',
+          updatedBy: 'Bob',
+        },
+      },
+    },
+  ]
+}
+
+export function createInitialMessagesByConversation(): Record<
+  string,
+  Message[]
+> {
+  return {
+    '1': [
+      {
+        id: '1',
+        conversationId: '1',
+        type: 'text',
+        content: '你好，最近项目进展如何？',
+        senderId: '1',
+        senderInfo: {
+          id: '1',
+          name: '张三',
+          avatar: 'https://i.pravatar.cc/100?img=1',
+          status: 'online',
+          title: '前端负责人',
+          department: '研发中心 / 前端平台组',
+        },
+        timestamp: '10:30',
+        status: 'read',
+      },
+      {
+        id: '2',
+        conversationId: '1',
+        type: 'text',
+        content: '挺好的，已经完成了第一阶段的开发！',
+        senderId: 'me',
+        senderInfo: {
+          id: 'me',
+          name: '我',
+          avatar: 'https://i.pravatar.cc/100?img=10',
+          status: 'online',
+          title: '产品经理',
+          department: '产品中心',
+          company: '悟乎科技',
+          email: 'me@wuhu.dev',
+          phone: '138 0000 0000',
+          location: '杭州总部 10F',
+          bio: '负责产品规划、需求协同和项目推进。',
+          remark: '当前登录用户',
+          tags: ['产品', '协同'],
+          joinedAt: '2022-01-10',
+          lastActiveAt: '在线',
+        },
+        timestamp: '10:31',
+        status: 'read',
+      },
+      {
+        id: '3',
+        conversationId: '1',
+        type: 'image',
+        content: 'https://i.pravatar.cc/300?img=5',
+        senderId: '1',
+        senderInfo: {
+          id: '1',
+          name: '张三',
+          avatar: 'https://i.pravatar.cc/100?img=1',
+          status: 'online',
+          title: '前端负责人',
+          department: '研发中心 / 前端平台组',
+        },
+        timestamp: '10:32',
+        status: 'read',
+      },
+      {
+        id: '4',
+        conversationId: '1',
+        type: 'emoji',
+        content: '👍',
+        senderId: 'me',
+        senderInfo: {
+          id: 'me',
+          name: '我',
+          avatar: 'https://i.pravatar.cc/100?img=10',
+          status: 'online',
+          title: '产品经理',
+          department: '产品中心',
+          company: '悟乎科技',
+          email: 'me@wuhu.dev',
+          phone: '138 0000 0000',
+          location: '杭州总部 10F',
+          bio: '负责产品规划、需求协同和项目推进。',
+          remark: '当前登录用户',
+          tags: ['产品', '协同'],
+          joinedAt: '2022-01-10',
+          lastActiveAt: '在线',
+        },
+        timestamp: '10:33',
+        status: 'read',
+        reactions: [{ emoji: '👍', count: 1, users: ['1'] }],
+      },
+    ],
+    '3': [
+      {
+        id: '5',
+        conversationId: '3',
+        type: 'text',
+        content: '代码已提交，麻烦大家看一下 MR。',
+        senderId: '4',
+        senderInfo: {
+          id: '4',
+          name: '王五',
+          avatar: 'https://i.pravatar.cc/100?img=4',
+          status: 'away',
+          title: '测试负责人',
+          department: '质量保障部',
+          company: '悟乎科技',
+          email: 'zhaoliu@wuhu.dev',
+          phone: '138 0000 1004',
+          location: '杭州总部 9F',
+          bio: '关注发布质量、自动化测试和回归流程。',
+          remark: '发布前请同步测试计划',
+          tags: ['测试', '质量', '发布'],
+          joinedAt: '2021-09-18',
+          lastActiveAt: '今天 09:20',
+        },
+        timestamp: '昨天',
+        status: 'read',
+      },
+    ],
+  }
+}
+
+export const defaultDirectorySearchHistory = [
+  '产品研发群',
+  '前端',
+  'Alice',
+  '设计评审',
+  '数据看板',
+  '测试',
+  'AI 产品',
+]
+
+export function createDirectoryCandidates(): DirectoryItem[] {
+  return [
+    {
+      id: 'directory-user-1',
+      type: 'user',
+      name: '林悦',
+      avatar: 'https://i.pravatar.cc/100?img=25',
+      status: 'online',
+      title: '交互设计师',
+      department: '体验设计部',
+      tags: ['设计', '交互', '原型'],
+    },
+    {
+      id: 'directory-user-2',
+      type: 'user',
+      name: '周航',
+      avatar: 'https://i.pravatar.cc/100?img=15',
+      status: 'away',
+      title: 'DevOps 工程师',
+      department: '平台工程部',
+      tags: ['运维', '发布', '云原生'],
+    },
+    {
+      id: 'directory-user-3',
+      type: 'user',
+      name: 'Mia Chen',
+      avatar: 'https://i.pravatar.cc/100?img=32',
+      status: 'offline',
+      title: '海外产品经理',
+      department: '国际业务部',
+      tags: ['产品', '海外', '增长'],
+    },
+    {
+      id: 'directory-user-4',
+      type: 'user',
+      name: '许言',
+      avatar: 'https://i.pravatar.cc/100?img=18',
+      status: 'busy',
+      title: '数据分析师',
+      department: '数据智能部',
+      tags: ['数据', '看板', '指标'],
+    },
+    {
+      id: 'directory-group-1',
+      type: 'group',
+      name: '前端技术交流',
+      avatar:
+        'https://api.dicebear.com/9.x/initials/svg?seed=Frontend%20Community',
+      category: 'study',
+      description: 'Vue、工程化与体验优化交流',
+      memberCount: 186,
+      tags: ['前端', 'Vue', '工程化'],
+    },
+    {
+      id: 'directory-group-2',
+      type: 'group',
+      name: 'AI 产品研究社',
+      avatar: 'https://api.dicebear.com/9.x/initials/svg?seed=AI%20Product',
+      category: 'interest',
+      description: 'AI 产品趋势、原型和案例分享',
+      memberCount: 92,
+      tags: ['AI', '产品', '研究'],
+    },
+    {
+      id: 'directory-group-3',
+      type: 'group',
+      name: '城市跑步计划',
+      avatar: 'https://api.dicebear.com/9.x/initials/svg?seed=Running',
+      category: 'interest',
+      description: '每周跑步活动与健康打卡',
+      memberCount: 64,
+      tags: ['运动', '健康'],
+    },
+  ]
+}
