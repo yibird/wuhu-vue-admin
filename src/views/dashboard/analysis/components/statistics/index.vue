@@ -1,40 +1,19 @@
-<template>
-  <n-card content-style="padding: 0;">
-    <n-tabs type="line" size="large" :tabs-padding="20" pane-style="padding: 20px;" animated>
-      <template #suffix>
-        <div class="px-20 flex items-center gap-10">
-          <n-radio-group name="radio-group-1">
-            <n-radio-button
-              v-for="item in options"
-              :key="item.value"
-              :value="item.value"
-              :label="item.title"
-            />
-          </n-radio-group>
-          <n-date-picker type="daterange" clearable class="w-240" />
-        </div>
-      </template>
-      <n-tab-pane v-for="item in items" :name="item.name" :tab="item.title">
-        <component :is="item.component" />
-      </n-tab-pane>
-    </n-tabs>
-  </n-card>
-</template>
 <script lang="ts" setup>
-import salesRevenue from './sales-revenue.vue';
-import visitCount from './visit-count.vue';
+import SalesRevenue from './SalesRevenue.vue'
+import VisitCount from './VisitCount.vue'
+
 const items = [
   {
     name: 'salesRevenue',
     title: '销售额',
-    component: salesRevenue,
+    component: SalesRevenue,
   },
   {
     name: 'visitCount',
     title: '访问量',
-    component: visitCount,
+    component: VisitCount,
   },
-];
+]
 
 const options = [
   {
@@ -61,5 +40,101 @@ const options = [
     title: '本年',
     value: 'year',
   },
-];
+]
+
+const activeRange = shallowRef('week')
+const chartRefreshing = shallowRef(false)
+
+function triggerChartFeedback() {
+  chartRefreshing.value = true
+}
 </script>
+
+<template>
+  <a-card
+    class="overflow-hidden rounded-8 border-1 border-solid border-color-2 shadow-[var(--w-shadow-card)]"
+    variant="borderless"
+    :styles="{ body: { padding: '0' } }"
+  >
+    <div
+      class="flex flex-wrap items-center justify-between gap-12 border-b-1 border-b-solid border-color-2 bg-container px-14 py-12 sm:px-18"
+    >
+      <div class="min-w-0">
+        <div class="text-sm text-main font-700">经营趋势</div>
+        <div class="mt-2 text-xs text-secondary">销售额与访问量对比分析</div>
+      </div>
+      <div class="min-w-0 flex flex-wrap items-center justify-end gap-8">
+        <a-radio-group
+          v-model:value="activeRange"
+          name="analysis-range"
+          @change="triggerChartFeedback"
+        >
+          <a-radio-button
+            v-for="item in options"
+            :key="item.value"
+            :value="item.value"
+          >
+            {{ item.title }}
+          </a-radio-button>
+        </a-radio-group>
+        <a-date-picker
+          type="daterange"
+          allow-clear
+          class="w-220 max-sm:w-full"
+          @change="triggerChartFeedback"
+        />
+      </div>
+    </div>
+
+    <a-tabs
+      class="analysis-tabs"
+      :tabs-padding="18"
+      :tab-bar-style="{ padding: '0 18px' }"
+      :animated="{ inkBar: true, tabPane: false }"
+      destroy-on-hidden
+    >
+      <a-tab-pane
+        v-for="item in items"
+        :key="item.name"
+        :name="item.name"
+        :tab="item.title"
+      >
+        <div
+          class="analysis-chart-pane h-360 p-12 max-md:h-300"
+          :class="{ 'is-refreshing': chartRefreshing }"
+          @animationend="chartRefreshing = false"
+        >
+          <component :is="item.component" />
+        </div>
+      </a-tab-pane>
+    </a-tabs>
+  </a-card>
+</template>
+
+<style scoped>
+.analysis-chart-pane {
+  border-radius: 8px;
+}
+
+.analysis-chart-pane.is-refreshing {
+  animation: analysis-chart-feedback 520ms ease-out both;
+}
+
+@keyframes analysis-chart-feedback {
+  0% {
+    background-color: rgb(var(--w-color-primary) / 12%);
+    box-shadow: inset 0 0 0 1px rgb(var(--w-color-primary) / 24%);
+  }
+
+  100% {
+    background-color: transparent;
+    box-shadow: inset 0 0 0 1px transparent;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .analysis-chart-pane.is-refreshing {
+    animation: none;
+  }
+}
+</style>

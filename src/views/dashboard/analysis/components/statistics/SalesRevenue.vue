@@ -1,8 +1,15 @@
-<template>
-  <div ref="chartRef"></div>
-</template>
 <script lang="ts" setup>
-import { VChart, type ISpec } from '@visactor/vchart'
+import {
+  getCssRgbVarAlpha,
+  useEChartsTheme,
+} from '@/composables/useEChartsTheme'
+import { useECharts } from '@/plugins/echarts'
+import VChart from 'vue-echarts'
+import type { EChartsCoreOption } from 'echarts/core'
+
+useECharts()
+
+const { baseChartOption, eChartsThemeName, getEChartsColor } = useEChartsTheme()
 
 const data = [
   { type: 'Nail polish', country: 'Africa', value: 4229 },
@@ -43,70 +50,73 @@ const data = [
   { type: 'Mascara', country: 'USA', value: 11261 },
 ]
 
-const spec = {
-  type: 'area',
-  data: {
-    id: 'areaChart',
-    fields: {
-      country: {
-        domain: ['China', 'USA', 'EU', 'Africa'],
-        sortIndex: 0,
-      },
+const productTypes = [...new Set(data.map((item) => item.type))]
+const countries = ['China', 'USA', 'EU', 'Africa'] as const
+
+const chartOption = computed<EChartsCoreOption>(() => {
+  return {
+    ...baseChartOption.value,
+    grid: {
+      bottom: 58,
+      left: 52,
+      right: 18,
+      top: 18,
     },
-    values: data,
-  },
-  title: {
-    visible: true,
-    text: 'Stacked area chart of cosmetic products sales',
-  },
-  stack: true,
-  xField: 'type',
-  yField: 'value',
-  seriesField: 'country',
-  legends: [{ visible: true, position: 'middle', orient: 'bottom' }],
-  tooltip: {
-    dimension: {
-      updateContent: (data) => {
-        let sum = 0
-        data?.forEach((datum) => {
-          sum += +datum.value!
-        })
-        data?.push({
-          hasShape: false,
-          key: 'Total',
-          value: sum + '',
-        })
-        return data
-      },
+    legend: {
+      bottom: 8,
+      itemHeight: 8,
+      itemWidth: 8,
+      textStyle: { color: getEChartsColor('secondaryText') },
     },
-  },
-} as ISpec
-
-const chartRef = ref<HTMLDivElement>()
-const chartInstance = ref<VChart | null>()
-
-const renderChart = () => {
-  const el = chartRef.value
-  if (!el || chartInstance.value) return
-  chartInstance.value = new VChart(spec, { dom: el })
-  chartInstance.value.renderAsync()
-}
-const destroyChart = () => {
-  chartInstance.value?.release()
-  chartInstance.value = null
-}
-
-onMounted(() => {
-  renderChart()
-})
-onActivated(() => {
-  renderChart()
-})
-
-onBeforeUnmount(() => {
-  destroyChart()
-})
-onDeactivated(() => {
-  destroyChart()
+    tooltip: {
+      ...baseChartOption.value.tooltip,
+      trigger: 'axis',
+    },
+    xAxis: {
+      axisLabel: { color: getEChartsColor('secondaryText') },
+      axisLine: { lineStyle: { color: getEChartsColor('axisLine') } },
+      axisTick: { show: false },
+      data: productTypes,
+      type: 'category',
+    },
+    yAxis: {
+      axisLabel: { color: getEChartsColor('secondaryText') },
+      axisLine: { show: false },
+      splitLine: {
+        lineStyle: {
+          color: getCssRgbVarAlpha(
+            '--w-border-color-2',
+            0.6,
+            'rgba(148, 163, 184, 0.18)'
+          ),
+        },
+      },
+      type: 'value',
+    },
+    series: countries.map((country) => ({
+      areaStyle: { opacity: 0.16 },
+      data: productTypes.map(
+        (type) =>
+          data.find((item) => item.type === type && item.country === country)
+            ?.value ?? 0
+      ),
+      emphasis: { focus: 'series' },
+      lineStyle: { width: 2 },
+      name: country,
+      showSymbol: false,
+      smooth: true,
+      stack: 'total',
+      type: 'line',
+    })),
+  }
 })
 </script>
+
+<template>
+  <VChart
+    :option="chartOption"
+    :theme="eChartsThemeName"
+    autoresize
+    class="full min-h-0"
+  />
+</template>

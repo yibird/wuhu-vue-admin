@@ -1,12 +1,16 @@
-<template>
-  <n-grid :x-gap="10" :y-gap="10" cols="xs:1 s:1 m:2 l:4 xl:4" item-responsive responsive="screen">
-    <n-gi v-for="(item, index) in items" :key="item.id">
-      <Item :item="item" :index="index" />
-    </n-gi>
-  </n-grid>
-</template>
 <script lang="ts" setup>
-import Item from './item.vue';
-import type { CardListProps } from '../types';
-const { items = [] } = defineProps<CardListProps>();
+import Item from './Item.vue'
+import type { CardListProps } from '../types'
+const { items = [] } = defineProps<CardListProps>()
 </script>
+
+<template>
+  <div class="grid grid-cols-1 gap-12 sm:grid-cols-2 xl:grid-cols-4">
+    <Item
+      v-for="(item, index) in items"
+      :key="item.id"
+      :item="item"
+      :index="index"
+    />
+  </div>
+</template>

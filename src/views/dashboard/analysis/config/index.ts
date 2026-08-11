@@ -11,7 +11,7 @@ export const cards: Card[] = [
     value: 100,
     description: '总访问数',
     totalValue: '1000',
-    icon: visitCountIcon
+    icon: visitCountIcon,
   },
   {
     id: 2,
@@ -19,7 +19,7 @@ export const cards: Card[] = [
     value: 1000,
     description: '总成交额',
     totalValue: '1000',
-    icon: transactionIcon
+    icon: transactionIcon,
   },
   {
     id: 3,
@@ -27,14 +27,14 @@ export const cards: Card[] = [
     value: 1000,
     description: '总下载数',
     totalValue: '1000',
-    icon: downloadCountIcon
+    icon: downloadCountIcon,
   },
   {
-    id: 3,
+    id: 4,
     title: '成交数',
     value: 234,
     description: '总成交数',
     totalValue: '1000',
-    icon: totalSalesIcon
-  }
+    icon: totalSalesIcon,
+  },
 ]
