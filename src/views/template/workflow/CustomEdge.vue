@@ -1,47 +1,62 @@
 <script lang="ts" setup>
-import { computed } from 'vue';
-import type { EdgeProps } from '@vue-flow/core';
-import { BaseEdge, EdgeLabelRenderer, getBezierPath, useVueFlow } from '@vue-flow/core';
+import { computed } from 'vue'
+import type { CSSProperties } from 'vue'
+import {
+  BaseEdge,
+  EdgeLabelRenderer,
+  getBezierPath,
+  type EdgeProps,
+} from '@vue-flow/core'
 
-const props = defineProps<EdgeProps>();
-
-const { removeEdges } = useVueFlow();
-
-const path = computed(() => getBezierPath(props));
-</script>
-
-<script lang="ts">
-export default {
+defineOptions({
   inheritAttrs: false,
-};
+})
+
+const props = defineProps<EdgeProps>()
+
+const path = computed(() =>
+  getBezierPath({
+    sourceX: props.sourceX,
+    sourceY: props.sourceY,
+    sourcePosition: props.sourcePosition,
+    targetX: props.targetX,
+    targetY: props.targetY,
+    targetPosition: props.targetPosition,
+    curvature: 0.25,
+  })
+)
+const edgeStyle = computed<CSSProperties>(() => ({
+  stroke: props.selected
+    ? 'rgb(var(--w-color-primary))'
+    : 'rgb(var(--w-text-placeholder))',
+  strokeWidth: props.selected ? 2.5 : 2,
+  strokeLinecap: 'round',
+  strokeLinejoin: 'round',
+  vectorEffect: 'non-scaling-stroke',
+}))
 </script>
 
 <template>
-  <BaseEdge :path="path[0]" />
+  <BaseEdge
+    :id="id"
+    :path="path[0]"
+    :marker-end="markerEnd"
+    :style="edgeStyle"
+  />
 
   <EdgeLabelRenderer>
     <div
+      v-if="label"
+      class="nodrag nopan inline-flex items-center rounded-full border-1 border-color-secondary border-solid bg-main px-8 py-4 shadow-[0_8px_20px_rgb(15_23_42_/_12%)]"
       :style="{
         pointerEvents: 'all',
         position: 'absolute',
-        transform: `translate(-50%, -50%) translate(${path[1]}px,${path[2]}px)`,
+        transform: `translate(-50%, -50%) translate(${path[1]}px, ${path[2]}px)`,
       }"
-      class="nodrag nopan"
     >
-      <button class="edgebutton" @click="removeEdges(id)">×</button>
+      <span class="max-w-80 truncate text-11px text-muted leading-18px">
+        {{ label }}
+      </span>
     </div>
   </EdgeLabelRenderer>
 </template>
-
-<style>
-.edgebutton {
-  border-radius: 999px;
-  cursor: pointer;
-}
-
-.edgebutton:hover {
-  box-shadow:
-    0 0 0 2px pink,
-    0 0 0 4px #f05f75;
-}
-</style>

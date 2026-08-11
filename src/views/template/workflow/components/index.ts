@@ -1,0 +1,8 @@
+export { default as Canvas } from './Canvas.vue'
+export { default as ContextMenu } from './ContextMenu.vue'
+export { default as GovernancePanel } from './GovernancePanel.vue'
+export { default as Header } from './Header.vue'
+export { default as Inspector } from './Inspector.vue'
+export { default as JsonEditor } from './JsonEditor.vue'
+export { default as Sidebar } from './Sidebar.vue'
+export { default as SourcePanel } from './SourcePanel.vue'
