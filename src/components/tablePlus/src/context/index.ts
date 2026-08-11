@@ -1,7 +1,9 @@
 import type { TablePlusProvide } from '../types'
 
 const contextKey = Symbol('context')
-export function useTablePlusProvider<T extends Record<string, any>>(value: TablePlusProvide<T>) {
+export function useTablePlusProvider<T extends Record<string, any>>(
+  value: TablePlusProvide<T>
+) {
   provide(contextKey, value)
 }
 
