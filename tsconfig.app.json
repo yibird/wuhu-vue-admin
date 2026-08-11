@@ -7,16 +7,14 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "esModuleInterop": true,
-
-    "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"],
-      "#/*": ["typings/*"],
-      "#mock/*": ["mock/*"]
+      "@/*": ["./src/*"],
+      "#/*": ["./types/*"],
+      "#mock/*": ["./mock/*"]
     }
   },
   "include": [
-    "typings/*.d.ts",
+    "types/*.d.ts",
     "build/**/*.d.ts",
     "src/**/*.ts",
     "src/**/*.tsx",

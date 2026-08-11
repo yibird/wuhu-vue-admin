@@ -1,22 +1,27 @@
-import { defineConfig } from 'vite'
-import { createResolve, createServer, createPlugin } from './build'
+import { defineConfig, loadEnv, type ConfigEnv } from 'vite'
+import { resolve } from 'node:path'
+import {
+  createBuild,
+  createOptimizeDeps,
+  createPlugin,
+  createResolve,
+  createServer,
+} from './build/index.ts'
 
-export default defineConfig({
-  resolve: createResolve(),
-  server: createServer(),
-  plugins: [createPlugin()],
-  envDir: 'env',
-  optimizeDeps: {
-    include: [
-      'vue',
-      'vue-i18n',
-      'naive-ui',
-      'vue-router',
-      'pinia',
-      '@visactor/vchart',
-    ],
-  },
-  devtools: {
-    enabled: false,
-  },
+export default defineConfig(({ command, mode }: ConfigEnv) => {
+  const envDir = resolve(process.cwd(), 'env')
+  const env = loadEnv(mode, envDir, '')
+
+  return {
+    envDir,
+    resolve: createResolve(),
+    server: createServer(env),
+    plugins: createPlugin({ command, env }),
+    optimizeDeps: createOptimizeDeps(),
+    build: createBuild(),
+    devtools: { enabled: false },
+    // experimental: {
+    //   bundledDev: true,
+    // },
+  }
 })

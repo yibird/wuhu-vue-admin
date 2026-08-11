@@ -1,0 +1,17 @@
+{
+  "version": 1.1,
+  "atDirectives": [
+    {
+      "name": "@apply",
+      "description": "Apply UnoCSS utilities to the current selector."
+    },
+    {
+      "name": "@screen",
+      "description": "Generate styles for a configured responsive breakpoint."
+    },
+    {
+      "name": "@unocss",
+      "description": "Inject a UnoCSS layer."
+    }
+  ]
+}

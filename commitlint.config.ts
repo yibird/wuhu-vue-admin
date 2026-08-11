@@ -3,7 +3,6 @@ import { defineConfig } from 'cz-git'
 /** @type {import('cz-git').UserConfig} */
 export default defineConfig({
   extends: ['@commitlint/config-conventional'],
-  parserPreset: 'conventional-changelog-atom',
   formatter: '@commitlint/format',
   rules: {
     'type-enum': [
@@ -21,10 +20,10 @@ export default defineConfig({
         'ci', // 修改 CI 配置、脚本
         'revert', // 回滚 commit
         'chore', // 对构建过程或辅助工具和库的更改（不影响源文件、测试用例）
-        'wip' // 对构建过程或辅助工具和库的更改（不影响源文件、测试用例）
-      ]
+        'wip', // 对构建过程或辅助工具和库的更改（不影响源文件、测试用例）
+      ],
     ],
-    'subject-case': [0] // subject大小写不做校验
+    'subject-case': [0], // subject大小写不做校验
   },
   // 提示词配置
   prompt: {
@@ -38,7 +37,7 @@ export default defineConfig({
       footerPrefixesSelect: '选择关联issue前缀（可选）:',
       customFooterPrefix: '输入自定义issue前缀 :',
       footer: '列举关联issue (可选) 例如: #31, #I3244 :\n',
-      confirmCommit: '是否提交或修改commit ?'
+      confirmCommit: '是否提交或修改commit ?',
     },
     types: [
       { value: 'feat', name: '✨ feat:  新增功能', emoji: ':sparkles:' },
@@ -52,7 +51,7 @@ export default defineConfig({
       { value: 'ci', name: '👷 ci:  CI 配置变更', emoji: '👷' },
       { value: 'revert', name: '⏪ revert:  回退提交', emoji: '⏪' },
       { value: 'chore', name: '🔧 chore:  杂项变更', emoji: ':hammer:' },
-      { value: 'wip', name: '🚧 wip:  工作进行中', emoji: '🚧' }
+      { value: 'wip', name: '🚧 wip:  工作进行中', emoji: '🚧' },
     ],
     // 是否使用 emoji 表情
     useEmoji: true,
@@ -74,7 +73,9 @@ export default defineConfig({
     breaklineNumber: 100,
     breaklineChar: '|',
     skipQuestions: ['breaking', 'footerPrefix', 'footer'], // 跳过的步骤
-    issuePrefixes: [{ value: 'closed', name: 'closed:   ISSUES has been processed' }],
+    issuePrefixes: [
+      { value: 'closed', name: 'closed:   ISSUES has been processed' },
+    ],
     customIssuePrefixAlign: 'top',
     emptyIssuePrefixAlias: 'skip',
     customIssuePrefixAlias: 'custom',
@@ -88,6 +89,6 @@ export default defineConfig({
     defaultBody: '',
     defaultIssues: '',
     defaultScope: '',
-    defaultSubject: ''
-  }
+    defaultSubject: '',
+  },
 })

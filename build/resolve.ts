@@ -6,16 +6,16 @@ export function createResolve() {
     alias: [
       {
         find: '@',
-        replacement: pathResolve('src') + '/'
+        replacement: pathResolve('src') + '/',
       },
       {
         find: '#',
-        replacement: pathResolve('typings') + '/'
+        replacement: pathResolve('types') + '/',
       },
       {
         find: '#mock',
-        replacement: pathResolve('mock') + '/'
-      }
-    ]
+        replacement: pathResolve('mock') + '/',
+      },
+    ],
   }
 }

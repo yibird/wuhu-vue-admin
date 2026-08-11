@@ -1,11 +1,10 @@
-import { compression, defineAlgorithm } from 'vite-plugin-compression2'
+import { compression } from 'vite-plugin-compression2'
 
 export function compressionPlugin() {
   return compression({
-    algorithms: [
-      'gzip',
-      'brotliCompress',
-      defineAlgorithm('deflate', { level: 9 }),
-    ],
+    threshold: 10 * 1024,
+    skipIfLargerOrEqual: true,
+    logLevel: 'silent',
+    algorithms: ['gzip', 'brotliCompress'],
   })
 }

@@ -1,11 +1,12 @@
 import Components from 'unplugin-vue-components/vite'
-import { NaiveUiResolver } from 'unplugin-vue-components/resolvers'
+import { AntdvNextResolver } from '@antdv-next/auto-import-resolver'
 
-export function componentsPlugin() {
+export function componentsPlugin(options: { generateDts: boolean }) {
   return Components({
-    resolvers: [NaiveUiResolver()],
+    resolvers: [AntdvNextResolver()],
     dirs: [],
     directoryAsNamespace: false,
+    dts: options.generateDts,
     // dirs: ['src/components'],
     // extensions: ['vue', 'ts', 'tsx'],
     // deep: true,

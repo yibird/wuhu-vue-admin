@@ -6,10 +6,10 @@ yarn-error.log*
 pnpm-debug.log*
 package-lock.json
 yarn.lock
-pnpm-lock.yaml
 
 # ---- Build outputs ----
 dist/
+stats.json
 .cache/
 .temp/
 tmp/

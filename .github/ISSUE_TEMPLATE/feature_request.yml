@@ -1,0 +1,28 @@
+name: Feature request
+description: Propose a focused enhancement
+title: "[Feature]: "
+labels:
+  - enhancement
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: Which user workflow or contributor problem needs solving?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: Describe behavior, API shape, and alternatives considered.
+    validations:
+      required: true
+  - type: checkboxes
+    id: compatibility
+    attributes:
+      label: Compatibility impact
+      options:
+        - label: This changes a public API.
+        - label: This changes persisted data or a schema.
+        - label: This changes routes, menus, or permissions.
