@@ -1,14 +1,19 @@
-<template>
-  <n-card title="系统状态">
-    <n-grid responsive="screen" item-responsive>
-      <n-gi v-for="(item, index) in items" :key="index" span="xs:24 s:24 m:24 l:6 xxl:6">
-        <Item :item="item" />
-      </n-gi>
-    </n-grid>
-  </n-card>
-</template>
 <script lang="ts" setup>
-  import Item from './item.vue'
-  import type { StatusProps } from '../types'
-  const { items = [] } = defineProps<StatusProps>()
+import Item from './item.vue'
+import Card from '../Card.vue'
+import type { StatusProps } from '../types'
+
+const { items = [] } = defineProps<StatusProps>()
 </script>
+
+<template>
+  <Card
+    title="系统状态"
+    icon="i-lucide:server-cog"
+    description="CPU、内存、负载与磁盘水位"
+  >
+    <div class="grid grid-cols-1 gap-12 sm:grid-cols-2 xl:grid-cols-4">
+      <Item v-for="item in items" :key="item.id" :item="item" />
+    </div>
+  </Card>
+</template>
