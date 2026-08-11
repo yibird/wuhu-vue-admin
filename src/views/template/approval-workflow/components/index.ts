@@ -1,0 +1,8 @@
+export { default as Canvas } from './Canvas.vue'
+export { default as FieldPermissions } from './FieldPermissions.vue'
+export { default as Header } from './Header.vue'
+export { default as Inspector } from './Inspector.vue'
+export { default as NodeCard } from './NodeCard.vue'
+export { default as Palette } from './Palette.vue'
+export { default as Simulator } from './Simulator.vue'
+export { default as SourcePanel } from './SourcePanel.vue'
