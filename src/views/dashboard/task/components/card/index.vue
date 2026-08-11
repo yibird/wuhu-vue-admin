@@ -1,51 +1,61 @@
 <template>
-  <n-grid
-    :x-gap="10"
-    :y-gap="10"
-    responsive="screen"
-    item-responsive
-    class="h-full overflow-hidden"
-  >
-    <n-grid-item
-      v-for="(item, index) in taskStatus"
-      :key="index"
-      span="xs:24 s:12 m:8 lg:8 xl:6 xxl:4"
-      class="xl:max-h-full xl:overflow-hidden"
+  <DragDropProvider @drag-end="handleDragEnd">
+    <div
+      class="grid h-full min-h-0 grid-cols-1 gap-10 overflow-y-auto md:grid-cols-3 xl:grid-cols-4 xl:overflow-hidden 2xl:grid-cols-6"
     >
-      <Group v-bind="item" :items="groupItems[item.status]" />
-    </n-grid-item>
-  </n-grid>
+      <div
+        v-for="item in taskStatus"
+        :key="item.status"
+        class="min-h-0 min-w-0 xl:max-h-full xl:overflow-hidden"
+      >
+        <Group
+          v-bind="item"
+          :items="groupItems[getTaskGroupId(item.status)] ?? []"
+          @delete="emit('delete', $event)"
+          @edit="emit('edit', $event)"
+        />
+      </div>
+    </div>
+  </DragDropProvider>
 </template>
 <script lang="ts" setup>
-import { groupBy } from 'es-toolkit';
-import Group from './group.vue';
-import type { TaskProps } from '../types';
+import { DragDropProvider } from '@dnd-kit/vue'
+import { move } from '@dnd-kit/helpers'
+import Group from './group.vue'
+import { taskStatusList } from '../../constants'
+import type { DragEndEvent } from '@dnd-kit/vue'
+import type { Task, TaskActionEmits, TaskStatusValue } from '../types'
 
-const taskStatus = [
-  {
-    text: '进行中',
-    status: 1,
-    color: '#1677FF',
-    textColor: '#fff',
-  },
-  {
-    text: '已完成',
-    status: 2,
-    color: '#87d068',
-    textColor: '#fff',
-  },
-  {
-    text: '已暂停',
-    status: 3,
-    color: '#ff4d4f',
-    textColor: '#fff',
-  },
-  {
-    color: '#ddd',
-    text: '已过期',
-    status: 4,
-  },
-];
-const { items = [] } = defineProps<TaskProps>();
-const groupItems = computed(() => groupBy(items, (item) => item.status));
+const emit = defineEmits<TaskActionEmits>()
+const taskStatus = taskStatusList
+const items = defineModel<Task[]>('items', { default: () => [] })
+const groupItems = computed<Record<string, Task[]>>(() =>
+  Object.fromEntries(
+    taskStatus.map(({ status }) => [
+      getTaskGroupId(status),
+      items.value.filter((item) => item.status === status),
+    ])
+  )
+)
+
+function getTaskGroupId(status: TaskStatusValue) {
+  return `task-group:${status}`
+}
+
+function flattenGroups(groups: Record<string, Task[]>) {
+  return taskStatus.flatMap(({ status }) =>
+    (groups[getTaskGroupId(status)] ?? []).map((item) =>
+      item.status === status ? item : { ...item, status }
+    )
+  )
+}
+
+function handleDragEnd(event: DragEndEvent) {
+  if (event.canceled) return
+
+  const nextGroups = move(groupItems.value, event)
+  if (nextGroups !== groupItems.value) {
+    items.value = flattenGroups(nextGroups)
+  }
+}
 </script>
