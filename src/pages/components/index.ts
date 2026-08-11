@@ -1,0 +1,6 @@
+export { default as Logo } from './Logo.vue'
+export { default as Layout } from './Layout.vue'
+export { default as Theme } from './Theme.vue'
+export { default as Translate } from './Translate.vue'
+export { default as Banner } from './Banner.vue'
+export type { Placement } from './types'
