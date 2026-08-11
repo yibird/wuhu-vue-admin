@@ -1,66 +1,83 @@
-<h1 align="center">Wuhu-vue-admin</h1>
+# Wuhu Vue Admin
 
-**中文** | [English](README.md)
+中文 | [English](README.md)
 
-## 简介
+Wuhu Vue Admin 是一个基于 Vue 的管理后台应用和参考实现，包含仪表盘、系统管理、工作流、聊天、编辑器及设计器类示例。
 
-Wuhu-vue-admin 是基于 Vue3.x + Pinia + VueRouter + Unocss + Vite + NaiveUI + TypeScript 实现的后端管理系统,支持开箱即用,内置了企业级常用解决方案,助力企业级需求快速开发。
+## 技术栈
 
-![图片](./images/01.png)
-![图片](./images/02.png)
-![图片](./images/03.png)
-![图片](./images/04.png)
-![图片](./images/05.png)
+- Vue 3、TypeScript、Pinia、Vue Router
+- Vite 8、pnpm
+- Antdv Next
+- UnoCSS、Less
+- Playwright、Node.js test runner
 
-## 1.项目结构
+## 环境要求
 
-- src/assets:静态资源存放目录。
-- src/common:通用配置存放目录,包含左侧菜单等配置。
-- src/components:通用组件目录。
-- src/constant:通用常量目录(用于解决enum运行时开销)。
-- src/composables:通用组合式函数(Composables)目录。
-- src/layouts:页面布局目录。
-- src/locales:多语言包存储目录。
-- src/router:路由相关目录。
-- src/store:全局状态管理目录。
-- src/style:全局样式文件目录。
-- src/utils:通用工具目录。
-- src/views:页面视图文件存放目录。
+- Node.js 24，或其他支持 TypeScript type stripping 的兼容版本
+- pnpm 10
 
-- build: vite构建配置目录。
-- mock:mock文件目录。
-- typings:全局TS类型声明目录。
-- uno:unocss配置目录。
+## 快速开始
 
-## 2.项目规范
-
-### git 提交规范
-
-git commit 格式:
-
-```
-# git commit 提交格式
-git commit -m "type(scope) : subject"
-# 例子1
-git commit -m "feat: 新增Butto组件"
+```bash
+pnpm install
+pnpm dev
 ```
 
-commit 主题:
+开发环境读取 `env/.env.development`。默认端口为 `5555`，`/api` 请求代理到 `http://localhost:8080`。
 
-- feat(feature): 表示添加新功能或功能增强。
-- fix: 表示修复bug或问题。
-- docs: 表示只涉及文档的更改,如更新文档、添加注释等。
-- style: 表示对代码风格、格式进行修改,不影响代码逻辑(例如，空格、缩进、分号等的更改)。
-- refactor: 表示对代码进行重构,既不是修复bug也不是添加新功能的修改。
-- perf(performance): 表示性能优化的修改。
-- test: 表示添加、修改或删除测试相关的代码。
-- chore: 表示对构建过程或辅助工具和库的更改,不影响生产代码(例如，更新构建脚本、配置文件等)。
-- build: 表示与构建系统相关的更改,如更新依赖、版本管理工具的更改等。
-- ci(continuous integration): 表示与持续集成流程相关的更改。
-- revert: 表示撤销之前的提交。
-- merge: 表示合并分支的工作流类型,通常用于合并开发分支或特性分支到主分支。
-- release: 表示发布工作流类型,用于版本发布或管理。
-- hotfix: 表示热修复工作流类型,通常用于紧急修复生产环境中的问题。
-- init: 表示初始化工作流类型,用于项目初始化或初始提交。
-- workflow: 表示提交的工作流或过程类型,以便更好地理解提交的上下文和目的。
-- wip: wip是Work In Progress的缩写,即工作正在进行中。表示提交仍然处于开发或尚未完成的状态。
+## 项目结构
+
+```text
+src/apis          后端 API adapter 和请求类型
+src/components    跨功能通用组件
+src/composables   跨功能组合式逻辑
+src/config        静态菜单和应用配置
+src/constants     共享常量
+src/layouts       应用外壳和布局功能
+src/locales       多语言资源
+src/pages         登录、注册等独立页面
+src/router        路由、守卫和动态注册
+src/store         Pinia Store
+src/style         全局 token 和结构样式
+src/views         路由级业务和模板页面
+types             全局 TypeScript 声明
+unocss            UnoCSS 规则、预设和 shortcuts
+build             Vite 构建配置
+scripts           仓库校验脚本
+tests             单元测试和契约测试
+e2e               Playwright 测试
+```
+
+## 质量检查
+
+```bash
+pnpm routes:check
+pnpm test:unit
+pnpm typecheck
+pnpm lint
+pnpm lint:style
+pnpm fmt:check
+pnpm e2e
+pnpm build
+```
+
+`pnpm routes:check` 会校验激活菜单 path 和页面组件是否匹配。`pnpm bundle:check` 检查已有的 `dist` 产物；CI 可设置 `BUNDLE_MAX_JS_KB` 来执行项目自己的 JavaScript 体积预算。
+
+## 二次开发约定
+
+- 路由页面放在 `src/views/<module>/<feature>/index.vue`。
+- 菜单在 `src/config/menu.ts` 中维护；每个激活的路由菜单必须映射到真实页面。
+- 认证逻辑集中在 `src/store/auth` 和 `src/apis/auth`，登录页面只负责收集凭据和展示状态。
+- 报表、工作流和设计器 Schema 属于版本化数据，应用或持久化前必须经过解析、迁移、校验和脱敏。
+- 从 components、composables、apis、utils 根 `index.ts` 导出的内容才是预期引用面；未文档化的深层 import 视为内部实现。
+
+提交代码前请阅读 [CONTRIBUTING.md](CONTRIBUTING.md)。安全漏洞请按 [SECURITY.md](SECURITY.md) 私下报告。
+
+## 稳定性约定
+
+项目目前处于 1.0 之前。公共导出在同一个 minor 版本内应保持向后兼容；实验性设计器允许演进，但持久化 Schema 的变化必须提供 migration。废弃 API 至少保留一个 minor 版本后才能删除。
+
+## License
+
+正式公开仓库前必须补充项目许可证。在许可证缺失时，代码可见不等于获得开源使用许可。
