@@ -1,55 +1,83 @@
 {
   "version": 1,
   "skills": {
-    "frontend-design": {
-      "source": "affaan-m/everything-claude-code",
+    "antdv-next": {
+      "source": "antdv-next/skills",
       "sourceType": "github",
-      "computedHash": "57cefa41cea390d412000acc24e5526034027ca46d4f7581ba8fa05777a8681f"
+      "skillPath": "skills/antdv-next/SKILL.md",
+      "computedHash": "4f006bda55acac7c7e0999b025cf0f67022cdf3beb57b7662e6bd9c894f60428"
+    },
+    "frontend-design": {
+      "source": "anthropics/skills",
+      "sourceType": "github",
+      "skillPath": "skills/frontend-design/SKILL.md",
+      "computedHash": "93f53fd1c0352d3d7ec17b8f73d7351bf76f4821e55d123c9d2abc2c53ba48e4"
+    },
+    "motion": {
+      "source": "onmax/nuxt-skills",
+      "sourceType": "github",
+      "skillPath": "skills/motion/SKILL.md",
+      "computedHash": "88f028610d2a273dd1de1b79c0e4cc70ed041105af86f890520ff9b1c674352e"
+    },
+    "performance-optimization": {
+      "source": "addyosmani/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/performance-optimization/SKILL.md",
+      "computedHash": "3881a49f910607b36f4fb1f9f17b4ef703293c6073986bcfa9f7839d44680aba"
+    },
+    "pnpm": {
+      "source": "antfu/skills",
+      "sourceType": "github",
+      "skillPath": "skills/pnpm/SKILL.md",
+      "computedHash": "20bca721bb934e39c8ff2dc3df2cd1712f9efb5419afe2cb847267f6fe0eacbc"
     },
     "unocss": {
       "source": "antfu/skills",
       "sourceType": "github",
+      "skillPath": "skills/unocss/SKILL.md",
       "computedHash": "1054e69977e1d2d3b7c8479adf16b4db43191bf775f150ce8a06a0b1c191318b"
     },
     "vite": {
       "source": "antfu/skills",
       "sourceType": "github",
+      "skillPath": "skills/vite/SKILL.md",
       "computedHash": "1cdc4bbecaa89544e6ef92566b015db989994bf90c4472683ac64f7a114dc3af"
     },
     "vue": {
       "source": "antfu/skills",
       "sourceType": "github",
+      "skillPath": "skills/vue/SKILL.md",
       "computedHash": "f72b54618560c53d65740515ded5bb833750c4574dbe961fd21f022bd2b31a74"
     },
     "vue-best-practices": {
       "source": "antfu/skills",
       "sourceType": "github",
+      "skillPath": "skills/vue-best-practices/SKILL.md",
       "computedHash": "6aebf11b392505e1aa40a6805e714c36095830cc3f0a7a41aebffee2854596b8"
     },
     "vue-router-best-practices": {
       "source": "antfu/skills",
       "sourceType": "github",
+      "skillPath": "skills/vue-router-best-practices/SKILL.md",
       "computedHash": "405d377ebeef773b240f31902dfb204095d4bcc945e8a4c2f4b560062c032fbb"
     },
     "vue-testing-best-practices": {
       "source": "antfu/skills",
       "sourceType": "github",
+      "skillPath": "skills/vue-testing-best-practices/SKILL.md",
       "computedHash": "c568e4abe743cd36a0eb15730f72de54b8d84c9bfbaa4395bc448428b9c71c12"
     },
     "vueuse-functions": {
       "source": "antfu/skills",
       "sourceType": "github",
-      "computedHash": "5189e448e981e42e2153c1b5e8d19e51b01e642c2357ab0f2892c4d8b50ba2b5"
+      "skillPath": "skills/vueuse-functions/SKILL.md",
+      "computedHash": "0a762ae555673c6a7705749bd58d74e2ae9b07007a2cde8168f1f6c480b8d8d9"
     },
     "web-design-guidelines": {
       "source": "antfu/skills",
       "sourceType": "github",
+      "skillPath": "skills/web-design-guidelines/SKILL.md",
       "computedHash": "57cefa41cea390d412000acc24e5526034027ca46d4f7581ba8fa05777a8687f"
-    },
-    "performance-optimization": {
-      "source": "addyosmani",
-      "sourceType": "github",
-      "computedHash": "111fa41cea390d412000acc24e5526034027ca46d4f7581ba8fa05777a8687f"
     }
   }
 }

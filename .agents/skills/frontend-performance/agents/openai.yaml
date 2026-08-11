@@ -1,0 +1,6 @@
+interface:
+  display_name: "Frontend Performance"
+  short_description: "Diagnose browser UI performance"
+  default_prompt: "Use $frontend-performance to analyze and optimize this frontend performance bottleneck."
+policy:
+  allow_implicit_invocation: true
