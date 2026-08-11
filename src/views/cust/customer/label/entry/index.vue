@@ -1,6 +1,6 @@
 <template>
   <div class="p-10">
-    <n-tabs
+    <a-tabs
       type="line"
       animated
       :tabs-padding="20"
@@ -8,7 +8,7 @@
       pane-class="full p-0!"
       class="h-full bg-white rounded-4 overflow-hidden"
     >
-      <n-tab-pane
+      <a-tab-pane
         v-for="item in options"
         :key="item.value"
         :name="item.value"
@@ -16,20 +16,20 @@
         display-directive="show:lazy"
       >
         <Content />
-      </n-tab-pane>
-    </n-tabs>
+      </a-tab-pane>
+    </a-tabs>
   </div>
 </template>
 <script lang="ts" setup>
-  import Content from './components/Content.vue'
-  const options = [
-    {
-      label: '企业标签',
-      value: 1
-    },
-    {
-      label: '个人标签',
-      value: 2
-    }
-  ]
+import Content from './components/Content.vue'
+const options = [
+  {
+    label: '企业标签',
+    value: 1,
+  },
+  {
+    label: '个人标签',
+    value: 2,
+  },
+]
 </script>

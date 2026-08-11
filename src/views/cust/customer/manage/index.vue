@@ -1,10 +1,12 @@
 <template>
-  <div class="full p-10 flex flex-col gap-10 overflow-hidden">
+  <div class="full-flex p-10 flex flex-col gap-10 overflow-hidden">
     <div class="bg-white p-10">
-      <FormPlus ref="formRef" :options="formOptions" :items="formItems" />
-      <n-button @click="onSetFiledValue">setFiledValue</n-button>
-      <n-button @click="onGetFiledValue">getFiledValue</n-button>
-      <n-button @click="onResetFiledValue">resetFiledValue</n-button>
+      <FormPlus ref="formRef" :options="formOptions" />
+      <div class="mt-10 flex flex-wrap gap-8">
+        <a-button @click="onSetFiledValue">设置字段值</a-button>
+        <a-button @click="onGetFiledValue">读取字段值</a-button>
+        <a-button @click="onResetFiledValue">重置字段值</a-button>
+      </div>
     </div>
     <TablePlus
       :loading="loading"
@@ -29,26 +31,23 @@ import {
   type TablePlusColumn,
   type FormPlusInstance,
 } from '@/components'
-import { NTag, type TagProps } from 'naive-ui'
+import { Tag, message } from 'antdv-next'
 
-const dataScopeMapping: Record<
-  number,
-  { text: string; type: TagProps['type'] }
-> = {
+const dataScopeMapping: Record<number, { text: string; color: string }> = {
   0: {
-    type: 'primary',
+    color: 'processing',
     text: '所有数据权限',
   },
   1: {
-    type: 'success',
+    color: 'success',
     text: '本部门及以下数据权限',
   },
   2: {
-    type: 'warning',
+    color: 'warning',
     text: '本部门数据权限',
   },
   3: {
-    type: 'error',
+    color: 'error',
     text: '仅本人数据权限',
   },
 }
@@ -63,11 +62,11 @@ const columns: TablePlusColumn<RoleResp>[] = [
     key: 'roleCode',
     minWidth: 100,
     resizable: true,
-    render({ dataScope }, rowIndex: number) {
+    render({ dataScope }: any) {
       const item = dataScopeMapping[dataScope]
       if (!item) return
-      const { type, text } = item
-      return h(NTag, { type }, { default: () => text })
+      const { color, text } = item
+      return h(Tag, { color }, { default: () => text })
     },
   },
   {
@@ -80,60 +79,60 @@ const query = ref({ pageNum: 1, pageSize: 10 })
 
 const {
   loading,
-  data,
   dataSource,
   pagination,
   rowSelection,
-  selectedAll,
   selectedKeys,
   rowKey,
   handleCheck,
   run,
 } = useTable<RoleResp, { pageNum: number; pageSize: number }>({
   api: () => getRolePageListApi(query.value),
-  rowKey: (row) => row.id,
+  rowKey: (row) => String(row.id),
   onPaginate: (page, size) => {
     query.value.pageNum = page
     query.value.pageSize = size
     run(query.value)
   },
 })
-console.log('asdASD:', dataSource)
 
 const formRef = ref<FormPlusInstance>()
 const formOptions = ref<FormPlusProps['options']>({
-  inline: true,
   labelPlacement: 'left',
   grid: { xGap: 24 },
-  model: {
-    test1: '111',
-    test2: '123',
-  },
-})
-const formItems = ref<FormPlusProps['items']>([
-  {
-    label: '测试1',
-    type: 'input',
-    path: 'test1',
-    componentProps: {
-      clearable: true,
+  items: [
+    {
+      label: '测试1',
+      type: 'input',
+      field: 'test1',
+      props: {
+        clearable: true,
+        span: 12,
+      },
     },
-    span: 12,
-  },
-  {
-    label: '测试2',
-    type: 'input',
-    path: 'test2',
-    span: 12,
-  },
-])
+    {
+      label: '测试2',
+      type: 'input',
+      field: 'test2',
+      props: {
+        span: 12,
+      },
+    },
+  ],
+})
 const onSetFiledValue = () => {
-  formRef.value?.setFiledValue('test1', '222test1test1')
+  formRef.value?.setFieldsValue({
+    test1: '示例客户',
+    test2: '已启用',
+  })
+  message.success('已设置表单字段值')
 }
 const onGetFiledValue = () => {
-  console.log(formRef.value?.getFiledValue('test1'))
+  const values = formRef.value?.getFieldsValue() ?? {}
+  message.info(`当前字段值：${JSON.stringify(values)}`)
 }
 const onResetFiledValue = () => {
-  formRef.value?.resetFiledValue('test1')
+  formRef.value?.reset()
+  message.success('已重置表单字段值')
 }
 </script>

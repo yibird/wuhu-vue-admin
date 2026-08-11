@@ -9,21 +9,32 @@
         <span>个标签)</span>
       </span>
       <div class="flex gap-8">
-        <Icon name="i-lucide:edit" :size="18" class="cursor-pointer hover:text-theme" />
-        <n-popconfirm @positive-click="handlePositiveClick" @negative-click="handleNegativeClick">
+        <Icon
+          name="i-lucide:edit"
+          :size="18"
+          class="cursor-pointer hover:text-theme"
+        />
+        <a-popconfirm
+          @positive-click="handlePositiveClick"
+          @negative-click="handleNegativeClick"
+        >
           <template #trigger>
-            <Icon name="i-lucide:beer" :size="18" class="cursor-pointer hover:text-theme" />
+            <Icon
+              name="i-lucide:beer"
+              :size="18"
+              class="cursor-pointer hover:text-theme"
+            />
           </template>
           是否删除该标签组？
-        </n-popconfirm>
+        </a-popconfirm>
       </div>
     </div>
     <div class="py-12 px-15 flex gap-12">
-      <n-button @click="handleAdd">添加</n-button>
-      <n-input
+      <a-button @click="handleAdd">添加</a-button>
+      <a-input
         v-if="edit"
         ref="inputRef"
-        clearable
+        allow-clear
         :maxlength="30"
         placeholder="请输入标签名称"
         class="w-180!"
@@ -34,20 +45,20 @@
   </div>
 </template>
 <script lang="ts" setup>
-  import Tag from './Tag.vue'
-  const edit = ref(false)
-  const inputRef = ref()
-  const handlePositiveClick = () => {}
-  const handleNegativeClick = () => {}
+import Tag from './Tag.vue'
+const edit = ref(false)
+const inputRef = ref()
+const handlePositiveClick = () => {}
+const handleNegativeClick = () => {}
 
-  const handleAdd = () => {
-    if (edit.value) {
-      edit.value = false
-      return
-    }
-    edit.value = true
-    setTimeout(() => {
-      inputRef.value.focus()
-    })
+const handleAdd = () => {
+  if (edit.value) {
+    edit.value = false
+    return
   }
+  edit.value = true
+  setTimeout(() => {
+    inputRef.value.focus()
+  })
+}
 </script>
