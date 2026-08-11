@@ -1,142 +1,134 @@
 <template>
-  <div data-swapy-slot="project">
-    <n-card
+  <section data-swapy-slot="project" class="page-enter page-enter--3 min-w-0">
+    <a-card
       size="small"
-      :segmented="{
-        content: true,
-      }"
+      :segmented="{ content: true }"
       data-swapy-item="project"
       content-class="p-0!"
     >
       <template #header>
-        <span class="text-md font-bold">项目</span>
+        <div class="min-w-0 flex items-center gap-8">
+          <span class="text-base text-main font-700">重点项目</span>
+          <span
+            class="rounded-full bg-fill-tertiary px-8 py-2 text-xs text-secondary"
+          >
+            {{ projectItems.length }} 个进行中
+          </span>
+        </div>
       </template>
       <template #header-extra>
-        <n-button type="primary">更多</n-button>
+        <a-button type="link" size="small">查看全部</a-button>
       </template>
-      <n-grid
-        item-responsive
-        responsive="screen"
-        x-gap="10"
-        y-gap="10"
-        class="p-15 overflow-hidden"
-      >
-        <n-grid-item v-for="item in projects" :key="item.id" span="xs:24 s:24 m:12 l:12 xl:8 xxl:6">
-          <n-card hoverable>
-            <div class="flex items-center gap-10">
-              <n-avatar :src="item.avatar" :size="40" />
-              <span className="text-base font-medium">{{ item.name }}</span>
-            </div>
-            <div class="my-10 min-h-60 text-sm dark-secondary dark:text-dark-secondary">
-              {{ item.describe }}
-            </div>
-            <div className="flex items-center justify-between gap-10">
-              <n-avatar-group :options="options" :size="32" :max="3">
-                <template #avatar="{ option: { name, src } }">
-                  <n-tooltip>
-                    <template #trigger>
-                      <n-avatar :src="src" />
-                    </template>
-                    {{ name }}
-                  </n-tooltip>
-                </template>
-                <template #rest="{ options: restOptions, rest }">
-                  <n-dropdown
-                    :options="createDropdownOptions(restOptions as any[])"
-                    placement="top"
+
+      <div class="grid grid-cols-1 gap-10 p-12 xl:grid-cols-2">
+        <article
+          v-for="item in projectItems"
+          :key="item.id"
+          class="group min-w-0 rounded-8 border-1 border-color-2 border-solid bg-container p-14 transition-[border-color,background-color,box-shadow,transform] duration-200 hover:(-translate-y-1 border-color-primary bg-primary/5 shadow-all-sm)"
+        >
+          <div class="min-w-0 flex items-start justify-between gap-12">
+            <div class="min-w-0 flex items-center gap-10">
+              <span
+                class="size-46 flex shrink-0 items-center justify-center rounded-10 border-1 border-solid shadow-all-sm transition-transform duration-200 group-hover:(-translate-y-1 scale-105)"
+                :class="item.logoClass"
+              >
+                <Icon :name="item.logo.icon" :size="21" />
+              </span>
+              <div class="min-w-0">
+                <div class="flex items-center gap-8">
+                  <h3 class="m-0 truncate text-base text-main font-700">
+                    {{ item.name }}
+                  </h3>
+                  <span
+                    class="shrink-0 rounded-full px-8 py-2 text-xs"
+                    :class="item.statusClass"
                   >
-                    <n-avatar>+{{ rest }}</n-avatar>
-                  </n-dropdown>
-                </template>
-              </n-avatar-group>
-              <span className="text-sm text-secondary">创建时间：{{ item.createAt }}</span>
+                    {{ item.status }}
+                  </span>
+                </div>
+                <p
+                  class="mb-0 mt-5 line-clamp-2 text-sm text-secondary leading-22px"
+                >
+                  {{ item.describe }}
+                </p>
+              </div>
             </div>
-          </n-card>
-        </n-grid-item>
-      </n-grid>
-    </n-card>
-  </div>
+
+            <a-button
+              type="text"
+              size="small"
+              class="shrink-0 opacity-60 transition-opacity group-hover:opacity-100"
+              :aria-label="`设置${item.name}`"
+              title="项目设置"
+              @click="emit('openSettings', item)"
+            >
+              <template #icon>
+                <Icon name="i-lucide:ellipsis" :size="16" />
+              </template>
+            </a-button>
+          </div>
+
+          <div class="mt-16">
+            <div class="mb-6 flex items-center justify-between text-xs">
+              <span class="text-secondary">完成进度</span>
+              <span class="text-main font-600">{{ item.progress }}%</span>
+            </div>
+            <a-progress :percent="item.progress" :show-info="false" :size="7" />
+          </div>
+
+          <div
+            class="mt-14 flex flex-col gap-10 text-xs text-secondary sm:flex-row sm:items-center sm:justify-between"
+          >
+            <div class="min-w-0 flex items-center gap-7">
+              <Icon name="i-lucide:user-round" :size="14" />
+              <span class="truncate">{{ item.master }}</span>
+            </div>
+            <div class="min-w-0 flex items-center gap-7">
+              <Icon name="i-lucide:calendar-clock" :size="14" />
+              <span class="truncate">截止 {{ item.dueAt }}</span>
+            </div>
+          </div>
+
+          <div class="mt-14 flex items-center justify-between gap-12">
+            <a-avatar-group
+              :options="item.members"
+              :size="28"
+              :max="{ count: 3 }"
+            >
+              <template #avatar="{ option }">
+                <a-tooltip :title="option.name">
+                  <a-avatar :src="option.src">{{
+                    option.name.slice(0, 1)
+                  }}</a-avatar>
+                </a-tooltip>
+              </template>
+            </a-avatar-group>
+            <span class="text-xs text-secondary"
+              >创建于 {{ item.createAt }}</span
+            >
+          </div>
+        </article>
+      </div>
+    </a-card>
+  </section>
 </template>
+
 <script lang="ts" setup>
-import type { Project } from './types';
+import { getProjectLogoOption } from '../data'
+import type { Project } from './types'
 
-const projects: Project[] = [
-  {
-    id: 1,
-    avatar: 'https://gw.alipayobjects.com/zos/rmsportal/WdGqmHpayyMjiEhcKoVE.png',
-    name: 'Alipay',
-    describe: '那是一种内在的东西，他们到达不了，也无法触及的',
-    master: 'zchengfeng',
-    createAt: '2020-02-02',
-  },
-  {
-    id: 2,
-    avatar: 'https://gw.alipayobjects.com/zos/rmsportal/zOsKZmFRdUtvpqCImOVY.png',
-    name: 'Angular',
-    describe: '那是一种内在的东西，他们到达不了，也无法触及的',
-    master: 'zchengfeng',
-    createAt: '2020-02-02',
-  },
-  {
-    id: 3,
-    avatar: 'https://gw.alipayobjects.com/zos/rmsportal/dURIMkkrRFpPgTuzkwnB.png',
-    name: 'Ant Design',
-    describe: '那是一种内在的东西，他们到达不了，也无法触及的',
-    master: 'zchengfeng',
-    createAt: '2020-02-02',
-  },
-  {
-    id: 4,
-    avatar: 'https://gw.alipayobjects.com/zos/rmsportal/sfjbOqnsXXJgNCjCzDBL.png',
-    name: 'Ant Design Pro',
-    describe: '那是一种内在的东西，他们到达不了，也无法触及的',
-    master: 'zchengfeng',
-    createAt: '2020-02-02',
-  },
-  {
-    id: 5,
-    avatar: 'https://gw.alipayobjects.com/zos/rmsportal/siCrBXXhmvTQGWPNLBow.png',
-    name: 'Bootstrap',
-    describe: '那是一种内在的东西，他们到达不了，也无法触及的',
-    master: 'zchengfeng',
-    createAt: '2020-02-02',
-  },
-  {
-    id: 6,
-    avatar: 'https://gw.alipayobjects.com/zos/rmsportal/kZzEzemZyKLKFsojXItE.png',
-    name: 'React',
-    describe: '那是一种内在的东西，他们到达不了，也无法触及的',
-    master: 'zchengfeng',
-    createAt: '2020-02-02',
-  },
-];
-const options = [
-  {
-    name: '张三',
-    src: 'https://gw.alipayobjects.com/zos/antfincdn/aPkFc8Sj7n/method-draw-image.svg',
-  },
-  {
-    name: '李四',
-    src: 'https://07akioni.oss-cn-beijing.aliyuncs.com/07akioni.jpeg',
-  },
-  {
-    name: '王五',
-    src: 'https://gw.alipayobjects.com/zos/antfincdn/aPkFc8Sj7n/method-draw-image.svg',
-  },
-  {
-    name: '赵六',
-    src: 'https://07akioni.oss-cn-beijing.aliyuncs.com/07akioni.jpeg',
-  },
-  {
-    name: '七仔',
-    src: 'https://gw.alipayobjects.com/zos/antfincdn/aPkFc8Sj7n/method-draw-image.svg',
-  },
-];
+const props = defineProps<{
+  projects: Project[]
+}>()
 
-const createDropdownOptions = (options: Array<{ name: string; src: string }>) => {
-  return options.map((option) => ({
-    key: option.name,
-    label: option.name,
-  }));
-};
+const emit = defineEmits<{
+  openSettings: [project: Project]
+}>()
+
+const projectItems = computed(() =>
+  props.projects.map((project) => ({
+    ...project,
+    logoClass: getProjectLogoOption(project.logo).class,
+  }))
+)
 </script>

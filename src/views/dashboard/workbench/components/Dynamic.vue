@@ -1,80 +1,88 @@
 <template>
-  <div data-swapy-slot="dynamic">
-    <n-card
+  <section data-swapy-slot="dynamic" class="page-enter page-enter--4 min-w-0">
+    <a-card
       size="small"
-      :segmented="{
-        content: true,
-      }"
-      content-class="py-0!"
+      :segmented="{ content: true }"
+      content-class="p-0!"
       data-swapy-item="dynamic"
     >
       <template #header>
-        <span class="text-md font-bold">动态</span>
+        <span class="text-base text-main font-700">团队动态</span>
       </template>
       <template #header-extra>
-        <n-button type="primary">更多</n-button>
+        <a-button type="link" size="small">更多</a-button>
       </template>
-      <div class="divide-y divide-[rgba(5,5,5,0.06)]">
-        <div v-for="item in items" :key="item.id" class="py-15">
-          <div class="flex items-center">
-            <n-avatar round :size="40" class="dark:bg-[#faad14]">{{ item.name }}</n-avatar>
-            <div class="flex-1 px-16 overflow-hidden">
-              <div class="text-base font-bold mb-10">{{ item.name }}</div>
-              <div class="text-sm">{{ item.describe }}</div>
+
+      <div class="p-12">
+        <div
+          v-for="item in items"
+          :key="item.id"
+          class="group grid grid-cols-[34px_minmax(0,1fr)] gap-10 rounded-8 border-color-2 border-b-1 border-b-solid px-8 py-12 transition-[background-color,transform] duration-200 hover:(translate-x-2 bg-hover) first:pt-0 last:border-b-0 last:pb-0"
+        >
+          <span
+            class="size-34 flex items-center justify-center rounded-full bg-fill-tertiary text-secondary transition-[background-color,color,border-color,transform] duration-200 group-hover:(scale-108 icon-primary-soft)"
+          >
+            <Icon :name="item.icon" :size="16" />
+          </span>
+          <div class="min-w-0">
+            <div class="min-w-0 flex flex-wrap items-center gap-x-6 gap-y-3">
+              <span class="text-sm text-main font-600">{{ item.name }}</span>
+              <span class="text-sm text-secondary">{{ item.action }}</span>
+              <span class="text-sm text-primary">{{ item.target }}</span>
             </div>
-          </div>
-          <div class="mt-16 flex items-center gap-10">
-            <div class="flex items-center gap-5 cursor-pointer hover:text-theme">
-              <Icon name="i-lucide:thumbs-up" :size="16" />
-              <span>12</span>
-            </div>
-            <n-divider vertical />
-            <div class="flex items-center gap-5 cursor-pointer hover:text-red">
-              <Icon name="i-lucide:heart" :size="16" />
-              <span>12</span>
-            </div>
-            <n-divider vertical />
-            <div class="flex items-center gap-5 cursor-pointer hover:text-[#18a058]">
-              <Icon name="i-lucide:message-circle-more" :size="16" />
-              <span>12</span>
+            <p class="mb-0 mt-5 text-sm text-secondary leading-22px">
+              {{ item.describe }}
+            </p>
+            <div class="mt-7 flex items-center gap-6 text-xs text-muted">
+              <Icon name="i-lucide:clock-3" :size="13" />
+              <span>{{ item.createAt }}</span>
             </div>
           </div>
         </div>
       </div>
-    </n-card>
-  </div>
+    </a-card>
+  </section>
 </template>
+
 <script lang="ts" setup>
-import type { Dynamic } from './types';
+import type { Dynamic } from './types'
 
 const items: Dynamic[] = [
   {
     id: 1,
-    avatar: 'https://picsum.photos/200/300',
-    name: '张三',
-    describe: '创建了项目1',
-    createAt: '2023-01-01',
+    name: '林舟',
+    action: '更新了',
+    target: '企业运营中台',
+    describe: '补充客户分层策略和看板指标口径，等待研发评估。',
+    createAt: '10 分钟前',
+    icon: 'i-lucide:file-pen-line',
   },
   {
     id: 2,
-    avatar: 'https://picsum.photos/200/300',
-    name: '张三',
-    describe: '创建了项目2221',
-    createAt: '2023-01-01',
+    name: '沈一',
+    action: '提交了',
+    target: '移动端体验优化',
+    describe: '已完成工作台、文件管理和图表页的移动端自测记录。',
+    createAt: '38 分钟前',
+    icon: 'i-lucide:smartphone',
   },
   {
     id: 3,
-    avatar: 'https://picsum.photos/200/300',
-    name: '张三',
-    describe: '创建了项目21',
-    createAt: '2023-01-01',
+    name: '周辰',
+    action: '创建了',
+    target: '工作流节点模板',
+    describe: '新增审批、条件分支、消息通知三个节点草案。',
+    createAt: '1 小时前',
+    icon: 'i-lucide:workflow',
   },
   {
     id: 4,
-    avatar: 'https://picsum.photos/200/300',
-    name: '张三1',
-    describe: '创建了项目111',
-    createAt: '2023-01-01',
+    name: '许安',
+    action: '标记了',
+    target: '权限审计风险',
+    describe: '发现 2 个菜单路径缺少页面组件，需要本周内确认。',
+    createAt: '2 小时前',
+    icon: 'i-lucide:shield-alert',
   },
-];
+]
 </script>

@@ -1,0 +1,804 @@
+<script setup lang="ts">
+import { Modal, message } from 'antdv-next'
+import type { FormInstance } from 'antdv-next'
+import type { CSSProperties } from 'vue'
+import { getProjectLogoOption, projectLogoOptions } from '../data'
+import type {
+  Project,
+  ProjectSettingsMode,
+  ProjectSettingsPayload,
+} from './types'
+
+const props = withDefaults(
+  defineProps<{
+    mode?: ProjectSettingsMode
+    project?: Project | null
+  }>(),
+  {
+    mode: 'create',
+    project: null,
+  }
+)
+
+const emit = defineEmits<{
+  save: [payload: ProjectSettingsPayload]
+}>()
+
+const open = defineModel<boolean>('open', { default: false })
+const formRef = shallowRef<FormInstance>()
+const initialForm = shallowRef<ProjectSettingsPayload>()
+
+const form = reactive<ProjectSettingsPayload>({
+  logo: {
+    icon: projectLogoOptions[0].icon,
+    tone: projectLogoOptions[0].tone,
+  },
+  name: '',
+  describe: '',
+  master: '',
+  dueAt: '',
+  priority: 'medium',
+  progress: 35,
+  notify: true,
+  autoReport: true,
+  riskWatch: false,
+})
+
+const priorityOptions = [
+  {
+    label: '常规',
+    value: 'low',
+    icon: 'i-lucide:circle',
+    class: 'bg-fill-tertiary text-secondary',
+  },
+  {
+    label: '重点',
+    value: 'medium',
+    icon: 'i-lucide:circle-dot',
+    class: 'bg-info-tint text-info',
+  },
+  {
+    label: '高优',
+    value: 'high',
+    icon: 'i-lucide:flame',
+    class: 'bg-warning-tint text-warning',
+  },
+  {
+    label: '紧急',
+    value: 'urgent',
+    icon: 'i-lucide:siren',
+    class: 'bg-error-tint text-error',
+  },
+] as const
+
+const switchOptions = [
+  {
+    key: 'notify',
+    title: '消息提醒',
+    desc: '关键节点自动通知负责人',
+    icon: 'i-lucide:bell-ring',
+  },
+  {
+    key: 'autoReport',
+    title: '周报同步',
+    desc: '每周五生成项目进展摘要',
+    icon: 'i-lucide:file-clock',
+  },
+  {
+    key: 'riskWatch',
+    title: '风险监控',
+    desc: '延期或低进度时展示预警',
+    icon: 'i-lucide:radar',
+  },
+] as const
+
+const rules = {
+  name: [
+    { required: true, message: '请输入项目名称', trigger: 'blur' },
+    { min: 2, message: '项目名称至少 2 个字符', trigger: 'blur' },
+  ],
+  describe: [{ required: true, message: '请输入项目说明', trigger: 'blur' }],
+  master: [{ required: true, message: '请输入负责人', trigger: 'blur' }],
+  dueAt: [
+    { required: true, message: '请输入截止日期', trigger: 'blur' },
+    {
+      pattern: /^(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/,
+      message: '请使用 MM-DD 格式',
+      trigger: 'blur',
+    },
+  ],
+}
+
+const modalStyles: Record<string, CSSProperties> = {
+  body: {
+    maxHeight: 'calc(100vh - 150px)',
+    overflowY: 'auto',
+    overscrollBehavior: 'contain',
+  },
+}
+
+const modalTitle = computed(() =>
+  props.mode === 'create' ? '新建项目设置' : '项目设置'
+)
+
+const selectedPriority = computed(
+  () =>
+    priorityOptions.find((item) => item.value === form.priority) ??
+    priorityOptions[1]
+)
+
+const selectedLogo = computed(() => getProjectLogoOption(form.logo))
+
+const isDirty = computed(() => {
+  if (!initialForm.value) return false
+  return JSON.stringify(getFormPayload()) !== JSON.stringify(initialForm.value)
+})
+
+const saveDisabled = computed(() => props.mode === 'edit' && !isDirty.value)
+
+const saveStateText = computed(() => {
+  if (isDirty.value) return '有未保存更改'
+  return props.mode === 'create' ? '填写信息后创建项目' : '设置未发生变化'
+})
+
+const activeSwitchCount = computed(
+  () => Number(form.notify) + Number(form.autoReport) + Number(form.riskWatch)
+)
+
+const progressStatus = computed(() => {
+  if (form.progress >= 80) return '进度健康'
+  if (form.progress >= 45) return '推进中'
+  return form.riskWatch ? '需要关注' : '等待启动'
+})
+
+const previewName = computed(() => form.name.trim() || '未命名项目')
+const previewDescribe = computed(
+  () =>
+    form.describe.trim() ||
+    '补充项目目标、交付范围和关键收益后，团队会更容易对齐。'
+)
+const previewMaster = computed(() => form.master.trim() || '待分配负责人')
+
+watch(
+  () => [open.value, props.project, props.mode] as const,
+  ([isOpen]) => {
+    if (!isOpen) return
+    resetForm()
+  },
+  { immediate: true }
+)
+
+function resetForm() {
+  const project = props.project
+  form.logo = {
+    ...(project?.logo ?? {
+      icon: projectLogoOptions[0].icon,
+      tone: projectLogoOptions[0].tone,
+    }),
+  }
+  form.name = project?.name ?? ''
+  form.describe = project?.describe ?? ''
+  form.master = project?.master?.replace(/^.*?：/, '') ?? ''
+  form.dueAt = project?.dueAt ?? '06-30'
+  form.priority = project?.statusClass.includes('error')
+    ? 'urgent'
+    : project?.statusClass.includes('warning')
+      ? 'high'
+      : project?.statusClass.includes('info')
+        ? 'medium'
+        : 'medium'
+  form.progress = project?.progress ?? 35
+  form.notify = true
+  form.autoReport = props.mode === 'create'
+  form.riskWatch = project?.statusClass.includes('error') ?? false
+  initialForm.value = getFormPayload()
+  nextTick(() => formRef.value?.clearValidate())
+}
+
+function getFormPayload(): ProjectSettingsPayload {
+  return {
+    ...form,
+    logo: { ...form.logo },
+  }
+}
+
+function restoreInitialForm() {
+  if (!initialForm.value) return
+  Object.assign(form, {
+    ...initialForm.value,
+    logo: { ...initialForm.value.logo },
+  })
+  formRef.value?.clearValidate()
+}
+
+function updateLogo(
+  icon: string,
+  tone: ProjectSettingsPayload['logo']['tone']
+) {
+  form.logo = { icon, tone }
+}
+
+function updatePriority(value: ProjectSettingsPayload['priority']) {
+  form.priority = value
+}
+
+function updateSwitch(
+  key: (typeof switchOptions)[number]['key'],
+  value: boolean
+) {
+  form[key] = value
+}
+
+async function handleSave() {
+  try {
+    await formRef.value?.validate()
+  } catch {
+    message.warning('请先完善项目必填信息')
+    return
+  }
+
+  const payload = getFormPayload()
+  emit('save', payload)
+  message.success(props.mode === 'create' ? '项目已创建' : '项目设置已保存')
+  open.value = false
+}
+
+function handleCancel() {
+  if (!isDirty.value) {
+    open.value = false
+    return
+  }
+
+  Modal.confirm({
+    title: '放弃未保存更改？',
+    content: '当前调整尚未保存，关闭后将恢复原来的项目设置。',
+    okText: '放弃更改',
+    okType: 'danger',
+    cancelText: '继续编辑',
+    onOk: () => {
+      open.value = false
+    },
+  })
+}
+</script>
+
+<template>
+  <a-modal
+    :open="open"
+    centered
+    :destroy-on-hidden="true"
+    :styles="modalStyles"
+    :width="920"
+    class="project-settings-modal"
+    @cancel="handleCancel"
+  >
+    <template #title>
+      <div class="flex items-center gap-10">
+        <span
+          class="size-38 flex items-center justify-center rounded-8 icon-primary-soft"
+        >
+          <Icon name="i-lucide:folder-cog" :size="18" />
+        </span>
+        <div class="min-w-0">
+          <div class="flex flex-wrap items-center gap-8">
+            <div class="text-lg text-main font-700">{{ modalTitle }}</div>
+            <span
+              class="rounded-full bg-fill-tertiary px-8 py-2 text-xs text-secondary font-500"
+            >
+              {{ props.mode === 'create' ? '创建模式' : '编辑模式' }}
+            </span>
+          </div>
+          <div class="mt-2 text-xs text-secondary font-400">
+            设置项目标识、交付信息和协作策略
+          </div>
+        </div>
+      </div>
+    </template>
+
+    <template #footer>
+      <div class="flex flex-col gap-10 sm:flex-row sm:items-center">
+        <div class="min-w-0 flex flex-1 items-center gap-8 text-xs">
+          <Icon
+            :name="isDirty ? 'i-lucide:circle-dot' : 'i-lucide:circle-check'"
+            :size="14"
+            :class="isDirty ? 'text-warning' : 'text-success'"
+          />
+          <span :class="isDirty ? 'text-main' : 'text-secondary'">
+            {{ saveStateText }}
+          </span>
+          <a-button
+            v-if="isDirty"
+            type="link"
+            size="small"
+            class="!px-2"
+            @click="restoreInitialForm"
+          >
+            恢复初始值
+          </a-button>
+        </div>
+        <div class="flex justify-end gap-8">
+          <a-button @click="handleCancel">取消</a-button>
+          <a-button type="primary" :disabled="saveDisabled" @click="handleSave">
+            <template #icon>
+              <Icon name="i-lucide:save" :size="15" />
+            </template>
+            {{ props.mode === 'create' ? '创建项目' : '保存设置' }}
+          </a-button>
+        </div>
+      </div>
+    </template>
+
+    <div class="grid gap-18 pt-6 lg:grid-cols-[minmax(0,1fr)_300px]">
+      <a-form
+        ref="formRef"
+        :model="form"
+        :rules="rules"
+        class="min-w-0 space-y-16"
+        layout="vertical"
+      >
+        <div class="project-settings-panel">
+          <div class="project-settings-heading">
+            <div>
+              <div class="project-settings-title">
+                <Icon name="i-lucide:shapes" :size="16" />
+                项目标识
+              </div>
+              <div class="project-settings-description">
+                选择与项目领域匹配的图标和识别色
+              </div>
+            </div>
+            <span class="text-xs text-secondary">{{ selectedLogo.label }}</span>
+          </div>
+
+          <div class="grid grid-cols-3 gap-8 sm:grid-cols-6">
+            <button
+              v-for="item in projectLogoOptions"
+              :key="item.icon"
+              type="button"
+              class="group relative min-w-0 flex flex-col items-center gap-7 rounded-8 border-1 border-solid bg-container p-8 transition-[border-color,background-color,box-shadow,transform] duration-200 hover:(-translate-y-1 border-color-primary/60 bg-hover shadow-all-sm)"
+              :class="
+                form.logo.icon === item.icon
+                  ? 'border-color-primary bg-primary/5 shadow-all-sm'
+                  : 'border-color-2'
+              "
+              :aria-label="`选择${item.label}标识`"
+              :aria-pressed="form.logo.icon === item.icon"
+              @click="updateLogo(item.icon, item.tone)"
+            >
+              <span
+                class="size-36 flex items-center justify-center rounded-8 border-1 border-solid transition-transform duration-200 group-hover:scale-105"
+                :class="item.class"
+              >
+                <Icon :name="item.icon" :size="18" />
+              </span>
+              <span class="w-full truncate text-xs text-secondary">
+                {{ item.label }}
+              </span>
+              <Icon
+                v-if="form.logo.icon === item.icon"
+                name="i-lucide:circle-check"
+                :size="14"
+                class="absolute right-5 top-5 text-primary"
+              />
+            </button>
+          </div>
+        </div>
+
+        <div class="project-settings-panel">
+          <div class="project-settings-heading">
+            <div>
+              <div class="project-settings-title">
+                <Icon name="i-lucide:file-pen-line" :size="16" />
+                基础信息
+              </div>
+              <div class="project-settings-description">
+                用清晰的目标和责任信息帮助团队快速理解项目
+              </div>
+            </div>
+          </div>
+
+          <div class="grid gap-12">
+            <a-form-item class="!mb-0" label="项目名称" name="name">
+              <a-input
+                v-model:value="form.name"
+                allow-clear
+                placeholder="输入项目名称"
+                :maxlength="30"
+                show-count
+              />
+            </a-form-item>
+
+            <a-form-item class="!mb-0" label="项目说明" name="describe">
+              <a-textarea
+                v-model:value="form.describe"
+                placeholder="描述项目目标、交付范围和当前背景"
+                :auto-size="{ minRows: 3, maxRows: 4 }"
+                :maxlength="120"
+                show-count
+              />
+            </a-form-item>
+
+            <div class="grid gap-10 sm:grid-cols-2">
+              <a-form-item class="!mb-0" label="负责人" name="master">
+                <a-input
+                  v-model:value="form.master"
+                  allow-clear
+                  placeholder="负责人姓名"
+                />
+              </a-form-item>
+              <a-form-item class="!mb-0" label="截止日期" name="dueAt">
+                <a-input
+                  v-model:value="form.dueAt"
+                  allow-clear
+                  placeholder="例如 06-30"
+                >
+                  <template #prefix>
+                    <Icon name="i-lucide:calendar-days" :size="14" />
+                  </template>
+                </a-input>
+              </a-form-item>
+            </div>
+          </div>
+        </div>
+
+        <div class="project-settings-panel">
+          <div class="project-settings-heading">
+            <div>
+              <div class="project-settings-title">
+                <Icon name="i-lucide:gauge" :size="16" />
+                推进状态
+              </div>
+              <div class="project-settings-description">
+                优先级和进度会共同决定项目卡片的状态表达
+              </div>
+            </div>
+            <span class="text-xs text-secondary">{{ progressStatus }}</span>
+          </div>
+
+          <div class="space-y-12">
+            <div class="grid gap-8 sm:grid-cols-4">
+              <button
+                v-for="item in priorityOptions"
+                :key="item.value"
+                type="button"
+                class="project-priority-option"
+                :class="[
+                  form.priority === item.value
+                    ? 'border-color-primary shadow-all-sm'
+                    : 'border-color-2',
+                ]"
+                :aria-pressed="form.priority === item.value"
+                @click="updatePriority(item.value)"
+              >
+                <span
+                  class="size-30 flex items-center justify-center rounded-7"
+                  :class="item.class"
+                >
+                  <Icon :name="item.icon" :size="15" />
+                </span>
+                <span class="text-sm text-main font-600">{{ item.label }}</span>
+              </button>
+            </div>
+
+            <div class="rounded-8 bg-fill-quaternary p-12">
+              <div class="mb-8 flex items-center justify-between text-xs">
+                <span class="text-secondary font-600">完成进度</span>
+                <span class="text-main font-700">{{ form.progress }}%</span>
+              </div>
+              <a-slider v-model:value="form.progress" :min="0" :max="100" />
+            </div>
+          </div>
+        </div>
+
+        <div class="project-settings-panel">
+          <div class="project-settings-heading">
+            <div>
+              <div class="project-settings-title">
+                <Icon name="i-lucide:workflow" :size="16" />
+                协作策略
+              </div>
+              <div class="project-settings-description">
+                按需开启提醒、周报和风险监控
+              </div>
+            </div>
+            <span class="text-xs text-secondary">
+              已开启 {{ activeSwitchCount }} 项
+            </span>
+          </div>
+
+          <div class="grid gap-8 sm:grid-cols-3">
+            <button
+              v-for="item in switchOptions"
+              :key="item.key"
+              type="button"
+              class="project-effect-option"
+              :class="form[item.key] ? 'is-active' : ''"
+              :aria-pressed="form[item.key]"
+              @click="updateSwitch(item.key, !form[item.key])"
+            >
+              <span class="flex items-start justify-between gap-8">
+                <span
+                  class="size-30 flex items-center justify-center rounded-7 bg-fill-tertiary text-secondary"
+                >
+                  <Icon :name="item.icon" :size="15" />
+                </span>
+                <a-switch
+                  size="small"
+                  :checked="form[item.key]"
+                  @click.stop
+                  @change="updateSwitch(item.key, Boolean($event))"
+                />
+              </span>
+              <span class="mt-9 block text-sm text-main font-600">
+                {{ item.title }}
+              </span>
+              <span class="mt-4 block text-xs text-secondary leading-18px">
+                {{ item.desc }}
+              </span>
+            </button>
+          </div>
+        </div>
+      </a-form>
+
+      <aside class="min-w-0">
+        <div class="project-preview-card">
+          <div class="mb-12 flex items-center gap-6 text-xs text-secondary">
+            <Icon name="i-lucide:scan-eye" :size="14" />
+            项目卡片实时预览
+          </div>
+          <div class="flex items-center justify-between gap-10">
+            <span
+              class="rounded-full px-8 py-3 text-xs font-600"
+              :class="selectedPriority.class"
+            >
+              {{ selectedPriority.label }}
+            </span>
+            <span class="text-xs text-secondary"
+              >{{ activeSwitchCount }} 项效果</span
+            >
+          </div>
+
+          <div class="mt-18 flex items-center gap-10">
+            <span
+              class="project-preview-logo size-52 flex shrink-0 items-center justify-center rounded-12 border-1 border-solid shadow-all-sm"
+              :class="selectedLogo.class"
+            >
+              <Transition name="project-logo-swap" mode="out-in">
+                <Icon
+                  :key="selectedLogo.icon"
+                  :name="selectedLogo.icon"
+                  :size="24"
+                />
+              </Transition>
+            </span>
+            <div class="min-w-0">
+              <div class="truncate text-base text-main font-700">
+                {{ previewName }}
+              </div>
+              <div class="mt-3 truncate text-xs text-secondary">
+                {{ previewMaster }}
+              </div>
+            </div>
+          </div>
+
+          <p
+            class="mb-0 mt-14 line-clamp-3 text-sm text-secondary leading-22px"
+          >
+            {{ previewDescribe }}
+          </p>
+
+          <div class="mt-16">
+            <div class="mb-7 flex items-center justify-between text-xs">
+              <span class="text-secondary">{{ progressStatus }}</span>
+              <span class="text-main font-700">{{ form.progress }}%</span>
+            </div>
+            <a-progress
+              :percent="form.progress"
+              :show-info="false"
+              :size="8"
+              :status="
+                form.riskWatch && form.progress < 45 ? 'exception' : 'active'
+              "
+            />
+          </div>
+
+          <div class="mt-14 grid grid-cols-2 gap-8 text-xs">
+            <div class="project-preview-stat">
+              <Icon name="i-lucide:calendar-clock" :size="14" />
+              {{ form.dueAt || '待定' }}
+            </div>
+            <div class="project-preview-stat">
+              <Icon name="i-lucide:bell-ring" :size="14" />
+              {{ form.notify ? '已提醒' : '不提醒' }}
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-12 border-t-1 border-color-2 border-t-solid pt-12">
+          <div class="flex items-center gap-7 text-sm text-main font-700">
+            <Icon name="i-lucide:badge-check" :size="15" class="text-primary" />
+            设置影响
+          </div>
+          <div class="mt-9 space-y-8 text-xs text-secondary leading-18px">
+            <div class="flex items-start gap-6">
+              <Icon
+                name="i-lucide:check"
+                :size="13"
+                class="mt-2 shrink-0 text-success"
+              />
+              Logo、名称和负责人会同步到项目卡片
+            </div>
+            <div class="flex items-start gap-6">
+              <Icon
+                name="i-lucide:check"
+                :size="13"
+                class="mt-2 shrink-0 text-success"
+              />
+              优先级和风险监控共同决定项目状态
+            </div>
+            <div class="flex items-start gap-6">
+              <Icon
+                name="i-lucide:check"
+                :size="13"
+                class="mt-2 shrink-0 text-success"
+              />
+              所有变更在保存前都可恢复
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </a-modal>
+</template>
+
+<style scoped>
+.project-settings-panel {
+  padding-block-end: 16px;
+  border-block-end: 1px solid rgb(var(--w-border-color-2));
+}
+
+.project-settings-panel:last-child {
+  padding-block-end: 0;
+  border-block-end: 0;
+}
+
+.project-settings-heading {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-block-end: 12px;
+}
+
+.project-settings-title {
+  display: flex;
+  gap: 7px;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 700;
+  color: rgb(var(--w-text-main));
+}
+
+.project-settings-description {
+  margin-block-start: 3px;
+  font-size: 12px;
+  line-height: 18px;
+  color: rgb(var(--w-text-secondary));
+}
+
+.project-priority-option,
+.project-effect-option {
+  width: 100%;
+  padding: 10px;
+  text-align: left;
+  cursor: pointer;
+  background: rgb(var(--w-bg-container));
+  border: 1px solid rgb(var(--w-border-color-2));
+  border-radius: 8px;
+  transition:
+    background-color 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+.project-priority-option {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.project-priority-option:hover,
+.project-priority-option:focus-visible,
+.project-effect-option:hover,
+.project-effect-option:focus-visible,
+.project-effect-option.is-active {
+  background: rgb(var(--w-bg-hover));
+  border-color: rgb(var(--w-color-primary) / 36%);
+  box-shadow: 0 8px 22px rgb(0 0 0 / 8%);
+  transform: translateY(-1px);
+}
+
+.project-priority-option:focus-visible,
+.project-effect-option:focus-visible {
+  outline: 2px solid rgb(var(--w-color-primary) / 35%);
+  outline-offset: 2px;
+}
+
+.project-effect-option.is-active {
+  background: rgb(var(--w-color-primary) / 8%);
+}
+
+.project-preview-card {
+  position: sticky;
+  top: 0;
+  padding: 14px;
+  overflow: hidden;
+  background: rgb(var(--w-bg-container));
+  border: 1px solid rgb(var(--w-border-color-1));
+  border-radius: 8px;
+  box-shadow: 0 14px 34px rgb(var(--w-shadow-color) / 12%);
+}
+
+.project-preview-card::before {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline: 0;
+  height: 3px;
+  content: '';
+  background: rgb(var(--w-color-primary));
+}
+
+.project-preview-logo {
+  transition:
+    border-color 180ms ease,
+    background-color 180ms ease,
+    color 180ms ease,
+    transform 180ms ease;
+}
+
+.project-preview-stat {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  min-width: 0;
+  padding: 8px;
+  color: rgb(var(--w-text-secondary));
+  background: rgb(var(--w-bg-fill-1));
+  border-radius: 6px;
+}
+
+.project-logo-swap-enter-active,
+.project-logo-swap-leave-active {
+  transition:
+    opacity 140ms ease,
+    transform 180ms ease;
+}
+
+.project-logo-swap-enter-from {
+  opacity: 0;
+  transform: scale(0.72) rotate(-8deg);
+}
+
+.project-logo-swap-leave-to {
+  opacity: 0;
+  transform: scale(0.72) rotate(8deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .project-priority-option,
+  .project-effect-option,
+  .project-preview-logo,
+  .project-logo-swap-enter-active,
+  .project-logo-swap-leave-active {
+    transition-duration: 1ms;
+  }
+
+  .project-priority-option:hover,
+  .project-priority-option:focus-visible,
+  .project-effect-option:hover,
+  .project-effect-option:focus-visible {
+    transform: none;
+  }
+}
+</style>
