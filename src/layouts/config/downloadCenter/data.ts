@@ -1,0 +1,172 @@
+import dayjs from 'dayjs'
+import type {
+  DownloadCategory,
+  DownloadItem,
+  DownloadMeta,
+  DownloadOption,
+  DownloadStatus,
+  DownloadStatusFilter,
+  DownloadCategoryFilter,
+} from './types'
+
+export const statusOptions: DownloadOption<DownloadStatusFilter>[] = [
+  { label: '全部状态', value: 'all' },
+  { label: '下载中', value: 'downloading' },
+  { label: '等待中', value: 'waiting' },
+  { label: '已暂停', value: 'paused' },
+  { label: '已完成', value: 'success' },
+  { label: '失败', value: 'failed' },
+]
+
+export const categoryOptions: DownloadOption<DownloadCategoryFilter>[] = [
+  { label: '全部类型', value: 'all' },
+  { label: '报表', value: 'report' },
+  { label: '素材', value: 'asset' },
+  { label: '备份', value: 'backup' },
+  { label: '票据', value: 'invoice' },
+  { label: '其他', value: 'other' },
+]
+
+export const statusMeta: Record<DownloadStatus, DownloadMeta> = {
+  downloading: {
+    label: '下载中',
+    icon: 'i-lucide:loader-circle',
+    color: 'processing',
+    class: 'text-primary bg-primary-tint border-color-primary',
+  },
+  waiting: {
+    label: '等待中',
+    icon: 'i-lucide:clock-3',
+    color: 'default',
+    class: 'text-secondary bg-secondary border-color-2',
+  },
+  paused: {
+    label: '已暂停',
+    icon: 'i-lucide:pause',
+    color: 'warning',
+    class: 'text-warning bg-warning-tint border-color-warning',
+  },
+  success: {
+    label: '已完成',
+    icon: 'i-lucide:circle-check',
+    color: 'success',
+    class: 'text-success bg-success-tint border-color-success',
+  },
+  failed: {
+    label: '失败',
+    icon: 'i-lucide:circle-alert',
+    color: 'error',
+    class: 'text-error bg-error-tint border-color-error',
+  },
+}
+
+export const categoryMeta: Record<DownloadCategory, DownloadMeta> = {
+  report: {
+    label: '报表',
+    icon: 'i-lucide:file-spreadsheet',
+    color: 'blue',
+    class: 'text-primary bg-primary-tint border-color-primary',
+  },
+  asset: {
+    label: '素材',
+    icon: 'i-lucide:image-down',
+    color: 'cyan',
+    class: 'text-info bg-info-tint border-color-info',
+  },
+  backup: {
+    label: '备份',
+    icon: 'i-lucide:database-backup',
+    color: 'orange',
+    class: 'text-warning bg-warning-tint border-color-warning',
+  },
+  invoice: {
+    label: '票据',
+    icon: 'i-lucide:receipt',
+    color: 'green',
+    class: 'text-success bg-success-tint border-color-success',
+  },
+  other: {
+    label: '其他',
+    icon: 'i-lucide:file-down',
+    color: 'default',
+    class: 'text-secondary bg-fill-quaternary border-color-2',
+  },
+}
+
+export const initialDownloadItems: DownloadItem[] = [
+  {
+    id: 'download-1001',
+    name: '客户转化分析-2026-06.xlsx',
+    description: '按渠道、员工、客户阶段拆解转化数据。',
+    category: 'report',
+    status: 'downloading',
+    progress: 64,
+    size: '86 MB',
+    speed: '3.2 MB/s',
+    source: '数据看板 / 客户转化',
+    savePath: 'Downloads/reports/customer-conversion.xlsx',
+    checksum: '等待完成后校验',
+    createdAt: dayjs().subtract(9, 'minute').format('YYYY-MM-DD HH:mm:ss'),
+    updatedAt: dayjs().subtract(1, 'minute').format('YYYY-MM-DD HH:mm:ss'),
+  },
+  {
+    id: 'download-1002',
+    name: '端午活动素材包.zip',
+    description: 'Banner、落地页、朋友圈投放素材。',
+    category: 'asset',
+    status: 'success',
+    progress: 100,
+    size: '386 MB',
+    speed: '已完成',
+    source: '素材库 / campaign/dragon-boat',
+    savePath: 'Downloads/assets/dragon-boat.zip',
+    checksum: 'SHA256 校验通过',
+    createdAt: dayjs().subtract(2, 'hour').format('YYYY-MM-DD HH:mm:ss'),
+    updatedAt: dayjs().subtract(96, 'minute').format('YYYY-MM-DD HH:mm:ss'),
+  },
+  {
+    id: 'download-1003',
+    name: '系统配置备份-0604.tar.gz',
+    description: '菜单、角色、字典和项目配置备份。',
+    category: 'backup',
+    status: 'paused',
+    progress: 42,
+    size: '148 MB',
+    speed: '已暂停',
+    source: '系统备份 / daily',
+    savePath: 'Downloads/backups/admin-config.tar.gz',
+    checksum: '等待完成后校验',
+    createdAt: dayjs().subtract(1, 'day').format('YYYY-MM-DD HH:mm:ss'),
+    updatedAt: dayjs().subtract(20, 'hour').format('YYYY-MM-DD HH:mm:ss'),
+  },
+  {
+    id: 'download-1004',
+    name: '发票归档-华南区.pdf',
+    description: '华南区本月客户发票归档文件。',
+    category: 'invoice',
+    status: 'failed',
+    progress: 27,
+    size: '42 MB',
+    speed: '网络中断',
+    source: '财务中心 / 发票',
+    savePath: 'Downloads/invoices/south.pdf',
+    checksum: '未完成',
+    createdAt: dayjs().subtract(2, 'day').format('YYYY-MM-DD HH:mm:ss'),
+    updatedAt: dayjs().subtract(2, 'day').format('YYYY-MM-DD HH:mm:ss'),
+  },
+  {
+    id: 'download-1005',
+    name: '操作日志-审计.csv',
+    description: '安全审计需要的近 30 天操作日志。',
+    category: 'other',
+    status: 'waiting',
+    progress: 0,
+    size: '12 MB',
+    speed: '等待资源',
+    source: '系统日志 / audit',
+    savePath: 'Downloads/logs/audit.csv',
+    checksum: '等待完成后校验',
+    createdAt: dayjs().subtract(4, 'minute').format('YYYY-MM-DD HH:mm:ss'),
+    updatedAt: dayjs().subtract(4, 'minute').format('YYYY-MM-DD HH:mm:ss'),
+  },
+]

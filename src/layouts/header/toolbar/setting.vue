@@ -1,11 +1,18 @@
+<script lang="ts" setup>
+import { usePreferences } from '@/layouts/preferences/composables'
+
+const { openPreferences } = usePreferences()
+</script>
+
 <template>
-  <button @click="value = true">
+  <button
+    type="button"
+    class="w-layout-toolbar-item max-sm:hidden!"
+    data-motion="spin"
+    aria-label="打开项目设置"
+    title="项目设置"
+    @click="openPreferences"
+  >
     <Icon name="i-lucide:settings" :size="20" />
   </button>
-  <Setting v-model:open="value" @close="value = false" />
 </template>
-<script lang="ts" setup>
-import { ref } from 'vue';
-import { Setting } from '@/layouts/config';
-const value = ref(false);
-</script>

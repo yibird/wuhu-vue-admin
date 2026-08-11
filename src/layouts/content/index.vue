@@ -1,29 +1,45 @@
 <template>
-  <n-layout-content
-    class="relative flex-1"
-    content-class="layout-content dark:bg-[#070707]!"
-  >
-    <router-view v-if="renderRouteView" v-slot="{ Component }">
-      <transition :name="transitionName" mode="out-in">
-        <keep-alive :include="include">
-          <suspense :timeout="0">
-            <component :is="Component" :key="$route.fullPath" />
-            <template #fallback>
-              <div class="h-full flex items-center justify-center">
-                <n-spin size="large">
-                  <template #description>Loading...</template>
-                </n-spin>
-              </div>
-            </template>
-          </suspense>
-        </keep-alive>
-      </transition>
-    </router-view>
-  </n-layout-content>
+  <a-layout-content class="relative grid min-h-full flex-1 overflow-hidden">
+    <div v-if="renderRouteView" class="relative h-full overflow-x-hidden">
+      <IframeView v-if="isIframe" :src="iframeSrc" />
+      <ErrorBoundary v-else stop-propagation @error="handleClientError">
+        <router-view v-slot="{ Component, route }">
+          <transition :name="transitionName" mode="out-in">
+            <keep-alive :include="include" :max="max">
+              <suspense>
+                <component :is="Component" :key="getRouteViewKey(route)" />
+                <template #fallback>
+                  <Loading :animation="loadingAnimation" />
+                </template>
+              </suspense>
+            </keep-alive>
+          </transition>
+        </router-view>
+      </ErrorBoundary>
+    </div>
+  </a-layout-content>
 </template>
+
 <script lang="ts" setup>
-import { useKeepAlive } from './useKeepAlive'
-import { useTransition } from './useTransition'
-const { renderRouteView, include } = useKeepAlive()
-const { transitionName } = useTransition()
+import {
+  getRouteViewKey,
+  useIframe,
+  useKeepAlive,
+  useTransition,
+} from './composables'
+import { ErrorBoundary, Loading } from '@/components'
+import { IframeView } from './components'
+import type { ErrorBoundaryErrorPayload } from '@/components'
+
+const emit = defineEmits<{
+  clientError: [payload: ErrorBoundaryErrorPayload]
+}>()
+
+const { renderRouteView, include, max } = useKeepAlive()
+const { transitionName, loadingAnimation } = useTransition()
+const { isIframe, iframeSrc } = useIframe()
+
+function handleClientError(payload: ErrorBoundaryErrorPayload) {
+  emit('clientError', payload)
+}
 </script>

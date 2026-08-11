@@ -1,0 +1,121 @@
+.layout-tabs {
+  --w-tabs-height: 40px;
+  --w-tabs-bg: #fff;
+  --w-tabs-border-color: rgb(var(--w-border-secondary));
+  --w-tabs-shadow: var(--w-shadow-elevated);
+
+  // control style
+  --w-tabs-control-size: 40px;
+  --w-tabs-control-home-offset: var(--w-tabs-control-size);
+  --w-tabs-control-right-offset: calc(var(--w-tabs-control-size) * 2);
+  --w-tabs-control-refresh-offset: var(--w-tabs-control-size);
+
+  // item style
+  --w-tabs-item-bg-color: rgb(255 255 255 / 50%);
+  --w-tabs-item-hover-bg-color: rgb(245 245 245 / 78%);
+  --w-tabs-item-color: rgb(var(--w-text-main));
+  --w-tabs-item-border-color: rgb(var(--w-border-secondary));
+  --w-tabs-item-active-bg-color: #fff;
+  --w-tabs-item-active-line-color: rgb(var(--w-text-main));
+  --w-tabs-item-close-color: rgb(var(--w-text-placeholder));
+  --w-tabs-item-close-hover-color: rgb(var(--w-text-main));
+  --w-tabs-item-title-max-width: 200px;
+  --w-tabs-control-bg-color: var(--w-tabs-bg);
+  --w-tabs-control-color: rgb(var(--w-text-main));
+  --w-tabs-control-border-color: rgb(var(--w-border-secondary));
+  --w-tabs-control-hover-color: rgb(var(--w-text-main));
+  --w-tabs-control-hover-bg-color: rgb(245 245 245 / 76%);
+  --w-tabs-control-active-color: rgb(var(--w-color-primary));
+  --w-tabs-control-active-bg-color: rgb(245 245 245 / 86%);
+  --w-tabs-item-active-color: rgb(var(--w-color-primary));
+
+  &-block {
+    --w-tabs-list-margin: 0 120px 0 80px;
+    --w-tabs-item-padding-x: 15px;
+    --w-tabs-item-close-size: 18px;
+    --w-tabs-item-close-gap: 12px;
+    --w-tabs-item-active-line-height: 3px;
+    --w-tabs-item-divider-width: 1px;
+    --w-tabs-item-border-color: #eee;
+  }
+
+  &-card {
+    --w-tabs-card-height: var(--w-tabs-height);
+    --w-tabs-card-list-height: 32px;
+    --w-tabs-control-card-size: 32px;
+    --w-tabs-card-list-margin-left: 90px;
+    --w-tabs-card-list-margin-right: 130px;
+    --w-tabs-card-item-gap: 10px;
+    --w-tabs-card-item-padding-x: 8px;
+    --w-tabs-card-item-radius: 4px;
+    --w-tabs-card-active-dot-size: 8px;
+    --w-tabs-card-active-dot-left: 10px;
+    --w-tabs-card-shadow: var(--w-shadow-elevated);
+    --w-tabs-card-control-shadow: 0 1px 4px rgb(var(--w-shadow-color));
+  }
+
+  &-google {
+    --w-tabs-google-list-margin-left: calc(
+      var(--w-tabs-google-control-size) * 2 +
+        var(--w-tabs-google-control-offset) * 4
+    );
+    --w-tabs-google-list-margin-right: calc(
+      var(--w-tabs-google-control-size) * 3 +
+        var(--w-tabs-google-control-offset) * 4
+    );
+    --w-tabs-google-control-size: 30px;
+    --w-tabs-google-control-offset: 5px;
+    --w-tabs-google-item-top-gap: 4px;
+    --w-tabs-google-item-bottom-gap: 4px;
+    --w-tabs-google-item-gap: 6px;
+    --w-tabs-google-item-padding-x: 12px;
+    --w-tabs-google-item-close-size: 18px;
+    --w-tabs-google-item-close-gap: 7px;
+    --w-tabs-google-item-hover-radius: 9px;
+    --w-tabs-google-item-active-radius: 11px;
+    --w-tabs-google-curve-size: 12px;
+    --w-tabs-google-curve-shadow-offset: 6px;
+    --w-tabs-google-divider-height: 18px;
+    --w-tabs-google-divider-offset-y: 7px;
+    --w-tabs-google-strip-bg-rgb: var(--w-border-color-2);
+    --w-tabs-google-item-hover-bg-rgb: var(--w-bg-hover-4);
+    --w-tabs-google-item-active-bg-rgb: var(--w-bg-page);
+    --w-tabs-google-divider-rgb: var(--w-border-color-3);
+    --w-tabs-google-control-hover-bg-rgb: var(--w-bg-hover-3);
+    --w-tabs-google-control-active-bg-rgb: var(--w-bg-active-1);
+  }
+}
+
+[data-theme='dark'] {
+  .layout-tabs {
+    --w-tabs-bg: rgb(17 24 39);
+    --w-tabs-border-color: rgb(31 41 55);
+
+    // control style
+    --w-tabs-control-bg-color: var(--w-tabs-bg);
+    --w-tabs-control-border-color: rgb(31 41 55);
+    --w-tabs-control-hover-bg-color: rgb(31 41 55);
+    --w-tabs-control-active-bg-color: rgb(55 65 81);
+
+    // item style
+    --w-tabs-item-bg-color: rgb(17 24 39);
+    --w-tabs-item-hover-bg-color: rgb(31 41 55);
+    --w-tabs-item-active-bg-color: rgb(31 41 55);
+    --w-tabs-item-active-line-color: rgb(var(--w-text-main));
+    --w-tabs-item-border-color: rgb(31 41 55);
+
+    &-block,
+    &-card {
+      --w-tabs-item-border-color: rgb(31 41 55);
+    }
+
+    &-google {
+      --w-tabs-google-strip-bg-rgb: 8 13 24;
+      --w-tabs-google-item-hover-bg-rgb: var(--w-bg-hover-1);
+      --w-tabs-google-item-active-bg-rgb: var(--w-bg-page);
+      --w-tabs-google-divider-rgb: var(--w-border-color-3);
+      --w-tabs-google-control-hover-bg-rgb: var(--w-bg-hover-1);
+      --w-tabs-google-control-active-bg-rgb: var(--w-bg-active-1);
+    }
+  }
+}

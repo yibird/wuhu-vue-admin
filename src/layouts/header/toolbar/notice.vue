@@ -1,15 +1,19 @@
 <template>
-  <n-popover trigger="click">
-    <template #trigger>
-      <button>
-        <n-badge dot class="animated animated-swing animated-infinite">
-          <Icon name="i-lucide:bell" :size="20" />
-        </n-badge>
-      </button>
+  <a-popover trigger="click" placement="bottomRight">
+    <button type="button" class="w-layout-toolbar-item" data-motion="ring">
+      <a-badge dot>
+        <Icon name="i-lucide:bell" :size="20" />
+      </a-badge>
+    </button>
+    <template #content>
+      <NoticeCenter />
     </template>
-    <NoticeCenter />
-  </n-popover>
+  </a-popover>
 </template>
 <script lang="ts" setup>
-import { NoticeCenter } from '@/layouts/config';
+import { defineAsyncComponent } from 'vue'
+
+const NoticeCenter = defineAsyncComponent(
+  () => import('@/layouts/config/noticeCenter/index.vue')
+)
 </script>

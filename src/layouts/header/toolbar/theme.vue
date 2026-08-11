@@ -1,18 +1,38 @@
 <template>
-  <button @click="changeThemeMode" class="relative">
-    <Icon v-if="themeMode === ThemeMode.Dark" name="i-lucide:sun" :size="22" />
-    <Icon v-else name="i-lucide:moon" :size="22" />
+  <button
+    type="button"
+    class="w-layout-toolbar-item"
+    data-testid="theme-toggle"
+    data-motion="spin"
+    @click="changeThemeMode"
+  >
+    <Transition
+      mode="out-in"
+      enter-active-class="transition-[opacity,transform] duration-160 ease-out motion-reduce:transition-none"
+      enter-from-class="scale-70 rotate-12 opacity-0 motion-reduce:(scale-100 rotate-0)"
+      leave-active-class="transition-[opacity,transform] duration-120 ease-in motion-reduce:transition-none"
+      leave-to-class="scale-70 -rotate-12 opacity-0 motion-reduce:(scale-100 rotate-0)"
+    >
+      <Icon
+        v-if="themeMode === ThemeMode.Dark"
+        key="light"
+        name="i-lucide:sun"
+        :size="22"
+      />
+      <Icon v-else key="dark" name="i-lucide:moon" :size="22" />
+    </Transition>
   </button>
 </template>
 <script setup lang="ts">
-import { useTheme } from '@/theme'
-import { ThemeMode } from '@/constant'
+import { useTheme } from '@/composables'
+import { ThemeMode } from '@/constants'
 
 const { themeMode, changeThemeWithAnimation } = useTheme()
 
 const changeThemeMode = (e: Event) => {
-  const mode =
+  changeThemeWithAnimation(
+    e,
     themeMode.value === ThemeMode.Dark ? ThemeMode.Light : ThemeMode.Dark
-  changeThemeWithAnimation(e, mode)
+  )
 }
 </script>

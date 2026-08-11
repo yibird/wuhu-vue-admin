@@ -1,14 +1,13 @@
 <template>
-  <component :is="activeComponent" />
+  <component v-if="activeComponent" :is="activeComponent" />
 </template>
 <script lang="ts" setup>
 import { computed } from 'vue'
-import { storeToRefs } from 'pinia'
-import { appStore } from '@/store'
-import { MenuMode } from '@/constant'
-import { VerticalSider, MixSider, SplitSider } from './components'
-
-const { app, sider } = storeToRefs(appStore())
+import { useAppStore } from '@/store'
+import { MenuMode } from '@/constants'
+import VerticalSider from './VerticalSider.vue'
+import MixSider from './MixSider.vue'
+import SplitSider from './SplitSider.vue'
 
 const components = {
   [MenuMode.Vertical]: VerticalSider,
@@ -16,10 +15,12 @@ const components = {
   [MenuMode.Split]: SplitSider,
 }
 
+const { app, sider } = useAppStore()
+
 const activeComponent = computed(() => {
   const showSider = sider.value.show
   const menuMode = app.value.menuMode
-  if (!showSider || menuMode === MenuMode.Horizontal) return
+  if (!showSider || menuMode === MenuMode.Horizontal) return null
   return components[menuMode]
 })
 </script>

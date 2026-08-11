@@ -1,5 +1,8 @@
 <template>
-  <div :class="['layout-tabs', `layout-tabs-${theme ?? 'card'}`]">
+  <div
+    data-testid="layout-tabs"
+    :class="['layout-tabs', `layout-tabs-${theme ?? 'card'}`]"
+  >
     <TabPrev @click="rollLeft" />
     <TabHome :active="current === -1" @click="openHomeTab" />
     <div ref="tabsRef" class="layout-tabs-list">
@@ -31,9 +34,7 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { ref } from 'vue'
 import { useTabs } from '@/composables'
-import { appStore } from '@/store'
 import { useRoll } from './composables'
 import {
   TabPrev,
@@ -48,6 +49,10 @@ import './style/index.less'
 const {
   tabs,
   current,
+  currentTab,
+  showIcon,
+  theme,
+
   openHomeTab,
   openTab,
   closeTab,
@@ -56,18 +61,15 @@ const {
   closeRightTab,
   closeOtherTab,
   closeAllTab,
+  sortTabs,
   togglePinTab,
   refreshTab,
 } = useTabs()
 
-const tabsRef = ref<HTMLElement>()
-const store = appStore()
-const { rollLeft, rollRight } = useRoll(tabsRef, current)
+const tabsRef = useTemplateRef<HTMLElement>('tabsRef')
+const { rollLeft, rollRight } = useRoll(tabsRef, () => currentTab.value?.name)
 
-const showIcon = computed(() => store.tabs.showIcon)
-const theme = computed(() => store.tabs.theme)
-
-const onDragEnd = (index: number) => {
-  current.value = index
+const onDragEnd = (tab: (typeof tabs.value)[number]) => {
+  sortTabs(tab)
 }
 </script>

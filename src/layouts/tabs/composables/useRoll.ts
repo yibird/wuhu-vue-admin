@@ -1,110 +1,158 @@
-import { waitForAnimations } from '@/utils'
+import { onScopeDispose, toValue, watch, type MaybeRefOrGetter } from 'vue'
+import { usePreferredReducedMotion, useResizeObserver } from '@vueuse/core'
 
-import type { Ref } from 'vue'
+const ITEM_SELECTOR = '[data-tab-key]'
+const WRAPPER_SELECTOR = '.layout-tabs-list__wrapper'
+const SCROLL_TOLERANCE = 1
 
-const RollType = {
-  LEFT: 'left',
-  RIGHT: 'right',
-  AUTO: 'auto',
-} as const
+type Target = MaybeRefOrGetter<HTMLElement | null | undefined>
+type ActiveKey = MaybeRefOrGetter<string | null | undefined>
+type RollDirection = -1 | 1
 
-const WRAPPER_CLASS_NAME = '.layout-tabs-list__wrapper'
-const ITEM_CLASS = 'layout-tab-item'
+interface HorizontalViewport {
+  left: number
+  width: number
+  maxLeft: number
+}
 
-type Target = HTMLElement | Ref<HTMLElement | undefined>
-type RollType = (typeof RollType)[keyof typeof RollType]
+interface HorizontalItemBounds {
+  left: number
+  right: number
+}
 
-/**
- * 滚动到指定索引
- * @param target 滚动目标元素
- * @param current 当前索引
- * @returns 滚动到指定索引的方法
- */
-export function useRoll(target: Target, current?: number | Ref<number>) {
-  const offset = ref(0)
+function clampScrollLeft(left: number, maxLeft: number) {
+  return Math.max(0, Math.min(left, maxLeft))
+}
 
-  /**
-   * 滚动到指定索引
-   * @param target 滚动目标元素
-   * @param type 滚动类型
-   * @param index 目标索引
-   * @returns 滚动到指定索引的方法
-   */
-  function rollPage(target: Target, type: RollType, index?: number) {
-    const targetEl = isRef(target) ? target.value : target
-    if (!targetEl) return
-    const wrapperEl = targetEl.querySelector(WRAPPER_CLASS_NAME) as HTMLElement
-    if (!wrapperEl) return
+export function resolveNearestScrollLeft(
+  viewport: HorizontalViewport,
+  item: HorizontalItemBounds,
+  tolerance = SCROLL_TOLERANCE
+) {
+  const itemWidth = item.right - item.left
+  const visibleRight = viewport.left + viewport.width
+  let candidateLeft: number
 
-    const outerWidth = targetEl.offsetWidth
-    const liItems = targetEl.getElementsByClassName(
-      ITEM_CLASS
-    ) as HTMLCollectionOf<HTMLElement>
-
-    switch (type) {
-      case RollType.LEFT:
-        if (Math.abs(offset.value) <= 0) return
-        const prefLeft = -offset.value - outerWidth
-        for (let i = 0, len = liItems.length; i < len; i++) {
-          const li = liItems[i]
-          if (!li) return
-          const left = li.offsetLeft
-          if (left >= prefLeft) {
-            wrapperEl.style.transform = `translateX(${-left}px)`
-            offset.value = -left
-            return
-          }
-        }
-        break
-      case RollType.RIGHT:
-        for (let i = 0, len = liItems.length; i < len; i++) {
-          const li = liItems[i]
-          if (!li) return
-          const left = li.offsetLeft
-          const liOuterWidth = li.offsetWidth
-          if (left + liOuterWidth > outerWidth - offset.value) {
-            wrapperEl.style.transform = `translateX(${-left}px)`
-            offset.value = -left
-            return
-          }
-        }
-        break
-      case RollType.AUTO:
-        if (typeof index !== 'number' || index < 0 || index >= liItems.length) {
-          return
-        }
-        const thisLi = liItems[index]
-        if (!thisLi) return
-        const thisLiLeft = thisLi.offsetLeft
-        const thisLiOuterWidth = thisLi.offsetWidth
-        if (thisLiLeft < -offset.value) {
-          wrapperEl.style.transform = `translateX(${-thisLiLeft}px)`
-          offset.value = -thisLiLeft
-        } else if (thisLiLeft + thisLiOuterWidth > outerWidth - offset.value) {
-          const newOffset = -(thisLiLeft + thisLiOuterWidth - outerWidth)
-          wrapperEl.style.transform = `translateX(${newOffset}px)`
-          offset.value = newOffset
-        }
-        break
-    }
+  if (itemWidth >= viewport.width - tolerance) {
+    candidateLeft = item.left
+  } else if (item.left < viewport.left - tolerance) {
+    candidateLeft = item.left
+  } else if (item.right > visibleRight + tolerance) {
+    candidateLeft = item.right - viewport.width
+  } else {
+    return undefined
   }
 
-  watch(
-    () => unref(current),
-    async (newCurrent) => {
-      const targetEl = isRef(target) ? target.value : target
-      if (!targetEl) return
-      if (typeof newCurrent === 'number') {
-        await waitForAnimations(targetEl)
-        rollPage(target, RollType.AUTO, newCurrent)
-      }
-    },
-    { immediate: true }
-  )
+  const nextLeft = clampScrollLeft(candidateLeft, viewport.maxLeft)
+  return Math.abs(nextLeft - viewport.left) > tolerance ? nextLeft : undefined
+}
+
+function readViewport(element: HTMLElement): HorizontalViewport | undefined {
+  const width = element.clientWidth
+  if (width <= 0) return undefined
 
   return {
-    rollAuto: (index: number) => rollPage(target, RollType.AUTO, index),
-    rollLeft: () => rollPage(target, RollType.LEFT),
-    rollRight: () => rollPage(target, RollType.RIGHT),
+    left: element.scrollLeft,
+    width,
+    maxLeft: Math.max(0, element.scrollWidth - width),
+  }
+}
+
+function findTabElement(element: HTMLElement, key: string) {
+  return element.querySelector<HTMLElement>(
+    `${ITEM_SELECTOR}[data-tab-key="${CSS.escape(key)}"]`
+  )
+}
+
+function scrollToActiveTab(
+  target: Target,
+  activeKey: ActiveKey,
+  behavior: ScrollBehavior
+) {
+  const targetEl = toValue(target)
+  const key = toValue(activeKey)
+  if (!targetEl || !key) return
+
+  const viewport = readViewport(targetEl)
+  const item = findTabElement(targetEl, key)
+  if (!viewport || !item) return
+
+  const nextLeft = resolveNearestScrollLeft(viewport, {
+    left: item.offsetLeft,
+    right: item.offsetLeft + item.offsetWidth,
+  })
+  if (nextLeft === undefined) return
+
+  targetEl.scrollTo({ left: nextLeft, behavior })
+}
+
+/**
+ * Keeps the active tab visible while preserving native horizontal scrolling.
+ */
+export function useRoll(target: Target, activeKey: ActiveKey) {
+  let scheduledFrameId: number | undefined
+  const preferredMotion = usePreferredReducedMotion()
+  const scrollBehavior = () =>
+    preferredMotion.value === 'reduce' ? 'auto' : 'smooth'
+
+  const cancelScheduledRoll = () => {
+    if (scheduledFrameId === undefined) return
+    cancelAnimationFrame(scheduledFrameId)
+    scheduledFrameId = undefined
+  }
+
+  const scheduleActiveRoll = () => {
+    cancelScheduledRoll()
+
+    const roll = () => {
+      scheduledFrameId = undefined
+      scrollToActiveTab(target, activeKey, scrollBehavior())
+    }
+
+    if (typeof requestAnimationFrame === 'undefined') {
+      roll()
+      return
+    }
+
+    scheduledFrameId = requestAnimationFrame(roll)
+  }
+
+  const rollPage = (direction: RollDirection) => {
+    const targetEl = toValue(target)
+    if (!targetEl) return
+
+    const viewport = readViewport(targetEl)
+    if (!viewport) return
+
+    const nextLeft = clampScrollLeft(
+      viewport.left + viewport.width * direction,
+      viewport.maxLeft
+    )
+    if (Math.abs(nextLeft - viewport.left) <= SCROLL_TOLERANCE) return
+
+    targetEl.scrollTo({
+      left: nextLeft,
+      behavior: scrollBehavior(),
+    })
+  }
+
+  watch([() => toValue(target), () => toValue(activeKey)], scheduleActiveRoll, {
+    immediate: true,
+    flush: 'post',
+  })
+
+  useResizeObserver(() => {
+    const targetEl = toValue(target)
+    if (!targetEl) return []
+
+    const wrapper = targetEl.querySelector<HTMLElement>(WRAPPER_SELECTOR)
+    return wrapper ? [targetEl, wrapper] : [targetEl]
+  }, scheduleActiveRoll)
+
+  onScopeDispose(cancelScheduledRoll)
+
+  return {
+    rollLeft: () => rollPage(-1),
+    rollRight: () => rollPage(1),
   }
 }

@@ -1,25 +1,22 @@
 <template>
-  <n-layout-header
-    class="h-50! px-10! bg-white! flex items-center justify-between dark:bg-dark-primary!"
+  <a-layout-header
+    class="w-layout-header transition-[background-color,border-color,color] duration-240 ease-out motion-reduce:transition-none"
   >
-    <HeaderNav v-if="showNav" />
-    <HeaderMenu v-else />
+    <HeaderNav />
     <HeaderToolbar />
-  </n-layout-header>
+  </a-layout-header>
 </template>
 <script lang="ts" setup>
-import { storeToRefs } from 'pinia'
-import { appStore } from '@/store'
 import HeaderNav from './nav/index.vue'
-import HeaderMenu from './menu/index.vue'
 import HeaderToolbar from './toolbar/index.vue'
-import { MenuMode, type MenuModeType } from '@/constant'
-
-const { app } = storeToRefs(appStore())
-
-const showNav = computed(() => {
-  return ([MenuMode.Vertical, MenuMode.Split] as MenuModeType[]).includes(
-    app.value.menuMode
-  )
-})
 </script>
+
+<style>
+.w-layout-header {
+  @apply relative h-50! px-10! flex items-center justify-between z-10;
+
+  background-color: var(--w-header-bg);
+  border-bottom: 1px solid rgb(var(--w-header-border-color));
+  backdrop-filter: var(--w-header-filter);
+}
+</style>

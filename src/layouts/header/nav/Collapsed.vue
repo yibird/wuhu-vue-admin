@@ -1,18 +1,18 @@
 <template>
   <button
-    class="span-button group inline-flex p-8 cursor-pointer rounded-4 hover:bg-[#f5f5f4] dark:hover:bg-[#2e3033]"
-    @click="onClick"
+    class="span-button size-32 group flex items-center justify-center p-8 cursor-pointer rounded-4 hover:bg-hover"
+    data-testid="sider-collapse-trigger"
+    @click="toggleCollapsed"
   >
-    <Icon name="i-lucide:align-justify" :size="18" class="transition group-hover:scale-110" />
+    <Icon
+      name="i-lucide:align-justify"
+      :size="20"
+      class="transition-transform group-hover:scale-110"
+    />
   </button>
 </template>
+
 <script lang="ts" setup>
-import { storeToRefs } from 'pinia'
-import { appStore } from '@/store'
-
-const { sider } = storeToRefs(appStore())
-
-const onClick = () => {
-  sider.value.collapsed = !sider.value.collapsed
-}
+import { useAppStore } from '@/store'
+const { toggleCollapsed } = useAppStore()
 </script>

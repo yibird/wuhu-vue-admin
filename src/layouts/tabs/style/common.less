@@ -1,41 +1,56 @@
 .layout-tabs {
   position: relative;
+  z-index: 1;
+  box-sizing: border-box;
   width: 100%;
   overflow: hidden;
-  border-top: 1px solid var(--w-tabs-border-color);
-  box-sizing: border-box;
-  z-index: 1;
   background: var(--w-tabs-bg);
-  box-shadow: var(--w-tabs-box-shadow);
+  // border-top: 1px solid var(--w-tabs-border-color);
+  box-shadow: var(--w-tabs-shadow);
 
   .tab-control {
     position: absolute;
     top: 0;
+    box-sizing: border-box;
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: var(--w-tabs-control-bg);
     color: var(--w-tabs-control-color);
-    cursor: pointer;
-    outline: none;
-    touch-action: none;
     appearance: none;
-    box-sizing: content-box;
+    touch-action: none;
+    cursor: pointer;
+    user-select: none;
+    outline: none;
+    background-color: var(--w-tabs-control-bg-color);
+    transition:
+      color 200ms cubic-bezier(0.4, 0, 0.2, 1),
+      background-color 200ms cubic-bezier(0.4, 0, 0.2, 1);
+
+    &:hover {
+      color: var(--w-tabs-control-hover-color);
+      background-color: var(--w-tabs-control-hover-bg-color);
+    }
+
+    &:active,
+    &.tab-item-active {
+      color: var(--w-tabs-control-active-color);
+      background-color: var(--w-tabs-control-active-bg-color);
+    }
 
     &-prev {
       left: 0;
     }
 
     &-home {
-      left: 40px;
+      left: var(--w-tabs-control-home-offset);
     }
 
     &-next {
-      right: 80px;
+      right: var(--w-tabs-control-right-offset);
     }
 
     &-refresh {
-      right: 40px;
+      right: var(--w-tabs-control-refresh-offset);
     }
 
     &-action {
@@ -44,52 +59,108 @@
   }
 
   &-list {
-    overflow: hidden;
+    overflow: auto hidden;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
 
     &__wrapper {
-      height: 100%;
+      position: relative;
       display: flex;
+      width: max-content;
+      min-width: 100%;
+      height: 100%;
       white-space: nowrap;
-      transition: all 0.3s ease;
+    }
+  }
+
+  .tab-item-wrapper {
+    position: relative;
+    flex: none;
+    align-self: stretch;
+
+    &:active:not([data-sortable-dragging='true'])
+      .tab-item:not(.tab-item-fixed) {
+      opacity: 0.9;
+      transform: translateY(1px) scale(0.985);
+    }
+
+    &[data-sortable-dragging='true'] {
+      z-index: 30;
+
+      .tab-item {
+        cursor: grabbing;
+        background-color: var(--w-tabs-item-active-bg-color);
+        box-shadow: var(--w-shadow-elevated);
+        opacity: 1;
+        transform: translateY(-2px) scale(1.02);
+      }
     }
   }
 
   .tab-item {
     position: relative;
-    flex: none;
+    box-sizing: border-box;
     display: flex;
+    flex: none;
     align-items: center;
-    cursor: pointer;
     overflow: hidden;
-    box-sizing: content-box;
+    color: var(--w-tabs-item-color);
+    cursor: pointer;
     user-select: none;
+    background-color: var(--w-tabs-item-bg-color);
+    transition:
+      color 200ms cubic-bezier(0.4, 0, 0.2, 1),
+      background-color 200ms cubic-bezier(0.4, 0, 0.2, 1),
+      border-color 200ms cubic-bezier(0.4, 0, 0.2, 1),
+      box-shadow 160ms ease,
+      opacity 120ms ease,
+      transform 160ms cubic-bezier(0.2, 0.8, 0.2, 1);
 
     &__icon {
-      display: inline-flex;
+      display: flex;
       align-items: center;
       justify-content: center;
       margin-right: 5px;
     }
 
     &__title {
-      max-width: 200px;
       width: 100%;
+      max-width: var(--w-tabs-item-title-max-width);
       overflow: hidden;
-      line-height: 1.7;
       text-overflow: ellipsis;
+      line-height: 1.7;
       white-space: nowrap;
     }
 
+    &__pin {
+      box-sizing: border-box;
+      display: inline-flex;
+      flex: none;
+      align-items: center;
+      justify-content: center;
+      margin-left: var(--w-tabs-item-close-gap);
+      color: var(--w-tabs-item-close-color);
+    }
+
     &__close {
+      box-sizing: border-box;
       display: flex;
       align-items: center;
       justify-content: center;
       padding: 0;
-      box-sizing: border-box;
+      appearance: none;
       cursor: pointer;
       outline: none;
       border: none;
-      appearance: none;
     }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .layout-tabs .tab-item {
+    transition: none;
   }
 }

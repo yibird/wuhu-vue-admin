@@ -40,7 +40,7 @@ export interface TabItemEmits {
 }
 
 export interface TabListEmits extends TabItemEmits {
-  (e: typeof EmitEvent.DRAG_END, index: number): void
+  (e: typeof EmitEvent.DRAG_END, tab: ITab): void
 }
 
 export interface TabItemProps {
