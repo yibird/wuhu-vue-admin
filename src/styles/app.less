@@ -1,0 +1,31 @@
+html,
+body,
+#app {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+  font-family: var(--w-font-family);
+  color: rgb(var(--w-text-main));
+  background-color: rgb(var(--w-bg-page));
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+img {
+  vertical-align: middle;
+}
+
+html.color-weakness-mode {
+  filter: saturate(0.72) contrast(1.08);
+}
+
+html.grey-mode {
+  filter: grayscale(1);
+}
+
+html.color-weakness-mode.grey-mode {
+  filter: grayscale(1) contrast(1.04);
+}

@@ -1,0 +1,459 @@
+:root {
+  font-weight: 400;
+  font-synthesis: none;
+  color-scheme: light;
+  text-rendering: optimizelegibility;
+
+  --w-font-family:
+    'Inter Variable', 'Inter Variable Fallback', -apple-system,
+    'BlinkMacSystemFont', 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB',
+    'Microsoft YaHei', 'Arial', sans-serif;
+
+  // ===================================== 基础颜色
+  // 主题色
+  --w-color-primary: 22 119 255;
+  // 成功颜色
+  --w-color-success: 82 196 26;
+  // 警告颜色
+  --w-color-warning: 250 173 20;
+  // 错误颜色
+  --w-color-error: 255 77 79;
+  // 信息颜色
+  --w-color-info: 22 119 255;
+
+  // ===================================== 文字颜色
+  // 1️⃣ 标题/重度强调（接近纯黑，但融入了微量蓝黑，极具分量感）
+  --w-text-main: 17, 24, 39;
+  // 2️⃣ 常规正文/标签（大幅加深！确保长文本、表格、常规文字绝对清晰，看久了不累）
+  --w-text-regular: 55, 65, 81;
+  // 3️⃣ 次要正文/时间/副标题（原先的 156 太淡了，拉深到 107，兼顾层级与可读性）
+  --w-text-secondary: 107, 114, 128;
+  // 4️⃣ 弱化/提示/脚注（用来代替你原先的 secondary，适合非常边缘的辅助提示）
+  --w-text-muted: 148, 163, 184;
+  // 5️⃣ 占位符颜色（比 muted 略淡一点点，既能看清，又不会干扰用户输入）
+  --w-text-placeholder: 186, 195, 207;
+  // 6️⃣ 禁用状态文字（保持足够的低对比度，同时确保在暗色/灰色底色上不消失）
+  --w-text-disabled: 203, 213, 225;
+  // 7️⃣ 链接/高亮颜色（微调了原先的纯蓝，融入了一丝丝靛蓝，视觉上更稳重，更符合现代审美）
+  --w-text-link: 26, 92, 255;
+  // 主题色
+  --w-text-primary: var(--w-color-primary);
+  // 成功颜色
+  --w-text-success: var(--w-color-success);
+  // 警告颜色
+  --w-text-warning: var(--w-color-warning);
+  // 错误颜色
+  --w-text-error: var(--w-color-error);
+  // 信息颜色
+  --w-text-info: var(--w-color-info);
+
+  // ===================================== 背景颜色
+  --w-bg-page: 245, 247, 250;
+  // 基础画布背景色
+  --w-bg-base: 255, 255, 255;
+  // 主背景色
+  --w-bg-main: var(--w-bg-base);
+  // 浮层背景色
+  --w-bg-elevated: 255, 255, 255;
+  // 容器背景色
+  --w-bg-container: 255, 255, 255;
+  // 二级容器背景色
+  --w-bg-container-secondary: 250, 250, 250;
+  // 三级背景色
+  --w-bg-secondary: 245, 245, 245;
+
+  // ===================================== 悬浮色
+  --w-bg-hover-1: 250 250 250; /* #FAFAFA */
+  --w-bg-hover-2: 247 247 248; /* #F7F7F8 */
+  --w-bg-hover-3: 243 244 246; /* #F3F4F6 */
+  --w-bg-hover-4: 238 240 242; /* #EEF0F2 */
+  --w-bg-hover-5: 232 234 237; /* #E8EAED */
+  --w-bg-hover-6: 226 229 233; /* #E2E5E9 */
+  --w-bg-hover-7: 218 222 227; /* #DADEE3 */
+  --w-bg-hover-8: 208 214 220; /* #D0D6DC */
+  --w-bg-hover: var(--w-bg-hover-4);
+
+  // ===================================== 激活颜色
+  --w-bg-active-1: 240 246 252; /* #F0F6FC */
+  --w-bg-active-2: 235 242 250; /* #EBF2FA */
+  --w-bg-active-3: 228 237 247; /* #E4EDF7 */
+  --w-bg-active-4: 220 232 245; /* #DCE8F5 */
+  --w-bg-active-5: 212 226 242; /* #D4E2F2 */
+  --w-bg-active-6: 203 220 239; /* #CBDCEF */
+  --w-bg-active-7: 194 214 236; /* #C2D6EC */
+  --w-bg-active-8: 184 207 233; /* #B8CFE9 */
+  --w-bg-active: var(--w-bg-active-4);
+
+  // ===================================== 选中颜色
+  --w-bg-selected-1: 242 249 255; /* #F2F9FF */
+  --w-bg-selected-2: 236 246 255; /* #ECF6FF */
+  --w-bg-selected-3: 230 244 255; /* #E6F4FF */
+  --w-bg-selected-4: 224 238 255; /* #E0EEFF */
+  --w-bg-selected-5: 219 235 255; /* #DBEBFF */
+  --w-bg-selected-6: 212 230 255; /* #D4E6FF */
+  --w-bg-selected-7: 204 225 255; /* #CCE1FF */
+  --w-bg-selected-8: 196 220 255; /* #C4DCFF */
+  --w-bg-selected: var(--w-bg-selected-4);
+
+  // ===================================== 禁用颜色
+  --w-bg-disabled-1: 248 248 248; /* #F8F8F8 */
+  --w-bg-disabled-2: 245 245 245; /* #F5F5F5 */
+  --w-bg-disabled-3: 242 242 242; /* #F2F2F2 */
+  --w-bg-disabled-4: 240 240 240; /* #F0F0F0 默认 */
+  --w-bg-disabled-5: 236 236 236; /* #ECECEC */
+  --w-bg-disabled-6: 232 232 232; /* #E8E8E8 */
+  --w-bg-disabled-7: 228 228 228; /* #E4E4E4 */
+  --w-bg-disabled-8: 224 224 224; /* #E0E0E0 */
+  --w-bg-disabled: var(--w-bg-disabled-4);
+
+  // ===================================== 蒙层颜色
+  --w-bg-mask-rgb: 15 23 42;
+  --w-bg-mask-1: rgb(var(--w-bg-mask-rgb) / 10%);
+  --w-bg-mask-2: rgb(var(--w-bg-mask-rgb) / 15%);
+  --w-bg-mask-3: rgb(var(--w-bg-mask-rgb) / 20%);
+  --w-bg-mask-4: rgb(var(--w-bg-mask-rgb) / 30%);
+  --w-bg-mask-5: rgb(var(--w-bg-mask-rgb) / 40%);
+  --w-bg-mask-6: rgb(var(--w-bg-mask-rgb) / 50%);
+  --w-bg-mask-7: rgb(var(--w-bg-mask-rgb) / 60%);
+  --w-bg-mask-8: rgb(var(--w-bg-mask-rgb) / 70%);
+  --w-bg-mask: var(--w-bg-mask-4);
+
+  // ===================================== 填充色
+  --w-bg-fill-1: 252 252 252;
+  --w-bg-fill-2: 250 250 250;
+  --w-bg-fill-3: 248 248 248;
+  --w-bg-fill-4: 245 245 245; /* 默认 */
+  --w-bg-fill-5: 242 242 242;
+  --w-bg-fill-6: 238 238 238;
+  --w-bg-fill-7: 234 234 234;
+  --w-bg-fill-8: 230 230 230;
+  --w-bg-fill: var(--w-bg-fill-4);
+  // 次要
+  --w-fill-secondary: 250, 250, 250;
+  // 常规
+  --w-fill-tertiary: 245, 245, 245;
+  // 最强
+  --w-fill-quaternary: 248, 250, 252;
+
+  // ===================================== 语义色背景
+  // Primary / 主题色：solid 用于主按钮，subtle 用于 Tag / Alert / 选中底色
+  --w-bg-primary: var(--w-color-primary);
+  --w-bg-primary-hover: 64, 150, 255;
+  --w-bg-primary-active: 9, 88, 217;
+  --w-bg-primary-tint: color-mix(
+    in srgb,
+    rgb(var(--w-bg-primary)) 10%,
+    rgb(var(--w-bg-container))
+  );
+  --w-bg-primary-tint-hover: color-mix(
+    in srgb,
+    rgb(var(--w-bg-primary)) 24%,
+    rgb(var(--w-bg-container))
+  );
+
+  // Success 悬浮色
+  --w-bg-success-hover: 115, 209, 61;
+  // Success 激活色
+  --w-bg-success-active: 56, 158, 13;
+  // Success 淡色底
+  --w-bg-success-tint: 246, 255, 237;
+  // Success 淡色底悬浮色
+  --w-bg-success-tint-hover: 217, 247, 190;
+
+  // Warning 悬浮色
+  --w-bg-warning-hover: 255, 197, 61;
+  // Warning 激活色
+  --w-bg-warning-active: 212, 136, 6;
+  // Warning 淡色底
+  --w-bg-warning-tint: 255, 251, 230;
+  // Warning 淡色底悬浮色
+  --w-bg-warning-tint-hover: 255, 241, 184;
+
+  // Error 悬浮色
+  --w-bg-error-hover: 255, 120, 117;
+  // Error 激活色
+  --w-bg-error-active: 217, 54, 62;
+  // Error 淡色底
+  --w-bg-error-tint: 255, 242, 240;
+  // Error 淡色底悬浮色
+  --w-bg-error-tint-hover: 255, 204, 199;
+
+  // Info 悬浮色
+  --w-bg-info-hover: 64, 150, 255;
+  // Info 激活色
+  --w-bg-info-active: 9, 88, 217;
+  // Info 淡色底
+  --w-bg-info-tint: 230, 244, 255;
+  // Info 淡色底悬浮色
+  --w-bg-info-tint-hover: 186, 224, 255;
+
+  // ===================================== 边框颜色
+  // 边框主题色
+  --w-border-color-primary: var(--w-color-primary);
+  // 边框成功色
+  --w-border-color-success: var(--w-color-success);
+  // 边框警告色
+  --w-border-color-warning: var(--w-color-warning);
+  // 边框错误色
+  --w-border-color-error: var(--w-color-error);
+  // 边框信息色
+  --w-border-color-info: var(--w-color-info);
+  // 边框主要色（深灰/边框主色）
+  --w-border-color-main: 226, 232, 240;
+  // 边框常规色（标准边框色，介于 main 和 muted 之间）
+  --w-border-color-regular: 210, 218, 230;
+  // 边框次要色（浅灰）
+  --w-border-color-secondary: 238, 238, 238;
+  // 边框常规色（极浅灰，用于分割线等）
+  --w-border-color-muted: 245, 247, 250;
+  // 边框占位符色（更浅，用于占位区块边框）
+  --w-border-color-placeholder: 240, 242, 245;
+  // 边框禁用色（最浅，几乎不可见）
+  --w-border-color-disabled: 245, 246, 248;
+  // 边框弱色（最浅，几乎不可见）
+  --w-border-color-1: 240, 242, 245;
+  // 弱/常规（适合：普通组件边框、表格内嵌分割线、输入框常规状态。最常用的标准线）
+  --w-border-color-2: 226, 232, 240;
+  // 中度/悬浮（适合：输入框 Hover 状态、标签边框、深色卡片边缘。具备一定的视觉存在感）
+  --w-border-color-3: 203, 213, 225;
+  // 强/聚焦（适合：输入框 Focus 状态、重要核心组件边框、或者需要明显区分的隔离线）
+  --w-border-color-4: 148, 163, 184;
+  // 最强/强调（适合：重度强调边界、深色模式过渡线、或者配合深色字体的特殊边框）
+  --w-border-color-5: 100, 116, 139;
+
+  /* 强 */
+  --w-border-color-6: 71 85 105; /* #475569 */
+
+  /* 很强 */
+  --w-border-color-7: 51 65 85; /* #334155 */
+
+  /* 最强 */
+  --w-border-color-8: 30 41 59; /* #1E293B */
+  --w-border-primary: var(--w-border-color-primary);
+  --w-border-secondary: var(--w-border-color-secondary);
+  --w-border-muted: var(--w-border-color-muted);
+  --w-border-regular: var(--w-border-color-regular);
+  --w-border-placeholder: var(--w-border-color-placeholder);
+  --w-border-disabled: var(--w-border-color-disabled);
+
+  // ===================================== 阴影
+  --w-shadow-color-1: 15, 23, 42 / 10%;
+  --w-shadow-color-2: 15, 23, 42 / 20%;
+  --w-shadow-color-3: 15, 23, 42 / 30%;
+  --w-shadow-color-4: 15, 23, 42 / 40%;
+  // 默认阴影颜色
+  --w-shadow-color: var(--w-shadow-color-2);
+
+  // 阴影悬浮色
+  --w-shadow-elevated: 0 12px 32px rgb(15 23 42 / 10%);
+  // 阴影次要色
+  --w-shadow-sider: 8px 0 12px -6px rgb(15 23 42 / 12%);
+
+  // ===================================== sider token
+  --w-sider-bg: 255 255 255;
+  --w-sider-border-color: 226 232 240;
+  --w-sider-shadow: 4px 0 10px -4px rgb(0 0 0 / 8%);
+  --w-sider-item-bg: 245 245 245;
+  --w-sider-item-hover-bg: 31 35 41;
+  --w-sider-item-active-bg: 31 35 41;
+  --w-sider-item-color: 75 85 99;
+  --w-sider-item-active-color: 255 255 255;
+  --w-sider-z-index: 1000;
+  --w-watermark-z-index: 1100;
+  --w-global-search-z-index: 1200;
+  --w-sider-vertical-shadow: 8px 0 12px -6px rgb(0 0 0 / 10%);
+
+  // ===================================== header token
+  --w-header-height: 50px;
+  --w-header-bg: rgb(255 255 255 / 75%);
+  --w-header-border-color: 226 232 240;
+  // --w-header-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+  --w-header-filter: saturate(180%) blur(20px);
+}
+
+[data-theme='dark'] {
+  color-scheme: dark;
+  // ===================================== 文字颜色
+  --w-text-main: 248, 250, 252;
+  --w-text-regular: 203, 213, 225;
+  --w-text-secondary: 148, 163, 184;
+  --w-text-muted: 100, 116, 139;
+  --w-text-placeholder: 71, 85, 105;
+  --w-text-disabled: 51, 65, 85;
+  --w-text-link: 96, 165, 250;
+
+  // ===================================== 背景颜色
+  --w-bg-page: 15, 23, 42;
+  --w-bg-base: 15, 23, 42;
+  --w-bg-elevated: 30, 41, 59;
+  --w-bg-container: 30, 41, 59;
+  --w-bg-container-secondary: 15, 23, 42;
+  --w-bg-secondary: 15, 23, 42;
+
+  // ===================================== 悬浮色
+  --w-bg-hover-1: 30 41 59;
+  --w-bg-hover-2: 35 48 68;
+  --w-bg-hover-3: 41 56 79;
+  --w-bg-hover-4: 51 65 85;
+  --w-bg-hover-5: 61 78 102;
+  --w-bg-hover-6: 71 85 105;
+  --w-bg-hover-7: 86 102 124;
+  --w-bg-hover-8: 100 116 139;
+
+  // ===================================== 激活颜色
+  --w-bg-active-1: 23 37 84;
+  --w-bg-active-2: 30 58 138;
+  --w-bg-active-3: 29 78 216;
+  --w-bg-active-4: 37 99 235;
+  --w-bg-active-5: 59 130 246;
+  --w-bg-active-6: 96 165 250;
+  --w-bg-active-7: 147 197 253;
+  --w-bg-active-8: 191 219 254;
+
+  // ===================================== 选中颜色
+  --w-bg-selected-1: 23 37 84;
+  --w-bg-selected-2: 30 58 138;
+  --w-bg-selected-3: 29 78 216;
+  --w-bg-selected-4: 37 99 235;
+  --w-bg-selected-5: 59 130 246;
+  --w-bg-selected-6: 96 165 250;
+  --w-bg-selected-7: 147 197 253;
+  --w-bg-selected-8: 191 219 254;
+
+  // ===================================== 禁用颜色
+  --w-bg-disabled-1: 15 23 42;
+  --w-bg-disabled-2: 17 24 39;
+  --w-bg-disabled-3: 22 30 46;
+  --w-bg-disabled-4: 30 41 59;
+  --w-bg-disabled-5: 35 48 68;
+  --w-bg-disabled-6: 41 56 79;
+  --w-bg-disabled-7: 51 65 85;
+  --w-bg-disabled-8: 71 85 105;
+
+  // ===================================== 蒙层颜色
+  --w-bg-mask-rgb: 0 0 0;
+  --w-bg-mask-1: rgb(var(--w-bg-mask-rgb) / 20%);
+  --w-bg-mask-2: rgb(var(--w-bg-mask-rgb) / 30%);
+  --w-bg-mask-3: rgb(var(--w-bg-mask-rgb) / 40%);
+  --w-bg-mask-4: rgb(var(--w-bg-mask-rgb) / 50%);
+  --w-bg-mask-5: rgb(var(--w-bg-mask-rgb) / 60%);
+  --w-bg-mask-6: rgb(var(--w-bg-mask-rgb) / 70%);
+  --w-bg-mask-7: rgb(var(--w-bg-mask-rgb) / 80%);
+  --w-bg-mask-8: rgb(var(--w-bg-mask-rgb) / 90%);
+
+  // ===================================== 填充色
+  --w-bg-fill-1: 15 23 42;
+  --w-bg-fill-2: 20 28 48;
+  --w-bg-fill-3: 25 35 53;
+  --w-bg-fill-4: 30 41 59;
+  --w-bg-fill-5: 35 48 68;
+  --w-bg-fill-6: 41 56 79;
+  --w-bg-fill-7: 51 65 85;
+  --w-bg-fill-8: 71 85 105;
+  --w-fill-secondary: 30, 41, 59;
+  --w-fill-tertiary: 25, 35, 53;
+  --w-fill-quaternary: 15, 23, 42;
+
+  // ===================================== 语义色背景
+  --w-bg-primary-tint: color-mix(
+    in srgb,
+    rgb(var(--w-bg-primary)) 20%,
+    rgb(var(--w-bg-page))
+  );
+  --w-bg-primary-tint-hover: color-mix(
+    in srgb,
+    rgb(var(--w-bg-primary)) 42%,
+    rgb(var(--w-bg-page))
+  );
+  --w-bg-success-tint: 20, 83, 45;
+  --w-bg-success-tint-hover: 22, 101, 52;
+  --w-bg-warning-tint: 113, 63, 18;
+  --w-bg-warning-tint-hover: 133, 77, 14;
+  --w-bg-error-tint: 127, 29, 29;
+  --w-bg-error-tint-hover: 153, 27, 27;
+  --w-bg-info-tint: 23, 37, 84;
+  --w-bg-info-tint-hover: 30, 58, 138;
+
+  // ===================================== 边框颜色
+  --w-border-color-main: 71, 85, 105;
+  --w-border-color-regular: 51, 65, 85;
+  --w-border-color-secondary: 30, 41, 59;
+  --w-border-color-muted: 15, 23, 42;
+  --w-border-color-placeholder: 15, 23, 42;
+  --w-border-color-disabled: 15, 23, 42;
+  --w-border-color-1: 15, 23, 42;
+  --w-border-color-2: 30, 41, 59;
+  --w-border-color-3: 51, 65, 85;
+  --w-border-color-4: 71, 85, 105;
+  --w-border-color-5: 100, 116, 139;
+  --w-border-color-6: 148, 163, 184;
+  --w-border-color-7: 203, 213, 225;
+  --w-border-color-8: 226, 232, 240;
+
+  // ===================================== 阴影
+  --w-shadow-color-1: 0, 0, 0 / 20%;
+  --w-shadow-color-2: 0, 0, 0 / 40%;
+  --w-shadow-color-3: 0, 0, 0 / 60%;
+  --w-shadow-color-4: 0, 0, 0 / 80%;
+  --w-shadow-elevated: 0 12px 32px rgb(0 0 0 / 80%);
+  --w-shadow-sider:
+    12px 0 28px -10px rgb(0 0 0 / 85%), 1px 0 0 rgb(148 163 184 / 18%);
+
+  // ===================================== 动效
+  // 动效时长：交互影响范围越大，持续时间越长；离场动画通常比入场动画短一级。
+  --w-motion-duration-none: 0ms; // 关闭动画或处理 reduced-motion 场景
+  --w-motion-duration-fast: 120ms; // 按压、开关、图标等即时反馈
+  --w-motion-duration-base: 180ms; // hover、颜色、边框等常规状态变化
+  --w-motion-duration-moderate: 240ms; // 下拉菜单、气泡、局部内容切换
+  --w-motion-duration-slow: 320ms; // 抽屉、侧栏、布局尺寸变化
+  --w-motion-duration-slower: 480ms; // 页面入场、复杂内容编排
+  --w-motion-duration: var(--w-motion-duration-base); // 默认动效时长
+
+  // 缓动曲线：进入强调减速，离开强调加速，减少界面拖沓感。
+  --w-motion-ease-linear: linear; // 进度、持续旋转等匀速动画
+  --w-motion-ease-standard: cubic-bezier(0.2, 0, 0, 1); // 状态和位置的常规过渡
+  --w-motion-ease-enter: cubic-bezier(0.16, 1, 0.3, 1); // 元素进入或展开
+  --w-motion-ease-exit: cubic-bezier(0.4, 0, 1, 1); // 元素离开或收起
+  --w-motion-ease-emphasized: cubic-bezier(0.2, 0.8, 0.2, 1); // 页面和大范围布局变化
+  --w-motion-ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1); // 小型元素的轻微回弹
+  --w-motion-ease: var(--w-motion-ease-standard); // 默认缓动曲线
+
+  // 动效幅度：限制位移和缩放范围，保持后台界面的稳定与可扫描性。
+  --w-motion-distance-sm: 4px; // hover、按压等微位移
+  --w-motion-distance-base: 8px; // 卡片、局部内容入场
+  --w-motion-distance-lg: 16px; // 浮层、面板入场
+  --w-motion-distance-xl: 32px; // 抽屉等大范围移动
+  --w-motion-scale-pressed: 0.96; // 控件按压反馈
+  --w-motion-scale-enter: 0.98; // 弹层或卡片入场起始比例
+  --w-motion-scale-emphasized: 1.04; // 图标或紧凑控件的强调反馈
+
+  // 动画延迟
+  --w-motion-delay-none: 0ms;
+  --w-motion-delay-short: 40ms;
+  --w-motion-delay-base: 80ms;
+  --w-motion-delay-long: 120ms;
+
+  // ===================================== app token
+
+  // 侧边栏背景色
+  --w-sider-bg: 30 41 59;
+  // 侧边栏边框色
+  --w-sider-border-color: 51 65 85;
+  // 侧边栏阴影
+  --w-sider-shadow: var(--w-shadow-sider);
+  // 侧边栏垂直阴影
+  --w-sider-vertical-shadow: var(--w-shadow-sider);
+  // 侧边栏项背景色
+  --w-sider-item-bg: 15 23 42;
+  // 侧边栏项悬停背景色
+  --w-sider-item-hover-bg: 51 65 85;
+  // 侧边栏项激活背景色
+  --w-sider-item-active-bg: 71 85 105;
+  // 侧边栏项颜色
+  --w-sider-item-color: 203 213 225;
+
+  // 头部背景色
+  --w-header-bg: rgb(17 24 39 / 72%);
+  // 头部边框色
+  --w-header-border-color: 51 65 85;
+}

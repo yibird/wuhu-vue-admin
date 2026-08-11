@@ -1,10 +1,15 @@
 import type { Rule } from 'unocss'
 
-const DIRECTION: Recordable = { t: 'top', r: 'right', b: 'bottom', l: 'left' }
+const DIRECTION: Recordable<string> = {
+  t: 'top',
+  r: 'right',
+  b: 'bottom',
+  l: 'left',
+}
 
 // bd-2px_dashed_red
 export const borderRule: Rule = [
-  /^b(t|r|b|l|d)_(.*)/,
+  /^b([trbld])_(.+)$/,
   ([, d, c]) => {
     const direction = DIRECTION[d] || ''
     const p = direction ? `border-${direction}` : 'border'

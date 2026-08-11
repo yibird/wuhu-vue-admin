@@ -1,5 +1,6 @@
 export const shortcuts = {
   full: 'w-full h-full',
+  'full-flex': 'w-full min-h-0 flex-1',
 
   // flex layout
   'flex-center': 'flex justify-center items-center',
@@ -32,12 +33,12 @@ export const shortcuts = {
   // element
   button:
     'flex items-center justify-center grow-0 shrink-0 bg-transparent border-none outline-none appearance-none touch-none cursor-pointer',
+  'icon-primary-soft':
+    'bg-primary/8 text-primary border-1 border-primary/15 border-solid',
 
   'span-button':
     'p-0 m-0 bg-transparent border-none outline-none appearance-none touch-none cursor-pointer',
   // 动画
   //   "hover-scale-120": "hover:scale-120 transition-scale ease-in-out",
   //   "active-scale": "scale-95 transition-transform duration-300 ease-in-out",
-
-  truncate: 'overflow-hidden text-ellipsis whitespace-nowrap',
 }

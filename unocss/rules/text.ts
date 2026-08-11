@@ -1,6 +1,6 @@
 import type { Rule } from 'unocss'
 
-const textSizes: Record<string, object> = {
+const textSizes = {
   xs: {
     'font-size': '12px',
     'line-height': '14px',
@@ -45,9 +45,16 @@ const textSizes: Record<string, object> = {
     'font-size': '72px',
     'line-height': '80px',
   },
-}
+} as const
 
-export const textRule: Rule = [
-  /^text-([\w-]+)$/,
-  ([, s]) => (s ? textSizes[s] : undefined),
+const textSizeKeysPattern = Object.keys(textSizes).join('|')
+
+export const textRule: Rule[] = [
+  [
+    new RegExp(`^text-(${textSizeKeysPattern})$`),
+    ([, key]) => {
+      const styles = textSizes[key as keyof typeof textSizes]
+      return styles
+    },
+  ],
 ]

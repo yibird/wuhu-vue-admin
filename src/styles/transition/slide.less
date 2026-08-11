@@ -1,0 +1,123 @@
+.slide-base-transition {
+  transition:
+    transform 0.3s cubic-bezier(0.33, 1, 0.68, 1),
+    opacity 0.3s ease;
+}
+
+.slide {
+  // === 基础滑动（全屏或大范围滑入滑出） ===
+  &-enter-from,
+  &-leave-to {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+
+  &-enter-to,
+  &-leave-from {
+    opacity: 1;
+    transform: translateX(0%);
+  }
+
+  &-enter-active,
+  &-leave-active {
+    .slide-base-transition; // 复用基础过渡
+  }
+
+  // === 向左微滑 ===
+  &-left {
+    &-enter-from,
+    &-leave-to {
+      opacity: 0;
+      transform: translateX(-40px);
+    }
+
+    &-enter-to,
+    &-leave-from {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    &-enter-active,
+    &-leave-active {
+      .slide-base-transition;
+    }
+  }
+
+  // === 向右微滑 ===
+  &-right {
+    &-enter-from,
+    &-leave-to {
+      opacity: 0;
+      transform: translateX(40px);
+    }
+
+    &-enter-to,
+    &-leave-from {
+      opacity: 1;
+      transform: translateX(0%);
+    }
+
+    &-enter-active,
+    &-leave-active {
+      // 只有右滑的 opacity 换成了 ease，所以单独写
+      transition:
+        transform 0.3s cubic-bezier(0.33, 1, 0.68, 1),
+        opacity 0.3s ease;
+    }
+  }
+
+  // === 向上微滑 ===
+  &-up {
+    &-enter-from,
+    &-leave-to {
+      opacity: 0;
+      transform: translateY(-40px);
+    }
+
+    &-enter-to,
+    &-leave-from {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    &-enter-active,
+    &-leave-active {
+      .slide-base-transition;
+    }
+  }
+
+  // === 向下微滑 ===
+  &-down {
+    &-enter-from,
+    &-leave-to {
+      opacity: 0;
+      transform: translateY(40px);
+    }
+
+    &-enter-to,
+    &-leave-from {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    &-enter-active,
+    &-leave-active {
+      .slide-base-transition;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .slide-enter-active,
+  .slide-left-enter-active,
+  .slide-right-enter-active,
+  .slide-up-enter-active,
+  .slide-down-enter-active,
+  .slide-leave-active,
+  .slide-left-leave-active,
+  .slide-right-leave-active,
+  .slide-up-leave-active,
+  .slide-down-leave-active {
+    transition: none;
+  }
+}

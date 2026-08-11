@@ -1,0 +1,48 @@
+.flip {
+  /* 翻页滚动 */
+  &-x {
+    &-enter-from,
+    &-leave-to {
+      opacity: 0;
+      transform: rotateY(90deg);
+    }
+
+    &-enter-to,
+    &-leave-from {
+      opacity: 1;
+      transform: rotateY(0deg);
+    }
+
+    &-enter-active,
+    &-leave-active {
+      transform-origin: center;
+      transition:
+        transform 0.2s cubic-bezier(0.3, 0, 0.2, 1),
+        opacity 0.2s ease;
+    }
+  }
+
+  /* 垂直翻页滚动 (绕X轴旋转) */
+  &-y {
+    &-enter-from,
+    &-leave-to {
+      opacity: 0;
+      transform: rotateX(90deg);
+    }
+
+    &-enter-to,
+    &-leave-from {
+      opacity: 1;
+      transform: rotateX(0deg);
+    }
+
+    &-enter-active,
+    &-leave-active {
+      transform-origin: center;
+      backface-visibility: hidden;
+      transition:
+        transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+        opacity 0.3s ease;
+    }
+  }
+}

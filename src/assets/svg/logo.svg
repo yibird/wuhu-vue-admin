@@ -1,1 +1,52 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1200" height="1200" viewBox="0 0 512 512" fill="none" class="h-full w-full" id="iconWithBackground"><rect id="r4" width="384" height="384" x="64" y="64" rx="83" fill="url(#linearGradient-iconWithBackground)" stroke="#000000" stroke-width="128" stroke-opacity="0%" paint-order="stroke"/><rect width="384" height="384" x="64" y="64" fill="url(#glare)" rx="83" style="mix-blend-mode: overlay;"/><defs><linearGradient id="linearGradient-iconWithBackground" gradientUnits="userSpaceOnUse" gradientTransform="rotate(0)" style="transform-origin:center center"><stop stop-color="#5865f2"/><stop offset="1" stop-color="#610c9f"/></linearGradient><radialGradient id="glare" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(256) rotate(90) scale(512)"><stop stop-color="white"/><stop offset="1" stop-color="white" stop-opacity="0"/></radialGradient><clipPath id="clip"><use xlink:href="#r4"/></clipPath></defs><svg xmlns="http://www.w3.org/2000/svg" width="369" height="369" viewBox="0 0 48 48" x="71.5" y="71.5"><path fill="#ffffff" fill-rule="evenodd" d="M11.671 10.027a2 2 0 0 0-1.644 2.302l4 24a2 2 0 0 0 3.71.663L24 26.031l6.263 10.961a2 2 0 0 0 3.71-.663l4-24a2 2 0 1 0-3.946-.658l-3.077 18.46l-5.214-9.123a2 2 0 0 0-3.473 0l-5.214 9.124l-3.076-18.461a2 2 0 0 0-2.302-1.644Z" clip-rule="evenodd"/></svg></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="32 28 448 436" fill="none" role="img" aria-labelledby="title desc">
+  <title id="title">Wuhu Admin Logo</title>
+  <desc id="desc">Two interlocking color ribbons form a rising W on a transparent background.</desc>
+  <defs>
+    <linearGradient id="warm-ribbon" x1="70" y1="78" x2="250" y2="430" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FF3D71" />
+      <stop offset="0.54" stop-color="#FF6B35" />
+      <stop offset="1" stop-color="#FFB800" />
+    </linearGradient>
+    <linearGradient id="cool-ribbon" x1="244" y1="426" x2="448" y2="70" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#6D5DFC" />
+      <stop offset="0.48" stop-color="#00B8F0" />
+      <stop offset="1" stop-color="#00E0B8" />
+    </linearGradient>
+    <linearGradient id="center-flash" x1="220" y1="206" x2="316" y2="330" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFFFF" stop-opacity="0.62" />
+      <stop offset="1" stop-color="#FFFFFF" stop-opacity="0" />
+    </linearGradient>
+    <filter id="logo-shadow" x="24" y="20" width="464" height="452" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="9" stdDeviation="9" flood-color="#0F172A" flood-opacity="0.16" />
+    </filter>
+  </defs>
+
+  <g filter="url(#logo-shadow)">
+    <path
+      d="M77 78C58 84 47 104 53 123L145 407C151 426 166 439 184 440C203 441 218 431 227 413L282 294C291 274 283 251 264 242C245 233 223 241 214 261L188 318L117 102C111 83 95 73 77 78Z"
+      fill="url(#warm-ribbon)"
+    />
+    <path
+      d="M229 260C220 241 228 218 247 208C266 198 289 206 299 226L332 298L394 86C398 72 408 63 421 59L447 36L449 69C461 78 467 94 462 111L373 416C367 436 350 448 331 448C312 448 296 438 287 420L229 260Z"
+      fill="url(#cool-ribbon)"
+    />
+    <path
+      d="M229 260C220 241 228 218 247 208C266 198 289 206 299 226L332 298L318 346L263 242C250 236 238 243 229 260Z"
+      fill="url(#center-flash)"
+    />
+    <path
+      d="M82 100L164 385C168 399 176 406 188 407"
+      stroke="#FFFFFF"
+      stroke-linecap="round"
+      stroke-width="7"
+      stroke-opacity="0.34"
+    />
+    <path
+      d="M404 105L343 376"
+      stroke="#FFFFFF"
+      stroke-linecap="round"
+      stroke-width="7"
+      stroke-opacity="0.32"
+    />
+  </g>
+</svg>

@@ -1,37 +1,38 @@
 import type { Rule } from 'unocss'
 
-const colors: Recordable = {
-  theme: { color: 'rgb(var(--w-primary-color))' },
-  primary: { color: '#303133' },
-  regular: { color: '#606266' },
-  secondary: { color: '#909399' },
-  placeholder: { color: '#A8ABB2' },
-  disabled: { color: '#C0C4CC' },
+const tokens: Record<string, string> = {
+  // semantic colors
+  primary: 'rgb(var(--w-color-primary))',
+  success: 'rgb(var(--w-color-success))',
+  warning: 'rgb(var(--w-color-warning))',
+  error: 'rgb(var(--w-color-error))',
+  info: 'rgb(var(--w-color-info))',
 
-  // dark
-  'dark-primary': { color: 'rgba(255, 255, 255, 0.85)' },
-  'dark-regular': { color: 'rgba(255, 255, 255, 0.65)' },
-  'dark-secondary': { color: 'rgba(255, 255, 255, 0.45)' },
-  'dark-placeholder': { color: 'rgba(255, 255, 255, 0.35)' },
-  'dark-disabled': { color: 'rgba(255, 255, 255, 0.25)' },
+  // text colors
+  main: 'rgb(var(--w-text-main))',
+  regular: 'rgb(var(--w-text-regular))',
+  secondary: 'rgb(var(--w-text-secondary))',
+  muted: 'rgb(var(--w-text-muted))',
+  placeholder: 'rgb(var(--w-text-placeholder))',
+  disabled: 'rgb(var(--w-text-disabled))',
+  link: 'rgb(var(--w-text-link))',
 }
 
+const escapeRegExp = (value: string) => {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+}
+
+const tokenKeysPattern = Object.keys(tokens)
+  .sort((a, b) => b.length - a.length)
+  .map(escapeRegExp)
+  .join('|')
+
 export const colorRule: Rule[] = [
-  // 文本颜色规则
-  [/^text-([\w-]+)$/, ([, s]) => ({ color: s ? colors[s]?.color : undefined })],
-
-  // // 边框颜色规则
-  // [/^border-([\w-]+)$/, ([, color]) => ({
-  //   'border-color': colors[color]?.color,
-  //   'border-style': 'solid',
-  //   'border-width': '1px'
-  // })],
-
-  // 纯边框颜色规则（不改变边框样式和宽度）
   [
-    /^border-color-([\w-]+)$/,
-    ([, s]) => ({
-      'border-color': s ? colors[s]?.color : undefined,
-    }),
+    new RegExp(`^text-(${tokenKeysPattern})$`),
+    ([, key]) => {
+      const color = tokens[key]
+      return color ? { color } : undefined
+    },
   ],
 ]

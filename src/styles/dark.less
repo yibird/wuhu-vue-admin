@@ -1,0 +1,39 @@
+:root.w-theme-transitioning *,
+:root.w-theme-transitioning *::before,
+:root.w-theme-transitioning *::after {
+  transition: none !important;
+}
+
+::view-transition-group(root),
+::view-transition-old(root),
+::view-transition-new(root) {
+  mix-blend-mode: normal;
+  animation: none;
+}
+
+::view-transition-image-pair(root) {
+  isolation: isolate;
+}
+
+::view-transition-old(root) {
+  z-index: 1;
+}
+
+::view-transition-new(root) {
+  z-index: 10000;
+}
+
+[data-theme='dark']::view-transition-old(root) {
+  z-index: 10000;
+}
+
+[data-theme='dark']::view-transition-new(root) {
+  z-index: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none !important;
+  }
+}

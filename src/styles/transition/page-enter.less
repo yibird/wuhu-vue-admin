@@ -1,0 +1,50 @@
+.page-enter {
+  animation: w-page-enter 0.52s cubic-bezier(0.2, 0.8, 0.2, 1)
+    var(--w-page-enter-delay, 0ms) both;
+}
+
+.page-enter--1 {
+  --w-page-enter-delay: 0ms;
+}
+
+.page-enter--2 {
+  --w-page-enter-delay: 75ms;
+}
+
+.page-enter--3 {
+  --w-page-enter-delay: 150ms;
+}
+
+.page-enter--4 {
+  --w-page-enter-delay: 225ms;
+}
+
+.page-enter--5 {
+  --w-page-enter-delay: 300ms;
+}
+
+.page-enter--6 {
+  --w-page-enter-delay: 375ms;
+}
+
+.page-enter--7 {
+  --w-page-enter-delay: 450ms;
+}
+
+@keyframes w-page-enter {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 8px, 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-enter {
+    animation: none;
+  }
+}

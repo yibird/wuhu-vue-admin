@@ -1,0 +1,58 @@
+.fade {
+  &-enter-active,
+  &-leave-active {
+    transition: opacity 0.3s cubic-bezier(0.33, 1, 0.68, 1);
+  }
+
+  &-enter-from,
+  &-leave-to {
+    opacity: 0;
+  }
+
+  &-enter-to,
+  &-leave-from {
+    opacity: 1;
+  }
+}
+
+.fade-scale {
+  &-enter-active,
+  &-leave-active {
+    transition:
+      transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+      opacity 0.3s ease;
+  }
+
+  &-enter-from,
+  &-leave-to {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+
+  &-enter-to,
+  &-leave-from {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.fade-zoom {
+  &-enter-active,
+  &-leave-active {
+    transition:
+      opacity 0.22s ease,
+      transform 0.22s ease;
+  }
+
+  &-enter-from,
+  &-leave-to {
+    opacity: 0;
+    transform: translateY(-14px) scale(0.98);
+  }
+
+  &-enter-to,
+  &-leave-from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
