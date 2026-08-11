@@ -1,107 +1,110 @@
 <template>
-  <div class="full p-10 flex flex-col gap-10 overflow-hidden">
-    <div class="bg-white p-10">
-      <FormPlus
-        ref="formRef"
-        :options="formOptions"
-        :items="formItems as FormPlusItem[]"
-        :show-feedback="false"
-        @search="onSearch"
-      />
-    </div>
+  <div class="h-full flex flex-col gap-10">
+    <FormPlus @reset="onReset" @submit="onSearch" :options="formOptions" />
     <TablePlus
-      :loading="loading"
+      ref="tableRef"
+      :api="getRolePageListApi"
       :columns="columns"
-      :data="dataSource"
-      :rowSelection="rowSelection"
-      :row-key="rowKey"
-      v-model:checked-row-keys="selectedKeys"
-      :pagination="pagination"
-      class="flex-1 overflow-hidden"
-      @update:checked-row-keys="handleCheck"
-    />
+      @update:checked-row-keys="onCheckedRowKeys"
+      :context-menu="contextMenu"
+    >
+      <template #headerLeft>
+        <a-button type="primary">
+          <template #icon><Icon name="i-lucide:plus" /></template>
+          新建
+        </a-button>
+        <a-button
+          :disabled="selectedKeys.length === 0"
+          type="primary"
+          danger
+          ghost
+        >
+          <template #icon><Icon name="i-lucide:trash-2" /></template>
+          删除
+        </a-button>
+      </template>
+    </TablePlus>
   </div>
 </template>
-<script lang="ts" setup>
-import { getRolePageListApi, type RoleResp } from '@/apis'
-import { FormPlus, TablePlus, useTable } from '@/components'
-import type { FormPlusItem, FormPlusProps, TablePlusColumn } from '@/components'
-import { createDiscreteApi } from 'naive-ui'
 
-interface FormState {
-  roleName?: string
-}
+<script setup lang="ts">
+import { getRolePageListApi } from '@/apis'
+import { FormPlus, TablePlus, useTable } from '@/components'
+
+import type { TablePlusColumn, FormPlusProps } from '@/components'
+
+const tableRef = ref()
 
 const formOptions = ref<FormPlusProps['options']>({
-  inline: true,
   labelPlacement: 'left',
   labelWidth: 80,
-  grid: { xGap: 10, yGap: 10 },
-  model: {
-    roleName: '123123',
-    test2: '',
-  },
-})
-const formItems = ref<FormPlusProps['items']>([
-  {
-    label: '角色名称',
-    type: 'input',
-    path: 'roleName',
-    componentProps: {
-      clearable: true,
-      placeholder: '请输入角色名称',
+  items: [
+    {
+      type: 'input',
+      field: 'roleName',
+      label: '角色名称',
     },
-    span: '24 s:12 m:8 l:6 xl:4 xxl:4',
+    {
+      type: 'input',
+      field: 'roleKey',
+      label: '角色标识',
+    },
+    {
+      type: 'select',
+      field: 'status',
+      label: '状态',
+      props: {
+        options: [
+          { label: '正常', value: 1 },
+          { label: '停用', value: 0 },
+        ],
+      },
+    },
+  ],
+})
+
+const columns = ref<TablePlusColumn[]>([
+  {
+    title: '角色名称',
+    dataIndex: 'roleName',
   },
   {
-    label: '是否启用',
-    type: 'input',
-    path: 'test2',
-    span: '24 s:12 m:8 l:6 xl:4 xxl:4',
+    title: '角色标识',
+    dataIndex: 'roleKey',
+  },
+  {
+    title: '排序',
+    dataIndex: 'orderNum',
+  },
+  {
+    title: '状态',
+    dataIndex: 'status',
+  },
+  {
+    title: '创建时间',
+    dataIndex: 'createTime',
   },
 ])
 
-const query = ref({ pageNum: 1, pageSize: 10 })
+const { selectedKeys, onCheckedRowKeys } = useTable()
 
-const columns: TablePlusColumn<RoleResp>[] = [
+const contextMenu = () => [
   {
-    title: '角色名称',
-    key: 'roleName',
+    label: '编辑',
+    key: 'edit',
+    icon: () => h('span', { class: 'i-lucide:edit' }),
   },
   {
-    title: '作用域',
-    key: 'roleCode',
-    minWidth: 100,
-    resizable: true,
-  },
-  {
-    title: '描述',
-    key: 'remark',
+    label: '删除',
+    key: 'delete',
+    icon: () => h('span', { class: 'i-lucide:trash-2' }),
   },
 ]
 
-const {
-  loading,
-  dataSource,
-  pagination,
-  rowSelection,
-  selectedKeys,
-  rowKey,
-  handleCheck,
-  run,
-} = useTable<RoleResp, { pageNum: number; pageSize: number }>({
-  api: () => getRolePageListApi(query.value),
-  rowKey: (row) => row.id,
-  onPaginate: (page, size) => {
-    query.value.pageNum = page
-    query.value.pageSize = size
-    run(query.value)
-  },
-})
-
-const { message } = createDiscreteApi(['message'])
-const onSearch = (values: FormState) => {
-  console.log('asdasd', values)
-  message.success('请求成功')
+const onSearch = (values: any) => {
+  tableRef.value?.run(values)
+}
+const onReset = () => {
+  tableRef.value?.run()
 }
 </script>

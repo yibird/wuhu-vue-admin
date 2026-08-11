@@ -1,1 +1,1 @@
-export { default as MenuModal } from './MenuModal.vue'
+export { default as FormModal } from './FormModal.vue'

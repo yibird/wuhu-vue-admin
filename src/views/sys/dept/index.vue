@@ -1,5 +1,5 @@
 <template>
-  <div class="full p-10">
+  <div class="full-flex p-10">
     <TablePlus
       :loading="loading"
       :columns="columns"
@@ -12,59 +12,50 @@
       @update:checked-row-keys="handleCheck"
     >
       <template #headerLeft>
-        <FormPlus
-          ref="formRef"
-          :options="formOptions"
-          :items="formItems as FormPlusItem[]"
-          :show-feedback="false"
-          @search="onSearch"
-        />
+        <FormPlus ref="formRef" :options="formOptions" @submit="onSearch" />
       </template>
       <template #headerRight>
-        <n-button type="primary">新增</n-button>
-        <n-button type="primary">组织架构图</n-button>
+        <a-button type="primary">新增</a-button>
+        <a-button type="primary">组织架构图</a-button>
       </template>
     </TablePlus>
   </div>
 </template>
 <script lang="ts" setup>
-import { createDiscreteApi } from 'naive-ui'
+import { App } from 'antdv-next'
 import { getRolePageListApi, type RoleResp } from '@/apis'
 import { FormPlus, TablePlus, useTable } from '@/components'
-import type { FormPlusItem, FormPlusProps, TablePlusColumn } from '@/components'
+import type { FormPlusProps, TablePlusColumn } from '@/components'
 
 interface FormState {
   roleName?: string
 }
 
 const formOptions = ref<FormPlusProps['options']>({
-  inline: true,
   labelPlacement: 'left',
   labelWidth: 80,
   grid: { xGap: 10, yGap: 10 },
-  model: {
-    roleName: '123123',
-    test2: '',
-  },
-})
-const formItems = ref<FormPlusProps['items']>([
-  {
-    label: '部门名称',
-    type: 'input',
-    path: 'roleName',
-    componentProps: {
-      clearable: true,
-      placeholder: '请输入部门名称',
+  items: [
+    {
+      label: '部门名称',
+      type: 'input',
+      field: 'roleName',
+      props: {
+        clearable: true,
+        placeholder: '请输入部门名称',
+        span: 6,
+      },
     },
-    span: '24 xs:24 s:24 m:12 l:8 xl:6 xxl:5',
-  },
-  {
-    label: '是否启用',
-    type: 'input',
-    path: 'test2',
-    span: '24 xs:24 s:24 m:12 l:8 xl:6 xxl:5',
-  },
-])
+    {
+      label: '是否启用',
+      type: 'input',
+      field: 'test2',
+      props: {
+        span: 6,
+      },
+    },
+  ],
+})
 
 const query = ref({ pageNum: 1, pageSize: 10 })
 
@@ -96,7 +87,7 @@ const {
   run,
 } = useTable<RoleResp, { pageNum: number; pageSize: number }>({
   api: () => getRolePageListApi(query.value),
-  rowKey: (row) => row.id,
+  rowKey: (row) => String(row.id),
   onPaginate: (page, size) => {
     query.value.pageNum = page
     query.value.pageSize = size
@@ -104,9 +95,11 @@ const {
   },
 })
 
-const { message } = createDiscreteApi(['message'])
+const { message } = App.useApp()
 const onSearch = (values: FormState) => {
-  console.log('asdasd', values)
-  message.success('请求成功')
+  query.value.pageNum = 1
+  run(query.value)
+  const keyword = values.roleName?.trim()
+  message.success(keyword ? `已按「${keyword}」查询部门` : '已刷新部门列表')
 }
 </script>

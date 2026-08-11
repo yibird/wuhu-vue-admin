@@ -1,7 +1,7 @@
 <template>
-  <div class="p-10 full">
+  <div class="p-10 full-flex">
     <div class="full flex bg-white">
-      <!-- <n-tabs
+      <!-- <a-tabs
         v-model:active-key="activeKey"
         type="line"
         placement="left"
@@ -10,11 +10,11 @@
         @update:value="onChange"
       >
       
-        <n-tab-pane v-for="item in items" :name="item.key">
+        <a-tab-pane v-for="item in items" :name="item.key">
           <template #tab>
             <div
               :class="[
-                'w-300 px-20 py-10 flex items-center rounded-6 transition-all hover:bg-[#f2f3f5]',
+                'w-300 px-20 py-10 flex items-center rounded-6 transition-colors hover:bg-[#f2f3f5]',
                 { 'bg-[#f2f3f5]': item.key === activeKey },
               ]"
             >
@@ -22,8 +22,8 @@
               <span class="ml-6">{{ item.label }}</span>
             </div>
           </template>
-        </n-tab-pane>
-      </n-tabs> -->
+        </a-tab-pane>
+      </a-tabs> -->
       <div
         class="h-full px-10 py-20 flex flex-col gap-10 border-r-1 border-r-solid border-[#f0f0f6]"
       >
@@ -31,7 +31,7 @@
           v-for="item in items"
           :key="item.key"
           :class="[
-            'w-300 px-20 py-10 flex items-center rounded-6 cursor-pointer select-none transition-all hover:bg-[#f2f3f5]',
+            'w-300 px-20 py-10 flex items-center rounded-6 cursor-pointer select-none transition-colors hover:bg-[#f2f3f5]',
             { 'bg-[#f2f3f5] text-theme': item.key === activeKey },
           ]"
           @click="onClick(item.key)"
@@ -41,15 +41,17 @@
         </div>
       </div>
       <div class="h-full p-20">
-        <Transition name="fade" mode="out-in">
-          <component :is="items.find((i) => i.key === activeKey)?.component" :key="activeKey" />
+        <Transition name="slide-right" mode="out-in">
+          <div :key="activeKey" class="h-full">
+            <component :is="currentComponent" />
+          </div>
         </Transition>
       </div>
     </div>
   </div>
 </template>
 <script lang="ts" setup>
-import { App, Security, Login, Mail, Sms, Oss, Client } from './components';
+import { App, Security, Login, Mail, Sms, Oss, Client } from './components'
 const items = [
   {
     key: 'app',
@@ -93,24 +95,13 @@ const items = [
     icon: 'i-lucide:pyramid',
     component: Client,
   },
-];
-const activeKey = ref('app');
+]
+const activeKey = ref('app')
+const currentComponent = computed(
+  () => items.find((item) => item.key === activeKey.value)?.component ?? App
+)
 
 const onClick = (key: string) => {
-  activeKey.value = key;
-};
+  activeKey.value = key
+}
 </script>
-<style scoped lang="less">
-.fade-enter-active,
-.fade-leave-active {
-  transition: all 0.3s ease;
-}
-.fade-enter-from {
-  opacity: 0;
-  transform: translateX(10px);
-}
-.fade-leave-to {
-  opacity: 0;
-  transform: translateX(-10px);
-}
-</style>

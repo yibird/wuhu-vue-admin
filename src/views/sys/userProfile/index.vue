@@ -1,19 +1,33 @@
 <template>
   <div class="p-10">
-    <n-grid responsive="screen" item-responsive x-gap="12" y-gap="12">
-      <n-grid-item span="xs:24 s:24 m:24 l:8 xl:8 xxl:8">
-        <n-card
-          size="small"
-          header-class="bg-gradient-to-b from-[#e8f4ff80] to-[#fff0]"
-          footer-class="p-12! text-center border-t-1 border-solid border-[#eee]"
+    <a-row :gutter="15">
+      <a-col :xs="24" :sm="24" :md="24" :lg="8" :xl="8" :xxl="6">
+        <a-card
+          title="基本信息"
+          :classes="{
+            header: 'bg-gradient-to-b! from-[#1677ff33] to-[#fff0]',
+            body: 'p-0!',
+          }"
+          variant="borderless"
+          class="rounded-4 overflow-hidden"
         >
-          <template #header>基本信息</template>
-          <template #footer>
-            <span class="text-xs text-secondary">注册于：2023-01-01 09:00:00</span>
-          </template>
           <div class="py-50">
             <div class="flex justify-center">
-              <div class="size-80 rounded-full bg-gray-100"></div>
+              <div
+                class="relative size-80 rounded-full bg-gray-100 cursor-pointer overflow-hidden group"
+                @click="openAvatarModal"
+              >
+                <img
+                  v-if="avatarUrl"
+                  :src="avatarUrl"
+                  class="full object-cover"
+                />
+                <div
+                  class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                >
+                  <Icon name="i-lucide:camera" :size="24" color="#fff" />
+                </div>
+              </div>
             </div>
             <div class="my-20 flex-center gap-5 text-md text-center">
               <span>超级管理员</span>
@@ -25,7 +39,7 @@
               <span class="text-secondary">123123123123</span>
             </div>
           </div>
-          <div class="flex flex-col gap-12">
+          <div class="p-20 flex flex-col gap-12">
             <div v-for="item in profileItems" :key="item.prop" class="flex">
               <div class="max-w-100 w-100 flex items-center gap-6">
                 <Icon :name="item.icon" :size="16" />
@@ -34,25 +48,38 @@
               <div class="flex-1">{{ item.value }}</div>
             </div>
           </div>
-        </n-card>
-      </n-grid-item>
-      <n-grid-item span="xs:24 s:24 m:24 l:16 xl:16 xxl:16">
+          <div
+            class="py-15 border-t-1 border-solid border-[#eee] text-center text-xs text-secondary"
+          >
+            注册于：2023-01-01 09:00:00
+          </div>
+        </a-card>
+      </a-col>
+      <a-col :xs="24" :sm="24" :md="24" :lg="16" :xl="16" :xxl="18">
         <div class="flex flex-col gap-12">
-          <n-card
-            size="small"
-            header-class="bg-gradient-to-b from-[#e8f4ff80] to-[#fff0]"
-            footer-class="p-12! text-center border-t-1 border-solid border-[#eee]"
+          <a-card
+            title="安全设置"
+            :classes="{
+              header: 'bg-gradient-to-b! from-[#1677ff33] to-[#fff0]',
+            }"
+            variant="borderless"
+            class="rounded-6"
           >
-            <template #header>安全设置</template>
-            <div class="py-20 flex flex-col gap-20">
-              <div v-for="(item, index) in settingItems" :key="index" class="flex">
+            <div class="flex flex-col gap-20">
+              <div
+                v-for="(item, index) in settingItems"
+                :key="index"
+                class="flex"
+              >
                 <div class="size-45 rounded-full bg-gray-100"></div>
                 <div class="flex-1 px-10">
                   <div class="flex items-center gap-10">
                     <span class="text-primary">{{ item.title }}</span>
                     <span
                       class="flex items-center"
-                      :style="{ color: item.status === 0 ? '#ff7d00' : '#00b42a' }"
+                      :style="{
+                        color: item.status === 0 ? '#ff7d00' : '#00b42a',
+                      }"
                     >
                       <Icon name="i-lucide:circle-alert" :size="16" />
                       <span class="ml-4 text-xs">{{
@@ -60,29 +87,39 @@
                       }}</span>
                     </span>
                   </div>
-                  <div class="mt-6 text-xs text-secondary">{{ item.description }}</div>
+                  <div class="mt-6 text-xs text-secondary">
+                    {{ item.description }}
+                  </div>
                 </div>
-                <n-button :type="item.status === 0 ? 'default' : 'primary'">
+                <a-button :type="item.status === 0 ? 'default' : 'primary'">
                   {{ item.status === 0 ? '绑定' : '解绑' }}
-                </n-button>
+                </a-button>
               </div>
             </div>
-          </n-card>
-          <n-card
-            size="small"
-            header-class="bg-gradient-to-b from-[#e8f4ff80] to-[#fff0]"
-            footer-class="p-12! text-center border-t-1 border-solid border-[#eee]"
+          </a-card>
+          <a-card
+            title="第三方账号"
+            :classes="{
+              header: 'bg-gradient-to-b! from-[#1677ff33] to-[#fff0]',
+            }"
+            variant="borderless"
+            class="rounded-6"
           >
-            <template #header>第三方账号</template>
-            <div class="py-20 flex flex-col gap-20">
-              <div v-for="(item, index) in accountItems" :key="index" class="flex">
+            <div class="flex flex-col gap-20">
+              <div
+                v-for="(item, index) in accountItems"
+                :key="index"
+                class="flex"
+              >
                 <div class="size-45 rounded-full bg-gray-100"></div>
                 <div class="flex-1 px-10">
                   <div class="flex items-center gap-10">
                     <span class="text-primary">{{ item.title }}</span>
                     <span
                       class="flex items-center"
-                      :style="{ color: item.status === 0 ? '#ff7d00' : '#00b42a' }"
+                      :style="{
+                        color: item.status === 0 ? '#ff7d00' : '#00b42a',
+                      }"
                     >
                       <Icon name="i-lucide:circle-alert" :size="16" />
                       <span class="ml-4 text-xs">{{
@@ -90,20 +127,40 @@
                       }}</span>
                     </span>
                   </div>
-                  <div class="mt-6 text-xs text-secondary">{{ item.description }}</div>
+                  <div class="mt-6 text-xs text-secondary">
+                    {{ item.description }}
+                  </div>
                 </div>
-                <n-button :type="item.status === 0 ? 'default' : 'primary'">
+                <a-button :type="item.status === 0 ? 'default' : 'primary'">
                   {{ item.status === 0 ? '绑定' : '解绑' }}
-                </n-button>
+                </a-button>
               </div>
             </div>
-          </n-card>
+          </a-card>
         </div>
-      </n-grid-item>
-    </n-grid>
+      </a-col>
+    </a-row>
+
+    <CropperPicker v-model:open="cropperOpen" @crop="handleCropSuccess" />
   </div>
 </template>
 <script lang="ts" setup>
+import { ref } from 'vue'
+import { message } from 'antdv-next'
+import { CropperPicker } from '@/components/cropper'
+
+const avatarUrl = ref('')
+const cropperOpen = ref(false)
+
+const openAvatarModal = () => {
+  cropperOpen.value = true
+}
+
+const handleCropSuccess = (dataUrl: string) => {
+  avatarUrl.value = dataUrl
+  message.success('头像修改成功')
+}
+
 const profileItems = [
   {
     icon: 'i-lucide:user',
@@ -135,7 +192,7 @@ const profileItems = [
     value: '超级管理员',
     prop: 'role',
   },
-];
+]
 
 const settingItems = [
   {
@@ -156,7 +213,7 @@ const settingItems = [
     status: 0,
     description: '为了您的账号安全，建议定期修改密码',
   },
-];
+]
 
 const accountItems = [
   {
@@ -171,5 +228,5 @@ const accountItems = [
     status: 0,
     description: '可通过 Gitee 进行登录',
   },
-];
+]
 </script>

@@ -1,127 +1,165 @@
 <template>
-  <div class="full p-10 flex flex-col gap-10 overflow-hidden">
+  <div class="h-full flex flex-col gap-10">
+    <FormPlus @reset="onReset" @submit="onSearch" :options="formOptions" />
     <TablePlus
-      :loading="loading"
+      ref="tableRef"
+      :api="getMenuPageListApi"
       :columns="columns"
-      :data="dataSource"
-      :rowSelection="rowSelection"
-      :row-key="rowKey"
-      v-model:checked-row-keys="selectedKeys"
-      :pagination="pagination"
-      class="flex-1 overflow-hidden"
-      @update:checked-row-keys="handleCheck"
+      @update:checked-row-keys="onCheckedRowKeys"
+      :context-menu="contextMenu"
+      :auto-size="false"
+      :pagination="false"
     >
       <template #headerLeft>
-        <FormPlus
-          ref="formRef"
-          :options="formOptions"
-          :items="formItems as FormPlusItem[]"
-          :show-feedback="false"
-          @search="onSearch"
-        />
-      </template>
-      <template #headerRight>
-        <n-button type="primary" @click="show = true">新建菜单</n-button>
+        <a-button type="primary" @click="onAdd">
+          <template #icon><Icon name="i-lucide:plus" /></template>
+          新建
+        </a-button>
+        <a-button
+          :disabled="selectedKeys.length === 0"
+          type="primary"
+          danger
+          ghost
+        >
+          <template #icon><Icon name="i-lucide:trash-2" /></template>
+          删除
+        </a-button>
+        <a-button :disabled="selectedKeys.length === 0" type="primary" ghost>
+          <template #icon><Icon name="i-lucide:chevron-down" /></template>
+          展开/折叠
+        </a-button>
       </template>
     </TablePlus>
-    <MenuModal v-model:show="show" />
+    <FormModal ref="modalRef" @success="onSuccess" />
   </div>
 </template>
-<script lang="ts" setup>
-import { createDiscreteApi } from 'naive-ui'
-import { MenuModal } from './components'
-import { getRolePageListApi, type RoleResp } from '@/apis'
+
+<script setup lang="ts">
+import { getMenuPageListApi } from '@/apis'
 import { FormPlus, TablePlus, useTable } from '@/components'
-import type { FormPlusItem, FormPlusProps, TablePlusColumn } from '@/components'
+import { Icon } from '@/components'
+import FormModal from './components/FormModal.vue'
+import { h } from 'vue'
 
-interface FormState {
-  roleName?: string
-}
+import type { TablePlusColumn, FormPlusProps } from '@/components'
 
-const show = ref(false)
+const tableRef = ref()
+const modalRef = ref<InstanceType<typeof FormModal>>()
+
 const formOptions = ref<FormPlusProps['options']>({
-  inline: true,
   labelPlacement: 'left',
-  grid: { xGap: 20, yGap: 10 },
-  model: {
-    menuTitle: '123123',
-    routePath: '',
-    permission: '',
-  },
+  labelWidth: 80,
+  items: [
+    {
+      type: 'input',
+      field: 'title',
+      label: '菜单名称',
+    },
+    {
+      type: 'select',
+      field: 'status',
+      label: '状态',
+      props: {
+        options: [
+          { label: '正常', value: 1 },
+          { label: '停用', value: 0 },
+        ],
+      },
+    },
+  ],
 })
-const formItems = ref<FormPlusProps['items']>([
+
+const columns = ref<TablePlusColumn[]>([
   {
-    label: '菜单标题',
-    type: 'input',
-    path: 'menuTitle',
-    componentProps: {
-      clearable: true,
-      placeholder: '请输入菜单标题',
-    },
-    span: '24 xs:24 s:24 m:12 l:8 xl:5 xxl:5',
+    title: '菜单名称',
+    dataIndex: 'title',
   },
   {
-    label: '路由地址',
-    type: 'input',
-    path: 'routePath',
-    componentProps: {
-      clearable: true,
-      placeholder: '请输入路由地址',
+    title: '图标',
+    dataIndex: 'icon',
+    customRender: ({ record }) => {
+      return record.icon
+        ? h(Icon, { name: record.icon as string, size: 16 })
+        : null
     },
-    span: '24 xs:24 s:24 m:12 l:8 xl:5 xxl:5',
   },
   {
-    label: '权限标识',
-    type: 'input',
-    path: 'permission',
-    componentProps: {
-      clearable: true,
-      placeholder: '请输入权限标识',
+    title: '排序',
+    dataIndex: 'orderNum',
+  },
+  {
+    title: '权限标识',
+    dataIndex: 'permission',
+  },
+  {
+    title: '组件路径',
+    dataIndex: 'component',
+  },
+  {
+    title: '状态',
+    dataIndex: 'status',
+  },
+  {
+    title: '创建时间',
+    dataIndex: 'createTime',
+  },
+  {
+    title: '操作',
+    key: 'action',
+    customRender: ({ record }) => {
+      return h('div', { class: 'flex gap-2' }, [
+        h(
+          'a',
+          {
+            onClick: () => {
+              onEdit(record)
+            },
+          },
+          '编辑'
+        ),
+        h(
+          'a',
+          {
+            class: 'text-red-500',
+          },
+          '删除'
+        ),
+      ])
     },
-    span: '24 xs:24 s:24 m:12 l:8 xl:5 xxl:5',
   },
 ])
 
-const query = ref({ pageNum: 1, pageSize: 10 })
+const { selectedKeys, onCheckedRowKeys } = useTable()
 
-const columns: TablePlusColumn<RoleResp>[] = [
+const contextMenu = () => [
   {
-    title: '角色名称',
-    key: 'roleName',
+    label: '编辑',
+    key: 'edit',
+    icon: () => h('span', { class: 'i-lucide:edit' }),
   },
   {
-    title: '作用域',
-    key: 'roleCode',
-    minWidth: 100,
-    resizable: true,
-  },
-  {
-    title: '描述',
-    key: 'remark',
+    label: '删除',
+    key: 'delete',
+    icon: () => h('span', { class: 'i-lucide:trash-2' }),
   },
 ]
 
-const {
-  loading,
-  dataSource,
-  pagination,
-  rowSelection,
-  selectedKeys,
-  rowKey,
-  handleCheck,
-  run,
-} = useTable<RoleResp, { pageNum: number; pageSize: number }>({
-  api: () => getRolePageListApi(query.value),
-  rowKey: (row) => row.id,
-  onPaginate: (page, size) => {
-    query.value.pageNum = page
-    query.value.pageSize = size
-    run(query.value)
-  },
-})
+const onSearch = (values: any) => {
+  tableRef.value?.run(values)
+}
+const onReset = () => {
+  tableRef.value?.run()
+}
 
-const { message } = createDiscreteApi(['message'])
-const onSearch = (values: FormState) => {
-  message.success('请求成功')
+const onAdd = () => {
+  modalRef.value?.show()
+}
+
+const onEdit = (record: any) => {
+  modalRef.value?.show(record)
+}
+
+const onSuccess = () => {
+  tableRef.value?.run()
 }
 </script>

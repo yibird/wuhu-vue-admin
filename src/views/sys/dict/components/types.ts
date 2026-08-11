@@ -1,5 +1,3 @@
-import type { TreeOption } from 'naive-ui'
-
 export interface DropdownProps {}
 export interface DropdownEmits {
   (e: 'del'): void
@@ -7,7 +5,7 @@ export interface DropdownEmits {
 
 export interface SiderProps {
   keys?: Array<string | number>
-  data?: TreeOption[]
+  data?: any[]
 }
 export interface SiderEmits {
   (e: 'change:keys', keys: Array<string | number>): void

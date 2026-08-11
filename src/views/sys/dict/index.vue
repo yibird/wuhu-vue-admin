@@ -1,13 +1,13 @@
 <template>
-  <div class="full p-10 overflow-hidden">
-    <n-grid :x-gap="12" class="h-full">
-      <n-gi :span="4">
+  <div class="full-flex p-10 overflow-hidden">
+    <a-row :gutter="[12, 0]" class="h-full">
+      <a-col :span="4">
         <Sider :data="treeData" :keys="keys" @change:keys="onChangeKeys" />
-      </n-gi>
-      <n-gi :span="20">
+      </a-col>
+      <a-col :span="20">
         <Content />
-      </n-gi>
-    </n-grid>
+      </a-col>
+    </a-row>
   </div>
 </template>
 <script lang="ts" setup>
@@ -16,12 +16,13 @@ const keys = ref<Array<string | number>>([1])
 const treeData = [
   {
     key: 1,
-    label: 'xxxx'
+    label: 'xxxx',
   },
   {
     key: 2,
-    label: 'xxxxxx111xxxx111xxxx111xxxx111xxxx111xxxx111xxxx111xxxx111xxxx111xxxx111xxxx111xx111'
-  }
+    label:
+      'xxxxxx111xxxx111xxxx111xxxx111xxxx111xxxx111xxxx111xxxx111xxxx111xxxx111xxxx111xx111',
+  },
 ]
 const onChangeKeys = (newKeys: Array<string | number>) => {
   keys.value = newKeys

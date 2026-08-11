@@ -1,12 +1,15 @@
 <template>
-  <n-dropdown :options="options" placement="bottom-start" @select="onSelect">
+  <a-dropdown
+    :menu="{ items: options }"
+    placement="bottomLeft"
+    @menu-click="onSelect"
+  >
     <span class="size-25 grid-center rounded-4 hover:bg-white">
       <Icon name="i-lucide:ellipsis" :size="18" />
     </span>
-  </n-dropdown>
+  </a-dropdown>
 </template>
 <script lang="ts" setup>
-import { useDialog } from 'naive-ui'
 import type { DropdownProps, DropdownEmits } from './types'
 
 const props = defineProps<DropdownProps>()
@@ -16,30 +19,29 @@ const options = [
   {
     key: 'update',
     label: '修改',
-    props: { class: 'w-100' }
+    props: { class: 'w-100' },
   },
   {
     key: 'del',
     label: '删除',
-    props: { class: 'w-100' }
-  }
+    props: { class: 'w-100' },
+  },
 ]
-const dialog = useDialog()
+import { Modal } from 'antdv-next'
 
-const onSelect = (key: string) => {
+const onSelect = ({ key }: { key: string }) => {
   switch (key) {
     case 'update':
       break
     case 'del':
-      dialog.warning({
+      Modal.confirm({
         title: '删除',
         content: '确定删除吗？',
-        positiveText: '确定',
-        negativeText: '取消',
-        draggable: true,
-        onNegativeClick: () => {
+        okText: '确定',
+        cancelText: '取消',
+        onCancel: () => {
           emits('del')
-        }
+        },
       })
       break
   }

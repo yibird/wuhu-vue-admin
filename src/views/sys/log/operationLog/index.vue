@@ -1,135 +1,128 @@
 <template>
-  <div class="full p-10">
+  <div class="h-full flex flex-col gap-10">
+    <FormPlus @reset="onReset" @submit="onSearch" :options="formOptions" />
     <TablePlus
-      :loading="loading"
+      ref="tableRef"
+      :api="getRolePageListApi"
       :columns="columns"
-      :data="dataSource"
-      :rowSelection="rowSelection"
-      :row-key="rowKey"
-      v-model:checked-row-keys="selectedKeys"
-      :pagination="pagination"
-      class="flex-1 overflow-hidden"
-      @update:checked-row-keys="handleCheck"
+      @update:checked-row-keys="onCheckedRowKeys"
+      :context-menu="contextMenu"
     >
       <template #headerLeft>
-        <FormPlus
-          ref="formRef"
-          :options="formOptions"
-          :items="formItems"
-          :show-feedback="false"
-          @search="onSearch"
-        />
+        <a-button type="primary">
+          <template #icon><Icon name="i-lucide:plus" /></template>
+          新建
+        </a-button>
+        <a-button
+          :disabled="selectedKeys.length === 0"
+          type="primary"
+          danger
+          ghost
+        >
+          <template #icon><Icon name="i-lucide:trash-2" /></template>
+          删除
+        </a-button>
       </template>
     </TablePlus>
-    <Detail v-model:show="show" />
+    <Detail ref="detailRef" />
   </div>
 </template>
-<script lang="ts" setup>
-import { createDiscreteApi, NA } from 'naive-ui'
-import { getRolePageListApi, type RoleResp } from '@/apis'
-import { FormPlus, TablePlus, useTable } from '@/components'
-import { Detail } from './components'
-import type { FormPlusProps, TablePlusColumn } from '@/components'
 
-interface FormState {
-  roleName?: string
-  ip?: string
-  loginTime?: number[][]
-}
-const show = ref(false)
+<script setup lang="ts">
+import { getRolePageListApi } from '@/apis'
+import { FormPlus, TablePlus, useTable } from '@/components'
+import Detail from './components/Detail.vue'
+
+import type { TablePlusColumn, FormPlusProps } from '@/components'
+
+const tableRef = ref()
+const detailRef = ref()
+
 const formOptions = ref<FormPlusProps['options']>({
-  inline: true,
   labelPlacement: 'left',
-  grid: { xGap: 20, yGap: 10 },
-  model: {
-    username: '123123',
-    ip: '',
-    loginTime: [1183135260000, Date.now()],
-  },
+  labelWidth: 80,
+  items: [
+    {
+      type: 'input',
+      field: 'roleName',
+      label: '角色名称',
+    },
+    {
+      type: 'input',
+      field: 'roleKey',
+      label: '角色标识',
+    },
+    {
+      type: 'select',
+      field: 'status',
+      label: '状态',
+      props: {
+        options: [
+          { label: '正常', value: 1 },
+          { label: '停用', value: 0 },
+        ],
+      },
+    },
+  ],
 })
-const formItems = ref<FormPlusProps['items']>([
+
+const columns = ref<TablePlusColumn[]>([
   {
-    label: '登录用户',
-    type: 'input',
-    path: 'username',
-    componentProps: {
-      clearable: true,
-      placeholder: '请输入标题登录用户',
-    },
-    span: '24 xs:24 s:24 m:12 l:8 xl:5 xxl:4',
+    title: '角色名称',
+    dataIndex: 'roleName',
   },
   {
-    label: 'IP',
-    type: 'input',
-    path: 'ip',
-    componentProps: {
-      clearable: true,
-      placeholder: '请输入IP或地址',
-    },
-    span: '24 xs:24 s:24 m:12 l:8 xl:5 xxl:4',
+    title: '角色标识',
+    dataIndex: 'roleKey',
   },
   {
-    label: '登录时间',
-    type: 'datePicker',
-    componentProps: {
-      type: 'datetimerange',
-      clearable: true,
-      placeholder: '请输入登录时间',
+    title: '排序',
+    dataIndex: 'orderNum',
+  },
+  {
+    title: '状态',
+    dataIndex: 'status',
+  },
+  {
+    title: '创建时间',
+    dataIndex: 'createTime',
+  },
+  {
+    title: '操作',
+    key: 'action',
+    customRender: ({ record }) => {
+      return h(
+        'a',
+        {
+          onClick: () => {
+            detailRef.value?.show(record)
+          },
+        },
+        '详情'
+      )
     },
-    span: '24 xs:24 s:24 m:12 l:8 xl:5 xxl:4',
   },
 ])
 
-const query = ref({ pageNum: 1, pageSize: 10 })
+const { selectedKeys, onCheckedRowKeys } = useTable()
 
-const columns: TablePlusColumn<RoleResp>[] = [
+const contextMenu = () => [
   {
-    title: '角色名称',
-    key: 'roleName',
-    render: (row) =>
-      h(
-        'span',
-        { class: 'text-theme cursor-pointer', onClick: () => onClick(row) },
-        row.roleName
-      ),
+    label: '编辑',
+    key: 'edit',
+    icon: () => h('span', { class: 'i-lucide:edit' }),
   },
   {
-    title: '作用域',
-    key: 'roleCode',
-    minWidth: 100,
-    resizable: true,
-  },
-  {
-    title: '描述',
-    key: 'remark',
+    label: '删除',
+    key: 'delete',
+    icon: () => h('span', { class: 'i-lucide:trash-2' }),
   },
 ]
 
-const {
-  loading,
-  dataSource,
-  pagination,
-  rowSelection,
-  selectedKeys,
-  rowKey,
-  handleCheck,
-  run,
-} = useTable<RoleResp, { pageNum: number; pageSize: number }>({
-  api: () => getRolePageListApi(query.value),
-  rowKey: (row) => row.id,
-  onPaginate: (page, size) => {
-    query.value.pageNum = page
-    query.value.pageSize = size
-    run(query.value)
-  },
-})
-
-const { message } = createDiscreteApi(['message'])
-const onSearch = (values: FormState) => {
-  message.success('请求成功')
+const onSearch = (values: any) => {
+  tableRef.value?.run(values)
 }
-const onClick = (row: RoleResp) => {
-  console.log('row:', row)
-  show.value = true
+const onReset = () => {
+  tableRef.value?.run()
 }
 </script>
