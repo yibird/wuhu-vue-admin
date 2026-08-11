@@ -1,59 +1,78 @@
+<script lang="ts" setup>
+import { computed } from 'vue'
+import { Icon } from '@/components'
+import { formatFileSize } from '../utils'
+
+const props = defineProps<{
+  usedSize: number
+  totalSize: number
+}>()
+
+const percent = computed(() => {
+  if (props.totalSize <= 0) return 0
+  return Math.min(props.usedSize / props.totalSize, 1)
+})
+
+const usageRatio = computed(() => {
+  if (props.totalSize <= 0) return 0
+  return props.usedSize / props.totalSize
+})
+const percentText = computed(() => `${Math.round(usageRatio.value * 100)}%`)
+const isOverLimit = computed(() => props.usedSize > props.totalSize)
+const progressColor = computed(() =>
+  isOverLimit.value
+    ? 'rgb(var(--w-color-error))'
+    : 'rgb(var(--w-color-primary))'
+)
+</script>
+
 <template>
-  <div class="bg-white rounded-2">
-    <div className="flex! justify-center" ref="elRef"> </div>
+  <div
+    class="file-capacity border-t-1 border-t-solid border-color-1 px-16 py-14 max-[1199px]:(border-t-0 border-l-1 border-l-solid border-color-1 px-16 py-12) max-[767px]:(border-t-1 border-l-0 border-t-solid border-color-1 px-12 py-12)"
+  >
+    <div class="flex items-center justify-between gap-8">
+      <div class="flex min-w-0 items-center gap-8">
+        <Icon
+          name="i-lucide:database"
+          :size="16"
+          class="text-secondary max-[575px]:hidden"
+        />
+        <span class="whitespace-nowrap text-xs text-secondary">存储空间</span>
+      </div>
+      <span
+        class="text-sm text-main font-600"
+        :class="isOverLimit ? 'text-error' : ''"
+      >
+        {{ percentText }}
+      </span>
+    </div>
+    <div class="mt-10 h-6 overflow-hidden rounded-full bg-fill-quaternary">
+      <div
+        class="h-full rounded-full transition-[width,background-color] duration-500 ease-out"
+        :style="{
+          width: `${percent * 100}%`,
+          backgroundColor: progressColor,
+        }"
+      ></div>
+    </div>
+    <div class="mt-8 flex items-center justify-between gap-8 text-11px">
+      <span class="text-main">{{ formatFileSize(usedSize) }} 已使用</span>
+      <span class="text-secondary">共 {{ formatFileSize(totalSize) }}</span>
+    </div>
+    <div v-if="isOverLimit" class="mt-6 text-11px text-error">
+      已超出可用空间
+    </div>
   </div>
 </template>
-<script lang="ts" setup>
-  import { VChart, registerLiquidChart } from '@visactor/vchart'
-  import { onBeforeUnmount, onMounted, ref } from 'vue'
-  registerLiquidChart()
 
-  const spec = {
-    type: 'liquid',
-    valueField: 'value',
-    data: {
-      id: 'chart',
-      values: [
-        {
-          value: 3 / 100
-        }
-      ]
-    },
-    width: 200,
-    height: 200,
-    color: ['#1664ff', '#737bf2'],
-    indicator: {
-      visible: true,
-      title: {
-        visible: true,
-        style: {
-          text: '容量',
-          fontSize: 26
-        }
-      },
-      content: [
-        {
-          visible: true,
-          style: {
-            fill: 'black',
-            text: `0.3%`,
-            lineHeight: 32
-          }
-        }
-      ]
-    }
+<style scoped>
+.file-capacity {
+  transition: border-color 180ms ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .file-capacity {
+    transition: none;
   }
-
-  const chartInstance = ref<VChart>()
-  const elRef = ref<HTMLDivElement>()
-
-  onMounted(() => {
-    const el = elRef.value
-    if (!el) return
-    chartInstance.value = new VChart(spec, { dom: el })
-    chartInstance.value.renderSync()
-  })
-  onBeforeUnmount(() => {
-    chartInstance.value?.release()
-  })
-</script>
+}
+</style>
