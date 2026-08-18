@@ -15,15 +15,15 @@ const textSizes = {
   },
   md: {
     'font-size': '18px',
-    'line-height': '32px',
+    'line-height': '28px',
   },
   '2md': {
     'font-size': '20px',
-    'line-height': '34px',
+    'line-height': '32px',
   },
   lg: {
     'font-size': '24px',
-    'line-height': '36px',
+    'line-height': '34px',
   },
   xl: {
     'font-size': '28px',

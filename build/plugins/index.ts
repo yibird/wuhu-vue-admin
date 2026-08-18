@@ -1,15 +1,8 @@
 import { unocssPlugin } from './unocss.ts'
 import { fontsPlugin } from './fonts.ts'
 import { componentsPlugin } from './components.ts'
-import { jsxPlugin } from './jsx.ts'
 import { vuePlugin } from './vue.ts'
 import { autoImportPlugin } from './auto-import.ts'
-import { mockPlugin } from './mock.ts'
-import { visualizerPlugin } from './visualizer.ts'
-import { compressionPlugin } from './compression.ts'
-import { cdnImportPlugin } from './cdn.ts'
-import { imageOptimizerPlugin } from './image-optimizer.ts'
-import { performanceGuardPlugin } from './performanceGuard.ts'
 import type { PluginOption } from 'vite'
 
 interface CreatePluginOptions {
@@ -17,7 +10,7 @@ interface CreatePluginOptions {
   env: Record<string, string>
 }
 
-export function createPlugin({ command, env }: CreatePluginOptions) {
+export async function createPlugin({ command, env }: CreatePluginOptions) {
   const isBuild = command === 'build'
   const isDev = command === 'serve'
   const enableAnalyze = env.VITE_ANALYZE === 'true' || env.ANALYZE === 'true'
@@ -30,33 +23,44 @@ export function createPlugin({ command, env }: CreatePluginOptions) {
 
   const plugins: PluginOption[] = [
     vuePlugin(),
-    jsxPlugin(),
-    componentsPlugin({ generateDts: isBuild }),
-    autoImportPlugin(),
+    componentsPlugin({ generateDts: isDev }),
+    autoImportPlugin({ generateDts: isDev }),
     fontsPlugin(),
     unocssPlugin(),
-    performanceGuardPlugin({
-      strict: performanceGuardStrict,
-    }),
   ]
 
   if (isDev) {
+    const { mockPlugin } = await import('./mock.ts')
     plugins.push(mockPlugin())
   }
 
   if (enableAnalyze) {
+    const { visualizerPlugin } = await import('./visualizer.ts')
     plugins.push(visualizerPlugin({ raw: enableAnalyzeRaw }))
   }
 
   if (isBuild) {
+    const [{ compressionPlugin }, { performanceGuardPlugin }] =
+      await Promise.all([
+        import('./compression.ts'),
+        import('./performanceGuard.ts'),
+      ])
+
+    plugins.push(
+      performanceGuardPlugin({
+        strict: performanceGuardStrict,
+      })
+    )
     plugins.push(compressionPlugin())
   }
 
   if (enableImageOptimizer) {
+    const { imageOptimizerPlugin } = await import('./image-optimizer.ts')
     plugins.push(imageOptimizerPlugin())
   }
 
   if (enableCdn) {
+    const { cdnImportPlugin } = await import('./cdn.ts')
     plugins.push(cdnImportPlugin())
   }
 

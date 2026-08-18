@@ -1,8 +1,12 @@
 import AutoImport from 'unplugin-auto-import/vite'
 
-export function autoImportPlugin() {
+interface AutoImportPluginOptions {
+  generateDts: boolean
+}
+
+export function autoImportPlugin({ generateDts }: AutoImportPluginOptions) {
   return AutoImport({
     imports: ['vue'],
-    dts: 'auto-imports.d.ts',
+    dts: generateDts ? 'auto-imports.d.ts' : false,
   })
 }
