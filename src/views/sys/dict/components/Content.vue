@@ -21,10 +21,12 @@
   </div>
 </template>
 <script lang="ts" setup>
+import { message } from 'antdv-next'
 import { getRolePageListApi, type RoleResp } from '@/apis'
-import { FormPlus, TablePlus, useTable } from '@/components'
-import type { FormPlusProps, TablePlusColumn } from '@/components'
-import { App } from 'antdv-next'
+import { FormPlus } from '@/components/formPlus'
+import type { FormPlusProps } from '@/components/formPlus'
+import { TablePlus, useTable } from '@/components/tablePlus'
+import type { TablePlusColumn } from '@/components/tablePlus'
 
 interface FormState {
   roleName?: string
@@ -94,7 +96,6 @@ const {
   },
 })
 
-const { message } = App.useApp()
 const onSearch = (values: FormState) => {
   query.value.pageNum = 1
   run(query.value)

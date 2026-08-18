@@ -27,7 +27,7 @@ const options = [
     props: { class: 'w-100' },
   },
 ]
-import { Modal } from 'antdv-next'
+import Modal from 'antdv-next/dist/modal/index'
 
 const onSelect = ({ key }: { key: string }) => {
   switch (key) {

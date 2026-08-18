@@ -29,9 +29,10 @@
 
 <script setup lang="ts">
 import { getRolePageListApi } from '@/apis'
-import { FormPlus, TablePlus, useTable } from '@/components'
-
-import type { TablePlusColumn, FormPlusProps } from '@/components'
+import { FormPlus } from '@/components/formPlus'
+import type { FormPlusProps } from '@/components/formPlus'
+import { TablePlus, useTable } from '@/components/tablePlus'
+import type { TablePlusColumn } from '@/components/tablePlus'
 
 const tableRef = ref()
 

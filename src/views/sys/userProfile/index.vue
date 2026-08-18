@@ -146,7 +146,7 @@
 </template>
 <script lang="ts" setup>
 import { ref } from 'vue'
-import { message } from 'antdv-next'
+import message from 'antdv-next/dist/message/index'
 import { CropperPicker } from '@/components/cropper'
 
 const avatarUrl = ref('')
