@@ -19,7 +19,7 @@
   </div>
 </template>
 <script lang="ts" setup>
-import ConfigItem from '../ConfigItem.vue'
+import { ConfigItem } from '../components'
 import { useAppStore } from '@/store'
 
 const { sider, header } = useAppStore()

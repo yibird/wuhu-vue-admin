@@ -11,6 +11,8 @@ export function useTabNav() {
   let navigationToken = 0
   let cancelScheduledPrefetch: (() => void) | undefined
 
+  const PREFETCH_DELAY = 2500
+
   const scheduleOpenTabPrefetch = (activePath: string) => {
     cancelScheduledPrefetch?.()
     const candidates = [store.homeTab, ...store.tabs]
@@ -26,6 +28,7 @@ export function useTabNav() {
     if (!candidates.length || typeof window === 'undefined') return
 
     const prefetch = () => {
+      if (document.visibilityState !== 'visible') return
       candidates.forEach((tab) => void prefetchMenuRoute(tab!))
     }
 
@@ -36,14 +39,19 @@ export function useTabNav() {
         options?: { timeout: number }
       ) => number
     }
-    if (idleWindow.requestIdleCallback && idleWindow.cancelIdleCallback) {
-      const idleId = idleWindow.requestIdleCallback(prefetch, { timeout: 1500 })
-      cancelScheduledPrefetch = () => idleWindow.cancelIdleCallback?.(idleId)
-      return
-    }
+    let idleId: number | undefined
+    const timeoutId = window.setTimeout(() => {
+      if (idleWindow.requestIdleCallback && idleWindow.cancelIdleCallback) {
+        idleId = idleWindow.requestIdleCallback(prefetch, { timeout: 3000 })
+        return
+      }
+      prefetch()
+    }, PREFETCH_DELAY)
 
-    const timeoutId = setTimeout(prefetch, 300)
-    cancelScheduledPrefetch = () => clearTimeout(timeoutId)
+    cancelScheduledPrefetch = () => {
+      clearTimeout(timeoutId)
+      if (idleId !== undefined) idleWindow.cancelIdleCallback?.(idleId)
+    }
   }
 
   const navigate = async (targetPath: string) => {

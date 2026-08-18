@@ -2,7 +2,7 @@
   <DragDropProvider @drag-end="handleDragEnd">
     <div class="layout-tabs-list__wrapper">
       <TransitionGroup name="layout-tabs">
-        <DndSortableItem
+        <DraggableItem
           v-for="(item, index) in items"
           :key="item.name"
           :disabled="{ draggable: !!item.fixed }"
@@ -31,7 +31,7 @@
               (idx: number, fixed: boolean) => emit('togglePin', idx, fixed)
             "
           />
-        </DndSortableItem>
+        </DraggableItem>
       </TransitionGroup>
     </div>
   </DragDropProvider>
@@ -40,7 +40,7 @@
 import { DragDropProvider } from '@dnd-kit/vue'
 import { arrayMove } from '@dnd-kit/helpers'
 import { isSortable } from '@dnd-kit/vue/sortable'
-import DndSortableItem from '@/components/dndSortableItem/index.vue'
+import { DraggableItem } from '@/components/draggable'
 import TabItem from './TabItem.vue'
 
 import type { TabListProps } from './types'

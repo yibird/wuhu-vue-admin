@@ -1,3 +1,7 @@
+// ========================================
+// Rotate Transition
+// ========================================
+
 .rotate {
   &-enter-from,
   &-leave-to {
@@ -14,7 +18,22 @@
   &-enter-active,
   &-leave-active {
     transition:
-      transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275),
-      opacity 0.3s ease;
+      transform var(--w-motion-duration-slow) var(--w-motion-ease-spring),
+      opacity var(--w-motion-duration-slow) var(--w-motion-ease-standard);
+    will-change: transform, opacity;
+  }
+}
+
+// ========================================
+// Reduced Motion
+// ========================================
+
+@media (prefers-reduced-motion: reduce) {
+  .rotate {
+    &-enter-active,
+    &-leave-active {
+      transition: none;
+      will-change: auto;
+    }
   }
 }

@@ -37,7 +37,7 @@
         type="button"
         @click.stop.prevent="onClose"
       >
-        <Icon name="i-lucide:x" :size="14" />
+        <Icon name="i-lucide:x" mode="svg" :size="16" />
       </button>
     </div>
   </a-dropdown>

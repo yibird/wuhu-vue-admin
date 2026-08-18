@@ -7,7 +7,7 @@ const { openPreferences } = usePreferences()
 <template>
   <button
     type="button"
-    class="w-layout-toolbar-item max-sm:hidden!"
+    class="w-layout-toolbar-item max-sm:hidden"
     data-motion="spin"
     aria-label="打开项目设置"
     title="项目设置"

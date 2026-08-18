@@ -2,8 +2,8 @@
 import { computed, shallowRef } from 'vue'
 import dayjs from 'dayjs'
 import { useMediaQuery } from '@vueuse/core'
-import { message } from 'antdv-next'
-import { Icon } from '@/components'
+import message from 'antdv-next/dist/message/index'
+import { Icon } from '@/components/icon'
 
 interface NoteItem {
   id: string

@@ -1,15 +1,15 @@
 <template>
   <button
     :aria-label="$t('common.auth.theme')"
-    class="size-40 flex cursor-pointer items-center justify-center rounded-8 border-0 bg-transparent text-main outline-none transition-[background-color,color,transform,box-shadow] duration-180 hover:(bg-hover text-primary -translate-y-1) focus-visible:shadow-[0_0_0_2px_rgb(var(--w-color-primary)_/_24%)] active:translate-y-0 motion-reduce:(transform-none transition-none)"
+    class="size-36 flex cursor-pointer items-center justify-center rounded-8 border-0 bg-transparent text-main outline-none transition-[background-color,color,transform,box-shadow] duration-motion-base hover:(bg-hover text-primary -translate-y-1) focus-visible:shadow-[0_0_0_2px_rgb(var(--w-color-primary)_/_24%)] active:translate-y-0 motion-reduce:(transform-none transition-none)"
     type="button"
     @click="changeThemeMode"
   >
     <Transition
       mode="out-in"
-      enter-active-class="transition-[opacity,transform] duration-160 ease-out motion-reduce:transition-none"
+      enter-active-class="transition-[opacity,transform] duration-motion-base ease-motion-enter motion-reduce:transition-none"
       enter-from-class="scale-70 rotate-12 opacity-0 motion-reduce:(scale-100 rotate-0)"
-      leave-active-class="transition-[opacity,transform] duration-120 ease-in motion-reduce:transition-none"
+      leave-active-class="transition-[opacity,transform] duration-motion-fast ease-motion-exit motion-reduce:transition-none"
       leave-to-class="scale-70 -rotate-12 opacity-0 motion-reduce:(scale-100 rotate-0)"
     >
       <Icon

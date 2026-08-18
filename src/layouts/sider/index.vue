@@ -2,25 +2,17 @@
   <component v-if="activeComponent" :is="activeComponent" />
 </template>
 <script lang="ts" setup>
-import { computed } from 'vue'
-import { useAppStore } from '@/store'
+import { defineAsyncComponent } from 'vue'
 import { MenuMode } from '@/constants'
 import VerticalSider from './VerticalSider.vue'
-import MixSider from './MixSider.vue'
-import SplitSider from './SplitSider.vue'
+import { useCollapse, useSider } from './composables'
 
 const components = {
   [MenuMode.Vertical]: VerticalSider,
-  [MenuMode.Mix]: MixSider,
-  [MenuMode.Split]: SplitSider,
+  [MenuMode.Mix]: defineAsyncComponent(() => import('./MixSider.vue')),
+  [MenuMode.Split]: defineAsyncComponent(() => import('./SplitSider.vue')),
 }
 
-const { app, sider } = useAppStore()
-
-const activeComponent = computed(() => {
-  const showSider = sider.value.show
-  const menuMode = app.value.menuMode
-  if (!showSider || menuMode === MenuMode.Horizontal) return null
-  return components[menuMode]
-})
+const { activeComponent } = useSider(components)
+useCollapse()
 </script>

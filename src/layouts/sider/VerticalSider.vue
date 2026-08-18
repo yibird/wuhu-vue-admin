@@ -4,26 +4,25 @@
     :collapsed="sider.collapsed"
     :collapsed-width="sider.collapsedWidth"
     :theme="siderTheme"
-    class="layout-sider-vertical z-[var(--w-sider-z-index)] shadow-[var(--w-sider-vertical-shadow)]"
+    class="z-[var(--w-sider-z-index)] shadow-[var(--w-sider-vertical-shadow)]"
     @update:collapsed="setCollapsed"
   >
-    <Logo :collapsed="sider.collapsed" />
-    <Search
-      :value="rawSearchValue"
-      :collapsed="sider.collapsed"
-      @update:value="onSearchInput"
-    />
-    <Scrollbar
-      class="sider-menu-scrollbar flex-1 overflow-hidden mx-1 mb-2"
-      content-class="pb-2"
-    >
-      <AppMenu
-        :items="items"
+    <div class="h-full flex flex-col">
+      <Logo :collapsed="sider.collapsed" />
+      <Search
+        :value="rawSearchValue"
         :collapsed="sider.collapsed"
-        :theme="siderTheme"
-        class="border-none"
+        @update:value="onSearchInput"
       />
-    </Scrollbar>
+      <Scrollbar class="flex-1 overflow-hidden">
+        <AppMenu
+          :items="items"
+          :collapsed="sider.collapsed"
+          :theme="siderTheme"
+          class="border-none"
+        />
+      </Scrollbar>
+    </div>
   </a-layout-sider>
 </template>
 <script lang="ts" setup>

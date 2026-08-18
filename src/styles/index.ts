@@ -6,3 +6,5 @@ import './app.less'
 import './transition/index.less'
 import './dark.less'
 import './antd.less'
+
+export * from './motion'

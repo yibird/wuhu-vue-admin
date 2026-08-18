@@ -2,7 +2,7 @@
   <a-tooltip title="记事本">
     <button
       type="button"
-      class="w-layout-toolbar-item xs:hidden!"
+      class="w-layout-toolbar-item max-sm:hidden"
       data-motion="tilt"
       @click="show = true"
     >

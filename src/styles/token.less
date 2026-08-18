@@ -249,6 +249,40 @@
   // 阴影次要色
   --w-shadow-sider: 8px 0 12px -6px rgb(15 23 42 / 12%);
 
+  // ===================================== 动效
+  // 动效时长：交互影响范围越大，持续时间越长；离场动画通常比入场动画短一级。
+  --w-motion-duration-none: 0ms; // 关闭动画或处理 reduced-motion 场景
+  --w-motion-duration-fast: 120ms; // 按压、开关、图标等即时反馈
+  --w-motion-duration-base: 180ms; // hover、颜色、边框等常规状态变化
+  --w-motion-duration-moderate: 240ms; // 下拉菜单、气泡、局部内容切换
+  --w-motion-duration-slow: 320ms; // 抽屉、侧栏、布局尺寸变化
+  --w-motion-duration-slower: 480ms; // 页面入场、复杂内容编排
+  --w-motion-duration: var(--w-motion-duration-base); // 默认动效时长
+
+  // 缓动曲线：进入强调减速，离开强调加速，减少界面拖沓感。
+  --w-motion-ease-linear: linear; // 进度、持续旋转等匀速动画
+  --w-motion-ease-standard: cubic-bezier(0.2, 0, 0, 1); // 状态和位置的常规过渡
+  --w-motion-ease-enter: cubic-bezier(0.16, 1, 0.3, 1); // 元素进入或展开
+  --w-motion-ease-exit: cubic-bezier(0.4, 0, 1, 1); // 元素离开或收起
+  --w-motion-ease-emphasized: cubic-bezier(0.2, 0.8, 0.2, 1); // 页面和大范围布局变化
+  --w-motion-ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1); // 小型元素的轻微回弹
+  --w-motion-ease: var(--w-motion-ease-standard); // 默认缓动曲线
+
+  // 动效幅度：限制位移和缩放范围，保持后台界面的稳定与可扫描性。
+  --w-motion-distance-sm: 4px; // hover、按压等微位移
+  --w-motion-distance-base: 8px; // 卡片、局部内容入场
+  --w-motion-distance-lg: 16px; // 浮层、面板入场
+  --w-motion-distance-xl: 32px; // 抽屉等大范围移动
+  --w-motion-scale-pressed: 0.96; // 控件按压反馈
+  --w-motion-scale-enter: 0.98; // 弹层或卡片入场起始比例
+  --w-motion-scale-emphasized: 1.04; // 图标或紧凑控件的强调反馈
+
+  // 动画延迟：用于列表或分段内容的轻量错峰，避免长时间级联等待。
+  --w-motion-delay-none: 0ms;
+  --w-motion-delay-short: 40ms;
+  --w-motion-delay-base: 80ms;
+  --w-motion-delay-long: 120ms;
+
   // ===================================== sider token
   --w-sider-bg: 255 255 255;
   --w-sider-border-color: 226 232 240;
@@ -398,40 +432,6 @@
   --w-shadow-elevated: 0 12px 32px rgb(0 0 0 / 80%);
   --w-shadow-sider:
     12px 0 28px -10px rgb(0 0 0 / 85%), 1px 0 0 rgb(148 163 184 / 18%);
-
-  // ===================================== 动效
-  // 动效时长：交互影响范围越大，持续时间越长；离场动画通常比入场动画短一级。
-  --w-motion-duration-none: 0ms; // 关闭动画或处理 reduced-motion 场景
-  --w-motion-duration-fast: 120ms; // 按压、开关、图标等即时反馈
-  --w-motion-duration-base: 180ms; // hover、颜色、边框等常规状态变化
-  --w-motion-duration-moderate: 240ms; // 下拉菜单、气泡、局部内容切换
-  --w-motion-duration-slow: 320ms; // 抽屉、侧栏、布局尺寸变化
-  --w-motion-duration-slower: 480ms; // 页面入场、复杂内容编排
-  --w-motion-duration: var(--w-motion-duration-base); // 默认动效时长
-
-  // 缓动曲线：进入强调减速，离开强调加速，减少界面拖沓感。
-  --w-motion-ease-linear: linear; // 进度、持续旋转等匀速动画
-  --w-motion-ease-standard: cubic-bezier(0.2, 0, 0, 1); // 状态和位置的常规过渡
-  --w-motion-ease-enter: cubic-bezier(0.16, 1, 0.3, 1); // 元素进入或展开
-  --w-motion-ease-exit: cubic-bezier(0.4, 0, 1, 1); // 元素离开或收起
-  --w-motion-ease-emphasized: cubic-bezier(0.2, 0.8, 0.2, 1); // 页面和大范围布局变化
-  --w-motion-ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1); // 小型元素的轻微回弹
-  --w-motion-ease: var(--w-motion-ease-standard); // 默认缓动曲线
-
-  // 动效幅度：限制位移和缩放范围，保持后台界面的稳定与可扫描性。
-  --w-motion-distance-sm: 4px; // hover、按压等微位移
-  --w-motion-distance-base: 8px; // 卡片、局部内容入场
-  --w-motion-distance-lg: 16px; // 浮层、面板入场
-  --w-motion-distance-xl: 32px; // 抽屉等大范围移动
-  --w-motion-scale-pressed: 0.96; // 控件按压反馈
-  --w-motion-scale-enter: 0.98; // 弹层或卡片入场起始比例
-  --w-motion-scale-emphasized: 1.04; // 图标或紧凑控件的强调反馈
-
-  // 动画延迟
-  --w-motion-delay-none: 0ms;
-  --w-motion-delay-short: 40ms;
-  --w-motion-delay-base: 80ms;
-  --w-motion-delay-long: 120ms;
 
   // ===================================== app token
 

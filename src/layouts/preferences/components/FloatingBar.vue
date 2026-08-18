@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { usePreferences } from './composables'
+import { usePreferences } from '../composables/usePreferences'
 
 const { preferencesOpen, openPreferences } = usePreferences()
 </script>
@@ -12,7 +12,7 @@ const { preferencesOpen, openPreferences } = usePreferences()
   >
     <button
       type="button"
-      class="size-42 flex cursor-pointer items-center justify-center rounded-6 border-0 bg-primary p-0 text-white outline-none transition-[box-shadow,transform] duration-180 ease-out focus-visible:shadow-[0_0_0_3px_rgb(var(--w-color-primary)_/_24%)] active:scale-92 motion-reduce:(transform-none transition-none)"
+      class="size-42 flex cursor-pointer items-center justify-center rounded-6 border-0 bg-primary p-0 text-white outline-none transition-[box-shadow,transform] duration-motion-base ease-motion-enter focus-visible:shadow-[0_0_0_3px_rgb(var(--w-color-primary)_/_24%)] active:scale-92 motion-reduce:(transform-none transition-none)"
       aria-label="打开项目设置"
       aria-haspopup="dialog"
       :aria-expanded="preferencesOpen"

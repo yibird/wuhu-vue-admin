@@ -2,7 +2,7 @@
   <a-tooltip :title="isFullscreen ? '退出全屏' : '全屏'">
     <button
       type="button"
-      class="w-layout-toolbar-item"
+      class="w-layout-toolbar-item max-sm:hidden"
       data-motion="expand"
       @click="toggle"
     >

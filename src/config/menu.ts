@@ -343,6 +343,16 @@ export const menus: IMenu[] = [
             icon: 'i-lucide:gallery-vertical-end',
             path: '/components/scrollbar',
           },
+          {
+            id: 316,
+            title: 'Container',
+            type: 1,
+            rootId: 3,
+            parentId: 31,
+            level: '3-31-316',
+            icon: 'i-lucide:panels-top-left',
+            path: '/components/container',
+          },
         ],
       },
       {
@@ -448,13 +458,13 @@ export const menus: IMenu[] = [
         children: [
           {
             id: 342,
-            title: 'DndSortableItem',
+            title: 'Draggable',
             type: 1,
             rootId: 3,
             parentId: 34,
             level: '3-34-342',
             icon: 'i-lucide:grip-vertical',
-            path: '/components/dnd-sortable-item',
+            path: '/components/draggable',
           },
           {
             id: 343,
@@ -869,6 +879,16 @@ export const menus: IMenu[] = [
     level: '10',
     icon: 'i-lucide:brain-circuit',
     children: [
+      {
+        id: 100,
+        title: '模型列表',
+        type: 1,
+        rootId: 10,
+        parentId: 10,
+        level: '10-100',
+        icon: 'i-lucide:cpu',
+        path: '/ai-platform/model',
+      },
       {
         id: 101,
         title: 'Agent',

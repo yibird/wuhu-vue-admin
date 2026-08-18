@@ -1,7 +1,7 @@
-import { createApp } from 'vue'
+import { createApp, nextTick } from 'vue'
 import { router, setupRouter } from '@/router'
 import { appStore, pinia, setupAuthSessionSync } from '@/store'
-import { globalComponents } from '@/components'
+import { globalComponents } from '@/components/components'
 import { globalDirectives } from '@/directives'
 import { applyAppLoadingTheme, plugins, hideAppLoading } from '@/plugins'
 import { i18n } from '@/locales'
@@ -19,8 +19,10 @@ import './styles'
   setupAuthSessionSync()
   await setupRouter(app)
   app.use(i18n).use(globalComponents).use(globalDirectives).use(plugins)
-  await router.isReady()
+  const routerReady = router.isReady()
   app.mount('#app')
-  await document.fonts.ready
+
+  await routerReady
+  await nextTick()
   hideAppLoading()
 })()

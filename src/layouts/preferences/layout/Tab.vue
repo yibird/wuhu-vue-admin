@@ -25,7 +25,7 @@
 </template>
 <script lang="ts" setup>
 import { useAppStore } from '@/store'
-import ConfigItem from '../ConfigItem.vue'
+import { ConfigItem } from '../components'
 import { TabsTheme } from '@/constants'
 
 const { tab } = useAppStore()

@@ -1,11 +1,20 @@
-.slide-base-transition {
+// ========================================
+// Slide Transition
+// ========================================
+
+.slide-base-transition() {
   transition:
-    transform 0.3s cubic-bezier(0.33, 1, 0.68, 1),
-    opacity 0.3s ease;
+    transform var(--w-motion-duration-slow) var(--w-motion-ease-enter),
+    opacity var(--w-motion-duration-slow) var(--w-motion-ease-standard);
+  will-change: transform, opacity;
 }
 
 .slide {
-  // === 基础滑动（全屏或大范围滑入滑出） ===
+  // ----------------------------------------
+  // 基础滑动
+  // 全屏 / 大范围从右侧滑入
+  // ----------------------------------------
+
   &-enter-from,
   &-leave-to {
     opacity: 0;
@@ -15,15 +24,18 @@
   &-enter-to,
   &-leave-from {
     opacity: 1;
-    transform: translateX(0%);
+    transform: translateX(0);
   }
 
   &-enter-active,
   &-leave-active {
-    .slide-base-transition; // 复用基础过渡
+    .slide-base-transition();
   }
 
-  // === 向左微滑 ===
+  // ----------------------------------------
+  // 向左微滑
+  // ----------------------------------------
+
   &-left {
     &-enter-from,
     &-leave-to {
@@ -39,11 +51,14 @@
 
     &-enter-active,
     &-leave-active {
-      .slide-base-transition;
+      .slide-base-transition();
     }
   }
 
-  // === 向右微滑 ===
+  // ----------------------------------------
+  // 向右微滑
+  // ----------------------------------------
+
   &-right {
     &-enter-from,
     &-leave-to {
@@ -54,19 +69,19 @@
     &-enter-to,
     &-leave-from {
       opacity: 1;
-      transform: translateX(0%);
+      transform: translateX(0);
     }
 
     &-enter-active,
     &-leave-active {
-      // 只有右滑的 opacity 换成了 ease，所以单独写
-      transition:
-        transform 0.3s cubic-bezier(0.33, 1, 0.68, 1),
-        opacity 0.3s ease;
+      .slide-base-transition();
     }
   }
 
-  // === 向上微滑 ===
+  // ----------------------------------------
+  // 向上微滑
+  // ----------------------------------------
+
   &-up {
     &-enter-from,
     &-leave-to {
@@ -82,11 +97,14 @@
 
     &-enter-active,
     &-leave-active {
-      .slide-base-transition;
+      .slide-base-transition();
     }
   }
 
-  // === 向下微滑 ===
+  // ----------------------------------------
+  // 向下微滑
+  // ----------------------------------------
+
   &-down {
     &-enter-from,
     &-leave-to {
@@ -102,22 +120,29 @@
 
     &-enter-active,
     &-leave-active {
-      .slide-base-transition;
+      .slide-base-transition();
     }
   }
 }
 
+// ========================================
+// Reduced Motion
+// ========================================
+
 @media (prefers-reduced-motion: reduce) {
-  .slide-enter-active,
-  .slide-left-enter-active,
-  .slide-right-enter-active,
-  .slide-up-enter-active,
-  .slide-down-enter-active,
-  .slide-leave-active,
-  .slide-left-leave-active,
-  .slide-right-leave-active,
-  .slide-up-leave-active,
-  .slide-down-leave-active {
-    transition: none;
+  .slide {
+    &-enter-active,
+    &-leave-active,
+    &-left-enter-active,
+    &-left-leave-active,
+    &-right-enter-active,
+    &-right-leave-active,
+    &-up-enter-active,
+    &-up-leave-active,
+    &-down-enter-active,
+    &-down-leave-active {
+      transition: none;
+      will-change: auto;
+    }
   }
 }

@@ -8,9 +8,9 @@
   >
     <Transition
       mode="out-in"
-      enter-active-class="transition-[opacity,transform] duration-160 ease-out motion-reduce:transition-none"
+      enter-active-class="transition-[opacity,transform] duration-motion-base ease-motion-enter motion-reduce:transition-none"
       enter-from-class="scale-70 rotate-12 opacity-0 motion-reduce:(scale-100 rotate-0)"
-      leave-active-class="transition-[opacity,transform] duration-120 ease-in motion-reduce:transition-none"
+      leave-active-class="transition-[opacity,transform] duration-motion-fast ease-motion-exit motion-reduce:transition-none"
       leave-to-class="scale-70 -rotate-12 opacity-0 motion-reduce:(scale-100 rotate-0)"
     >
       <Icon

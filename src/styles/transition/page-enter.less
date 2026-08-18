@@ -1,7 +1,17 @@
+// ========================================
+// Page Enter
+// ========================================
+
 .page-enter {
-  animation: w-page-enter 0.52s cubic-bezier(0.2, 0.8, 0.2, 1)
-    var(--w-page-enter-delay, 0ms) both;
+  animation: w-page-enter var(--w-motion-duration-slower)
+    var(--w-motion-ease-emphasized)
+    var(--w-page-enter-delay, var(--w-motion-delay-none)) both;
+  will-change: transform, opacity;
 }
+
+// ========================================
+// Stagger Delay
+// ========================================
 
 .page-enter--1 {
   --w-page-enter-delay: 0ms;
@@ -31,20 +41,29 @@
   --w-page-enter-delay: 450ms;
 }
 
+// ========================================
+// Animation
+// ========================================
+
 @keyframes w-page-enter {
   from {
     opacity: 0;
-    transform: translate3d(0, 8px, 0);
+    transform: translateY(var(--w-motion-distance-base));
   }
 
   to {
     opacity: 1;
-    transform: translate3d(0, 0, 0);
+    transform: translateY(0);
   }
 }
+
+// ========================================
+// Reduced Motion
+// ========================================
 
 @media (prefers-reduced-motion: reduce) {
   .page-enter {
     animation: none;
+    will-change: auto;
   }
 }

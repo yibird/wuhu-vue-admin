@@ -1,5 +1,13 @@
+// ========================================
+// Flip Transition
+// ========================================
+
 .flip {
-  /* 翻页滚动 */
+  // ----------------------------------------
+  // 水平翻页
+  // 绕 Y 轴旋转
+  // ----------------------------------------
+
   &-x {
     &-enter-from,
     &-leave-to {
@@ -10,19 +18,25 @@
     &-enter-to,
     &-leave-from {
       opacity: 1;
-      transform: rotateY(0deg);
+      transform: rotateY(0);
     }
 
     &-enter-active,
     &-leave-active {
       transform-origin: center;
+      backface-visibility: hidden;
       transition:
-        transform 0.2s cubic-bezier(0.3, 0, 0.2, 1),
-        opacity 0.2s ease;
+        transform var(--w-motion-duration-base) var(--w-motion-ease-standard),
+        opacity var(--w-motion-duration-base) var(--w-motion-ease-standard);
+      will-change: transform, opacity;
     }
   }
 
-  /* 垂直翻页滚动 (绕X轴旋转) */
+  // ----------------------------------------
+  // 垂直翻页
+  // 绕 X 轴旋转
+  // ----------------------------------------
+
   &-y {
     &-enter-from,
     &-leave-to {
@@ -33,7 +47,7 @@
     &-enter-to,
     &-leave-from {
       opacity: 1;
-      transform: rotateX(0deg);
+      transform: rotateX(0);
     }
 
     &-enter-active,
@@ -41,8 +55,26 @@
       transform-origin: center;
       backface-visibility: hidden;
       transition:
-        transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-        opacity 0.3s ease;
+        transform var(--w-motion-duration-slow) var(--w-motion-ease-standard),
+        opacity var(--w-motion-duration-slow) var(--w-motion-ease-standard);
+      will-change: transform, opacity;
+    }
+  }
+}
+
+// ========================================
+// Reduced Motion
+// ========================================
+
+@media (prefers-reduced-motion: reduce) {
+  .flip {
+    &-x,
+    &-y {
+      &-enter-active,
+      &-leave-active {
+        transition: none;
+        will-change: auto;
+      }
     }
   }
 }

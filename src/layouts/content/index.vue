@@ -1,5 +1,7 @@
 <template>
-  <a-layout-content class="relative grid min-h-full flex-1 overflow-hidden">
+  <a-layout-content
+    class="relative grid w-full min-h-full flex-1 overflow-hidden"
+  >
     <div v-if="renderRouteView" class="relative h-full overflow-x-hidden">
       <IframeView v-if="isIframe" :src="iframeSrc" />
       <ErrorBoundary v-else stop-propagation @error="handleClientError">
@@ -27,9 +29,10 @@ import {
   useKeepAlive,
   useTransition,
 } from './composables'
-import { ErrorBoundary, Loading } from '@/components'
+import { ErrorBoundary } from '@/components/errorBoundary'
+import { Loading } from '@/components/loading'
 import { IframeView } from './components'
-import type { ErrorBoundaryErrorPayload } from '@/components'
+import type { ErrorBoundaryErrorPayload } from '@/components/errorBoundary'
 
 const emit = defineEmits<{
   clientError: [payload: ErrorBoundaryErrorPayload]

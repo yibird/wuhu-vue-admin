@@ -1,6 +1,6 @@
 <template>
   <a-layout-header
-    class="w-layout-header transition-[background-color,border-color,color] duration-240 ease-out motion-reduce:transition-none"
+    class="w-layout-header transition-[background-color,border-color,color] duration-motion-moderate ease-motion-enter motion-reduce:transition-none"
   >
     <HeaderNav />
     <HeaderToolbar />
@@ -11,7 +11,7 @@ import HeaderNav from './nav/index.vue'
 import HeaderToolbar from './toolbar/index.vue'
 </script>
 
-<style>
+<style scoped>
 .w-layout-header {
   @apply relative h-50! px-10! flex items-center justify-between z-10;
 

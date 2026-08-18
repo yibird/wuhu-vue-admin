@@ -11,8 +11,8 @@
 </template>
 
 <script lang="ts" setup>
-import { storeToRefs } from 'pinia'
-import { appStore } from '@/store'
-import ConfigItem from '../ConfigItem.vue'
-const { footer } = storeToRefs(appStore())
+import { useAppStore } from '@/store'
+import { ConfigItem } from '../components'
+
+const { footer } = useAppStore()
 </script>

@@ -3,12 +3,12 @@
     <button
       type="button"
       aria-label="打开用户菜单"
-      class="group size-32 flex items-center justify-center rounded-full border-0 bg-transparent p-0 cursor-pointer outline-none transition-[box-shadow,transform] duration-180 ease-out hover:(-translate-y-1 shadow-all-sm) focus-visible:shadow-[0_0_0_2px_rgb(var(--w-color-primary)_/_24%)] active:(scale-94 translate-y-0 shadow-none) motion-reduce:(transform-none transition-none)"
+      class="group size-32 flex items-center justify-center rounded-full border-0 bg-transparent p-0 cursor-pointer outline-none transition-[box-shadow,transform] duration-motion-base ease-motion-enter hover:(-translate-y-1 shadow-all-sm) focus-visible:shadow-[0_0_0_2px_rgb(var(--w-color-primary)_/_24%)] active:(scale-94 translate-y-0 shadow-none) motion-reduce:(transform-none transition-none)"
     >
       <a-avatar
         :size="30"
         round
-        class="transition-transform duration-180 ease-out group-hover:scale-105 group-active:scale-98 motion-reduce:transform-none"
+        class="transition-transform duration-motion-base ease-motion-enter group-hover:scale-105 group-active:scale-98 motion-reduce:transform-none"
       />
     </button>
   </a-dropdown>

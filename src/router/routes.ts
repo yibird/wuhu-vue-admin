@@ -1,5 +1,5 @@
 import type { IRoute } from './types'
-import { NotAuthorized, NotFound } from '@/components'
+import { NotAuthorized, NotFound } from '@/components/exception'
 
 export const routes: IRoute[] = [
   {

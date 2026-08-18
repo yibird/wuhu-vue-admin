@@ -25,8 +25,8 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { useShortcuts } from '@/layouts/shortcuts'
-import ConfigItem from '../ConfigItem.vue'
+import { useShortcuts } from '../composables'
+import { ConfigItem } from '../components'
 
 const { enabled, search, logout, lockScreen } = useShortcuts()
 </script>

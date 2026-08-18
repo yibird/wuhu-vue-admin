@@ -14,7 +14,7 @@
 </template>
 <script lang="ts" setup>
 import { useAppStore } from '@/store'
-import ConfigItem from '../ConfigItem.vue'
+import { ConfigItem } from '../components'
 
 const { app } = useAppStore()
 </script>

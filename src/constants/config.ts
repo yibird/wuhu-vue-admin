@@ -67,10 +67,10 @@ export const TabsTheme = {
 
 export const LoadingAnimation = {
   Beat: 'beat',
-  Orbit: 'orbit',
-  Pulse: 'pulse',
+  Spinner: 'spinner',
   Bars: 'bars',
   Ring: 'ring',
+  Pulse: 'pulse',
 } as const
 
 export type ThemeModeType = (typeof ThemeMode)[keyof typeof ThemeMode]

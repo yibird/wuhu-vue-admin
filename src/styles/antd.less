@@ -1,10 +1,26 @@
-.layout-menu-horizontal {
-  height: var(--w-header-height);
-  line-height: var(--w-header-height) !important;
+.ant-layout-header {
+  .layout-menu-horizontal {
+    height: var(--w-header-height);
+    line-height: var(--w-header-height);
 
-  .ant-menu-submenu-selected::after,
-  .ant-menu-submenu-active::after {
-    top: 0;
-    bottom: unset !important;
+    &.ant-menu-horizontal {
+      .ant-menu-item,
+      .ant-menu-submenu-title {
+        display: flex;
+        align-items: center;
+      }
+
+      .ant-menu-item-icon,
+      .ant-menu-title-content {
+        display: inline-flex;
+        align-items: center;
+      }
+
+      .ant-menu-item::after,
+      .ant-menu-submenu::after {
+        top: 0;
+        bottom: auto;
+      }
+    }
   }
 }

@@ -13,10 +13,7 @@
     <div class="py-10">
       <Search :collapsed="sider.collapsed" />
     </div>
-    <Scrollbar
-      class="sider-menu-scrollbar flex-1 overflow-hidden"
-      content-class="pb-2"
-    >
+    <Scrollbar class="flex-1 overflow-hidden" content-class="pb-2">
       <AppMenu
         :items="items"
         :collapsed="sider.collapsed"
@@ -61,10 +58,5 @@ const items = computed(() => {
   flex-direction: column;
   height: 100%;
   overflow: hidden;
-}
-
-.sider-menu-scrollbar {
-  width: auto;
-  margin: 0 4px 8px;
 }
 </style>

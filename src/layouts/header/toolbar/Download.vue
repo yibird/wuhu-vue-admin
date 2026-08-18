@@ -9,7 +9,7 @@
       <button
         type="button"
         :aria-label="`打开下载中心，当前 ${totalDownloadCount} 个下载`"
-        class="w-layout-toolbar-item hidden xl:block"
+        class="w-layout-toolbar-item max-sm:hidden"
         data-motion="drop"
         @click="show = true"
       >

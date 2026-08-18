@@ -9,7 +9,7 @@
       <img
         aria-hidden="true"
         alt=""
-        class="h-auto w-full max-w-520 select-none object-contain [background:radial-gradient(ellipse_at_center,rgb(var(--w-color-primary)_/_22%),rgb(var(--w-color-primary)_/_12%)_36%,transparent_70%)] transition-[filter,transform] duration-500 ease-out hover:(-translate-y-2 scale-102) motion-reduce:(transform-none transition-none)"
+        class="h-auto w-full max-w-520 select-none object-contain [background:radial-gradient(ellipse_at_center,rgb(var(--w-color-primary)_/_22%),rgb(var(--w-color-primary)_/_12%)_36%,transparent_70%)] transition-[filter,transform] duration-motion-slower ease-motion-enter hover:(-translate-y-2 scale-102) motion-reduce:(transform-none transition-none)"
         :src="LoginBannerImage"
       />
       <div class="mt-8 text-xl font-600 leading-8 text-main">

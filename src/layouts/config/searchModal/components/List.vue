@@ -24,7 +24,7 @@
         data-testid="search-modal-item"
         :aria-selected="activeIndex === index"
         :class="[
-          'group relative min-h-52 w-full min-w-0 flex cursor-pointer items-center gap-10 overflow-hidden rounded-6 border-1 border-transparent border-solid bg-transparent px-9 py-7 text-left text-main transition-[background-color,border-color,box-shadow] duration-160',
+          'group relative min-h-52 w-full min-w-0 flex cursor-pointer items-center gap-10 overflow-hidden rounded-6 border-1 border-transparent border-solid bg-transparent px-9 py-7 text-left text-main transition-[background-color,border-color,box-shadow] duration-motion-base',
           {
             'border-primary bg-primary-tint': activeIndex === index,
             'hover:(border-color-2 bg-hover-2)': activeIndex !== index,
@@ -35,7 +35,7 @@
         @click="onSelect(item, index)"
       >
         <span
-          class="size-32 flex shrink-0 items-center justify-center rounded-6 transition-colors duration-160"
+          class="size-32 flex shrink-0 items-center justify-center rounded-6 transition-colors duration-motion-base"
           :class="
             activeIndex === index
               ? 'bg-primary [color:#fff]'
@@ -67,7 +67,7 @@
         <Icon
           name="i-lucide:arrow-right"
           :size="20"
-          class="shrink-0 transition-[opacity,transform,color] duration-160"
+          class="shrink-0 transition-[opacity,transform,color] duration-motion-base"
           :class="
             activeIndex === index
               ? 'translate-x-0 text-primary opacity-100'
@@ -100,7 +100,7 @@ import {
 } from './pinyin'
 import type { ListEmits, ListProps } from './types'
 import type { IMenu } from '#/config'
-import type { ScrollbarInstance } from '@/components'
+import type { ScrollbarInstance } from '@/components/scrollbar'
 
 const { items = [], searchValue = '' } = defineProps<ListProps>()
 const emits = defineEmits<ListEmits>()

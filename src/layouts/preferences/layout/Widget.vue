@@ -68,7 +68,7 @@
 <script lang="ts" setup>
 import { useWidget } from '@/layouts/header/composables'
 import { HeaderWidget } from '@/constants'
-import ConfigItem from '../ConfigItem.vue'
+import { ConfigItem } from '../components'
 
 const {
   enableSearch,

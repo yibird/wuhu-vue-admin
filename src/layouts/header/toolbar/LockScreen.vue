@@ -1,7 +1,7 @@
 <template>
   <button
     type="button"
-    class="w-layout-toolbar-item"
+    class="w-layout-toolbar-item max-sm:hidden"
     data-motion="tilt"
     @click="lock"
   >

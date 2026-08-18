@@ -1,0 +1,49 @@
+// ========================================
+// Simple List TransitionGroup
+// ========================================
+
+.list-group {
+  position: relative;
+}
+
+.list {
+  &-enter-active,
+  &-leave-active {
+    transition:
+      opacity var(--w-motion-duration-fast) var(--w-motion-ease-standard),
+      transform var(--w-motion-duration-base) var(--w-motion-ease-enter);
+  }
+
+  &-enter-from,
+  &-leave-to {
+    opacity: 0;
+    transform: translate3d(0, 6px, 0);
+  }
+
+  &-enter-to,
+  &-leave-from {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+
+  &-leave-active {
+    position: absolute;
+    inset-inline: 0;
+    pointer-events: none;
+  }
+
+  &-move {
+    transition: transform var(--w-motion-duration-base)
+      var(--w-motion-ease-enter);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .list {
+    &-enter-active,
+    &-leave-active,
+    &-move {
+      transition: none;
+    }
+  }
+}

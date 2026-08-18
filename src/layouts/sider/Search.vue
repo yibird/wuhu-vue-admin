@@ -32,34 +32,21 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { useAppStore } from '@/store'
+import { useSearch } from './composables'
 import type { SearchEmits, SearchProps } from './types'
 
-const { sider, setCollapsed } = useAppStore()
-const props = defineProps<SearchProps>()
-
 const value = defineModel<string>('value', { default: '' })
+const props = defineProps<SearchProps>()
 const emits = defineEmits<SearchEmits>()
-const inputRef = useTemplateRef<HTMLInputElement>('inputRef')
-const isCollapsed = computed(() => props.collapsed ?? sider.value.collapsed)
 
-const onChange = (e: Event) => {
-  const target = e.target as HTMLInputElement
-  value.value = target.value
-  emits('change', target.value)
-}
-
-const onClear = () => {
-  value.value = ''
-  inputRef.value?.focus()
-  emits('clear')
-}
-
-const onClick = () => {
-  if (!sider.value.collapsed) return
-  setCollapsed(false)
-  setTimeout(() => {
-    inputRef.value?.focus()
-  })
-}
+const { isCollapsed, onChange, onClear, onClick } = useSearch({
+  value,
+  collapsed: props.collapsed,
+  onChange: (value: string) => {
+    emits('change', value)
+  },
+  onClear: () => {
+    emits('clear')
+  },
+})
 </script>

@@ -1,9 +1,9 @@
 <template>
   <div
-    class="group h-54 flex items-center overflow-hidden border-b-1 border-color-2 border-b-solid bg-container px-14 outline-none transition-[border-color,background-color] duration-180"
+    class="group h-54 flex items-center overflow-hidden border-b-1 border-color-2 border-b-solid bg-container px-14 outline-none transition-[border-color,background-color] duration-motion-base"
   >
     <span
-      class="size-30 flex shrink-0 items-center justify-center rounded-6 bg-fill-4 text-muted transition-colors duration-180"
+      class="size-30 flex shrink-0 items-center justify-center rounded-6 bg-fill-4 text-muted transition-colors duration-motion-base"
     >
       <Icon name="i-lucide:search" :size="17" />
     </span>

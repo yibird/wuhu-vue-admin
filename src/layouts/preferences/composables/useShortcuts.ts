@@ -1,9 +1,8 @@
-import { onKeyStroke } from '@vueuse/core'
 import { computed } from 'vue'
+import { onKeyStroke } from '@vueuse/core'
 import { useAuth } from '@/composables'
 import { useAppStore } from '@/store'
-import { useGlobalSearch } from '@/layouts/config/composables'
-import { useLockScreen } from '../config/composables'
+import { useGlobalSearch, useLockScreen } from '@/layouts/config/composables'
 
 type ShortcutAction = 'search' | 'logout' | 'lockScreen'
 

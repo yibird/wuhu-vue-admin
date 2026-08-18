@@ -49,24 +49,25 @@ const {
 </script>
 
 <style lang="less">
+:where(.w-layout-toolbar-item) {
+  display: grid;
+}
+
 .w-layout-toolbar-item {
   position: relative;
-  display: grid;
   place-items: center;
   width: 32px;
   height: 32px;
-  padding: 0;
   color: rgb(var(--w-text-regular));
   cursor: pointer;
   outline: none;
   background: transparent;
-  border: 0;
   border-radius: 4px;
   transition:
-    background-color 180ms ease-out,
-    color 180ms ease-out,
-    box-shadow 180ms ease-out,
-    transform 180ms cubic-bezier(0.16, 1, 0.3, 1);
+    background-color var(--w-motion-duration-base) var(--w-motion-ease-standard),
+    color var(--w-motion-duration-base) var(--w-motion-ease-standard),
+    box-shadow var(--w-motion-duration-base) var(--w-motion-ease-standard),
+    transform var(--w-motion-duration-base) var(--w-motion-ease-enter);
 
   &:hover {
     color: rgb(var(--w-text-main));

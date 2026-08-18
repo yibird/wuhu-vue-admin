@@ -15,21 +15,10 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { Locale } from '@/constants'
-import ConfigItem from '../ConfigItem.vue'
 import { useLocale } from '@/locales'
 import { useAppStore } from '@/store'
-
-const localeOptions = [
-  {
-    label: '中文简体',
-    value: Locale.ZH_CN,
-  },
-  {
-    label: 'English',
-    value: Locale.EN,
-  },
-]
+import { ConfigItem } from '../components'
+import { localeOptions } from './options'
 
 const { app } = useAppStore()
 const { appLocale, changeLocale } = useLocale()
