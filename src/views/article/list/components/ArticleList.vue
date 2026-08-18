@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { Modal, message } from 'antdv-next'
+import message from 'antdv-next/dist/message/index'
+import Modal from 'antdv-next/dist/modal/index'
 import { useRouter } from 'vue-router'
 import { useLoading } from '@/composables'
 import { articleItems } from '../../data'

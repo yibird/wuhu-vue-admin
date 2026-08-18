@@ -6,7 +6,8 @@ import {
   watchDebounced,
   whenever,
 } from '@vueuse/core'
-import { Modal, message } from 'antdv-next'
+import message from 'antdv-next/dist/message/index'
+import Modal from 'antdv-next/dist/modal/index'
 import { articleItems } from '../../data'
 import type { MenuProps } from 'antdv-next'
 import { STORAGE_KEYS, TEMPLATE_MAP, createInitialDocuments } from '../data'
