@@ -10,7 +10,7 @@ import {
   type Placement,
 } from './components'
 import { useI18n } from 'vue-i18n'
-import { message } from 'antdv-next'
+import message from 'antdv-next/dist/message/index'
 import { useGo } from '@/router'
 
 const { t } = useI18n()
@@ -56,7 +56,7 @@ const onSuccess = async () => {
 <template>
   <div
     :class="[
-      'login relative isolate min-h-screen min-h-[100dvh] w-full flex overflow-hidden bg-page text-main transition-colors duration-300 max-xl:items-stretch max-xl:justify-center motion-reduce:transition-none',
+      'login relative isolate min-h-screen min-h-[100dvh] w-full flex overflow-hidden bg-page text-main transition-colors duration-motion-slow max-xl:items-stretch max-xl:justify-center motion-reduce:transition-none',
       { 'flex-row': placement === 'right' },
       { 'flex-row-reverse': placement === 'left' },
     ]"
@@ -88,7 +88,7 @@ const onSuccess = async () => {
       <div class="page-enter page-enter--2 w-full max-w-400">
         <div class="mb-24">
           <h1
-            class="m-0 text-2xl font-semibold leading-10 text-main transition-colors duration-200 motion-reduce:transition-none"
+            class="m-0 text-2xl font-semibold leading-10 text-main transition-colors duration-motion-base motion-reduce:transition-none"
           >
             {{ $t('register.title') }}
           </h1>

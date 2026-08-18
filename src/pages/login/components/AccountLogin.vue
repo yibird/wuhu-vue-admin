@@ -16,6 +16,7 @@
     >
       <a-input
         v-model:value="formData.account"
+        ref="accountInputRef"
         allow-clear
         autofocus
         autocomplete="username"
@@ -23,15 +24,18 @@
         :maxlength="64"
         size="large"
         :placeholder="$t('login.inputAccount')"
-        class="transition-[border-color,box-shadow,background-color] duration-180 hover:border-primary/45 focus-within:shadow-[0_0_0_3px_rgb(var(--w-color-primary)_/_12%)] motion-reduce:transition-none"
-        @press-enter="submitForm"
+        @clear="formData.account = ''"
       >
         <template #prefix>
           <Icon
             name="i-lucide:shield-user"
             :size="18"
-            class="text-secondary transition-[color,transform] duration-180 group-focus-within:(text-primary translate-x-1) motion-reduce:transition-none"
+            tabindex="-1"
+            class="text-secondary transition-all group-focus-within:text-primary"
           />
+        </template>
+        <template #clearIcon>
+          <ClearIcon />
         </template>
       </a-input>
     </a-form-item>
@@ -47,14 +51,13 @@
         :maxlength="128"
         size="large"
         :placeholder="$t('login.inputPassword')"
-        class="transition-[border-color,box-shadow,background-color] duration-180 hover:border-primary/45 focus-within:shadow-[0_0_0_3px_rgb(var(--w-color-primary)_/_12%)] motion-reduce:transition-none"
         @press-enter="submitForm"
       >
         <template #prefix>
           <Icon
             name="i-lucide:lock-keyhole"
             :size="18"
-            class="text-secondary transition-[color,transform] duration-180 group-focus-within:(text-primary translate-x-1) motion-reduce:transition-none"
+            class="text-secondary transition-[color,transform] duration-motion-base group-focus-within:text-primary"
           />
         </template>
       </a-input-password>
@@ -75,7 +78,7 @@
         size="large"
         block
         html-type="submit"
-        class="h-44! font-medium transition-[transform,box-shadow,filter] duration-200 hover:(-translate-y-1 shadow-[0_10px_22px_rgb(var(--w-color-primary)_/_22%)] brightness-105) active:(translate-y-0 shadow-none brightness-100) motion-reduce:(transform-none transition-none)"
+        class="h-44! font-medium transition-[transform,box-shadow,filter] duration-motion-base hover:(-translate-y-1 brightness-105) active:(translate-y-0 shadow-none brightness-100)"
         data-testid="login-submit"
         :loading="loading"
         :disabled="loading"
@@ -96,7 +99,7 @@
               shape="circle"
               html-type="button"
               :aria-label="item.label"
-              class="size-38! border-color-2! bg-container! outline-none! transition-[background-color,transform,box-shadow,border-color] duration-180 hover:(-translate-y-1 border-primary! bg-hover! shadow-all-sm) focus-visible:shadow-[0_0_0_2px_rgb(var(--w-color-primary)_/_24%)] active:translate-y-0 motion-reduce:(transform-none transition-none)"
+              class="size-38! border-color-2! bg-container! outline-none! transition-[background-color,transform,box-shadow,border-color] duration-motion-base hover:(-translate-y-1 border-primary! bg-hover! shadow-all-sm) focus-visible:shadow-[0_0_0_2px_rgb(var(--w-color-primary)_/_24%)] active:translate-y-0 motion-reduce:(transform-none transition-none)"
             >
               <img
                 :src="item.icon"
@@ -114,7 +117,7 @@
         <a-button
           type="link"
           html-type="button"
-          class="h-auto! px-4! transition-[color,transform] duration-180 hover:(translate-x-1 text-primary!) active:translate-x-0 motion-reduce:(transform-none transition-none)"
+          class="h-auto! px-4! transition-[color,transform] duration-motion-base hover:(translate-x-1 text-primary!) active:translate-x-0 motion-reduce:(transform-none transition-none)"
           @click="to('/register')"
         >
           {{ $t('login.toRegister') }}
@@ -124,6 +127,7 @@
   </a-form>
 </template>
 <script setup lang="ts">
+import { nextTick, onMounted, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useGo } from '@/router'
 import wechatIcon from '@/assets/svg/wechat.svg'
@@ -131,6 +135,8 @@ import qqIcon from '@/assets/svg/qq.svg'
 import githubIcon from '@/assets/svg/github.svg'
 import googleIcon from '@/assets/svg/google.svg'
 import type { FormInstance } from 'antdv-next'
+import type { ComponentPublicInstance } from 'vue'
+import ClearIcon from './ClearIcon.vue'
 import type { LoginEmits, LoginFormProps } from './types'
 
 const emits = defineEmits<LoginEmits>()
@@ -138,6 +144,8 @@ const props = withDefaults(defineProps<LoginFormProps>(), { loading: false })
 const { t } = useI18n()
 const { to } = useGo()
 const formRef = useTemplateRef<FormInstance>('formRef')
+const accountInputRef =
+  useTemplateRef<ComponentPublicInstance>('accountInputRef')
 const rememberedAccountKey = 'wuhu:login:remembered-account'
 const items = computed(() => [
   {
@@ -206,7 +214,16 @@ const onSubmit = () => {
   })
 }
 
+const removeClearButtonFromTabOrder = () => {
+  const clearButton = accountInputRef.value?.$el?.querySelector(
+    '.ant-input-clear-icon'
+  ) as HTMLButtonElement | null | undefined
+  clearButton?.setAttribute('tabindex', '-1')
+}
+
 onMounted(() => {
+  void nextTick(removeClearButtonFromTabOrder)
+
   try {
     const account = localStorage.getItem(rememberedAccountKey)
     if (!account) return
@@ -216,4 +233,9 @@ onMounted(() => {
     // Ignore unavailable storage and keep the form usable.
   }
 })
+
+watch(
+  () => formData.account,
+  () => void nextTick(removeClearButtonFromTabOrder)
+)
 </script>

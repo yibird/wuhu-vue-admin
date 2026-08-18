@@ -172,7 +172,7 @@ watch(
               shape="circle"
               html-type="button"
               :aria-label="item.label"
-              class="size-38! border-color-2! bg-container! outline-none! transition-[background-color,transform,box-shadow,border-color] duration-180 hover:(-translate-y-1 border-primary! bg-hover! shadow-all-sm) focus-visible:shadow-[0_0_0_2px_rgb(var(--w-color-primary)_/_24%)] active:translate-y-0 motion-reduce:(transform-none transition-none)"
+              class="size-38! border-color-2! bg-container! outline-none! transition-[background-color,transform,box-shadow,border-color] duration-motion-base hover:(-translate-y-1 border-primary! bg-hover! shadow-all-sm) focus-visible:shadow-[0_0_0_2px_rgb(var(--w-color-primary)_/_24%)] active:translate-y-0 motion-reduce:(transform-none transition-none)"
             >
               <img
                 :src="item.icon"

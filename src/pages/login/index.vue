@@ -1,7 +1,7 @@
 <template>
   <div
     :class="[
-      'relative isolate min-h-screen min-h-[100dvh] w-full flex overflow-hidden bg-page text-main transition-colors duration-300 max-xl:items-stretch max-xl:justify-center motion-reduce:transition-none',
+      'relative isolate min-h-screen min-h-[100dvh] w-full flex overflow-hidden bg-page text-main transition-colors duration-motion-slow max-xl:items-stretch max-xl:justify-center motion-reduce:transition-none',
       { 'flex-row': placement === 'right' },
       { 'flex-row-reverse': placement === 'left' },
     ]"
@@ -9,11 +9,9 @@
   >
     <Logo />
     <div
-      class="page-enter page-enter--2 absolute right-16 top-16 z-10 flex items-center gap-2 rounded-8 border-1 border-color-2 border-solid bg-container p-2 shadow-all-sm sm:right-20 sm:top-20"
+      class="page-enter page-enter--2 absolute right-16 top-16 z-10 flex items-center gap-2 rounded-8 border-1 border-color-2 border-solid bg-container px-6 py-4 shadow-all-sm sm:right-20 sm:top-20"
     >
-      <div class="max-xl:hidden">
-        <Layout @change="changePlacement" />
-      </div>
+      <Layout class="max-xl:hidden" @change="changePlacement" />
       <Theme />
       <Translate />
     </div>
@@ -36,7 +34,7 @@
       <div class="page-enter page-enter--2 w-full max-w-400">
         <div class="mb-24">
           <h1
-            class="m-0 text-2xl font-semibold leading-10 text-main transition-colors duration-200 motion-reduce:transition-none"
+            class="m-0 text-2xl font-semibold leading-10 text-main transition-colors duration-motion-base motion-reduce:transition-none"
           >
             {{ $t('login.title') }}
           </h1>
@@ -80,7 +78,7 @@ import {
   type Placement,
 } from './components'
 import { useI18n } from 'vue-i18n'
-import { message } from 'antdv-next'
+import message from 'antdv-next/dist/message/index'
 import { useRoute } from 'vue-router'
 import { useAuth } from '@/composables'
 import { getSafeRedirect, useGo } from '@/router'

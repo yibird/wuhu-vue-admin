@@ -2,7 +2,7 @@
   <div class="flex flex-col items-center gap-22 py-12">
     <a-spin size="large" :spinning="refreshing || loading" :delay="120">
       <div
-        class="rounded-8 border-1 border-color-2 border-solid bg-fill-quaternary p-16 shadow-all-sm transition-[border-color,box-shadow,transform] duration-200 hover:(-translate-y-1 border-primary/50 shadow-all-md) motion-reduce:(transform-none transition-none)"
+        class="rounded-8 border-1 border-color-2 border-solid bg-fill-quaternary p-16 shadow-all-sm transition-[border-color,box-shadow,transform] duration-motion-base hover:(-translate-y-1 border-primary/50 shadow-all-md) motion-reduce:(transform-none transition-none)"
       >
         <QRCode :value="text" :size="196" />
       </div>
@@ -27,7 +27,7 @@
 <script setup lang="ts">
 import { onUnmounted } from 'vue'
 import type { LoginFormProps } from './types'
-import { QRCode } from 'antdv-next'
+import QRCode from 'antdv-next/dist/qrcode/index'
 
 withDefaults(defineProps<LoginFormProps>(), { loading: false })
 const createQrValue = () =>
