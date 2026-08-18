@@ -54,7 +54,7 @@ const surfaceStyle = computed(() => ({
   max-width: none;
   transform-origin: left top;
   transition:
-    width 160ms ease,
-    height 160ms ease;
+    width var(--w-motion-duration-base) var(--w-motion-ease-standard),
+    height var(--w-motion-duration-base) var(--w-motion-ease-standard);
 }
 </style>

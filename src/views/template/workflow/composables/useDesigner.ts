@@ -11,7 +11,7 @@ import {
   type NodeMouseEvent,
   type XYPosition,
 } from '@vue-flow/core'
-import { message } from 'antdv-next'
+import message from 'antdv-next/dist/message/index'
 import { useWorkflowHistory } from './useWorkflowHistory'
 import {
   createSchemaNodeFromPalette,

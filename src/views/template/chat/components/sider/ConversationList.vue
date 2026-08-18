@@ -21,7 +21,7 @@
           <a-dropdown :trigger="['contextmenu']" :menu="getActionMenu(conv)">
             <button
               type="button"
-              class="group relative box-border block w-full rounded-6 border-0 p-10 text-left cursor-pointer transition-[background-color,box-shadow,transform] duration-180 ease-out hover:translate-x-1 active:scale-99 focus-visible:(outline-none shadow-[0_0_0_2px_rgb(var(--w-color-primary)/24%)]) motion-reduce:(transform-none transition-none)"
+              class="group relative box-border block w-full rounded-6 border-0 p-10 text-left cursor-pointer transition-[background-color,box-shadow,transform] duration-motion-base ease-motion-enter hover:translate-x-1 active:scale-99 focus-visible:(outline-none shadow-[0_0_0_2px_rgb(var(--w-color-primary)/24%)]) motion-reduce:(transform-none transition-none)"
               :class="
                 activeConversationId === conv.id
                   ? 'bg-primary/10 hover:bg-primary/14'
@@ -45,7 +45,7 @@
                     :size="44"
                     round
                     fallback-src="https://i.pravatar.cc/100?img=1"
-                    class="transition-transform duration-180 ease-out group-hover:scale-105 motion-reduce:transform-none"
+                    class="transition-transform duration-motion-base ease-motion-enter group-hover:scale-105 motion-reduce:transform-none"
                   />
                   <span
                     v-if="conv.userInfo?.status"
@@ -149,7 +149,7 @@
 </template>
 
 <script setup lang="ts">
-import { Icon } from '@/components'
+import { Icon } from '@/components/icon'
 import Search from '../Search.vue'
 import Tabs from '../Tabs.vue'
 import VirtualList from '../VirtualList.vue'

@@ -28,7 +28,7 @@ const emit = defineEmits<{
       <button
         v-for="item in upcomingEvents"
         :key="item.id"
-        class="w-full appearance-none rounded-8 border-1 border-color-2 border-solid bg-page p-10 text-left text-main font-inherit cursor-pointer transition-[transform,colors] duration-200 hover:(-translate-y-1 border-primary/50 bg-hover) focus-visible:(border-primary shadow-[0_0_0_2px_rgb(var(--w-color-primary)_/_20%)] outline-none) motion-reduce:transition-none motion-reduce:hover:translate-y-0"
+        class="w-full appearance-none rounded-8 border-1 border-color-2 border-solid bg-page p-10 text-left text-main font-inherit cursor-pointer transition-[transform,colors] duration-motion-base hover:(-translate-y-1 border-primary/50 bg-hover) focus-visible:(border-primary shadow-[0_0_0_2px_rgb(var(--w-color-primary)_/_20%)] outline-none) motion-reduce:transition-none motion-reduce:hover:translate-y-0"
         type="button"
         @click="emit('selectEventDate', item.startDate, item.id)"
       >

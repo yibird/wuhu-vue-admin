@@ -123,7 +123,7 @@ function latencyPercent(item: WorkflowLatencyRank) {
               </div>
               <div class="h-5 overflow-hidden rounded-full bg-fill-secondary">
                 <div
-                  class="h-full origin-left rounded-full bg-primary transition-transform duration-500"
+                  class="h-full origin-left rounded-full bg-primary transition-transform duration-motion-slower"
                   :style="{ width: latencyPercent(item) }"
                 ></div>
               </div>
@@ -157,7 +157,7 @@ function latencyPercent(item: WorkflowLatencyRank) {
         <div
           v-for="alert in alerts"
           :key="alert.id"
-          class="group flex gap-9 rounded-6 px-8 py-8 transition-colors duration-150 hover:bg-hover"
+          class="group flex gap-9 rounded-6 px-8 py-8 transition-colors duration-motion-fast hover:bg-hover"
           :class="{ 'opacity-55': alert.acknowledged }"
         >
           <span

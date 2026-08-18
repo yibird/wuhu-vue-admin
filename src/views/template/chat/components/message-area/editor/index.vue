@@ -105,7 +105,7 @@
           </template>
           <button
             type="button"
-            class="button size-36 rounded-6 text-secondary transition-[background-color,box-shadow,transform,color] duration-180 hover:(-translate-y-1 bg-hover text-primary shadow-all-sm) active:(translate-y-0 scale-92)"
+            class="button size-36 rounded-6 text-secondary transition-[background-color,box-shadow,transform,color] duration-motion-base hover:(-translate-y-1 bg-hover text-primary shadow-all-sm) active:(translate-y-0 scale-92)"
             :class="
               showEmojiPicker ? 'bg-primary/10 text-primary shadow-all-sm' : ''
             "
@@ -696,8 +696,8 @@ defineExpose({
 .emoji-feedback-enter-active,
 .emoji-feedback-leave-active {
   transition:
-    opacity 180ms ease,
-    transform 180ms ease;
+    opacity var(--w-motion-duration-base) var(--w-motion-ease-standard),
+    transform var(--w-motion-duration-base) var(--w-motion-ease-standard);
 }
 
 .emoji-feedback-enter-from,

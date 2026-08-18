@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { Modal, message } from 'antdv-next'
+import message from 'antdv-next/dist/message/index'
+import Modal from 'antdv-next/dist/modal/index'
 import { useRouter } from 'vue-router'
 import { useLoading } from '@/composables'
 import Card from './components/Card.vue'
@@ -112,8 +113,10 @@ function handleCardAction(
           <a-button @click="clearFilters">清除筛选</a-button>
         </a-empty>
 
-        <div
+        <TransitionGroup
           v-else
+          name="fade"
+          tag="div"
           class="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6"
         >
           <Card
@@ -123,7 +126,7 @@ function handleCardAction(
             @action="handleCardAction"
             @open="openDesigner"
           />
-        </div>
+        </TransitionGroup>
       </main>
 
       <footer

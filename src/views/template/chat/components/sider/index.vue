@@ -110,8 +110,8 @@ function handleContactChat(contact: Contact) {
 .sidebar-view-enter-active,
 .sidebar-view-leave-active {
   transition:
-    opacity 180ms ease,
-    transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
+    opacity var(--w-motion-duration-base) var(--w-motion-ease-standard),
+    transform var(--w-motion-duration-moderate) var(--w-motion-ease-enter);
 }
 
 .sidebar-view-enter-from {
@@ -147,8 +147,8 @@ function handleContactChat(contact: Contact) {
   background: transparent;
   border-radius: 999px;
   transition:
-    background-color 160ms ease,
-    box-shadow 160ms ease;
+    background-color var(--w-motion-duration-base) var(--w-motion-ease-standard),
+    box-shadow var(--w-motion-duration-base) var(--w-motion-ease-standard);
 }
 
 .chat-sidebar-resize-handle:hover::before,

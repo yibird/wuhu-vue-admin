@@ -2,7 +2,7 @@
 import { computed, nextTick, ref, shallowRef, watch } from 'vue'
 import { DragDropProvider } from '@dnd-kit/vue'
 import { move } from '@dnd-kit/helpers'
-import DndSortableItem from '@/components/dndSortableItem/index.vue'
+import { DraggableItem } from '@/components/draggable'
 import FieldFormatEditor from './FieldFormatEditor.vue'
 import FieldMappingEditor from './FieldMappingEditor.vue'
 import type { DragEndEvent } from '@dnd-kit/vue'
@@ -179,7 +179,7 @@ function handleDragEnd(event: DragEndEvent) {
     <Scrollbar ref="fieldScrollRef" class="field-panel__scroll">
       <DragDropProvider @drag-end="handleDragEnd">
         <div class="field-panel__list">
-          <DndSortableItem
+          <DraggableItem
             v-for="(field, index) in fields"
             :key="field.key"
             :id="field.key"
@@ -311,7 +311,7 @@ function handleDragEnd(event: DragEndEvent) {
               :field="field"
               @update-field="emit('updateField', field.key, $event)"
             />
-          </DndSortableItem>
+          </DraggableItem>
         </div>
       </DragDropProvider>
     </Scrollbar>
@@ -394,9 +394,9 @@ function handleDragEnd(event: DragEndEvent) {
   border: 0;
   border-radius: 6px;
   transition:
-    color 0.2s ease,
-    background-color 0.2s ease,
-    box-shadow 0.2s ease;
+    color var(--w-motion-duration-base) var(--w-motion-ease-standard),
+    background-color var(--w-motion-duration-base) var(--w-motion-ease-standard),
+    box-shadow var(--w-motion-duration-base) var(--w-motion-ease-standard);
 }
 
 .field-card__drag:hover,
@@ -462,11 +462,11 @@ function handleDragEnd(event: DragEndEvent) {
   color: #dc2626;
 }
 
-.field-card[data-sortable-drag-source='true'] {
+.field-card[data-w-draggable-drag-source='true'] {
   user-select: none;
 }
 
-.field-card[data-sortable-dragging='true'] {
+.field-card[data-w-draggable-dragging='true'] {
   z-index: 20;
   box-shadow: var(--w-shadow-card);
   opacity: 0.45;

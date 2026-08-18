@@ -1,6 +1,6 @@
 import { computed, onBeforeUnmount, shallowRef, watch } from 'vue'
 import { useIntervalFn } from '@vueuse/core'
-import { message } from 'antdv-next'
+import message from 'antdv-next/dist/message/index'
 import {
   initialWorkflowAlerts,
   initialWorkflowInstances,

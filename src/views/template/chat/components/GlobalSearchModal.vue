@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, shallowRef, watch } from 'vue'
-import { Icon } from '@/components'
+import { Icon } from '@/components/icon'
 import { useSearchHistory } from '../composables/useSearchHistory'
 import { statusText } from '../utils'
 import type {
@@ -669,10 +669,10 @@ function handleSelectMessage(result: MessageSearchResult) {
   border: 1px solid rgb(var(--w-border-color-1));
   border-radius: 8px;
   transition:
-    background-color 160ms ease,
-    border-color 160ms ease,
-    box-shadow 180ms ease,
-    transform 180ms ease;
+    background-color var(--w-motion-duration-base) var(--w-motion-ease-standard),
+    border-color var(--w-motion-duration-base) var(--w-motion-ease-standard),
+    box-shadow var(--w-motion-duration-base) var(--w-motion-ease-standard),
+    transform var(--w-motion-duration-base) var(--w-motion-ease-standard);
 }
 
 .global-search-scope:hover,
@@ -708,8 +708,8 @@ function handleSelectMessage(result: MessageSearchResult) {
 .global-search-result-enter-active,
 .global-search-result-leave-active {
   transition:
-    opacity 160ms ease,
-    transform 200ms cubic-bezier(0.22, 1, 0.36, 1);
+    opacity var(--w-motion-duration-base) var(--w-motion-ease-standard),
+    transform var(--w-motion-duration-base) var(--w-motion-ease-enter);
 }
 
 .global-search-history-enter-from,

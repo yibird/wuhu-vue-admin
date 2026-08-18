@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, toRef } from 'vue'
-import { Icon } from '@/components'
+import { Icon } from '@/components/icon'
 import WindowShell from './WindowShell.vue'
 import { useCallSession } from './useCallSession'
 import type { CallWindowEmits, CallWindowProps } from './types'

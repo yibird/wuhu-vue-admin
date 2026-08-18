@@ -1,4 +1,4 @@
-﻿<script setup lang="ts">
+<script setup lang="ts">
 import { computed } from 'vue'
 import BaseNode from './BaseNode.vue'
 import { getBranchCount, getBranchRuleCount } from './nodeFormatters'

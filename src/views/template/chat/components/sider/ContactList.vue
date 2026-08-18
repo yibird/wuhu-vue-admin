@@ -27,7 +27,7 @@
 
         <div v-else class="px-8 py-3">
           <div
-            class="group relative rounded-6 transition-[background-color,box-shadow,transform] duration-180 ease-out hover:(translate-x-1 bg-hover shadow-all-sm) active:scale-99 motion-reduce:(transform-none transition-none)"
+            class="group relative rounded-6 transition-[background-color,box-shadow,transform] duration-motion-base ease-motion-enter hover:(translate-x-1 bg-hover shadow-all-sm) active:scale-99 motion-reduce:(transform-none transition-none)"
           >
             <button
               type="button"
@@ -42,7 +42,7 @@
                     :size="44"
                     round
                     fallback-src="https://i.pravatar.cc/100?img=1"
-                    class="transition-transform duration-180 ease-out group-hover:scale-105 motion-reduce:transform-none"
+                    class="transition-transform duration-motion-base ease-motion-enter group-hover:scale-105 motion-reduce:transform-none"
                   />
                   <span
                     v-if="row.contact.status"
@@ -88,7 +88,7 @@
             </button>
 
             <div
-              class="absolute right-8 top-16 flex items-center opacity-75 transition-[opacity,transform] duration-180 ease-out group-focus-within:(translate-x-0 opacity-100) group-hover:(translate-x-0 opacity-100)"
+              class="absolute right-8 top-16 flex items-center opacity-75 transition-[opacity,transform] duration-motion-base ease-motion-enter group-focus-within:(translate-x-0 opacity-100) group-hover:(translate-x-0 opacity-100)"
             >
               <button
                 type="button"
@@ -133,7 +133,7 @@
 <script setup lang="ts">
 import { h } from 'vue'
 import type { MenuProps } from 'antdv-next'
-import { Icon } from '@/components'
+import { Icon } from '@/components/icon'
 import VirtualList from '../VirtualList.vue'
 import Search from '../Search.vue'
 import Tabs from '../Tabs.vue'

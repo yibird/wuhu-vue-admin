@@ -124,8 +124,8 @@ onUnmounted(() => {
 
   :deep(.df-event) {
     transition:
-      transform 180ms ease,
-      filter 180ms ease;
+      transform var(--w-motion-duration-base) var(--w-motion-ease-standard),
+      filter var(--w-motion-duration-base) var(--w-motion-ease-standard);
   }
 
   :deep(.df-event:hover) {

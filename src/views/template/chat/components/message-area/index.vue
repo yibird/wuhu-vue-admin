@@ -164,7 +164,7 @@ import MessageList from './list/index.vue'
 import MessageEditor from './editor/index.vue'
 import { h } from 'vue'
 import type { MenuProps } from 'antdv-next'
-import { Icon } from '@/components'
+import { Icon } from '@/components/icon'
 import type {
   ChatSendPayload,
   ChatSettings,
@@ -340,8 +340,8 @@ function handleHeaderAction({ key }: { key: string }) {
 .conversation-content-enter-active,
 .conversation-content-leave-active {
   transition:
-    opacity 180ms ease,
-    transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
+    opacity var(--w-motion-duration-base) var(--w-motion-ease-standard),
+    transform var(--w-motion-duration-moderate) var(--w-motion-ease-enter);
 }
 
 .conversation-content-enter-from {

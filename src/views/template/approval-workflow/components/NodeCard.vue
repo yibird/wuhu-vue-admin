@@ -62,7 +62,7 @@ function handleChildAddAfter(id: string, type: ApprovalNodeType) {
     </a-dropdown>
 
     <div
-      class="approval-node group relative w-250 overflow-visible rounded-10 border-1 border-color-2 border-solid bg-container p-0 text-left shadow-[var(--w-shadow-card)] transition-[transform,border-color,box-shadow,background-color] duration-200 ease-out hover:(-translate-y-1 border-primary/60 shadow-[0_12px_28px_rgb(var(--w-shadow-color-1))]) motion-reduce:transition-none motion-reduce:hover:translate-y-0"
+      class="approval-node group relative w-250 overflow-visible rounded-10 border-1 border-color-2 border-solid bg-container p-0 text-left shadow-[var(--w-shadow-card)] transition-[transform,border-color,box-shadow,background-color] duration-motion-base ease-motion-enter hover:(-translate-y-1 border-primary/60 shadow-[0_12px_28px_rgb(var(--w-shadow-color-1))]) motion-reduce:transition-none motion-reduce:hover:translate-y-0"
       :class="{
         'z-10 -translate-y-1 border-primary bg-container shadow-[0_16px_34px_rgb(var(--w-color-primary)/16%)] ring-2 ring-primary/22':
           selected,

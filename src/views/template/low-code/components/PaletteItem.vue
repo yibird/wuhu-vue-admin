@@ -30,7 +30,7 @@ const { isDragging } = useDraggable({
     :aria-label="item.title"
     :data-palette-dragging="isDragging || undefined"
     :data-low-code-palette-item="item.type"
-    class="group size-40 cursor-grab items-center justify-center rounded-8 border-1 border-color-2 border-solid bg-main text-primary transition-[background-color,border-color,opacity] duration-150 hover:border-color-primary hover:bg-primary/8 active:cursor-grabbing data-[palette-dragging=true]:opacity-40"
+    class="group size-40 cursor-grab items-center justify-center rounded-8 border-1 border-color-2 border-solid bg-main text-primary transition-[background-color,border-color,opacity] duration-motion-fast hover:border-color-primary hover:bg-primary/8 active:cursor-grabbing data-[palette-dragging=true]:opacity-40"
     @click="emit('add', item.type)"
   >
     <Icon :name="item.icon" :size="20" />

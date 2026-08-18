@@ -1,5 +1,5 @@
 import { computed, shallowRef } from 'vue'
-import { message } from 'antdv-next'
+import message from 'antdv-next/dist/message/index'
 import {
   approvalPalette,
   approvalTemplates,

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onKeyStroke, useEventListener } from '@vueuse/core'
+import { onKeyStroke } from '@vueuse/core'
 import { useDroppable } from '@dnd-kit/vue'
 import {
   computed,
@@ -24,7 +24,8 @@ import {
   findDesignerNodeLocation,
   flattenDesignerNodes,
 } from '../utils/nodeTree'
-import type { ScrollbarInstance } from '@/components'
+import { useRangeSelection } from '@/composables/useRangeSelection'
+import type { ScrollbarInstance } from '@/components/scrollbar'
 import type {
   DesignerComponentType,
   DesignerDropTarget,
@@ -87,23 +88,57 @@ const contextMenu = shallowRef<{
   top: number
 }>()
 const ignoreNextCanvasClick = shallowRef(false)
-const marqueeSelection = shallowRef<{
-  pointerId: number
-  startX: number
-  startY: number
-  x: number
-  y: number
-  width: number
-  height: number
-  ids: string[]
-}>()
 
 const actionBarHeight = 40
 const actionBarGap = 8
 const emptyStyle: Record<string, string> = {}
-const activeSelectedIds = computed(() =>
-  marqueeSelection.value ? marqueeSelection.value.ids : props.selectedIds
+const nodeTargets = computed(() => {
+  const nodeCount = props.nodes.length
+  const list = nodeListRef.value
+  if (!list || !nodeCount) return []
+  return Array.from(
+    list.querySelectorAll<HTMLElement>('[data-low-code-node-id]')
+  )
+})
+const selectedNodeTargets = computed(() => {
+  const selectedIds = new Set(props.selectedIds)
+  return nodeTargets.value.filter((element) =>
+    selectedIds.has(element.dataset.lowCodeNodeId ?? '')
+  )
+})
+const rangeContainer = computed(
+  () => canvasViewportRef.value?.getScrollElement() ?? null
 )
+const rangeSelection = useRangeSelection<HTMLElement>({
+  container: rangeContainer,
+  getKey: (element) => element.dataset.lowCodeNodeId ?? '',
+  multiple: true,
+  observeScroll: true,
+  selected: selectedNodeTargets,
+  targets: nodeTargets,
+  onChange: (elements) => {
+    ignoreNextCanvasClick.value = true
+    const ids = elements
+      .map((element) => element.dataset.lowCodeNodeId ?? '')
+      .filter(Boolean)
+    if (ids.length) {
+      emit('select-many', ids)
+    } else {
+      emit('clear-selection')
+    }
+  },
+  onStart: () => {
+    closeContextMenu()
+    handleCanvasActiveChange(true)
+  },
+})
+const isRangeSelecting = rangeSelection.isSelecting
+const activeSelectedIds = computed(() => {
+  if (!rangeSelection.isSelecting.value) return props.selectedIds
+  return rangeSelection.activeSelected.value
+    .map((element) => element.dataset.lowCodeNodeId ?? '')
+    .filter(Boolean)
+})
 const activeSelectedIdSet = computed(() => new Set(activeSelectedIds.value))
 const selectedIdSet = computed(() => new Set(props.selectedIds))
 const selectedNodes = computed(() => {
@@ -119,16 +154,7 @@ const selectedActionNodes = computed(() => selectedNodes.value)
 const actionBarWidth = computed(() =>
   Math.max(78, actionBarActions.value.length * 36 + 10)
 )
-const marqueeSelectionStyle = computed(() => {
-  const selection = marqueeSelection.value
-  if (!selection) return {}
-
-  return {
-    height: `${selection.height}px`,
-    transform: `translate3d(${selection.x}px, ${selection.y}px, 0)`,
-    width: `${selection.width}px`,
-  }
-})
+const marqueeSelectionStyle = rangeSelection.selectionStyle
 const contextMenuActions = computed(() => {
   const actions: Array<{
     danger?: boolean
@@ -252,8 +278,8 @@ onKeyStroke(
       return
     }
 
-    if (marqueeSelection.value) {
-      cancelMarqueeSelection()
+    if (rangeSelection.isSelecting.value) {
+      rangeSelection.cancelSelection()
       return
     }
 
@@ -268,25 +294,7 @@ onBeforeUnmount(() => {
   if (actionBarFrameId !== undefined) {
     window.cancelAnimationFrame(actionBarFrameId)
   }
-  cancelMarqueeSelection()
-})
-
-useEventListener(window, 'pointermove', (event) => {
-  if (!marqueeSelection.value) return
-
-  handleMarqueePointerMove(event)
-})
-
-useEventListener(window, 'pointerup', (event) => {
-  if (!marqueeSelection.value) return
-
-  finishMarqueeSelection(event)
-})
-
-useEventListener(window, 'pointercancel', (event) => {
-  if (!marqueeSelection.value) return
-
-  cancelMarqueeSelection(event)
+  rangeSelection.cancelSelection()
 })
 
 function getNodeActions(
@@ -532,152 +540,9 @@ function isCanvasBlankTarget(target: EventTarget | null) {
   )
 }
 
-function getCanvasContentPoint(event: PointerEvent, content: HTMLElement) {
-  const rect = content.getBoundingClientRect()
-  return {
-    x: event.clientX - rect.left,
-    y: event.clientY - rect.top,
-  }
-}
-
-function getSelectionRect(
-  startX: number,
-  startY: number,
-  currentX: number,
-  currentY: number
-) {
-  return {
-    height: Math.abs(currentY - startY),
-    width: Math.abs(currentX - startX),
-    x: Math.min(startX, currentX),
-    y: Math.min(startY, currentY),
-  }
-}
-
-function getIntersectingNodeIds(rect: {
-  x: number
-  y: number
-  width: number
-  height: number
-}) {
-  const list = nodeListRef.value
-  const content = canvasContentRef.value
-  if (!list || !content) return []
-
-  const contentRect = content.getBoundingClientRect()
-  const selectionRight = rect.x + rect.width
-  const selectionBottom = rect.y + rect.height
-  return Array.from(
-    list.querySelectorAll<HTMLElement>('[data-low-code-node-id]')
-  )
-    .filter((element) => {
-      const nodeRect = element.getBoundingClientRect()
-      const nodeLeft = nodeRect.left - contentRect.left
-      const nodeTop = nodeRect.top - contentRect.top
-      const nodeRight = nodeLeft + nodeRect.width
-      const nodeBottom = nodeTop + nodeRect.height
-
-      return (
-        nodeLeft < selectionRight &&
-        nodeRight > rect.x &&
-        nodeTop < selectionBottom &&
-        nodeBottom > rect.y
-      )
-    })
-    .map((element) => element.dataset.lowCodeNodeId ?? '')
-    .filter(Boolean)
-}
-
-function handleMarqueePointerDown(event: PointerEvent) {
-  handleCanvasActiveChange(true)
-  if (event.button !== 0 || isDraggingNode.value) return
-  if (!isCanvasBlankTarget(event.target)) return
-
-  const content = canvasContentRef.value
-  if (!content) return
-
-  closeContextMenu()
-  const point = getCanvasContentPoint(event, content)
-  marqueeSelection.value = {
-    height: 0,
-    ids: [],
-    pointerId: event.pointerId,
-    startX: point.x,
-    startY: point.y,
-    width: 0,
-    x: point.x,
-    y: point.y,
-  }
-  content.setPointerCapture(event.pointerId)
-  event.preventDefault()
-}
-
-function handleMarqueePointerMove(event: PointerEvent) {
-  const selection = marqueeSelection.value
-  if (!selection || selection.pointerId !== event.pointerId) return
-
-  const content = canvasContentRef.value
-  if (!content) return
-
-  const point = getCanvasContentPoint(event, content)
-  const rect = getSelectionRect(
-    selection.startX,
-    selection.startY,
-    point.x,
-    point.y
-  )
-  const ids =
-    rect.width < 4 && rect.height < 4 ? [] : getIntersectingNodeIds(rect)
-  marqueeSelection.value = {
-    ...selection,
-    ...rect,
-    ids,
-  }
-  event.preventDefault()
-}
-
-function finishMarqueeSelection(event: PointerEvent) {
-  const selection = marqueeSelection.value
-  if (!selection || selection.pointerId !== event.pointerId) return false
-
-  marqueeSelection.value = undefined
-  if (selection.width < 4 && selection.height < 4) {
-    emit('clear-selection')
-  } else {
-    ignoreNextCanvasClick.value = true
-    emit('select-many', selection.ids)
-  }
-  event.preventDefault()
-  return true
-}
-
-function cancelMarqueeSelection(event?: PointerEvent) {
-  if (
-    event &&
-    marqueeSelection.value &&
-    marqueeSelection.value.pointerId !== event.pointerId
-  ) {
-    return
-  }
-
-  marqueeSelection.value = undefined
-}
-
 function handleNodeSelect(node: DesignerNode) {
   handleCanvasActiveChange(true)
   emit('select', node.id)
-}
-
-function handleCanvasPointerMove(event: PointerEvent) {
-  handleMarqueePointerMove(event)
-}
-
-function handleCanvasPointerUp(event: PointerEvent) {
-  finishMarqueeSelection(event)
-}
-
-function handleCanvasPointerCancel(event: PointerEvent) {
-  cancelMarqueeSelection(event)
 }
 
 function handleCanvasActiveChange(active: boolean) {
@@ -694,7 +559,7 @@ function handleCanvasBackgroundClick(event: MouseEvent) {
     return
   }
 
-  if (isDraggingNode.value || marqueeSelection.value) return
+  if (isDraggingNode.value || rangeSelection.isSelecting.value) return
   if (!isCanvasBlankTarget(event.target)) return
 
   emit('clear-selection')
@@ -772,11 +637,7 @@ function openPreviewModal() {
           ref="canvasContentRef"
           data-low-code-canvas-content
           class="relative min-h-full p-18"
-          @pointerdown="handleMarqueePointerDown"
-          @pointermove="handleCanvasPointerMove"
           @mousemove="handleCanvasMouseMove"
-          @pointerup="handleCanvasPointerUp"
-          @pointercancel="handleCanvasPointerCancel"
           @click="handleCanvasBackgroundClick"
           @contextmenu.prevent
         >
@@ -822,14 +683,14 @@ function openPreviewModal() {
           </div>
 
           <div
-            v-if="marqueeSelection"
+            v-if="isRangeSelecting"
             class="pointer-events-none absolute left-0 top-0 z-20 rounded-6 border-1 border-primary border-solid bg-primary/10 shadow-[0_0_0_1px_rgb(var(--w-color-primary)_/_18%)] will-change-transform"
             :style="marqueeSelectionStyle"
           />
 
           <DesignerNodeActions
             v-if="
-              selectedActionNodes.length && !isDraggingNode && !marqueeSelection
+              selectedActionNodes.length && !isDraggingNode && !isRangeSelecting
             "
             class="absolute left-0 top-0 z-30 will-change-transform"
             :actions="actionBarActions"
@@ -862,13 +723,14 @@ function openPreviewModal() {
 .low-code-canvas-root {
   transform-origin: center;
   transition:
-    border-radius 120ms ease,
-    box-shadow 120ms ease,
-    opacity 100ms ease;
+    border-radius var(--w-motion-duration-fast) var(--w-motion-ease-standard),
+    box-shadow var(--w-motion-duration-fast) var(--w-motion-ease-standard),
+    opacity var(--w-motion-duration-fast) var(--w-motion-ease-standard);
 }
 
 .low-code-canvas-root.is-fullscreen {
-  animation: low-code-fullscreen-in 120ms ease-out;
+  animation: low-code-fullscreen-in var(--w-motion-duration-fast)
+    var(--w-motion-ease-enter);
 }
 
 .low-code-canvas-root.is-fullscreen .low-code-device-shell {
@@ -878,7 +740,7 @@ function openPreviewModal() {
 .low-code-device-shell {
   box-sizing: border-box;
   max-width: none;
-  transition: width 120ms ease-out;
+  transition: width var(--w-motion-duration-fast) var(--w-motion-ease-enter);
 }
 
 .low-code-designer-node__content {

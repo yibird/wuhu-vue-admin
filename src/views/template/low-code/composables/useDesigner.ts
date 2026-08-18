@@ -1,6 +1,6 @@
 import { computed, shallowRef } from 'vue'
 import { useClipboard } from '@vueuse/core'
-import { message } from 'antdv-next'
+import message from 'antdv-next/dist/message/index'
 import {
   createDesignerNode,
   paletteItems,

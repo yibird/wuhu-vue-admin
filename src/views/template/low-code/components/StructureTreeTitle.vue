@@ -113,9 +113,9 @@ function emitNodeAction(
   border: 1px solid transparent;
   border-radius: 6px;
   transition:
-    background-color 0.2s ease,
-    border-color 0.2s ease,
-    box-shadow 0.2s ease;
+    background-color var(--w-motion-duration-base) var(--w-motion-ease-standard),
+    border-color var(--w-motion-duration-base) var(--w-motion-ease-standard),
+    box-shadow var(--w-motion-duration-base) var(--w-motion-ease-standard);
 }
 
 .designer-structure-tree-title--page {
@@ -170,7 +170,8 @@ function emitNodeAction(
   border-radius: 6px;
   box-shadow: 0 4px 12px rgb(0 0 0 / 8%);
   opacity: 0;
-  transition: opacity 0.2s ease;
+  transition: opacity var(--w-motion-duration-base)
+    var(--w-motion-ease-standard);
 }
 
 .designer-structure-tree-title:hover .designer-structure-tree-title__tools,
@@ -194,9 +195,9 @@ function emitNodeAction(
   border: 1px solid rgb(var(--w-border-color-2));
   border-radius: 6px;
   transition:
-    color 0.2s ease,
-    background-color 0.2s ease,
-    border-color 0.2s ease;
+    color var(--w-motion-duration-base) var(--w-motion-ease-standard),
+    background-color var(--w-motion-duration-base) var(--w-motion-ease-standard),
+    border-color var(--w-motion-duration-base) var(--w-motion-ease-standard);
 }
 
 .designer-structure-tree-title__tool:hover {

@@ -19,7 +19,7 @@
         <div class="px-8 py-3">
           <button
             type="button"
-            class="group block w-full rounded-6 border-0 bg-transparent p-10 text-left cursor-pointer transition-[background-color,box-shadow,transform] duration-180 ease-out hover:(translate-x-1 bg-hover shadow-all-sm) active:scale-99 focus-visible:(outline-none bg-hover shadow-[0_0_0_2px_rgb(var(--w-color-primary)/24%)]) motion-reduce:(transform-none transition-none)"
+            class="group block w-full rounded-6 border-0 bg-transparent p-10 text-left cursor-pointer transition-[background-color,box-shadow,transform] duration-motion-base ease-motion-enter hover:(translate-x-1 bg-hover shadow-all-sm) active:scale-99 focus-visible:(outline-none bg-hover shadow-[0_0_0_2px_rgb(var(--w-color-primary)/24%)]) motion-reduce:(transform-none transition-none)"
             :aria-label="`打开群聊${group.title}`"
             @click="handleSelect(group)"
           >
@@ -30,7 +30,7 @@
                   :size="44"
                   round
                   fallback-src="https://i.pravatar.cc/100?img=5"
-                  class="transition-transform duration-180 ease-out group-hover:scale-105 motion-reduce:transform-none"
+                  class="transition-transform duration-motion-base ease-motion-enter group-hover:scale-105 motion-reduce:transform-none"
                 />
                 <span
                   v-if="group.groupInfo?.memberCount"
@@ -69,7 +69,7 @@
                 <Icon
                   name="i-lucide:chevron-right"
                   :size="15"
-                  class="text-placeholder opacity-0 transition-[opacity,transform] duration-180 group-hover:(translate-x-1 opacity-100)"
+                  class="text-placeholder opacity-0 transition-[opacity,transform] duration-motion-base group-hover:(translate-x-1 opacity-100)"
                 />
               </span>
             </span>

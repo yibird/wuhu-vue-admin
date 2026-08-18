@@ -10,7 +10,7 @@
       ref="tabButtons"
       type="button"
       role="tab"
-      class="button rounded-6 px-8 py-6 text-sm transition-colors focus-visible:(outline-none shadow-[0_0_0_2px_rgb(var(--w-color-primary)/24%)])"
+      class="button rounded-6 px-8 py-6 text-sm transition-[background-color,color,transform] duration-200 ease-out active:scale-[0.9] focus-visible:(outline-none shadow-[0_0_0_2px_rgb(var(--w-color-primary)/24%)])"
       :aria-selected="activeKey === item.key"
       :tabindex="activeKey === item.key ? 0 : -1"
       :class="[

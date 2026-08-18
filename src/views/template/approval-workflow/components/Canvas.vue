@@ -5,7 +5,7 @@ import type {
   ApprovalNodeType,
   ApprovalWorkflowSettings,
 } from '../types'
-import type { ScrollbarInstance } from '@/components'
+import type { ScrollbarInstance } from '@/components/scrollbar'
 import { APPROVAL_WORKFLOW_SELECTORS } from '../constants'
 import { useApprovalCanvasInteraction } from '../composables/useCanvasInteraction'
 import NodeCard from './NodeCard.vue'
@@ -28,6 +28,7 @@ const emit = defineEmits<{
 
 const canvasRef = useTemplateRef<HTMLElement>('canvas')
 const canvasScrollbarRef = useTemplateRef<ScrollbarInstance>('canvasScrollbar')
+const selectedIdsRef = computed(() => props.selectedIds)
 const {
   canvasContentStyle,
   marqueeSelectedIds,
@@ -35,14 +36,11 @@ const {
   selectionRect,
   zoom,
   zoomLabel,
-  handlePointerDown,
-  handlePointerMove,
-  handlePointerCancel,
-  handlePointerUp,
   handleWheel,
   setZoom,
 } = useApprovalCanvasInteraction(
   canvasRef,
+  selectedIdsRef,
   {
     duplicateSelected: () => emit('duplicateSelected'),
     removeSelected: () => emit('removeSelected'),
@@ -141,10 +139,6 @@ const activeSelectedCount = computed(() => activeSelectedIds.value.length)
       class="relative min-h-0 overflow-hidden select-none bg-page outline-none [background-image:linear-gradient(90deg,rgb(var(--w-border-color-1)/55%)_1px,transparent_1px),linear-gradient(0deg,rgb(var(--w-border-color-1)/55%)_1px,transparent_1px)] [background-size:36px_36px]"
       :data-testid="APPROVAL_WORKFLOW_SELECTORS.canvas"
       tabindex="0"
-      @pointercancel="handlePointerCancel"
-      @pointerdown="handlePointerDown"
-      @pointermove="handlePointerMove"
-      @pointerup="handlePointerUp"
       @wheel="handleWheel"
     >
       <Scrollbar
@@ -153,7 +147,7 @@ const activeSelectedCount = computed(() => activeSelectedIds.value.length)
         content-class="approval-canvas-scroll relative min-h-full p-20"
       >
         <div
-          class="mx-auto min-w-max pb-40 transition-transform ease-in-out [transform-origin:top_center] [transition-duration:160ms]"
+          class="mx-auto min-w-max pb-40 transition-transform [transform-origin:top_center] [transition-duration:var(--w-motion-duration-base)] [transition-timing-function:var(--w-motion-ease-standard)]"
           :style="canvasContentStyle"
         >
           <NodeCard

@@ -72,15 +72,13 @@ const {
 })
 
 const {
+  activeSelectedWidgetIds,
   hasSelection,
   isMarqueeSelecting,
   marqueeStyle,
   selectedCount,
-  handleCanvasPointerDown,
-  handleCanvasPointerMove,
-  handleCanvasPointerUp,
-  shouldSuppressWidgetClick,
 } = useChartCanvasSelection({
+  canvas: screenRef,
   selectedWidgetIds: selectedWidgetIdsRef,
   widgets: widgetsRef,
   onClearSelection: () => emit('clearSelection'),
@@ -117,30 +115,7 @@ function handleWidgetPointerMoveWithGrid(event: PointerEvent) {
   handleWidgetPointerMove(event, grid)
 }
 
-function handleScreenPointerDown(event: PointerEvent) {
-  const screen = screenRef.value
-  if (!screen) return
-
-  handleCanvasPointerDown(event, screen)
-}
-
-function handleScreenPointerMove(event: PointerEvent) {
-  const screen = screenRef.value
-  if (!screen) return
-
-  handleCanvasPointerMove(event, screen)
-}
-
-function handleScreenPointerUp(event: PointerEvent) {
-  const screen = screenRef.value
-  if (!screen) return
-
-  handleCanvasPointerUp(event, screen)
-}
-
 function handleWidgetClick(id: string) {
-  if (shouldSuppressWidgetClick()) return
-
   emit('selectWidget', id)
 }
 </script>
@@ -177,9 +152,6 @@ function handleWidgetClick(id: string) {
         data-chart-marquee-area="true"
         @dragover="handleGridDragOver"
         @drop="handleGridDrop"
-        @pointerdown="handleScreenPointerDown"
-        @pointermove="handleScreenPointerMove"
-        @pointerup="handleScreenPointerUp"
         @click.self="emit('clearSelection')"
       >
         <SelectionActionBar
@@ -202,7 +174,7 @@ function handleWidgetClick(id: string) {
             :key="widget.id"
             :index="index"
             :is-dragging="draggingWidget?.id === widget.id"
-            :is-selected="selectedWidgetIds.includes(widget.id)"
+            :is-selected="activeSelectedWidgetIds.includes(widget.id)"
             :screen-config="screenConfig"
             :source="getSource(widget.sourceId)"
             :widget="widget"

@@ -74,7 +74,7 @@
 </template>
 
 <script setup lang="ts">
-import { Icon } from '@/components'
+import { Icon } from '@/components/icon'
 import type {
   ChatSettings,
   SettingPanelEmits,
@@ -199,8 +199,8 @@ function updateArchiveDays(value: number | [number, number] | unknown) {
   border: 1px solid rgb(var(--w-border-color-1));
   border-radius: 8px;
   transition:
-    background-color 0.2s ease,
-    border-color 0.2s ease;
+    background-color var(--w-motion-duration-base) var(--w-motion-ease-standard),
+    border-color var(--w-motion-duration-base) var(--w-motion-ease-standard);
 }
 
 .setting-row:hover {

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, useTemplateRef } from 'vue'
 import { useDroppable } from '@dnd-kit/vue'
-import DndSortableItem from '@/components/dndSortableItem/index.vue'
+import { DraggableItem } from '@/components/draggable'
 import { canControlAcceptChildren } from './controls/registry'
 import { useDesignerNodeClasses } from '../composables/useNodeClasses'
 import DesignerNodeRenderer from './NodeRenderer.vue'
@@ -67,7 +67,7 @@ const gridStyle = computed(() => {
 </script>
 
 <template>
-  <DndSortableItem
+  <DraggableItem
     :id="node.id"
     :index="nodeIndex"
     :group="groupId"
@@ -124,7 +124,7 @@ const gridStyle = computed(() => {
         拖入控件到容器内部
       </div>
     </div>
-  </DndSortableItem>
+  </DraggableItem>
 </template>
 
 <style scoped>

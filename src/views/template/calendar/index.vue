@@ -75,7 +75,8 @@
 
 <script setup lang="ts">
 import { useLoading } from '@/composables'
-import { Modal, message } from 'antdv-next'
+import message from 'antdv-next/dist/message/index'
+import Modal from 'antdv-next/dist/modal/index'
 import { computed, nextTick, shallowRef, watch } from 'vue'
 import CalendarAside from './components/Aside.vue'
 import CalendarBoard from './components/Board.vue'

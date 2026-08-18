@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { Icon } from '@/components'
+import { Icon } from '@/components/icon'
 import type { UserInfo } from '../types'
 import { statusText } from '../../utils'
 

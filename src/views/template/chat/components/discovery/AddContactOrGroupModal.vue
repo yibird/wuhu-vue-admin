@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, shallowRef, watch } from 'vue'
-import { Icon } from '@/components'
+import { Icon } from '@/components/icon'
 import { defaultDirectorySearchHistory } from '../../data'
 import { useSearchHistory } from '../../composables/useSearchHistory'
 import type {
@@ -387,8 +387,8 @@ function handleAdd(item: DirectoryItem) {
 .directory-result-enter-active,
 .directory-result-leave-active {
   transition:
-    opacity 160ms ease,
-    transform 200ms cubic-bezier(0.22, 1, 0.36, 1);
+    opacity var(--w-motion-duration-base) var(--w-motion-ease-standard),
+    transform var(--w-motion-duration-base) var(--w-motion-ease-enter);
 }
 
 .history-item-enter-from,

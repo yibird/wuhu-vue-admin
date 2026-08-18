@@ -3,7 +3,7 @@ import { computed, useTemplateRef } from 'vue'
 import { useVirtualizer } from '@tanstack/vue-virtual'
 import type { ComponentPublicInstance, CSSProperties } from 'vue'
 import type { VirtualItem } from '@tanstack/vue-virtual'
-import type { ScrollbarInstance, ScrollbarProps } from '@/components'
+import type { ScrollbarInstance, ScrollbarProps } from '@/components/scrollbar'
 
 const props = withDefaults(
   defineProps<{
@@ -111,7 +111,8 @@ function measureElement(element: Element | ComponentPublicInstance | null) {
 
 <style scoped>
 .virtual-list-surface {
-  animation: chat-virtual-list-enter 220ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: chat-virtual-list-enter var(--w-motion-duration-moderate)
+    var(--w-motion-ease-enter) both;
 }
 
 @keyframes chat-virtual-list-enter {

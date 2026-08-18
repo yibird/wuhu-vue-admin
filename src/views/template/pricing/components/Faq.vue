@@ -43,7 +43,7 @@ const emit = defineEmits<Emits>()
           />
         </span>
         <span
-          class="grid overflow-hidden transition-[grid-template-rows,opacity] duration-300 ease-out motion-reduce:transition-none"
+          class="grid overflow-hidden transition-[grid-template-rows,opacity] duration-motion-slow ease-motion-enter motion-reduce:transition-none"
           :class="
             props.openIndex === index
               ? 'grid-rows-[1fr] opacity-100'

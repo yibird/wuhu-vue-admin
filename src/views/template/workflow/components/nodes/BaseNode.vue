@@ -58,7 +58,7 @@ function formatConfigValue(value: unknown) {
 
 <template>
   <div
-    class="workflow-node relative w-292 select-none rounded-12 border-1 border-color-2 border-solid bg-main p-14 text-main shadow-[0_14px_34px_rgb(15_23_42_/_10%)] transition-[border-color,box-shadow,transform] duration-200"
+    class="workflow-node relative w-292 select-none rounded-12 border-1 border-color-2 border-solid bg-main p-14 text-main shadow-[0_14px_34px_rgb(15_23_42_/_10%)] transition-[border-color,box-shadow,transform] duration-motion-base"
     :class="{ 'workflow-node--dragging scale-[1.01]': dragging }"
     :style="rootStyle"
     data-workflow-node

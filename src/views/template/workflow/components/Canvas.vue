@@ -1,4 +1,4 @@
-﻿<script setup lang="ts">
+<script setup lang="ts">
 import { Background } from '@vue-flow/background'
 import { MiniMap } from '@vue-flow/minimap'
 import type { MenuProps } from 'antdv-next'

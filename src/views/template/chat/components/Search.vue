@@ -48,7 +48,7 @@
         <Icon
           name="i-lucide:plus"
           :size="18"
-          class="transition-transform duration-200"
+          class="transition-transform duration-motion-base"
           :class="{ 'rotate-45': menuOpen }"
         />
       </button>
@@ -58,7 +58,7 @@
 <script lang="ts" setup>
 import { h, shallowRef } from 'vue'
 import type { MenuProps } from 'antdv-next'
-import { Icon } from '@/components'
+import { Icon } from '@/components/icon'
 
 withDefaults(
   defineProps<{

@@ -91,7 +91,7 @@
 <script setup lang="ts">
 import MessageItem from './MessageItem.vue'
 import type { Message, MessageListEmits } from '../../types'
-import type { ScrollbarInstance } from '@/components'
+import type { ScrollbarInstance } from '@/components/scrollbar'
 
 interface Props {
   messages?: Message[]
@@ -182,7 +182,8 @@ defineExpose({
 <style scoped>
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 0.2s ease;
+  transition: opacity var(--w-motion-duration-base)
+    var(--w-motion-ease-standard);
 }
 
 .fade-enter-from,
@@ -193,8 +194,8 @@ defineExpose({
 .message-list-enter-active,
 .message-list-leave-active {
   transition:
-    opacity 180ms ease,
-    transform 180ms ease;
+    opacity var(--w-motion-duration-base) var(--w-motion-ease-standard),
+    transform var(--w-motion-duration-base) var(--w-motion-ease-standard);
 }
 
 .message-list-enter-from {
@@ -208,7 +209,8 @@ defineExpose({
 }
 
 .message-list-move {
-  transition: transform 180ms ease;
+  transition: transform var(--w-motion-duration-base)
+    var(--w-motion-ease-standard);
 }
 
 .typing-bubble {

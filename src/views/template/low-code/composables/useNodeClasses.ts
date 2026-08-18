@@ -56,7 +56,7 @@ function getNodeTone(node: DesignerNode): DesignerNodeTone {
 export function useDesignerNodeClasses() {
   function getNodeClass(node: DesignerNode, selected: boolean) {
     return [
-      'low-code-designer-node group relative cursor-pointer select-none overflow-hidden rounded-8 border-1 border-solid bg-container transition-[transform,box-shadow,border-color,background-color,opacity] duration-200 ease-out hover:-translate-y-1',
+      'low-code-designer-node group relative cursor-pointer select-none overflow-hidden rounded-8 border-1 border-solid bg-container transition-[transform,box-shadow,border-color,background-color,opacity] duration-motion-base ease-motion-enter hover:-translate-y-1',
       densityClassMap[getNodeDensity(node)],
       selected
         ? 'border-color-primary bg-primary-tint shadow-[0_0_0_3px_rgb(var(--w-color-primary)_/_28%),0_18px_42px_rgb(37_99_235_/_18%)] ring-2 ring-primary ring-offset-2 ring-offset-container'

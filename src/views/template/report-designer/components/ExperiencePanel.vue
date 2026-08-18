@@ -421,8 +421,8 @@ watch(
   border: 1px solid rgb(var(--w-border-color-1));
   border-radius: 8px;
   transition:
-    background-color 0.2s ease,
-    border-color 0.2s ease;
+    background-color var(--w-motion-duration-base) var(--w-motion-ease-standard),
+    border-color var(--w-motion-duration-base) var(--w-motion-ease-standard);
 }
 
 .report-experience-panel__version:hover,

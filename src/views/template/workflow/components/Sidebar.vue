@@ -39,7 +39,7 @@ const visiblePalette = computed(() => {
 
 <template>
   <aside
-    class="min-h-0 min-w-0 flex flex-col gap-12 overflow-hidden rounded-12 border-1 border-color-2 border-solid bg-main p-14 opacity-100 shadow-[0_10px_24px_rgb(15_23_42_/_8%)] transition-[opacity,transform,padding,border-color,box-shadow,max-height] duration-300 ease-in-out max-lg:max-h-280"
+    class="min-h-0 min-w-0 flex flex-col gap-12 overflow-hidden rounded-12 border-1 border-color-2 border-solid bg-main p-14 opacity-100 shadow-[0_10px_24px_rgb(15_23_42_/_8%)] transition-[opacity,transform,padding,border-color,box-shadow,max-height] duration-motion-slow ease-motion-exit-out max-lg:max-h-280"
     :class="
       collapsed
         ? 'pointer-events-none -translate-x-12 border-transparent p-0 opacity-0 shadow-none max-lg:max-h-0 max-lg:-translate-y-8'
@@ -97,7 +97,7 @@ const visiblePalette = computed(() => {
         </template>
         <a-button
           type="text"
-          class="aspect-square !h-auto !w-full !rounded-10 !border-1 !border-color-secondary !border-solid !bg-main !p-0 transition-[border-color,box-shadow,transform,background-color] duration-200 hover:-translate-y-1 hover:!border-primary hover:!bg-primary-tint hover:shadow-[0_8px_18px_rgb(15_23_42_/_8%)]"
+          class="aspect-square !h-auto !w-full !rounded-10 !border-1 !border-color-secondary !border-solid !bg-main !p-0 transition-[border-color,box-shadow,transform,background-color] duration-motion-base hover:-translate-y-1 hover:!border-primary hover:!bg-primary-tint hover:shadow-[0_8px_18px_rgb(15_23_42_/_8%)]"
           :aria-label="`添加${item.title}`"
           @click="$emit('add', item)"
         >

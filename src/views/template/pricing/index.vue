@@ -289,9 +289,9 @@ function toggleFaq(index: number) {
   box-shadow: 0 22px 60px rgb(var(--w-color-primary) / 10%);
   transform: translateZ(0);
   transition:
-    border-color 0.28s ease,
-    box-shadow 0.28s ease,
-    transform 0.28s cubic-bezier(0.2, 0.72, 0.18, 1);
+    border-color var(--w-motion-duration-slow) var(--w-motion-ease-standard),
+    box-shadow var(--w-motion-duration-slow) var(--w-motion-ease-standard),
+    transform var(--w-motion-duration-slow) var(--w-motion-ease-enter);
   animation: pricing-rise 0.62s cubic-bezier(0.2, 0.72, 0.18, 1) both;
 }
 
@@ -316,8 +316,8 @@ function toggleFaq(index: number) {
   opacity: 0;
   transform: rotate(16deg) translateX(-30%);
   transition:
-    opacity 0.28s ease,
-    transform 0.72s cubic-bezier(0.2, 0.72, 0.18, 1);
+    opacity var(--w-motion-duration-slow) var(--w-motion-ease-standard),
+    transform var(--w-motion-duration-slower) var(--w-motion-ease-enter);
 }
 
 :deep(.pricing-hero:hover::after) {
@@ -470,11 +470,11 @@ function toggleFaq(index: number) {
   border: 1px solid rgb(var(--w-border-color-1));
   border-radius: 8px;
   transition:
-    color 0.2s ease,
-    border-color 0.2s ease,
-    background 0.2s ease,
-    box-shadow 0.2s ease,
-    transform 0.2s ease;
+    color var(--w-motion-duration-base) var(--w-motion-ease-standard),
+    border-color var(--w-motion-duration-base) var(--w-motion-ease-standard),
+    background var(--w-motion-duration-base) var(--w-motion-ease-standard),
+    box-shadow var(--w-motion-duration-base) var(--w-motion-ease-standard),
+    transform var(--w-motion-duration-base) var(--w-motion-ease-standard);
 }
 
 :deep(.pricing-hero__switch-item::after) {
@@ -488,8 +488,8 @@ function toggleFaq(index: number) {
   transform: scaleX(0.2);
   transform-origin: left;
   transition:
-    opacity 0.22s ease,
-    transform 0.28s cubic-bezier(0.2, 0.72, 0.18, 1);
+    opacity var(--w-motion-duration-moderate) var(--w-motion-ease-standard),
+    transform var(--w-motion-duration-slow) var(--w-motion-ease-enter);
 }
 
 :deep(.pricing-hero__switch-item:hover),
@@ -579,10 +579,10 @@ function toggleFaq(index: number) {
   opacity: 0;
   transform: translateY(16px);
   transition:
-    border-color 0.22s ease,
-    box-shadow 0.22s ease,
-    background 0.22s ease,
-    transform 0.28s cubic-bezier(0.2, 0.72, 0.18, 1);
+    border-color var(--w-motion-duration-moderate) var(--w-motion-ease-standard),
+    box-shadow var(--w-motion-duration-moderate) var(--w-motion-ease-standard),
+    background var(--w-motion-duration-moderate) var(--w-motion-ease-standard),
+    transform var(--w-motion-duration-slow) var(--w-motion-ease-enter);
   animation: pricing-rise 0.62s cubic-bezier(0.2, 0.72, 0.18, 1) forwards;
   will-change: transform;
 }
@@ -606,8 +606,8 @@ function toggleFaq(index: number) {
   filter: blur(2px);
   transform: scale(0.86);
   transition:
-    opacity 0.28s ease,
-    transform 0.42s cubic-bezier(0.2, 0.72, 0.18, 1);
+    opacity var(--w-motion-duration-slow) var(--w-motion-ease-standard),
+    transform var(--w-motion-duration-slower) var(--w-motion-ease-enter);
 }
 
 :deep(.pricing-plan::after) {
@@ -627,8 +627,8 @@ function toggleFaq(index: number) {
   filter: blur(12px);
   transform: translateY(10px) scaleX(0.76);
   transition:
-    opacity 0.28s ease,
-    transform 0.34s cubic-bezier(0.2, 0.72, 0.18, 1);
+    opacity var(--w-motion-duration-slow) var(--w-motion-ease-standard),
+    transform var(--w-motion-duration-slow) var(--w-motion-ease-enter);
 }
 
 :deep(.pricing-plan:hover),
@@ -692,10 +692,10 @@ function toggleFaq(index: number) {
   border-radius: 8px;
   box-shadow: none;
   transition:
-    background 0.22s ease,
-    border-color 0.22s ease,
-    color 0.22s ease,
-    transform 0.28s cubic-bezier(0.2, 0.72, 0.18, 1);
+    background var(--w-motion-duration-moderate) var(--w-motion-ease-standard),
+    border-color var(--w-motion-duration-moderate) var(--w-motion-ease-standard),
+    color var(--w-motion-duration-moderate) var(--w-motion-ease-standard),
+    transform var(--w-motion-duration-slow) var(--w-motion-ease-enter);
 }
 
 :deep(.pricing-plan:hover .pricing-plan__icon),
@@ -852,8 +852,8 @@ function toggleFaq(index: number) {
   line-height: 20px;
   color: rgb(var(--w-text-regular));
   transition:
-    color 0.2s ease,
-    transform 0.22s ease;
+    color var(--w-motion-duration-base) var(--w-motion-ease-standard),
+    transform var(--w-motion-duration-moderate) var(--w-motion-ease-standard);
 }
 
 :deep(.pricing-plan:hover .pricing-plan__features li) {
@@ -891,8 +891,8 @@ function toggleFaq(index: number) {
 :deep(.pricing-icon-pop-enter-active),
 :deep(.pricing-icon-pop-leave-active) {
   transition:
-    opacity 0.24s ease,
-    transform 0.28s cubic-bezier(0.2, 0.72, 0.18, 1);
+    opacity var(--w-motion-duration-moderate) var(--w-motion-ease-standard),
+    transform var(--w-motion-duration-slow) var(--w-motion-ease-enter);
 }
 
 :deep(.pricing-price-swap-enter-from),
@@ -979,7 +979,8 @@ function toggleFaq(index: number) {
   display: grid;
   grid-template-columns: minmax(210px, 1.35fr) repeat(3, minmax(150px, 1fr));
   border-top: 1px solid rgb(var(--w-border-color-1));
-  transition: background 0.2s ease;
+  transition: background var(--w-motion-duration-base)
+    var(--w-motion-ease-standard);
 }
 
 :deep(.pricing-compare__row:first-child) {
@@ -994,9 +995,9 @@ function toggleFaq(index: number) {
   text-align: center;
   border-left: 1px solid rgb(var(--w-border-color-1));
   transition:
-    background 0.2s ease,
-    color 0.2s ease,
-    transform 0.22s ease;
+    background var(--w-motion-duration-base) var(--w-motion-ease-standard),
+    color var(--w-motion-duration-base) var(--w-motion-ease-standard),
+    transform var(--w-motion-duration-moderate) var(--w-motion-ease-standard);
 }
 
 :deep(.pricing-compare__row > div:first-child) {
@@ -1063,9 +1064,9 @@ function toggleFaq(index: number) {
   border-radius: 8px;
   box-shadow: inset 0 1px 0 rgb(255 255 255 / 10%);
   transition:
-    border-color 0.2s ease,
-    box-shadow 0.2s ease,
-    transform 0.2s ease;
+    border-color var(--w-motion-duration-base) var(--w-motion-ease-standard),
+    box-shadow var(--w-motion-duration-base) var(--w-motion-ease-standard),
+    transform var(--w-motion-duration-base) var(--w-motion-ease-standard);
   animation: pricing-rise 0.54s cubic-bezier(0.2, 0.72, 0.18, 1) both;
 }
 
@@ -1094,9 +1095,9 @@ function toggleFaq(index: number) {
   border: 1px solid rgb(var(--w-border-color-1));
   border-radius: 8px;
   transition:
-    background 0.22s ease,
-    border-color 0.22s ease,
-    transform 0.24s cubic-bezier(0.2, 0.72, 0.18, 1);
+    background var(--w-motion-duration-moderate) var(--w-motion-ease-standard),
+    border-color var(--w-motion-duration-moderate) var(--w-motion-ease-standard),
+    transform var(--w-motion-duration-moderate) var(--w-motion-ease-enter);
 }
 
 .pricing-addon:hover .pricing-addon__icon {
@@ -1144,9 +1145,9 @@ function toggleFaq(index: number) {
   overflow: hidden;
   transform: translateZ(0);
   transition:
-    border-color 0.22s ease,
-    box-shadow 0.22s ease,
-    transform 0.28s cubic-bezier(0.2, 0.72, 0.18, 1);
+    border-color var(--w-motion-duration-moderate) var(--w-motion-ease-standard),
+    box-shadow var(--w-motion-duration-moderate) var(--w-motion-ease-standard),
+    transform var(--w-motion-duration-slow) var(--w-motion-ease-enter);
   animation: pricing-rise 0.62s 0.18s cubic-bezier(0.2, 0.72, 0.18, 1) both;
 }
 
@@ -1344,9 +1345,9 @@ function toggleFaq(index: number) {
   border: 0;
   border-bottom: 1px solid rgb(var(--w-border-color-1));
   transition:
-    background 0.2s ease,
-    color 0.2s ease,
-    transform 0.22s ease;
+    background var(--w-motion-duration-base) var(--w-motion-ease-standard),
+    color var(--w-motion-duration-base) var(--w-motion-ease-standard),
+    transform var(--w-motion-duration-moderate) var(--w-motion-ease-standard);
 }
 
 :deep(.pricing-faq__item:hover) {
@@ -1370,7 +1371,8 @@ function toggleFaq(index: number) {
 }
 
 :deep(.pricing-faq__question svg) {
-  transition: transform 0.24s ease;
+  transition: transform var(--w-motion-duration-moderate)
+    var(--w-motion-ease-standard);
 }
 
 :deep(.pricing-faq__item--open .pricing-faq__question svg) {

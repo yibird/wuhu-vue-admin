@@ -245,8 +245,8 @@ function handlePreviewModeChange(value: string | number) {
   position: relative;
   flex-shrink: 0;
   transition:
-    width 160ms ease,
-    height 160ms ease;
+    width var(--w-motion-duration-base) var(--w-motion-ease-standard),
+    height var(--w-motion-duration-base) var(--w-motion-ease-standard);
 }
 
 .low-code-preview-icon-button {
@@ -261,9 +261,9 @@ function handlePreviewModeChange(value: string | number) {
   border: 1px solid rgb(var(--w-border-color-2));
   border-radius: 6px;
   transition:
-    color 160ms ease,
-    border-color 160ms ease,
-    background-color 160ms ease;
+    color var(--w-motion-duration-base) var(--w-motion-ease-standard),
+    border-color var(--w-motion-duration-base) var(--w-motion-ease-standard),
+    background-color var(--w-motion-duration-base) var(--w-motion-ease-standard);
 }
 
 .low-code-preview-icon-button:hover {

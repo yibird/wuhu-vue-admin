@@ -110,7 +110,7 @@
           </span>
           <button
             type="button"
-            class="button relative size-22 rounded-full transition-[background-color,box-shadow,opacity,transform,color] duration-180 hover:(-translate-y-1 bg-warning-tint text-warning shadow-all-sm) focus-visible:(outline-2 outline-warning outline-offset-2) active:(translate-y-0 scale-92)"
+            class="button relative size-22 rounded-full transition-[background-color,box-shadow,opacity,transform,color] duration-motion-base hover:(-translate-y-1 bg-warning-tint text-warning shadow-all-sm) focus-visible:(outline-2 outline-warning outline-offset-2) active:(translate-y-0 scale-92)"
             :class="[
               favorite
                 ? 'bg-warning-tint text-warning opacity-100'
@@ -176,7 +176,7 @@
               v-for="emoji in quickEmojis"
               :key="emoji"
               type="button"
-              class="button size-28 rounded-4 text-xl transition-[background-color,box-shadow,transform] duration-150 hover:(-translate-y-1 bg-hover shadow-all-sm) active:(translate-y-0 scale-92)"
+              class="button size-28 rounded-4 text-xl transition-[background-color,box-shadow,transform] duration-motion-fast hover:(-translate-y-1 bg-hover shadow-all-sm) active:(translate-y-0 scale-92)"
               :aria-label="`回应${emoji}`"
               @click="handleReaction(emoji)"
             >
@@ -192,7 +192,7 @@
 <script setup lang="ts">
 import type { MenuProps } from 'antdv-next'
 import { computed, h, onBeforeUnmount, ref, shallowRef } from 'vue'
-import { Icon } from '@/components'
+import { Icon } from '@/components/icon'
 import TextContent from './message/Text.vue'
 import ImageContent from './message/Image.vue'
 import EmojiContent from './message/Emoji.vue'
@@ -368,8 +368,8 @@ onBeforeUnmount(() => {
 .favorite-pop-enter-active,
 .favorite-pop-leave-active {
   transition:
-    opacity 180ms ease,
-    transform 180ms ease;
+    opacity var(--w-motion-duration-base) var(--w-motion-ease-standard),
+    transform var(--w-motion-duration-base) var(--w-motion-ease-standard);
 }
 
 .favorite-pop-enter-from,

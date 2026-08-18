@@ -1,5 +1,6 @@
 import { computed, ref, shallowRef, watch } from 'vue'
-import { message as messageToast, Modal } from 'antdv-next'
+import messageToast from 'antdv-next/dist/message/index'
+import Modal from 'antdv-next/dist/modal/index'
 import {
   createDirectoryCandidates,
   createGroupMembers,
