@@ -31,11 +31,20 @@ Development mode includes local mock endpoints for authentication, users, and ro
 
 ## Preview
 
-![Analysis dashboard](./images/01.png)
-
-| System monitor                     | File manager                     |
-| ---------------------------------- | -------------------------------- |
-| ![System monitor](./images/02.png) | ![File manager](./images/03.png) |
+![](./images/01.png)
+![](./images/02.png)
+![](./images/03.png)
+![](./images/04.png)
+![](./images/05.png)
+![](./images/06.png)
+![](./images/07.png)
+![](./images/08.png)
+![](./images/09.png)
+![](./images/10.png)
+![](./images/11.png)
+![](./images/12.png)
+![](./images/13.png)
+![](./images/14.png)
 
 ## Tech Stack
 
@@ -96,6 +105,176 @@ Vite loads shared and mode-specific files from the `env` directory. Development 
 | `pnpm bundle:check`  | Check an existing `dist` directory against gzip budgets    |
 | `pnpm build:analyze` | Run bundle analysis and then enforce bundle budgets        |
 
+## Commit, Review, and Release Workflow
+
+The repository currently uses Husky for local Git checks and `standard-version` for manual releases. GitHub Actions, automatic release PRs, and production deployment are not configured in this repository yet.
+
+### 1. Install the project
+
+Run the installation once after cloning:
+
+```bash
+pnpm install
+```
+
+The `prepare` script initializes Husky. After that, commits created in this working copy run the repository hooks automatically.
+
+### 2. Create a branch and make changes
+
+Use a short-lived branch for a feature or fix instead of committing directly to `main`:
+
+```bash
+git switch -c feat/ticket-center
+```
+
+Keep each commit focused. The commit type should describe the user-visible or engineering change:
+
+| Type       | Meaning                              |
+| ---------- | ------------------------------------ |
+| `feat`     | Add a feature                        |
+| `fix`      | Fix a bug                            |
+| `refactor` | Change structure without behavior    |
+| `perf`     | Improve performance                  |
+| `docs`     | Change documentation                 |
+| `test`     | Add or update tests                  |
+| `build`    | Change build tooling or dependencies |
+| `ci`       | Change CI configuration              |
+| `chore`    | Other maintenance                    |
+
+### 3. Commit changes
+
+The recommended interactive command is:
+
+```bash
+pnpm commit
+```
+
+It opens the configured `cz-git` prompt. You can also commit directly when using the same format:
+
+```bash
+git add src/views/dashboard/ticket
+git commit -m "feat(ticket): add ticket center"
+```
+
+The expected format is:
+
+```text
+<type>(<scope>): <subject>
+```
+
+The scope is optional. Breaking changes should use `!` and/or include a `BREAKING CHANGE:` footer.
+
+### 4. What runs during a commit
+
+Husky runs two hooks:
+
+1. `pre-commit` runs `lint-staged`. It checks and, where configured, fixes only staged JavaScript, TypeScript, Vue, CSS, Less, JSON, and Markdown files with Oxlint, Oxfmt, Stylelint, or the matching formatter.
+2. `commit-msg` runs Commitlint. It rejects commit messages that do not follow the allowed Conventional Commit types.
+
+If a hook fails, fix the reported issue and run the commit again. The normal workflow should not bypass hooks with `--no-verify`.
+
+### 5. Validate before opening a PR
+
+Run the checks relevant to the change. For a broad change, use:
+
+```bash
+pnpm routes:check
+pnpm typecheck
+pnpm lint
+pnpm lint:style
+pnpm fmt:check
+pnpm test:unit
+pnpm build
+```
+
+The aggregate `pnpm check` command additionally runs the route check, unit tests, type check, Oxlint, and Playwright E2E tests. It does not replace the style check or production build, so run those separately when they are relevant.
+
+### 6. Push and review
+
+Push the branch and open a pull request:
+
+```bash
+git push -u origin feat/ticket-center
+```
+
+Review the diff, screenshots, route changes, environment changes, and any migration notes in the PR. This repository currently has no checked-in GitHub Actions workflow, so CI checks are not automatically run by the repository. The author should run the required local checks before requesting review.
+
+After approval, merge the pull request into the release branch, normally `main`.
+
+### 7. Create a release (current process)
+
+The current release command is:
+
+```bash
+pnpm release
+```
+
+If the repository has no existing release tag and the current version in `package.json` should become the first release, use:
+
+```bash
+pnpm release -- --first-release
+```
+
+This creates the first changelog entry, release commit, and tag without incrementing the current package version. To choose an explicit first version instead, use a command such as `pnpm release -- --release-as 0.1.0`. After the first tag exists, use the regular `pnpm release` command.
+
+It runs `standard-version`, which normally:
+
+1. Reads Conventional Commits since the previous tag.
+2. Calculates the next version.
+3. Creates or updates `CHANGELOG.md`.
+4. Updates the version in `package.json`.
+5. Creates a release commit such as `chore(release): vX.Y.Z`.
+6. Creates a Git tag such as `vX.Y.Z`.
+
+Before releasing, make sure the working tree is clean and the release branch contains the changes to publish:
+
+```bash
+git switch main
+git pull --ff-only origin main
+git status --short
+pnpm install --frozen-lockfile
+pnpm check
+pnpm build
+# Use the first-release or regular release command described above.
+```
+
+Review the generated changelog, version, release commit, and tag before pushing them. If they are correct, push both the commit and tag:
+
+```bash
+git push origin main
+git push origin vX.Y.Z
+```
+
+Or, when the release commit is already on `main`, push its tags together:
+
+```bash
+git push --follow-tags origin main
+```
+
+The `pnpm changelog` command only generates or updates changelog content; it does not create a version commit or tag. Use it when you need a preview or a changelog-only update.
+
+### Release notes and current limitations
+
+- A Git tag pushed to GitHub is not the same as a GitHub Release. Create a GitHub Release from the tag manually if the project needs one.
+- Production deployment is not defined in this repository. The build artifact is `dist/`; deployment must be handled by the hosting or deployment platform.
+- `release-please` has been evaluated as the future release tool, but it is not wired into the current project. Do not expect a release PR or automatic release after pushing to `main` until a GitHub Actions workflow is added.
+
+The intended future flow is:
+
+```mermaid
+flowchart LR
+  A[Create branch] --> B[Change code]
+  B --> C[Commit]
+  C --> D[Husky checks]
+  D --> E[Push branch]
+  E --> F[Pull request review]
+  F --> G[Merge main]
+  G --> H[release-please release PR]
+  H --> I[Merge release PR]
+  I --> J[Tag and GitHub Release]
+  J --> K[Deploy dist/]
+```
+
 ## Project Structure
 
 ```text
@@ -114,7 +293,7 @@ src/
 |-- store/         Pinia stores
 |-- styles/        Global tokens, themes, and transitions
 |-- utils/         Shared utilities and HTTP client
-`-- views/         Route-level business and template pages
+  -- views/         Route-level business and template pages
 build/             Vite configuration and build plugins
 env/               Shared and mode-specific environment files
 mock/              Development mock endpoints and sample data
@@ -142,16 +321,6 @@ pnpm bundle:check
 ```
 
 The default gzip limits are 700 KiB for recursive initial JavaScript, 100 KiB for initial CSS, 3 MiB for a single JavaScript chunk, and 5 MiB for total JavaScript. Override them in CI with `BUNDLE_INITIAL_JS_GZIP_MAX`, `BUNDLE_INITIAL_CSS_GZIP_MAX`, `BUNDLE_SINGLE_JS_GZIP_MAX`, and `BUNDLE_TOTAL_JS_GZIP_MAX`.
-
-## Commit Convention
-
-Use Conventional Commits:
-
-```text
-<type>(<scope>): <subject>
-```
-
-Common types are `feat`, `fix`, `refactor`, `perf`, `docs`, `style`, `test`, and `chore`.
 
 ## Project Status
 

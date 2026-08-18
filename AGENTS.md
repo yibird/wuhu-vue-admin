@@ -4,7 +4,7 @@
 
 ## 项目概况
 
-- 技术栈：Vue 3.5、TypeScript、Vite 8、Pinia、Vue Router、Antdv Next、UnoCSS、Less。
+- 技术栈：Vue 3.6、TypeScript、Vite 8、Pinia、Vue Router、Antdv Next、UnoCSS、Less。
 - 包管理器：pnpm。优先使用 `pnpm` 执行脚本，不混用 npm/yarn。
 - 主要源码目录：
   - `src/views`：业务页面和模板页面，路由组件放在这里。

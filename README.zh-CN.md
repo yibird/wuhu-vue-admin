@@ -31,11 +31,20 @@ Wuhu Vue Admin 将可配置的管理后台外壳与仪表盘、系统模块、�
 
 ## 预览
 
-![分析看板](./images/01.png)
-
-| 系统监控                     | 文件管理器                     |
-| ---------------------------- | ------------------------------ |
-| ![系统监控](./images/02.png) | ![文件管理器](./images/03.png) |
+![](./images/01.png)
+![](./images/02.png)
+![](./images/03.png)
+![](./images/04.png)
+![](./images/05.png)
+![](./images/06.png)
+![](./images/07.png)
+![](./images/08.png)
+![](./images/09.png)
+![](./images/10.png)
+![](./images/11.png)
+![](./images/12.png)
+![](./images/13.png)
+![](./images/14.png)
 
 ## 技术栈
 
@@ -96,6 +105,176 @@ Vite 从 `env` 目录加载共享环境文件和模式专属环境文件。开�
 | `pnpm bundle:check`  | 检查已有 `dist` 目录是否符合 gzip 体积预算 |
 | `pnpm build:analyze` | 执行 bundle 分析并校验体积预算             |
 
+## 提交、评审与发布流程
+
+当前仓库使用 Husky 执行本地 Git 检查，使用 `standard-version` 手动生成版本和发布记录。仓库目前还没有配置 GitHub Actions、自动发布 PR 或生产环境部署流程。
+
+### 1. 安装项目
+
+克隆项目后先执行一次：
+
+```bash
+pnpm install
+```
+
+`prepare` 脚本会初始化 Husky。初始化完成后，在当前工作副本中创建提交时会自动执行仓库配置的 Git hooks。
+
+### 2. 创建分支并修改代码
+
+功能或修复建议使用短生命周期分支，不要直接提交到 `main`：
+
+```bash
+git switch -c feat/ticket-center
+```
+
+每个提交尽量只包含一个清晰的变更。提交类型应该描述用户可见的变化或工程变化：
+
+| 类型       | 含义                     |
+| ---------- | ------------------------ |
+| `feat`     | 新增功能                 |
+| `fix`      | 修复缺陷                 |
+| `refactor` | 重构代码结构，不改变行为 |
+| `perf`     | 性能优化                 |
+| `docs`     | 文档变更                 |
+| `test`     | 添加或修改测试           |
+| `build`    | 构建工具或依赖变更       |
+| `ci`       | CI 配置变更              |
+| `chore`    | 其他维护性变更           |
+
+### 3. 创建提交
+
+推荐使用交互式提交命令：
+
+```bash
+pnpm commit
+```
+
+该命令会打开项目配置的 `cz-git` 提示。也可以直接使用符合规范的提交信息：
+
+```bash
+git add src/views/dashboard/ticket
+git commit -m "feat(ticket): add ticket center"
+```
+
+提交信息格式为：
+
+```text
+<type>(<scope>): <subject>
+```
+
+其中 `scope` 可选。不兼容变更应使用 `!`，或者在提交正文或尾部包含 `BREAKING CHANGE:`。
+
+### 4. 创建提交时会发生什么
+
+Husky 会执行两个 hooks：
+
+1. `pre-commit` 执行 `lint-staged`。它只检查暂存区文件，并根据文件类型使用 Oxlint、Oxfmt、Stylelint 或对应格式化工具进行检查和修复。
+2. `commit-msg` 执行 Commitlint。如果提交信息不符合允许的 Conventional Commits 类型，提交会被拒绝。
+
+如果 hook 失败，先根据错误信息修复，再重新执行提交。正常流程不应使用 `--no-verify` 绕过检查。
+
+### 5. 创建 PR 前执行检查
+
+根据变更范围执行对应检查。对于较大变更，建议完整执行：
+
+```bash
+pnpm routes:check
+pnpm typecheck
+pnpm lint
+pnpm lint:style
+pnpm fmt:check
+pnpm test:unit
+pnpm build
+```
+
+聚合命令 `pnpm check` 会执行路由检查、单元测试、类型检查、Oxlint 和 Playwright E2E 测试。但它不包含样式检查和生产构建，因此涉及样式或构建配置时仍需单独执行对应命令。
+
+### 6. 推送与代码评审
+
+推送分支并创建 Pull Request：
+
+```bash
+git push -u origin feat/ticket-center
+```
+
+在 PR 中检查代码差异、页面截图、路由变更、环境变量变更和迁移说明。当前仓库没有提交 GitHub Actions workflow，因此 GitHub 不会自动运行 CI 检查。发起评审前，应由作者在本地完成必要检查。
+
+评审通过后，将 Pull Request 合并到发布分支，通常是 `main`。
+
+### 7. 创建发布版本（当前流程）
+
+当前发布命令为：
+
+```bash
+pnpm release
+```
+
+如果仓库还没有发布 tag，并且需要将 `package.json` 中的当前版本作为首个发布版本，请执行：
+
+```bash
+pnpm release -- --first-release
+```
+
+该命令会创建首个 changelog、发布提交和 tag，但不会递增当前版本号。如果需要指定首个版本号，可以执行类似 `pnpm release -- --release-as 0.1.0` 的命令。首个 tag 创建完成后，后续版本使用常规的 `pnpm release` 命令。
+
+该命令会执行 `standard-version`，通常完成以下操作：
+
+1. 读取上一个 tag 之后的 Conventional Commits。
+2. 计算下一个版本号。
+3. 创建或更新 `CHANGELOG.md`。
+4. 更新 `package.json` 中的版本号。
+5. 创建类似 `chore(release): vX.Y.Z` 的发布提交。
+6. 创建类似 `vX.Y.Z` 的 Git tag。
+
+发布前请确认工作区干净，并且发布分支包含了要发布的变更：
+
+```bash
+git switch main
+git pull --ff-only origin main
+git status --short
+pnpm install --frozen-lockfile
+pnpm check
+pnpm build
+# 根据上文选择首次发布或常规发布命令。
+```
+
+执行完成后，检查生成的 changelog、版本号、发布提交和 tag。确认无误后，同时推送提交和 tag：
+
+```bash
+git push origin main
+git push origin vX.Y.Z
+```
+
+如果发布提交已经在 `main` 上，也可以将 tag 一起推送：
+
+```bash
+git push --follow-tags origin main
+```
+
+`pnpm changelog` 只生成或更新 changelog 内容，不会创建版本提交和 tag。需要预览或只更新 changelog 时可以使用它。
+
+### 发布说明与当前限制
+
+- 推送 Git tag 到 GitHub 不等于创建 GitHub Release。如果项目需要 Release 页面，需要根据 tag 手动创建。
+- 仓库没有定义生产部署流程。生产构建产物是 `dist/`，实际部署由托管或部署平台负责。
+- `release-please` 已被评估为后续发布工具，但目前尚未接入项目。添加 GitHub Actions workflow 之前，推送到 `main` 不会自动创建发布 PR 或完成发布。
+
+计划中的流程如下：
+
+```mermaid
+flowchart LR
+  A[创建分支] --> B[修改代码]
+  B --> C[创建提交]
+  C --> D[Husky 检查]
+  D --> E[推送分支]
+  E --> F[Pull Request 评审]
+  F --> G[合并 main]
+  G --> H[release-please 创建发布 PR]
+  H --> I[合并发布 PR]
+  I --> J[创建 tag 和 GitHub Release]
+  J --> K[部署 dist/]
+```
+
 ## 项目结构
 
 ```text
@@ -114,7 +293,7 @@ src/
 |-- store/         Pinia 状态仓库
 |-- styles/        全局 token、主题和过渡样式
 |-- utils/         通用工具和 HTTP 客户端
-`-- views/         路由级业务页面和模板页面
+  -- views/         路由级业务页面和模板页面
 build/             Vite 配置和构建插件
 env/               共享环境文件和模式专属环境文件
 mock/              开发环境 Mock 接口和示例数据
@@ -142,16 +321,6 @@ pnpm bundle:check
 ```
 
 默认 gzip 限制为：递归初始 JavaScript 700 KiB、初始 CSS 100 KiB、单个 JavaScript chunk 3 MiB、全部 JavaScript 5 MiB。CI 中可以通过 `BUNDLE_INITIAL_JS_GZIP_MAX`、`BUNDLE_INITIAL_CSS_GZIP_MAX`、`BUNDLE_SINGLE_JS_GZIP_MAX` 和 `BUNDLE_TOTAL_JS_GZIP_MAX` 覆盖这些限制。
-
-## 提交规范
-
-使用 Conventional Commits：
-
-```text
-<type>(<scope>): <subject>
-```
-
-常用类型包括 `feat`、`fix`、`refactor`、`perf`、`docs`、`style`、`test` 和 `chore`。
 
 ## 项目状态
 
