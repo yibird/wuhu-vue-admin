@@ -1,4 +1,4 @@
-import { theme as antTheme } from 'antdv-next'
+import antTheme from 'antdv-next/dist/theme/index'
 import { computed, nextTick, shallowRef, watch, watchEffect } from 'vue'
 import { createSharedComposable, useColorMode } from '@vueuse/core'
 import { ThemeMode, type ThemeModeType } from '@/constants'

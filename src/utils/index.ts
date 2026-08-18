@@ -12,17 +12,7 @@ export type {
   UseRequestOptions,
   UseRequestReturn,
 } from './http'
-export {
-  toPx,
-  getElHorizontalSpacing,
-  getElSpacing,
-  getElSpacingInfo,
-  getElementSize,
-  getElementTotalHeight,
-  getElementTotalWidth,
-  getElVerticalSpacing,
-  waitForAnimations,
-} from './dom'
+export { toPx, waitForAnimations } from './dom'
 export { isUrl } from './url'
 export { menusToOptions, renderIcon, renderMenus } from './antdv'
 export {

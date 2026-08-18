@@ -1,7 +1,14 @@
 import { h } from 'vue'
-import { Icon, type IconProps } from '@/components'
+import { Icon, type IconProps } from '@/components/icon'
 import type { IMenu } from '#/config'
 
+/**
+ * 动态渲染图标
+ *
+ * @param iconName icon name
+ * @param props icon props
+ * @returns Icon Node
+ */
 export function renderIcon(
   iconName?: string | null,
   props: Omit<IconProps, 'name'> = {}
@@ -12,6 +19,7 @@ export function renderIcon(
 
 /**
  * 渲染菜单树
+ *
  * @param menus 菜单树
  * @param mapper 映射函数
  * @param predicate  过滤条件
@@ -52,6 +60,12 @@ export function renderMenus<T>(
   return result
 }
 
+/**
+ * 将菜单项列表转换为选项列表
+ *
+ * @param menus 菜单项列表
+ * @returns 选项列表
+ */
 export function menusToOptions(menus: IMenu[] = []) {
   return renderMenus(menus, (item) => ({
     key: String(item.id),

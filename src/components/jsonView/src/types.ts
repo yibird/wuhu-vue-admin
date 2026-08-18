@@ -1,84 +1,37 @@
-import type { VNode } from 'vue'
-import type { NodeDataType } from 'vue-json-pretty/types/components/TreeNode'
-
 export type JsonPrimitive = string | number | boolean | null
+
 export type JsonValue =
   | JsonPrimitive
   | { [key: string]: JsonValue }
   | JsonValue[]
-export type JsonSelectedValue = string | string[]
 
 export type JsonViewProps = {
+  /** 要展示的 JSON 数据。 */
   data?: JsonValue
 
+  /**
+   * 是否禁止编辑。
+   * @default true
+   */
+  readonly?: boolean
+  /** JSON 缩进空格数，传 0 时使用紧凑格式。 */
   indent?: number
-  deep?: number
-  collapsedNodeLength?: number
-  showLength?: boolean
-  showLine?: boolean
-  showLineNumber?: boolean
-  showIcon?: boolean
-  showDoubleQuotes?: boolean
-  virtual?: boolean
-  height?: number
-  itemHeight?: number
-  rootPath?: string
-  nodeSelectable?: (path: NodeDataType) => boolean
-  selectableType?: 'multiple' | 'single'
-  showSelectController?: boolean
-  selectOnClickNode?: boolean
-  highlightSelectedNode?: boolean
-  collapsedOnClickBrackets?: boolean
-  renderNodeKey?: ({
-    node,
-    defaultKey,
-  }: {
-    node: NodeDataType
-    defaultKey: string
-  }) => VNode
-  renderNodeValue?: ({
-    node,
-    defaultValue,
-  }: {
-    node: NodeDataType
-    defaultValue: string
-  }) => VNode
-  renderNodeActions?:
-    | boolean
-    | (({
-        node,
-        defaultActions,
-      }: {
-        node: NodeDataType
-        defaultActions: {
-          copy: () => void
-        }
-      }) => VNode)
-  editable?: boolean
-  editableTrigger?: 'click' | 'dblclick'
-  theme?: 'dark' | 'light'
+  /** 编辑器容器高度，数字按 px 处理。 */
+  height?: number | string
 
   /**
-   * @desc 是否显示边框
+   * 是否显示边框。
    * @default true
    */
   bordered?: boolean
   /**
-   * @desc 是否显示复制按钮
+   * 是否显示复制按钮。
    * @default true
    */
   showCopy?: boolean
 }
 
 export interface JsonViewEmits {
-  (e: 'nodeClick', node: NodeDataType): void
-  (e: 'nodeMouseover', node: NodeDataType): void
-  (e: 'bracketsClick', collapsed: boolean, node: NodeDataType): void
-  (e: 'iconClick', collapsed: boolean, node: NodeDataType): void
-  (
-    e: 'selectedChange',
-    newVal: JsonSelectedValue,
-    oldVal: JsonSelectedValue
-  ): void
-  (e: 'copy', data: JsonViewProps['data']): void
+  (event: 'update:data', data: JsonValue): void
+  (event: 'copy', data: JsonValue): void
 }

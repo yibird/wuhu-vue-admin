@@ -1,13 +1,54 @@
 import { ref, isRef, onMounted, type Ref } from 'vue'
 import { useResizeObserver } from '@vueuse/core'
 import { throttle } from 'es-toolkit'
-import { getElementSize, getElSpacing } from '@/utils'
 
 const TABLE_PLUS_CLASS_NAME = '.table-plus'
 const HEADER_CLASS_NAME = '.table-plus-header'
 const TABLE_HEADER_CLASS_NAME = '.ant-table-header'
 const TABLE_PAGINATION_CLASS_NAME = '.ant-pagination'
 const TABLE_BORDER_CLASS_NAME = '.ant-table-bordered'
+
+function parsePixelValue(value: string) {
+  return Number.parseFloat(value) || 0
+}
+
+function getElementSpacing(element: Element) {
+  const style = getComputedStyle(element)
+  const horizontal =
+    parsePixelValue(style.marginLeft) +
+    parsePixelValue(style.marginRight) +
+    parsePixelValue(style.paddingLeft) +
+    parsePixelValue(style.paddingRight) +
+    parsePixelValue(style.borderLeftWidth) +
+    parsePixelValue(style.borderRightWidth)
+  const vertical =
+    parsePixelValue(style.marginTop) +
+    parsePixelValue(style.marginBottom) +
+    parsePixelValue(style.paddingTop) +
+    parsePixelValue(style.paddingBottom) +
+    parsePixelValue(style.borderTopWidth) +
+    parsePixelValue(style.borderBottomWidth)
+
+  return { x: horizontal, y: vertical }
+}
+
+function getElementSize(element?: Element | null) {
+  if (!element) return { width: 0, height: 0 }
+
+  const rect = element.getBoundingClientRect()
+  const style = getComputedStyle(element)
+
+  return {
+    width:
+      rect.width +
+      parsePixelValue(style.marginLeft) +
+      parsePixelValue(style.marginRight),
+    height:
+      rect.height +
+      parsePixelValue(style.marginTop) +
+      parsePixelValue(style.marginBottom),
+  }
+}
 
 interface UseSizeOptions {
   autoSize?: boolean | Ref<boolean | undefined>
@@ -47,7 +88,7 @@ export function useSize(
     const tablePlusElWidth = tablePlusEl.clientWidth ?? 0
     const tablePlusHeaderHeight = tablePlusHeaderEl?.clientHeight ?? 0
 
-    const { x: spacingX, y: spacingY } = getElSpacing(el)
+    const { x: spacingX, y: spacingY } = getElementSpacing(el)
     const { height: tableHeaderHeight } = getElementSize(tableHeaderEl)
     const { height: paginationHeight } = getElementSize(paginationEl)
 

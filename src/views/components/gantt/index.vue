@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { shallowRef } from 'vue'
 import dayjs from 'dayjs'
-import { message } from 'antdv-next'
+import message from 'antdv-next/dist/message/index'
 import { Gantt } from '@/components/gantt'
 import { Scrollbar } from '@/components/scrollbar'
 import type { GanttTask, GanttViewMode } from '@/components/gantt'

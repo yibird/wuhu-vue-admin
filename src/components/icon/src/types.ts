@@ -9,6 +9,11 @@ export interface IconProps {
    */
   size?: number | string
   /**
+   * @desc icon rendering mode. SVG mode renders trusted Iconify data as inline SVG.
+   * @default "mask"
+   */
+  mode?: 'mask' | 'svg'
+  /**
    * @desc icon color
    */
   color?: string

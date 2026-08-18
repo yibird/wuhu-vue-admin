@@ -1,4 +1,9 @@
-// 等待元素及其子元素的所有动画完成
+/**
+ * 等待元素及其子元素的所有动画完成
+ *
+ * @param element 元素
+ * @returns
+ */
 export function waitForAnimations(element: HTMLElement): Promise<void> {
   return new Promise((resolve) => {
     const animations = element.getAnimations({ subtree: true })

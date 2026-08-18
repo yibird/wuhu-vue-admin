@@ -1,4 +1,4 @@
-import { message as antdMessage } from 'antdv-next'
+import { message } from 'antdv-next'
 import { isHTTPError, type BeforeErrorHook } from 'ky'
 import { ContentType, HttpHeader } from '@/constants'
 import { buildResponseDedupKey, dedupeResponse } from '../dedupe'
@@ -18,7 +18,7 @@ export const beforeErrorHook: BeforeErrorHook = async ({ error }) => {
   dedupeResponse(
     buildResponseDedupKey(errorInfo.status, errorInfo.message),
     () => {
-      antdMessage.error(errorInfo.message)
+      message.error(errorInfo.message)
     }
   )
 

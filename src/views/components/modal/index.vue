@@ -1,8 +1,10 @@
 <script setup lang="ts">
-import { message } from 'antdv-next'
+import message from 'antdv-next/dist/message/index'
 import { shallowRef, useTemplateRef } from 'vue'
-import { Icon, Modal, Scrollbar } from '@/components'
-import type { ModalInstance, ModalPosition } from '@/components'
+import { Icon } from '@/components/icon'
+import { Modal } from '@/components/modal'
+import { Scrollbar } from '@/components/scrollbar'
+import type { ModalInstance, ModalPosition } from '@/components/modal'
 
 const basicOpen = shallowRef(false)
 const enhancedOpen = shallowRef(false)

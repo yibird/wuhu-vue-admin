@@ -30,22 +30,13 @@ const jsonData: JsonValue = {
           <div class="min-w-0">
             <h1 class="m-0 text-xl text-main font-600">JsonView</h1>
             <p class="mb-0 mt-6 text-sm leading-22 text-secondary">
-              支持折叠、复制、选择和编辑的 JSON 视图。
+              基于 CodeMirror 的只读 JSON 展示，支持语法高亮和复制。
             </p>
           </div>
           <a-tag color="blue">src/components/jsonView</a-tag>
         </header>
 
-        <div class="max-h-480 overflow-auto rounded-6">
-          <JsonView
-            :data="jsonData"
-            :deep="3"
-            editable
-            highlight-selected-node
-            select-on-click-node
-            show-select-controller
-          />
-        </div>
+        <JsonView :data="jsonData" readonly :height="420" />
       </section>
     </Scrollbar>
   </WView>

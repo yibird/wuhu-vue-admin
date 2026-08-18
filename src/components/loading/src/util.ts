@@ -56,7 +56,7 @@ export function hideLoading() {
   const currentContainer = container
 
   currentContainer.style.transition =
-    'opacity 0.6s ease-out, visibility 0.6s ease-out'
+    'opacity var(--w-motion-duration-slower) var(--w-motion-ease-exit), visibility var(--w-motion-duration-slower) var(--w-motion-ease-exit)'
   currentContainer.style.opacity = '0'
   currentContainer.style.visibility = 'hidden'
 

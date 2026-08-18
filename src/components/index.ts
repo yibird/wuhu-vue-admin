@@ -1,4 +1,5 @@
 export { CodeEditor } from './codeEditor'
+export { LazyContainer, ResizeContainer } from './container'
 export { Cropper, CropperPicker } from './cropper'
 export {
   DatePicker,
@@ -6,7 +7,7 @@ export {
   defaultDatePresets,
   defaultDateRangePresets,
 } from './datePicker'
-export { DndSortableItem } from './dndSortableItem'
+export { Draggable, DraggableItem, useDraggable } from './draggable'
 export { Editor } from './editor'
 export { ErrorBoundary } from './errorBoundary'
 export { ClientError, Error, NotAuthorized, NotFound } from './exception'
@@ -40,6 +41,5 @@ export {
 } from './view'
 export { globalComponents } from './components'
 
-// Type-only exports are erased and do not add runtime module dependencies.
 // oxlint-disable-next-line oxc/no-barrel-file -- Preserve the public type import path without runtime cost.
 export type * from './types'

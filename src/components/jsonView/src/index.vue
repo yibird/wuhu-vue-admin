@@ -1,11 +1,84 @@
+<script setup lang="ts">
+import { useClipboard } from '@vueuse/core'
+import message from 'antdv-next/dist/message/index'
+import { computed, shallowRef, watch } from 'vue'
+import { CodeEditor } from '@/components/codeEditor'
+import type { JsonValue, JsonViewEmits, JsonViewProps } from './types'
+
+const props = withDefaults(defineProps<JsonViewProps>(), {
+  data: () => ({}),
+  readonly: true,
+  indent: 2,
+  height: 320,
+  bordered: true,
+  showCopy: true,
+})
+
+const emit = defineEmits<JsonViewEmits>()
+const sourceCode = shallowRef(formatJson(props.data, props.indent))
+const { copy, isSupported } = useClipboard()
+
+const editorHeight = computed(() =>
+  typeof props.height === 'number' ? `${props.height}px` : props.height
+)
+
+function normalizeIndent(indent: number) {
+  return Math.min(10, Math.max(0, Math.floor(indent)))
+}
+
+function formatJson(value: JsonValue, indent: number) {
+  return JSON.stringify(value, null, normalizeIndent(indent))
+}
+
+function syncSourceCode(value: JsonValue) {
+  const nextValue = formatJson(value, props.indent)
+  if (nextValue !== sourceCode.value) sourceCode.value = nextValue
+}
+
+watch(
+  () => [props.data, props.indent] as const,
+  ([value]) => syncSourceCode(value),
+  { deep: true }
+)
+
+function onSourceCodeChange(value: string) {
+  sourceCode.value = value
+  if (props.readonly) return
+
+  try {
+    const parsed = JSON.parse(value) as JsonValue
+    emit('update:data', parsed)
+  } catch {
+    // 保留编辑中的非法 JSON，等待用户继续输入完成后再同步数据。
+  }
+}
+
+async function onCopy() {
+  if (!isSupported.value) {
+    message.warning('当前环境不支持剪贴板操作')
+    return
+  }
+
+  try {
+    await copy(sourceCode.value)
+    message.success('复制成功')
+    emit('copy', props.data)
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : String(error)
+    message.error(`复制失败：${errorMessage}`)
+  }
+}
+</script>
+
 <template>
   <div
-    class="p-10"
-    :class="{ 'rounded-2 border-1 border-color-2 border-solid': bordered }"
+    class="relative min-h-0 overflow-hidden rounded-8"
+    :class="{ 'border-1 border-color-2 border-solid': props.bordered }"
+    :style="{ height: editorHeight }"
   >
-    <a-tooltip v-if="showCopy" title="复制 JSON">
+    <a-tooltip v-if="props.showCopy" title="复制 JSON">
       <a-button
-        class="float-right ml-10"
+        class="absolute right-10 top-10 z-1"
         type="text"
         size="small"
         aria-label="复制 JSON"
@@ -17,70 +90,14 @@
         </template>
       </a-button>
     </a-tooltip>
-    <vue-json-pretty
-      v-bind="restProps"
-      :show-icon="showIcon"
-      v-model:data="data"
-      v-model:selected-value="selectedValue"
-      @node-click="emits('nodeClick', $event)"
-      @node-mouseover="emits('nodeMouseover', $event)"
-      @brackets-click="onBracketsClick"
-      @icon-click="onIconClick"
-      @selected-change="onSelectedChange"
+
+    <CodeEditor
+      :model-value="sourceCode"
+      language="json"
+      :readonly="props.readonly"
+      class="h-full min-h-0"
+      :style="{ border: 'none', borderRadius: 0 }"
+      @update:model-value="onSourceCodeChange"
     />
   </div>
 </template>
-<script lang="ts" setup>
-import VueJsonPretty from 'vue-json-pretty'
-import 'vue-json-pretty/lib/styles.css'
-import type { JsonSelectedValue, JsonViewEmits, JsonViewProps } from './types'
-import type { NodeDataType } from 'vue-json-pretty/types/components/TreeNode'
-import { useClipboard } from '@vueuse/core'
-import { message } from 'antdv-next'
-defineOptions({ inheritAttrs: false })
-
-const data = defineModel<JsonViewProps['data']>('data', {
-  default: () => ({}),
-})
-const selectedValue = defineModel<JsonSelectedValue>('selectedValue')
-const {
-  bordered = true,
-  showCopy = true,
-  showIcon = true,
-  ...restProps
-} = defineProps<JsonViewProps>()
-const emits = defineEmits<JsonViewEmits>()
-
-const { copy, isSupported } = useClipboard()
-
-function onBracketsClick(collapsed: boolean, node: NodeDataType) {
-  emits('bracketsClick', collapsed, node)
-}
-
-function onIconClick(collapsed: boolean, node: NodeDataType) {
-  emits('iconClick', collapsed, node)
-}
-
-function onSelectedChange(
-  newValue: JsonSelectedValue,
-  oldValue: JsonSelectedValue
-) {
-  emits('selectedChange', newValue, oldValue)
-}
-
-async function onCopy() {
-  if (!isSupported.value) {
-    message.warning('当前环境不支持剪贴板操作')
-    return
-  }
-
-  try {
-    await copy(JSON.stringify(data.value, null, 2))
-    message.success('复制成功')
-    emits('copy', data.value)
-  } catch (error: unknown) {
-    const errorMessage = error instanceof Error ? error.message : String(error)
-    message.error(`复制失败：${errorMessage}`)
-  }
-}
-</script>

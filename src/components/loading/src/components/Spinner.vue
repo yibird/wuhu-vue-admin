@@ -1,18 +1,18 @@
 <template>
-  <div class="w-loading-orbit">
+  <div class="w-loading-spinner">
     <span></span>
     <span></span>
   </div>
 </template>
 
 <style lang="less" scoped>
-.w-loading-orbit {
+.w-loading-spinner {
   position: relative;
   width: 100%;
   height: 100%;
   border: 1px solid rgb(var(--w-color-primary) / 16%);
   border-radius: 50%;
-  animation: w-loading-orbit-rotate 1.1s linear infinite;
+  animation: w-loading-spinner-rotate 1.1s linear infinite;
 
   &::before {
     position: absolute;
@@ -45,14 +45,14 @@
   }
 }
 
-@keyframes w-loading-orbit-rotate {
+@keyframes w-loading-spinner-rotate {
   to {
     transform: rotate(360deg);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .w-loading-orbit {
+  .w-loading-spinner {
     animation: none !important;
   }
 }

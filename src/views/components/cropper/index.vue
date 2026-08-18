@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { shallowRef, useTemplateRef } from 'vue'
-import { message } from 'antdv-next'
+import message from 'antdv-next/dist/message/index'
 import { Cropper, CropperPicker } from '@/components/cropper'
 import { Icon } from '@/components/icon'
 import { Scrollbar } from '@/components/scrollbar'

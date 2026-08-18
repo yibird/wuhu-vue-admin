@@ -117,7 +117,7 @@ import {
   useTemplateRef,
   watch,
 } from 'vue'
-import { message } from 'antdv-next'
+import message from 'antdv-next/dist/message/index'
 import Cropper from './Cropper.vue'
 import type { CropperOptions } from 'cropperjs'
 import type {

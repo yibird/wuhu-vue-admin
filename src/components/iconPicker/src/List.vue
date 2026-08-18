@@ -213,13 +213,15 @@ function handleViewportScroll() {
   &-option {
     &--motion {
       transition:
-        color 160ms cubic-bezier(0.22, 1, 0.36, 1),
-        background-color 160ms cubic-bezier(0.22, 1, 0.36, 1),
-        border-color 160ms cubic-bezier(0.22, 1, 0.36, 1),
-        transform 180ms cubic-bezier(0.22, 1, 0.36, 1);
+        color var(--w-motion-duration-base) var(--w-motion-ease-standard),
+        background-color var(--w-motion-duration-base)
+          var(--w-motion-ease-standard),
+        border-color var(--w-motion-duration-base) var(--w-motion-ease-standard),
+        transform var(--w-motion-duration-base) var(--w-motion-ease-enter);
 
       .w-icon-selector-option__preview {
-        transition: transform 180ms cubic-bezier(0.22, 1, 0.36, 1);
+        transition: transform var(--w-motion-duration-base)
+          var(--w-motion-ease-enter);
       }
 
       &:active:not(:disabled) {

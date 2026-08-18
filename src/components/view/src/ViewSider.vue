@@ -100,9 +100,10 @@ function toggle() {
   min-height: 0;
   overflow: visible;
   transition:
-    width 240ms cubic-bezier(0.22, 1, 0.36, 1),
-    flex-basis 240ms cubic-bezier(0.22, 1, 0.36, 1),
-    margin-inline-end 240ms cubic-bezier(0.22, 1, 0.36, 1);
+    width var(--w-motion-duration-moderate) var(--w-motion-ease-enter),
+    flex-basis var(--w-motion-duration-moderate) var(--w-motion-ease-enter),
+    margin-inline-end var(--w-motion-duration-moderate)
+      var(--w-motion-ease-enter);
 
   &__body {
     box-sizing: border-box;
@@ -116,8 +117,8 @@ function toggle() {
     min-height: 100%;
     overflow: hidden;
     transition:
-      opacity 180ms ease,
-      transform 240ms cubic-bezier(0.22, 1, 0.36, 1);
+      opacity var(--w-motion-duration-base) var(--w-motion-ease-standard),
+      transform var(--w-motion-duration-moderate) var(--w-motion-ease-enter);
   }
 
   &__trigger {
@@ -160,7 +161,7 @@ function toggle() {
     &-icon {
       display: grid;
       place-items: center;
-      transition: scale 180ms cubic-bezier(0.22, 1, 0.36, 1);
+      transition: scale var(--w-motion-duration-base) var(--w-motion-ease-enter);
     }
   }
 

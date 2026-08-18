@@ -1,4 +1,4 @@
-import { DateRangePicker as AntDateRangePicker } from 'antdv-next'
+import { DateRangePicker as AntDateRangePicker } from 'antdv-next/dist/date-picker/index'
 import { computed, defineComponent, h, useAttrs, useSlots } from 'vue'
 import './dayjs'
 import { defaultDateRangePresets } from './presets'

@@ -1,4 +1,4 @@
-import { use, type SetOptionOpts } from 'echarts/core'
+import { use } from 'echarts/core'
 import {
   BarChart,
   BoxplotChart,
@@ -18,28 +18,20 @@ import {
 } from 'echarts/charts'
 import {
   DatasetComponent,
-  GridComponent,
   GraphicComponent,
-  LegendComponent,
   RadarComponent,
-  TooltipComponent,
   VisualMapComponent,
 } from 'echarts/components'
-import { CanvasRenderer } from 'echarts/renderers'
-import { INIT_OPTIONS_KEY, UPDATE_OPTIONS_KEY } from 'vue-echarts'
-import { provide } from 'vue'
+import { provideEChartsOptions, registerEChartsCore } from './echartsCore'
 
 let registered = false
 
-const eChartsUpdateOptions = {
-  notMerge: true,
-} satisfies SetOptionOpts
-
 export function useECharts() {
-  provide(INIT_OPTIONS_KEY, { renderer: 'canvas' })
-  provide(UPDATE_OPTIONS_KEY, eChartsUpdateOptions)
+  provideEChartsOptions()
 
   if (registered) return
+
+  registerEChartsCore()
 
   use([
     BarChart,
@@ -50,9 +42,7 @@ export function useECharts() {
     GaugeChart,
     GraphChart,
     GraphicComponent,
-    GridComponent,
     HeatmapChart,
-    LegendComponent,
     LineChart,
     PieChart,
     PictorialBarChart,
@@ -61,10 +51,8 @@ export function useECharts() {
     SankeyChart,
     ScatterChart,
     SunburstChart,
-    TooltipComponent,
     TreemapChart,
     VisualMapComponent,
-    CanvasRenderer,
   ])
   registered = true
 }

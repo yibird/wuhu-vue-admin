@@ -92,22 +92,24 @@ function toggle() {
   box-sizing: border-box;
   min-width: 0;
   overflow: visible;
-  transition: margin-block-end 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  transition: margin-block-end var(--w-motion-duration-slow)
+    var(--w-motion-ease-standard);
 
   &__body {
     display: grid;
     grid-template-rows: 1fr;
     min-width: 0;
     overflow: hidden;
-    transition: grid-template-rows 300ms cubic-bezier(0.4, 0, 0.2, 1);
+    transition: grid-template-rows var(--w-motion-duration-slow)
+      var(--w-motion-ease-standard);
   }
 
   &__collapse {
     min-height: 0;
     overflow: hidden;
     transition:
-      opacity 180ms ease,
-      transform 300ms cubic-bezier(0.4, 0, 0.2, 1);
+      opacity var(--w-motion-duration-base) var(--w-motion-ease-standard),
+      transform var(--w-motion-duration-slow) var(--w-motion-ease-standard);
   }
 
   &__content {
@@ -155,7 +157,7 @@ function toggle() {
     &-icon {
       display: grid;
       place-items: center;
-      transition: scale 180ms cubic-bezier(0.22, 1, 0.36, 1);
+      transition: scale var(--w-motion-duration-base) var(--w-motion-ease-enter);
     }
   }
 

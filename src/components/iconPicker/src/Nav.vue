@@ -136,10 +136,11 @@ const totalCount = computed(
 
   &__item {
     transition:
-      color 160ms cubic-bezier(0.22, 1, 0.36, 1),
-      background-color 160ms cubic-bezier(0.22, 1, 0.36, 1),
-      box-shadow 160ms cubic-bezier(0.22, 1, 0.36, 1),
-      transform 180ms cubic-bezier(0.22, 1, 0.36, 1);
+      color var(--w-motion-duration-base) var(--w-motion-ease-standard),
+      background-color var(--w-motion-duration-base)
+        var(--w-motion-ease-standard),
+      box-shadow var(--w-motion-duration-base) var(--w-motion-ease-standard),
+      transform var(--w-motion-duration-base) var(--w-motion-ease-enter);
 
     &:active {
       transform: scale(0.98);
@@ -151,8 +152,8 @@ const totalCount = computed(
     &-leave-active {
       transform-origin: center;
       transition:
-        opacity 140ms ease,
-        transform 180ms cubic-bezier(0.22, 1, 0.36, 1);
+        opacity var(--w-motion-duration-fast) var(--w-motion-ease-standard),
+        transform var(--w-motion-duration-base) var(--w-motion-ease-enter);
     }
 
     &-enter-from,

@@ -152,8 +152,8 @@ const onShow = (e: Event) => {
 .fade-enter-active,
 .fade-leave-active {
   transition:
-    opacity 0.2s ease,
-    transform 0.2s ease;
+    opacity var(--w-motion-duration-base) var(--w-motion-ease-standard),
+    transform var(--w-motion-duration-base) var(--w-motion-ease-enter);
 }
 
 .fade-enter-from,

@@ -80,6 +80,7 @@ const rootClass = computed(() =>
   [
     props.rootClass,
     'w-modal-root',
+    hasEnhancedHeader.value && 'w-modal-root--enhanced-header',
     props.draggable && 'w-modal-root--draggable',
     isFullscreen.value && 'w-modal-root--fullscreen',
   ]
@@ -109,6 +110,8 @@ interface DragSession {
 const modalPosition: ModalPosition = { x: 0, y: 0 }
 let dragSession: DragSession | null = null
 let modalElement: HTMLElement | null = null
+let dragHandle: HTMLElement | null = null
+let dragPointerId: number | null = null
 
 function setFullscreen(fullscreen: boolean) {
   if (fullscreen === isFullscreen.value) return
@@ -180,18 +183,20 @@ function handleTitlePointerDown(event: PointerEvent) {
     return
   }
 
-  const element = (event.currentTarget as HTMLElement).closest<HTMLElement>(
-    '.ant-modal'
-  )
+  const handle = event.currentTarget as HTMLElement | null
+  const element = handle?.closest<HTMLElement>('.ant-modal')
   if (!element) return
 
   event.preventDefault()
+  dragHandle = handle
+  dragPointerId = event.pointerId
   modalElement = element
   dragSession = {
     initialRect: element.getBoundingClientRect(),
     startOffset: { ...modalPosition },
     startPointer: getPointerPosition(event),
   }
+  handle?.setPointerCapture?.(event.pointerId)
   element.classList.add('w-modal--dragging')
   window.addEventListener('pointermove', handlePointerMove)
   window.addEventListener('pointerup', handlePointerUp)
@@ -223,6 +228,15 @@ function stopDragging() {
   window.removeEventListener('pointermove', handlePointerMove)
   window.removeEventListener('pointerup', handlePointerUp)
   window.removeEventListener('pointercancel', handlePointerUp)
+  if (
+    dragHandle &&
+    dragPointerId !== null &&
+    dragHandle.hasPointerCapture?.(dragPointerId)
+  ) {
+    dragHandle.releasePointerCapture(dragPointerId)
+  }
+  dragHandle = null
+  dragPointerId = null
   modalElement?.classList.remove('w-modal--dragging')
   dragSession = null
 }
@@ -280,7 +294,8 @@ defineExpose<ModalInstance>({
       <div
         class="w-modal-title min-w-0 flex items-center gap-8 pr-32"
         :class="{
-          'cursor-move select-none': draggable && !isFullscreen,
+          'w-modal-title--draggable cursor-move select-none':
+            draggable && !isFullscreen,
         }"
         @pointerdown="handleTitlePointerDown"
       >
@@ -297,7 +312,7 @@ defineExpose<ModalInstance>({
         >
           <a-button
             type="text"
-            size="small"
+            size="middle"
             class="shrink-0"
             :aria-label="
               isFullscreen
@@ -341,6 +356,14 @@ defineExpose<ModalInstance>({
 
 :global(.w-modal--dragging) {
   user-select: none;
+}
+
+:global(.w-modal-title--draggable) {
+  touch-action: none;
+}
+
+:global(.w-modal-root--enhanced-header .ant-modal-close) {
+  top: 20px;
 }
 
 :global(.w-modal-root--fullscreen .ant-modal-wrap) {

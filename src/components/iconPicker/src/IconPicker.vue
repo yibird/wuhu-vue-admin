@@ -286,8 +286,8 @@ const handleAfterClose = () => {
 .w-icon-picker-grid-enter-active,
 .w-icon-picker-grid-leave-active {
   transition:
-    opacity 140ms ease,
-    transform 180ms cubic-bezier(0.22, 1, 0.36, 1);
+    opacity var(--w-motion-duration-fast) var(--w-motion-ease-standard),
+    transform var(--w-motion-duration-base) var(--w-motion-ease-enter);
 }
 
 .w-icon-picker-header-enter-from {
