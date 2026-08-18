@@ -1,6 +1,6 @@
 <template>
   <aside
-    class="h-full min-h-0 shrink-0 flex flex-col overflow-hidden border-0 border-r-1 border-solid border-color-2 bg-container transition-[width,min-width,max-height] duration-200 ease-out will-change-[width] max-xl:h-auto max-xl:max-h-260 max-xl:w-full max-xl:min-w-0 max-xl:border-r-0 max-xl:border-b-1 max-md:max-h-230"
+    class="h-full min-h-0 shrink-0 flex flex-col overflow-hidden border-0 border-r-1 border-solid border-color-2 bg-container transition-[width,min-width,max-height] duration-motion-base ease-motion-enter will-change-[width] motion-reduce:transition-none max-xl:h-auto max-xl:max-h-260 max-xl:w-full max-xl:min-w-0 max-xl:border-r-0 max-xl:border-b-1 max-md:max-h-230"
     :class="
       collapsed
         ? 'w-72 min-w-72 max-xl:max-h-56'
@@ -9,7 +9,7 @@
   >
     <Header v-model:collapsed="collapsed" @create="emit('create')" />
     <div
-      class="overflow-hidden px-10 transition-[max-height,opacity,padding] duration-150 ease-out"
+      class="overflow-hidden px-10 transition-[max-height,opacity,padding] duration-motion-fast ease-motion-enter motion-reduce:transition-none"
       :class="
         collapsed
           ? 'max-h-0 pb-0 opacity-0 pointer-events-none'
@@ -24,25 +24,35 @@
         </template>
       </a-input>
 
-      <div class="mt-8 grid grid-cols-3 gap-4 rounded-10 bg-fill-tertiary p-3">
-        <button
-          v-for="view in viewOptions"
-          :key="view.key"
-          type="button"
-          class="h-28 min-w-0 rounded-7 border-0 bg-transparent px-4 text-12px text-secondary cursor-pointer transition-colors hover:text-main"
-          :class="
-            activeView === view.key ? 'bg-container text-main shadow-sm' : ''
-          "
-          @click="activeView = view.key"
+      <div class="mt-8">
+        <a-segmented
+          v-model:value="activeView"
+          :options="viewOptions"
+          block
+          size="large"
         >
-          <span
-            class="inline-flex max-w-full items-center justify-center gap-4"
-          >
-            <Icon :name="view.icon" :size="13" />
-            <span class="truncate">{{ view.label }}</span>
-            <span class="text-11px text-muted">{{ view.count }}</span>
-          </span>
-        </button>
+          <template #labelRender="{ value }">
+            <div
+              class="flex-center gap-4 transition-colors duration-motion-fast"
+            >
+              <Icon
+                :name="getViewOption(value).iconName"
+                :size="13"
+                class="shrink-0 transition-colors duration-motion-fast"
+                :class="activeView === value ? 'text-primary' : ''"
+              />
+              <span class="truncate">{{ getViewOption(value).label }}</span>
+              <span
+                class="min-w-16 rounded-full bg-fill-tertiary px-4 text-10px text-muted leading-16px transition-[background-color,color] duration-motion-fast"
+                :class="
+                  activeView === value ? 'bg-primary/10 text-primary' : ''
+                "
+              >
+                {{ getViewOption(value).count }}
+              </span>
+            </div>
+          </template>
+        </a-segmented>
       </div>
     </div>
     <List
@@ -62,9 +72,9 @@
 
 <script setup lang="ts">
 import { computed, shallowRef } from 'vue'
-import type { SiderEmits, SiderProps } from '../types'
 import Header from './Header.vue'
 import List from './List.vue'
+import type { SiderEmits, SiderProps } from '../types'
 
 const props = withDefaults(defineProps<SiderProps>(), {
   items: () => [],
@@ -78,26 +88,49 @@ type SiderView = 'all' | 'pinned' | 'archived'
 
 const activeView = shallowRef<SiderView>('all')
 
+const viewCounts = computed(() =>
+  props.items.reduce(
+    (counts, item) => {
+      if (item.archived) {
+        counts.archived += 1
+        return counts
+      }
+
+      counts.all += 1
+      if (item.pinned) counts.pinned += 1
+      return counts
+    },
+    { all: 0, pinned: 0, archived: 0 } satisfies Record<SiderView, number>
+  )
+)
+
 const viewOptions = computed(() => [
   {
-    key: 'all' as const,
+    value: 'all',
     label: '全部',
-    icon: 'i-lucide:message-square',
-    count: props.items.filter((item) => !item.archived).length,
+    iconName: 'i-lucide:message-square',
+    count: viewCounts.value.all,
   },
   {
-    key: 'pinned' as const,
+    value: 'pinned',
     label: '置顶',
-    icon: 'i-lucide:pin',
-    count: props.items.filter((item) => item.pinned && !item.archived).length,
+    iconName: 'i-lucide:pin',
+    count: viewCounts.value.pinned,
   },
   {
-    key: 'archived' as const,
+    value: 'archived',
     label: '归档',
-    icon: 'i-lucide:archive',
-    count: props.items.filter((item) => item.archived).length,
+    iconName: 'i-lucide:archive',
+    count: viewCounts.value.archived,
   },
 ])
+
+function getViewOption(value: string | number) {
+  return (
+    viewOptions.value.find((item) => item.value === value) ??
+    viewOptions.value[0]
+  )
+}
 
 const emptyText = computed(() => {
   if (keyword.value.trim()) return '没有匹配的会话'

@@ -56,7 +56,7 @@ function selectSection(key: KnowledgeDetailSectionKey) {
         :key="section.key"
         type="button"
         :class="[
-          'mb-6 w-full min-w-0 rounded-8 border-1 border-solid px-10 py-9 text-left transition-[background-color,border-color,transform] duration-200 hover:(-translate-y-1 border-primary/45 bg-primary/6)',
+          'mb-6 w-full min-w-0 rounded-8 border-1 border-solid px-10 py-9 text-left transition-[background-color,border-color,transform] duration-motion-base hover:(-translate-y-1 border-primary/45 bg-primary/6)',
           section.key === props.activeKey
             ? 'border-primary/55 bg-primary/10 shadow-[0_8px_24px_rgb(var(--w-color-primary)_/_12%)]'
             : 'border-transparent bg-transparent',

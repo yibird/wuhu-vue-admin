@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, reactive, shallowRef } from 'vue'
-import { message } from 'antdv-next'
+import message from 'antdv-next/dist/message/index'
 import { useRoute, useRouter } from 'vue-router'
 import { agentResources } from '../data'
 import type { AgentStatus } from '../types'

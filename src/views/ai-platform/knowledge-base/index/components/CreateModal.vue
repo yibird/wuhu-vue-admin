@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { FormInstance } from 'antdv-next'
 import { computed, nextTick, reactive, shallowRef, watch } from 'vue'
-import { IconSelector } from '@/components'
+import { IconSelector } from '@/components/iconPicker'
 import {
   defaultKnowledgeBaseIconBackground,
   getKnowledgeBaseIconForeground,
@@ -143,7 +143,7 @@ function isValidationError(error: unknown) {
             <button
               v-for="color in colorOptions"
               :key="color"
-              class="size-24 cursor-pointer rounded-6 border-2 border-solid p-0 outline-none transition-[border-color,box-shadow,transform] duration-160 hover:scale-105 focus-visible:shadow-[0_0_0_2px_rgb(var(--w-color-primary)_/_24%)] motion-reduce:(transform-none transition-none)"
+              class="size-24 cursor-pointer rounded-6 border-2 border-solid p-0 outline-none transition-[border-color,box-shadow,transform] duration-motion-base hover:scale-105 focus-visible:shadow-[0_0_0_2px_rgb(var(--w-color-primary)_/_24%)] motion-reduce:(transform-none transition-none)"
               :class="
                 form.iconBackground === color
                   ? 'border-primary shadow-[0_0_0_2px_rgb(var(--w-color-primary)_/_16%)]'

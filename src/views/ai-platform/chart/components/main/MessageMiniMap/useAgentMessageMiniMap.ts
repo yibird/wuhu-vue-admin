@@ -7,7 +7,7 @@ import {
   type MaybeRefOrGetter,
 } from 'vue'
 import type { AgentMessage } from '../../types'
-import type { ScrollbarInstance } from '@/components'
+import type { ScrollbarInstance } from '@/components/scrollbar'
 import type { MessageMiniMapItem } from './types'
 
 interface UseAgentMessageMiniMapOptions {

@@ -166,7 +166,7 @@ function getItemBorderClass(
           <article
             v-for="item in props.section.items"
             :key="item.title"
-            class="border-l-3 border-l-solid p-14 transition-colors duration-200 hover:bg-hover"
+            class="border-l-3 border-l-solid p-14 transition-colors duration-motion-base hover:bg-hover"
             :class="getItemBorderClass(item.tone)"
           >
             <div class="flex items-start gap-12">

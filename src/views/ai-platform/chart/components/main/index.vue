@@ -206,7 +206,7 @@
             v-for="suggestion in suggestions"
             :key="suggestion.id"
             type="button"
-            class="min-w-0 flex items-start gap-10 rounded-12 border-1 border-color-muted border-solid bg-container p-12 text-left text-regular cursor-pointer transition-[background-color,border-color,transform] duration-150 hover:-translate-y-1 hover:border-color-3 hover:bg-hover"
+            class="min-w-0 flex items-start gap-10 rounded-12 border-1 border-color-muted border-solid bg-container p-12 text-left text-regular cursor-pointer transition-[background-color,border-color,transform] duration-motion-fast hover:-translate-y-1 hover:border-color-3 hover:bg-hover"
             @click="useSuggestion(suggestion.prompt)"
           >
             <Icon
@@ -398,7 +398,7 @@ import MessageItem from './MessageItem.vue'
 import MessageMiniMap from './MessageMiniMap/MessageMiniMap.vue'
 import { useAgentMessageMiniMap } from './MessageMiniMap/useAgentMessageMiniMap'
 import Send from './Send.vue'
-import type { ScrollbarInstance } from '@/components'
+import type { ScrollbarInstance } from '@/components/scrollbar'
 
 const props = withDefaults(defineProps<MainProps>(), {
   attachments: () => [],
@@ -579,8 +579,8 @@ function saveEditingMessage() {
 .agent-message-anchor {
   border-radius: 8px;
   transition:
-    background-color 360ms ease,
-    box-shadow 360ms ease;
+    background-color var(--w-motion-duration-slow) var(--w-motion-ease-standard),
+    box-shadow var(--w-motion-duration-slow) var(--w-motion-ease-standard);
 }
 
 .agent-message-anchor.is-minimap-target {
@@ -591,8 +591,8 @@ function saveEditingMessage() {
 .agent-minimap-fade-enter-active,
 .agent-minimap-fade-leave-active {
   transition:
-    opacity 180ms ease,
-    transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
+    opacity var(--w-motion-duration-base) var(--w-motion-ease-standard),
+    transform var(--w-motion-duration-moderate) var(--w-motion-ease-enter);
 }
 
 .agent-minimap-fade-enter-from,

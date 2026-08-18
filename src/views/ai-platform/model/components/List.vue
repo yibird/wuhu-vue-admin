@@ -3,7 +3,6 @@ import message from 'antdv-next/dist/message/index'
 import Modal from 'antdv-next/dist/modal/index'
 import { AnimatePresence, LayoutGroup, Motion, MotionConfig } from 'motion-v'
 import { shallowRef } from 'vue'
-import { useRouter } from 'vue-router'
 import { useLoading } from '@/composables'
 import {
   cardListMotionAnimate,
@@ -11,113 +10,110 @@ import {
   cardListMotionInitial,
   cardListMotionTransition,
 } from '@/styles'
-import Card from './Card.vue'
-import CreateModal from './CreateModal.vue'
+import ModelCard from './ModelCard.vue'
+import ModelConfigDrawer from './ModelConfigDrawer.vue'
 import Toolbar from './Toolbar.vue'
-import { useAgentList } from '../composables/useAgentList'
+import { useModelList } from '../composables/useModelList'
 import type {
-  AgentAction,
-  AgentCreateInput,
-  AgentItem,
-  AgentPageConfig,
+  ModelAction,
+  ModelCreateInput,
+  ModelItem,
+  ModelPageConfig,
 } from '../types'
 
 const props = defineProps<{
-  config: AgentPageConfig
-  items: AgentItem[]
-  editPath?: string
-  detailPath?: string
+  config: ModelPageConfig
+  items: ModelItem[]
 }>()
 
-const router = useRouter()
-const createModalOpen = shallowRef(false)
 const { isLoading } = useLoading({ delay: 220 })
+const createDrawerOpen = shallowRef(false)
+const editingItem = shallowRef<ModelItem>()
 const {
+  configuredCount,
   currentPage,
-  draftCount,
   filteredItems,
   items,
   keyword,
   onlineCount,
   pageSize,
   paginatedItems,
+  providerCount,
+  providerFilter,
   sortBy,
   statusFilter,
   createItem,
   duplicateItem,
   removeItem,
+  resetFilters,
   toggleItem,
-} = useAgentList(props.items)
-
-function clearFilters() {
-  keyword.value = ''
-  statusFilter.value = 'all'
-  sortBy.value = 'updated-desc'
-}
+  updateItem,
+} = useModelList(props.items)
 
 function paginationTotalText(total: number) {
   return `共 ${total} 个${props.config.totalText}`
 }
 
 function handleCreate() {
-  createModalOpen.value = true
+  editingItem.value = undefined
+  createDrawerOpen.value = true
 }
 
-function handleCreated(input: AgentCreateInput) {
-  const item = createItem(input)
-  message.success(`已创建「${item.name}」`)
+function handleEdit(item: ModelItem) {
+  editingItem.value = item
+  createDrawerOpen.value = true
 }
 
-function handleCardAction(action: AgentAction, item: AgentItem) {
+function handleSaved(input: ModelCreateInput) {
+  if (editingItem.value) {
+    const item = updateItem(editingItem.value.id, input)
+    if (item) message.success(`「${item.name}」配置已保存`)
+  } else {
+    const item = createItem(input)
+    message.success(`已创建「${item.name}」`)
+  }
+}
+
+function handleCardAction(action: ModelAction, item: ModelItem) {
   if (action === 'delete') {
     Modal.confirm({
-      title: `删除${props.config.totalText}`,
+      title: '删除模型',
       content: `确定删除「${item.name}」吗？删除后无法恢复。`,
       okText: '删除',
       okType: 'danger',
       cancelText: '取消',
       onOk: () => {
         removeItem(item.id)
-        message.success('删除成功')
+        message.success('模型已删除')
       },
     })
     return
   }
 
   if (action === 'duplicate') {
-    duplicateItem(item.id)
-    message.success('已创建副本')
+    const duplicated = duplicateItem(item.id)
+    if (duplicated) message.success(`已创建「${duplicated.name}」`)
     return
   }
 
   if (action === 'toggle') {
-    const nextStatus =
-      item.status === 'online'
-        ? props.config.statusLabels.offline
-        : props.config.statusLabels.online
     toggleItem(item.id)
-    message.success(`状态已更新为「${nextStatus}」`)
+    message.success(
+      item.status === 'online' ? '模型已停用' : '模型已启用，可参与路由'
+    )
     return
   }
 
-  if (action === 'archive') {
-    message.success(`已归档「${item.name}」`)
-    return
-  }
-
-  if (action === 'edit') {
-    if (props.editPath) {
-      void router.push({ path: props.editPath, query: { id: item.id } })
+  if (action === 'test') {
+    if (!item.apiKeyConfigured) {
+      message.warning('请先配置 API Key，再测试模型连接')
       return
     }
-    message.info(`编辑「${item.name}」功能待接入`)
+    message.success(`「${item.name}」连接测试通过`)
     return
   }
 
-  if (props.detailPath) {
-    void router.push({ path: props.detailPath, query: { id: item.id } })
-    return
-  }
+  handleEdit(item)
 }
 </script>
 
@@ -126,29 +122,31 @@ function handleCardAction(action: AgentAction, item: AgentItem) {
     <div class="h-full min-h-0 flex flex-col overflow-hidden bg-page">
       <Toolbar
         v-model:keyword="keyword"
+        v-model:provider="providerFilter"
         v-model:sort="sortBy"
         v-model:status="statusFilter"
         :config="props.config"
-        :draft-count="draftCount"
+        :configured-count="configuredCount"
         :online-count="onlineCount"
+        :provider-count="providerCount"
         :total="items.length"
         @create="handleCreate"
       />
 
       <main
-        data-testid="ai-resource-scroll"
-        class="min-h-0 flex-1 p-12 overflow-y-auto overflow-x-hidden sm:p-16"
+        data-testid="model-list-scroll"
+        class="min-h-0 flex-1 overflow-y-auto p-12 sm:p-16 lg:p-20"
       >
         <div
           v-if="isLoading"
-          class="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6"
+          class="grid grid-cols-1 gap-12 md:grid-cols-3 2xl:grid-cols-4"
         >
           <div
-            v-for="index in 12"
+            v-for="index in 10"
             :key="index"
-            class="h-270 rounded-8 border-1 border-color-2 border-solid bg-container p-14"
+            class="h-310 rounded-8 border-1 border-color-2 border-solid bg-container p-14"
           >
-            <a-skeleton active :paragraph="{ rows: 5 }" />
+            <a-skeleton active :paragraph="{ rows: 6 }" />
           </div>
         </div>
 
@@ -157,16 +155,16 @@ function handleCardAction(action: AgentAction, item: AgentItem) {
           class="h-full min-h-360 flex flex-col items-center justify-center"
           :description="props.config.emptyText"
         >
-          <a-button @click="clearFilters">清除筛选</a-button>
+          <a-button @click="resetFilters">清除筛选</a-button>
         </a-empty>
 
         <MotionConfig v-else reduced-motion="user">
-          <LayoutGroup id="agent-card-list">
+          <LayoutGroup id="model-card-list">
             <AnimatePresence
               as="div"
               mode="popLayout"
               :initial="false"
-              class="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6"
+              class="grid grid-cols-1 gap-12 md:grid-cols-3 2xl:grid-cols-4"
             >
               <Motion
                 v-for="item in paginatedItems"
@@ -179,11 +177,10 @@ function handleCardAction(action: AgentAction, item: AgentItem) {
                 :transition="cardListMotionTransition"
                 class="min-w-0"
               >
-                <Card
+                <ModelCard
                   class="h-full"
                   :item="item"
                   :status-labels="props.config.statusLabels"
-                  :subject="props.config.totalText"
                   @action="handleCardAction"
                 />
               </Motion>
@@ -193,14 +190,14 @@ function handleCardAction(action: AgentAction, item: AgentItem) {
       </main>
 
       <footer
-        data-testid="ai-resource-pagination"
+        data-testid="model-list-pagination"
         class="flex flex-none justify-center border-t-1 border-color-2 border-t-solid bg-container px-12 py-10 sm:px-16"
       >
         <a-pagination
           v-if="!isLoading && filteredItems.length > 0"
           v-model:current="currentPage"
           v-model:page-size="pageSize"
-          :page-size-options="[12, 24, 36]"
+          :page-size-options="[10, 20, 50, 100, 200, 500]"
           :show-total="paginationTotalText"
           :total="filteredItems.length"
           show-size-changer
@@ -208,7 +205,11 @@ function handleCardAction(action: AgentAction, item: AgentItem) {
         <span v-else class="text-xs text-secondary">暂无分页数据</span>
       </footer>
 
-      <CreateModal v-model:open="createModalOpen" @create="handleCreated" />
+      <ModelConfigDrawer
+        v-model:open="createDrawerOpen"
+        :item="editingItem"
+        @save="handleSaved"
+      />
     </div>
   </WView>
 </template>

@@ -1,8 +1,16 @@
 <script setup lang="ts">
-import { Modal, message } from 'antdv-next'
+import message from 'antdv-next/dist/message/index'
+import Modal from 'antdv-next/dist/modal/index'
+import { AnimatePresence, LayoutGroup, Motion, MotionConfig } from 'motion-v'
 import { shallowRef } from 'vue'
 import { useRouter } from 'vue-router'
 import { useLoading } from '@/composables'
+import {
+  cardListMotionAnimate,
+  cardListMotionExit,
+  cardListMotionInitial,
+  cardListMotionTransition,
+} from '@/styles'
 import Card from './Card.vue'
 import CreateModal from './CreateModal.vue'
 import Toolbar from './Toolbar.vue'
@@ -134,7 +142,7 @@ function handleCardAction(
 
       <main
         data-testid="ai-resource-scroll"
-        class="min-h-0 flex-1 overflow-y-auto p-12 sm:p-16"
+        class="min-h-0 flex-1 p-12 overflow-y-auto overflow-x-hidden sm:p-16"
       >
         <div
           v-if="isLoading"
@@ -157,19 +165,36 @@ function handleCardAction(
           <a-button @click="clearFilters">清除筛选</a-button>
         </a-empty>
 
-        <div
-          v-else
-          class="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6"
-        >
-          <Card
-            v-for="item in paginatedItems"
-            :key="item.id"
-            :item="item"
-            :status-labels="props.config.statusLabels"
-            :subject="props.config.totalText"
-            @action="handleCardAction"
-          />
-        </div>
+        <MotionConfig v-else reduced-motion="user">
+          <LayoutGroup id="knowledge-base-card-list">
+            <AnimatePresence
+              as="div"
+              mode="popLayout"
+              :initial="false"
+              class="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6"
+            >
+              <Motion
+                v-for="item in paginatedItems"
+                :key="item.id"
+                as="div"
+                layout="position"
+                :initial="cardListMotionInitial"
+                :animate="cardListMotionAnimate"
+                :exit="cardListMotionExit"
+                :transition="cardListMotionTransition"
+                class="min-w-0"
+              >
+                <Card
+                  class="h-full"
+                  :item="item"
+                  :status-labels="props.config.statusLabels"
+                  :subject="props.config.totalText"
+                  @action="handleCardAction"
+                />
+              </Motion>
+            </AnimatePresence>
+          </LayoutGroup>
+        </MotionConfig>
       </main>
 
       <footer

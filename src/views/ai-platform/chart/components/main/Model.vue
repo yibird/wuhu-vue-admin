@@ -4,6 +4,7 @@
     :show-arrow="false"
     placement="bottomLeft"
     :trigger="['click']"
+    :styles="{ container: { padding: 0 } }"
   >
     <button
       type="button"
@@ -26,56 +27,51 @@
     </button>
 
     <template #content>
-      <div class="w-280 p-8">
-        <a-input
-          v-model:value="keyword"
-          allow-clear
-          placeholder="搜索模型"
-          size="small"
-        />
-        <Scrollbar class="mt-8 max-h-260">
-          <div
-            v-if="filteredModels.length === 0"
-            class="min-h-96 flex flex-col items-center justify-center gap-6 text-center text-secondary"
-          >
-            <Icon name="i-lucide:circle-alert" :size="20" />
-            <span class="text-xs">暂无可用模型</span>
+      <div class="w-300 py-10">
+        <div class="px-12">
+          <a-input v-model:value="keyword" allow-clear placeholder="搜索模型" />
+        </div>
+        <Scrollbar class="mt-8" content-class="px-12 h-300">
+          <div v-if="filteredModels.length === 0" class="h-300 flex-center">
+            <a-empty />
           </div>
-          <button
-            v-for="item in filteredModels"
-            :key="item.id"
-            type="button"
-            :data-agent-model-option="item.id"
-            class="w-full flex items-center justify-between gap-10 rounded-7 border-0 bg-transparent p-9 text-left cursor-pointer transition-colors hover:bg-hover"
-            :class="{ 'bg-hover': item.id === selectedModel?.id }"
-            @click="selectModel(item.id)"
-          >
-            <span class="min-w-0">
-              <strong class="block truncate text-13px text-main">
-                {{ item.name }}
-              </strong>
-              <small class="mt-2 block truncate text-xs text-secondary">
-                {{ item.desc }}
-              </small>
-              <span class="mt-5 flex flex-wrap items-center gap-5">
-                <span
-                  v-if="item.context"
-                  class="rounded-full bg-fill-tertiary px-6 py-2 text-11px text-secondary"
-                >
-                  {{ item.context }}
-                </span>
-                <span
-                  v-if="item.speed"
-                  class="rounded-full bg-fill-tertiary px-6 py-2 text-11px text-secondary"
-                >
-                  {{ item.speed }}
+          <div class="flex flex-col gap-5">
+            <button
+              v-for="item in filteredModels"
+              :key="item.id"
+              type="button"
+              :data-agent-model-option="item.id"
+              class="w-full flex items-center justify-between gap-10 rounded-7 border-0 bg-transparent p-9 text-left cursor-pointer transition-colors hover:bg-hover"
+              :class="{ 'bg-hover': item.id === selectedModel?.id }"
+              @click="selectModel(item.id)"
+            >
+              <span class="min-w-0">
+                <strong class="block truncate text-13px text-main">
+                  {{ item.name }}
+                </strong>
+                <small class="mt-2 block truncate text-xs text-secondary">
+                  {{ item.desc }}
+                </small>
+                <span class="mt-5 flex flex-wrap items-center gap-5">
+                  <span
+                    v-if="item.context"
+                    class="rounded-full bg-fill-tertiary px-6 py-2 text-11px text-secondary"
+                  >
+                    {{ item.context }}
+                  </span>
+                  <span
+                    v-if="item.speed"
+                    class="rounded-full bg-fill-tertiary px-6 py-2 text-11px text-secondary"
+                  >
+                    {{ item.speed }}
+                  </span>
                 </span>
               </span>
-            </span>
-            <span class="shrink-0 text-11px text-secondary">
-              {{ item.type }}
-            </span>
-          </button>
+              <span class="shrink-0 text-11px text-secondary">
+                {{ item.type }}
+              </span>
+            </button>
+          </div>
         </Scrollbar>
       </div>
     </template>

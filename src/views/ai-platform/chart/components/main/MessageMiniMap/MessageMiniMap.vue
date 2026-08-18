@@ -184,10 +184,10 @@ onBeforeUnmount(() => cancelAnimationFrame(scrollFrame))
     scaleX(var(--message-marker-scale-x)) scaleY(var(--message-marker-scale-y));
   transform-origin: right center;
   transition:
-    transform 340ms cubic-bezier(0.22, 1, 0.36, 1),
-    opacity 200ms ease-out,
-    background-color 200ms ease,
-    box-shadow 240ms ease;
+    transform var(--w-motion-duration-slow) var(--w-motion-ease-enter),
+    opacity var(--w-motion-duration-base) var(--w-motion-ease-enter),
+    background-color var(--w-motion-duration-base) var(--w-motion-ease-standard),
+    box-shadow var(--w-motion-duration-moderate) var(--w-motion-ease-standard);
   will-change: transform, opacity;
 }
 
@@ -244,7 +244,7 @@ onBeforeUnmount(() => cancelAnimationFrame(scrollFrame))
   box-shadow: var(--w-shadow-elevated);
   backdrop-filter: blur(12px);
   transform: translate3d(0, calc(-50% + var(--message-preview-offset-y)), 0);
-  transition: transform 280ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition: transform var(--w-motion-duration-slow) var(--w-motion-ease-enter);
   will-change: transform, opacity;
 }
 
@@ -267,8 +267,8 @@ onBeforeUnmount(() => cancelAnimationFrame(scrollFrame))
 .message-preview-enter-active,
 .message-preview-leave-active {
   transition:
-    opacity 160ms ease,
-    transform 280ms cubic-bezier(0.22, 1, 0.36, 1);
+    opacity var(--w-motion-duration-base) var(--w-motion-ease-standard),
+    transform var(--w-motion-duration-slow) var(--w-motion-ease-enter);
 }
 
 .message-preview-enter-from,

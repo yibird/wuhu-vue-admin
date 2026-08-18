@@ -99,7 +99,7 @@
 
       <div
         v-if="actions.length"
-        class="mt-5 flex items-center gap-4 opacity-0 transition-opacity duration-150 group-focus-within:opacity-100 group-hover:opacity-100"
+        class="mt-5 flex items-center gap-4 opacity-0 transition-opacity duration-motion-fast group-focus-within:opacity-100 group-hover:opacity-100"
         :class="isUser ? 'justify-end' : ''"
       >
         <button

@@ -1,6 +1,7 @@
 import { computed, onBeforeUnmount, reactive, shallowRef } from 'vue'
 import { useClipboard } from '@vueuse/core'
-import { message, Modal } from 'antdv-next'
+import message from 'antdv-next/dist/message/index'
+import Modal from 'antdv-next/dist/modal/index'
 import {
   createInitialChats,
   createInitialMessagesByChatId,
@@ -232,14 +233,7 @@ export function useAgent() {
   }
 
   function handleDeleteChat(id: string) {
-    Modal.confirm({
-      title: '删除会话',
-      content: '删除后当前演示数据中不会保留这条会话。',
-      okText: '删除',
-      okType: 'danger',
-      cancelText: '取消',
-      onOk: () => deleteChat(id),
-    })
+    deleteChat(id)
   }
 
   function handleArchiveChat(id: string) {

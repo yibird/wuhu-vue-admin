@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, shallowRef } from 'vue'
 import { renderIcon } from '@/utils'
 import { getAgentIconForeground } from '../iconPalette'
 import type { AgentAction, AgentItem } from '../types'
@@ -13,6 +13,10 @@ const props = defineProps<{
 const emit = defineEmits<{
   action: [key: AgentAction, item: AgentItem]
 }>()
+
+type TooltipAction = 'edit' | 'delete'
+
+const openTooltip = shallowRef<TooltipAction>()
 
 const iconStyle = computed(() => ({
   backgroundColor: props.item.iconBackground,
@@ -70,7 +74,12 @@ const moreActionItems = computed(() => [
 ])
 
 function handleAction(key: AgentAction) {
+  openTooltip.value = undefined
   emit('action', key, props.item)
+}
+
+function handleTooltipOpen(action: TooltipAction, open: boolean) {
+  openTooltip.value = open ? action : undefined
 }
 
 function handleMoreAction(info: { key: string | number }) {
@@ -88,7 +97,7 @@ function handleMoreAction(info: { key: string | number }) {
 
 <template>
   <article
-    class="group min-w-0 cursor-pointer overflow-hidden rounded-8 border-1 border-color-2 border-solid bg-container shadow-[var(--w-shadow-card)] outline-none transition-[border-color,box-shadow,transform] duration-200 hover:-translate-y-2 hover:border-primary/45 hover:shadow-[var(--w-shadow-elevated)] focus-visible:border-primary"
+    class="group min-w-0 cursor-pointer overflow-hidden rounded-8 border-1 border-color-2 border-solid bg-container shadow-[var(--w-shadow-card)] outline-none transition-[border-color,box-shadow,transform] duration-motion-base hover:-translate-y-2 hover:border-primary/45 hover:shadow-[var(--w-shadow-elevated)] focus-visible:border-primary"
     :aria-label="`${props.subject}：${props.item.name}`"
     role="button"
     tabindex="0"
@@ -98,7 +107,7 @@ function handleMoreAction(info: { key: string | number }) {
   >
     <div class="flex min-w-0 items-start gap-12 p-14">
       <span
-        class="size-44 flex flex-none items-center justify-center rounded-8 shadow-[inset_0_0_0_1px_rgb(15_23_42_/_6%)] transition-transform duration-200 group-hover:-rotate-3 group-hover:scale-105"
+        class="size-44 flex flex-none items-center justify-center rounded-8 shadow-[inset_0_0_0_1px_rgb(15_23_42_/_6%)] transition-transform duration-motion-base group-hover:-rotate-3 group-hover:scale-105"
         :style="iconStyle"
       >
         <Icon :name="props.item.icon" :size="22" />
@@ -125,7 +134,13 @@ function handleMoreAction(info: { key: string | number }) {
             @click.stop
             @dblclick.stop
           >
-            <a-tooltip title="编辑">
+            <a-tooltip
+              :open="openTooltip === 'edit'"
+              placement="top"
+              destroy-on-hidden
+              title="编辑"
+              @open-change="handleTooltipOpen('edit', $event)"
+            >
               <a-button
                 type="text"
                 size="small"
@@ -137,7 +152,13 @@ function handleMoreAction(info: { key: string | number }) {
                 </template>
               </a-button>
             </a-tooltip>
-            <a-tooltip title="删除">
+            <a-tooltip
+              :open="openTooltip === 'delete'"
+              placement="top"
+              destroy-on-hidden
+              title="删除"
+              @open-change="handleTooltipOpen('delete', $event)"
+            >
               <a-button
                 danger
                 type="text"
