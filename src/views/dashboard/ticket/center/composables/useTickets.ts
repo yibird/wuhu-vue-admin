@@ -1,5 +1,5 @@
 import dayjs from 'dayjs'
-import { computed, reactive, shallowRef } from 'vue'
+import { computed, reactive, shallowRef, watch } from 'vue'
 import { getTicketStatusMeta } from '../data'
 import { useTicketStore } from '../store'
 import type {
@@ -20,6 +20,8 @@ export function useTickets() {
   const createDrawerOpen = shallowRef(false)
   const detailDrawerOpen = shallowRef(false)
   const selectedTicketId = shallowRef('')
+  const currentPage = shallowRef(1)
+  const pageSize = shallowRef(12)
   const filters = reactive<TicketFilters>({
     keyword: '',
     status: 'all',
@@ -59,6 +61,15 @@ export function useTickets() {
     tickets.value.find((ticket) => ticket.id === selectedTicketId.value)
   )
 
+  const totalPages = computed(() =>
+    Math.max(1, Math.ceil(filteredTickets.value.length / pageSize.value))
+  )
+
+  const paginatedTickets = computed(() => {
+    const start = (currentPage.value - 1) * pageSize.value
+    return filteredTickets.value.slice(start, start + pageSize.value)
+  })
+
   const hasFilters = computed(
     () =>
       filters.keyword.trim() !== '' ||
@@ -79,6 +90,17 @@ export function useTickets() {
     ).length,
   }))
 
+  watch(
+    () => [filters.keyword, filters.status, filters.category, filters.priority],
+    () => {
+      currentPage.value = 1
+    }
+  )
+
+  watch(totalPages, (total) => {
+    if (currentPage.value > total) currentPage.value = total
+  })
+
   function resetFilters() {
     filters.keyword = ''
     filters.status = 'all'
@@ -98,6 +120,7 @@ export function useTickets() {
   function createTicket(draft: TicketDraft) {
     const ticket = createStoredTicket(draft)
     createDrawerOpen.value = false
+    currentPage.value = 1
     selectedTicketId.value = ticket.id
     detailDrawerOpen.value = true
     return ticket
@@ -152,6 +175,7 @@ export function useTickets() {
 
   return {
     createDrawerOpen,
+    currentPage,
     detailDrawerOpen,
     filteredTickets,
     filters,
@@ -163,6 +187,8 @@ export function useTickets() {
     createTicket,
     openCreateDrawer,
     openTicket,
+    pageSize,
+    paginatedTickets,
     resetFilters,
     updateStatus,
   }

@@ -1,32 +1,47 @@
 <script setup lang="ts">
-import { message } from 'antdv-next'
+import message from 'antdv-next/dist/message/index'
+import { AnimatePresence, LayoutGroup, Motion, MotionConfig } from 'motion-v'
 import { useLoading } from '@/composables'
-import TicketCreateDrawer from '../components/TicketCreateDrawer.vue'
-import TicketDetailDrawer from '../components/TicketDetailDrawer.vue'
-import TicketFilters from '../components/TicketFilters.vue'
-import TicketSummary from '../components/TicketSummary.vue'
-import TicketTable from '../components/TicketTable.vue'
-import { useTickets } from '../composables/useTickets'
-import { getTicketStatusMeta } from '../data'
-import type { TicketDraft, TicketRecord, TicketStatus } from '../types'
+import {
+  cardListMotionAnimate,
+  cardListMotionExit,
+  cardListMotionInitial,
+  cardListMotionTransition,
+} from '@/styles'
+import {
+  TicketCreateDrawer,
+  TicketDetailDrawer,
+  TicketFilters,
+  TicketSummary,
+  TicketCard,
+} from './components'
+import { useTickets } from './composables/useTickets'
+import { getTicketStatusMeta } from './data'
+import type { TicketDraft, TicketRecord, TicketStatus } from './types'
 
 const { isLoading } = useLoading({ delay: 240 })
 const {
   createDrawerOpen,
+  currentPage,
   detailDrawerOpen,
   filteredTickets,
   filters,
   hasFilters,
   selectedTicket,
   stats,
-  tickets,
   addReply,
   createTicket,
   openCreateDrawer,
   openTicket,
+  pageSize,
+  paginatedTickets,
   resetFilters,
   updateStatus,
 } = useTickets()
+
+function paginationTotalText(total: number) {
+  return `共 ${total} 条工单`
+}
 
 function handleCreate(draft: TicketDraft) {
   const ticket = createTicket(draft)
@@ -47,27 +62,9 @@ function handleReply(ticket: TicketRecord, content: string) {
 </script>
 
 <template>
-  <WView :full="true" :padding="0">
+  <WView full>
     <div class="h-full min-h-0 flex flex-col overflow-hidden bg-page">
-      <header
-        class="flex flex-none items-center justify-between gap-12 border-b-1 border-color-2 border-b-solid bg-container px-14 py-12 sm:px-18"
-      >
-        <div class="min-w-0">
-          <h1 class="mb-0 truncate text-lg text-main font-700">工单中心</h1>
-          <div class="mt-3 text-xs text-secondary">
-            {{ tickets.length }} 条记录
-          </div>
-        </div>
-        <a-button type="primary" @click="openCreateDrawer">
-          <template #icon>
-            <Icon name="i-lucide:plus" />
-          </template>
-          提交工单
-        </a-button>
-      </header>
-
       <TicketSummary :stats="stats" />
-
       <TicketFilters
         v-model:category="filters.category"
         v-model:keyword="filters.keyword"
@@ -79,13 +76,78 @@ function handleReply(ticket: TicketRecord, content: string) {
         @reset="resetFilters"
       />
 
-      <main class="min-h-0 flex-1 overflow-auto p-10 sm:p-14">
-        <TicketTable
-          :items="filteredTickets"
-          :loading="isLoading"
-          @open="openTicket"
-        />
+      <main
+        data-testid="ticket-center-scroll"
+        class="min-h-0 flex-1 overflow-y-auto py-12"
+      >
+        <div
+          v-if="isLoading"
+          class="grid grid-cols-1 gap-12 sm:grid-cols-2 xl:grid-cols-4 2xl:grid-cols-6"
+        >
+          <div
+            v-for="index in 8"
+            :key="index"
+            class="h-268 rounded-8 border-1 border-color-2 border-solid bg-container p-14"
+          >
+            <a-skeleton active :paragraph="{ rows: 5 }" />
+          </div>
+        </div>
+
+        <a-empty
+          v-else-if="paginatedTickets.length === 0"
+          class="h-full min-h-360 flex flex-col items-center justify-center"
+          description="没有符合条件的工单"
+        >
+          <a-button :disabled="!hasFilters" @click="resetFilters">
+            清除筛选
+          </a-button>
+        </a-empty>
+
+        <MotionConfig v-else reduced-motion="user">
+          <LayoutGroup id="ticket-center-card-list">
+            <AnimatePresence
+              as="div"
+              mode="popLayout"
+              :initial="false"
+              class="grid grid-cols-1 gap-12 sm:grid-cols-2 xl:grid-cols-4 2xl:grid-cols-6"
+            >
+              <Motion
+                v-for="ticket in paginatedTickets"
+                :key="ticket.id"
+                as="div"
+                layout="position"
+                :initial="cardListMotionInitial"
+                :animate="cardListMotionAnimate"
+                :exit="cardListMotionExit"
+                :transition="cardListMotionTransition"
+                class="min-w-0"
+              >
+                <TicketCard
+                  class="h-full"
+                  :ticket="ticket"
+                  @open="openTicket"
+                />
+              </Motion>
+            </AnimatePresence>
+          </LayoutGroup>
+        </MotionConfig>
       </main>
+
+      <footer
+        data-testid="ticket-center-pagination"
+        class="flex flex-none justify-center border-t-1 border-color-2 border-t-solid bg-container px-12 py-10 sm:px-16"
+      >
+        <a-pagination
+          v-if="!isLoading && filteredTickets.length > 0"
+          v-model:current="currentPage"
+          v-model:page-size="pageSize"
+          :page-size-options="[8, 16, 24]"
+          :show-total="paginationTotalText"
+          :total="filteredTickets.length"
+          show-size-changer
+        />
+        <span v-else class="text-xs text-secondary">暂无分页数据</span>
+      </footer>
 
       <TicketCreateDrawer
         v-model:open="createDrawerOpen"

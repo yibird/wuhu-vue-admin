@@ -13,11 +13,26 @@ export interface WorkbenchAction {
   desc: string
   tone: string
   text: string
+  action?: 'create-project'
+  path?: string
 }
 
 export interface WorkbenchMember {
   name: string
   src?: string
+}
+
+export interface WorkbenchAnnouncement {
+  id: number | string
+  title: string
+  summary: string
+  content: string
+  category: string
+  categoryClass: string
+  icon: string
+  publisher: string
+  publishedAt: string
+  read?: boolean
 }
 
 export type ProjectLogoTone =

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { Icon } from '@/components'
+import { Icon } from '@/components/icon'
 import type { FileBreadcrumbItem } from '../types'
 
 defineProps<{
@@ -13,8 +13,12 @@ const emit = defineEmits<{
 </script>
 
 <template>
-  <a-breadcrumb class="file-breadcrumb max-[575px]:hidden">
-    <a-breadcrumb-item class="file-breadcrumb__item">
+  <a-breadcrumb
+    class="min-h-24 flex items-center leading-24px max-[575px]:hidden [&_.ant-breadcrumb-separator]:(inline-flex items-center leading-24px)"
+  >
+    <a-breadcrumb-item
+      class="inline-flex items-center leading-24px [&>span]:(inline-flex items-center leading-24px)"
+    >
       <button
         type="button"
         class="group h-24 inline-flex cursor-pointer items-center gap-4 border-none bg-transparent p-0 text-secondary leading-24px outline-none transition-colors hover:text-primary focus-visible:text-primary active:scale-98"
@@ -23,7 +27,7 @@ const emit = defineEmits<{
         <Icon
           name="i-lucide:folder-open"
           :size="18"
-          class="shrink-0 transition-transform duration-180 group-hover:scale-108"
+          class="shrink-0 transition-transform duration-motion-base group-hover:scale-108"
         />
         <span class="text-sm">文件管理</span>
       </button>
@@ -32,7 +36,7 @@ const emit = defineEmits<{
     <a-breadcrumb-item
       v-for="item in items"
       :key="item.id"
-      class="file-breadcrumb__item"
+      class="inline-flex items-center leading-24px [&>span]:(inline-flex items-center leading-24px)"
     >
       <button
         type="button"
@@ -42,27 +46,10 @@ const emit = defineEmits<{
         <Icon
           name="i-lucide:folder"
           :size="18"
-          class="shrink-0 transition-transform duration-180 group-hover:-translate-y-1"
+          class="shrink-0 transition-transform duration-motion-base group-hover:-translate-y-1"
         />
         <span class="text-sm">{{ item.fileName }}</span>
       </button>
     </a-breadcrumb-item>
   </a-breadcrumb>
 </template>
-
-<style scoped>
-.file-breadcrumb {
-  display: flex;
-  align-items: center;
-  min-height: 24px;
-  line-height: 24px;
-}
-
-.file-breadcrumb :deep(.ant-breadcrumb-separator),
-.file-breadcrumb :deep(.file-breadcrumb__item),
-.file-breadcrumb :deep(.file-breadcrumb__item > span) {
-  display: inline-flex;
-  align-items: center;
-  line-height: 24px;
-}
-</style>

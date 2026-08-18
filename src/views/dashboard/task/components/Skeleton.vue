@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { ScrollbarProps } from '@/components'
+import type { ScrollbarProps } from '@/components/scrollbar'
 
 const taskGroupScrollbarOptions = {
   overflow: { x: 'hidden', y: 'scroll' },

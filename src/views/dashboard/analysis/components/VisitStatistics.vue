@@ -6,10 +6,10 @@ import {
   getCssRgbVarAlpha,
   useEChartsTheme,
 } from '@/composables/useEChartsTheme'
-import { useECharts } from '@/plugins/echarts'
+import { useDashboardECharts } from '@/plugins/echartsDashboard'
 import type { EChartsCoreOption } from 'echarts/core'
 
-useECharts()
+useDashboardECharts()
 
 const { baseChartOption, eChartsThemeName, getEChartsColor } = useEChartsTheme()
 
@@ -84,7 +84,7 @@ const chartOption = computed<EChartsCoreOption>(() => ({
     description="近 9 日访问趋势"
     body-class="p-0"
   >
-    <div class="h-320 w-full p-12 max-md:h-260">
+    <div class="h-380 w-full p-12 max-md:h-260">
       <VChart
         :option="chartOption"
         :theme="eChartsThemeName"

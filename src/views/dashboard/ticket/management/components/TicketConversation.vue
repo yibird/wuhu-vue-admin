@@ -4,9 +4,9 @@ import {
   getTicketCategoryMeta,
   getTicketPriorityMeta,
   getTicketStatusMeta,
-} from '../../data'
-import type { TicketRecord } from '../../types'
+} from '../../center/data'
 import { activityTypeMeta } from '../data'
+import type { TicketRecord } from '../../center/types'
 
 const props = defineProps<{
   ticket?: TicketRecord

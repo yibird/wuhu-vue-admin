@@ -1,4 +1,8 @@
-import type { TicketCategory, TicketPriority, TicketStatus } from '../types'
+import type {
+  TicketCategory,
+  TicketPriority,
+  TicketStatus,
+} from '../center/types'
 
 export type TicketQueueKey =
   | 'all'

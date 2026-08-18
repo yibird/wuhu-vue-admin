@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import {
-  FilePreviewModal as BaseFilePreviewModal,
+  FilePreview as BaseFilePreviewModal,
   type FilePreviewKind,
   type FilePreviewSource,
-} from '@/components'
+} from '@/components/filePreview'
 import type { IFile } from '../types'
 import { getFileCategoryByType, getFileExtension } from '../utils'
 

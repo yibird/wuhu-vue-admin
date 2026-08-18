@@ -117,7 +117,8 @@ function triggerChartFeedback() {
 }
 
 .analysis-chart-pane.is-refreshing {
-  animation: analysis-chart-feedback 520ms ease-out both;
+  animation: analysis-chart-feedback var(--w-motion-duration-slower)
+    var(--w-motion-ease-enter) both;
 }
 
 @keyframes analysis-chart-feedback {

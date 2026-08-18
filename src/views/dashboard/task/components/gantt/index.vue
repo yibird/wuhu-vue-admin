@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import dayjs from 'dayjs'
-import { message } from 'antdv-next'
+import message from 'antdv-next/dist/message/index'
 import {
   Gantt,
   type GanttContextMenuEvent,

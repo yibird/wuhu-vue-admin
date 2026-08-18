@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
-import { Icon } from '@/components'
+import { Icon } from '@/components/icon'
 import { formatFileSize } from '../utils'
 
 const props = defineProps<{
@@ -28,7 +28,7 @@ const progressColor = computed(() =>
 
 <template>
   <div
-    class="file-capacity border-t-1 border-t-solid border-color-1 px-16 py-14 max-[1199px]:(border-t-0 border-l-1 border-l-solid border-color-1 px-16 py-12) max-[767px]:(border-t-1 border-l-0 border-t-solid border-color-1 px-12 py-12)"
+    class="border-t-1 border-t-solid border-color-1 px-16 py-14 transition-colors duration-motion-base ease-motion-standard motion-reduce:transition-none max-[1199px]:(border-t-0 border-l-1 border-l-solid border-color-1 px-16 py-12) max-[767px]:(border-t-1 border-l-0 border-t-solid border-color-1 px-12 py-12)"
   >
     <div class="flex items-center justify-between gap-8">
       <div class="flex min-w-0 items-center gap-8">
@@ -48,7 +48,7 @@ const progressColor = computed(() =>
     </div>
     <div class="mt-10 h-6 overflow-hidden rounded-full bg-fill-quaternary">
       <div
-        class="h-full rounded-full transition-[width,background-color] duration-500 ease-out"
+        class="h-full rounded-full transition-[width,background-color] duration-motion-slower ease-motion-enter"
         :style="{
           width: `${percent * 100}%`,
           backgroundColor: progressColor,
@@ -64,15 +64,3 @@ const progressColor = computed(() =>
     </div>
   </div>
 </template>
-
-<style scoped>
-.file-capacity {
-  transition: border-color 180ms ease;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .file-capacity {
-    transition: none;
-  }
-}
-</style>

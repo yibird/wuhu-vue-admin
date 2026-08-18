@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { Modal, message } from 'antdv-next'
-import type { FormInstance } from 'antdv-next'
-import type { CSSProperties } from 'vue'
+import message from 'antdv-next/dist/message/index'
+import Modal from 'antdv-next/dist/modal/index'
+import type { FormInstance, ModalProps } from 'antdv-next'
 import { getProjectLogoOption, projectLogoOptions } from '../data'
 import type {
   Project,
@@ -109,12 +109,8 @@ const rules = {
   ],
 }
 
-const modalStyles: Record<string, CSSProperties> = {
-  body: {
-    maxHeight: 'calc(100vh - 150px)',
-    overflowY: 'auto',
-    overscrollBehavior: 'contain',
-  },
+const modalClasses: ModalProps['classes'] = {
+  body: 'max-h-[calc(100vh-150px)] overflow-y-auto overscroll-contain',
 }
 
 const modalTitle = computed(() =>
@@ -267,9 +263,8 @@ function handleCancel() {
     :open="open"
     centered
     :destroy-on-hidden="true"
-    :styles="modalStyles"
+    :classes="modalClasses"
     :width="920"
-    class="project-settings-modal"
     @cancel="handleCancel"
   >
     <template #title>
@@ -336,14 +331,16 @@ function handleCancel() {
         class="min-w-0 space-y-16"
         layout="vertical"
       >
-        <div class="project-settings-panel">
-          <div class="project-settings-heading">
+        <div
+          class="border-b-1 border-b-solid border-color-2 pb-16 last:border-b-0 last:pb-0"
+        >
+          <div class="mb-12 flex items-start justify-between gap-12">
             <div>
-              <div class="project-settings-title">
+              <div class="flex items-center gap-7 text-sm text-main font-700">
                 <Icon name="i-lucide:shapes" :size="16" />
                 项目标识
               </div>
-              <div class="project-settings-description">
+              <div class="mt-3 text-xs text-secondary leading-18px">
                 选择与项目领域匹配的图标和识别色
               </div>
             </div>
@@ -355,7 +352,7 @@ function handleCancel() {
               v-for="item in projectLogoOptions"
               :key="item.icon"
               type="button"
-              class="group relative min-w-0 flex flex-col items-center gap-7 rounded-8 border-1 border-solid bg-container p-8 transition-[border-color,background-color,box-shadow,transform] duration-200 hover:(-translate-y-1 border-color-primary/60 bg-hover shadow-all-sm)"
+              class="group relative min-w-0 flex flex-col items-center gap-7 rounded-8 border-1 border-solid bg-container p-8 transition-[border-color,background-color,box-shadow,transform] duration-motion-base hover:(-translate-y-1 border-color-primary/60 bg-hover shadow-all-sm)"
               :class="
                 form.logo.icon === item.icon
                   ? 'border-color-primary bg-primary/5 shadow-all-sm'
@@ -366,7 +363,7 @@ function handleCancel() {
               @click="updateLogo(item.icon, item.tone)"
             >
               <span
-                class="size-36 flex items-center justify-center rounded-8 border-1 border-solid transition-transform duration-200 group-hover:scale-105"
+                class="size-36 flex items-center justify-center rounded-8 border-1 border-solid transition-transform duration-motion-base group-hover:scale-105"
                 :class="item.class"
               >
                 <Icon :name="item.icon" :size="18" />
@@ -384,14 +381,16 @@ function handleCancel() {
           </div>
         </div>
 
-        <div class="project-settings-panel">
-          <div class="project-settings-heading">
+        <div
+          class="border-b-1 border-b-solid border-color-2 pb-16 last:border-b-0 last:pb-0"
+        >
+          <div class="mb-12 flex items-start justify-between gap-12">
             <div>
-              <div class="project-settings-title">
+              <div class="flex items-center gap-7 text-sm text-main font-700">
                 <Icon name="i-lucide:file-pen-line" :size="16" />
                 基础信息
               </div>
-              <div class="project-settings-description">
+              <div class="mt-3 text-xs text-secondary leading-18px">
                 用清晰的目标和责任信息帮助团队快速理解项目
               </div>
             </div>
@@ -441,14 +440,16 @@ function handleCancel() {
           </div>
         </div>
 
-        <div class="project-settings-panel">
-          <div class="project-settings-heading">
+        <div
+          class="border-b-1 border-b-solid border-color-2 pb-16 last:border-b-0 last:pb-0"
+        >
+          <div class="mb-12 flex items-start justify-between gap-12">
             <div>
-              <div class="project-settings-title">
+              <div class="flex items-center gap-7 text-sm text-main font-700">
                 <Icon name="i-lucide:gauge" :size="16" />
                 推进状态
               </div>
-              <div class="project-settings-description">
+              <div class="mt-3 text-xs text-secondary leading-18px">
                 优先级和进度会共同决定项目卡片的状态表达
               </div>
             </div>
@@ -461,12 +462,12 @@ function handleCancel() {
                 v-for="item in priorityOptions"
                 :key="item.value"
                 type="button"
-                class="project-priority-option"
-                :class="[
+                class="w-full flex items-center gap-8 rounded-8 border-1 border-solid bg-container p-10 text-left cursor-pointer transition-[background-color,border-color,box-shadow,transform] duration-motion-base ease-motion-standard hover:(-translate-y-1 border-primary/36 bg-hover shadow-[0_8px_22px_rgb(0_0_0_/_8%)]) focus-visible:(-translate-y-1 border-primary/36 bg-hover shadow-[0_8px_22px_rgb(0_0_0_/_8%)] outline-2 outline-primary/35 outline-offset-2) active:translate-y-0 motion-reduce:(transform-none transition-none)"
+                :class="
                   form.priority === item.value
-                    ? 'border-color-primary shadow-all-sm'
-                    : 'border-color-2',
-                ]"
+                    ? 'border-primary shadow-all-sm'
+                    : 'border-color-2'
+                "
                 :aria-pressed="form.priority === item.value"
                 @click="updatePriority(item.value)"
               >
@@ -490,14 +491,16 @@ function handleCancel() {
           </div>
         </div>
 
-        <div class="project-settings-panel">
-          <div class="project-settings-heading">
+        <div
+          class="border-b-1 border-b-solid border-color-2 pb-16 last:border-b-0 last:pb-0"
+        >
+          <div class="mb-12 flex items-start justify-between gap-12">
             <div>
-              <div class="project-settings-title">
+              <div class="flex items-center gap-7 text-sm text-main font-700">
                 <Icon name="i-lucide:workflow" :size="16" />
                 协作策略
               </div>
-              <div class="project-settings-description">
+              <div class="mt-3 text-xs text-secondary leading-18px">
                 按需开启提醒、周报和风险监控
               </div>
             </div>
@@ -511,8 +514,12 @@ function handleCancel() {
               v-for="item in switchOptions"
               :key="item.key"
               type="button"
-              class="project-effect-option"
-              :class="form[item.key] ? 'is-active' : ''"
+              class="w-full box-border rounded-8 border-1 border-solid bg-container p-10 text-left cursor-pointer transition-[background-color,border-color,box-shadow,transform] duration-motion-base ease-motion-standard hover:(-translate-y-1 border-primary/36 bg-hover shadow-[0_8px_22px_rgb(0_0_0_/_8%)]) focus-visible:(-translate-y-1 border-primary/36 bg-hover shadow-[0_8px_22px_rgb(0_0_0_/_8%)] outline-2 outline-primary/35 outline-offset-2) active:translate-y-0 motion-reduce:(transform-none transition-none)"
+              :class="
+                form[item.key]
+                  ? '-translate-y-1 border-primary/36 bg-primary/8 shadow-all-sm'
+                  : 'border-color-2'
+              "
               :aria-pressed="form[item.key]"
               @click="updateSwitch(item.key, !form[item.key])"
             >
@@ -541,7 +548,9 @@ function handleCancel() {
       </a-form>
 
       <aside class="min-w-0">
-        <div class="project-preview-card">
+        <div
+          class="sticky top-0 overflow-hidden rounded-8 border-1 border-color-1 border-solid bg-container p-14 shadow-[0_14px_34px_rgb(var(--w-shadow-color)_/_12%)]"
+        >
           <div class="mb-12 flex items-center gap-6 text-xs text-secondary">
             <Icon name="i-lucide:scan-eye" :size="14" />
             项目卡片实时预览
@@ -560,10 +569,16 @@ function handleCancel() {
 
           <div class="mt-18 flex items-center gap-10">
             <span
-              class="project-preview-logo size-52 flex shrink-0 items-center justify-center rounded-12 border-1 border-solid shadow-all-sm"
+              class="size-52 flex shrink-0 items-center justify-center rounded-12 border-1 border-solid shadow-all-sm transition-[border-color,background-color,color,transform] duration-motion-base ease-motion-standard motion-reduce:transition-none"
               :class="selectedLogo.class"
             >
-              <Transition name="project-logo-swap" mode="out-in">
+              <Transition
+                mode="out-in"
+                enter-active-class="transition-[opacity,transform] duration-motion-base ease-motion-standard motion-reduce:transition-none"
+                leave-active-class="transition-[opacity,transform] duration-motion-base ease-motion-standard motion-reduce:transition-none"
+                enter-from-class="-rotate-8 scale-75 opacity-0 motion-reduce:(rotate-0 scale-100)"
+                leave-to-class="scale-75 rotate-8 opacity-0 motion-reduce:(scale-100 rotate-0)"
+              >
                 <Icon
                   :key="selectedLogo.icon"
                   :name="selectedLogo.icon"
@@ -603,11 +618,15 @@ function handleCancel() {
           </div>
 
           <div class="mt-14 grid grid-cols-2 gap-8 text-xs">
-            <div class="project-preview-stat">
+            <div
+              class="min-w-0 flex items-center gap-5 rounded-6 bg-fill-1 p-8 text-secondary"
+            >
               <Icon name="i-lucide:calendar-clock" :size="14" />
               {{ form.dueAt || '待定' }}
             </div>
-            <div class="project-preview-stat">
+            <div
+              class="min-w-0 flex items-center gap-5 rounded-6 bg-fill-1 p-8 text-secondary"
+            >
               <Icon name="i-lucide:bell-ring" :size="14" />
               {{ form.notify ? '已提醒' : '不提醒' }}
             </div>
@@ -650,155 +669,3 @@ function handleCancel() {
     </div>
   </a-modal>
 </template>
-
-<style scoped>
-.project-settings-panel {
-  padding-block-end: 16px;
-  border-block-end: 1px solid rgb(var(--w-border-color-2));
-}
-
-.project-settings-panel:last-child {
-  padding-block-end: 0;
-  border-block-end: 0;
-}
-
-.project-settings-heading {
-  display: flex;
-  gap: 12px;
-  align-items: flex-start;
-  justify-content: space-between;
-  margin-block-end: 12px;
-}
-
-.project-settings-title {
-  display: flex;
-  gap: 7px;
-  align-items: center;
-  font-size: 14px;
-  font-weight: 700;
-  color: rgb(var(--w-text-main));
-}
-
-.project-settings-description {
-  margin-block-start: 3px;
-  font-size: 12px;
-  line-height: 18px;
-  color: rgb(var(--w-text-secondary));
-}
-
-.project-priority-option,
-.project-effect-option {
-  width: 100%;
-  padding: 10px;
-  text-align: left;
-  cursor: pointer;
-  background: rgb(var(--w-bg-container));
-  border: 1px solid rgb(var(--w-border-color-2));
-  border-radius: 8px;
-  transition:
-    background-color 180ms ease,
-    border-color 180ms ease,
-    box-shadow 180ms ease,
-    transform 180ms ease;
-}
-
-.project-priority-option {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-}
-
-.project-priority-option:hover,
-.project-priority-option:focus-visible,
-.project-effect-option:hover,
-.project-effect-option:focus-visible,
-.project-effect-option.is-active {
-  background: rgb(var(--w-bg-hover));
-  border-color: rgb(var(--w-color-primary) / 36%);
-  box-shadow: 0 8px 22px rgb(0 0 0 / 8%);
-  transform: translateY(-1px);
-}
-
-.project-priority-option:focus-visible,
-.project-effect-option:focus-visible {
-  outline: 2px solid rgb(var(--w-color-primary) / 35%);
-  outline-offset: 2px;
-}
-
-.project-effect-option.is-active {
-  background: rgb(var(--w-color-primary) / 8%);
-}
-
-.project-preview-card {
-  position: sticky;
-  top: 0;
-  padding: 14px;
-  overflow: hidden;
-  background: rgb(var(--w-bg-container));
-  border: 1px solid rgb(var(--w-border-color-1));
-  border-radius: 8px;
-  box-shadow: 0 14px 34px rgb(var(--w-shadow-color) / 12%);
-}
-
-.project-preview-card::before {
-  position: absolute;
-  inset-block-start: 0;
-  inset-inline: 0;
-  height: 3px;
-  content: '';
-  background: rgb(var(--w-color-primary));
-}
-
-.project-preview-logo {
-  transition:
-    border-color 180ms ease,
-    background-color 180ms ease,
-    color 180ms ease,
-    transform 180ms ease;
-}
-
-.project-preview-stat {
-  display: flex;
-  gap: 5px;
-  align-items: center;
-  min-width: 0;
-  padding: 8px;
-  color: rgb(var(--w-text-secondary));
-  background: rgb(var(--w-bg-fill-1));
-  border-radius: 6px;
-}
-
-.project-logo-swap-enter-active,
-.project-logo-swap-leave-active {
-  transition:
-    opacity 140ms ease,
-    transform 180ms ease;
-}
-
-.project-logo-swap-enter-from {
-  opacity: 0;
-  transform: scale(0.72) rotate(-8deg);
-}
-
-.project-logo-swap-leave-to {
-  opacity: 0;
-  transform: scale(0.72) rotate(8deg);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .project-priority-option,
-  .project-effect-option,
-  .project-preview-logo,
-  .project-logo-swap-enter-active,
-  .project-logo-swap-leave-active {
-    transition-duration: 1ms;
-  }
-
-  .project-priority-option:hover,
-  .project-priority-option:focus-visible,
-  .project-effect-option:hover,
-  .project-effect-option:focus-visible {
-    transform: none;
-  }
-}
-</style>

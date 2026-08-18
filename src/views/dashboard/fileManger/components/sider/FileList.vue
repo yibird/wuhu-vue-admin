@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { computed, shallowRef } from 'vue'
 import { LayoutGroup, Motion, MotionConfig } from 'motion-v'
-import { Icon } from '@/components'
+import { Icon } from '@/components/icon'
 import type { FileCategory, FileCategoryStats } from '../types'
 import { fileCategoryOptions } from '../utils'
 
@@ -58,11 +58,11 @@ const visibleItems = computed(() => {
     class="file-list min-h-0 flex flex-1 flex-col overflow-hidden max-[1199px]:min-h-120"
   >
     <div
-      class="file-list__header flex items-center justify-between px-16 py-14 max-[575px]:(px-12 py-12)"
+      class="flex items-center justify-between px-16 py-14 min-[768px]:max-[1199px]:py-10 max-[575px]:(px-12 py-12)"
     >
       <div class="flex min-w-0 items-center gap-10">
         <span
-          class="file-list__header-icon size-30 flex-center shrink-0 rounded-6 bg-primary/10 text-primary max-[575px]:hidden"
+          class="size-30 flex-center shrink-0 rounded-6 bg-primary/10 text-primary max-[575px]:hidden"
         >
           <Icon name="i-lucide:folder-tree" :size="16" />
         </span>
@@ -79,7 +79,7 @@ const visibleItems = computed(() => {
         </div>
       </div>
       <a-tooltip title="仅显示有文件的类型">
-        <a-switch v-model:checked="onlyUsed" size="small" />
+        <a-switch v-model:checked="onlyUsed" />
       </a-tooltip>
     </div>
     <Scrollbar
@@ -97,7 +97,7 @@ const visibleItems = computed(() => {
             :while-press="categoryPress"
             :transition="categoryItemTransition"
             :class="[
-              'file-list__item group relative w-full min-w-0 flex cursor-pointer items-center overflow-hidden rounded-6 border-0 bg-transparent px-10 py-9 text-left text-regular outline-none transition-[background-color,color] max-[1199px]:(min-w-132 bg-fill-quaternary px-12 py-9) max-[575px]:min-w-112',
+              'file-list__item group relative w-full min-w-0 flex cursor-pointer items-center overflow-hidden rounded-6 border-0 bg-transparent px-10 py-9 text-left text-regular outline-none transition-[background-color,color,box-shadow] duration-motion-base ease-motion-standard focus-visible:shadow-[0_0_0_2px_rgb(var(--w-color-primary)_/_18%)] motion-reduce:transition-none max-[1199px]:(min-w-132 bg-fill-quaternary px-12 py-9) max-[575px]:min-w-112',
               activeCategory === item.value
                 ? 'file-list__item--active text-primary font-medium dark:text-main'
                 : 'hover:bg-hover hover:text-main',
@@ -109,15 +109,15 @@ const visibleItems = computed(() => {
               as="span"
               layout-id="file-manager-category-selection"
               :initial="false"
-              class="file-list__selection pointer-events-none absolute inset-0 rounded-6 bg-primary/9 dark:bg-primary/16"
+              class="pointer-events-none absolute inset-0 rounded-6 bg-primary/9 before:(absolute bottom-7 left-0 top-7 w-3 rounded-r-full bg-primary content-empty) dark:bg-primary/16"
               :transition="categorySelectionTransition"
             />
             <span
-              class="file-list__item-icon relative z-1 size-28 flex-center shrink-0 rounded-6 text-secondary transition-[background-color,color,transform] group-hover:(bg-primary/8 text-primary) max-[575px]:size-24"
+              class="relative z-1 size-28 flex-center shrink-0 rounded-6 text-secondary transition-[background-color,color,transform] duration-motion-moderate ease-motion-enter group-hover:(bg-primary/8 text-primary) motion-reduce:transition-none max-[575px]:size-24"
               :class="
                 activeCategory === item.value
                   ? 'bg-primary/12 text-primary'
-                  : ''
+                  : 'group-hover:translate-x-2'
               "
             >
               <Icon :name="iconMap[item.value]" :size="16" />
@@ -141,45 +141,3 @@ const visibleItems = computed(() => {
     </Scrollbar>
   </div>
 </template>
-
-<style scoped>
-.file-list__header-icon,
-.file-list__item-icon {
-  transition:
-    background-color 180ms ease,
-    color 180ms ease,
-    transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.file-list__selection::before {
-  position: absolute;
-  top: 7px;
-  bottom: 7px;
-  left: 0;
-  width: 3px;
-  content: '';
-  background-color: rgb(var(--w-color-primary));
-  border-radius: 0 999px 999px 0;
-}
-
-.file-list__item:not(.file-list__item--active):hover .file-list__item-icon {
-  transform: translateX(2px);
-}
-
-.file-list__item:focus-visible {
-  box-shadow: 0 0 0 2px rgb(var(--w-color-primary) / 18%);
-}
-
-@media (width <= 1199px) and (width > 767px) {
-  .file-list__header {
-    padding-block: 10px;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .file-list__header-icon,
-  .file-list__item-icon {
-    transition: none;
-  }
-}
-</style>

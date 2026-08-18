@@ -64,16 +64,16 @@ function handleSeverityChange(value: string | number) {
     <TransitionGroup
       tag="div"
       class="relative flex flex-col gap-10"
-      enter-active-class="transition-[opacity,transform] duration-220 ease-out motion-reduce:transition-none"
+      enter-active-class="transition-[opacity,transform] duration-motion-moderate ease-motion-enter motion-reduce:transition-none"
       enter-from-class="-translate-y-6 scale-[0.985] opacity-0 motion-reduce:(translate-y-0 scale-100)"
-      leave-active-class="absolute inset-x-0 transition-[opacity,transform] duration-220 ease-out motion-reduce:transition-none"
+      leave-active-class="absolute inset-x-0 transition-[opacity,transform] duration-motion-moderate ease-motion-enter motion-reduce:transition-none"
       leave-to-class="-translate-y-6 scale-[0.985] opacity-0 motion-reduce:(translate-y-0 scale-100)"
-      move-class="transition-transform duration-220 ease-out motion-reduce:transition-none"
+      move-class="transition-transform duration-motion-moderate ease-motion-enter motion-reduce:transition-none"
     >
       <div
         v-for="item in filteredItems"
         :key="item.id"
-        class="rounded-8 border-1 border-solid border-color-2 bg-container-secondary p-12 transition-[border-color,background-color,box-shadow,transform] duration-180 ease-out hover:(-translate-y-2 shadow-[0_6px_16px_rgb(var(--w-color-primary)_/_10%)]) active:(translate-y-0 scale-[0.995]) motion-reduce:transition-none motion-reduce:hover:translate-y-0 motion-reduce:active:scale-100"
+        class="rounded-8 border-1 border-solid border-color-2 bg-container-secondary p-12 transition-[border-color,background-color,box-shadow,transform] duration-motion-base ease-motion-enter hover:(-translate-y-2 shadow-[0_6px_16px_rgb(var(--w-color-primary)_/_10%)]) active:(translate-y-0 scale-[0.995]) motion-reduce:transition-none motion-reduce:hover:translate-y-0 motion-reduce:active:scale-100"
       >
         <div class="flex items-start gap-10">
           <span

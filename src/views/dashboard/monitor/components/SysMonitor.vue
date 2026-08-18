@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { NumberTicker } from '@/components'
+import { NumberTicker } from '@/components/numberTicker'
 import {
   getCssRgbVar,
   getCssRgbVarAlpha,

@@ -1,24 +1,7 @@
-import {
-  computed,
-  nextTick,
-  shallowRef,
-  type CSSProperties,
-  type Ref,
-} from 'vue'
-import type { FileSelectionKey, FileViewMode, IFile } from '../types'
-import type { ScrollbarInstance } from '@/components'
-
-interface SelectionRect {
-  height: number
-  left: number
-  top: number
-  width: number
-}
-
-interface SelectionItemRect {
-  key: FileSelectionKey
-  rect: SelectionRect
-}
+import { computed, nextTick, shallowRef, type Ref } from 'vue'
+import { useRangeSelection } from '@/composables/useRangeSelection'
+import type { FileSelectionKey, FileViewMode, IFile } from '../components/types'
+import type { ScrollbarInstance } from '@/components/scrollbar'
 
 interface UseFileSelectionOptions {
   items: Ref<IFile[]>
@@ -28,34 +11,9 @@ interface UseFileSelectionOptions {
 }
 
 const fileItemSelector = '[data-file-manager-item-id]'
-const actionTargetSelector =
-  'button, input, textarea, select, a, [role="menuitem"], [data-file-manager-action]'
 
 function getFileIdSelector(id: FileSelectionKey) {
   return `[data-file-manager-item-id="${CSS.escape(id)}"]`
-}
-
-function normalizeRect(
-  startX: number,
-  startY: number,
-  currentX: number,
-  currentY: number
-): SelectionRect {
-  return {
-    height: Math.abs(currentY - startY),
-    left: Math.min(startX, currentX),
-    top: Math.min(startY, currentY),
-    width: Math.abs(currentX - startX),
-  }
-}
-
-function intersects(a: SelectionRect, b: SelectionRect) {
-  return (
-    a.left < b.left + b.width &&
-    a.left + a.width > b.left &&
-    a.top < b.top + b.height &&
-    a.top + a.height > b.top
-  )
 }
 
 export function useFileSelection({
@@ -66,38 +24,9 @@ export function useFileSelection({
 }: UseFileSelectionOptions) {
   const focusedKey = shallowRef<FileSelectionKey>()
   const selectionAnchorKey = shallowRef<FileSelectionKey>()
-  const dragSelection = shallowRef<
-    | {
-        baseKeys: FileSelectionKey[]
-        contentLeft: number
-        contentTop: number
-        itemRects: SelectionItemRect[]
-        pointerId: number
-        rect: SelectionRect
-        startX: number
-        startY: number
-        viewportRect: SelectionRect
-        viewportStartX: number
-        viewportStartY: number
-      }
-    | undefined
-  >()
 
   const selectableItems = computed(() => items.value)
   const selectedKeySet = computed(() => new Set(selectedKeys.value))
-  const dragSelectionStyle = computed<CSSProperties | undefined>(() => {
-    const rect = dragSelection.value?.viewportRect
-    if (!rect) return undefined
-
-    return {
-      position: 'fixed',
-      height: `${rect.height}px`,
-      left: `${rect.left}px`,
-      top: `${rect.top}px`,
-      width: `${rect.width}px`,
-      zIndex: 2000,
-    }
-  })
 
   function focusContainer() {
     const element =
@@ -110,6 +39,57 @@ export function useFileSelection({
   function getContentElement() {
     return containerRef.value?.getContentElement() ?? null
   }
+
+  const rangeContainer = computed(
+    () => containerRef.value?.getScrollElement() ?? null
+  )
+  const itemVersion = computed(() =>
+    items.value.map((item) => item.id).join('|')
+  )
+  const rangeTargets = computed(() => {
+    itemVersion.value
+    const content = getContentElement()
+    return content
+      ? Array.from(content.querySelectorAll<HTMLElement>(fileItemSelector))
+      : []
+  })
+  const selectedRangeTargets = computed(() => {
+    const selected = selectedKeySet.value
+    return rangeTargets.value.filter((element) =>
+      selected.has(element.dataset.fileManagerItemId ?? '')
+    )
+  })
+
+  const rangeSelection = useRangeSelection<HTMLElement>({
+    container: rangeContainer,
+    getKey: (element) => element.dataset.fileManagerItemId ?? '',
+    multiple: true,
+    observeScroll: true,
+    selected: selectedRangeTargets,
+    targets: rangeTargets,
+    threshold: 4,
+    onSelecting: (_rect, elements) => {
+      const keys = elements
+        .map((element) => element.dataset.fileManagerItemId ?? '')
+        .filter(Boolean) as FileSelectionKey[]
+      setSelectedKeys(keys)
+      focusedKey.value = keys.at(-1) ?? keys.at(0)
+    },
+    onStart: () => {
+      focusContainer()
+    },
+    onChange: (elements) => {
+      setSelectedKeys(
+        elements
+          .map((element) => element.dataset.fileManagerItemId ?? '')
+          .filter(Boolean) as FileSelectionKey[]
+      )
+    },
+  })
+  const dragSelection = computed(() =>
+    rangeSelection.isSelecting.value ? true : undefined
+  )
+  const dragSelectionStyle = rangeSelection.selectionStyle
 
   function getItemIndex(key: FileSelectionKey | undefined) {
     if (!key) return -1
@@ -194,137 +174,10 @@ export function useFileSelection({
   }
 
   function clearSelection() {
+    rangeSelection.cancelSelection()
     selectedKeys.value = []
     focusedKey.value = undefined
     selectionAnchorKey.value = undefined
-  }
-
-  function getContentPoint(event: PointerEvent) {
-    const content = getContentElement()
-    if (!content) return undefined
-
-    const contentRect = content.getBoundingClientRect()
-    return {
-      x: event.clientX - contentRect.left,
-      y: event.clientY - contentRect.top,
-    }
-  }
-
-  function collectItemRects(content: HTMLElement): SelectionItemRect[] {
-    const contentRect = content.getBoundingClientRect()
-    return Array.from(content.querySelectorAll<HTMLElement>(fileItemSelector))
-      .map((element) => {
-        const itemRect = element.getBoundingClientRect()
-        const key = element.dataset.fileManagerItemId
-        if (!key) return undefined
-        return {
-          key,
-          rect: {
-            height: itemRect.height,
-            left: itemRect.left - contentRect.left,
-            top: itemRect.top - contentRect.top,
-            width: itemRect.width,
-          },
-        }
-      })
-      .filter((item): item is SelectionItemRect => !!item)
-  }
-
-  function getIntersectingKeys(
-    rect: SelectionRect,
-    itemRects: SelectionItemRect[]
-  ) {
-    return itemRects
-      .filter((item) => intersects(rect, item.rect))
-      .map((item) => item.key)
-  }
-
-  function handleSelectionPointerDown(event: PointerEvent) {
-    if (event.button !== 0) return
-    if (!(event.target instanceof HTMLElement)) return
-    if (
-      event.target.closest(fileItemSelector) ||
-      event.target.closest(actionTargetSelector)
-    ) {
-      return
-    }
-
-    const content = getContentElement()
-    const point = getContentPoint(event)
-    if (!content || !point) return
-
-    const contentRect = content.getBoundingClientRect()
-    focusContainer()
-    const baseKeys = event.ctrlKey || event.metaKey ? selectedKeys.value : []
-    const rect = normalizeRect(point.x, point.y, point.x, point.y)
-    const viewportRect = normalizeRect(
-      event.clientX,
-      event.clientY,
-      event.clientX,
-      event.clientY
-    )
-    dragSelection.value = {
-      baseKeys,
-      contentLeft: contentRect.left,
-      contentTop: contentRect.top,
-      itemRects: collectItemRects(content),
-      pointerId: event.pointerId,
-      rect,
-      startX: point.x,
-      startY: point.y,
-      viewportRect,
-      viewportStartX: event.clientX,
-      viewportStartY: event.clientY,
-    }
-    if (!baseKeys.length) setSelectedKeys([])
-    try {
-      content.setPointerCapture(event.pointerId)
-    } catch {
-      // Some custom scroll containers may retarget pointer events.
-    }
-    event.preventDefault()
-  }
-
-  function handleSelectionPointerMove(event: PointerEvent) {
-    const selection = dragSelection.value
-    if (!selection || event.pointerId !== selection.pointerId) return
-
-    const point = {
-      x: event.clientX - selection.contentLeft,
-      y: event.clientY - selection.contentTop,
-    }
-    const rect = normalizeRect(
-      selection.startX,
-      selection.startY,
-      point.x,
-      point.y
-    )
-    const viewportRect = normalizeRect(
-      selection.viewportStartX,
-      selection.viewportStartY,
-      event.clientX,
-      event.clientY
-    )
-    const selectedByRect = getIntersectingKeys(rect, selection.itemRects)
-    dragSelection.value = {
-      ...selection,
-      rect,
-      viewportRect,
-    }
-    setSelectedKeys([...selection.baseKeys, ...selectedByRect])
-    focusedKey.value = selectedByRect.at(-1) ?? selection.baseKeys.at(-1)
-  }
-
-  function finishDragSelection(event?: PointerEvent) {
-    const selection = dragSelection.value
-    if (!selection) return
-
-    const content = getContentElement()
-    if (content?.hasPointerCapture(selection.pointerId)) {
-      content.releasePointerCapture(selection.pointerId)
-    }
-    dragSelection.value = undefined
-    if (event) event.preventDefault()
   }
 
   function getGridColumnCount() {
@@ -442,12 +295,9 @@ export function useFileSelection({
     focusedKey,
     selectedKeySet,
     clearSelection,
-    finishDragSelection,
     handleCheckboxChange,
     handleItemClick,
     handleKeyDown,
-    handleSelectionPointerDown,
-    handleSelectionPointerMove,
     syncAfterItemsChange,
   }
 }

@@ -69,9 +69,9 @@ const cardStyles: Record<string, CSSProperties> = {
 <style scoped>
 .analysis-card {
   transition:
-    border-color 180ms ease,
-    box-shadow 180ms ease,
-    transform 180ms ease;
+    border-color var(--w-motion-duration-base) var(--w-motion-ease-standard),
+    box-shadow var(--w-motion-duration-base) var(--w-motion-ease-standard),
+    transform var(--w-motion-duration-base) var(--w-motion-ease-standard);
 }
 
 .analysis-card:hover {

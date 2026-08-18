@@ -1,4 +1,4 @@
-import type { TicketActivityType, TicketSlaStatus } from '../types'
+import type { TicketActivityType, TicketSlaStatus } from '../center/types'
 import type { TicketQueueKey } from './types'
 
 export const CURRENT_AGENT = '李明'

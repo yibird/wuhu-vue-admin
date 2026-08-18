@@ -10,24 +10,26 @@
       class="min-w-0 flex-1 overflow-hidden"
       :options="taskGroupScrollbarOptions"
     >
-      <div ref="groupRef" class="relative min-h-200 p-10 flex flex-col gap-10">
-        <DndSortableItem
-          v-for="(item, index) in items"
-          :key="item.id"
-          :data="{ status }"
-          :group="groupId"
-          :id="item.id"
-          :index="index"
-          accept="task-card"
-          class="task-card-item"
-          type="task-card"
-        >
-          <Item
-            :item="item"
-            @delete="emit('delete', $event)"
-            @edit="emit('edit', $event)"
-          />
-        </DndSortableItem>
+      <div ref="groupRef" class="relative min-h-200 p-10">
+        <div class="flex flex-col gap-10">
+          <DraggableItem
+            v-for="(item, index) in items"
+            :key="item.id"
+            :data="{ status }"
+            :group="groupId"
+            :id="item.id"
+            :index="index"
+            accept="task-card"
+            class="task-card-item"
+            type="task-card"
+          >
+            <Item
+              :item="item"
+              @delete="emit('delete', $event)"
+              @edit="emit('edit', $event)"
+            />
+          </DraggableItem>
+        </div>
         <div
           v-if="items.length === 0"
           class="h-180 flex justify-center items-center"
@@ -42,9 +44,9 @@
 <script lang="ts" setup>
 import { computed, useTemplateRef } from 'vue'
 import { useDroppable } from '@dnd-kit/vue'
-import DndSortableItem from '@/components/dndSortableItem/index.vue'
+import { DraggableItem } from '@/components/draggable'
 import Item from './item.vue'
-import type { ScrollbarProps } from '@/components'
+import type { ScrollbarProps } from '@/components/scrollbar'
 import type { CardTaskGroupProps, TaskActionEmits } from '../types'
 
 const props = defineProps<CardTaskGroupProps>()
@@ -66,35 +68,27 @@ useDroppable({
 </script>
 
 <style scoped>
-.task-card-item[data-sortable-drag-source='true'] {
+.task-card-item[data-w-draggable-drag-source='true'] {
   position: relative;
   z-index: 10000;
   user-select: none;
 }
 
-.task-card-item[data-sortable-dragging='true'] {
+.task-card-item[data-w-draggable-dragging='true'] {
   position: relative;
   z-index: 10000 !important;
   pointer-events: none;
-  transform: rotate(1deg);
-  will-change: transform;
+  will-change: transform, translate;
 }
 
-.task-card-item[data-sortable-dragging='true'],
-.task-card-item[data-sortable-drop-target='true'] {
+.task-card-item[data-w-draggable-dragging='true'],
+.task-card-item[data-w-draggable-drop-target='true'] {
   margin-block-end: 0 !important;
 }
 
-.task-card-item[data-sortable-dragging='true'] :deep(.task-card-panel),
-.task-card-item[data-sortable-drop-target='true'] :deep(.task-card-panel) {
+.task-card-item[data-w-draggable-dragging='true'] :deep(.task-card-panel),
+.task-card-item[data-w-draggable-drop-target='true'] :deep(.task-card-panel) {
   border-color: rgb(var(--w-color-primary));
   box-shadow: 0 16px 36px rgb(15 23 42 / 18%);
-}
-
-.task-card-item[data-sortable-drag-source='true']:not(
-    [data-sortable-dragging='true']
-  )
-  :deep(.task-card-panel) {
-  opacity: 0.58;
 }
 </style>

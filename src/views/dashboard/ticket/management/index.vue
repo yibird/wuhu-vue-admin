@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { message } from 'antdv-next'
+import message from 'antdv-next/dist/message/index'
 import {
   ticketCategoryOptions,
   ticketPriorityOptions,
   ticketStatusOptions,
-} from '../data'
-import type { TicketPriority } from '../types'
+} from '../center/data'
+import type { TicketPriority } from '../center/types'
 import TicketConversation from './components/TicketConversation.vue'
 import TicketProperties from './components/TicketProperties.vue'
 import TicketQueue from './components/TicketQueue.vue'

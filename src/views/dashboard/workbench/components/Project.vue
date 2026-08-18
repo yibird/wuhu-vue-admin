@@ -1,12 +1,7 @@
 <template>
   <section data-swapy-slot="project" class="page-enter page-enter--3 min-w-0">
-    <a-card
-      size="small"
-      :segmented="{ content: true }"
-      data-swapy-item="project"
-      content-class="p-0!"
-    >
-      <template #header>
+    <a-card :styles="{ body: { padding: 0 } }" data-swapy-item="project">
+      <template #title>
         <div class="min-w-0 flex items-center gap-8">
           <span class="text-base text-main font-700">重点项目</span>
           <span
@@ -16,20 +11,20 @@
           </span>
         </div>
       </template>
-      <template #header-extra>
+      <template #extra>
         <a-button type="link" size="small">查看全部</a-button>
       </template>
 
-      <div class="grid grid-cols-1 gap-10 p-12 xl:grid-cols-2">
+      <div class="p-20 grid grid-cols-1 gap-10 xl:grid-cols-2">
         <article
           v-for="item in projectItems"
           :key="item.id"
-          class="group min-w-0 rounded-8 border-1 border-color-2 border-solid bg-container p-14 transition-[border-color,background-color,box-shadow,transform] duration-200 hover:(-translate-y-1 border-color-primary bg-primary/5 shadow-all-sm)"
+          class="group min-w-0 rounded-8 border-1 border-color-2 border-solid bg-container p-14 transition-[border-color,background-color,box-shadow,transform] duration-motion-base hover:(-translate-y-1 border-color-primary bg-primary/5 shadow-all-sm)"
         >
           <div class="min-w-0 flex items-start justify-between gap-12">
             <div class="min-w-0 flex items-center gap-10">
               <span
-                class="size-46 flex shrink-0 items-center justify-center rounded-10 border-1 border-solid shadow-all-sm transition-transform duration-200 group-hover:(-translate-y-1 scale-105)"
+                class="size-46 flex shrink-0 items-center justify-center rounded-10 border-1 border-solid shadow-all-sm transition-transform duration-motion-base group-hover:(-translate-y-1 scale-105)"
                 :class="item.logoClass"
               >
                 <Icon :name="item.logo.icon" :size="21" />

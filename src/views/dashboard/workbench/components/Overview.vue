@@ -1,6 +1,6 @@
 <template>
   <section
-    class="overflow-hidden rounded-4 border-1 border-color-2 border-solid bg-container transition-[border-color,box-shadow] duration-200 hover:(border-color-1 shadow-all-sm)"
+    class="overflow-hidden rounded-4 border-1 border-color-2 border-solid bg-container transition-[border-color,box-shadow] duration-motion-base hover:(border-color-1 shadow-all-sm)"
   >
     <div class="grid gap-0 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)]">
       <div class="min-w-0 p-16 sm:p-20">
@@ -46,14 +46,14 @@
         <div
           v-for="item in metrics"
           :key="item.title"
-          class="group min-w-0 border-color-2 border-r-1 border-r-solid border-b-1 border-b-solid p-14 transition-colors duration-200 hover:bg-hover last:border-r-0 sm:last:border-r-0 lg:nth-2:border-r-0 lg:nth-last-2:border-b-0 lg:last:border-b-0"
+          class="group min-w-0 border-color-2 border-r-1 border-r-solid border-b-1 border-b-solid p-14 transition-colors duration-motion-base hover:bg-hover last:border-r-0 sm:last:border-r-0 lg:nth-2:border-r-0 lg:nth-last-2:border-b-0 lg:last:border-b-0"
         >
           <div class="flex items-center justify-between gap-10">
             <span class="truncate text-sm text-secondary">{{
               item.title
             }}</span>
             <span
-              class="size-30 shrink-0 flex items-center justify-center rounded-8 transition-transform duration-200 group-hover:scale-110"
+              class="size-30 shrink-0 flex items-center justify-center rounded-8 transition-transform duration-motion-base group-hover:scale-110"
               :class="item.tone"
             >
               <Icon :name="item.icon" :size="16" />
@@ -72,7 +72,7 @@
 </template>
 
 <script lang="ts" setup>
-import { NumberTicker } from '@/components'
+import { NumberTicker } from '@/components/numberTicker'
 import type { OverviewMetric } from './types'
 
 const metrics: OverviewMetric[] = [

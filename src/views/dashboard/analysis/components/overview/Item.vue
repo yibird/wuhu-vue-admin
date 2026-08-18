@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { NumberTicker } from '@/components'
+import { NumberTicker } from '@/components/numberTicker'
 import ItemExtra from './ItemExtra.vue'
 import type { CardItemProps, CardItemEmits } from '../types.ts'
 
@@ -52,9 +52,9 @@ const onChange = (val: string) => {
 .analysis-overview-card {
   cursor: default;
   transition:
-    border-color 180ms ease,
-    box-shadow 180ms ease,
-    transform 180ms ease;
+    border-color var(--w-motion-duration-base) var(--w-motion-ease-standard),
+    box-shadow var(--w-motion-duration-base) var(--w-motion-ease-standard),
+    transform var(--w-motion-duration-base) var(--w-motion-ease-standard);
 }
 
 .analysis-overview-card:hover,
@@ -71,8 +71,8 @@ const onChange = (val: string) => {
 
 .analysis-overview-icon {
   transition:
-    background-color 180ms ease,
-    transform 180ms ease;
+    background-color var(--w-motion-duration-base) var(--w-motion-ease-standard),
+    transform var(--w-motion-duration-base) var(--w-motion-ease-standard);
 }
 
 .analysis-overview-card:hover .analysis-overview-icon,

@@ -1,26 +1,21 @@
 <template>
   <section data-swapy-slot="dynamic" class="page-enter page-enter--4 min-w-0">
-    <a-card
-      size="small"
-      :segmented="{ content: true }"
-      content-class="p-0!"
-      data-swapy-item="dynamic"
-    >
-      <template #header>
+    <a-card :styles="{ body: { padding: 0 } }" data-swapy-item="dynamic">
+      <template #title>
         <span class="text-base text-main font-700">团队动态</span>
       </template>
-      <template #header-extra>
+      <template #extra>
         <a-button type="link" size="small">更多</a-button>
       </template>
 
-      <div class="p-12">
+      <div class="p-20 flex flex-col">
         <div
           v-for="item in items"
           :key="item.id"
-          class="group grid grid-cols-[34px_minmax(0,1fr)] gap-10 rounded-8 border-color-2 border-b-1 border-b-solid px-8 py-12 transition-[background-color,transform] duration-200 hover:(translate-x-2 bg-hover) first:pt-0 last:border-b-0 last:pb-0"
+          class="group flex gap-20 px-8 py-12 rounded-4 transition-colors duration-motion-base hover:(bg-hover)"
         >
           <span
-            class="size-34 flex items-center justify-center rounded-full bg-fill-tertiary text-secondary transition-[background-color,color,border-color,transform] duration-200 group-hover:(scale-108 icon-primary-soft)"
+            class="size-34 grid place-items-center rounded-full bg-fill-tertiary text-secondary transition-[background-color,color] duration-motion-base group-hover:(bg-primary-tint text-primary)"
           >
             <Icon :name="item.icon" :size="16" />
           </span>

@@ -2,7 +2,7 @@
 import type { MenuProps } from 'antdv-next'
 import { h, ref, toRef, watch } from 'vue'
 import { Motion } from 'motion-v'
-import { Icon } from '@/components'
+import { Icon } from '@/components/icon'
 import type { FileSelectionKey, FileViewMode, IFile } from '../types'
 import { FILE_NODE_TYPE } from '../types'
 import {
@@ -12,7 +12,7 @@ import {
   getFileExtension,
   getFileNameWithoutExtension,
 } from '../utils'
-import { useFileSelection } from './useFileSelection'
+import { useFileSelection } from '../../composables/useFileSelection'
 import textIcon from '@/assets/svg/text.svg'
 import videoIcon from '@/assets/svg/video.svg'
 import mp3Icon from '@/assets/svg/mp3.svg'
@@ -25,7 +25,7 @@ import cssIcon from '@/assets/svg/css.svg'
 import jsIcon from '@/assets/svg/js.svg'
 import unknownIcon from '@/assets/svg/unknown.svg'
 import folderIcon from '@/assets/svg/folder.svg'
-import type { ScrollbarInstance } from '@/components'
+import type { ScrollbarInstance } from '@/components/scrollbar'
 
 const selectedKeys = defineModel<FileSelectionKey[]>('selectedKeys', {
   required: true,
@@ -65,12 +65,9 @@ const {
   dragSelection,
   dragSelectionStyle,
   selectedKeySet,
-  finishDragSelection,
   handleCheckboxChange,
   handleItemClick,
   handleKeyDown,
-  handleSelectionPointerDown,
-  handleSelectionPointerMove,
   syncAfterItemsChange,
 } = useFileSelection({
   containerRef: gridRef,
@@ -159,8 +156,8 @@ function isImageFile(file: IFile) {
 function getPreviewClass(file: IFile, size: 'grid' | 'list') {
   const classes =
     size === 'grid'
-      ? 'file-grid__preview size-64 flex-center overflow-hidden rounded-4'
-      : 'file-grid__preview size-42 flex-center shrink-0 overflow-hidden rounded-4'
+      ? 'file-grid__preview size-64 flex-center overflow-hidden rounded-4 transition-transform duration-motion-moderate ease-motion-enter group-hover:(-translate-y-2 scale-104) motion-reduce:transition-none'
+      : 'file-grid__preview size-42 flex-center shrink-0 overflow-hidden rounded-4 transition-transform duration-motion-moderate ease-motion-enter group-hover:(-translate-y-2 scale-104) motion-reduce:transition-none'
   return isImageFile(file) && isFile(file)
     ? `${classes} bg-transparent`
     : classes
@@ -168,7 +165,9 @@ function getPreviewClass(file: IFile, size: 'grid' | 'list') {
 
 function getImageClass(file: IFile, size: 'grid' | 'list') {
   const classes =
-    size === 'grid' ? 'file-grid__image size-58' : 'file-grid__image size-36'
+    size === 'grid'
+      ? 'file-grid__image size-58 transition-[filter,transform] duration-motion-moderate ease-motion-standard group-hover:[filter:saturate(1.06)] motion-reduce:transition-none'
+      : 'file-grid__image size-36 transition-[filter,transform] duration-motion-moderate ease-motion-standard group-hover:[filter:saturate(1.06)] motion-reduce:transition-none'
   return isImageFile(file) && isFile(file)
     ? `${classes} rounded-4 object-cover`
     : `${classes} object-cover`
@@ -355,23 +354,17 @@ function handleAction(file: IFile, { key }: { key: string }) {
     class="file-grid min-h-0"
     :content-class="
       viewMode === 'grid'
-        ? 'relative grid select-none grid-cols-[repeat(auto-fill,minmax(148px,1fr))] gap-10 py-10 max-[575px]:grid-cols-[repeat(auto-fill,minmax(118px,1fr))] max-[575px]:gap-8'
+        ? 'relative grid select-none grid-cols-[repeat(auto-fill,minmax(148px,1fr))] gap-10 py-10 px-2 max-[575px]:grid-cols-[repeat(auto-fill,minmax(118px,1fr))] max-[575px]:gap-8'
         : 'relative flex select-none flex-col gap-8 py-10'
     "
     tabindex="0"
     @keydown="handleKeyDown"
-    @pointerdown="handleSelectionPointerDown"
-    @pointermove="handleSelectionPointerMove"
-    @pointerup="finishDragSelection"
-    @pointercancel="finishDragSelection"
   >
-    <Teleport to="body">
-      <div
-        v-if="dragSelection"
-        class="pointer-events-none rounded-4 border-1 border-primary border-solid bg-primary/12"
-        :style="dragSelectionStyle"
-      ></div>
-    </Teleport>
+    <div
+      v-if="dragSelection"
+      class="pointer-events-none absolute left-0 top-0 z-20 rounded-4 border-1 border-primary border-solid bg-primary/12 will-change-transform"
+      :style="dragSelectionStyle"
+    ></div>
 
     <a-empty
       v-if="items.length === 0"
@@ -398,7 +391,7 @@ function handleAction(file: IFile, { key }: { key: string }) {
           :transition="itemTransition"
           :data-file-manager-item-id="item.id"
           :class="[
-            'file-grid__card group relative min-w-0 cursor-pointer rounded-6 border-1 border-solid bg-container-secondary p-10 text-left outline-none transition-[background-color,border-color,box-shadow] duration-180 hover:(border-color-primary bg-selected shadow-all-sm) focus-visible:border-primary',
+            'file-grid__card group relative min-w-0 cursor-pointer rounded-6 border-1 border-solid bg-container-secondary p-10 text-left outline-none transition-[background-color,border-color,box-shadow] duration-motion-base hover:(border-color-primary bg-selected shadow-all-sm) focus-visible:border-primary',
             isSelected(item)
               ? 'border-color-primary bg-selected text-primary'
               : 'border-color-1 text-main',
@@ -544,27 +537,3 @@ function handleAction(file: IFile, { key }: { key: string }) {
     </template>
   </Scrollbar>
 </template>
-
-<style scoped>
-.file-grid__preview,
-.file-grid__image {
-  transition:
-    filter 220ms ease,
-    transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.file-grid__card:hover .file-grid__preview {
-  transform: translateY(-2px) scale(1.04);
-}
-
-.file-grid__card:hover .file-grid__image {
-  filter: saturate(1.06);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .file-grid__preview,
-  .file-grid__image {
-    transition: none;
-  }
-}
-</style>

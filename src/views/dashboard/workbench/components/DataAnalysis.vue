@@ -1,21 +1,16 @@
 <template>
   <section data-swapy-slot="analysis" class="page-enter page-enter--7 min-w-0">
-    <a-card
-      size="small"
-      :segmented="{ content: true }"
-      content-class="p-0!"
-      data-swapy-item="analysis"
-    >
-      <template #header>
+    <a-card :styles="{ body: { padding: 0 } }" data-swapy-item="analysis">
+      <template #title>
         <span class="text-base text-main font-700">数据概览</span>
       </template>
 
-      <div class="p-12">
+      <div class="p-20">
         <div class="grid grid-cols-2 gap-8">
           <div
             v-for="item in metrics"
             :key="item.label"
-            class="group min-w-0 rounded-8 bg-fill-tertiary p-10 transition-[background-color,box-shadow,transform] duration-200 hover:(-translate-y-1 bg-hover shadow-all-sm)"
+            class="group min-w-0 rounded-8 bg-fill-tertiary p-10 transition-[background-color,box-shadow,transform] duration-motion-base hover:(-translate-y-1 bg-hover shadow-all-sm)"
           >
             <div class="truncate text-xs text-secondary">{{ item.label }}</div>
             <div class="mt-6 truncate text-lg text-main font-700">
@@ -59,11 +54,11 @@
         </div>
 
         <div
-          class="mt-16 rounded-8 border-1 border-color-2 border-solid bg-container p-12 transition-[border-color,box-shadow,transform] duration-200 hover:(-translate-y-1 border-color-primary shadow-all-sm)"
+          class="mt-16 rounded-8 border-1 border-color-2 border-solid bg-container p-12 transition-[border-color,box-shadow,transform] duration-motion-base hover:(-translate-y-1 border-color-primary shadow-all-sm)"
         >
           <div class="flex items-center gap-8">
             <span
-              class="size-30 flex items-center justify-center rounded-8 bg-warning-tint text-warning transition-transform duration-200"
+              class="size-30 flex items-center justify-center rounded-8 bg-warning-tint text-warning transition-transform duration-motion-base"
             >
               <Icon name="i-lucide:bell-ring" :size="16" />
             </span>
@@ -81,7 +76,7 @@
 </template>
 
 <script lang="ts" setup>
-import { NumberTicker } from '@/components'
+import { NumberTicker } from '@/components/numberTicker'
 import type { AnalysisMetric, AnalysisRankItem } from './types'
 
 const metrics: AnalysisMetric[] = [

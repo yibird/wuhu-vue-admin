@@ -1,5 +1,6 @@
 import type { UploadFile } from 'antdv-next'
-import { Modal, message } from 'antdv-next'
+import message from 'antdv-next/dist/message/index'
+import Modal from 'antdv-next/dist/modal/index'
 import dayjs from 'dayjs'
 import { onBeforeUnmount } from 'vue'
 import { useClipboard } from '@vueuse/core'

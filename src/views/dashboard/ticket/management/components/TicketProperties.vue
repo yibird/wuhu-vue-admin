@@ -4,8 +4,8 @@ import {
   getTicketPriorityMeta,
   getTicketStatusMeta,
   ticketPriorityList,
-} from '../../data'
-import type { TicketPriority, TicketRecord } from '../../types'
+} from '../../center/data'
+import type { TicketPriority, TicketRecord } from '../../center/types'
 import {
   CURRENT_AGENT,
   closingReasonOptions,

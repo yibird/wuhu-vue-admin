@@ -3,11 +3,11 @@ import {
   getCssRgbVarAlpha,
   useEChartsTheme,
 } from '@/composables/useEChartsTheme'
-import { useECharts } from '@/plugins/echarts'
+import { useDashboardECharts } from '@/plugins/echartsDashboard'
 import VChart from 'vue-echarts'
 import type { EChartsCoreOption } from 'echarts/core'
 
-useECharts()
+useDashboardECharts()
 
 const { baseChartOption, eChartsThemeName, getEChartsColor } = useEChartsTheme()
 

@@ -1,8 +1,12 @@
 import dayjs from 'dayjs'
 import { computed, reactive, shallowRef, watch } from 'vue'
-import { getTicketPriorityMeta } from '../../data'
-import { useTicketStore } from '../../store'
-import type { TicketPriority, TicketRecord, TicketSlaStatus } from '../../types'
+import { getTicketPriorityMeta } from '../../center/data'
+import { useTicketStore } from '../../center/store'
+import type {
+  TicketPriority,
+  TicketRecord,
+  TicketSlaStatus,
+} from '../../center/types'
 import { CURRENT_AGENT, DEFAULT_TEAM, ticketQueueMeta } from '../data'
 import type {
   TicketAssignment,

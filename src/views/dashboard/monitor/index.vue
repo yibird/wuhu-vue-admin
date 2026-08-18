@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import { useClipboard, useIntervalFn } from '@vueuse/core'
 import { onUnmounted } from 'vue'
-import { message } from 'antdv-next'
-import { NumberTicker } from '@/components'
+import message from 'antdv-next/dist/message/index'
+import { NumberTicker } from '@/components/numberTicker'
 import { useLoading } from '@/composables'
 import {
   AlertCenter,

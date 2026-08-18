@@ -1,11 +1,11 @@
 <script lang="ts" setup>
 import { useEChartsTheme } from '@/composables/useEChartsTheme'
-import { useECharts } from '@/plugins/echarts'
+import { useDashboardECharts } from '@/plugins/echartsDashboard'
 import Card from './Card.vue'
 import VChart from 'vue-echarts'
 import type { EChartsCoreOption } from 'echarts/core'
 
-useECharts()
+useDashboardECharts()
 
 const { baseChartOption, eChartsThemeName, getEChartsColor } = useEChartsTheme()
 
@@ -67,7 +67,7 @@ const chartOption = computed<EChartsCoreOption>(() => ({
     description="搜索占比分布"
     body-class="p-0"
   >
-    <div class="h-320 w-full p-12 max-md:h-280">
+    <div class="h-380 w-full p-12 max-md:h-280">
       <VChart
         :option="chartOption"
         :theme="eChartsThemeName"

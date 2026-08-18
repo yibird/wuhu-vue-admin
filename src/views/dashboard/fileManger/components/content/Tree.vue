@@ -2,7 +2,7 @@
 import type { MenuProps, TreeDataNode } from 'antdv-next'
 import { computed, h, shallowRef, watch } from 'vue'
 import { Motion } from 'motion-v'
-import { Icon } from '@/components'
+import { Icon } from '@/components/icon'
 import {
   FILE_NODE_TYPE,
   ROOT_PARENT_ID,
@@ -370,7 +370,9 @@ function handleAction(file: IFile, { key }: { key: string }) {
 </script>
 
 <template>
-  <div class="file-tree h-full min-h-0 overflow-hidden">
+  <div
+    class="file-tree h-full min-h-0 overflow-hidden [&_.ant-tree-node-content-wrapper]:(min-w-0 flex-1 rounded-6 p-0) [&_.ant-tree-switcher]:(transition-[background-color,color] duration-motion-base ease-motion-standard) [&_.ant-tree-switcher:hover]:(bg-hover text-primary) [&_.ant-tree-title]:(block min-w-0) [&_.ant-tree-treenode]:(w-full py-2) motion-reduce:[&_.ant-tree-switcher]:transition-none"
+  >
     <a-empty
       v-if="treeData.length === 0"
       class="py-72"
@@ -401,7 +403,7 @@ function handleAction(file: IFile, { key }: { key: string }) {
             <a-dropdown :trigger="['contextmenu']" :menu="getActionMenu(file)">
               <Motion
                 as="div"
-                class="file-tree__row group border-1 border-transparent border-solid text-secondary hover:(border-color-2 bg-hover)"
+                class="file-tree__row group grid min-w-0 cursor-pointer grid-cols-[minmax(260px,1fr)_104px_104px_116px_168px_44px] items-center gap-12 rounded-6 border-1 border-transparent border-solid px-10 py-8 text-secondary transition-[background-color,border-color] duration-motion-base ease-motion-standard hover:(border-color-2 bg-hover) motion-reduce:transition-none max-[900px]:(grid-cols-[minmax(0,1fr)_32px] gap-8)"
                 :data-file-manager-item-id="file.id"
                 :while-hover="rowHover"
                 :while-press="rowPress"
@@ -409,12 +411,12 @@ function handleAction(file: IFile, { key }: { key: string }) {
                 @dblclick.stop="handleDoubleClick(file)"
                 @contextmenu.stop
               >
-                <div class="file-tree__name">
+                <div class="min-w-0 flex items-center gap-8">
                   <img
                     :src="getIcon(file)"
                     :alt="file.fileName"
                     :class="[
-                      'file-tree__icon size-28 shrink-0 object-cover',
+                      'file-tree__icon size-28 shrink-0 object-cover transition-transform duration-motion-base ease-motion-enter group-hover:scale-106 motion-reduce:transition-none',
                       isDirectory(file) ? '' : 'rounded-4',
                     ]"
                   />
@@ -432,20 +434,30 @@ function handleAction(file: IFile, { key }: { key: string }) {
                     class="shrink-0 text-warning"
                   />
                 </div>
-                <span class="file-tree__meta">
+                <span
+                  class="min-w-0 truncate whitespace-nowrap text-xs max-[900px]:hidden"
+                >
                   {{
                     isDirectory(file)
                       ? '文件夹'
                       : getFileCategoryLabel(file.fileType)
                   }}
                 </span>
-                <span class="file-tree__meta">
+                <span
+                  class="min-w-0 truncate whitespace-nowrap text-xs max-[900px]:hidden"
+                >
                   {{ isDirectory(file) ? '-' : formatFileSize(file.fileSize) }}
                 </span>
-                <span class="file-tree__meta">{{ file.updater || '-' }}</span>
-                <span class="file-tree__meta">{{
-                  file.updateTime || '-'
-                }}</span>
+                <span
+                  class="min-w-0 truncate whitespace-nowrap text-xs max-[900px]:hidden"
+                >
+                  {{ file.updater || '-' }}
+                </span>
+                <span
+                  class="min-w-0 truncate whitespace-nowrap text-xs max-[900px]:hidden"
+                >
+                  {{ file.updateTime || '-' }}
+                </span>
                 <a-dropdown :trigger="['click']" :menu="getActionMenu(file)">
                   <button
                     type="button"
@@ -466,89 +478,3 @@ function handleAction(file: IFile, { key }: { key: string }) {
     </div>
   </div>
 </template>
-
-<style scoped>
-.file-tree :deep(.ant-tree-treenode) {
-  width: 100%;
-  padding: 2px 0;
-}
-
-.file-tree :deep(.ant-tree-node-content-wrapper) {
-  flex: 1;
-  min-width: 0;
-  padding: 0;
-  border-radius: 6px;
-}
-
-.file-tree :deep(.ant-tree-title) {
-  display: block;
-  min-width: 0;
-}
-
-.file-tree__row {
-  display: grid;
-  grid-template-columns: minmax(260px, 1fr) 104px 104px 116px 168px 44px;
-  gap: 12px;
-  align-items: center;
-  min-width: 0;
-  padding: 8px 10px;
-  cursor: pointer;
-  border-radius: 6px;
-  transition:
-    background-color 0.2s ease,
-    border-color 0.2s ease;
-}
-
-.file-tree__name {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-  min-width: 0;
-}
-
-.file-tree__meta {
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  font-size: 12px;
-  white-space: nowrap;
-}
-
-.file-tree__icon {
-  transition: transform 200ms cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.file-tree__row:hover .file-tree__icon {
-  transform: scale(1.06);
-}
-
-.file-tree :deep(.ant-tree-switcher) {
-  transition:
-    color 160ms ease,
-    background-color 160ms ease;
-}
-
-.file-tree :deep(.ant-tree-switcher:hover) {
-  color: rgb(var(--w-color-primary));
-  background-color: rgb(var(--w-bg-hover));
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .file-tree__row,
-  .file-tree__icon,
-  .file-tree :deep(.ant-tree-switcher) {
-    transition: none;
-  }
-}
-
-@media (width <= 900px) {
-  .file-tree__row {
-    grid-template-columns: minmax(0, 1fr) 32px;
-    gap: 8px;
-  }
-
-  .file-tree__meta {
-    display: none;
-  }
-}
-</style>

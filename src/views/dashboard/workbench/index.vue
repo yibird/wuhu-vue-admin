@@ -14,7 +14,7 @@
               <h1 class="m-0 text-2md text-main font-700">工作台</h1>
               <span
                 v-if="dragEnabled"
-                class="rounded-full bg-primary-tint px-8 py-3 text-xs text-primary transition-colors duration-200"
+                class="rounded-full bg-primary-tint px-8 py-3 text-xs text-primary transition-colors duration-motion-base"
               >
                 布局编辑中
               </span>
@@ -36,7 +36,7 @@
             </a-button>
             <button
               type="button"
-              class="size-34 flex items-center justify-center rounded-6 border-1 border-color-2 border-solid bg-container text-regular transition-[border-color,background-color,box-shadow,transform,color] duration-200 hover:(border-color-primary bg-hover shadow-all -translate-y-1) active:translate-y-0 disabled:cursor-not-allowed disabled:text-disabled disabled:hover:(border-color-2 bg-container shadow-none translate-y-0)"
+              class="size-34 flex items-center justify-center rounded-6 border-1 border-color-2 border-solid bg-container text-regular transition-[border-color,background-color,box-shadow,transform,color] duration-motion-base hover:(border-color-primary bg-hover shadow-all -translate-y-1) active:translate-y-0 disabled:cursor-not-allowed disabled:text-disabled disabled:hover:(border-color-2 bg-container shadow-none translate-y-0)"
               :class="{
                 'border-color-primary bg-primary-tint text-primary shadow-all':
                   dragEnabled,
@@ -78,6 +78,7 @@
                 @open-settings="openEditProjectSettings"
               />
               <Dynamic />
+              <DataAnalysis />
             </a-col>
             <a-col
               :xs="24"
@@ -89,8 +90,8 @@
               class="min-w-0 flex flex-col gap-12"
             >
               <Action @create-project="openCreateProjectSettings" />
+              <Announcement />
               <Team />
-              <DataAnalysis />
             </a-col>
           </a-row>
         </div>
@@ -114,6 +115,7 @@ import {
   Overview,
   Project,
   Action,
+  Announcement,
   Dynamic,
   Team,
   DataAnalysis,
@@ -251,10 +253,10 @@ watch(isLoading, (value) => {
 <style scoped>
 .workbench-grid :deep([data-swapy-item]) {
   transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease,
-    border-color 0.2s ease,
-    background-color 0.2s ease;
+    transform var(--w-motion-duration-base) var(--w-motion-ease-standard),
+    box-shadow var(--w-motion-duration-base) var(--w-motion-ease-standard),
+    border-color var(--w-motion-duration-base) var(--w-motion-ease-standard),
+    background-color var(--w-motion-duration-base) var(--w-motion-ease-standard);
 }
 
 .workbench-grid--drag :deep([data-swapy-item]) {

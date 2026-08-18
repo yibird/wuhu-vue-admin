@@ -75,7 +75,8 @@
 
 <script lang="ts" setup>
 import dayjs from 'dayjs'
-import { Modal, message } from 'antdv-next'
+import message from 'antdv-next/dist/message/index'
+import Modal from 'antdv-next/dist/modal/index'
 import { shallowReactive, shallowRef } from 'vue'
 import { useLoading } from '@/composables'
 import type { Component } from 'vue'
