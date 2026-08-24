@@ -1,5 +1,6 @@
 import { textRule } from './text'
 import { colorRule } from './color'
+import { contentVisibilityRule } from './contentVisibility'
 import { bgRule } from './background'
 import { borderRule } from './border'
 import { borderColorRule } from './borderColor'
@@ -10,6 +11,7 @@ export const rules = [
   ...textRule,
   ...colorRule,
   ...bgRule,
+  contentVisibilityRule,
   borderRule,
   ...borderColorRule,
   ...motionRule,

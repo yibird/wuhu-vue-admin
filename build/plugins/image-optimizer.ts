@@ -1,29 +1,29 @@
-import { ViteImageOptimizer } from 'vite-plugin-image-optimizer'
+import { imagetools } from 'vite-imagetools'
 
 export function imageOptimizerPlugin() {
-  return ViteImageOptimizer({
-    png: {
-      quality: 80,
+  return imagetools({
+    defaultDirectives: (url) => {
+      const directives = new URLSearchParams()
+      /**
+       * 默认输出 WebP
+       * 手动指定 format 时保留用户配置
+       */
+      if (!url.searchParams.has('format')) {
+        directives.set('format', 'webp')
+      }
+      /**
+       * 默认质量 80
+       * 手动指定 quality 时保留用户配置
+       */
+      if (!url.searchParams.has('quality')) {
+        directives.set('quality', '80')
+      }
+
+      /**
+       * 默认移除图片 metadata
+       */
+      directives.set('remove', 'true')
+      return directives
     },
-    jpeg: {
-      quality: 80,
-    },
-    jpg: {
-      quality: 80,
-    },
-    svg: {
-      plugins: [
-        {
-          name: 'preset-default',
-          params: {
-            overrides: {
-              removeViewBox: false,
-            },
-          },
-        },
-      ],
-    },
-    cache: true,
-    cacheLocation: 'node_modules/.cache/vite-plugin-image-optimizer',
   })
 }

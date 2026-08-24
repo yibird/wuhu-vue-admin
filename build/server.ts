@@ -6,8 +6,8 @@ const ENV = {
 }
 
 export function createServer(env: Record<string, string> = {}) {
-  const proxyTarget = env.VITE_API_PROXY_URL || ENV.API_PROXY_URL
-  const port = Number(env.VITE_PORT || ENV.PORT)
+  const proxyTarget = env.VITE_API_PROXY_URL ?? ENV.API_PROXY_URL
+  const port = Number(env.VITE_PORT ?? ENV.PORT)
 
   return {
     cors: true,

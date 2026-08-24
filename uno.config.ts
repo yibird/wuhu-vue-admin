@@ -4,6 +4,7 @@ import { postprocess, presets, rules, shortcuts, transformers } from './unocss'
 const rgbVar = (name: string) => `rgb(var(${name}))`
 
 export default defineConfig({
+  blocklist: ['?'],
   content: {
     pipeline: {
       include: ['src/**/*.{vue,ts,tsx}'],

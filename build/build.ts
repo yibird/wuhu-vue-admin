@@ -1,13 +1,23 @@
 import type { BuildOptions } from 'vite'
 
 interface ChunkGroup {
+  /**
+   * Chunk 名称。
+   */
   name: string
-  packages?: string[]
-  packagePrefixes?: string[]
-  priority: number
+
+  /**
+   * 精确匹配包名。
+   */
+  packages?: readonly string[]
+
+  /**
+   * 匹配包名前缀。
+   */
+  packagePrefixes?: readonly string[]
 }
 
-const chunkGroups: ChunkGroup[] = [
+const chunkGroups: readonly ChunkGroup[] = [
   {
     name: 'vue-vendor',
     packages: [
@@ -18,83 +28,121 @@ const chunkGroups: ChunkGroup[] = [
       'vue-i18n',
     ],
     packagePrefixes: ['@vue/', '@intlify/'],
-    priority: 100,
   },
+
   {
-    name: 'workflow',
-    packagePrefixes: ['@vue-flow/'],
-    priority: 50,
+    name: 'antd-vendor',
+    packages: ['antdv-next'],
   },
+
+  // ============================================================
+  // Heavy feature modules
+  // ============================================================
+
+  {
+    name: 'editor',
+    packagePrefixes: ['@tiptap/', 'prosemirror-'],
+  },
+
   {
     name: 'code-editor',
     packages: ['codemirror'],
     packagePrefixes: ['@codemirror/'],
-    priority: 50,
   },
+
+  {
+    name: 'workflow',
+    packagePrefixes: ['@vue-flow/'],
+  },
+
+  {
+    name: 'chart',
+    packages: ['echarts', 'vue-echarts'],
+  },
+
   {
     name: 'calendar',
     packages: ['@dayflow/core', '@dayflow/vue', '@dayflow/plugin-drag'],
-    priority: 50,
   },
+
   {
-    name: 'scrollbar',
-    packages: ['overlayscrollbars', 'overlayscrollbars-vue'],
-    priority: 50,
+    name: 'gantt',
+    packages: ['frappe-gantt'],
   },
+
   {
-    name: 'editor',
-    packagePrefixes: ['@tiptap/', 'prosemirror-'],
-    priority: 50,
+    name: 'cropper',
+    packages: ['cropperjs'],
   },
+
+  // jit-viewer follows the document-preview route's dynamic import boundary.
+  // Grouping it manually can pull Vite's preload helper into the viewer chunk.
 ]
 
-const routeOnlyPreloadChunkRE =
-  /^(?:viewer|chart|workflow|code-editor|calendar|editor|motion|iconPicker|cropper|gantt|jsonView|numberTicker|filePreview)-/
+const NODE_MODULES = '/node_modules/'
 
-function matchPackage(id: string, pkg: string) {
-  return id.includes(`/node_modules/${pkg}/`)
+function normalizePath(id: string) {
+  return id.replaceAll('\\', '/')
 }
 
+/**
+ * 判断是否匹配指定 package。
+ */
+function matchPackage(id: string, packageName: string) {
+  return (
+    id.includes(`${NODE_MODULES}${packageName}/`) ||
+    id.endsWith(`${NODE_MODULES}${packageName}`)
+  )
+}
+
+/**
+ * 判断是否匹配 package 前缀。
+ */
 function matchPackagePrefix(id: string, prefix: string) {
-  return id.includes(`/node_modules/${prefix}`)
+  return id.includes(`${NODE_MODULES}${prefix}`)
 }
 
-function createCodeSplittingGroup({
-  packages = [],
-  packagePrefixes = [],
-  ...group
-}: ChunkGroup) {
+function createCodeSplittingGroup(group: ChunkGroup) {
+  const { name, packages = [], packagePrefixes = [] } = group
   return {
-    ...group,
+    name,
     test(id: string) {
-      const normalized = id.replaceAll('\\', '/')
-      if (!normalized.includes('/node_modules/')) return false
+      const normalizedId = normalizePath(id)
+      // 只处理 node_modules
+      if (!normalizedId.includes(NODE_MODULES)) {
+        return false
+      }
       return (
-        packages.some((pkg) => matchPackage(normalized, pkg)) ||
-        packagePrefixes.some((prefix) => matchPackagePrefix(normalized, prefix))
+        packages.some((packageName) =>
+          matchPackage(normalizedId, packageName)
+        ) ||
+        packagePrefixes.some((prefix) =>
+          matchPackagePrefix(normalizedId, prefix)
+        )
       )
     },
   }
 }
 
-function shouldPreloadDependency(dep: string) {
-  return !routeOnlyPreloadChunkRE.test(dep.split('/').pop() ?? dep)
-}
-
+/**
+ * Vite Build 配置。
+ */
 export function createBuild(): BuildOptions {
   return {
     target: 'esnext',
+    // 生成 manifest
     manifest: true,
+    // 启用 CSS 代码分割
+    cssCodeSplit: true,
+    // CSS 压缩
+    cssMinify: 'lightningcss',
+    // JS 压缩
+    minify: 'oxc',
+    // chunk 过大警告阈值
     chunkSizeWarningLimit: 1000,
+    // 报告 chunk 大小,不计算 gzip / brotli 大小,可以明显减少 build 阶段额外开销
     reportCompressedSize: false,
-    modulePreload: {
-      resolveDependencies(_url, deps, { hostType }) {
-        // Route chunks are listed in the glob-generated router module. Avoid
-        // downloading page-only packages from index.html, but keep navigation
-        // preloads parallel once a route is actually requested.
-        return hostType === 'html' ? deps.filter(shouldPreloadDependency) : deps
-      },
-    },
+    // Rolldown 配置
     rolldownOptions: {
       output: {
         codeSplitting: {

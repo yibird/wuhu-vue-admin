@@ -7,62 +7,44 @@ import type { PluginOption } from 'vite'
 
 interface CreatePluginOptions {
   command: 'build' | 'serve'
-  env: Record<string, string>
 }
 
-export async function createPlugin({ command, env }: CreatePluginOptions) {
-  const isBuild = command === 'build'
+async function getDevPlugins(command: string) {
   const isDev = command === 'serve'
-  const enableAnalyze = env.VITE_ANALYZE === 'true' || env.ANALYZE === 'true'
-  const enableAnalyzeRaw = env.VITE_ANALYZE_RAW === 'true'
-  const enableCdn = isBuild && env.VITE_CDN === 'true'
-  const enableImageOptimizer = isBuild && env.VITE_IMAGE_OPTIMIZER === 'true'
-  const performanceGuardStrict =
-    env.VITE_PERFORMANCE_GUARD_STRICT === 'true' ||
-    (isBuild && env.VITE_PERFORMANCE_GUARD_STRICT !== 'false')
+  if (!isDev) return []
+  const { mockPlugin } = await import('./mock.ts')
+  return [mockPlugin()]
+}
 
+async function getProdPlugins(command: string): Promise<PluginOption[]> {
+  if (command !== 'build') return []
+  const [
+    { visualizerPlugin },
+    { compressionPlugin },
+    { imageOptimizerPlugin },
+  ] = await Promise.all([
+    import('./visualizer.ts'),
+    import('./compression.ts'),
+    import('./image-optimizer.ts'),
+  ])
+
+  return [
+    visualizerPlugin({ raw: true }),
+    compressionPlugin(),
+    imageOptimizerPlugin(),
+  ]
+}
+
+export async function createPlugin({ command }: CreatePluginOptions) {
+  const isDev = command === 'serve'
   const plugins: PluginOption[] = [
     vuePlugin(),
-    componentsPlugin({ generateDts: isDev }),
-    autoImportPlugin({ generateDts: isDev }),
+    componentsPlugin({ isDev }),
+    autoImportPlugin({ isDev }),
     fontsPlugin(),
     unocssPlugin(),
   ]
-
-  if (isDev) {
-    const { mockPlugin } = await import('./mock.ts')
-    plugins.push(mockPlugin())
-  }
-
-  if (enableAnalyze) {
-    const { visualizerPlugin } = await import('./visualizer.ts')
-    plugins.push(visualizerPlugin({ raw: enableAnalyzeRaw }))
-  }
-
-  if (isBuild) {
-    const [{ compressionPlugin }, { performanceGuardPlugin }] =
-      await Promise.all([
-        import('./compression.ts'),
-        import('./performanceGuard.ts'),
-      ])
-
-    plugins.push(
-      performanceGuardPlugin({
-        strict: performanceGuardStrict,
-      })
-    )
-    plugins.push(compressionPlugin())
-  }
-
-  if (enableImageOptimizer) {
-    const { imageOptimizerPlugin } = await import('./image-optimizer.ts')
-    plugins.push(imageOptimizerPlugin())
-  }
-
-  if (enableCdn) {
-    const { cdnImportPlugin } = await import('./cdn.ts')
-    plugins.push(cdnImportPlugin())
-  }
-
-  return plugins
+  const devPlugins = await getDevPlugins(command)
+  const prodPlugins = await getProdPlugins(command)
+  return [...plugins, ...devPlugins, ...prodPlugins]
 }

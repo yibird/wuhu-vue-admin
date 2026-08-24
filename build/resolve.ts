@@ -16,6 +16,14 @@ export function createResolve() {
         find: '#mock',
         replacement: pathResolve('mock') + '/',
       },
+      {
+        // frappe-gantt exposes its stylesheet through the root `style` condition,
+        // but does not export the documented dist subpath.
+        find: 'frappe-gantt/dist/frappe-gantt.css',
+        replacement: pathResolve(
+          'node_modules/frappe-gantt/dist/frappe-gantt.css'
+        ),
+      },
     ],
   }
 }
