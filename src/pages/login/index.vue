@@ -8,13 +8,7 @@
     :aria-busy="loginLoading"
   >
     <Logo />
-    <div
-      class="page-enter page-enter--2 absolute right-16 top-16 z-10 flex items-center gap-2 rounded-8 border-1 border-color-2 border-solid bg-container px-6 py-4 shadow-all-sm sm:right-20 sm:top-20"
-    >
-      <Layout class="max-xl:hidden" @change="changePlacement" />
-      <Theme />
-      <Translate />
-    </div>
+    <ActionBar @change="changePlacement" />
     <Banner
       :placement="placement"
       title-key="login.banner.title"
@@ -68,17 +62,15 @@
 <script lang="ts" setup>
 import {
   Logo,
-  Layout,
-  Theme,
-  Translate,
   Banner,
+  ActionBar,
   AccountLogin,
   MobileLogin,
   QrcodeLogin,
   type Placement,
 } from './components'
 import { useI18n } from 'vue-i18n'
-import message from 'antdv-next/dist/message/index'
+import { message } from 'antdv-next'
 import { useRoute } from 'vue-router'
 import { useAuth } from '@/composables'
 import { getSafeRedirect, useGo } from '@/router'
@@ -90,8 +82,8 @@ const { to } = useGo()
 const route = useRoute()
 const { login, loginLoading } = useAuth()
 
-const placement = shallowRef<Placement>('right')
-const activeLoginType = shallowRef('account')
+const placement = ref<Placement>('right')
+const activeLoginType = ref('account')
 
 const loginComponents = {
   account: markRaw(AccountLogin),

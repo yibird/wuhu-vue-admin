@@ -1,58 +1,3 @@
-<script lang="ts" setup>
-import {
-  Logo,
-  Layout,
-  Theme,
-  Translate,
-  Banner,
-  AccountRegister,
-  MobileRegister,
-  type Placement,
-} from './components'
-import { useI18n } from 'vue-i18n'
-import message from 'antdv-next/dist/message/index'
-import { useGo } from '@/router'
-
-const { t } = useI18n()
-const { to } = useGo()
-
-const placement = shallowRef<Placement>('right')
-const registering = shallowRef(false)
-
-const items = computed(() => [
-  {
-    key: 'account',
-    label: t('register.accountLogin'),
-    content: AccountRegister,
-  },
-  {
-    key: 'mobile',
-    label: t('register.mobileLogin'),
-    content: MobileRegister,
-  },
-])
-
-const changePlacement = (value: Placement) => {
-  placement.value = value
-}
-
-const simulateRegister = () =>
-  new Promise<void>((resolve) => window.setTimeout(resolve, 500))
-
-const onSuccess = async () => {
-  if (registering.value) return
-
-  registering.value = true
-  try {
-    await simulateRegister()
-    message.success(t('register.success'))
-    await to('/login', true)
-  } finally {
-    registering.value = false
-  }
-}
-</script>
-
 <template>
   <div
     :class="[
@@ -62,13 +7,7 @@ const onSuccess = async () => {
     ]"
   >
     <Logo />
-    <div
-      class="absolute right-16 top-16 z-10 flex items-center gap-2 rounded-8 border-1 border-color-2 border-solid bg-container p-2 shadow-all-sm sm:right-20 sm:top-20"
-    >
-      <Layout @change="changePlacement" />
-      <Theme />
-      <Translate />
-    </div>
+    <ActionBar @change="changePlacement" />
     <Banner
       :placement="placement"
       title-key="register.banner.title"
@@ -113,3 +52,51 @@ const onSuccess = async () => {
     </div>
   </div>
 </template>
+<script lang="ts" setup>
+import {
+  Logo,
+  ActionBar,
+  Banner,
+  AccountRegister,
+  MobileRegister,
+  type Placement,
+} from './components'
+import { useI18n } from 'vue-i18n'
+import { message } from 'antdv-next'
+import { useGo } from '@/router'
+
+const { t } = useI18n()
+const { to } = useGo()
+
+const placement = shallowRef<Placement>('right')
+const registering = shallowRef(false)
+
+const items = computed(() => [
+  {
+    key: 'account',
+    label: t('register.accountLogin'),
+    content: AccountRegister,
+  },
+  {
+    key: 'mobile',
+    label: t('register.mobileLogin'),
+    content: MobileRegister,
+  },
+])
+
+const changePlacement = (value: Placement) => {
+  placement.value = value
+}
+
+const onSuccess = async () => {
+  if (registering.value) return
+
+  registering.value = true
+  try {
+    message.success(t('register.success'))
+    await to('/login', true)
+  } finally {
+    registering.value = false
+  }
+}
+</script>

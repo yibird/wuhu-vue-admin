@@ -30,7 +30,7 @@
             name="i-lucide:shield-user"
             :size="18"
             tabindex="-1"
-            class="text-secondary transition-all group-focus-within:text-primary"
+            class="text-secondary transition-colors group-focus-within:text-primary"
           />
         </template>
         <template #clearIcon>
@@ -68,12 +68,11 @@
   </a-form>
 </template>
 <script setup lang="ts">
-import { nextTick, onMounted, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { validateCode, validateMobile } from '@/utils'
+import ClearIcon from './ClearIcon.vue'
 import type { FormInstance } from 'antdv-next'
 import type { ComponentPublicInstance } from 'vue'
-import ClearIcon from './ClearIcon.vue'
 import type { LoginEmits, LoginFormProps } from './types'
 
 const emits = defineEmits<LoginEmits>()

@@ -1,10 +1,6 @@
-export {
-  Logo,
-  Layout,
-  Theme,
-  Translate,
-  Banner,
-  type Placement,
-} from '../../components/index.ts'
+export { default as Logo } from './Logo.vue'
+export { default as Banner } from './Banner.vue'
+export { default as ActionBar } from './actionBar/index.vue'
 export { default as AccountRegister } from './AccountRegister.vue'
 export { default as MobileRegister } from './MobileRegister.vue'
+export type { Placement } from './types'

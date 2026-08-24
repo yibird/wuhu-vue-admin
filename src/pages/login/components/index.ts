@@ -1,11 +1,7 @@
-export {
-  Logo,
-  Layout,
-  Theme,
-  Translate,
-  Banner,
-  type Placement,
-} from '../../components'
+export { default as Logo } from './Logo.vue'
+export { default as Banner } from './Banner.vue'
+export { default as ActionBar } from './actionBar/index.vue'
 export { default as AccountLogin } from './AccountLogin.vue'
 export { default as MobileLogin } from './MobileLogin.vue'
 export { default as QrcodeLogin } from './QrcodeLogin.vue'
+export type { Placement } from './types'

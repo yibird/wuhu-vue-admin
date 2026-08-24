@@ -15,7 +15,7 @@
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import type { Placement } from './types'
+import type { Placement } from '../types'
 
 const { t } = useI18n()
 const options = computed<Array<{ key: Placement; label: string }>>(() => [

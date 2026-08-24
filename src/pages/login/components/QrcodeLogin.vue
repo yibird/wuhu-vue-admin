@@ -25,9 +25,8 @@
   </div>
 </template>
 <script setup lang="ts">
-import { onUnmounted } from 'vue'
+import { QRCode } from 'antdv-next'
 import type { LoginFormProps } from './types'
-import QRCode from 'antdv-next/dist/qrcode/index'
 
 withDefaults(defineProps<LoginFormProps>(), { loading: false })
 const createQrValue = () =>
