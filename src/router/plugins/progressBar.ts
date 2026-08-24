@@ -6,9 +6,9 @@ import type { WatchStopHandle } from 'vue'
 const defaultOptions: TopbarConfigOptions = {
   barThickness: 2,
   barColors: {
-    '0.2': 'rgba(24, 144, 255, .75)',
-    '0.6': 'rgba(24, 144, 255, .85)',
-    '1.0': 'rgba(24, 144, 255, 1)',
+    '0.2': 'rgb(var(--w-color-primary) / 75%)',
+    '0.6': 'rgb(var(--w-color-primary) / 85%)',
+    '1.0': 'rgb(var(--w-color-primary))',
   },
   shadowBlur: 0,
 }

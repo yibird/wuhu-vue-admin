@@ -15,8 +15,13 @@ export interface DictResp extends BaseResp {
   status: boolean
 }
 
-export interface CreateDictReq {}
+export interface CreateDictReq {
+  name: string
+  type: string
+  status: boolean
+  remark?: string
+}
 
-export interface UpdateDictReq {
+export interface UpdateDictReq extends Partial<CreateDictReq> {
   id: string
 }

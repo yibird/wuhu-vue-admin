@@ -8,10 +8,13 @@ import type { IMenu, ITab } from '#/config'
  * @returns 标签页
  */
 export function menuToTab(menu: IMenu): ITab {
+  if ((menu.type !== 1 && menu.type !== 2) || !menu.path) {
+    throw new Error(`Menu ${menu.id} is not a route menu`)
+  }
   return {
-    name: String(menu.id),
-    path: menu.path!,
     ...omit(menu, ['children']),
+    name: String(menu.id),
+    path: menu.path,
     fixed: menu.fixed ?? false,
     home: menu.home ?? false,
     keepAlive: menu.keepAlive ?? true,
@@ -24,5 +27,7 @@ export function menuToTab(menu: IMenu): ITab {
  * @returns 标签页数组
  */
 export function menusToTabs(menus: IMenu[]): ITab[] {
-  return menus.map(menuToTab)
+  return menus
+    .filter((menu) => menu.type === 1 || menu.type === 2)
+    .map(menuToTab)
 }

@@ -3,13 +3,23 @@ import type { Input, Options } from 'ky'
 import { RequestMethod } from '@/constants'
 import { getToken } from './util'
 
-const DEFAULT_REQUEST_METHOD = RequestMethod.POST
+const DEFAULT_REQUEST_METHOD = RequestMethod.GET
 const RESPONSE_DEDUPE_INTERVAL = 1500
 
 export interface ApiRequestOptions extends Options {
   dedupe?: boolean
   dedupeKey?: string
+  responseType?: ApiResponseType
 }
+
+export type ApiResponseType =
+  | 'arrayBuffer'
+  | 'blob'
+  | 'formData'
+  | 'json'
+  | 'response'
+  | 'stream'
+  | 'text'
 
 const pendingRequests = new Map<string, Promise<unknown>>()
 const pendingResponses = new Set<string>()

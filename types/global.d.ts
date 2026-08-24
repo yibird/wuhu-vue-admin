@@ -29,4 +29,6 @@ declare global {
   ) extends (arg: infer I) => void
     ? I
     : never
+
+  type RequiredKeys<T, K extends keyof T> = T & Required<Pick<T, K>>
 }

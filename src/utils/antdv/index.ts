@@ -25,22 +25,26 @@ export function renderIcon(
  * @param predicate  过滤条件
  * @returns 渲染后的菜单树
  */
-export function renderMenus<T>(
+export type RenderedMenuNode<T extends object> = T & {
+  children?: RenderedMenuNode<T>[]
+}
+
+export function renderMenus<T extends object>(
   menus: IMenu[],
-  mapper?: (item: IMenu) => Partial<T>,
+  mapper: (item: IMenu) => T,
   predicate?: (item: IMenu) => boolean
-): T[] {
+): RenderedMenuNode<T>[] {
   if (!predicate) {
     return menus.map((item) => ({
-      ...mapper?.(item),
+      ...mapper(item),
       children:
         item.children && item.children.length > 0
           ? renderMenus(item.children, mapper, predicate)
           : undefined,
-    })) as unknown as T[]
+    }))
   }
 
-  const result: T[] = []
+  const result: RenderedMenuNode<T>[] = []
   for (const node of menus) {
     const filteredChildren =
       node.children && node.children.length > 0
@@ -52,9 +56,9 @@ export function renderMenus<T>(
       hasMatchingChildren
     ) {
       result.push({
-        ...mapper?.(node),
+        ...mapper(node),
         children: hasMatchingChildren ? filteredChildren : undefined,
-      } as unknown as T)
+      })
     }
   }
   return result

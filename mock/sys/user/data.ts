@@ -2,7 +2,7 @@ import { faker } from '@faker-js/faker'
 import type { UserResp } from '@/apis'
 
 function createUser(index: number): UserResp {
-  const gender = faker.number.int({ min: 0, max: 2 })
+  const gender = faker.helpers.arrayElement([0, 1, 2] as const)
   const dataStatus = faker.datatype.boolean()
 
   return {
@@ -36,10 +36,10 @@ function createUser(index: number): UserResp {
       .birthdate({ min: 18, max: 80, mode: 'age' })
       .toISOString()
       .split('T')[0],
-    education: faker.number.int({ min: 0, max: 4 }),
-    work_experience: faker.number.int({ min: 0, max: 5 }),
-    marital_status: faker.number.int({ min: 0, max: 3 }),
-    source: faker.number.int({ min: 0, max: 2 }),
+    education: faker.helpers.arrayElement([0, 1, 2, 3, 4] as const),
+    work_experience: faker.helpers.arrayElement([0, 1, 2, 3, 4, 5] as const),
+    marital_status: faker.helpers.arrayElement([0, 1, 2, 3] as const),
+    source: faker.helpers.arrayElement([0, 1, 2] as const),
   }
 }
 

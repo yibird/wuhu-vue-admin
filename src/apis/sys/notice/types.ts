@@ -1,5 +1,7 @@
 import type { BaseResp } from '#/http'
 
+export type NoticeType = 1 | 2
+
 export interface NoticeResp extends BaseResp {
   /**
    * @desc 通知标题
@@ -12,7 +14,7 @@ export interface NoticeResp extends BaseResp {
   /**
    * @desc 通知类型(1通知,2公告)
    */
-  type: number
+  type: NoticeType
   /**
    * @desc 排序
    */
@@ -23,8 +25,15 @@ export interface NoticeResp extends BaseResp {
   status: boolean
 }
 
-export interface CreateNoticeReq {}
+export interface CreateNoticeReq {
+  title: string
+  content: string
+  type: NoticeType
+  sort: number
+  status: boolean
+  remark?: string
+}
 
-export interface UpdateNoticeReq {
+export interface UpdateNoticeReq extends Partial<CreateNoticeReq> {
   id: string
 }

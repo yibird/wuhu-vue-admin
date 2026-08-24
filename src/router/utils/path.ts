@@ -1,5 +1,6 @@
 /**
  * 标准化路由路径
+ *
  * @param path - 原始路径字符串
  * @returns 标准化后的路径（以 / 开头，去除多余斜杠）
  * @example
@@ -7,7 +8,7 @@
  * normalizeRoutePath('user/list/')  // '/user/list'
  * normalizeRoutePath('')            // '/'
  */
-export function normalizeRoutePath(path: string): string {
+export function normalizePath(path: string): string {
   const normalized = path.trim().replace(/^\/+|\/+$/g, '')
   return normalized ? `/${normalized}` : '/'
 }
@@ -20,7 +21,7 @@ export function normalizeRoutePath(path: string): string {
  * toChildRoutePath('/user/list')  // 'user/list'
  */
 export function toChildRoutePath(path: string): string {
-  return normalizeRoutePath(path).replace(/^\//, '')
+  return normalizePath(path).replace(/^\//, '')
 }
 
 /**

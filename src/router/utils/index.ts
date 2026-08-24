@@ -1,8 +1,3 @@
-export { normalizeRoutePath, toChildRoutePath, toPascalCase } from './path'
-export {
-  isMenu,
-  menuToRoute,
-  prefetchMenuRoute,
-  prefetchRouteComponent,
-} from './route'
+export { normalizePath, toChildRoutePath, toPascalCase } from './path'
+export { isMenu, getComponentName, menuToRoute } from './route'
 export { getSafeRedirect } from './redirect'

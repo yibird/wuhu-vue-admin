@@ -1,5 +1,7 @@
 import type { BaseResp } from '#/http'
 
+export type DeptType = 1 | 2
+
 export interface DeptResp extends BaseResp {
   /**
    * @desc 部门名称
@@ -12,7 +14,7 @@ export interface DeptResp extends BaseResp {
   /**
    * @desc 部门类型(1:部门,2:岗位)
    */
-  type: number
+  type: DeptType
   /**
    * @desc 部门负责人
    */
@@ -27,8 +29,16 @@ export interface DeptResp extends BaseResp {
   email: string
 }
 
-export interface CreateDeptReq {}
+export interface CreateDeptReq {
+  name: string
+  code: string
+  type: DeptType
+  leader: string
+  phone: string
+  email: string
+  remark?: string
+}
 
-export interface UpdateDeptReq {
+export interface UpdateDeptReq extends Partial<CreateDeptReq> {
   id: string
 }

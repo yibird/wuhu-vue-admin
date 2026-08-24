@@ -65,20 +65,44 @@ export const TabsTheme = {
   Google: 'google',
 } as const
 
+/**
+ *  loading动画
+ */
 export const LoadingAnimation = {
   Beat: 'beat',
   Spinner: 'spinner',
+  Pulse: 'pulse',
   Bars: 'bars',
   Ring: 'ring',
-  Pulse: 'pulse',
 } as const
 
-export type ThemeModeType = (typeof ThemeMode)[keyof typeof ThemeMode]
-export type LocaleType = (typeof Locale)[keyof typeof Locale]
-export type MenuModeType = (typeof MenuMode)[keyof typeof MenuMode]
-export type SiderThemeType = (typeof SiderTheme)[keyof typeof SiderTheme]
-export type HeaderWidgetType = (typeof HeaderWidget)[keyof typeof HeaderWidget]
-export type TabsThemeType = (typeof TabsTheme)[keyof typeof TabsTheme]
-export type PageAnimationType = 'fade' | 'slide-left'
-export type LoadingAnimationType =
-  (typeof LoadingAnimation)[keyof typeof LoadingAnimation]
+/**
+ * 页面动画
+ */
+export const PageAnimation = {
+  // 从左滑动
+  SlideLeft: 'slide-left',
+  // 从右滑动
+  SlideRight: 'slide-right',
+  // 从上滑动
+  SlideUp: 'slide-up',
+  // 从下滑动
+  SlideDown: 'slide-down',
+  // 淡入淡出
+  Fade: 'fade',
+  // 放大
+  FadeScale: 'fade-scale',
+  // 横向反转
+  FlipX: 'flip-x',
+  // 竖向反转
+  FlipY: 'flip-y',
+} as const
+
+/**
+ * 页面动画mode
+ */
+export const PageAnimationMode = {
+  DEFAULT: 'default',
+  OUT_INT: 'out-in',
+  IN_OUT: 'in-out',
+} as const

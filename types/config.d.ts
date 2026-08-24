@@ -1,20 +1,23 @@
-import type {
-  MenuModeType,
-  SiderThemeType,
-  ThemeModeType,
-  LocaleType,
-  HeaderWidgetType,
-  TabsThemeType,
-  PageAnimationType,
-  LoadingAnimationType,
-} from '@/constants'
+import type { SiderThemeType, HeaderWidgetType } from '@/constants'
 
-export interface IMenu {
+import type {
+  MenuMode,
+  ThemeMode,
+  Locale,
+  TabsTheme,
+  PageAnimation,
+  LoadingAnimation,
+  PageAnimationMode,
+} from '@/config'
+
+export type MenuType = 0 | 1 | 2 | 3
+
+interface MenuBase {
   /**
    * @desc 菜单id
    * @default
    */
-  id: number
+  id: string
   /**
    * @desc 菜单标题
    * @default
@@ -24,31 +27,22 @@ export interface IMenu {
    * @desc 菜单类型,0目录、1菜单项、2子页面、3权限按钮
    * @default
    */
-  type: number
+  type: MenuType
   /**
-   * @desc 菜单跳转路径,仅在菜单类型为1时生效
-   * @default
+   * @desc 访问页面所需权限
    */
-  path?: string
-  /**
-   * @desc 页面组件对应的视图路径；仅在公开路由 path 与磁盘目录不一致时设置
-   */
-  componentPath?: string
-  /**
-   * @desc 访问页面所需权限，数组表示满足任意一项即可
-   */
-  permission?: string | string[]
+  permission?: string
 
   /**
-   * @desc 当前菜单的根节点,为空表示一级菜单
+   * @desc 当前菜单的根节点,值为 "0" 表示一级菜单
    * @default
    */
-  rootId?: number | string | null
+  rootId: string
   /**
-   * @desc 当前菜单的父级id,为空表示一级菜单
+   * @desc 当前菜单的父级id,值为 "0" 表示一级菜单
    * @default
    */
-  parentId?: number | null
+  parentId: string
   /**
    * @desc 菜单级别路径,由父级id和当前菜单id组成,元素之间使用 - 号分割
    */
@@ -68,11 +62,6 @@ export interface IMenu {
    * @default
    */
   iconShape?: 'round' | 'square'
-  /**
-   * @desc 子菜单
-   * @default
-   */
-  children?: IMenu[]
   /**
    * @desc 是否为首页,仅在menu类型为1时生效
    * @default false
@@ -118,8 +107,28 @@ export interface IMenu {
   params?: Record<string, unknown>
 }
 
-export interface ITab extends Omit<IMenu, 'children' | 'id'> {
-  id?: number | string
+export interface MenuDirectory extends MenuBase {
+  type: 0
+  path?: string
+  children?: IMenu[]
+}
+
+export interface MenuRoute extends MenuBase {
+  type: 1 | 2
+  path: string
+  children?: IMenu[]
+}
+
+export interface MenuAction extends MenuBase {
+  type: 3
+  path?: never
+  children?: never
+}
+
+export type IMenu = MenuDirectory | MenuRoute | MenuAction
+
+export type ITab = Omit<IMenu, 'children' | 'id' | 'path' | 'type'> & {
+  id: string
   /**
    * @desc 标签页名称
    * @default
@@ -135,6 +144,7 @@ export interface ITab extends Omit<IMenu, 'children' | 'id'> {
    * @default false
    */
   home?: boolean
+  type: 1 | 2
 }
 
 export interface SiderConfig {
@@ -237,9 +247,9 @@ export interface TabConfig {
   enablePersist: boolean
   /**
    * @desc 标签页主题
-   * @default TabsThemeType.Card
+   * @default TabsTheme.Card
    */
-  theme?: TabsThemeType
+  theme?: TabsTheme
 }
 
 export interface FooterConfig {
@@ -268,14 +278,20 @@ export interface AnimationConfig {
   enablePageLoading?: boolean
   /**
    * @desc 页面切换 Loading 动画
-   * @default 'vben'
+   * @default LoadingAnimation.Beat
    */
-  loadingAnimation?: LoadingAnimationType
+  loadingAnimation?: LoadingAnimation
   /**
    * @desc 页面切换动画
-   * @default ''
+   * @default PageAnimation.SlideLeft
    */
-  pageAnimation?: PageAnimationType
+  pageAnimation?: PageAnimation
+
+  /**
+   * @desc 页面动画mode
+   * @default PageAnimation.DEFAULT
+   */
+  pageAnimationMode?: PageAnimationMode
 }
 
 export interface LockscreenConfig {}
@@ -328,7 +344,7 @@ export interface AppConfig {
    * @desc 主题
    * @default ThemeMode.Light
    */
-  themeMode: ThemeModeType
+  themeMode: ThemeMode
   /**
    * @desc 主题色
    * @default ''
@@ -338,11 +354,11 @@ export interface AppConfig {
    * @desc 语言
    * @default Locale.ZH_CN
    */
-  locale: LocaleType
+  locale: Locale
   /**
    * @desc 菜单模式
    */
-  menuMode: MenuModeType
+  menuMode: MenuMode
   /**
    * @desc 是否启用页面缓存
    * @default true

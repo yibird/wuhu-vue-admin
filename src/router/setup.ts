@@ -12,10 +12,13 @@ export const router = createRouter({
 
 export async function setupRouter(app: App) {
   const { isRegistered, registerRoutes } = useRegisterRoutes(router)
-  if (!isRegistered) {
+  if (!isRegistered.value) {
     await registerRoutes()
   }
   setupGlobalRouteGuard(router)
-  setupRouterPlugins(router, plugins)
+  const pluginRegistration = setupRouterPlugins(router, plugins)
   app.use(router)
+  return () => {
+    pluginRegistration.dispose()
+  }
 }

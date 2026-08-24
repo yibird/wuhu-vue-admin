@@ -1,4 +1,4 @@
-import { useTitle as useVueTitle } from '@vueuse/core'
+import { useTitle } from '@vueuse/core'
 import type { RouterPlugin } from './types'
 import type { RouteLocationNormalized } from 'vue-router'
 import type { IRouteMeta } from '../types'
@@ -19,12 +19,10 @@ export interface TitlePluginOptions {
  * Create title plugin
  * Updates page title based on route meta.title
  */
-export function createTitlePlugin(options: TitlePluginOptions = {}): RouterPlugin {
-  const {
-    defaultTitle = '',
-    titleSuffix = '',
-    separator = ' - ',
-  } = options
+export function createTitlePlugin(
+  options: TitlePluginOptions = {}
+): RouterPlugin {
+  const { defaultTitle = '', titleSuffix = '', separator = ' - ' } = options
 
   /**
    * Get page title from route
@@ -66,12 +64,11 @@ export function createTitlePlugin(options: TitlePluginOptions = {}): RouterPlugi
         const pageTitle = getPageTitle(to)
         const title = buildTitle(pageTitle)
         if (title) {
-          useVueTitle(title)
+          useTitle(title)
         }
       },
     },
   }
 }
 
-/** Default title plugin instance */
 export const titlePlugin = createTitlePlugin()

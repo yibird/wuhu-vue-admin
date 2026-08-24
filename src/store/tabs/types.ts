@@ -22,7 +22,7 @@ export interface TabState {
    * @desc 根菜单id列表
    * @default []
    */
-  rootId?: number | string | null
+  rootId?: string
   /**
    * @desc 是否渲染路由视图,用于刷新路由
    * @default true
@@ -33,9 +33,4 @@ export interface TabState {
    * @default []
    */
   cachedTabs: string[]
-  /**
-   * @desc homeTab 缓存
-   * @default undefined
-   */
-  _homeTabCache?: ITab
 }

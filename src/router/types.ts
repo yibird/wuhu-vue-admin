@@ -4,7 +4,7 @@ export interface IRouteMeta {
   /**
    * @desc 菜单id
    */
-  id?: string | number
+  id?: string
   /**
    * @desc 标题
    */
@@ -16,7 +16,7 @@ export interface IRouteMeta {
   /** Whether the route can be visited without an authenticated session. */
   public?: boolean
   /** Permission keys accepted by this route. */
-  permission?: string | string[]
+  permission?: string
   /** Whether the rendered route component should be cached. */
   keepAlive?: boolean
   /** Whether the route is intentionally hidden from navigation. */

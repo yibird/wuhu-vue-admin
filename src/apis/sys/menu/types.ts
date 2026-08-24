@@ -1,5 +1,7 @@
 import type { BaseResp } from '#/http'
 
+export type MenuType = 1 | 2 | 3
+
 export interface MenuResp extends BaseResp {
   /**
    * @desc 菜单名称
@@ -8,7 +10,7 @@ export interface MenuResp extends BaseResp {
   /**
    * @desc 菜单类型(1目录,2菜单,3按钮)
    */
-  type: number
+  type: MenuType
   /**
    * @desc 路由地址
    */
@@ -35,8 +37,18 @@ export interface MenuResp extends BaseResp {
   status: boolean
 }
 
-export interface CreateMenuReq {}
+export interface CreateMenuReq {
+  name: string
+  type: MenuType
+  path: string
+  component: string
+  perms: string
+  icon: string
+  sort: number
+  status: boolean
+  remark?: string
+}
 
-export interface UpdateMenuReq {
+export interface UpdateMenuReq extends Partial<CreateMenuReq> {
   id: string
 }

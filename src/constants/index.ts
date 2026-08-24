@@ -1,22 +1,4 @@
-export {
-  HeaderWidget,
-  LoadingAnimation,
-  Locale,
-  MenuMode,
-  SiderTheme,
-  TabsTheme,
-  ThemeMode,
-} from './config'
-export type {
-  HeaderWidgetType,
-  LoadingAnimationType,
-  LocaleType,
-  MenuModeType,
-  PageAnimationType,
-  SiderThemeType,
-  TabsThemeType,
-  ThemeModeType,
-} from './config'
+export * from './config'
 export {
   ApiCode,
   ContentType,

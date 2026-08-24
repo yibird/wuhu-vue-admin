@@ -18,7 +18,7 @@ export function useAuth() {
       cancelText: '取消',
       okText: '确认',
       async onOk() {
-        store.clearSession()
+        store.logout()
         await to('/login', true)
       },
     })

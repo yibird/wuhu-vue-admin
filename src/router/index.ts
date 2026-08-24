@@ -1,14 +1,13 @@
 export { setupGlobalRouteGuard } from './guard'
-export { useGo, useRegisterRoutes } from './composable'
+export { useGo } from './composable'
 export { plugins, setupRouterPlugins } from './plugins'
 export { router, setupRouter } from './setup'
 export {
   isMenu,
+  getComponentName,
   getSafeRedirect,
   menuToRoute,
-  normalizeRoutePath,
-  prefetchMenuRoute,
-  prefetchRouteComponent,
+  normalizePath,
   toChildRoutePath,
   toPascalCase,
 } from './utils'

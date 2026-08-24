@@ -1,18 +1,18 @@
 import { authStore, permissionStore } from '@/store'
-import { hasPermission } from '@/store/permission/access'
+import { menus } from '@/config'
+import { usePermission } from '@/composables'
 import { getToken } from '@/utils'
 import { getSafeRedirect } from '../utils'
 
 import type { Router } from 'vue-router'
 import type { IRouteMeta } from '../types'
 
-function hasRoutePermission(required: IRouteMeta['permission']) {
-  return hasPermission(new Set(permissionStore().permissions), required)
-}
-
 export function setupGlobalBeforeEachRouteGuard(router: Router) {
-  router.beforeEach(async (to) => {
-    const store = authStore()
+  const { hasPermission } = usePermission()
+
+  return router.beforeEach((to) => {
+    const auth = authStore()
+    const permissions = permissionStore()
     const token = getToken()
     const isPublic = to.matched.some((record) => record.meta.public === true)
 
@@ -24,7 +24,7 @@ export function setupGlobalBeforeEachRouteGuard(router: Router) {
     }
 
     if (!token) {
-      store.clearSession()
+      auth.logout()
       return {
         path: '/login',
         query: to.fullPath === '/' ? undefined : { redirect: to.fullPath },
@@ -32,18 +32,15 @@ export function setupGlobalBeforeEachRouteGuard(router: Router) {
       }
     }
 
-    try {
-      await store.restoreSession()
-    } catch {
-      return {
-        path: '/login',
-        query: { redirect: to.fullPath },
-        replace: true,
-      }
+    if (permissions.menus.length === 0) {
+      permissions.setMenus(menus)
     }
 
-    const required = to.meta.permission as IRouteMeta['permission']
-    if (!hasRoutePermission(required) && to.path !== '/403') {
+    const permission = to.meta.permission as IRouteMeta['permission']
+
+    if (to.path === '/403') return true
+
+    if (permission && !hasPermission(permission)) {
       return { path: '/403', replace: true }
     }
 

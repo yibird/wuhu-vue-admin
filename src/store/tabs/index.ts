@@ -13,7 +13,6 @@ const initialState = (): TabState => ({
   rootId: undefined,
   renderRouteView: true,
   cachedTabs: [],
-  _homeTabCache: undefined,
 })
 
 export const tabStore = defineStore('tab', {
@@ -23,12 +22,9 @@ export const tabStore = defineStore('tab', {
       return this.current === -1 ? this.homeTab : state.tabs[state.current]
     },
     homeTab(): Maybe<ITab> {
-      // 返回缓存的 homeTab
-      if (this._homeTabCache) return this._homeTabCache
       const { flatMenus, flatMenusCache } = permissionStore()
       if (flatMenus.length === 0) return undefined
       let result: ITab | undefined
-      // 优先从缓存中找标记了 home 的菜单
       for (const [, menu] of flatMenusCache) {
         if (menu.home && [1, 2].includes(menu.type)) {
           result = menuToTab(menu)
@@ -39,7 +35,6 @@ export const tabStore = defineStore('tab', {
         const first = flatMenus.find((m) => m.type === 1)
         if (first) result = menuToTab(first)
       }
-      this._homeTabCache = result
       return result
     },
     getCachedTabs(): string[] {
@@ -73,9 +68,6 @@ export const tabStore = defineStore('tab', {
     _getNextTabNameAfterClose(index: number) {
       if (index !== this.current) return this.currentTab?.name
       return this.tabs[index - 1]?.name ?? this.tabs[index + 1]?.name
-    },
-    _invalidateHomeTabCache() {
-      this._homeTabCache = undefined
     },
     openHomeTab() {
       this.current = -1
@@ -228,14 +220,6 @@ export const tabStore = defineStore('tab', {
       this.cachedTabs = this.tabs
         .filter((tab) => tab.keepAlive)
         .map((tab) => tab.name)
-    },
-    /**
-     * 重置 homeTab 缓存（当菜单数据变化时调用）
-     */
-    refreshHomeTabCache() {
-      this._invalidateHomeTabCache()
-      // 触发 homeTab getter 重新计算
-      void this.homeTab
     },
   },
 })

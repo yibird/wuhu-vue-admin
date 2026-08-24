@@ -1,7 +1,7 @@
 import zhCN from 'antdv-next/locale/zh_CN'
 import enGB from 'antdv-next/locale/en_GB'
-import type { Locale as AntdvLocale } from 'antdv-next/dist/locale'
 import { useAppStore } from '@/store'
+import type { Locale as AntdvLocale } from 'antdv-next/dist/locale'
 
 import { Locale, type LocaleType } from '@/constants'
 import { useI18n } from 'vue-i18n'

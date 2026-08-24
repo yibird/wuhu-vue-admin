@@ -1,41 +1,36 @@
 import { defineStore, storeToRefs } from 'pinia'
-import { menus } from '@/config'
-import { treeToList } from '@zhouchengfeng/okay/coll'
-import {
-  filterMenusByPermissions,
-  hasPermission,
-  resolveMenuPermission,
-} from './access'
-
+import { treeToList } from '@zhouchengfeng/okay'
+import type { IMenu } from '#/config'
 import type { PermissionState } from './types'
 
-function createMenuState(permissions: string[]) {
-  const visibleMenus = filterMenusByPermissions(menus, permissions)
-  const flatMenus = treeToList(visibleMenus)
-  const flatMenusCache = new Map(flatMenus.map((m) => [m.id, m]))
-  return { menus: visibleMenus, flatMenus, flatMenusCache }
-}
-
 const createInitialState = (): PermissionState => ({
-  ...createMenuState([]),
+  menus: [],
+  flatMenus: [],
+  flatMenusCache: new Map<string, IMenu>(),
   permissions: [],
 })
 
 export const permissionStore = defineStore('permission', {
   state: createInitialState,
   actions: {
-    setPermissions(permissions: string[]) {
-      const uniquePermissions = [...new Set(permissions.filter(Boolean))]
-      this.permissions = uniquePermissions
-      Object.assign(this, createMenuState(uniquePermissions))
+    setMenus(menus: IMenu[]) {
+      const flatMenus = treeToList(menus)
+      const flatMenusCache = new Map(flatMenus.map((m) => [m.id, m]))
+      const permissions = flatMenus.flatMap((item) =>
+        item.permission ? [item.permission] : []
+      )
+      Object.assign(this, {
+        menus,
+        flatMenus,
+        flatMenusCache,
+        permissions,
+      })
     },
-    clearPermissions() {
-      this.$reset()
+    clear() {
+      Object.assign(this, createInitialState())
     },
   },
 })
-
-export { filterMenusByPermissions, hasPermission, resolveMenuPermission }
 
 export const usePermissionStore = () => {
   const store = permissionStore()

@@ -25,10 +25,15 @@ export interface DictNormalizeOptions {
 }
 
 export interface UseDictOptions extends DictNormalizeOptions {
-  fetcher?: (code: string) => Promise<DictRawItem[]>
+  fetcher?: DictFetcher
   immediate?: boolean
   refreshOnMount?: boolean
 }
+
+export type DictFetcher = (
+  code: string,
+  signal?: AbortSignal
+) => Promise<DictRawItem[]>
 
 const DEFAULT_LABEL_KEY = 'label'
 const DEFAULT_VALUE_KEY = 'value'
@@ -38,12 +43,32 @@ const DEFAULT_DISABLED_KEY = 'disabled'
 const dictCache = shallowReactive<Record<string, DictRawItem[]>>({})
 const dictLoading = shallowReactive<Record<string, boolean>>({})
 const dictErrors = shallowReactive<Record<string, Error | undefined>>({})
-const pendingRequests = new Map<string, Promise<DictRawItem[]>>()
+const pendingRequests = new Map<
+  string,
+  {
+    controller: AbortController
+    generation: number
+    promise: Promise<DictRawItem[]>
+  }
+>()
+const keyGenerations = new Map<string, number>()
 
-let defaultFetcher: ((code: string) => Promise<DictRawItem[]>) | undefined
+let cacheScope = 'anonymous'
+let cacheGeneration = 0
+let defaultFetcher: DictFetcher | undefined
 
 function normalizeCode(code: string | null | undefined): string {
   return String(code ?? '').trim()
+}
+
+function getCacheKey(code: string) {
+  return `${cacheScope}:${normalizeCode(code)}`
+}
+
+function invalidateKey(key: string) {
+  keyGenerations.set(key, (keyGenerations.get(key) ?? 0) + 1)
+  pendingRequests.get(key)?.controller.abort()
+  pendingRequests.delete(key)
 }
 
 function toLabel(value: unknown): string {
@@ -109,25 +134,31 @@ function findItemByValue(
 
 // ============ 全局 API ============
 
-export function setDictFetcher(
-  fetcher: (code: string) => Promise<DictRawItem[]>
-): void {
+export function setDictFetcher(fetcher: DictFetcher): void {
   defaultFetcher = fetcher
 }
 
+export function setDictCacheScope(scope: string): void {
+  const normalizedScope = scope.trim() || 'anonymous'
+  if (normalizedScope === cacheScope) return
+  clearDictCache()
+  cacheScope = normalizedScope
+}
+
 export function getDictCache(code: string): DictRawItem[] {
-  const key = normalizeCode(code)
+  const key = getCacheKey(code)
   return [...(dictCache[key] ?? [])]
 }
 
 export function hasDictCache(code: string): boolean {
-  const key = normalizeCode(code)
-  return key !== '' && key in dictCache
+  const normalizedCode = normalizeCode(code)
+  return normalizedCode !== '' && getCacheKey(normalizedCode) in dictCache
 }
 
 export function setDictCache(code: string, items: DictRawItem[]): void {
-  const key = normalizeCode(code)
-  if (!key) return
+  const normalizedCode = normalizeCode(code)
+  if (!normalizedCode) return
+  const key = getCacheKey(normalizedCode)
 
   dictCache[key] = [...items]
   delete dictErrors[key]
@@ -135,28 +166,29 @@ export function setDictCache(code: string, items: DictRawItem[]): void {
 
 export function clearDictCache(code?: string): void {
   if (code) {
-    const key = normalizeCode(code)
+    const key = getCacheKey(code)
+    invalidateKey(key)
     delete dictCache[key]
     delete dictLoading[key]
     delete dictErrors[key]
-    pendingRequests.delete(key)
     return
   }
 
-  for (const key of Object.keys(dictCache)) {
-    delete dictCache[key]
-    delete dictLoading[key]
-    delete dictErrors[key]
-  }
+  cacheGeneration += 1
+  pendingRequests.forEach(({ controller }) => controller.abort())
+  for (const key of Object.keys(dictCache)) delete dictCache[key]
+  for (const key of Object.keys(dictLoading)) delete dictLoading[key]
+  for (const key of Object.keys(dictErrors)) delete dictErrors[key]
   pendingRequests.clear()
+  keyGenerations.clear()
 }
 
 export function isDictLoading(code: string): boolean {
-  return Boolean(dictLoading[normalizeCode(code)])
+  return Boolean(dictLoading[getCacheKey(code)])
 }
 
 export function getDictError(code: string): Error | undefined {
-  return dictErrors[normalizeCode(code)]
+  return dictErrors[getCacheKey(code)]
 }
 
 export function getDictOptions(
@@ -186,10 +218,11 @@ export function getDictLabel(
 
 export async function refreshDict(
   code: string,
-  fetcher?: (code: string) => Promise<DictRawItem[]>
+  fetcher?: DictFetcher
 ): Promise<DictRawItem[]> {
-  const key = normalizeCode(code)
-  if (!key) return []
+  const normalizedCode = normalizeCode(code)
+  if (!normalizedCode) return []
+  const key = getCacheKey(normalizedCode)
 
   const requestFetcher = fetcher ?? defaultFetcher
   if (!requestFetcher) {
@@ -200,33 +233,46 @@ export async function refreshDict(
 
   // 合并并发请求
   const pending = pendingRequests.get(key)
-  if (pending) return await pending
+  if (pending) return await pending.promise
 
+  const controller = new AbortController()
+  const generation = keyGenerations.get(key) ?? 0
+  const globalGeneration = cacheGeneration
   dictLoading[key] = true
   delete dictErrors[key]
 
-  const request = requestFetcher(key)
+  const request = requestFetcher(normalizedCode, controller.signal)
     .then((items) => {
+      if (
+        controller.signal.aborted ||
+        globalGeneration !== cacheGeneration ||
+        generation !== (keyGenerations.get(key) ?? 0)
+      ) {
+        return []
+      }
       dictCache[key] = Array.isArray(items) ? [...items] : []
       return dictCache[key]
     })
     .catch((error) => {
+      if (controller.signal.aborted) return []
       const normalizedError = toError(error)
       dictErrors[key] = normalizedError
       throw normalizedError
     })
     .finally(() => {
-      pendingRequests.delete(key)
-      dictLoading[key] = false
+      if (pendingRequests.get(key)?.controller === controller) {
+        pendingRequests.delete(key)
+        dictLoading[key] = false
+      }
     })
 
-  pendingRequests.set(key, request)
+  pendingRequests.set(key, { controller, generation, promise: request })
   return await request
 }
 
 export async function refreshDicts(
   codes: readonly string[],
-  fetcher?: (code: string) => Promise<DictRawItem[]>
+  fetcher?: DictFetcher
 ): Promise<Record<string, DictRawItem[]>> {
   const uniqueCodes = [...new Set(codes.map(normalizeCode).filter(Boolean))]
   const results = await Promise.all(

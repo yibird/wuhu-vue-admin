@@ -1,5 +1,11 @@
 import type { BaseResp } from '#/http'
 
+export type UserSex = 0 | 1 | 2
+export type UserEducation = 0 | 1 | 2 | 3 | 4
+export type UserWorkExperience = 0 | 1 | 2 | 3 | 4 | 5
+export type UserMaritalStatus = 0 | 1 | 2 | 3
+export type UserSource = 0 | 1 | 2
+
 export interface UserResp extends BaseResp {
   /**
    * @desc 角色名称
@@ -24,7 +30,7 @@ export interface UserResp extends BaseResp {
   /**
    * @desc 性别(0:男,1:女,2:未知)
    */
-  sex: number
+  sex: UserSex
   /**
    * @desc 年龄
    */
@@ -48,23 +54,40 @@ export interface UserResp extends BaseResp {
   /**
    * @desc 学历(0:高中,1:大专,2:本科,3:硕士,4:博士)
    */
-  education: number
+  education: UserEducation
   /**
    * @desc 工作经验(0:无,1:1年,2:2年,3:3年,4:4年,5:5年以上)
    */
-  work_experience: number
+  work_experience: UserWorkExperience
   /**
    * @desc 婚姻状态(0:未婚,1:已婚,2:离异,3:丧偶)
    */
-  marital_status: number
+  marital_status: UserMaritalStatus
   /**
    * @desc 用户来源(0:注册,1:导入,2:第三方登录)
    */
-  source: number
+  source: UserSource
 }
 
-export interface CreateUserReq {}
+export interface CreateUserReq {
+  username: string
+  nickname: string
+  realname: string
+  sex: UserSex
+  age: number
+  phone: string
+  email: string
+  address: string
+  education: UserEducation
+  work_experience: UserWorkExperience
+  marital_status: UserMaritalStatus
+  source: UserSource
+  small_avatar?: string
+  big_avatar?: string
+  birthday?: string
+  remark?: string
+}
 
-export interface UpdateUserReq {
+export interface UpdateUserReq extends Partial<CreateUserReq> {
   id: string
 }

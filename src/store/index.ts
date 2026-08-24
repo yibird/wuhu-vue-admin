@@ -10,17 +10,11 @@ export type { AppState } from './app/types'
 export { tabStore, useTabStore } from './tabs'
 export type { TabState } from './tabs/types'
 
-export {
-  filterMenusByPermissions,
-  hasPermission,
-  permissionStore,
-  resolveMenuPermission,
-  usePermissionStore,
-} from './permission'
+export { permissionStore, usePermissionStore } from './permission'
 export type { PermissionState } from './permission/types'
 
 export { dictStore, useDictStore } from './dict'
 export type { DictState } from './dict/types'
 
-export { authStore, setupAuthSessionSync, useAuthStore } from './auth'
+export { authStore, useAuthStore } from './auth'
 export type { AuthState } from './auth/types'

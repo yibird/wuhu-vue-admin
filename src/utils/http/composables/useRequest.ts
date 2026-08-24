@@ -37,13 +37,13 @@ export function isAbortError(value: unknown) {
   )
 }
 
-export function useRequest<TData, TParams extends unknown[] = unknown[]>(
+export function useRequest<TData, TParams extends unknown[] = []>(
   service: Service<TData, TParams>,
   options: UseRequestOptions<TData, TParams> = {}
 ): UseRequestReturn<TData, TParams> {
   const {
     manual = false,
-    defaultParams = [] as unknown as TParams,
+    defaultParams,
     initialData,
     ready,
     refreshDeps,
@@ -69,7 +69,8 @@ export function useRequest<TData, TParams extends unknown[] = unknown[]>(
   const docVisibility = useDocumentVisibility()
 
   let requestCount = 0
-  let lastParams: TParams = defaultParams
+  const initialParams = (defaultParams ?? []) as TParams
+  let lastParams: TParams = initialParams
   let controller: AbortController | null = null
   let pollingTimer: ReturnType<typeof setTimeout> | null = null
   let stopVisibilityPollingWatch: (() => void) | null = null
@@ -84,11 +85,11 @@ export function useRequest<TData, TParams extends unknown[] = unknown[]>(
     const currentCount = ++requestCount
     lastParams = args
 
-    onBefore?.(args)
     loading.value = true
     error.value = undefined
 
     try {
+      onBefore?.(args)
       const context: RequestContext = { signal: currentController.signal }
       const result = await service(...args, context)
       if (currentCount !== requestCount) return result
@@ -202,10 +203,19 @@ export function useRequest<TData, TParams extends unknown[] = unknown[]>(
       return
     }
 
-    pollingTimer = setTimeout(() => {
+    pollingTimer = setTimeout(async () => {
       if (disposed) return
-      refresh()
-      startPolling()
+      if (loading.value) {
+        startPolling()
+        return
+      }
+      try {
+        await refreshAsync()
+      } catch {
+        // Polling keeps running after transient request failures.
+      } finally {
+        if (!disposed) startPolling()
+      }
     }, pollingInterval)
   }
 
@@ -247,7 +257,7 @@ export function useRequest<TData, TParams extends unknown[] = unknown[]>(
   const start = () => {
     nextTick(() => {
       if (disposed) return
-      wrappedRun(...defaultParams)
+      wrappedRun(...initialParams)
       startPolling()
     })
   }
