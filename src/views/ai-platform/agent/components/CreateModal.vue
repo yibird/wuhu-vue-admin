@@ -1,12 +1,11 @@
 <script setup lang="ts">
-import type { FormInstance } from 'antdv-next'
-import { computed, nextTick, reactive, shallowRef, watch } from 'vue'
-import { IconSelector } from '@/components/iconPicker'
+import { IconSelector } from '@/components/icon-picker'
 import {
   agentIconBackgroundOptions,
   defaultAgentIconBackground,
   getAgentIconForeground,
 } from '../iconPalette'
+import type { FormInstance } from 'antdv-next'
 import type { AgentCreateInput } from '../types'
 
 const open = defineModel<boolean>('open', { required: true })

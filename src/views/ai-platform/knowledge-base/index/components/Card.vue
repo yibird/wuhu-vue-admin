@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { computed } from 'vue'
 import { renderIcon } from '@/utils'
 import { getKnowledgeBaseIconForeground } from '../../iconPalette'
 import type { KnowledgeBaseAction, KnowledgeBaseItem } from '../../types'

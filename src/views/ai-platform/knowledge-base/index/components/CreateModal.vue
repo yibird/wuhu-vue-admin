@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { FormInstance } from 'antdv-next'
 import { computed, nextTick, reactive, shallowRef, watch } from 'vue'
-import { IconSelector } from '@/components/iconPicker'
+import { IconSelector } from '@/components/icon-picker'
 import {
   defaultKnowledgeBaseIconBackground,
   getKnowledgeBaseIconForeground,

@@ -71,7 +71,6 @@
 </template>
 
 <script setup lang="ts">
-import { computed, shallowRef } from 'vue'
 import Header from './Header.vue'
 import List from './List.vue'
 import type { SiderEmits, SiderProps } from '../types'

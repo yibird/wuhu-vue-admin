@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { computed, shallowRef } from 'vue'
 import type { KnowledgeSectionWorkspace } from '../types'
 
 const props = defineProps<{

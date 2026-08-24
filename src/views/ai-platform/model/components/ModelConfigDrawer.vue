@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import type { FormInstance } from 'antdv-next'
-import { computed, nextTick, reactive, shallowRef, watch } from 'vue'
 import ProviderCreateModal from './ProviderCreateModal.vue'
 import {
   capabilityOptions,
@@ -8,6 +6,7 @@ import {
   protocolOptions,
   providerOptions,
 } from '../data'
+import type { FormInstance } from 'antdv-next'
 import type { ModelCreateInput, ModelItem, ModelProviderOption } from '../types'
 
 const props = defineProps<{

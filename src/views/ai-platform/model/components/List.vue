@@ -1,8 +1,6 @@
 <script setup lang="ts">
-import message from 'antdv-next/dist/message/index'
-import Modal from 'antdv-next/dist/modal/index'
+import { message, Modal } from 'antdv-next'
 import { AnimatePresence, LayoutGroup, Motion, MotionConfig } from 'motion-v'
-import { shallowRef } from 'vue'
 import { useLoading } from '@/composables'
 import {
   cardListMotionAnimate,

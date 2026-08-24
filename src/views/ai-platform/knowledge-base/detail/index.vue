@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { computed, shallowRef } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { knowledgeBaseResources } from '../data'
 import SectionPanel from './components/SectionPanel.vue'

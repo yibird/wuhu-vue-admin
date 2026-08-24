@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { computed } from 'vue'
 import { providerOptions } from '../data'
 import type { ModelPageConfig, ModelProvider } from '../types'
 import type {

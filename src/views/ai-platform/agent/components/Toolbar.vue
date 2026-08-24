@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { computed } from 'vue'
 import type { AgentPageConfig, AgentSort } from '../types'
 import type { AgentStatusFilter } from '../composables/useAgentList'
 

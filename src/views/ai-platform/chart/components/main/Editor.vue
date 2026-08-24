@@ -25,7 +25,6 @@
 
 <script setup lang="ts">
 import { useTextareaAutosize } from '@vueuse/core'
-import { shallowRef, useTemplateRef } from 'vue'
 
 const model = defineModel<string>({ default: '' })
 

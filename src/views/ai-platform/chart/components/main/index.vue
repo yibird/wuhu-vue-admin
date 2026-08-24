@@ -375,20 +375,6 @@
 </template>
 
 <script setup lang="ts">
-import {
-  computed,
-  nextTick,
-  onBeforeUnmount,
-  shallowRef,
-  useTemplateRef,
-  watch,
-} from 'vue'
-import type {
-  AgentGenerationConfig,
-  AgentMessage,
-  MainEmits,
-  MainProps,
-} from '../types'
 import Editor from './Editor.vue'
 import Model from './Model.vue'
 import Tool from './Tool.vue'
@@ -398,7 +384,13 @@ import MessageItem from './MessageItem.vue'
 import MessageMiniMap from './MessageMiniMap/MessageMiniMap.vue'
 import { useAgentMessageMiniMap } from './MessageMiniMap/useAgentMessageMiniMap'
 import Send from './Send.vue'
-import type { ScrollbarInstance } from '@/components/scrollbar'
+import type { ScrollbarInstance } from '@/components'
+import type {
+  AgentGenerationConfig,
+  AgentMessage,
+  MainEmits,
+  MainProps,
+} from '../types'
 
 const props = withDefaults(defineProps<MainProps>(), {
   attachments: () => [],

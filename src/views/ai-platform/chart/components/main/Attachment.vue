@@ -18,8 +18,6 @@
 </template>
 
 <script setup lang="ts">
-import { useTemplateRef } from 'vue'
-
 withDefaults(
   defineProps<{
     disabled?: boolean

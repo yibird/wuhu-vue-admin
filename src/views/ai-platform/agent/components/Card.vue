@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { computed, shallowRef } from 'vue'
 import { renderIcon } from '@/utils'
 import { getAgentIconForeground } from '../iconPalette'
 import type { AgentAction, AgentItem } from '../types'

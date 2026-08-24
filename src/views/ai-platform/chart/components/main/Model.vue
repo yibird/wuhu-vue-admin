@@ -79,7 +79,6 @@
 </template>
 
 <script setup lang="ts">
-import { computed, shallowRef } from 'vue'
 import type { AgentModel } from '../types'
 
 const props = withDefaults(

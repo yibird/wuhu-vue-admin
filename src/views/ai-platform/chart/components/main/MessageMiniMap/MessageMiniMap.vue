@@ -1,12 +1,6 @@
 <script setup lang="ts">
-import {
-  computed,
-  onBeforeUnmount,
-  shallowRef,
-  watch,
-  type CSSProperties,
-} from 'vue'
 import { useMessageMiniMap } from './useMessageMiniMap'
+import type { CSSProperties } from 'vue'
 import type {
   MessageMiniMapEmits,
   MessageMiniMapItem,

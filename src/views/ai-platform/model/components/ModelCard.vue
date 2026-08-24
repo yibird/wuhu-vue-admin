@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { computed } from 'vue'
 import { renderIcon } from '@/utils'
 import { formatTokenWindow, getCapabilityLabel, getProviderMeta } from '../data'
 import type { ModelAction, ModelItem, ModelStatus } from '../types'

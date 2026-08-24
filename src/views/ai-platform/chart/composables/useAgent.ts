@@ -1,7 +1,6 @@
 import { computed, onBeforeUnmount, reactive, shallowRef } from 'vue'
 import { useClipboard } from '@vueuse/core'
-import message from 'antdv-next/dist/message/index'
-import Modal from 'antdv-next/dist/modal/index'
+import { message, Modal } from 'antdv-next'
 import {
   createInitialChats,
   createInitialMessagesByChatId,

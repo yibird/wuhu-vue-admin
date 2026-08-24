@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { computed } from 'vue'
 import type { KnowledgeBasePageConfig, KnowledgeBaseSort } from '../../types'
 import type { KnowledgeBaseStatusFilter } from '../composables/useKnowledgeBaseList'
 
