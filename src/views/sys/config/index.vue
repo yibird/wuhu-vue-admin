@@ -1,6 +1,6 @@
 <template>
   <div class="p-10 full-flex">
-    <div class="full flex bg-white">
+    <div class="full flex bg-container">
       <!-- <a-tabs
         v-model:active-key="activeKey"
         type="line"
@@ -25,14 +25,14 @@
         </a-tab-pane>
       </a-tabs> -->
       <div
-        class="h-full px-10 py-20 flex flex-col gap-10 border-r-1 border-r-solid border-[#f0f0f6]"
+        class="h-full px-10 py-20 flex flex-col gap-10 border-r-1 border-r-solid border-color-1"
       >
         <div
           v-for="item in items"
           :key="item.key"
           :class="[
-            'w-300 px-20 py-10 flex items-center rounded-6 cursor-pointer select-none transition-colors hover:bg-[#f2f3f5]',
-            { 'bg-[#f2f3f5] text-theme': item.key === activeKey },
+            'w-300 px-20 py-10 flex items-center rounded-6 cursor-pointer select-none transition-colors hover:bg-hover-3',
+            { 'bg-hover-3 text-theme': item.key === activeKey },
           ]"
           @click="onClick(item.key)"
         >

@@ -2,7 +2,7 @@
 import Card from './Card.vue'
 import type { MonitorTone, RecommendAppEmits, RecommendAppProps } from './types'
 
-const { items = [] } = defineProps<RecommendAppProps>()
+const { items = [], loading = false } = defineProps<RecommendAppProps>()
 const emit = defineEmits<RecommendAppEmits>()
 
 const toneClassMap: Record<MonitorTone, string> = {
@@ -16,6 +16,27 @@ const toneClassMap: Record<MonitorTone, string> = {
 
 <template>
   <Card
+    v-if="loading"
+    title="应用中心"
+    icon="i-lucide:package-plus"
+    description="常用运维应用与可安装组件"
+  >
+    <div class="flex flex-col gap-8">
+      <div
+        v-for="item in 4"
+        :key="item"
+        class="rounded-8 border-1 border-solid border-color-2 p-10"
+      >
+        <a-skeleton active avatar :paragraph="{ rows: 1 }" />
+        <div class="mt-10 flex justify-between gap-8">
+          <a-skeleton-button active size="small" />
+          <a-skeleton-button active size="small" />
+        </div>
+      </div>
+    </div>
+  </Card>
+  <Card
+    v-else
     title="应用中心"
     icon="i-lucide:package-plus"
     description="常用运维应用与可安装组件"

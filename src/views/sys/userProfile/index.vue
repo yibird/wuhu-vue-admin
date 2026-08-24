@@ -5,7 +5,8 @@
         <a-card
           title="基本信息"
           :classes="{
-            header: 'bg-gradient-to-b! from-[#1677ff33] to-[#fff0]',
+            header:
+              'bg-gradient-to-b! from-[var(--w-bg-primary-tint)] to-transparent',
             body: 'p-0!',
           }"
           variant="borderless"
@@ -14,7 +15,7 @@
           <div class="py-50">
             <div class="flex justify-center">
               <div
-                class="relative size-80 rounded-full bg-gray-100 cursor-pointer overflow-hidden group"
+                class="relative size-80 rounded-full bg-fill-tertiary cursor-pointer overflow-hidden group"
                 @click="openAvatarModal"
               >
                 <img
@@ -49,7 +50,7 @@
             </div>
           </div>
           <div
-            class="py-15 border-t-1 border-solid border-[#eee] text-center text-xs text-secondary"
+            class="py-15 border-t-1 border-solid border-color-secondary text-center text-xs text-secondary"
           >
             注册于：2023-01-01 09:00:00
           </div>
@@ -60,7 +61,8 @@
           <a-card
             title="安全设置"
             :classes="{
-              header: 'bg-gradient-to-b! from-[#1677ff33] to-[#fff0]',
+              header:
+                'bg-gradient-to-b! from-[var(--w-bg-primary-tint)] to-transparent',
             }"
             variant="borderless"
             class="rounded-6"
@@ -71,14 +73,17 @@
                 :key="index"
                 class="flex"
               >
-                <div class="size-45 rounded-full bg-gray-100"></div>
+                <div class="size-45 rounded-full bg-fill-tertiary"></div>
                 <div class="flex-1 px-10">
                   <div class="flex items-center gap-10">
                     <span class="text-primary">{{ item.title }}</span>
                     <span
                       class="flex items-center"
                       :style="{
-                        color: item.status === 0 ? '#ff7d00' : '#00b42a',
+                        color:
+                          item.status === 0
+                            ? 'rgb(var(--w-color-warning))'
+                            : 'rgb(var(--w-color-success))',
                       }"
                     >
                       <Icon name="i-lucide:circle-alert" :size="16" />
@@ -100,7 +105,8 @@
           <a-card
             title="第三方账号"
             :classes="{
-              header: 'bg-gradient-to-b! from-[#1677ff33] to-[#fff0]',
+              header:
+                'bg-gradient-to-b! from-[var(--w-bg-primary-tint)] to-transparent',
             }"
             variant="borderless"
             class="rounded-6"
@@ -111,14 +117,17 @@
                 :key="index"
                 class="flex"
               >
-                <div class="size-45 rounded-full bg-gray-100"></div>
+                <div class="size-45 rounded-full bg-fill-tertiary"></div>
                 <div class="flex-1 px-10">
                   <div class="flex items-center gap-10">
                     <span class="text-primary">{{ item.title }}</span>
                     <span
                       class="flex items-center"
                       :style="{
-                        color: item.status === 0 ? '#ff7d00' : '#00b42a',
+                        color:
+                          item.status === 0
+                            ? 'rgb(var(--w-color-warning))'
+                            : 'rgb(var(--w-color-success))',
                       }"
                     >
                       <Icon name="i-lucide:circle-alert" :size="16" />
@@ -145,9 +154,8 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { ref } from 'vue'
-import message from 'antdv-next/dist/message/index'
-import { CropperPicker } from '@/components/cropper'
+import { message } from 'antdv-next'
+import { CropperPicker } from '@/components'
 
 const avatarUrl = ref('')
 const cropperOpen = ref(false)

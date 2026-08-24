@@ -10,6 +10,7 @@
   </a-dropdown>
 </template>
 <script lang="ts" setup>
+import { Modal } from 'antdv-next'
 import type { DropdownProps, DropdownEmits } from './types'
 
 const props = defineProps<DropdownProps>()
@@ -27,7 +28,6 @@ const options = [
     props: { class: 'w-100' },
   },
 ]
-import Modal from 'antdv-next/dist/modal/index'
 
 const onSelect = ({ key }: { key: string }) => {
   switch (key) {

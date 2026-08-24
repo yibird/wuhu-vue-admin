@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import { NumberTicker } from '@/components/numberTicker'
+import { NumberTicker } from '@/components/number-ticker'
 import Card from './Card.vue'
 import type { MonitorTone, OverviewProps } from './types'
 
-const { items = [] } = defineProps<OverviewProps>()
+const { items = [], loading = false } = defineProps<OverviewProps>()
 
 const toneClassMap: Record<MonitorTone, string> = {
   primary: 'icon-primary-soft',
@@ -16,6 +16,25 @@ const toneClassMap: Record<MonitorTone, string> = {
 
 <template>
   <Card
+    v-if="loading"
+    title="资源概览"
+    icon="i-lucide:gauge"
+    description="核心资源、任务与应用概况"
+  >
+    <div class="grid grid-cols-1 gap-12 sm:grid-cols-2 2xl:grid-cols-4">
+      <div
+        v-for="item in 4"
+        :key="item"
+        class="rounded-8 border-1 border-solid border-color-2 p-14"
+      >
+        <a-skeleton-input active size="small" class="!w-86" />
+        <a-skeleton-input active class="!mt-8 !w-92" />
+        <a-skeleton-input active size="small" class="!mt-12 !w-full" />
+      </div>
+    </div>
+  </Card>
+  <Card
+    v-else
     title="资源概览"
     icon="i-lucide:gauge"
     description="核心资源、任务与应用概况"

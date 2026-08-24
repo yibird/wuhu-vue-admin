@@ -19,6 +19,7 @@ export interface OverviewMetric {
 
 export interface OverviewProps {
   items: OverviewMetric[]
+  loading?: boolean
 }
 
 export interface Status {
@@ -33,6 +34,7 @@ export interface Status {
 
 export interface StatusProps {
   items: Status[]
+  loading?: boolean
 }
 
 export interface StatusItemProps {
@@ -48,6 +50,7 @@ export interface SysInfoType {
 
 export interface SysInfoProps {
   items: SysInfoType[]
+  loading?: boolean
 }
 
 export interface SysInfoEmits {
@@ -65,6 +68,7 @@ export interface SysMonitorData {
 
 export interface SysMonitorProps {
   data?: SysMonitorData[]
+  loading?: boolean
 }
 
 export interface AppType {
@@ -79,6 +83,7 @@ export interface AppType {
 
 export interface RecommendAppProps {
   items: AppType[]
+  loading?: boolean
 }
 
 export interface RecommendAppEmits {
@@ -99,6 +104,7 @@ export interface AlertItem {
 export interface AlertCenterProps {
   items: AlertItem[]
   activeSeverity: MonitorSeverity | 'all'
+  loading?: boolean
 }
 
 export interface AlertCenterEmits {
@@ -118,6 +124,7 @@ export interface ServiceItem {
 
 export interface ServiceHealthProps {
   items: ServiceItem[]
+  loading?: boolean
 }
 
 export interface ServiceHealthEmits {

@@ -1,7 +1,7 @@
 <template>
-  <div class="border-1 border-solid border-[#f0f0f0] rounded-2 overflow-hidden">
+  <div class="border-1 border-solid border-color-1 rounded-2 overflow-hidden">
     <div
-      class="p-12 flex items-center justify-between bg-[#fafafa] border-b-1 border-b-solid border-[#f0f0f0]"
+      class="p-12 flex items-center justify-between bg-fill-secondary border-b-1 border-b-solid border-color-1"
     >
       <span class="text-sm">
         <span>标签(共</span>

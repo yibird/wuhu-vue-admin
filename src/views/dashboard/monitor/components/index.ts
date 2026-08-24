@@ -6,5 +6,6 @@ export { default as SysMonitor } from './SysMonitor.vue'
 export { default as RecommendApp } from './RecommendApp.vue'
 export { default as AlertCenter } from './AlertCenter.vue'
 export { default as ServiceHealth } from './ServiceHealth.vue'
+export { default as MonitorHeader } from './MonitorHeader.vue'
 
 export type * from './types'

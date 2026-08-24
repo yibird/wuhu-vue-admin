@@ -22,12 +22,11 @@
 </template>
 <script lang="ts" setup>
 import { getRolePageListApi, type RoleResp } from '@/apis'
-import { FormPlus } from '@/components/formPlus'
-import type { FormPlusInstance, FormPlusProps } from '@/components/formPlus'
-import { TablePlus, useTable } from '@/components/tablePlus'
-import type { TablePlusColumn } from '@/components/tablePlus'
-import message from 'antdv-next/dist/message/index'
-import Tag from 'antdv-next/dist/tag/index'
+import { message, Tag } from 'antdv-next'
+import { FormPlus } from '@/components/form-plus'
+import { TablePlus, useTable } from '@/components/table-plus'
+import type { FormPlusInstance, FormPlusProps } from '@/components/form-plus'
+import type { TablePlusColumn } from '@/components/table-plus'
 
 const dataScopeMapping: Record<number, { text: string; color: string }> = {
   0: {

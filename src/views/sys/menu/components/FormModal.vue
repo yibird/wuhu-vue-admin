@@ -111,10 +111,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
-
 const open = ref(false)
-
 const show = (_record?: any) => {
   open.value = true
 }

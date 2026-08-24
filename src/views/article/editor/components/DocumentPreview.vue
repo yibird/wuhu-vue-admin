@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { computed } from 'vue'
 import { sanitizeHtml } from '../utils'
 
 const props = defineProps<{

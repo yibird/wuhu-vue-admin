@@ -30,10 +30,10 @@
 
 <script setup lang="ts">
 import { getRolePageListApi } from '@/apis'
-import { FormPlus } from '@/components/formPlus'
-import type { FormPlusProps } from '@/components/formPlus'
-import { TablePlus, useTable } from '@/components/tablePlus'
-import type { TablePlusColumn } from '@/components/tablePlus'
+import { FormPlus } from '@/components/form-plus'
+import type { FormPlusProps } from '@/components/form-plus'
+import { TablePlus, useTable } from '@/components/table-plus'
+import type { TablePlusColumn } from '@/components/table-plus'
 import Detail from './components/Detail.vue'
 
 const tableRef = ref()

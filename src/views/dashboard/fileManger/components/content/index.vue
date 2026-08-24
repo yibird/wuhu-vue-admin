@@ -1,6 +1,4 @@
 <script lang="ts" setup>
-import type { UploadFile } from 'antdv-next'
-import { toRef } from 'vue'
 import { Icon } from '@/components/icon'
 import { useFileContentActions } from '../../composables/useFileContentActions'
 import Breadcrumb from './Breadcrumb.vue'
@@ -22,6 +20,7 @@ import {
   fileViewOptions,
   getFileCategoryLabel,
 } from '../utils'
+import type { UploadFile } from 'antdv-next'
 
 const activeCategory = defineModel<FileCategory>('activeCategory', {
   required: true,

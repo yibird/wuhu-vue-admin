@@ -42,10 +42,9 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, useTemplateRef } from 'vue'
 import { useDroppable } from '@dnd-kit/vue'
 import { DraggableItem } from '@/components/draggable'
-import Item from './item.vue'
+import Item from './Item.vue'
 import type { ScrollbarProps } from '@/components/scrollbar'
 import type { CardTaskGroupProps, TaskActionEmits } from '../types'
 

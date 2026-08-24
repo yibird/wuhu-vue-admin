@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import message from 'antdv-next/dist/message/index'
-import Modal from 'antdv-next/dist/modal/index'
-import type { FormInstance, ModalProps } from 'antdv-next'
+import { message, Modal } from 'antdv-next'
 import { getProjectLogoOption, projectLogoOptions } from '../data'
+import type { FormInstance, ModalProps } from 'antdv-next'
 import type {
   Project,
   ProjectSettingsMode,
@@ -352,7 +351,7 @@ function handleCancel() {
               v-for="item in projectLogoOptions"
               :key="item.icon"
               type="button"
-              class="group relative min-w-0 flex flex-col items-center gap-7 rounded-8 border-1 border-solid bg-container p-8 transition-[border-color,background-color,box-shadow,transform] duration-motion-base hover:(-translate-y-1 border-color-primary/60 bg-hover shadow-all-sm)"
+              class="group relative min-w-0 flex flex-col items-center gap-7 rounded-8 border-1 border-solid bg-container p-8 cursor-pointer transition-[border-color,background-color,box-shadow,transform] duration-motion-base hover:(-translate-y-1 border-color-primary/60 bg-hover shadow-all-sm)"
               :class="
                 form.logo.icon === item.icon
                   ? 'border-color-primary bg-primary/5 shadow-all-sm'
@@ -374,7 +373,7 @@ function handleCancel() {
               <Icon
                 v-if="form.logo.icon === item.icon"
                 name="i-lucide:circle-check"
-                :size="14"
+                :size="16"
                 class="absolute right-5 top-5 text-primary"
               />
             </button>

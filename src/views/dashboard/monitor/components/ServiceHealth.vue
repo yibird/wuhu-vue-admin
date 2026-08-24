@@ -6,7 +6,7 @@ import type {
   ServiceStatus,
 } from './types'
 
-const { items = [] } = defineProps<ServiceHealthProps>()
+const { items = [], loading = false } = defineProps<ServiceHealthProps>()
 const emit = defineEmits<ServiceHealthEmits>()
 
 const statusMeta: Record<
@@ -41,6 +41,26 @@ const statusMeta: Record<
 
 <template>
   <Card
+    v-if="loading"
+    title="服务健康"
+    icon="i-lucide:server"
+    description="核心服务状态与延迟"
+  >
+    <div class="grid grid-cols-1 gap-10 md:grid-cols-2">
+      <div
+        v-for="item in 4"
+        :key="item"
+        class="rounded-8 border-1 border-solid border-color-2 p-12"
+      >
+        <a-skeleton active :title="{ width: '45%' }" :paragraph="{ rows: 2 }" />
+        <div class="mt-12 flex justify-end">
+          <a-skeleton-button active size="small" />
+        </div>
+      </div>
+    </div>
+  </Card>
+  <Card
+    v-else
     title="服务健康"
     icon="i-lucide:server"
     description="核心服务状态与延迟"

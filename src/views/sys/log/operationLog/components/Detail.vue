@@ -90,7 +90,7 @@
   </a-drawer>
 </template>
 <script lang="ts" setup>
-import { JsonView } from '@/components/jsonView'
+import { JsonView } from '@/components/json-view'
 const show = defineModel('show', {
   default: false,
   type: Boolean,

@@ -1,11 +1,10 @@
 <script lang="ts" setup>
 import { useClipboard, useIntervalFn } from '@vueuse/core'
-import { onUnmounted } from 'vue'
-import message from 'antdv-next/dist/message/index'
-import { NumberTicker } from '@/components/numberTicker'
+import { message } from 'antdv-next'
 import { useLoading } from '@/composables'
 import {
   AlertCenter,
+  MonitorHeader,
   Overview,
   RecommendApp,
   ServiceHealth,
@@ -13,7 +12,6 @@ import {
   SysInfo,
   SysMonitor,
 } from './components'
-import Skeleton from './components/Skeleton.vue'
 import {
   alertItems,
   appItems,
@@ -35,7 +33,6 @@ const { isLoading } = useLoading()
 const { copy, isSupported: isClipboardSupported } = useClipboard({
   legacy: true,
 })
-
 const activeSeverity = shallowRef<MonitorSeverity | 'all'>('all')
 const autoRefresh = shallowRef(true)
 const refreshing = shallowRef(false)
@@ -43,6 +40,7 @@ const lastRefreshAt = shallowRef(formatTime())
 const resolvedAlertIds = shallowRef<string[]>([])
 const appDetail = shallowRef<AppType | null>(null)
 let refreshTimer: number | null = null
+
 onUnmounted(() => {
   if (refreshTimer) clearTimeout(refreshTimer)
 })
@@ -66,9 +64,7 @@ const healthScore = computed(() => {
 
 const { pause, resume } = useIntervalFn(
   () => {
-    if (autoRefresh.value) {
-      refreshDashboard(false)
-    }
+    if (autoRefresh.value) refreshDashboard(false)
   },
   30_000,
   { immediate: true }
@@ -81,6 +77,15 @@ watch(autoRefresh, (enabled) => {
   }
   pause()
 })
+
+onActivated(() => {
+  if (autoRefresh.value) {
+    resume()
+    refreshDashboard(false)
+  }
+})
+
+onDeactivated(pause)
 
 function formatTime(date = new Date()) {
   return new Intl.DateTimeFormat('zh-CN', {
@@ -97,9 +102,7 @@ function refreshDashboard(showMessage = true) {
     refreshTimer = null
     lastRefreshAt.value = formatTime()
     refreshing.value = false
-    if (showMessage) {
-      message.success('监控数据已刷新')
-    }
+    if (showMessage) message.success('监控数据已刷新')
   }, 420)
 }
 
@@ -152,136 +155,70 @@ function installApp(item: AppType) {
   <WView :full="true" :padding="0">
     <Scrollbar>
       <div class="min-h-full bg-page p-10 sm:p-12">
-        <Skeleton v-if="isLoading" />
-        <div v-else class="w-full">
-          <section
-            class="page-enter page-enter--1 mb-12 overflow-hidden rounded-8 border-1 border-solid border-color-2 bg-container shadow-[var(--w-shadow-card)]"
-          >
-            <div
-              class="flex flex-wrap items-center justify-between gap-12 border-b-1 border-b-solid border-color-2 px-14 py-14 sm:px-18 sm:py-16"
-            >
-              <div class="min-w-0">
-                <div class="flex flex-wrap items-center gap-10">
-                  <h1 class="m-0 text-md text-main font-700 sm:text-lg">
-                    服务器监控
-                  </h1>
-                  <span
-                    :class="[
-                      'inline-flex items-center gap-5 rounded-999 px-9 py-4 text-xs',
-                      criticalAlertCount > 0
-                        ? 'bg-error-tint text-error'
-                        : 'bg-success-tint text-success',
-                    ]"
-                  >
-                    <Icon
-                      :name="
-                        criticalAlertCount > 0
-                          ? 'i-lucide:circle-alert'
-                          : 'i-lucide:circle-check'
-                      "
-                      :size="13"
-                    />
-                    {{ criticalAlertCount > 0 ? '需要处理' : '运行正常' }}
-                  </span>
-                </div>
-                <div class="mt-5 text-xs text-secondary">
-                  最近刷新 {{ lastRefreshAt }} · 自动刷新
-                  {{ autoRefresh ? '已开启' : '已关闭' }}
-                </div>
-              </div>
+        <MonitorHeader
+          :auto-refresh="autoRefresh"
+          :critical-alert-count="criticalAlertCount"
+          :health-score="healthScore"
+          :last-refresh-at="lastRefreshAt"
+          :loading="isLoading"
+          :refreshing="refreshing"
+          :running-service-count="runningServiceCount"
+          :total-service-count="serviceItems.length"
+          :unresolved-alert-count="unresolvedAlerts.length"
+          @refresh="refreshDashboard()"
+          @update:auto-refresh="autoRefresh = $event"
+        />
 
-              <div
-                class="flex flex-wrap items-center justify-start gap-8 sm:justify-end"
-              >
-                <a-switch v-model:checked="autoRefresh" />
-                <span class="text-xs text-secondary">自动刷新</span>
-                <a-button :loading="refreshing" @click="refreshDashboard()">
-                  <template #icon>
-                    <Icon
-                      name="i-lucide:refresh-cw"
-                      :class="{
-                        'animate-spin motion-reduce:animate-none': refreshing,
-                      }"
-                    />
-                  </template>
-                  刷新
-                </a-button>
-              </div>
-            </div>
+        <div
+          class="grid w-full grid-cols-1 gap-12 xl:grid-cols-[minmax(0,1fr)_360px] 2xl:grid-cols-[minmax(0,1fr)_400px]"
+        >
+          <main class="min-w-0 flex flex-col gap-12">
+            <Overview
+              class="page-enter page-enter--2"
+              :items="overviewItems"
+              :loading="isLoading"
+            />
+            <Status
+              class="page-enter page-enter--3"
+              :items="statusItems"
+              :loading="isLoading"
+            />
+            <SysMonitor
+              class="page-enter page-enter--4"
+              :data="monitorData"
+              :loading="isLoading"
+            />
+            <ServiceHealth
+              class="page-enter page-enter--5"
+              :items="serviceItems"
+              :loading="isLoading"
+              @action="handleServiceAction"
+            />
+          </main>
 
-            <div class="grid grid-cols-1 gap-0 sm:grid-cols-3">
-              <div class="px-14 py-12 sm:px-18 sm:py-14">
-                <div class="text-xs text-secondary">健康评分</div>
-                <div class="mt-6 flex items-end gap-6">
-                  <span class="text-xl text-main font-800 sm:text-2xl">
-                    <NumberTicker :value="healthScore" :duration="800" />
-                  </span>
-                  <span class="pb-2 text-xs text-secondary">/ 100</span>
-                </div>
-              </div>
-              <div
-                class="border-y-1 border-y-solid border-color-2 px-14 py-12 sm:border-x-1 sm:border-y-0 sm:border-x-solid sm:px-18 sm:py-14"
-              >
-                <div class="text-xs text-secondary">运行服务</div>
-                <div class="mt-6 text-xl text-main font-800 sm:text-2xl">
-                  <NumberTicker :value="runningServiceCount" :duration="800" />
-                  <span class="text-secondary"> / </span>
-                  <NumberTicker :value="serviceItems.length" :duration="800" />
-                </div>
-              </div>
-              <div class="px-14 py-12 sm:px-18 sm:py-14">
-                <div class="text-xs text-secondary">未处理告警</div>
-                <div class="mt-6 text-xl text-main font-800 sm:text-2xl">
-                  <NumberTicker
-                    :value="unresolvedAlerts.length"
-                    :duration="800"
-                  />
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <div
-            class="grid grid-cols-1 gap-12 xl:grid-cols-[minmax(0,1fr)_360px] 2xl:grid-cols-[minmax(0,1fr)_400px]"
-          >
-            <main class="min-w-0 flex flex-col gap-12">
-              <Overview
-                class="page-enter page-enter--2"
-                :items="overviewItems"
-              />
-              <Status class="page-enter page-enter--3" :items="statusItems" />
-              <SysMonitor
-                class="page-enter page-enter--4"
-                :data="monitorData"
-              />
-              <ServiceHealth
-                class="page-enter page-enter--5"
-                :items="serviceItems"
-                @action="handleServiceAction"
-              />
-            </main>
-
-            <aside class="min-w-0 flex flex-col gap-12">
-              <AlertCenter
-                v-model:active-severity="activeSeverity"
-                class="page-enter page-enter--2"
-                :items="unresolvedAlerts"
-                @resolve="resolveAlert"
-              />
-              <SysInfo
-                class="page-enter page-enter--3"
-                :items="sysInfoItems"
-                @copy="copySysInfo"
-                @copy-all="copyAllSysInfo"
-              />
-              <RecommendApp
-                class="page-enter page-enter--4"
-                :items="appItems"
-                @open="openApp"
-                @install="installApp"
-              />
-            </aside>
-          </div>
+          <aside class="min-w-0 flex flex-col gap-12">
+            <AlertCenter
+              v-model:active-severity="activeSeverity"
+              class="page-enter page-enter--2"
+              :items="unresolvedAlerts"
+              :loading="isLoading"
+              @resolve="resolveAlert"
+            />
+            <SysInfo
+              class="page-enter page-enter--3"
+              :items="sysInfoItems"
+              :loading="isLoading"
+              @copy="copySysInfo"
+              @copy-all="copyAllSysInfo"
+            />
+            <RecommendApp
+              class="page-enter page-enter--4"
+              :items="appItems"
+              :loading="isLoading"
+              @install="installApp"
+              @open="openApp"
+            />
+          </aside>
         </div>
       </div>
     </Scrollbar>

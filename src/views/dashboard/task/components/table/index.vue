@@ -1,5 +1,6 @@
 <template>
-  <div class="h-full overflow-hidden bg-container rounded-4">
+  <TableSkeleton v-if="loading" />
+  <div v-else class="h-full overflow-hidden bg-container rounded-4">
     <a-table
       :columns="columns"
       :data-source="items"
@@ -108,6 +109,7 @@
 
 <script lang="ts" setup>
 import type { TableColumnsType } from 'antdv-next'
+import TableSkeleton from './Skeleton.vue'
 import {
   getTaskAssigneeMeta,
   getTaskDueMeta,
@@ -117,6 +119,7 @@ import {
 import type { Task, TaskActionEmits, TaskStatusValue } from '../types'
 
 const emit = defineEmits<TaskActionEmits>()
+const { loading = false } = defineProps<{ loading?: boolean }>()
 const items = defineModel<Task[]>('items', { default: () => [] })
 
 const columns: TableColumnsType<Task> = [

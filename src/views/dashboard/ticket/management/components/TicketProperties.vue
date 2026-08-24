@@ -1,11 +1,9 @@
 <script setup lang="ts">
-import { computed, shallowRef, watch } from 'vue'
 import {
   getTicketPriorityMeta,
   getTicketStatusMeta,
   ticketPriorityList,
 } from '../../center/data'
-import type { TicketPriority, TicketRecord } from '../../center/types'
 import {
   CURRENT_AGENT,
   closingReasonOptions,
@@ -15,6 +13,7 @@ import {
   supportTeamOptions,
   waitingReasonOptions,
 } from '../data'
+import type { TicketPriority, TicketRecord } from '../../center/types'
 import type { TicketAssignment, TicketResolution } from '../types'
 
 const props = defineProps<{

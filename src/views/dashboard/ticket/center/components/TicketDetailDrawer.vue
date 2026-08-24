@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { computed, shallowRef, watch } from 'vue'
 import { useWindowSize } from '@vueuse/core'
 import {
   getTicketCategoryMeta,

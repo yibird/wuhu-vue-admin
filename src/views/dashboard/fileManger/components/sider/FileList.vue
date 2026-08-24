@@ -1,9 +1,8 @@
 <script lang="ts" setup>
-import { computed, shallowRef } from 'vue'
 import { LayoutGroup, Motion, MotionConfig } from 'motion-v'
 import { Icon } from '@/components/icon'
-import type { FileCategory, FileCategoryStats } from '../types'
 import { fileCategoryOptions } from '../utils'
+import type { FileCategory, FileCategoryStats } from '../types'
 
 const props = defineProps<{
   activeCategory: FileCategory

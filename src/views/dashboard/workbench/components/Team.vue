@@ -1,5 +1,10 @@
 <template>
-  <section data-swapy-slot="team" class="page-enter page-enter--6 min-w-0">
+  <TeamSkeleton v-if="loading" />
+  <section
+    v-else
+    data-swapy-slot="team"
+    class="page-enter page-enter--6 min-w-0"
+  >
     <a-card :styles="{ body: { padding: 0 } }" data-swapy-item="team">
       <template #title>
         <span class="text-base text-main font-700">协作团队</span>
@@ -52,7 +57,12 @@
 </template>
 
 <script lang="ts" setup>
+import TeamSkeleton from './TeamSkeleton.vue'
 import type { TeamItem } from './types'
+
+const { loading = false } = defineProps<{
+  loading?: boolean
+}>()
 
 const items: TeamItem[] = [
   {

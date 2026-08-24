@@ -28,12 +28,7 @@
       <a-tag v-if="item.estimatedHours" :bordered="false" color="purple">
         {{ item.estimatedHours }}h
       </a-tag>
-      <a-tag
-        v-for="tag in item.tags ?? []"
-        :key="tag"
-        :bordered="false"
-        color="default"
-      >
+      <a-tag v-for="tag in item.tags ?? []" :key="tag" :bordered="false">
         {{ tag }}
       </a-tag>
     </div>

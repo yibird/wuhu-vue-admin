@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import { computed } from 'vue'
 import { Icon } from '@/components/icon'
 import { formatFileSize } from '../utils'
 

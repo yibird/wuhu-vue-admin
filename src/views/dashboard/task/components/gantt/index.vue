@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import dayjs from 'dayjs'
-import message from 'antdv-next/dist/message/index'
+import { message } from 'antdv-next'
 import {
   Gantt,
   type GanttContextMenuEvent,
@@ -12,6 +12,7 @@ import { sortTasksByStatus, taskDateTimeFormat } from '../../constants'
 import type { Task, TaskActionEmits } from '../types'
 import ContextMenu from './ContextMenu.vue'
 import List from './List.vue'
+import GanttSkeleton from './Skeleton.vue'
 import { useTaskGanttContextMenu } from './useTaskGanttContextMenu'
 import {
   createTaskId,
@@ -25,6 +26,7 @@ import {
 } from './utils'
 
 const emit = defineEmits<TaskActionEmits>()
+const { loading = false } = defineProps<{ loading?: boolean }>()
 const items = defineModel<Task[]>('items', { default: () => [] })
 
 const viewMode = shallowRef<GanttViewMode>('Month')
@@ -279,7 +281,8 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div class="h-full min-h-0 min-w-0 flex flex-col gap-12">
+  <GanttSkeleton v-if="loading" />
+  <div v-else class="h-full min-h-0 min-w-0 flex flex-col gap-12">
     <div
       class="flex flex-wrap items-center justify-between gap-10 rounded-4 bg-container p-12"
     >

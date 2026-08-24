@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import { useTemplateRef } from 'vue'
 import { Editor } from '@/components/editor'
-import type { EditorExpose } from '@/components/editor'
 import DocumentPreview from './DocumentPreview.vue'
-import type { DeviceMode, EditorContentExpose, EditorMode } from '../types'
 import { deviceOptions } from '../data'
+import type { DeviceMode, EditorContentExpose, EditorMode } from '../types'
+import type { EditorExpose } from '@/components/editor'
 
 const props = defineProps<{
   activeMode: EditorMode

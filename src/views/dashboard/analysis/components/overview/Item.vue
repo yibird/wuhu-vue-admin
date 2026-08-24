@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { NumberTicker } from '@/components/numberTicker'
+import { NumberTicker } from '@/components/number-ticker'
 import ItemExtra from './ItemExtra.vue'
 import type { CardItemProps, CardItemEmits } from '../types.ts'
 

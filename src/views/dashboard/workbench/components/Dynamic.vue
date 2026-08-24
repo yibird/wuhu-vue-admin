@@ -1,5 +1,10 @@
 <template>
-  <section data-swapy-slot="dynamic" class="page-enter page-enter--4 min-w-0">
+  <DynamicSkeleton v-if="loading" />
+  <section
+    v-else
+    data-swapy-slot="dynamic"
+    class="page-enter page-enter--4 min-w-0"
+  >
     <a-card :styles="{ body: { padding: 0 } }" data-swapy-item="dynamic">
       <template #title>
         <span class="text-base text-main font-700">团队动态</span>
@@ -12,7 +17,7 @@
         <div
           v-for="item in items"
           :key="item.id"
-          class="group flex gap-20 px-8 py-12 rounded-4 transition-colors duration-motion-base hover:(bg-hover)"
+          class="content-auto-86 group flex gap-20 px-8 py-12 rounded-4 transition-colors duration-motion-base hover:(bg-hover)"
         >
           <span
             class="size-34 grid place-items-center rounded-full bg-fill-tertiary text-secondary transition-[background-color,color] duration-motion-base group-hover:(bg-primary-tint text-primary)"
@@ -40,7 +45,12 @@
 </template>
 
 <script lang="ts" setup>
+import DynamicSkeleton from './DynamicSkeleton.vue'
 import type { Dynamic } from './types'
+
+const { loading = false } = defineProps<{
+  loading?: boolean
+}>()
 
 const items: Dynamic[] = [
   {

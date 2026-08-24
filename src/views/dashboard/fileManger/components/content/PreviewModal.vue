@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import { computed } from 'vue'
 import {
-  FilePreview as BaseFilePreviewModal,
+  FilePreview,
   type FilePreviewKind,
   type FilePreviewSource,
-} from '@/components/filePreview'
+} from '@/components'
 import type { IFile } from '../types'
 import { getFileCategoryByType, getFileExtension } from '../utils'
 
@@ -71,5 +70,5 @@ const powerpointExtensions = new Set(['pot', 'potx', 'ppt', 'pptx'])
 </script>
 
 <template>
-  <BaseFilePreviewModal v-model:open="open" :file="previewSource" />
+  <FilePreview v-model:open="open" :file="previewSource" />
 </template>

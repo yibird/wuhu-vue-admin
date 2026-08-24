@@ -32,7 +32,7 @@ import type { SiderProps, SiderEmits } from './types'
 const { data = [], keys = [] } = defineProps<SiderProps>()
 const emits = defineEmits<SiderEmits>()
 
-import message from 'antdv-next/dist/message/index'
+import { message } from 'antdv-next'
 
 const renderTitle = (node: any) => {
   const label = h('div', { class: 'flex-1 truncate' }, node.title ?? node.label)

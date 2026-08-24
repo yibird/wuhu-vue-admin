@@ -4,55 +4,25 @@
       class="h-full overflow-hidden"
       content-class="full min-h-0 min-w-0 flex flex-col gap-10"
     >
-      <div v-if="isLoading" class="min-h-0 min-w-0 flex-1 overflow-hidden">
-        <Skeleton />
-      </div>
-      <div
-        v-else
-        class="page-enter page-enter--1 flex flex-wrap items-center justify-between gap-12 rounded-4 bg-container p-12"
-      >
-        <div class="flex flex-wrap items-center gap-8">
-          <a-button type="primary" @click="openCreateModal">
-            <template #icon>
-              <Icon name="i-lucide:plus" />
-            </template>
-            添加任务
-          </a-button>
-          <a-tag color="blue">共 {{ tasks.length }} 个任务</a-tag>
-          <a-tag color="green">当前 {{ filteredTasks.length }} 个</a-tag>
-        </div>
-
-        <div class="flex flex-wrap items-center justify-end gap-10">
-          <a-input
-            v-model:value="keyword"
-            allow-clear
-            class="w-220 max-sm:w-full"
-            placeholder="搜索任务、负责人、优先级"
-          />
-          <a-select
-            v-model:value="statusFilter"
-            class="w-130 max-sm:w-full"
-            :options="filterStatusOptions"
-          />
-          <a-radio-group v-model:value="type" class="whitespace-nowrap">
-            <a-radio-button
-              v-for="item in typeOptions"
-              :key="item.value"
-              :value="item.value"
-            >
-              {{ item.label }}
-            </a-radio-button>
-          </a-radio-group>
-        </div>
-      </div>
+      <TaskToolbar
+        v-model:keyword="keyword"
+        v-model:status="statusFilter"
+        v-model:view="type"
+        :filtered-task-count="filteredTasks.length"
+        :loading="isLoading"
+        :status-options="filterStatusOptions"
+        :task-count="tasks.length"
+        :view-options="viewOptions"
+        @create="openCreateModal"
+      />
 
       <div
-        v-if="!isLoading"
         class="page-enter page-enter--2 min-h-0 min-w-0 flex-1 overflow-hidden"
       >
         <Component
           :is="component"
           v-model:items="visibleTasks"
+          :loading="isLoading"
           @delete="confirmDeleteTask"
           @edit="openEditModal"
         />
@@ -74,15 +44,11 @@
 </template>
 
 <script lang="ts" setup>
+import { message, Modal } from 'antdv-next'
 import dayjs from 'dayjs'
-import message from 'antdv-next/dist/message/index'
-import Modal from 'antdv-next/dist/modal/index'
-import { shallowReactive, shallowRef } from 'vue'
 import { useLoading } from '@/composables'
-import type { Component } from 'vue'
-import type { Task, TaskFormState, TaskStatusValue } from './components'
 import Form from './components/Form.vue'
-import Skeleton from './components/Skeleton.vue'
+import TaskToolbar from './components/TaskToolbar.vue'
 import CardTask from './components/card/index.vue'
 import GanttTask from './components/gantt/index.vue'
 import TableTask from './components/table/index.vue'
@@ -94,13 +60,16 @@ import {
   taskAssigneeList,
   taskStatusSelectOptions,
 } from './constants'
+import type {
+  Task,
+  TaskFilterStatus,
+  TaskFormState,
+  TaskStatusValue,
+  TaskViewOption,
+  TaskViewType,
+} from './components'
 
-type TaskViewType = 'card' | 'table' | 'gantt'
-type TaskFilterStatus = TaskStatusValue | 'all'
-
-interface TaskViewOption {
-  label: string
-  value: TaskViewType
+interface TaskViewComponentOption extends TaskViewOption {
   component: Component
 }
 
@@ -126,12 +95,12 @@ const formState = shallowReactive<TaskFormState>({
   status: 1,
 })
 
-const filterStatusOptions = [
-  { label: '全部状态', value: 'all' },
-  ...taskStatusSelectOptions,
-]
+const filterStatusOptions: Array<{
+  label: string
+  value: TaskFilterStatus
+}> = [{ label: '全部状态', value: 'all' }, ...taskStatusSelectOptions]
 
-const typeOptions: TaskViewOption[] = [
+const typeOptions: TaskViewComponentOption[] = [
   {
     label: '卡片',
     value: 'card',
@@ -148,6 +117,11 @@ const typeOptions: TaskViewOption[] = [
     component: GanttTask,
   },
 ]
+
+const viewOptions: TaskViewOption[] = typeOptions.map(({ label, value }) => ({
+  label,
+  value,
+}))
 
 const filteredTasks = computed(() => {
   const text = keyword.value.trim().toLowerCase()

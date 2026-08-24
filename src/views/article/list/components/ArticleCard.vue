@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { computed } from 'vue'
 import { renderIcon } from '@/utils'
 import { getArticleIconForeground } from '../../iconPalette'
 import type { ArticleAction, ArticleItem } from '../../types'

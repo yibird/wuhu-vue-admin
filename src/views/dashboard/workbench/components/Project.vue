@@ -1,5 +1,10 @@
 <template>
-  <section data-swapy-slot="project" class="page-enter page-enter--3 min-w-0">
+  <ProjectSkeleton v-if="props.loading" />
+  <section
+    v-else
+    data-swapy-slot="project"
+    class="page-enter page-enter--3 min-w-0"
+  >
     <a-card :styles="{ body: { padding: 0 } }" data-swapy-item="project">
       <template #title>
         <div class="min-w-0 flex items-center gap-8">
@@ -31,7 +36,10 @@
               </span>
               <div class="min-w-0">
                 <div class="flex items-center gap-8">
-                  <h3 class="m-0 truncate text-base text-main font-700">
+                  <h3
+                    v-ellipsis-tooltip="item.name"
+                    class="m-0 truncate text-base text-main font-700"
+                  >
                     {{ item.name }}
                   </h3>
                   <span
@@ -42,6 +50,7 @@
                   </span>
                 </div>
                 <p
+                  v-ellipsis-tooltip="item.describe"
                   class="mb-0 mt-5 line-clamp-2 text-sm text-secondary leading-22px"
                 >
                   {{ item.describe }}
@@ -110,10 +119,12 @@
 
 <script lang="ts" setup>
 import { getProjectLogoOption } from '../data'
+import ProjectSkeleton from './ProjectSkeleton.vue'
 import type { Project } from './types'
 
 const props = defineProps<{
   projects: Project[]
+  loading?: boolean
 }>()
 
 const emit = defineEmits<{

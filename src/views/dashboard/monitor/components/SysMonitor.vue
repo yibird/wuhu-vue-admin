@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { NumberTicker } from '@/components/numberTicker'
+import { NumberTicker } from '@/components/number-ticker'
 import {
   getCssRgbVar,
   getCssRgbVarAlpha,
@@ -34,6 +34,8 @@ const metricOptions: Array<{ label: string; value: MonitorMetric }> = [
   { label: '磁盘 IO', value: 'diskIo' },
   { label: '网络', value: 'network' },
 ]
+
+const chartBars = [42, 64, 50, 78, 58, 86, 66, 72, 48, 82, 56, 70]
 
 const chartData = computed(() => {
   return props.data.slice(-activeRange.value).map((item) => ({
@@ -110,6 +112,31 @@ const chartOption = computed<EChartsCoreOption>(() => {
 
 <template>
   <Card
+    v-if="props.loading"
+    title="系统监控"
+    icon="i-lucide:chart-area"
+    description="关键资源使用率趋势"
+    body-class="p-0"
+  >
+    <div class="grid grid-cols-3 border-b-1 border-b-solid border-color-2">
+      <div v-for="item in 3" :key="item" class="px-16 py-12">
+        <a-skeleton-input active size="small" class="!w-46" />
+        <a-skeleton-input active class="!mt-6 !w-72" />
+      </div>
+    </div>
+    <div class="h-360 p-16 max-md:h-280">
+      <div class="h-full flex items-end gap-10">
+        <div
+          v-for="height in chartBars"
+          :key="height"
+          class="flex-1 rounded-t-6 bg-fill-tertiary"
+          :style="{ height: `${height}%` }"
+        />
+      </div>
+    </div>
+  </Card>
+  <Card
+    v-else
     title="系统监控"
     icon="i-lucide:chart-area"
     description="关键资源使用率趋势"

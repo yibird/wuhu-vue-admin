@@ -49,6 +49,27 @@ function handleSeverityChange(value: string | number) {
 
 <template>
   <Card
+    v-if="props.loading"
+    title="告警中心"
+    icon="i-lucide:bell-ring"
+    description="待处理事件与风险提示"
+  >
+    <div class="flex flex-col gap-10">
+      <div
+        v-for="item in 3"
+        :key="item"
+        class="rounded-8 border-1 border-solid border-color-2 p-12"
+      >
+        <a-skeleton active avatar :paragraph="{ rows: 2 }" />
+        <div class="mt-10 flex justify-between gap-10">
+          <a-skeleton-input active size="small" class="!w-90" />
+          <a-skeleton-button active size="small" />
+        </div>
+      </div>
+    </div>
+  </Card>
+  <Card
+    v-else
     title="告警中心"
     icon="i-lucide:bell-ring"
     description="待处理事件与风险提示"

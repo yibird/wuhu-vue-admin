@@ -1,6 +1,11 @@
 <script lang="ts" setup>
 import { useRouter } from 'vue-router'
+import AnnouncementSkeleton from './AnnouncementSkeleton.vue'
 import type { WorkbenchAnnouncement } from './types'
+
+const { loading = false } = defineProps<{
+  loading?: boolean
+}>()
 
 const router = useRouter()
 const detailOpen = shallowRef(false)
@@ -98,7 +103,9 @@ async function openNoticeCenter() {
 </script>
 
 <template>
+  <AnnouncementSkeleton v-if="loading" />
   <section
+    v-else
     data-swapy-slot="announcement"
     class="page-enter page-enter--6 min-w-0"
   >

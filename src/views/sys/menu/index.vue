@@ -36,14 +36,13 @@
 
 <script setup lang="ts">
 import { getMenuPageListApi } from '@/apis'
-import { FormPlus } from '@/components/formPlus'
+import { FormPlus } from '@/components/form-plus'
 import { Icon } from '@/components/icon'
-import { TablePlus, useTable } from '@/components/tablePlus'
+import { TablePlus, useTable } from '@/components/table-plus'
 import FormModal from './components/FormModal.vue'
-import { h } from 'vue'
 
-import type { FormPlusProps } from '@/components/formPlus'
-import type { TablePlusColumn } from '@/components/tablePlus'
+import type { FormPlusProps } from '@/components/form-plus'
+import type { TablePlusColumn } from '@/components/table-plus'
 
 const tableRef = ref()
 const modalRef = ref<InstanceType<typeof FormModal>>()

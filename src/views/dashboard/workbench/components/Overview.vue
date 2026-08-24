@@ -1,5 +1,7 @@
 <template>
+  <OverviewSkeleton v-if="loading" />
   <section
+    v-else
     class="overflow-hidden rounded-4 border-1 border-color-2 border-solid bg-container transition-[border-color,box-shadow] duration-motion-base hover:(border-color-1 shadow-all-sm)"
   >
     <div class="grid gap-0 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)]">
@@ -72,8 +74,13 @@
 </template>
 
 <script lang="ts" setup>
-import { NumberTicker } from '@/components/numberTicker'
+import { NumberTicker } from '@/components/number-ticker'
+import OverviewSkeleton from './OverviewSkeleton.vue'
 import type { OverviewMetric } from './types'
+
+const { loading = false } = defineProps<{
+  loading?: boolean
+}>()
 
 const metrics: OverviewMetric[] = [
   {

@@ -1,12 +1,11 @@
 <script setup lang="ts">
-import { computed, reactive, useTemplateRef, watch } from 'vue'
 import { useWindowSize } from '@vueuse/core'
-import type { FormInstance } from 'antdv-next'
 import {
   ticketCategoryList,
   ticketEnvironmentOptions,
   ticketPriorityList,
 } from '../data'
+import type { FormInstance } from 'antdv-next'
 import type { TicketDraft } from '../types'
 
 const open = defineModel<boolean>('open', { required: true })

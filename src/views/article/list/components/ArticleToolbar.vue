@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { computed } from 'vue'
 import type { ArticleSort } from '../../types'
 import type { ArticleStatusFilter } from '../composables/useArticleList'
 

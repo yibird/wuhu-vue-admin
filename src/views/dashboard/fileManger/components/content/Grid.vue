@@ -1,9 +1,6 @@
 <script lang="ts" setup>
-import type { MenuProps } from 'antdv-next'
-import { h, ref, toRef, watch } from 'vue'
 import { Motion } from 'motion-v'
 import { Icon } from '@/components/icon'
-import type { FileSelectionKey, FileViewMode, IFile } from '../types'
 import { FILE_NODE_TYPE } from '../types'
 import {
   formatFileSize,
@@ -25,6 +22,8 @@ import cssIcon from '@/assets/svg/css.svg'
 import jsIcon from '@/assets/svg/js.svg'
 import unknownIcon from '@/assets/svg/unknown.svg'
 import folderIcon from '@/assets/svg/folder.svg'
+import type { MenuProps } from 'antdv-next'
+import type { FileSelectionKey, FileViewMode, IFile } from '../types'
 import type { ScrollbarInstance } from '@/components/scrollbar'
 
 const selectedKeys = defineModel<FileSelectionKey[]>('selectedKeys', {

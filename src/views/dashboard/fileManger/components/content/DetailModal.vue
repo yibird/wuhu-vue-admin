@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { computed } from 'vue'
 import { FILE_NODE_TYPE, type IFile } from '../types'
 import {
   formatFileSize,

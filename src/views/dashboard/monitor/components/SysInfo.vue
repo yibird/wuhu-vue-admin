@@ -2,12 +2,30 @@
 import Card from './Card.vue'
 import type { SysInfoEmits, SysInfoProps } from './types'
 
-const { items = [] } = defineProps<SysInfoProps>()
+const { items = [], loading = false } = defineProps<SysInfoProps>()
 const emit = defineEmits<SysInfoEmits>()
 </script>
 
 <template>
   <Card
+    v-if="loading"
+    title="系统信息"
+    icon="i-lucide:info"
+    description="实例、系统与网络基础信息"
+  >
+    <div class="flex flex-col gap-8">
+      <div
+        v-for="item in 6"
+        :key="item"
+        class="flex gap-12 rounded-6 bg-fill-1 px-10 py-9"
+      >
+        <a-skeleton-input active size="small" class="!w-68" />
+        <a-skeleton-input active size="small" class="!w-160" />
+      </div>
+    </div>
+  </Card>
+  <Card
+    v-else
     title="系统信息"
     icon="i-lucide:info"
     description="实例、系统与网络基础信息"

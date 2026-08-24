@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import message from 'antdv-next/dist/message/index'
+import { message } from 'antdv-next'
 import { AnimatePresence, LayoutGroup, Motion, MotionConfig } from 'motion-v'
 import { useLoading } from '@/composables'
 import {

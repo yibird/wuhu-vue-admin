@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { computed } from 'vue'
 import {
   getTicketCategoryMeta,
   getTicketPriorityMeta,
@@ -60,7 +59,7 @@ function handleQueueChange(value: TicketQueueKey) {
         v-for="ticket in items"
         :key="ticket.id"
         type="button"
-        class="w-full border-b-1 border-color-2 border-b-solid border-l-3 border-l-transparent bg-transparent px-11 py-10 text-left transition-colors duration-motion-fast hover:bg-hover motion-reduce:transition-none"
+        class="content-auto-110 w-full border-b-1 border-color-2 border-b-solid border-l-3 border-l-transparent bg-transparent px-11 py-10 text-left transition-colors duration-motion-fast hover:bg-hover motion-reduce:transition-none"
         :class="{
           'border-l-primary bg-selected': ticket.id === selectedId,
         }"

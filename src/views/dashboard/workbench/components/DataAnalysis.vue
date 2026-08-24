@@ -1,5 +1,10 @@
 <template>
-  <section data-swapy-slot="analysis" class="page-enter page-enter--7 min-w-0">
+  <DataAnalysisSkeleton v-if="loading" />
+  <section
+    v-else
+    data-swapy-slot="analysis"
+    class="page-enter page-enter--7 min-w-0"
+  >
     <a-card :styles="{ body: { padding: 0 } }" data-swapy-item="analysis">
       <template #title>
         <span class="text-base text-main font-700">数据概览</span>
@@ -76,8 +81,13 @@
 </template>
 
 <script lang="ts" setup>
-import { NumberTicker } from '@/components/numberTicker'
+import { NumberTicker } from '@/components/number-ticker'
+import DataAnalysisSkeleton from './DataAnalysisSkeleton.vue'
 import type { AnalysisMetric, AnalysisRankItem } from './types'
+
+const { loading = false } = defineProps<{
+  loading?: boolean
+}>()
 
 const metrics: AnalysisMetric[] = [
   {

@@ -1,5 +1,10 @@
 <template>
-  <section data-swapy-slot="action" class="page-enter page-enter--5 min-w-0">
+  <ActionSkeleton v-if="loading" />
+  <section
+    v-else
+    data-swapy-slot="action"
+    class="page-enter page-enter--5 min-w-0"
+  >
     <a-card :styles="{ body: { padding: 0 } }" data-swapy-item="action">
       <template #title>
         <span class="text-base text-main font-700">快捷操作</span>
@@ -65,8 +70,13 @@
 <script lang="ts" setup>
 import { useRouter } from 'vue-router'
 import { defaultWorkbenchActionIds, workbenchActions } from '../data'
+import ActionSkeleton from './ActionSkeleton.vue'
 import QuickActionManagerModal from './QuickActionManagerModal.vue'
 import type { WorkbenchAction } from './types'
+
+const { loading = false } = defineProps<{
+  loading?: boolean
+}>()
 
 const emit = defineEmits<{
   createProject: []

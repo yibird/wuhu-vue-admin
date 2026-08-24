@@ -1,6 +1,13 @@
 export type TaskStatusValue = 1 | 2 | 3 | 4
 export type TaskPriorityValue = 'urgent' | 'high' | 'medium' | 'low'
 export type TaskDueTone = 'success' | 'warning' | 'error' | 'default'
+export type TaskViewType = 'card' | 'table' | 'gantt'
+export type TaskFilterStatus = TaskStatusValue | 'all'
+
+export interface TaskViewOption {
+  label: string
+  value: TaskViewType
+}
 
 export interface Task {
   id: number
@@ -36,6 +43,7 @@ export interface TaskFormState {
 
 export interface TaskProps {
   items?: Task[]
+  loading?: boolean
 }
 
 export interface CardTaskStatus {

@@ -1,13 +1,11 @@
 <template>
   <WView :full="false" :padding="false" class="bg-page">
     <Scrollbar content-class="min-h-full">
-      <Skeleton v-if="isLoading" />
       <div
-        v-else
-        class="min-h-full min-w-0 w-full p-12 flex flex-col gap-12 overflow-x-hidden lg:p-16"
+        class="min-h-full w-full p-12 flex flex-col gap-12 overflow-x-hidden lg:p-16"
       >
         <section
-          class="workbench-header page-enter page-enter--1 min-w-0 flex flex-col gap-12 lg:flex-row lg:items-center lg:justify-between"
+          class="page-enter page-enter--1 flex flex-wrap gap-12 justify-between"
         >
           <div class="min-w-0">
             <div class="mt-6 flex items-center gap-10">
@@ -34,27 +32,36 @@
               </template>
               新建项目
             </a-button>
-            <button
-              type="button"
-              class="size-34 flex items-center justify-center rounded-6 border-1 border-color-2 border-solid bg-container text-regular transition-[border-color,background-color,box-shadow,transform,color] duration-motion-base hover:(border-color-primary bg-hover shadow-all -translate-y-1) active:translate-y-0 disabled:cursor-not-allowed disabled:text-disabled disabled:hover:(border-color-2 bg-container shadow-none translate-y-0)"
-              :class="{
-                'border-color-primary bg-primary-tint text-primary shadow-all':
-                  dragEnabled,
-              }"
-              :disabled="isMobile"
-              :title="isMobile ? '移动端不支持拖拽布局' : '拖拽布局'"
-              @click="toggleDrag"
+            <a-tooltip
+              :title="dragEnabled ? '退出布局' : '开启布局'"
+              fresh
+              placement="bottom"
             >
-              <Icon
-                name="i-lucide:grid-3x3"
-                :class="{ 'text-primary': dragEnabled }"
-                :size="18"
-              />
-            </button>
+              <button
+                type="button"
+                class="size-34 flex items-center justify-center rounded-6 border-1 border-color-2 border-solid bg-container text-regular transition-[border-color,background-color,box-shadow,transform,color] duration-motion-base hover:(border-color-primary bg-hover shadow-all -translate-y-1) active:translate-y-0"
+                :class="{
+                  'border-color-primary bg-primary-tint text-primary shadow-all':
+                    dragEnabled,
+                }"
+                :aria-label="dragEnabled ? '退出布局' : '开启布局'"
+                :aria-pressed="dragEnabled"
+                @click="toggleDrag"
+              >
+                <Icon
+                  name="i-lucide:grid-3x3"
+                  :class="{ 'text-primary': dragEnabled }"
+                  :size="18"
+                />
+              </button>
+            </a-tooltip>
           </div>
         </section>
 
-        <Overview class="workbench-overview page-enter page-enter--2" />
+        <Overview
+          :loading="isLoading"
+          class="workbench-overview page-enter page-enter--2"
+        />
 
         <div
           ref="container"
@@ -74,11 +81,12 @@
               class="min-w-0 flex flex-col gap-12"
             >
               <Project
+                :loading="isLoading"
                 :projects="projects"
                 @open-settings="openEditProjectSettings"
               />
-              <Dynamic />
-              <DataAnalysis />
+              <Dynamic :loading="isLoading" />
+              <DataAnalysis :loading="isLoading" />
             </a-col>
             <a-col
               :xs="24"
@@ -89,9 +97,12 @@
               :xxl="7"
               class="min-w-0 flex flex-col gap-12"
             >
-              <Action @create-project="openCreateProjectSettings" />
-              <Announcement />
-              <Team />
+              <Action
+                :loading="isLoading"
+                @create-project="openCreateProjectSettings"
+              />
+              <Announcement :loading="isLoading" />
+              <Team :loading="isLoading" />
             </a-col>
           </a-row>
         </div>
@@ -108,7 +119,6 @@
 </template>
 
 <script lang="ts" setup>
-import { useMediaQuery } from '@vueuse/core'
 import { createSwapy, type Swapy } from 'swapy'
 import { useLoading } from '@/composables'
 import {
@@ -121,7 +131,6 @@ import {
   DataAnalysis,
 } from './components'
 import ProjectSettingsModal from './components/ProjectSettingsModal.vue'
-import Skeleton from './components/Skeleton.vue'
 import { initialProjects, workbenchMembers } from './data'
 import type {
   Project as WorkbenchProject,
@@ -131,7 +140,7 @@ import type {
 
 const swapy = shallowRef<Swapy>()
 const container = useTemplateRef<HTMLDivElement>('container')
-const enabled = shallowRef(false)
+const dragEnabled = shallowRef(false)
 const projectSettingsOpen = shallowRef(false)
 const projectSettingsMode = shallowRef<ProjectSettingsMode>('create')
 const selectedProject = shallowRef<WorkbenchProject | null>(null)
@@ -142,14 +151,17 @@ const projects = shallowRef<WorkbenchProject[]>(
     members: [...project.members],
   }))
 )
-const isMobile = useMediaQuery('(max-width: 767px)')
 const { isLoading } = useLoading()
-const dragEnabled = computed(() => enabled.value && !isMobile.value)
 
 const setupSwapy = () => {
   if (swapy.value || !container.value || !dragEnabled.value) return
 
-  swapy.value = createSwapy(container.value, { enabled: true })
+  // Animate once on drop; hover swapping repeatedly animates these deep cards.
+  swapy.value = createSwapy(container.value, {
+    animation: 'dynamic',
+    enabled: true,
+    swapMode: 'drop',
+  })
 }
 
 const destroySwapy = () => {
@@ -158,8 +170,7 @@ const destroySwapy = () => {
 }
 
 const toggleDrag = () => {
-  if (isMobile.value) return
-  enabled.value = !enabled.value
+  dragEnabled.value = !dragEnabled.value
 }
 
 const openCreateProjectSettings = () => {
@@ -243,8 +254,9 @@ watch(dragEnabled, (value) => {
   destroySwapy()
 })
 
-watch(isLoading, (value) => {
+watch(isLoading, async (value) => {
   if (!value) {
+    await nextTick()
     setupSwapy()
   }
 })
@@ -253,7 +265,6 @@ watch(isLoading, (value) => {
 <style scoped>
 .workbench-grid :deep([data-swapy-item]) {
   transition:
-    transform var(--w-motion-duration-base) var(--w-motion-ease-standard),
     box-shadow var(--w-motion-duration-base) var(--w-motion-ease-standard),
     border-color var(--w-motion-duration-base) var(--w-motion-ease-standard),
     background-color var(--w-motion-duration-base) var(--w-motion-ease-standard);
@@ -265,7 +276,15 @@ watch(isLoading, (value) => {
   outline-offset: 3px;
 }
 
-.workbench-grid--drag :deep([data-swapy-item]:active) {
+.workbench-grid--drag :deep([data-swapy-dragging]) {
+  z-index: 1001 !important;
   cursor: grabbing;
+  transition: none;
+  will-change: transform;
+}
+
+.workbench-grid--drag :deep([data-swapy-slot]:has(> [data-swapy-dragging])) {
+  position: relative;
+  z-index: 1000;
 }
 </style>

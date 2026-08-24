@@ -1,9 +1,8 @@
 <script lang="ts" setup>
-import { computed } from 'vue'
 import { getTaskDueMeta } from '../../constants'
+import { taskProgress } from './utils'
 import type { Task } from '../types'
 import type { TaskGanttMenuPosition } from './utils'
-import { taskProgress } from './utils'
 
 interface Props {
   readonly open: boolean

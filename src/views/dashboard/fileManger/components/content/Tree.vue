@@ -1,6 +1,4 @@
 <script lang="ts" setup>
-import type { MenuProps, TreeDataNode } from 'antdv-next'
-import { computed, h, shallowRef, watch } from 'vue'
 import { Motion } from 'motion-v'
 import { Icon } from '@/components/icon'
 import {
@@ -27,6 +25,7 @@ import cssIcon from '@/assets/svg/css.svg'
 import jsIcon from '@/assets/svg/js.svg'
 import unknownIcon from '@/assets/svg/unknown.svg'
 import folderIcon from '@/assets/svg/folder.svg'
+import type { MenuProps, TreeDataNode } from 'antdv-next'
 
 interface FileTreeNode extends TreeDataNode {
   children?: FileTreeNode[]

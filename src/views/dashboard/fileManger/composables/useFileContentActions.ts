@@ -1,5 +1,5 @@
 import type { MenuProps, UploadFile } from 'antdv-next'
-import message from 'antdv-next/dist/message/index'
+import { message } from 'antdv-next'
 import { computed, h, shallowRef, type Ref } from 'vue'
 import { Icon } from '@/components/icon'
 import {

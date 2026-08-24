@@ -1,6 +1,4 @@
-import type { UploadFile } from 'antdv-next'
-import message from 'antdv-next/dist/message/index'
-import Modal from 'antdv-next/dist/modal/index'
+import { message, Modal } from 'antdv-next'
 import dayjs from 'dayjs'
 import { onBeforeUnmount } from 'vue'
 import { useClipboard } from '@vueuse/core'
@@ -15,6 +13,7 @@ import {
   getFileTypeByName,
   getUniqueFilename,
 } from '../components/utils'
+import type { UploadFile } from 'antdv-next'
 import type { FileExplorer } from './useFileExplorer'
 
 export function useFileOperations(explorer: FileExplorer) {
