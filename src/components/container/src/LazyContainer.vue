@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { computed, onMounted, shallowRef, useTemplateRef } from 'vue'
 import { useIntersectionObserver } from '@vueuse/core'
 import { toPx } from '@/utils'
 import type {

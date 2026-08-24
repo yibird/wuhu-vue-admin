@@ -1,7 +1,7 @@
 export { default as Draggable } from './src/Draggable.vue'
 export { default as DraggableItem } from './src/DraggableItem'
-export { useDraggable } from './src/composables/useDraggable'
-export type { UseDraggableInput } from './src/composables/useDraggable'
+export { useDraggable } from '@dnd-kit/vue'
+export type { UseDraggableInput } from '@dnd-kit/vue'
 export type {
   DraggableDisabled,
   DraggableEmits,

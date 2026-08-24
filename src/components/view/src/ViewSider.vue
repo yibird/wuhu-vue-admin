@@ -1,12 +1,15 @@
 <script setup lang="ts">
-import { computed, inject, useId } from 'vue'
-import { Icon } from '@/components/icon'
-import type { ViewCollapseEmits, ViewSiderProps, ViewSiderSlots } from './types'
+import { computed, inject, useId, type CSSProperties } from 'vue'
 import { toPx } from '@/utils'
-import { negateCssSize, viewContextKey } from './context'
-import type { CSSProperties } from 'vue'
+import { Icon } from '../../icon'
+import { getCssSize, viewContextKey } from './context'
+import type {
+  ViewCollapseEmits,
+  WViewSiderProps,
+  WViewSiderSlots,
+} from './types'
 
-const props = withDefaults(defineProps<ViewSiderProps>(), {
+const props = withDefaults(defineProps<WViewSiderProps>(), {
   collapsible: false,
   trigger: true,
   collapseLabel: '收起侧栏',
@@ -17,7 +20,7 @@ const props = withDefaults(defineProps<ViewSiderProps>(), {
 
 const collapsed = defineModel<boolean>('collapsed', { default: false })
 const emits = defineEmits<ViewCollapseEmits>()
-const slots = defineSlots<ViewSiderSlots>()
+const slots = defineSlots<WViewSiderSlots>()
 defineOptions({ name: 'WViewSider', inheritAttrs: false })
 
 const contentId = useId()
@@ -34,7 +37,7 @@ const siderStyle = computed<CSSProperties>(() => {
   return {
     width,
     flexBasis: width,
-    marginInlineEnd: shouldOffsetGap ? negateCssSize(gap) : '0px',
+    marginInlineEnd: shouldOffsetGap ? getCssSize(gap) : '0px',
   }
 })
 

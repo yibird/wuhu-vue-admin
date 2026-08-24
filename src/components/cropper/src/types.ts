@@ -16,7 +16,7 @@ export interface CropperCanvasOptions {
   height?: number
 }
 
-export interface CropperExpose {
+export interface CropperInstance {
   rotate: (angle: number) => void
   scale: (x: number, y?: number) => void
   zoom: (factor: number) => void
@@ -26,6 +26,8 @@ export interface CropperExpose {
   ) => Promise<HTMLCanvasElement | null>
   getInstance: () => CropperJs | null
 }
+
+export type CropperExpose = CropperInstance
 
 export interface CropperPickerProps {
   open: boolean

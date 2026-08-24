@@ -11,9 +11,8 @@
 </template>
 
 <script setup lang="ts">
-import { nextTick, onUnmounted, shallowRef, useTemplateRef, watch } from 'vue'
 import Cropper from 'cropperjs'
-import type { CropperEmits, CropperExpose, CropperProps } from './types'
+import type { CropperEmits, CropperInstance, CropperProps } from './types'
 
 const props = withDefaults(defineProps<CropperProps>(), {
   alt: 'image',
@@ -81,7 +80,7 @@ const reset = () => {
 
 const getInstance = () => cropper.value
 
-defineExpose<CropperExpose>({
+defineExpose<CropperInstance>({
   rotate,
   scale,
   zoom,
@@ -91,18 +90,18 @@ defineExpose<CropperExpose>({
 })
 </script>
 
-<style scoped>
+<style scoped lang="less">
 .w-cropper-wrapper {
   position: relative;
   width: 100%;
   height: 100%;
   overflow: hidden;
-}
 
-.w-cropper-wrapper img {
-  display: block;
-  max-width: 100%;
-  max-height: 100%;
+  img {
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
+  }
 }
 
 :deep(cropper-canvas) {

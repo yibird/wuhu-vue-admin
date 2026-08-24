@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type { ViewContentSlots } from './types'
-
-defineSlots<ViewContentSlots>()
+defineSlots<{
+  default?: () => VNode | VNode[]
+}>()
 defineOptions({ name: 'WViewContent' })
 </script>
 

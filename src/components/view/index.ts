@@ -4,14 +4,11 @@ import WViewContent from './src/ViewContent.vue'
 import WViewFooter from './src/ViewFooter.vue'
 import WViewSider from './src/ViewSider.vue'
 export type {
-  ViewCollapsibleProps,
-  ViewContentProps,
-  ViewDirection,
-  ViewFooterProps,
-  ViewHeaderProps,
-  ViewProps,
-  ViewSiderProps,
-  ViewSize,
+  WViewProps,
+  WViewSiderProps,
+  WViewHeaderProps,
+  WViewContentProps,
+  WViewFooterProps,
 } from './src/types'
 
 const WView = View as typeof View & {

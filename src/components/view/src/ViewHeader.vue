@@ -1,15 +1,14 @@
 <script setup lang="ts">
-import { computed, inject, useId } from 'vue'
-import { Icon } from '@/components/icon'
-import { negateCssSize, viewContextKey } from './context'
+import { Icon } from '@/components'
+import { getCssSize, viewContextKey } from './context'
 import type {
   ViewCollapseEmits,
-  ViewHeaderProps,
-  ViewHeaderSlots,
+  WViewHeaderProps,
+  WViewHeaderSlots,
 } from './types'
 import type { CSSProperties } from 'vue'
 
-const props = withDefaults(defineProps<ViewHeaderProps>(), {
+const props = withDefaults(defineProps<WViewHeaderProps>(), {
   collapsible: false,
   trigger: true,
   collapseLabel: '收起头部',
@@ -18,7 +17,7 @@ const props = withDefaults(defineProps<ViewHeaderProps>(), {
 
 const collapsed = defineModel<boolean>('collapsed', { default: false })
 const emits = defineEmits<ViewCollapseEmits>()
-const slots = defineSlots<ViewHeaderSlots>()
+const slots = defineSlots<WViewHeaderSlots>()
 defineOptions({ name: 'WViewHeader', inheritAttrs: false })
 
 const contentId = useId()
@@ -30,7 +29,7 @@ const headerStyle = computed<CSSProperties>(() => {
     collapsed.value && viewContext?.direction.value === 'vertical'
 
   return {
-    marginBlockEnd: shouldOffsetGap ? negateCssSize(gap) : '0px',
+    marginBlockEnd: shouldOffsetGap ? getCssSize(gap) : '0px',
   }
 })
 

@@ -1,12 +1,5 @@
 <script setup lang="ts">
 import { Editor as TiptapEditorCore, EditorContent } from '@tiptap/vue-3'
-import {
-  computed,
-  onBeforeUnmount,
-  shallowRef,
-  useTemplateRef,
-  watch,
-} from 'vue'
 import { useDeferred } from '@/composables'
 import EditorFooter from './components/EditorFooter.vue'
 import EditorToolbar from './components/EditorToolbar.vue'
@@ -24,7 +17,6 @@ import { useEditorCommands } from './composables/useEditorCommands'
 import { useEditorState } from './composables/useEditorState'
 import { useEditorToolbar } from './composables/useEditorToolbar'
 import type { Editor as TiptapEditor } from '@tiptap/vue-3'
-import type { CSSProperties } from 'vue'
 import type {
   EditorEmits,
   EditorExpose,

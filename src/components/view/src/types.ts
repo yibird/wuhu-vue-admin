@@ -1,80 +1,100 @@
 import type { HTMLAttributes } from 'vue'
 
 export type ViewSize = number | string
-
 export type ViewDirection = 'vertical' | 'horizontal'
 
-export interface ViewProps extends /* @vue-ignore */ HTMLAttributes {
+export interface WViewProps extends /* @vue-ignore */ HTMLAttributes {
   /**
-   * @description 是否启用内边距，或直接指定内边距大小
+   * @desc 是否启用内边距，或直接指定内边距大小
    * @default true
    */
   padding?: boolean | string | number
   /**
-   * @description 是否占满整个容器
+   * @desc 是否占满整个容器
    * @default false
    */
   full?: boolean
   /**
-   * @description 子元素之间的间距。设置后 View 会作为 flex 容器使用。
+   * @desc 子元素之间的间距。设置后 View 会作为 flex 容器使用。
+   * @default
    */
   gap?: ViewSize
   /**
-   * @description 设置 gap 布局的方向。
-   * @default vertical
+   * @desc 设置 gap 布局的方向。
+   * @default 'vertical'
    */
   direction?: ViewDirection
 }
 
-export interface ViewCollapseSlotProps {
+export interface ViewCollapsePayload {
+  /**
+   * @desc 收缩状态
+   */
   collapsed: boolean
+  /**
+   * 切换状态方法
+   *
+   * @returns
+   */
   toggle: () => void
 }
 
 export interface ViewCollapsibleProps {
-  /** 是否允许用户通过 trigger 控制内容折叠。 */
+  /**
+   * @desc 是否允许用户通过 trigger 控制内容折叠。
+   * @default
+   */
   collapsible?: boolean
-  /** 是否显示内置或自定义 trigger。 */
+  /**
+   * @desc 是否显示内置或自定义 trigger。
+   * @default
+   */
   trigger?: boolean
-  /** 内置 trigger 收起时的无障碍标签。 */
+  /**
+   * @desc 内置 trigger 收起时的无障碍标签。
+   * @default
+   */
   collapseLabel?: string
-  /** 内置 trigger 展开时的无障碍标签。 */
+  /**
+   * @desc 内置 trigger 展开时的无障碍标签。
+   * @default
+   */
   expandLabel?: string
-  /** 当前是否处于收起状态。 */
+  /**
+   * @desc 当前是否处于收起状态。
+   * @default
+   */
   collapsed?: boolean
 }
-
-export interface ViewSiderProps
+export interface WViewSiderProps
   extends /* @vue-ignore */ HTMLAttributes, ViewCollapsibleProps {
-  /** 展开状态下的宽度。 */
+  /**
+   * @desc 展开状态下的宽度。
+   * @default
+   */
   width?: ViewSize
-  /** 收起状态下的宽度。设置为 0 时会完全收起内容。 */
+  /**
+   * @desc 收起状态下的宽度。设置为 0 时会完全收起内容。
+   * @default
+   */
   collapsedWidth?: ViewSize
 }
 
-export interface ViewHeaderProps
+export interface WViewHeaderProps
   extends /* @vue-ignore */ HTMLAttributes, ViewCollapsibleProps {}
 
-export type ViewContentProps = HTMLAttributes
+export type WViewContentProps = HTMLAttributes
 
-export type ViewFooterProps = HTMLAttributes
+export type WViewFooterProps = HTMLAttributes
 
-export interface ViewSiderSlots {
-  default?: (props: { collapsed: boolean }) => unknown
-  trigger?: (props: ViewCollapseSlotProps) => unknown
+export interface WViewSiderSlots {
+  default?: (props: { collapsed: boolean }) => VNode | VNode[]
+  trigger?: (props: ViewCollapsePayload) => VNode | VNode[]
 }
 
-export interface ViewHeaderSlots {
-  default?: (props: { collapsed: boolean }) => unknown
-  trigger?: (props: ViewCollapseSlotProps) => unknown
-}
-
-export interface ViewContentSlots {
-  default?: () => unknown
-}
-
-export interface ViewFooterSlots {
-  default?: () => unknown
+export interface WViewHeaderSlots {
+  default?: (props: { collapsed: boolean }) => VNode | VNode[]
+  trigger?: (props: ViewCollapsePayload) => VNode | VNode[]
 }
 
 export interface ViewCollapseEmits {

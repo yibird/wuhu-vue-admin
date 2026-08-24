@@ -29,7 +29,7 @@ defineOptions({
 })
 
 const scrollbarRef = ref<OverlayScrollbarsComponentRef | null>(null)
-const contentRef = ref<HTMLElement | null>(null)
+const contentRef = useTemplateRef<HTMLElement>('contentRef')
 
 const defaultScrollbarOptions = {
   update: {
@@ -39,12 +39,11 @@ const defaultScrollbarOptions = {
       event: [80, 200],
       env: [120, 300],
     },
-    // The app scroll containers use the normal document flow, so skip the
-    // default computed-style flow direction probe on every size update.
     flowDirectionStyles: () => ({}),
   },
   scrollbars: {
-    autoHide: 'scroll',
+    autoHide: 'leave',
+    autoHideDelay: 120,
   },
 } satisfies ScrollbarProps['options']
 

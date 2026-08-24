@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import { computed, defineAsyncComponent } from 'vue'
 import LoadingBeat from './components/Beat.vue'
 import type { LoadingProps } from './types'
 
@@ -16,7 +15,7 @@ const loadingComponents = {
   ring: defineAsyncComponent(() => import('./components/Ring.vue')),
 } as const
 
-const loadingType = computed(() => props.type || props.animation || 'beat')
+const loadingType = computed(() => props.type || 'beat')
 const loadingComponent = computed(() => loadingComponents[loadingType.value])
 </script>
 
@@ -26,8 +25,8 @@ const loadingComponent = computed(() => loadingComponents[loadingType.value])
     :class="[
       `w-loading--${loadingType}`,
       {
-        'w-loading--container': !props.fullScreen,
-        'w-loading--full': props.fullScreen,
+        'w-loading--container': !props.full,
+        'w-loading--full': props.full,
       },
     ]"
     role="status"

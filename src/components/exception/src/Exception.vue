@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import { computed } from 'vue'
 import type { ExceptionEmits, ExceptionProps, ExceptionSlots } from './types'
 
 const props = withDefaults(defineProps<ExceptionProps>(), {

@@ -24,41 +24,7 @@ export interface InlineIcon {
 }
 
 let iconSetPromise: Promise<LucideIconSet> | undefined
-const inlineIconCache = new Map<string, InlineIcon | undefined>()
-
-function normalizeSvgBody(body: string) {
-  if (typeof DOMParser === 'undefined' || !body.includes('<path')) {
-    return body
-  }
-
-  const document = new DOMParser().parseFromString(
-    `<svg>${body}</svg>`,
-    'image/svg+xml'
-  )
-
-  for (const path of document.querySelectorAll('path[d]')) {
-    if (path.getAttribute('fill') !== 'none' || !path.hasAttribute('stroke')) {
-      continue
-    }
-
-    const pathData = path.getAttribute('d')
-    if (!pathData) continue
-
-    const subpaths = pathData.split(/(?=[Mm])/).filter(Boolean)
-    if (subpaths.length < 2) continue
-
-    const fragment = document.createDocumentFragment()
-    for (const subpath of subpaths) {
-      const clone = path.cloneNode(true) as SVGPathElement
-      clone.setAttribute('d', subpath.trim())
-      fragment.append(clone)
-    }
-
-    path.replaceWith(fragment)
-  }
-
-  return document.documentElement.innerHTML
-}
+const iconCache = new Map<string, InlineIcon | undefined>()
 
 function loadIconSet() {
   iconSetPromise ??= import('@iconify-json/lucide/icons.json').then(
@@ -74,16 +40,13 @@ function resolveIcon(
 ): LucideIcon | undefined {
   if (visited.has(name)) return undefined
   visited.add(name)
-
   const icon = iconSet.icons[name]
-  if (icon) return icon
 
+  if (icon) return icon
   const alias = iconSet.aliases?.[name]
   if (!alias) return undefined
-
   const parent = resolveIcon(iconSet, alias.parent, visited)
   if (!parent) return undefined
-
   return {
     body: `${parent.body}${alias.body ?? ''}`,
     width: alias.width ?? parent.width,
@@ -94,25 +57,28 @@ function resolveIcon(
 export async function loadLucideIcon(
   iconName: string
 ): Promise<InlineIcon | undefined> {
-  const match = iconName.match(/^i-lucide:(.+)$/)
+  const match = /^i-lucide:(.+)$/.exec(iconName)
   if (!match) return undefined
-  if (inlineIconCache.has(iconName)) return inlineIconCache.get(iconName)
+
+  if (iconCache.has(iconName)) {
+    return iconCache.get(iconName)
+  }
 
   const iconSet = await loadIconSet()
   const icon = resolveIcon(iconSet, match[1])
+
   if (!icon) {
-    inlineIconCache.set(iconName, undefined)
+    iconCache.set(iconName, undefined)
     return undefined
   }
 
   const width = icon.width ?? iconSet.width ?? 24
   const height = icon.height ?? iconSet.height ?? 24
 
-  const inlineIcon = {
-    body: normalizeSvgBody(icon.body),
+  const result: InlineIcon = {
+    body: icon.body,
     viewBox: `0 0 ${width} ${height}`,
   }
-
-  inlineIconCache.set(iconName, inlineIcon)
-  return inlineIcon
+  iconCache.set(iconName, result)
+  return result
 }

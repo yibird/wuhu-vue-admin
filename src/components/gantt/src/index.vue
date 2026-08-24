@@ -1,15 +1,6 @@
 <script lang="ts" setup>
-import {
-  onActivated,
-  onDeactivated,
-  onMounted,
-  onUnmounted,
-  shallowRef,
-  useTemplateRef,
-  watch,
-} from 'vue'
 import Gantt from 'frappe-gantt'
-import '/node_modules/frappe-gantt/dist/frappe-gantt.css'
+import 'frappe-gantt/dist/frappe-gantt.css'
 import { createGanttTaskSignature, normalizeGanttTasks } from './utils'
 import type { GanttProps, GanttEmits, GanttTask } from './types'
 import type {

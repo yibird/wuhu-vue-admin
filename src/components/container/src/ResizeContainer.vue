@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { computed, useTemplateRef, watch } from 'vue'
 import { useElementSize } from '@vueuse/core'
 import type {
   ContainerSize,

@@ -110,18 +110,11 @@
 </template>
 
 <script lang="ts" setup>
-import {
-  computed,
-  onBeforeUnmount,
-  shallowRef,
-  useTemplateRef,
-  watch,
-} from 'vue'
-import message from 'antdv-next/dist/message/index'
+import { message } from 'antdv-next'
 import Cropper from './Cropper.vue'
 import type { CropperOptions } from 'cropperjs'
 import type {
-  CropperExpose,
+  CropperInstance,
   CropperPickerEmits,
   CropperPickerProps,
 } from './types'
@@ -137,7 +130,7 @@ const props = withDefaults(defineProps<CropperPickerProps>(), {
 const emit = defineEmits<CropperPickerEmits>()
 
 const fileInputRef = useTemplateRef<HTMLInputElement>('fileInputRef')
-const cropperRef = useTemplateRef<CropperExpose>('cropperRef')
+const cropperRef = useTemplateRef<CropperInstance>('cropperRef')
 const cropperSrc = shallowRef(props.src)
 const scaleX = shallowRef(1)
 const scaleY = shallowRef(1)

@@ -12,7 +12,7 @@ export type DraggableDisabled =
     }
 
 export type DraggableItemKey<T> =
-  | string
+  | (keyof T & string)
   | ((element: T, index: number) => DraggableIdentifier)
 
 export type DraggableItemData<T> =
@@ -24,8 +24,8 @@ export interface DraggableProps<T = unknown> {
   tag?: string | Component
   /** The fallback tag used when an item slot returns multiple root nodes. */
   itemTag?: string | Component
-  /** The list item identifier field or resolver. */
-  itemKey?: DraggableItemKey<T>
+  /** Stable list item identifier field or resolver. */
+  itemKey: DraggableItemKey<T>
   /** Disables dragging and/or dropping for every item in this list. */
   disabled?: DraggableDisabled
   /** The duration of the sortable transition in milliseconds. */
@@ -34,12 +34,6 @@ export interface DraggableProps<T = unknown> {
   ghostClass?: string
   /** Restricts the drag activator to a descendant matching this selector. */
   handleSelector?: string
-  /** The sortable group. Lists with the same group can exchange items. */
-  group?: DraggableIdentifier
-  /** The accepted draggable type(s). */
-  accept?: string | string[]
-  /** Prioritizes this list when multiple drop targets overlap. */
-  collisionPriority?: number
   /** The draggable type for each item. */
   type?: string
   /** Data attached to each sortable item. */
@@ -61,8 +55,7 @@ export interface DraggableItemSlotProps<T> extends DraggableItemState {
 }
 
 export interface DraggableSlots<T = unknown> {
-  default?: () => VNodeArrayChildren
-  item?: (props: DraggableItemSlotProps<T>) => VNodeArrayChildren
+  item: (props: DraggableItemSlotProps<T>) => VNodeArrayChildren
   header?: () => VNodeArrayChildren
   footer?: () => VNodeArrayChildren
 }

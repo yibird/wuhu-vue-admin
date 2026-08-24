@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type { ViewFooterSlots } from './types'
-
-defineSlots<ViewFooterSlots>()
+defineSlots<{
+  default?: () => VNode | VNode[]
+}>()
 defineOptions({ name: 'WViewFooter' })
 </script>
 

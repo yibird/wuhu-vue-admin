@@ -1,12 +1,4 @@
 <script setup lang="ts">
-import {
-  computed,
-  getCurrentInstance,
-  onBeforeUnmount,
-  shallowRef,
-  useAttrs,
-  watch,
-} from 'vue'
 import type { ModalProps as AntdvModalProps } from 'antdv-next'
 import type {
   ModalEmits,

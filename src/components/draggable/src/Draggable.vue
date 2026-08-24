@@ -1,10 +1,8 @@
 <script setup lang="ts" generic="T = unknown">
-import { computed, useAttrs, useId } from 'vue'
 import { arrayMove } from '@dnd-kit/helpers'
 import { DragDropProvider } from '@dnd-kit/vue'
 import { isSortable } from '@dnd-kit/vue/sortable'
 import DraggableItem from './DraggableItem'
-import { flattenDraggableVNodes } from './utils'
 import type {
   DraggableEmits,
   DraggableItemData,
@@ -13,7 +11,6 @@ import type {
   DraggableSlots,
 } from './types'
 import type { DragEndEvent, DragStartEvent } from '@dnd-kit/vue'
-import type { VNode } from 'vue'
 
 defineOptions({ inheritAttrs: false })
 
@@ -28,13 +25,7 @@ const attrs = useAttrs()
 const items = defineModel<T[]>({ default: () => [] })
 const instanceId = useId()
 
-const hasItemSlot = computed(() => Boolean(slots.item))
-const slotNodes = computed(() =>
-  flattenDraggableVNodes(slots.default?.() ?? [])
-)
-const sortableGroup = computed(
-  () => props.group ?? `w-draggable-group:${instanceId}`
-)
+const sortableGroup = `w-draggable-group:${instanceId}`
 const transition = computed(() => {
   if (props.transition !== undefined) return props.transition
   if (props.animation === undefined) return undefined
@@ -43,13 +34,13 @@ const transition = computed(() => {
 
 function normalizeIdentifier(value: unknown, index: number) {
   if (typeof value === 'string' || typeof value === 'number') return value
-  return `w-draggable-item:${index}`
+  throw new Error(`Draggable item at index ${index} has no stable identifier`)
 }
 
-function resolveItemId(element: T | undefined, index: number, vnode?: VNode) {
+function resolveItemId(element: T, index: number) {
   const itemKey = props.itemKey as DraggableItemKey<T> | undefined
   if (typeof itemKey === 'function') {
-    return normalizeIdentifier(itemKey(element as T, index), index)
+    return normalizeIdentifier(itemKey(element, index), index)
   }
 
   if (typeof itemKey === 'string' && element != null) {
@@ -58,15 +49,7 @@ function resolveItemId(element: T | undefined, index: number, vnode?: VNode) {
       return normalizeIdentifier(value, index)
     }
   }
-
-  if (element && typeof element === 'object' && 'id' in element) {
-    const value = (element as { id?: unknown }).id
-    if (value !== undefined && value !== null) {
-      return normalizeIdentifier(value, index)
-    }
-  }
-
-  return normalizeIdentifier(vnode?.key, index)
+  return normalizeIdentifier(undefined, index)
 }
 
 function resolveItemData(element: T, index: number) {
@@ -74,22 +57,23 @@ function resolveItemData(element: T, index: number) {
   return typeof data === 'function' ? data(element, index) : data
 }
 
-const itemEntries = computed(() =>
-  items.value.map((element, index) => ({
-    data: resolveItemData(element, index),
-    element,
-    id: resolveItemId(element, index),
-    index,
-  }))
-)
-const slotEntries = computed(() =>
-  slotNodes.value.map((vnode, index) => ({
-    data: resolveItemData(items.value[index] as T, index),
-    id: resolveItemId(items.value[index] as T, index, vnode),
-    index,
-    vnode,
-  }))
-)
+const itemEntries = computed(() => {
+  const identifiers = new Set<string>()
+  return items.value.map((element, index) => {
+    const id = resolveItemId(element, index)
+    const identifier = `${typeof id}:${String(id)}`
+    if (identifiers.has(identifier)) {
+      throw new Error(`Duplicate Draggable item identifier: ${String(id)}`)
+    }
+    identifiers.add(identifier)
+    return {
+      data: resolveItemData(element, index),
+      element,
+      id,
+      index,
+    }
+  })
+})
 
 function handleDragStart(event: DragStartEvent) {
   emit('start', event)
@@ -124,55 +108,30 @@ function handleDragEnd(event: DragEndEvent) {
     <component :is="props.tag" v-bind="attrs">
       <slot name="header" />
 
-      <template v-if="hasItemSlot">
-        <DraggableItem
-          v-for="entry in itemEntries"
-          :key="entry.id"
-          :accept="props.accept"
-          :collision-priority="props.collisionPriority"
-          :data="entry.data"
-          :disabled="props.disabled"
-          :ghost-class="props.ghostClass"
-          :group="sortableGroup"
-          :handle-selector="props.handleSelector"
-          :id="entry.id"
-          :index="entry.index"
-          :tag="props.itemTag"
-          :transition="transition"
-          :type="props.type"
-          unwrap
-        >
-          <template #default="state">
-            <slot
-              name="item"
-              :element="entry.element"
-              :index="entry.index"
-              v-bind="state"
-            />
-          </template>
-        </DraggableItem>
-      </template>
-
-      <template v-else>
-        <DraggableItem
-          v-for="entry in slotEntries"
-          :key="entry.id"
-          :accept="props.accept"
-          :collision-priority="props.collisionPriority"
-          :data="entry.data"
-          :disabled="props.disabled"
-          :ghost-class="props.ghostClass"
-          :group="sortableGroup"
-          :handle-selector="props.handleSelector"
-          :id="entry.id"
-          :index="entry.index"
-          :tag="props.itemTag"
-          :transition="transition"
-          :type="props.type"
-          unwrap
-          :vnode="entry.vnode"
-        />
-      </template>
+      <DraggableItem
+        v-for="entry in itemEntries"
+        :key="entry.id"
+        :data="entry.data"
+        :disabled="props.disabled"
+        :ghost-class="props.ghostClass"
+        :group="sortableGroup"
+        :handle-selector="props.handleSelector"
+        :id="entry.id"
+        :index="entry.index"
+        :tag="props.itemTag"
+        :transition="transition"
+        :type="props.type"
+        unwrap
+      >
+        <template #default="state">
+          <slot
+            name="item"
+            :element="entry.element"
+            :index="entry.index"
+            v-bind="state"
+          />
+        </template>
+      </DraggableItem>
 
       <slot name="footer" />
     </component>

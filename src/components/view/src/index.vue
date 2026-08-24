@@ -1,14 +1,13 @@
 <script lang="ts" setup>
-import { computed, provide } from 'vue'
 import { toPx } from '@/utils'
 import { viewContextKey } from './context'
 import type { CSSProperties } from 'vue'
-import type { ViewProps } from './types'
+import type { WViewProps } from './types'
 
 defineOptions({
   name: 'WView',
 })
-const props = withDefaults(defineProps<ViewProps>(), {
+const props = withDefaults(defineProps<WViewProps>(), {
   padding: true,
   full: true,
   direction: 'vertical',

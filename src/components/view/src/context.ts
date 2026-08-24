@@ -8,6 +8,6 @@ export interface ViewContext {
 
 export const viewContextKey: InjectionKey<ViewContext> = Symbol('WViewContext')
 
-export function negateCssSize(value: string) {
+export function getCssSize(value: string) {
   return value === '0px' ? value : `calc(0px - ${value})`
 }

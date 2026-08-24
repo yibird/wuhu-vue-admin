@@ -1,4 +1,19 @@
-import Modal from './src/index.vue'
-export type { ModalInstance, ModalPosition, ModalProps } from './src/types'
+import ModalComponent from './src/index.vue'
+import { destroyAll, open } from './src/service'
+export type {
+  ModalAction,
+  ModalComponent,
+  ModalController,
+  ModalInstance,
+  ModalMaybePromise,
+  ModalOpenOptions,
+  ModalOpenPromise,
+  ModalPosition,
+  ModalProps,
+  ModalResult,
+  ModalUpdateOptions,
+} from './src/types'
 
-export { Modal }
+export { destroyAll, open }
+
+export const Modal = Object.assign(ModalComponent, { destroyAll, open })
