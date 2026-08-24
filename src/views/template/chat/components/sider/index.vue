@@ -29,14 +29,24 @@
         @add-contact="emit('open-add-contact')"
         @open-global-search="emit('open-global-search')"
       />
-      <GroupList
-        v-else-if="activeKey === 'group'"
-        key="group"
+      <ContactCenter
+        v-else-if="activeKey === 'contactCenter'"
+        key="contact-center"
+        :contacts="contacts"
+        :friend-groups="friendGroups"
         :groups="groups"
+        :notifications="notifications"
         @select="handleConversationSelect"
+        @chat="handleContactChat"
+        @show-contact="(contact) => emit('show-contact', contact)"
         @create-group="emit('open-create-group')"
         @add-contact="emit('open-add-contact')"
         @open-global-search="emit('open-global-search')"
+        @read-notifications="(category) => emit('read-notifications', category)"
+        @resolve-notification="
+          (notification, accepted) =>
+            emit('resolve-notification', notification, accepted)
+        "
       />
     </Transition>
     <button
@@ -53,22 +63,33 @@
 <script lang="ts" setup>
 import ConversationList from './ConversationList.vue'
 import ContactList from './ContactList.vue'
-import GroupList from './GroupList.vue'
-import type { Contact, Conversation, NavType } from '../types'
+import ContactCenter from './ContactCenter.vue'
+import type {
+  Contact,
+  ContactNotification,
+  ContactNotificationCategory,
+  Conversation,
+  FriendGroup,
+  NavType,
+} from '../types'
 
 withDefaults(
   defineProps<{
     activeKey?: NavType
     conversations?: Conversation[]
     contacts?: Contact[]
+    friendGroups?: FriendGroup[]
     groups?: Conversation[]
+    notifications?: ContactNotification[]
     resizing?: boolean
   }>(),
   {
     activeKey: 'conversation',
     conversations: () => [],
     contacts: () => [],
+    friendGroups: () => [],
     groups: () => [],
+    notifications: () => [],
     resizing: false,
   }
 )
@@ -85,6 +106,8 @@ const emit = defineEmits<{
   'pin-conversation': [conversation: Conversation]
   'mark-unread': [conversation: Conversation]
   'archive-conversation': [conversation: Conversation]
+  'read-notifications': [category: ContactNotificationCategory]
+  'resolve-notification': [notification: ContactNotification, accepted: boolean]
   'resize-start': [event: PointerEvent]
 }>()
 

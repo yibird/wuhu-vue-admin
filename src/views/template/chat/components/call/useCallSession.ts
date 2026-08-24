@@ -15,6 +15,11 @@ interface UseCallSessionOptions {
   video: boolean
 }
 
+interface MediaRequestResult {
+  stream: MediaStream | null
+  warning?: string
+}
+
 export function useCallSession({ open, video }: UseCallSessionOptions) {
   const status = ref<CallStatus>('calling')
   const duration = ref(0)
@@ -28,6 +33,7 @@ export function useCallSession({ open, video }: UseCallSessionOptions) {
 
   let connectTimer: number | undefined
   let durationTimer: number | undefined
+  let callToken = 0
 
   const hasLocalVideo = computed(() => {
     return (
@@ -76,6 +82,7 @@ export function useCallSession({ open, video }: UseCallSessionOptions) {
 
   async function startCall() {
     cleanupCall()
+    const token = callToken
     status.value = 'calling'
     duration.value = 0
     micEnabled.value = true
@@ -83,34 +90,53 @@ export function useCallSession({ open, video }: UseCallSessionOptions) {
     speakerEnabled.value = true
     permissionError.value = ''
 
-    await requestMedia()
+    const result = await requestMedia()
+    if (!isCurrentCall(token)) {
+      result.stream?.getTracks().forEach((track) => track.stop())
+      return
+    }
+
+    permissionError.value = result.warning ?? ''
+    const stream = result.stream
+    if (stream) {
+      mediaStream.value = stream
+      if (localVideoRef.value) {
+        localVideoRef.value.srcObject = stream
+      }
+    }
 
     connectTimer = window.setTimeout(() => {
-      status.value = status.value === 'error' ? 'error' : 'connected'
+      if (!isCurrentCall(token) || status.value === 'error') return
+      status.value = 'connected'
       startDurationTimer()
     }, 900)
   }
 
-  async function requestMedia() {
+  async function requestMedia(): Promise<MediaRequestResult> {
     if (!navigator.mediaDevices?.getUserMedia) {
-      permissionError.value = '当前浏览器不支持媒体设备调用，已切换为模拟通话。'
-      status.value = 'error'
-      return
+      return {
+        stream: null,
+        warning: '当前浏览器不支持媒体设备调用，已切换为模拟通话。',
+      }
     }
 
     try {
-      mediaStream.value = await navigator.mediaDevices.getUserMedia({
-        audio: true,
-        video,
-      })
-
-      if (localVideoRef.value) {
-        localVideoRef.value.srcObject = mediaStream.value
+      return {
+        stream: await navigator.mediaDevices.getUserMedia({
+          audio: true,
+          video,
+        }),
       }
     } catch {
-      permissionError.value = '无法访问麦克风或摄像头，已切换为模拟通话。'
-      status.value = 'error'
+      return {
+        stream: null,
+        warning: '无法访问麦克风或摄像头，已切换为模拟通话。',
+      }
     }
+  }
+
+  function isCurrentCall(token: number) {
+    return open.value && callToken === token
   }
 
   function startDurationTimer() {
@@ -135,6 +161,7 @@ export function useCallSession({ open, video }: UseCallSessionOptions) {
   }
 
   function cleanupCall() {
+    callToken += 1
     stopOutgoingCallTone()
     window.clearTimeout(connectTimer)
     window.clearInterval(durationTimer)

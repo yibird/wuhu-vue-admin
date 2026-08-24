@@ -4,13 +4,16 @@
       <Nav
         v-model:active-key="activeKey"
         :unread-count="totalUnreadCount"
+        :contact-notification-count="contactNotificationCount"
         @open-settings="openSettingsModal"
       />
       <Sider
         :active-key="activeKey"
         :conversations="conversations"
         :contacts="contacts"
+        :friend-groups="friendGroups"
         :groups="groups"
+        :notifications="contactNotifications"
         :resizing="isSidebarResizing"
         :style="sidebarStyle"
         v-model:active-conversation-id="activeConversationId"
@@ -24,6 +27,8 @@
         @pin-conversation="toggleConversationPinned"
         @mark-unread="markConversationUnread"
         @archive-conversation="toggleConversationArchived"
+        @read-notifications="markContactNotificationsRead"
+        @resolve-notification="resolveContactNotification"
         @open-global-search="openGlobalSearch"
         @resize-start="startSidebarResize"
       />
@@ -122,7 +127,6 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, shallowRef, watch } from 'vue'
 import { Nav, Sider, MessageArea } from './components'
 import CallFloatingWindow from './components/call/FloatingWindow.vue'
 import AddContactOrGroupModal from './components/discovery/AddContactOrGroupModal.vue'
@@ -132,12 +136,7 @@ import GroupDrawer from './components/group/Drawer.vue'
 import SettingsModal from './components/settings/Modal.vue'
 import UserDetailModal from './components/user/DetailModal.vue'
 import { useChat } from './composables/useChat'
-import type {
-  Contact,
-  Conversation,
-  GroupPanelTab,
-  UserInfo,
-} from './components/types'
+import { useChatPanels } from './composables/useChatPanels'
 
 const {
   activeKey,
@@ -153,12 +152,15 @@ const {
   chatSettings,
   conversations,
   contacts,
+  friendGroups,
   groups,
   directoryCandidates,
   messagesByConversation,
   favoriteMessageIds,
+  contactNotifications,
   activeMessages,
   totalUnreadCount,
+  contactNotificationCount,
   isCurrentConversationTyping,
   startSidebarResize,
   handleConversationSelect,
@@ -186,100 +188,36 @@ const {
   createGroup,
   addDirectoryUser,
   addDirectoryGroup,
+  markContactNotificationsRead,
+  resolveContactNotification,
 } = useChat()
 
-const selectedUser = shallowRef<UserInfo | null>(null)
-const settingsModalOpen = shallowRef(false)
-const createGroupModalOpen = shallowRef(false)
-const addContactModalOpen = shallowRef(false)
-const globalSearchOpen = shallowRef(false)
-const groupDrawerOpen = shallowRef(false)
-const groupPanelTab = shallowRef<GroupPanelTab>('announcement')
-const userDetailOpen = computed(() => Boolean(selectedUser.value))
-
-function openSettingsModal() {
-  settingsModalOpen.value = true
-}
-
-function openCreateGroupModal() {
-  createGroupModalOpen.value = true
-}
-
-function openAddContactModal() {
-  addContactModalOpen.value = true
-}
-
-function openGlobalSearch() {
-  globalSearchOpen.value = true
-}
-
-function openGroupPanel(tab: GroupPanelTab) {
-  if (activeConversation.value?.type !== 'group') return
-  groupPanelTab.value = tab
-  groupDrawerOpen.value = true
-}
-
-function handleGlobalContactSelect(contact: Contact) {
-  handleContactChat(contact)
-}
-
-function handleGlobalGroupSelect(group: Conversation) {
-  activeKey.value = 'conversation'
-  handleConversationSelect(group)
-}
-
-function openUserDetail(user: UserInfo) {
-  const contact = contacts.value.find((item) => item.id === user.id)
-  const conversationUser = conversations.value.find(
-    (item) => item.userInfo?.id === user.id
-  )?.userInfo
-
-  selectedUser.value = {
-    ...conversationUser,
-    ...contact,
-    ...user,
-  }
-}
-
-function closeUserDetail() {
-  selectedUser.value = null
-}
-
-function handleContactQuickChat(contact: Contact) {
-  handleContactChat(contact, false)
-}
-
-function startPrivateChat(user: UserInfo) {
-  const navigateToConversation = activeKey.value !== 'contact'
-  closeUserDetail()
-  groupDrawerOpen.value = false
-  handleContactChat(user, navigateToConversation)
-}
-
-function handleGlobalSearchShortcut(event: KeyboardEvent) {
-  if (event.defaultPrevented) return
-  if (!(event.ctrlKey || event.metaKey) || event.key.toLowerCase() !== 'k') {
-    return
-  }
-
-  event.preventDefault()
-  openGlobalSearch()
-}
-
-watch(
-  () => activeConversation.value?.id,
-  () => {
-    if (activeConversation.value?.type !== 'group') {
-      groupDrawerOpen.value = false
-    }
-  }
-)
-
-onMounted(() => {
-  window.addEventListener('keydown', handleGlobalSearchShortcut, true)
-})
-
-onBeforeUnmount(() => {
-  window.removeEventListener('keydown', handleGlobalSearchShortcut, true)
+const {
+  addContactModalOpen,
+  createGroupModalOpen,
+  globalSearchOpen,
+  groupDrawerOpen,
+  groupPanelTab,
+  selectedUser,
+  settingsModalOpen,
+  userDetailOpen,
+  closeUserDetail,
+  handleContactQuickChat,
+  handleGlobalContactSelect,
+  handleGlobalGroupSelect,
+  openAddContactModal,
+  openCreateGroupModal,
+  openGlobalSearch,
+  openGroupPanel,
+  openSettingsModal,
+  openUserDetail,
+  startPrivateChat,
+} = useChatPanels({
+  activeKey,
+  activeConversation,
+  contacts,
+  conversations,
+  selectConversation: handleConversationSelect,
+  startContactChat: handleContactChat,
 })
 </script>

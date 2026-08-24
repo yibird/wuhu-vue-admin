@@ -1,197 +1,204 @@
 <template>
-  <a-dropdown
-    v-model:open="contextMenuOpen"
-    :trigger="['contextmenu']"
-    :menu="messageActionMenu"
-  >
-    <div
-      class="group relative flex gap-10 px-2 py-2"
-      :class="isMine ? 'flex-row-reverse' : 'flex-row'"
-      :aria-label="`${message.senderInfo?.name ?? '未知用户'}的${message.type}消息`"
-      @contextmenu.prevent.stop
+  <div class="min-w-0">
+    <a-dropdown
+      v-model:open="contextMenuOpen"
+      :trigger="['contextmenu']"
+      :menu="messageActionMenu"
     >
-      <button
-        type="button"
-        class="button size-36 shrink-0 rounded-full transition-transform hover:scale-105 focus-visible:(outline-2 outline-primary outline-offset-2)"
-        :disabled="!message.senderInfo"
-        :title="
-          message.senderInfo
-            ? `查看${message.senderInfo.name}资料`
-            : '暂无用户资料'
-        "
-        :aria-label="
-          message.senderInfo
-            ? `查看${message.senderInfo.name}资料`
-            : '暂无用户资料'
-        "
-        @click.stop="handleUserClick"
-      >
-        <a-avatar
-          :src="message.senderInfo?.avatar || 'https://i.pravatar.cc/100?img=1'"
-          :size="36"
-          round
-        />
-      </button>
-
-      <!-- Content -->
       <div
-        class="max-w-[70%] flex flex-col gap-6"
-        :class="isMine ? 'items-end' : 'items-start'"
+        class="group relative flex gap-10 px-2 py-2"
+        :class="isMine ? 'flex-row-reverse' : 'flex-row'"
+        :aria-label="`${message.senderInfo?.name ?? '未知用户'}的${message.type}消息`"
+        @contextmenu.prevent.stop
       >
-        <div v-if="!isMine" class="text-xs text-regular px-4">
-          {{ message.senderInfo?.name }}
-        </div>
-
-        <div
-          class="max-w-full rounded-12 px-12 py-8 break-words shadow-all-sm"
-          :class="[
-            isMine
-              ? 'bg-primary text-white rounded-tr-2px'
-              : 'bg-fill-quaternary text-main rounded-tl-2px',
-          ]"
+        <button
+          type="button"
+          class="button size-36 shrink-0 rounded-full transition-transform hover:scale-105 focus-visible:(outline-2 outline-primary outline-offset-2)"
+          :disabled="!message.senderInfo"
+          :title="
+            message.senderInfo
+              ? `查看${message.senderInfo.name}资料`
+              : '暂无用户资料'
+          "
+          :aria-label="
+            message.senderInfo
+              ? `查看${message.senderInfo.name}资料`
+              : '暂无用户资料'
+          "
+          @click.stop="handleUserClick"
         >
-          <TextContent
-            v-if="message.type === 'text'"
-            :content="message.content"
+          <a-avatar
+            :src="
+              message.senderInfo?.avatar || 'https://i.pravatar.cc/100?img=1'
+            "
+            :size="36"
+            round
           />
-          <ImageContent
-            v-else-if="message.type === 'image'"
-            :content="message.content"
-            @preview="previewImage"
-          />
-          <EmojiContent
-            v-else-if="message.type === 'emoji'"
-            :content="message.content"
-          />
-          <VoiceContent
-            v-else-if="message.type === 'voice'"
-            :content="message.content"
-            :is-playing="isPlaying"
-            @toggle-play="togglePlay"
-          />
-          <FileContent
-            v-else-if="message.type === 'file'"
-            :content="message.content"
-            @download="handleDownload"
-          />
-          <CustomContent v-else :content="message.content" />
-        </div>
+        </button>
 
+        <!-- Content -->
         <div
-          v-if="message.replyInfo"
-          class="max-w-full rounded-6 border-l-3 border-primary bg-fill-quaternary px-8 py-6 text-left text-xs text-secondary"
+          class="max-w-[70%] flex flex-col gap-6"
+          :class="isMine ? 'items-end' : 'items-start'"
         >
-          <div class="mb-2 text-primary">
-            {{ message.replyInfo.senderName }}
+          <div v-if="!isMine" class="text-xs text-regular px-4">
+            {{ message.senderInfo?.name }}
           </div>
-          <div class="truncate">{{ message.replyInfo.content }}</div>
-        </div>
 
-        <div v-if="message.reactions?.length" class="flex flex-wrap gap-6 px-4">
           <div
-            v-for="reaction in message.reactions"
-            :key="reaction.emoji"
-            class="flex items-center gap-2 rounded-full border-1 border-color-2 border-solid bg-container px-6 py-2 cursor-pointer transition-colors hover:bg-hover"
-            @click="$emit('reaction', reaction.emoji)"
-          >
-            <span>{{ reaction.emoji }}</span>
-            <span v-if="reaction.count > 1" class="text-xs text-regular">{{
-              reaction.count
-            }}</span>
-          </div>
-        </div>
-
-        <div class="flex items-center gap-8 px-4">
-          <span class="whitespace-nowrap text-xs text-regular">
-            {{ message.timestamp }}
-          </span>
-          <span v-if="message.editedAt" class="text-xs text-secondary">
-            已编辑
-          </span>
-          <button
-            type="button"
-            class="button relative size-22 rounded-full transition-[background-color,box-shadow,opacity,transform,color] duration-motion-base hover:(-translate-y-1 bg-warning-tint text-warning shadow-all-sm) focus-visible:(outline-2 outline-warning outline-offset-2) active:(translate-y-0 scale-92)"
+            class="max-w-full rounded-12 px-12 py-8 break-words shadow-all-sm"
             :class="[
-              favorite
-                ? 'bg-warning-tint text-warning opacity-100'
-                : 'text-secondary opacity-0 group-hover:opacity-100 focus-visible:opacity-100',
+              isMine
+                ? 'bg-primary text-white rounded-tr-2px'
+                : 'bg-fill-quaternary text-main rounded-tl-2px',
             ]"
-            :title="favorite ? '取消收藏' : '收藏消息'"
-            :aria-label="favorite ? '取消收藏消息' : '收藏消息'"
-            @click.stop="handleFavoriteToggle"
           >
-            <Icon
-              name="i-lucide:star"
-              :size="12"
-              :class="{ 'fill-current': favorite }"
+            <TextContent
+              v-if="message.type === 'text'"
+              :content="message.content"
             />
-            <Transition name="favorite-pop">
-              <span
-                v-if="favoritePulse"
-                class="pointer-events-none absolute -top-22 left-0 whitespace-nowrap rounded-full bg-warning-tint px-7 py-2 text-11px text-warning shadow-all-sm"
-              >
-                {{ favoritePulseText }}
-              </span>
-            </Transition>
-          </button>
-          <div v-if="isMine" class="flex items-center">
-            <Icon
-              v-if="message.status === 'sending'"
-              name="i-lucide:loader-2"
-              :size="12"
-              class="text-regular animate-spin"
+            <ImageContent
+              v-else-if="message.type === 'image'"
+              :content="message.content"
+              @preview="previewImage"
             />
-            <Icon
-              v-else-if="message.status === 'sent'"
-              name="i-lucide:check"
-              :size="12"
-              class="text-regular"
+            <EmojiContent
+              v-else-if="message.type === 'emoji'"
+              :content="message.content"
             />
-            <Icon
-              v-else-if="message.status === 'read'"
-              name="i-lucide:check-check"
-              :size="12"
-              class="text-primary"
+            <VoiceContent
+              v-else-if="message.type === 'voice'"
+              :content="message.content"
+              :is-playing="isPlaying"
+              @toggle-play="togglePlay"
             />
+            <FileContent
+              v-else-if="message.type === 'file'"
+              :content="message.content"
+              @download="handleDownload"
+            />
+            <CustomContent v-else :content="message.content" />
+          </div>
+
+          <div
+            v-if="message.replyInfo"
+            class="max-w-full rounded-6 border-l-3 border-primary bg-fill-quaternary px-8 py-6 text-left text-xs text-secondary"
+          >
+            <div class="mb-2 text-primary">
+              {{ message.replyInfo.senderName }}
+            </div>
+            <div class="truncate">{{ message.replyInfo.content }}</div>
+          </div>
+
+          <div
+            v-if="message.reactions?.length"
+            class="flex flex-wrap gap-6 px-4"
+          >
             <button
-              v-else-if="message.status === 'failed'"
               type="button"
-              class="button size-16 text-error"
-              title="点击重试"
-              aria-label="重新发送失败消息"
-              @click="$emit('retry')"
+              v-for="reaction in message.reactions"
+              :key="reaction.emoji"
+              class="flex items-center gap-2 rounded-full border-1 border-color-2 border-solid bg-container px-6 py-2 cursor-pointer transition-colors hover:bg-hover focus-visible:(outline-2 outline-primary outline-offset-2)"
+              :aria-label="`${reaction.emoji} ${reaction.count} 个反应`"
+              @click="$emit('reaction', reaction.emoji)"
             >
-              <Icon name="i-lucide:alert-circle" :size="12" />
+              <span>{{ reaction.emoji }}</span>
+              <span v-if="reaction.count > 1" class="text-xs text-regular">{{
+                reaction.count
+              }}</span>
             </button>
           </div>
-        </div>
 
-        <div
-          v-if="showEmojiPicker"
-          class="absolute -top-72 z-3 rounded-8 border-1 border-color-2 border-solid bg-container p-8 shadow-all-md"
-          :class="isMine ? 'right-0' : 'left-0'"
-        >
-          <div class="grid grid-cols-8 gap-4">
+          <div class="flex items-center gap-8 px-4">
+            <span class="whitespace-nowrap text-xs text-regular">
+              {{ message.timestamp }}
+            </span>
+            <span v-if="message.editedAt" class="text-xs text-secondary">
+              已编辑
+            </span>
             <button
-              v-for="emoji in quickEmojis"
-              :key="emoji"
               type="button"
-              class="button size-28 rounded-4 text-xl transition-[background-color,box-shadow,transform] duration-motion-fast hover:(-translate-y-1 bg-hover shadow-all-sm) active:(translate-y-0 scale-92)"
-              :aria-label="`回应${emoji}`"
-              @click="handleReaction(emoji)"
+              class="button relative size-22 rounded-full transition-[background-color,box-shadow,opacity,transform,color] duration-motion-base hover:(-translate-y-1 bg-warning-tint text-warning shadow-all-sm) focus-visible:(outline-2 outline-warning outline-offset-2) active:(translate-y-0 scale-92)"
+              :class="[
+                favorite
+                  ? 'bg-warning-tint text-warning opacity-100'
+                  : 'text-secondary opacity-0 group-hover:opacity-100 focus-visible:opacity-100',
+              ]"
+              :title="favorite ? '取消收藏' : '收藏消息'"
+              :aria-label="favorite ? '取消收藏消息' : '收藏消息'"
+              @click.stop="handleFavoriteToggle"
             >
-              {{ emoji }}
+              <Icon
+                name="i-lucide:star"
+                :size="12"
+                :class="{ 'fill-current': favorite }"
+              />
+              <Transition name="favorite-pop">
+                <span
+                  v-if="favoritePulse"
+                  class="pointer-events-none absolute -top-22 left-0 whitespace-nowrap rounded-full bg-warning-tint px-7 py-2 text-11px text-warning shadow-all-sm"
+                >
+                  {{ favoritePulseText }}
+                </span>
+              </Transition>
             </button>
+            <div v-if="isMine" class="flex items-center">
+              <Icon
+                v-if="message.status === 'sending'"
+                name="i-lucide:loader-2"
+                :size="12"
+                class="text-regular animate-spin"
+              />
+              <Icon
+                v-else-if="message.status === 'sent'"
+                name="i-lucide:check"
+                :size="12"
+                class="text-regular"
+              />
+              <Icon
+                v-else-if="message.status === 'read'"
+                name="i-lucide:check-check"
+                :size="12"
+                class="text-primary"
+              />
+              <button
+                v-else-if="message.status === 'failed'"
+                type="button"
+                class="button size-16 text-error"
+                title="点击重试"
+                aria-label="重新发送失败消息"
+                @click="$emit('retry')"
+              >
+                <Icon name="i-lucide:alert-circle" :size="12" />
+              </button>
+            </div>
+          </div>
+
+          <div
+            v-if="showEmojiPicker"
+            class="absolute -top-72 z-3 rounded-8 border-1 border-color-2 border-solid bg-container p-8 shadow-all-md"
+            :class="isMine ? 'right-0' : 'left-0'"
+          >
+            <div class="grid grid-cols-8 gap-4">
+              <button
+                v-for="emoji in quickEmojis"
+                :key="emoji"
+                type="button"
+                class="button size-28 rounded-4 text-xl transition-[background-color,box-shadow,transform] duration-motion-fast hover:(-translate-y-1 bg-hover shadow-all-sm) active:(translate-y-0 scale-92)"
+                :aria-label="`回应${emoji}`"
+                @click="handleReaction(emoji)"
+              >
+                {{ emoji }}
+              </button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </a-dropdown>
+    </a-dropdown>
+  </div>
 </template>
 
 <script setup lang="ts">
-import type { MenuProps } from 'antdv-next'
-import { computed, h, onBeforeUnmount, ref, shallowRef } from 'vue'
 import { Icon } from '@/components/icon'
 import TextContent from './message/Text.vue'
 import ImageContent from './message/Image.vue'
@@ -199,6 +206,7 @@ import EmojiContent from './message/Emoji.vue'
 import VoiceContent from './message/Voice.vue'
 import FileContent from './message/File.vue'
 import CustomContent from './message/Custom.vue'
+import type { MenuProps } from 'antdv-next'
 import type { Message, MessageItemEmits } from '../../types'
 
 interface Props {

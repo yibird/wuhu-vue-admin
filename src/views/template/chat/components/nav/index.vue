@@ -80,9 +80,11 @@ const emit = defineEmits<NavigationEmits>()
 const props = withDefaults(
   defineProps<{
     unreadCount?: number
+    contactNotificationCount?: number
   }>(),
   {
     unreadCount: 0,
+    contactNotificationCount: 0,
   }
 )
 
@@ -94,7 +96,12 @@ const navItems = computed<NavItem[]>(() => [
     badge: props.unreadCount,
   },
   { key: 'contact', label: '通讯录', icon: 'i-lucide:notebook-text' },
-  { key: 'group', label: '群聊', icon: 'i-lucide:users' },
+  {
+    key: 'contactCenter',
+    label: '联系人',
+    icon: 'i-lucide:contact-round',
+    badge: props.contactNotificationCount,
+  },
 ])
 
 const activeKey = defineModel<NavType>('activeKey', { default: 'conversation' })

@@ -2,7 +2,7 @@
 import { DragDropProvider } from '@dnd-kit/vue'
 import VoiceCall from './VoiceCall.vue'
 import VideoCall from './VideoCall.vue'
-import './style.css'
+import './style.less'
 import type { Conversation } from '../types'
 
 type CallType = 'voice' | 'video'

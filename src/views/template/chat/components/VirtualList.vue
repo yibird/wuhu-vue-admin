@@ -1,5 +1,4 @@
 <script setup lang="ts" generic="T">
-import { computed, useTemplateRef } from 'vue'
 import { useVirtualizer } from '@tanstack/vue-virtual'
 import type { ComponentPublicInstance, CSSProperties } from 'vue'
 import type { VirtualItem } from '@tanstack/vue-virtual'
@@ -20,6 +19,10 @@ const props = withDefaults(
     getItemKey: undefined,
   }
 )
+
+const emit = defineEmits<{
+  scroll: [event: Event]
+}>()
 
 defineSlots<{
   default(props: { item: T; index: number }): unknown
@@ -50,7 +53,6 @@ const totalSize = computed(() => virtualizer.value.getTotalSize())
 const surfaceStyle = computed<CSSProperties>(() => ({
   height: `${totalSize.value}px`,
 }))
-
 function getItemStyle(item: VirtualItem): CSSProperties {
   return {
     transform: `translate3d(0, ${item.start}px, 0)`,
@@ -74,6 +76,12 @@ function measureElement(element: Element | ComponentPublicInstance | null) {
         : element?.$el
   if (target instanceof HTMLElement) virtualizer.value.measureElement(target)
 }
+
+defineExpose<{
+  getScrollElement: () => HTMLElement | null
+}>({
+  getScrollElement: () => scrollbar.value?.getScrollElement() ?? null,
+})
 </script>
 
 <template>
@@ -82,11 +90,12 @@ function measureElement(element: Element | ComponentPublicInstance | null) {
     :defer="false"
     :options="scrollbarOptions"
     class="min-h-0 overflow-hidden"
-    content-class="min-h-full"
+    content-class="min-h-full py-10"
+    @scroll="emit('scroll', $event)"
   >
     <div
       v-if="items.length"
-      class="virtual-list-surface relative w-full"
+      class="relative w-full"
       role="list"
       :aria-label="ariaLabel"
       :style="surfaceStyle"
@@ -108,28 +117,3 @@ function measureElement(element: Element | ComponentPublicInstance | null) {
     </div>
   </Scrollbar>
 </template>
-
-<style scoped>
-.virtual-list-surface {
-  animation: chat-virtual-list-enter var(--w-motion-duration-moderate)
-    var(--w-motion-ease-enter) both;
-}
-
-@keyframes chat-virtual-list-enter {
-  from {
-    opacity: 0;
-    transform: translate3d(0, 6px, 0);
-  }
-
-  to {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .virtual-list-surface {
-    animation: none;
-  }
-}
-</style>

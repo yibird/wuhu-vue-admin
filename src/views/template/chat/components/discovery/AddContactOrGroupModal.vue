@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { computed, shallowRef, watch } from 'vue'
 import { Icon } from '@/components/icon'
 import { defaultDirectorySearchHistory } from '../../data'
 import { useSearchHistory } from '../../composables/useSearchHistory'

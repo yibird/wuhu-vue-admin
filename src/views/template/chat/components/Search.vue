@@ -56,9 +56,8 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { h, shallowRef } from 'vue'
+import { Icon } from '@/components'
 import type { MenuProps } from 'antdv-next'
-import { Icon } from '@/components/icon'
 
 withDefaults(
   defineProps<{

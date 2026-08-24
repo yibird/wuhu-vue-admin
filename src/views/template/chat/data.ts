@@ -1,10 +1,118 @@
 import type {
   Contact,
+  ContactNotification,
   Conversation,
   DirectoryItem,
+  FriendGroup,
   GroupMember,
   Message,
 } from './components/types'
+
+export function createFriendGroups(): FriendGroup[] {
+  return [
+    {
+      id: 'project',
+      name: '项目协作',
+      icon: 'i-lucide:folder-kanban',
+      order: 1,
+    },
+    {
+      id: 'colleague',
+      name: '公司同事',
+      icon: 'i-lucide:building-2',
+      order: 2,
+    },
+    {
+      id: 'external',
+      name: '外部联系人',
+      icon: 'i-lucide:earth',
+      order: 3,
+    },
+    {
+      id: 'new',
+      name: '新朋友',
+      icon: 'i-lucide:user-round-plus',
+      order: 4,
+    },
+  ]
+}
+
+export function createInitialContactNotifications(): ContactNotification[] {
+  return [
+    {
+      id: 'friend-request-linyue',
+      category: 'friend',
+      title: '林悦申请添加你',
+      description: '体验设计部，正在参与新版工作台设计。',
+      avatar: 'https://i.pravatar.cc/100?img=25',
+      createdAt: '5 分钟前',
+      unread: true,
+      status: 'pending',
+      target: {
+        id: 'directory-user-1',
+        type: 'user',
+        name: '林悦',
+        avatar: 'https://i.pravatar.cc/100?img=25',
+        status: 'online',
+        title: '交互设计师',
+        department: '体验设计部',
+        tags: ['设计', '交互', '原型'],
+      },
+    },
+    {
+      id: 'friend-request-mia',
+      category: 'friend',
+      title: 'Mia Chen 申请添加你',
+      description: '国际业务部，希望与你同步海外版本计划。',
+      avatar: 'https://i.pravatar.cc/100?img=32',
+      createdAt: '昨天 16:20',
+      unread: true,
+      status: 'pending',
+      target: {
+        id: 'directory-user-3',
+        type: 'user',
+        name: 'Mia Chen',
+        avatar: 'https://i.pravatar.cc/100?img=32',
+        status: 'offline',
+        title: '海外产品经理',
+        department: '国际业务部',
+        tags: ['产品', '海外', '增长'],
+      },
+    },
+    {
+      id: 'group-invite-frontend',
+      category: 'group',
+      title: '邀请你加入前端技术交流',
+      description: '周航邀请你加入群聊，共 186 位成员。',
+      avatar:
+        'https://api.dicebear.com/9.x/initials/svg?seed=Frontend%20Community',
+      createdAt: '12 分钟前',
+      unread: true,
+      status: 'pending',
+      target: {
+        id: 'directory-group-1',
+        type: 'group',
+        name: '前端技术交流',
+        avatar:
+          'https://api.dicebear.com/9.x/initials/svg?seed=Frontend%20Community',
+        category: 'study',
+        description: 'Vue、工程化与体验优化交流',
+        memberCount: 186,
+        tags: ['前端', 'Vue', '工程化'],
+      },
+    },
+    {
+      id: 'group-invite-ai',
+      category: 'group',
+      title: 'AI 产品研究社邀请',
+      description: 'Bob 邀请你加入群聊，共 92 位成员。',
+      avatar: 'https://api.dicebear.com/9.x/initials/svg?seed=AI%20Product',
+      createdAt: '星期一',
+      unread: false,
+      status: 'accepted',
+    },
+  ]
+}
 
 const generatedMemberFamilyNames = [
   '陈',
@@ -224,6 +332,7 @@ export function createInitialContacts(): Contact[] {
       tags: ['前端', '项目 A', '核心成员'],
       joinedAt: '2023-04-12',
       lastActiveAt: '刚刚在线',
+      friendGroupId: 'project',
     },
     {
       id: '2',
@@ -241,6 +350,7 @@ export function createInitialContacts(): Contact[] {
       tags: ['后端', '接口', '项目 A'],
       joinedAt: '2022-11-08',
       lastActiveAt: '昨天 18:42',
+      friendGroupId: 'project',
     },
     {
       id: '3',
@@ -258,6 +368,7 @@ export function createInitialContacts(): Contact[] {
       tags: ['后端', '架构', 'Code Review'],
       joinedAt: '2021-07-20',
       lastActiveAt: '10 分钟前',
+      friendGroupId: 'project',
     },
     {
       id: '4',
@@ -275,6 +386,7 @@ export function createInitialContacts(): Contact[] {
       tags: ['测试', '质量', '发布'],
       joinedAt: '2021-09-18',
       lastActiveAt: '今天 09:20',
+      friendGroupId: 'colleague',
     },
     {
       id: '5',
@@ -292,6 +404,7 @@ export function createInitialContacts(): Contact[] {
       tags: ['设计', '海外'],
       joinedAt: '2024-02-01',
       lastActiveAt: '刚刚在线',
+      friendGroupId: 'external',
     },
     {
       id: '6',
@@ -309,6 +422,7 @@ export function createInitialContacts(): Contact[] {
       tags: ['数据', '看板', '产品'],
       joinedAt: '2020-05-14',
       lastActiveAt: '今天 11:08',
+      friendGroupId: 'colleague',
     },
     {
       id: '7',
@@ -325,6 +439,7 @@ export function createInitialContacts(): Contact[] {
       tags: ['测试'],
       joinedAt: '2023-12-04',
       lastActiveAt: '刚刚在线',
+      friendGroupId: 'colleague',
     },
     {
       id: '8',
@@ -342,32 +457,13 @@ export function createInitialContacts(): Contact[] {
       tags: ['运维', '发布', '监控'],
       joinedAt: '2022-03-22',
       lastActiveAt: '昨天 20:16',
+      friendGroupId: 'external',
     },
   ]
 }
 
 export function createInitialGroups(): Conversation[] {
   return [
-    {
-      id: 'g1',
-      type: 'group',
-      title: '产品研发群',
-      avatar: 'https://i.pravatar.cc/100?img=5',
-      lastMessage: '代码审查完成',
-      lastMessageTime: '10:30',
-      unreadCount: 0,
-      groupInfo: {
-        id: 'g1',
-        name: '产品研发群',
-        memberCount: 28,
-        members: createGroupMembers('g1', 28),
-        announcement: {
-          content: '代码冻结时间为周五 18:00，合并前请完成自测并关联对应需求。',
-          updatedAt: '昨天 17:20',
-          updatedBy: '王五',
-        },
-      },
-    },
     {
       id: 'g2',
       type: 'group',

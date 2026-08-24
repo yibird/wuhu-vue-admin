@@ -41,7 +41,12 @@ export function useSearchHistory(options: UseSearchHistoryOptions) {
   function updateRecords(nextRecords: string[]) {
     records.value = nextRecords
     if (typeof window === 'undefined') return
-    window.localStorage.setItem(storageKey, JSON.stringify(nextRecords))
+
+    try {
+      window.localStorage.setItem(storageKey, JSON.stringify(nextRecords))
+    } catch {
+      // Storage can be unavailable in private browsing or when the quota is full.
+    }
   }
 
   function addRecord(keyword: string) {

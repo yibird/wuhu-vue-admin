@@ -1,76 +1,73 @@
 <template>
-  <Scrollbar
-    ref="containerRef"
-    class="h-full"
-    content-class="min-h-full h-full p-15"
-    @scroll="handleScroll"
-  >
+  <div class="relative h-full">
     <div v-if="loading" class="flex items-center justify-center py-20">
       <a-spin size="small" />
       <span class="ml-10 text-regular">加载中…</span>
     </div>
 
     <div v-else class="min-h-full h-full flex flex-col">
-      <div
-        v-if="messages.length === 0"
-        class="min-h-360 flex flex-1 items-center justify-center"
+      <VirtualList
+        ref="virtualListRef"
+        class="min-h-0 flex-1"
+        aria-label="消息列表"
+        :items="renderedItems"
+        :estimate-size="estimateMessageRowSize"
+        :get-item-key="getMessageRowKey"
+        @scroll="handleScroll"
       >
-        <div class="text-center text-regular">
-          <Icon
-            name="i-lucide:message-square"
-            :size="40"
-            class="mb-10 opacity-50"
-          />
-          <div>暂无消息</div>
-        </div>
-      </div>
-
-      <TransitionGroup
-        v-else
-        tag="div"
-        name="message-list"
-        class="min-h-full flex flex-1 flex-col"
-        :class="compact ? 'gap-8' : 'gap-15'"
-      >
-        <MessageItem
-          v-for="message in messages"
-          :key="message.id"
-          :favorite="favoriteIdSet.has(message.id)"
-          :message="message"
-          :is-mine="isMine(message.senderId)"
-          @retry="$emit('retry', message)"
-          @recall="$emit('recall', message)"
-          @delete="$emit('delete', message)"
-          @copy="$emit('copy', message)"
-          @reply="$emit('reply', message)"
-          @edit="$emit('edit', message)"
-          @favorite="$emit('favorite', message)"
-          @reaction="(emoji: string) => $emit('reaction', message, emoji)"
-          @preview-image="(url: string) => $emit('previewImage', url)"
-          @download="$emit('download', message)"
-          @show-user="(user) => $emit('showUser', user)"
-        />
-
-        <div
-          v-if="typing"
-          key="typing-indicator"
-          class="flex items-center gap-10 px-2 py-2"
-        >
-          <a-avatar
-            :size="36"
-            round
-            fallback-src="https://i.pravatar.cc/100?img=1"
+        <template #default="{ item }">
+          <MessageItem
+            v-if="item.type === 'message'"
+            :favorite="favoriteIdSet.has(item.message.id)"
+            :message="item.message"
+            :is-mine="isMine(item.message.senderId)"
+            @retry="$emit('retry', item.message)"
+            @recall="$emit('recall', item.message)"
+            @delete="$emit('delete', item.message)"
+            @copy="$emit('copy', item.message)"
+            @reply="$emit('reply', item.message)"
+            @edit="$emit('edit', item.message)"
+            @favorite="$emit('favorite', item.message)"
+            @reaction="
+              (emoji: string) => $emit('reaction', item.message, emoji)
+            "
+            @preview-image="(url: string) => $emit('previewImage', url)"
+            @download="$emit('download', item.message)"
+            @show-user="(user) => $emit('showUser', user)"
           />
           <div
-            class="typing-bubble rounded-12 rounded-tl-2px bg-fill-quaternary px-13 py-10 shadow-all-sm"
+            v-else
+            class="flex items-center gap-10 px-2 py-2"
             aria-live="polite"
           >
-            <span />
-            <span />
-            <span />
+            <a-avatar
+              :size="36"
+              round
+              fallback-src="https://i.pravatar.cc/100?img=1"
+            />
+            <div
+              class="typing-bubble rounded-12 rounded-tl-2px bg-fill-quaternary px-13 py-10 shadow-all-sm"
+            >
+              <span />
+              <span />
+              <span />
+            </div>
           </div>
-        </div>
-      </TransitionGroup>
+        </template>
+
+        <template #empty>
+          <div class="min-h-360 flex h-full items-center justify-center">
+            <div class="text-center text-regular">
+              <Icon
+                name="i-lucide:message-square"
+                :size="40"
+                class="mb-10 opacity-50"
+              />
+              <div>暂无消息</div>
+            </div>
+          </div>
+        </template>
+      </VirtualList>
 
       <transition name="fade">
         <button
@@ -85,13 +82,13 @@
         </button>
       </transition>
     </div>
-  </Scrollbar>
+  </div>
 </template>
 
 <script setup lang="ts">
 import MessageItem from './MessageItem.vue'
+import VirtualList from '../../VirtualList.vue'
 import type { Message, MessageListEmits } from '../../types'
-import type { ScrollbarInstance } from '@/components/scrollbar'
 
 interface Props {
   messages?: Message[]
@@ -99,6 +96,14 @@ interface Props {
   typing?: boolean
   compact?: boolean
   favoriteMessageIds?: string[]
+}
+
+type MessageListItem =
+  | { type: 'message'; message: Message }
+  | { type: 'typing'; id: 'typing-indicator' }
+
+interface VirtualListExpose {
+  getScrollElement: () => HTMLElement | null
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -111,12 +116,28 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emit = defineEmits<MessageListEmits>()
 
-const containerRef = ref<ScrollbarInstance | null>()
+const virtualListRef = ref<VirtualListExpose | null>(null)
 const showScrollButton = ref(false)
 const isAtBottom = ref(true)
 const isAutoScrolling = ref(false)
 let scrollResetTimer: number | undefined
 const favoriteIdSet = computed(() => new Set(props.favoriteMessageIds))
+const renderedItems = computed<MessageListItem[]>(() => {
+  const items: MessageListItem[] = props.messages.map((message) => ({
+    type: 'message',
+    message,
+  }))
+  if (props.typing) items.push({ type: 'typing', id: 'typing-indicator' })
+  return items
+})
+
+function estimateMessageRowSize(item: MessageListItem) {
+  return item.type === 'typing' ? 58 : props.compact ? 72 : 92
+}
+
+function getMessageRowKey(item: MessageListItem) {
+  return item.type === 'typing' ? item.id : item.message.id
+}
 
 const isMine = (senderId: string) => senderId === 'me'
 
@@ -129,7 +150,7 @@ function handleScroll(e: Event) {
 }
 
 function scrollToBottom() {
-  const container = containerRef.value?.getScrollElement()
+  const container = virtualListRef.value?.getScrollElement()
   if (container && !isAutoScrolling.value) {
     isAutoScrolling.value = true
     container.scrollTo({
@@ -146,14 +167,14 @@ function scrollToBottom() {
 
 function scrollToNewMessage() {
   nextTick(() => {
-    if (containerRef.value && isAtBottom.value && !isAutoScrolling.value) {
+    if (isAtBottom.value && !isAutoScrolling.value) {
       scrollToBottom()
     }
   })
 }
 
 onMounted(() => {
-  scrollToBottom()
+  nextTick(scrollToBottom)
 })
 
 onBeforeUnmount(() => {
@@ -180,39 +201,6 @@ defineExpose({
 </script>
 
 <style scoped>
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity var(--w-motion-duration-base)
-    var(--w-motion-ease-standard);
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
-
-.message-list-enter-active,
-.message-list-leave-active {
-  transition:
-    opacity var(--w-motion-duration-base) var(--w-motion-ease-standard),
-    transform var(--w-motion-duration-base) var(--w-motion-ease-standard);
-}
-
-.message-list-enter-from {
-  opacity: 0;
-  transform: translateY(8px) scale(0.99);
-}
-
-.message-list-leave-to {
-  opacity: 0;
-  transform: translateY(-4px);
-}
-
-.message-list-move {
-  transition: transform var(--w-motion-duration-base)
-    var(--w-motion-ease-standard);
-}
-
 .typing-bubble {
   display: inline-flex;
   gap: 4px;
@@ -250,14 +238,6 @@ defineExpose({
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .message-list-enter-active,
-  .message-list-leave-active,
-  .message-list-move,
-  .fade-enter-active,
-  .fade-leave-active {
-    transition-duration: 1ms;
-  }
-
   .typing-bubble span {
     animation: none;
   }

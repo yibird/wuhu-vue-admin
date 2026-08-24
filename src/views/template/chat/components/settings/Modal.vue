@@ -31,7 +31,6 @@
 </template>
 
 <script setup lang="ts">
-import { shallowRef, watch } from 'vue'
 import { Icon } from '@/components/icon'
 import SettingPanel from '../sider/SettingPanel.vue'
 import type { ChatSettings } from '../types'

@@ -331,6 +331,8 @@
 <script setup lang="ts">
 import { useTextareaAutosize } from '@vueuse/core'
 import EmojiPicker from './EmojiPicker.vue'
+import { useImageAttachments } from './composables/useImageAttachments'
+import { useMessageRecording } from './composables/useMessageRecording'
 import type { ChatSendPayload, Message, MessageEditorEmits } from '../../types'
 import type { EditorProps } from './types'
 
@@ -353,22 +355,15 @@ const props = withDefaults(defineProps<EditorProps>(), {
 const emit = defineEmits<MessageEditorEmits>()
 
 const inputText = ref('')
-const imageList = ref<string[]>([])
-const isRecording = ref(false)
-const recordingDuration = ref(0)
 const showEmojiPicker = ref(false)
 const emojiFeedback = shallowRef('')
 const showImageMenu = ref(false)
 const showExtensionMenu = ref(false)
-const isImageDragging = ref(false)
 const textareaRef = useTemplateRef<HTMLTextAreaElement>('textarea')
 const imageInputRef = ref<HTMLInputElement>()
 const fileInputRef = ref<HTMLInputElement>()
 
-let recordingTimer: number | null = null
 let emojiFeedbackTimer: number | undefined
-
-const maxImageCount = 9
 
 interface EditorAction {
   key: string
@@ -434,9 +429,29 @@ const canSend = computed(() => {
 })
 
 const activeTipMessage = computed(() => props.editMessage ?? props.replyMessage)
-const imageRemainingCount = computed(
-  () => maxImageCount - imageList.value.length
-)
+const {
+  imageList,
+  imageRemainingCount,
+  isImageDragging,
+  addImages,
+  clearImages,
+  removeImage,
+} = useImageAttachments({
+  onOversize: () => showEmojiFeedback('单张图片不能超过 10 MB'),
+})
+
+const {
+  isRecording,
+  recordingDuration,
+  cancelRecording,
+  stopRecording,
+  toggleRecording,
+} = useMessageRecording({
+  onSend: (duration) =>
+    emit('send', { type: 'voice', content: String(duration) }),
+  onTyping: () => emit('typing'),
+  onStopTyping: () => emit('stopTyping'),
+})
 
 useTextareaAutosize({
   element: textareaRef,
@@ -475,7 +490,7 @@ function handleSend() {
     imageList.value.forEach((img) => {
       emit('send', { type: 'image', content: img })
     })
-    imageList.value = []
+    clearImages()
   }
 
   showEmojiPicker.value = false
@@ -568,23 +583,6 @@ function handleImageDrop(e: DragEvent) {
   showImageMenu.value = false
 }
 
-function addImages(files: File[]) {
-  const imageFiles = files
-    .filter((file) => file.type.startsWith('image/'))
-    .slice(0, Math.max(0, imageRemainingCount.value))
-
-  imageFiles.forEach((file) => {
-    const reader = new FileReader()
-    reader.onload = (ev) => {
-      const url = ev.target?.result as string
-      if (url && imageList.value.length < maxImageCount) {
-        imageList.value.push(url)
-      }
-    }
-    reader.readAsDataURL(file)
-  })
-}
-
 function handleFileSelect(e: Event) {
   const target = e.target as HTMLInputElement
   const file = target.files?.[0]
@@ -594,57 +592,8 @@ function handleFileSelect(e: Event) {
   target.value = ''
 }
 
-function removeImage(index: number) {
-  imageList.value.splice(index, 1)
-}
-
 function cancelComposeContext() {
   emit('cancelCompose')
-}
-
-function toggleRecording() {
-  if (isRecording.value) {
-    stopRecording()
-  } else {
-    startRecording()
-  }
-}
-
-function startRecording() {
-  isRecording.value = true
-  recordingDuration.value = 0
-  recordingTimer = window.setInterval(() => {
-    recordingDuration.value++
-    if (recordingDuration.value >= 60) {
-      stopRecording()
-    }
-  }, 1000)
-  emit('typing')
-}
-
-function stopRecording() {
-  if (recordingTimer) {
-    clearInterval(recordingTimer)
-    recordingTimer = null
-  }
-  if (recordingDuration.value <= 0) {
-    cancelRecording()
-    return
-  }
-  isRecording.value = false
-  emit('send', { type: 'voice', content: recordingDuration.value.toString() })
-  recordingDuration.value = 0
-  emit('stopTyping')
-}
-
-function cancelRecording() {
-  if (recordingTimer) {
-    clearInterval(recordingTimer)
-    recordingTimer = null
-  }
-  isRecording.value = false
-  recordingDuration.value = 0
-  emit('stopTyping')
 }
 
 function handleFocus() {
@@ -656,9 +605,6 @@ function handleBlur() {
 }
 
 onBeforeUnmount(() => {
-  if (recordingTimer) {
-    clearInterval(recordingTimer)
-  }
   if (emojiFeedbackTimer) {
     window.clearTimeout(emojiFeedbackTimer)
   }
@@ -676,7 +622,7 @@ watch(
 
 function resetInput() {
   inputText.value = ''
-  imageList.value = []
+  clearImages()
 }
 
 defineExpose({

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { computed, reactive, shallowRef, watch } from 'vue'
 import { Icon } from '@/components/icon'
 import type { Contact, CreateGroupPayload, GroupCategory } from '../types'
 

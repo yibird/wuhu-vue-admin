@@ -38,6 +38,7 @@
             <button
               v-for="emoji in recentEmojis"
               :key="emoji"
+              type="button"
               class="size-40 flex items-center justify-center text-lg rounded-4 cursor-pointer hover:bg-hover transition-colors"
               @click="handleSelect(emoji)"
             >
@@ -55,6 +56,7 @@
             <button
               v-for="emoji in smileyEmojis"
               :key="emoji"
+              type="button"
               class="size-40 flex items-center justify-center text-lg rounded-4 cursor-pointer hover:bg-hover transition-colors"
               @click="handleSelect(emoji)"
             >
@@ -72,6 +74,7 @@
             <button
               v-for="emoji in gestureEmojis"
               :key="emoji"
+              type="button"
               class="size-40 flex items-center justify-center text-lg rounded-4 cursor-pointer hover:bg-hover transition-colors"
               @click="handleSelect(emoji)"
             >
@@ -89,6 +92,7 @@
             <button
               v-for="emoji in objectEmojis"
               :key="emoji"
+              type="button"
               class="size-40 flex items-center justify-center text-lg rounded-4 cursor-pointer hover:bg-hover transition-colors"
               @click="handleSelect(emoji)"
             >
@@ -106,6 +110,7 @@
             <button
               v-for="emoji in symbolEmojis"
               :key="emoji"
+              type="button"
               class="size-40 flex items-center justify-center text-lg rounded-4 cursor-pointer hover:bg-hover transition-colors"
               @click="handleSelect(emoji)"
             >
@@ -123,6 +128,7 @@
             <button
               v-for="emoji in filteredEmojis"
               :key="emoji"
+              type="button"
               class="size-40 flex items-center justify-center text-lg rounded-4 cursor-pointer hover:bg-hover transition-colors"
               @click="handleSelect(emoji)"
             >

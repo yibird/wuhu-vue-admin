@@ -3,6 +3,7 @@
     <button
       type="button"
       class="button size-28 rounded-full transition-colors hover:bg-hover"
+      :aria-label="isPlaying ? '暂停语音' : '播放语音'"
       @click="$emit('toggle-play')"
     >
       <Icon :name="isPlaying ? 'i-lucide:pause' : 'i-lucide:play'" :size="16" />
@@ -22,8 +23,6 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
-
 interface Props {
   content: string
   isPlaying?: boolean

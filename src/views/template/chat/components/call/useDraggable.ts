@@ -58,6 +58,7 @@ export function useDraggableCallWindow(
 
   let positionFrame = 0
   let resizeObserver: ResizeObserver | null = null
+  let disposed = false
 
   const windowStyle = computed<CSSProperties>(
     () =>
@@ -144,10 +145,12 @@ export function useDraggableCallWindow(
   function resetWindowPositionAfterRender() {
     positioned.value = false
     cancelScheduledPosition()
-    void nextTick(() => {
+    nextTick(() => {
+      if (disposed) return
       positionFrame = window.requestAnimationFrame(() => {
         positionFrame = window.requestAnimationFrame(() => {
           positionFrame = 0
+          if (disposed) return
           resetWindowPosition()
         })
       })
@@ -155,17 +158,23 @@ export function useDraggableCallWindow(
   }
 
   function keepWindowInViewportAfterRender() {
-    void nextTick(() => {
-      window.requestAnimationFrame(keepWindowInViewport)
+    cancelScheduledPosition()
+    nextTick(() => {
+      if (disposed) return
+      positionFrame = window.requestAnimationFrame(() => {
+        positionFrame = 0
+        if (!disposed) keepWindowInViewport()
+      })
     })
   }
 
   function placeWindowAtBottomRightAfterRender() {
     cancelScheduledPosition()
-    void nextTick(() => {
+    nextTick(() => {
+      if (disposed) return
       positionFrame = window.requestAnimationFrame(() => {
         positionFrame = 0
-        resetWindowPosition()
+        if (!disposed) resetWindowPosition()
       })
     })
   }
@@ -251,12 +260,14 @@ export function useDraggableCallWindow(
   }
 
   onMounted(() => {
+    disposed = false
     window.addEventListener('resize', keepWindowInViewportAfterRender)
   })
 
   watch(windowRef, observeWindowSize, { immediate: true })
 
   onUnmounted(() => {
+    disposed = true
     cancelScheduledPosition()
     resizeObserver?.disconnect()
     window.removeEventListener('resize', keepWindowInViewportAfterRender)

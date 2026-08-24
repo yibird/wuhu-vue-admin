@@ -1,5 +1,5 @@
 // Navigation types
-export type NavType = 'conversation' | 'contact' | 'group'
+export type NavType = 'conversation' | 'contact' | 'contactCenter'
 
 export type GlobalSearchTab = 'all' | 'contacts' | 'groups' | 'messages'
 
@@ -199,7 +199,32 @@ export interface CustomMessageContent {
 }
 
 // Contact types
-export interface Contact extends UserInfo {}
+export interface Contact extends UserInfo {
+  friendGroupId?: string
+}
+
+export interface FriendGroup {
+  id: string
+  name: string
+  icon: string
+  order: number
+}
+
+export type ContactNotificationCategory = 'friend' | 'group'
+
+export type ContactNotificationStatus = 'pending' | 'accepted' | 'rejected'
+
+export interface ContactNotification {
+  id: string
+  category: ContactNotificationCategory
+  title: string
+  description: string
+  avatar?: string
+  createdAt: string
+  unread: boolean
+  status: ContactNotificationStatus
+  target?: DirectoryItem
+}
 
 // Editor types
 export interface EditorState {

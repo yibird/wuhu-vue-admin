@@ -1,6 +1,7 @@
 <template>
   <div class="h-full flex flex-col">
     <Search
+      v-if="showToolbar"
       v-model="searchValue"
       placeholder="搜索群聊…"
       @create-group="emit('createGroup')"
@@ -96,10 +97,14 @@ import type { Conversation } from '../types'
 
 interface Props {
   groups?: Conversation[]
+  searchKeyword?: string
+  showToolbar?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
   groups: () => [],
+  searchKeyword: '',
+  showToolbar: true,
 })
 
 const emit = defineEmits<{
@@ -112,14 +117,16 @@ const emit = defineEmits<{
 const searchValue = shallowRef('')
 
 const filteredGroups = computed(() => {
-  if (!searchValue.value) {
+  const normalizedKeyword = (props.searchKeyword || searchValue.value)
+    .trim()
+    .toLowerCase()
+  if (!normalizedKeyword) {
     return props.groups
   }
-  const keyword = searchValue.value.toLowerCase()
   return props.groups.filter(
     (g) =>
-      g.title.toLowerCase().includes(keyword) ||
-      g.groupInfo?.name.toLowerCase().includes(keyword)
+      g.title.toLowerCase().includes(normalizedKeyword) ||
+      g.groupInfo?.name.toLowerCase().includes(normalizedKeyword)
   )
 })
 

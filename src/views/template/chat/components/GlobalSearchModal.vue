@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { computed, shallowRef, watch } from 'vue'
-import { Icon } from '@/components/icon'
+import { Icon } from '@/components'
 import { useSearchHistory } from '../composables/useSearchHistory'
+import { useChatGlobalSearch } from '../composables/useChatGlobalSearch'
+import type { MessageSearchResult } from '../composables/useChatGlobalSearch'
 import { statusText } from '../utils'
 import type {
   Contact,
@@ -10,12 +11,6 @@ import type {
   GlobalSearchTab,
   Message,
 } from './types'
-
-interface MessageSearchResult {
-  conversation: Conversation
-  message: Message
-  preview: string
-}
 
 const props = withDefaults(
   defineProps<{
@@ -57,167 +52,26 @@ const {
   collapsedCount: 6,
 })
 
-const normalizedQuery = computed(() => normalizeText(query.value))
-const hasQuery = computed(() => Boolean(normalizedQuery.value))
-
-const allConversations = computed(() => {
-  const items = new Map<string, Conversation>()
-  for (const conversation of props.conversations) {
-    items.set(conversation.id, conversation)
-  }
-  for (const group of props.groups) {
-    items.set(group.id, group)
-  }
-  return [...items.values()]
-})
-
-const conversationById = computed(
-  () => new Map(allConversations.value.map((item) => [item.id, item]))
-)
-
-const contactResults = computed(() => {
-  if (!normalizedQuery.value) return []
-  return props.contacts
-    .filter((contact) =>
-      containsKeyword([
-        contact.name,
-        contact.title,
-        contact.department,
-        contact.company,
-        contact.email,
-        contact.phone,
-        contact.location,
-        contact.remark,
-        ...(contact.tags ?? []),
-      ])
-    )
-    .slice(0, 12)
-    .map((contact) => ({
-      contact,
-      meta: contactMeta(contact),
-      tags: contact.tags?.slice(0, 3) ?? [],
-    }))
-})
-
-const groupResults = computed(() => {
-  if (!normalizedQuery.value) return []
-  return allConversations.value
-    .filter((conversation) => conversation.type === 'group')
-    .filter((group) =>
-      containsKeyword([
-        group.title,
-        group.groupInfo?.name,
-        group.groupInfo?.category,
-        group.lastMessage,
-      ])
-    )
-    .slice(0, 12)
-})
-
-const messageResults = computed<MessageSearchResult[]>(() => {
-  if (!normalizedQuery.value) return []
-
-  const results: MessageSearchResult[] = []
-
-  for (const [conversationId, messages] of Object.entries(
-    props.messagesByConversation
-  )) {
-    const conversation = conversationById.value.get(conversationId)
-    if (!conversation) continue
-
-    for (const message of messages) {
-      if (
-        !containsKeyword([
-          message.content,
-          message.senderInfo?.name,
-          conversation.title,
-        ])
-      ) {
-        continue
-      }
-
-      results.push({
-        conversation,
-        message,
-        preview: createMessagePreview(message),
-      })
-
-      if (results.length >= 30) return results
-    }
-  }
-
-  return results
-})
-
-const resultCounts = computed(() => ({
-  contacts: contactResults.value.length,
-  groups: groupResults.value.length,
-  messages: messageResults.value.length,
-}))
-
-const totalResultCount = computed(
-  () =>
-    resultCounts.value.contacts +
-    resultCounts.value.groups +
-    resultCounts.value.messages
-)
-
-const activeResultCount = computed(() => {
-  if (activeTab.value === 'all') return totalResultCount.value
-  return resultCounts.value[activeTab.value]
-})
-
-const searchTabs = computed(() => [
-  { key: 'all', label: `全部 ${totalResultCount.value}` },
-  { key: 'contacts', label: `联系人 ${resultCounts.value.contacts}` },
-  { key: 'groups', label: `群聊 ${resultCounts.value.groups}` },
-  { key: 'messages', label: `消息 ${resultCounts.value.messages}` },
-])
-
-const scopeItems = computed(() => [
-  {
-    key: 'contacts' as const,
-    label: '找人',
-    icon: 'i-lucide:user-round-search',
-    description: `${props.contacts.length} 位联系人`,
-  },
-  {
-    key: 'groups' as const,
-    label: '找群',
-    icon: 'i-lucide:users-round',
-    description: `${allConversations.value.filter((item) => item.type === 'group').length} 个群聊`,
-  },
-  {
-    key: 'messages' as const,
-    label: '搜聊天记录',
-    icon: 'i-lucide:messages-square',
-    description: `${messageTotalCount.value} 条消息`,
-  },
-])
-
-const messageTotalCount = computed(() =>
-  Object.values(props.messagesByConversation).reduce(
-    (sum, messages) => sum + messages.length,
-    0
-  )
-)
-
-const visibleSections = computed(() => ({
-  contacts:
-    activeTab.value === 'contacts' ||
-    (activeTab.value === 'all' && contactResults.value.length > 0),
-  groups:
-    activeTab.value === 'groups' ||
-    (activeTab.value === 'all' && groupResults.value.length > 0),
-  messages:
-    activeTab.value === 'messages' ||
-    (activeTab.value === 'all' && messageResults.value.length > 0),
-}))
-
-const resultSummary = computed(() => {
-  if (!hasQuery.value) return '输入关键词后开始全局检索'
-  if (activeResultCount.value === 0) return '没有找到匹配结果'
-  return `找到 ${activeResultCount.value} 条匹配结果`
+const {
+  activeResultCount,
+  contactResults,
+  groupResults,
+  hasQuery,
+  messageResults,
+  resultCounts,
+  resultSummary,
+  scopeItems,
+  searchTabs,
+  visibleSections,
+  groupMeta,
+  messageSenderName,
+} = useChatGlobalSearch({
+  activeTab,
+  contacts: () => props.contacts,
+  conversations: () => props.conversations,
+  groups: () => props.groups,
+  messagesByConversation: () => props.messagesByConversation,
+  query,
 })
 
 watch(open, (isOpen) => {
@@ -229,52 +83,6 @@ watch(open, (isOpen) => {
 watch(query, (value) => {
   if (!value.trim()) activeTab.value = 'all'
 })
-
-function normalizeText(value?: string | number) {
-  return String(value ?? '')
-    .trim()
-    .toLowerCase()
-}
-
-function containsKeyword(fields: Array<string | number | undefined>) {
-  return fields.some((field) =>
-    normalizeText(field).includes(normalizedQuery.value)
-  )
-}
-
-function createMessagePreview(message: Message) {
-  const content = getMessageContentLabel(message)
-  const normalized = content.replace(/\s+/g, ' ').trim()
-  return normalized.length > 88 ? `${normalized.slice(0, 88)}...` : normalized
-}
-
-function getMessageContentLabel(message: Message) {
-  switch (message.type) {
-    case 'image':
-      return '[图片]'
-    case 'voice':
-      return '[语音消息]'
-    case 'file':
-      return `[文件] ${message.content.split('/').at(-1) ?? message.content}`
-    default:
-      return message.content
-  }
-}
-
-function contactMeta(contact: Contact) {
-  return [contact.title, contact.department, contact.company]
-    .filter(Boolean)
-    .join(' / ')
-}
-
-function groupMeta(group: Conversation) {
-  const count = group.groupInfo?.memberCount
-  return count ? `${count} 位成员` : '群聊'
-}
-
-function messageSenderName(message: Message) {
-  return message.senderId === 'me' ? '我' : (message.senderInfo?.name ?? '对方')
-}
 
 function handleSearch(value?: string) {
   const keyword = (typeof value === 'string' ? value : query.value).trim()

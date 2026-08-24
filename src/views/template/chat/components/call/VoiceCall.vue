@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { toRef } from 'vue'
 import { Icon } from '@/components/icon'
 import WindowShell from './WindowShell.vue'
 import { useCallSession } from './useCallSession'

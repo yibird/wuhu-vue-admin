@@ -67,7 +67,7 @@
             <button
               v-if="conversation.type === 'group'"
               type="button"
-              class="button size-40 rounded-full text-secondary hover:(bg-hover text-primary)"
+              class="button size-40 rounded-full text-secondary transition-[background-color,color,transform] hover:(bg-hover text-primary) active:scale-90"
               title="群公告"
               aria-label="打开群公告"
               @click="emit('openGroupPanel', 'announcement')"
@@ -77,7 +77,7 @@
             <button
               v-if="conversation.type === 'group'"
               type="button"
-              class="button size-40 rounded-full text-secondary hover:(bg-hover text-primary)"
+              class="button size-40 rounded-full text-secondary transition-[background-color,color,transform] hover:(bg-hover text-primary) active:scale-90"
               title="群成员"
               aria-label="打开群成员列表"
               @click="emit('openGroupPanel', 'members')"
@@ -86,7 +86,7 @@
             </button>
             <button
               type="button"
-              class="button size-40 rounded-full text-secondary hover:(bg-hover text-primary)"
+              class="button size-40 rounded-full text-secondary transition-[background-color,color,transform] hover:(bg-hover text-primary) active:scale-90"
               title="语音通话"
               aria-label="发起语音通话"
               @click="emit('call', 'voice')"
@@ -95,7 +95,7 @@
             </button>
             <button
               type="button"
-              class="button size-40 rounded-full text-secondary hover:(bg-hover text-primary)"
+              class="button size-40 rounded-full text-secondary transition-[background-color,color,transform] hover:(bg-hover text-primary) active:scale-90"
               title="视频通话"
               aria-label="发起视频通话"
               @click="emit('call', 'video')"
@@ -162,7 +162,6 @@
 <script setup lang="ts">
 import MessageList from './list/index.vue'
 import MessageEditor from './editor/index.vue'
-import { h } from 'vue'
 import type { MenuProps } from 'antdv-next'
 import { Icon } from '@/components/icon'
 import type {
