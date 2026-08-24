@@ -62,17 +62,43 @@ function getLiteralValue(property) {
   return undefined
 }
 
-function collectMenuRoutes(sourceFile) {
-  const routes = []
+function collectMenuEntries(sourceFile) {
+  const entries = []
+
+  function getAncestors(node) {
+    const ancestors = []
+    let current = node.parent
+    while (current) {
+      if (ts.isObjectLiteralExpression(current)) {
+        const id = Number(getLiteralValue(getProperty(current, 'id')))
+        const type = Number(getLiteralValue(getProperty(current, 'type')))
+        if (Number.isFinite(id) && [0, 1, 2, 3].includes(type)) {
+          ancestors.unshift({ id })
+        }
+      }
+      current = current.parent
+    }
+    return ancestors
+  }
+
   function visit(node) {
     if (ts.isObjectLiteralExpression(node)) {
+      const id = Number(getLiteralValue(getProperty(node, 'id')))
       const type = Number(getLiteralValue(getProperty(node, 'type')))
       const path = getLiteralValue(getProperty(node, 'path'))
-      if ([1, 2].includes(type) && typeof path === 'string') {
-        routes.push({
+      if (Number.isFinite(id) && [0, 1, 2, 3].includes(type)) {
+        entries.push({
+          id,
+          type,
           path,
           componentPath: getLiteralValue(getProperty(node, 'componentPath')),
           disabled: getLiteralValue(getProperty(node, 'disabled')) === true,
+          external: getLiteralValue(getProperty(node, 'isExternal')) === true,
+          home: getLiteralValue(getProperty(node, 'home')) === true,
+          rootId: Number(getLiteralValue(getProperty(node, 'rootId'))),
+          parentId: Number(getLiteralValue(getProperty(node, 'parentId'))),
+          level: getLiteralValue(getProperty(node, 'level')),
+          ancestors: getAncestors(node),
           line:
             sourceFile.getLineAndCharacterOfPosition(node.getStart()).line + 1,
         })
@@ -81,7 +107,7 @@ function collectMenuRoutes(sourceFile) {
     ts.forEachChild(node, visit)
   }
   visit(sourceFile)
-  return routes
+  return entries
 }
 
 const sourceText = readFileSync(menuFile, 'utf8')
@@ -93,12 +119,71 @@ const sourceFile = ts.createSourceFile(
   ts.ScriptKind.TS
 )
 const viewRoutes = collectViewRoutes()
-const menuRoutes = collectMenuRoutes(sourceFile)
+const menuEntries = collectMenuEntries(sourceFile)
 const failures = []
 const activePaths = new Map()
+const menuIds = new Map()
+let homeCount = 0
 
-for (const menu of menuRoutes) {
-  if (menu.disabled || /^https?:\/\//i.test(menu.path)) continue
+for (const menu of menuEntries) {
+  const previousIdLine = menuIds.get(menu.id)
+  if (previousIdLine) {
+    failures.push(
+      `menu.ts:${menu.line} duplicate menu id ${menu.id} (first at line ${previousIdLine})`
+    )
+  } else {
+    menuIds.set(menu.id, menu.line)
+  }
+
+  const parent = menu.ancestors.at(-1)
+  const root = menu.ancestors[0]
+  const expectedParentId = parent?.id ?? 0
+  const expectedRootId = root?.id ?? 0
+  const expectedLevel = [...menu.ancestors.map(({ id }) => id), menu.id].join(
+    '-'
+  )
+  if (menu.parentId !== expectedParentId) {
+    failures.push(
+      `menu.ts:${menu.line} menu ${menu.id} parentId ${menu.parentId} should be ${expectedParentId}`
+    )
+  }
+  if (menu.rootId !== expectedRootId) {
+    failures.push(
+      `menu.ts:${menu.line} menu ${menu.id} rootId ${menu.rootId} should be ${expectedRootId}`
+    )
+  }
+  if (menu.level !== expectedLevel) {
+    failures.push(
+      `menu.ts:${menu.line} menu ${menu.id} level ${menu.level} should be ${expectedLevel}`
+    )
+  }
+
+  if (menu.home) {
+    homeCount += 1
+    if (menu.type !== 1) {
+      failures.push(`menu.ts:${menu.line} home menu ${menu.id} must be type 1`)
+    }
+  }
+
+  const externalPath =
+    typeof menu.path === 'string' && /^https?:\/\//i.test(menu.path)
+  if (externalPath && !menu.external) {
+    failures.push(
+      `menu.ts:${menu.line} external URL ${menu.path} must set isExternal: true`
+    )
+  }
+  if (menu.external && !/^https:\/\//i.test(menu.path ?? '')) {
+    failures.push(
+      `menu.ts:${menu.line} external menu ${menu.id} must use an HTTPS URL`
+    )
+  }
+
+  if (![1, 2].includes(menu.type)) continue
+  if (typeof menu.path !== 'string' || !menu.path) {
+    failures.push(`menu.ts:${menu.line} route menu ${menu.id} is missing path`)
+    continue
+  }
+  if (menu.disabled || externalPath) continue
   const routePath = normalizeRoutePath(menu.path)
   const target = normalizeRoutePath(menu.componentPath ?? routePath)
   if (!viewRoutes.has(target)) {
@@ -114,12 +199,18 @@ for (const menu of menuRoutes) {
   }
 }
 
+if (homeCount !== 1) {
+  failures.push(
+    `menu catalog must contain exactly one home route (found ${homeCount})`
+  )
+}
+
 if (failures.length) {
   console.error('Route contract check failed:')
   failures.forEach((failure) => console.error(`- ${failure}`))
   process.exitCode = 1
 } else {
   console.log(
-    `Route contract check passed (${activePaths.size} active menu routes).`
+    `Route contract check passed (${menuIds.size} menus, ${activePaths.size} active routes).`
   )
 }
