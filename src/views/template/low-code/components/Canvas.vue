@@ -629,7 +629,7 @@ function openPreviewModal() {
         @scroll="
           () => {
             closeContextMenu()
-            updateActionBarPosition()
+            scheduleActionBarPositionUpdate()
           }
         "
       >

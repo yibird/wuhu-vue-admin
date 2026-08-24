@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { computed } from 'vue'
 import AntdvControlPreview from './AntdvControlPreview.vue'
 import BasicControlPreview from './BasicControlPreview.vue'
 import type { DesignerComponentType, DesignerNode } from '../../types'

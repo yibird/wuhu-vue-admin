@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { computed } from 'vue'
 import NodeRenderer from './NodeRenderer.vue'
 import type { DesignerNode } from '../types'
 

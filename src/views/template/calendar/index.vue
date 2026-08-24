@@ -3,54 +3,53 @@
     class="box-border h-full overflow-hidden p-10 [--calendar-content-height:760px] [background:radial-gradient(circle_at_top_left,rgb(var(--w-color-primary)_/_10%),transparent_30%),linear-gradient(180deg,rgb(var(--w-bg-layout-canvas-gradient-start)),rgb(var(--w-bg-layout-canvas-gradient-end)))] max-md:[--calendar-content-height:680px]"
     content-class="min-h-full min-w-0 flex flex-col gap-12"
   >
-    <CalendarSkeleton v-if="isLoading" />
+    <CalendarToolbar
+      :loading="isLoading"
+      :active-view="activeView"
+      :current-month-label="currentMonthLabel"
+      :event-count-label="eventCountLabel"
+      :today-label="todayLabel"
+      :view-options="viewOptions"
+      @change-view="changeCalendarView"
+      @create-event="openCreateEvent()"
+      @next="goToNext"
+      @previous="goToPrevious"
+      @today="goToToday"
+    />
 
-    <template v-else>
-      <CalendarToolbar
-        :active-view="activeView"
-        :current-month-label="currentMonthLabel"
-        :event-count-label="eventCountLabel"
-        :today-label="todayLabel"
-        :view-options="viewOptions"
-        @change-view="changeCalendarView"
+    <CalendarSummary :items="summaryCards" :loading="isLoading" />
+
+    <div
+      class="grid min-h-[var(--calendar-content-height)] flex-1 grid-cols-[minmax(0,1fr)_320px] gap-12 max-[1100px]:grid-cols-1"
+    >
+      <CalendarBoard
+        :calendar="calendar"
+        :has-active-filters="hasActiveFilters"
+        :loading="isLoading"
+        :visible-event-count="visibleEventCount"
         @create-event="openCreateEvent()"
-        @next="goToNext"
-        @previous="goToPrevious"
-        @today="goToToday"
       />
-
-      <CalendarSummary :items="summaryCards" />
-
-      <div
-        class="grid min-h-[var(--calendar-content-height)] flex-1 grid-cols-[minmax(0,1fr)_320px] gap-12 max-[1100px]:grid-cols-1"
-      >
-        <CalendarBoard
-          :calendar="calendar"
-          :has-active-filters="hasActiveFilters"
-          :visible-event-count="visibleEventCount"
-          @create-event="openCreateEvent()"
-        />
-        <CalendarAside
-          :active-filter-count="activeFilterCount"
-          :calendar-ids="filters.calendarIds"
-          :calendar-types="calendarTypes"
-          :get-calendar-count="getCalendarCount"
-          :has-active-filters="hasActiveFilters"
-          :keyword="filters.keyword"
-          :selected-event="selectedEventDetail"
-          :status-options="eventStatusOptions"
-          :statuses="filters.statuses"
-          :upcoming-events="upcomingEvents"
-          @delete-event="confirmDeleteEvent"
-          @edit-event="handleEditEvent"
-          @reset-filters="resetFilters"
-          @select-event-date="selectEventDate"
-          @update-calendar-ids="updateCalendarIds"
-          @update-keyword="updateKeyword"
-          @update-statuses="updateStatuses"
-        />
-      </div>
-    </template>
+      <CalendarAside
+        :active-filter-count="activeFilterCount"
+        :calendar-ids="filters.calendarIds"
+        :calendar-types="calendarTypes"
+        :get-calendar-count="getCalendarCount"
+        :has-active-filters="hasActiveFilters"
+        :keyword="filters.keyword"
+        :loading="isLoading"
+        :selected-event="selectedEventDetail"
+        :status-options="eventStatusOptions"
+        :statuses="filters.statuses"
+        :upcoming-events="upcomingEvents"
+        @delete-event="confirmDeleteEvent"
+        @edit-event="handleEditEvent"
+        @reset-filters="resetFilters"
+        @select-event-date="selectEventDate"
+        @update-calendar-ids="updateCalendarIds"
+        @update-keyword="updateKeyword"
+        @update-statuses="updateStatuses"
+      />
+    </div>
 
     <a-modal
       v-model:open="eventModalOpen"
@@ -74,14 +73,11 @@
 </template>
 
 <script setup lang="ts">
+import { message, Modal } from 'antdv-next'
 import { useLoading } from '@/composables'
-import message from 'antdv-next/dist/message/index'
-import Modal from 'antdv-next/dist/modal/index'
-import { computed, nextTick, shallowRef, watch } from 'vue'
 import CalendarAside from './components/Aside.vue'
 import CalendarBoard from './components/Board.vue'
 import CalendarEventForm from './components/EventForm.vue'
-import CalendarSkeleton from './components/Skeleton.vue'
 import CalendarSummary from './components/Summary.vue'
 import CalendarToolbar from './components/Toolbar.vue'
 import { useCalendarEvents } from './composables/useEvents'

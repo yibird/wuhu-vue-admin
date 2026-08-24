@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { UpcomingEvent } from '../types'
+import { getPriorityClass, getStatusClass } from '../data'
 
 defineProps<{
   hasActiveFilters: boolean
@@ -47,14 +48,14 @@ const emit = defineEmits<{
         <div class="mt-8 flex flex-wrap gap-6">
           <span
             class="inline-flex items-center gap-4 rounded-4 border-1 border-solid px-6 py-2 text-11px"
-            :class="item.status.className"
+            :class="getStatusClass(item.status.value)"
           >
             <Icon :name="item.status.icon" :size="12" />
             {{ item.status.label }}
           </span>
           <span
             class="inline-flex items-center gap-4 rounded-4 border-1 border-solid px-6 py-2 text-11px"
-            :class="item.priority.className"
+            :class="getPriorityClass(item.priority.value)"
           >
             <Icon :name="item.priority.icon" :size="12" />
             {{ item.priority.label }}优先级

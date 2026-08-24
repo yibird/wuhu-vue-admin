@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import { computed } from 'vue'
 import type { CSSProperties } from 'vue'
 import {
   BaseEdge,

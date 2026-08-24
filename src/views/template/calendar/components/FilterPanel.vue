@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-
 import type { CalendarType } from '@dayflow/core'
 import type { CalendarEventStatus, CalendarMetaOption } from '../types'
 

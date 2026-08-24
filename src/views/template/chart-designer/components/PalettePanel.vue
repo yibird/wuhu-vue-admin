@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { computed, shallowRef } from 'vue'
 import { CHART_DESIGNER_SELECTORS } from '../constants'
 import type { ChartPaletteItem } from '../types'
 

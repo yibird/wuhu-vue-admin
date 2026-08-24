@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import BaseNode from './BaseNode.vue'
 import type { NodeProps } from '@vue-flow/core'
 import type { WorkflowNodeData, WorkflowNodeKind } from '../../types'
-import BaseNode from './BaseNode.vue'
 
 const props = defineProps<NodeProps<WorkflowNodeData>>()
 

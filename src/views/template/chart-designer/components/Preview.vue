@@ -1,8 +1,7 @@
 <script setup lang="ts">
+import VChart from 'vue-echarts'
 import { useEChartsTheme } from '@/composables/useEChartsTheme'
 import { useECharts } from '@/plugins/echarts'
-import { computed } from 'vue'
-import VChart from 'vue-echarts'
 import {
   aggregateChartRows,
   createWidgetChartOption,

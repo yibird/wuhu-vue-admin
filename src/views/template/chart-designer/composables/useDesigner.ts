@@ -1,4 +1,4 @@
-import { computed, readonly, shallowRef } from 'vue'
+import { computed, onBeforeUnmount, readonly, shallowRef } from 'vue'
 import {
   aiSuggestions,
   chartDataSources,
@@ -41,6 +41,18 @@ export function useChartDesigner() {
   const aiBusy = shallowRef(false)
   const jsonDraft = shallowRef('[{"date":"06-12","name":"示例","value":128}]')
   const aiMessages = shallowRef<ChartAiMessage[]>([...initialAiMessages])
+  let aiTimer: number | undefined
+  let disposed = false
+
+  const sleepWithCleanup = (ms: number) =>
+    new Promise<void>((resolve) => {
+      aiTimer = window.setTimeout(resolve, ms)
+    })
+
+  onBeforeUnmount(() => {
+    disposed = true
+    if (aiTimer) window.clearTimeout(aiTimer)
+  })
 
   const activeSource = computed(
     () =>
@@ -157,7 +169,8 @@ export function useChartDesigner() {
       createAiMessage('user', trimmedPrompt),
     ]
 
-    await new Promise((resolve) => window.setTimeout(resolve, 460))
+    await sleepWithCleanup(460)
+    if (disposed) return
 
     const scenario = getAiScenario(trimmedPrompt)
     const generatedWidgets = createGeneratedWidgets(
@@ -212,7 +225,8 @@ export function useChartDesigner() {
       createAiMessage('user', `优化选中组件：${trimmedPrompt}`),
     ]
 
-    await new Promise((resolve) => window.setTimeout(resolve, 360))
+    await sleepWithCleanup(360)
+    if (disposed) return
 
     const nextChartType =
       widget.kind === 'chart'

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { computed } from 'vue'
 import { Handle, Position, type NodeProps } from '@vue-flow/core'
 import type { CSSProperties } from 'vue'
 import type { WorkflowNodeData, WorkflowNodeStatus } from '../../types'

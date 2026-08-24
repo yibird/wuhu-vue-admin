@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { CalendarEventDetail } from '../types'
+import { getPriorityClass, getStatusClass } from '../data'
 
 defineProps<{
   selectedEvent: CalendarEventDetail | null
@@ -56,14 +57,14 @@ const emit = defineEmits<{
       <div class="mt-12 flex flex-wrap gap-6">
         <span
           class="inline-flex items-center gap-4 rounded-4 border-1 border-solid px-6 py-2 text-11px"
-          :class="selectedEvent.status.className"
+          :class="getStatusClass(selectedEvent.status.value)"
         >
           <Icon :name="selectedEvent.status.icon" :size="12" />
           {{ selectedEvent.status.label }}
         </span>
         <span
           class="inline-flex items-center gap-4 rounded-4 border-1 border-solid px-6 py-2 text-11px"
-          :class="selectedEvent.priority.className"
+          :class="getPriorityClass(selectedEvent.priority.value)"
         >
           <Icon :name="selectedEvent.priority.icon" :size="12" />
           {{ selectedEvent.priority.label }}优先级

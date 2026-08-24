@@ -11,7 +11,7 @@ import {
   type NodeMouseEvent,
   type XYPosition,
 } from '@vue-flow/core'
-import message from 'antdv-next/dist/message/index'
+import { message } from 'antdv-next'
 import { useWorkflowHistory } from './useWorkflowHistory'
 import {
   createSchemaNodeFromPalette,
@@ -50,6 +50,7 @@ const WORKFLOW_RUN_SEQUENCE = [
 
 const NODE_SPACING_X = 340
 const NODE_SPACING_Y = 92
+const EDIT_BURST_MS = 400
 
 const workflowTestCases: WorkflowTestCase[] = [
   {
@@ -153,6 +154,7 @@ export function useWorkflowDesigner(options: UseWorkflowDesignerOptions = {}) {
     y: 0,
   })
   const runTimers: ReturnType<typeof setTimeout>[] = []
+  let editBurstTimer: number | null = null
 
   const {
     canRedo,
@@ -480,25 +482,41 @@ export function useWorkflowDesigner(options: UseWorkflowDesignerOptions = {}) {
     const id = selectedNodeId.value
     if (!id) return
 
-    patchNodeData(id, { [key]: value })
+    patchNodeData(id, { [key]: value }, !editBurstTimer, false)
+    scheduleEditBurstSchemaSync()
   }
 
   function updateSelectedConfig(key: string, value: unknown) {
     const node = selectedNode.value
     if (!node) return
 
-    patchNodeData(node.id, {
-      config: {
-        ...node.data.config,
-        [key]: value,
+    patchNodeData(
+      node.id,
+      {
+        config: {
+          ...node.data.config,
+          [key]: value,
+        },
       },
-    })
+      !editBurstTimer,
+      false
+    )
+    scheduleEditBurstSchemaSync()
+  }
+
+  function scheduleEditBurstSchemaSync() {
+    if (editBurstTimer) window.clearTimeout(editBurstTimer)
+    editBurstTimer = window.setTimeout(() => {
+      editBurstTimer = null
+      syncSchemaFromFlow()
+    }, EDIT_BURST_MS)
   }
 
   function patchNodeData(
     id: string,
     update: Partial<WorkflowNodeData>,
-    recordChange = true
+    recordChange = true,
+    syncSchema = true
   ) {
     if (recordChange) {
       recordHistory()
@@ -513,7 +531,7 @@ export function useWorkflowDesigner(options: UseWorkflowDesignerOptions = {}) {
         },
       }
     })
-    syncSchemaFromFlow()
+    if (syncSchema) syncSchemaFromFlow()
   }
 
   function removeSelectedNode() {
@@ -903,6 +921,9 @@ export function useWorkflowDesigner(options: UseWorkflowDesignerOptions = {}) {
   onMounted(() => window.addEventListener('keydown', handleKeydown))
   onBeforeUnmount(() => window.removeEventListener('keydown', handleKeydown))
   onBeforeUnmount(clearRunTimers)
+  onBeforeUnmount(() => {
+    if (editBurstTimer) window.clearTimeout(editBurstTimer)
+  })
 
   return {
     contextActions,

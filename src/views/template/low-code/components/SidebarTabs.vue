@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { shallowRef } from 'vue'
 import Palette from './Palette.vue'
 import StructurePanel from './StructurePanel.vue'
 import type {

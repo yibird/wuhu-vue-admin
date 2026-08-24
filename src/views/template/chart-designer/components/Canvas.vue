@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { computed, useTemplateRef, watch } from 'vue'
 import { CHART_DESIGNER_SELECTORS } from '../constants'
 import { useChartCanvasDrag } from '../composables/useCanvasDrag'
 import { useChartCanvasSelection } from '../composables/useCanvasSelection'

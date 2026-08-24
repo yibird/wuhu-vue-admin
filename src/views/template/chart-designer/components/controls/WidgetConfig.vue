@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { computed } from 'vue'
 import { CHART_DESIGNER_SELECTORS } from '../../constants'
 import { chartControlDefinitions, isChartType } from './registry'
 import type { ChartDataSource, ChartField, ChartWidget } from '../../types'

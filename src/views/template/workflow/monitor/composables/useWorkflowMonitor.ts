@@ -1,6 +1,13 @@
-import { computed, onBeforeUnmount, shallowRef, watch } from 'vue'
+import {
+  computed,
+  onActivated,
+  onBeforeUnmount,
+  onDeactivated,
+  shallowRef,
+  watch,
+} from 'vue'
 import { useIntervalFn } from '@vueuse/core'
-import message from 'antdv-next/dist/message/index'
+import { message } from 'antdv-next'
 import {
   initialWorkflowAlerts,
   initialWorkflowInstances,
@@ -169,6 +176,15 @@ export function useWorkflowMonitor() {
     if (enabled) resume()
     else pause()
   })
+
+  onActivated(() => {
+    if (autoRefresh.value) {
+      resume()
+      refresh(false)
+    }
+  })
+
+  onDeactivated(pause)
 
   function openInstance(id: string) {
     const instance = instances.value.find((item) => item.id === id)

@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-import type { ApprovalBranch, ApprovalNode, ApprovalNodeType } from '../types'
 import { APPROVAL_WORKFLOW_SELECTORS } from '../constants'
 import { useApprovalNodeContextMenu } from '../composables/useNodeContextMenu'
 import { resolveApprovalNodeComponent } from './nodes'
+import type { ApprovalBranch, ApprovalNode, ApprovalNodeType } from '../types'
 
 const props = defineProps<{
   node: ApprovalNode

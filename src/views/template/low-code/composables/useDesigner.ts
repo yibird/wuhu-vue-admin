@@ -1,6 +1,6 @@
-import { computed, shallowRef } from 'vue'
+import { computed, onBeforeUnmount, shallowRef } from 'vue'
 import { useClipboard } from '@vueuse/core'
-import message from 'antdv-next/dist/message/index'
+import { message } from 'antdv-next'
 import {
   createDesignerNode,
   paletteItems,
@@ -42,6 +42,7 @@ import type {
 } from '../types'
 
 const MAX_HISTORY = 50
+const EDIT_BURST_MS = 300
 
 const getUniqueIds = (ids: string[]) => Array.from(new Set(ids.filter(Boolean)))
 
@@ -75,6 +76,7 @@ export function useLowCodeDesigner() {
   const selectedIds = shallowRef<string[]>([])
   const historyIndex = shallowRef(0)
   const sourcePanelOpen = shallowRef(false)
+  let editBurstTimer: number | null = null
   const flatNodes = computed(() => flattenDesignerNodes(nodes.value))
   const nodes = shallowRef<DesignerNode[]>([
     createDesignerNode('hero', {
@@ -358,8 +360,23 @@ export function useLowCodeDesigner() {
         ...update.style,
       },
     }))
-    commit(nextNodes, id)
+
+    if (editBurstTimer) {
+      nodes.value = nextNodes
+    } else {
+      commit(nextNodes, id)
+    }
+
+    if (editBurstTimer) window.clearTimeout(editBurstTimer)
+    editBurstTimer = window.setTimeout(() => {
+      editBurstTimer = null
+      syncSchemaFromNodes()
+    }, EDIT_BURST_MS)
   }
+
+  onBeforeUnmount(() => {
+    if (editBurstTimer) window.clearTimeout(editBurstTimer)
+  })
 
   const {
     aiBusy,

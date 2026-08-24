@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { computed, useTemplateRef } from 'vue'
 import { useDraggable } from '@dnd-kit/vue'
 import type { DesignerPaletteItem } from '../types'
 

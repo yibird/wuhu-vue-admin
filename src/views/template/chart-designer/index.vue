@@ -1,18 +1,17 @@
 <script setup lang="ts">
-import { shallowRef } from 'vue'
 import { CHART_DESIGNER_SELECTORS } from './constants'
 import { chartPalette, favoriteChartPalette } from './data'
 import {
-  AiPanel as ChartAiPanel,
-  Canvas as ChartCanvas,
-  DataSourceModal as ChartDataSourceModal,
-  Header as ChartDesignerHeader,
-  HistoryModal as ChartHistoryModal,
-  Inspector as ChartInspector,
-  PalettePanel as ChartPalettePanel,
-  PreviewModal as ChartPreviewModal,
-  SchemaModal as ChartSchemaModal,
-  ShareModal as ChartShareModal,
+  AiPanel,
+  Canvas,
+  DataSourceModal,
+  Header,
+  HistoryModal,
+  Inspector,
+  PalettePanel,
+  PreviewModal,
+  SchemaModal,
+  ShareModal,
 } from './components'
 import { cloneDataSource, cloneWidget } from './composables/schema'
 import { useChartDesigner } from './composables/useDesigner'
@@ -117,7 +116,7 @@ function applySchema(schema: ChartDesignerSchema) {
       class="h-[calc(100dvh-90px)] min-h-0 min-w-0 grid grid-rows-[auto_minmax(0,1fr)] gap-12 overflow-hidden bg-page p-12 max-[980px]:p-8"
       :data-testid="CHART_DESIGNER_SELECTORS.page"
     >
-      <ChartDesignerHeader
+      <Header
         :stats="designerStats"
         @copy-schema="copySchema"
         @export-schema="exportSchema"
@@ -133,7 +132,7 @@ function applySchema(schema: ChartDesignerSchema) {
         <div
           class="min-h-0 grid grid-rows-[minmax(0,1fr)] gap-12 overflow-hidden max-[980px]:min-h-[720px]"
         >
-          <ChartPalettePanel
+          <PalettePanel
             :favorites="favoriteChartPalette"
             :palette="chartPalette"
             @add-widget="addWidget"
@@ -141,7 +140,7 @@ function applySchema(schema: ChartDesignerSchema) {
           />
         </div>
 
-        <ChartCanvas
+        <Canvas
           :active-source-id="activeSourceId"
           :data-sources="dataSources"
           :screen-config="screenConfig"
@@ -166,7 +165,7 @@ function applySchema(schema: ChartDesignerSchema) {
         <div
           class="min-h-0 grid grid-rows-[minmax(360px,0.64fr)_minmax(240px,0.36fr)] gap-12 overflow-hidden max-[980px]:min-h-[720px]"
         >
-          <ChartInspector
+          <Inspector
             :data-sources="dataSources"
             :fields="selectedFields"
             :widget="selectedWidget"
@@ -174,7 +173,7 @@ function applySchema(schema: ChartDesignerSchema) {
             @remove-widget="removeWidget"
             @update-widget="updateWidget"
           />
-          <ChartAiPanel
+          <AiPanel
             v-model:prompt="aiPrompt"
             :busy="aiBusy"
             :can-update-selected="!!selectedWidget"
@@ -187,7 +186,7 @@ function applySchema(schema: ChartDesignerSchema) {
         </div>
       </section>
 
-      <ChartDataSourceModal
+      <DataSourceModal
         v-model:json-draft="jsonDraft"
         v-model:open="dataSourceModalOpen"
         :active-source-id="activeSourceId"
@@ -196,7 +195,7 @@ function applySchema(schema: ChartDesignerSchema) {
         @select-source="selectDataSource"
         @update-source="updateDataSource"
       />
-      <ChartSchemaModal
+      <SchemaModal
         v-model:draft="schemaDraft"
         v-model:open="schemaOpen"
         :error="schemaError"
@@ -204,18 +203,18 @@ function applySchema(schema: ChartDesignerSchema) {
         @export="exportSchema"
         @format="formatSchemaDraft"
       />
-      <ChartHistoryModal
+      <HistoryModal
         v-model:open="historyOpen"
         :history="history"
         @restore="restoreHistory"
       />
-      <ChartPreviewModal
+      <PreviewModal
         v-model:open="previewOpen"
         :data-sources="dataSources"
         :screen-config="screenConfig"
         :widgets="widgets"
       />
-      <ChartShareModal
+      <ShareModal
         v-model:open="shareOpen"
         :url="shareUrl"
         @copy="copyShareUrl"

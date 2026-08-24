@@ -12,7 +12,7 @@ import type {
   UpcomingEvent,
 } from '../types'
 
-defineProps<{
+const { loading = false } = defineProps<{
   activeFilterCount: number
   calendarTypes: CalendarType[]
   calendarIds: string[]
@@ -23,6 +23,7 @@ defineProps<{
   statusOptions: CalendarMetaOption<CalendarEventStatus>[]
   statuses: CalendarEventStatus[]
   upcomingEvents: UpcomingEvent[]
+  loading?: boolean
 }>()
 
 const emit = defineEmits<{
@@ -44,7 +45,15 @@ function handleSelectEventDate(date: Date, eventId: string) {
   <aside
     class="min-h-0 overflow-hidden rounded-8 border-1 border-color-2 border-solid bg-container shadow-[var(--w-shadow-elevated)] max-[1100px]:order--1"
   >
-    <Scrollbar content-class="flex flex-col gap-16 p-14">
+    <div
+      v-if="loading"
+      class="p-14"
+      aria-label="日历侧栏加载中"
+      aria-busy="true"
+    >
+      <a-skeleton active :paragraph="{ rows: 12 }" />
+    </div>
+    <Scrollbar v-else content-class="flex flex-col gap-16 p-14">
       <CalendarFilterPanel
         :active-filter-count="activeFilterCount"
         :calendar-ids="calendarIds"

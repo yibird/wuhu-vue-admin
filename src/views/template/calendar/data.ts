@@ -73,19 +73,16 @@ export const eventStatusOptions: CalendarMetaOption<CalendarEventStatus>[] = [
     label: '已确认',
     value: 'confirmed',
     icon: 'i-lucide:check-circle-2',
-    className: 'text-success bg-success/10 border-success/30',
   },
   {
     label: '待确认',
     value: 'tentative',
     icon: 'i-lucide:circle-dashed',
-    className: 'text-warning bg-warning/10 border-warning/30',
   },
   {
     label: '已完成',
     value: 'done',
     icon: 'i-lucide:badge-check',
-    className: 'text-primary bg-primary/10 border-primary/30',
   },
 ]
 
@@ -95,21 +92,38 @@ export const eventPriorityOptions: CalendarMetaOption<CalendarEventPriority>[] =
       label: '高',
       value: 'high',
       icon: 'i-lucide:chevrons-up',
-      className: 'text-error bg-error/10 border-error/30',
     },
     {
       label: '中',
       value: 'medium',
       icon: 'i-lucide:equal',
-      className: 'text-info bg-info/10 border-info/30',
     },
     {
       label: '低',
       value: 'low',
       icon: 'i-lucide:chevrons-down',
-      className: 'text-secondary bg-fill border-color-2',
     },
   ]
+
+const statusClassMap: Record<CalendarEventStatus, string> = {
+  confirmed: 'text-success bg-success/10 border-success/30',
+  tentative: 'text-warning bg-warning/10 border-warning/30',
+  done: 'text-primary bg-primary/10 border-primary/30',
+}
+
+const priorityClassMap: Record<CalendarEventPriority, string> = {
+  high: 'text-error bg-error/10 border-error/30',
+  medium: 'text-info bg-info/10 border-info/30',
+  low: 'text-secondary bg-fill border-color-2',
+}
+
+export function getStatusClass(status: CalendarEventStatus) {
+  return statusClassMap[status]
+}
+
+export function getPriorityClass(priority: CalendarEventPriority) {
+  return priorityClassMap[priority]
+}
 
 export const ownerOptions: CalendarSelectOption[] = [
   { label: '产品组', value: '产品组' },

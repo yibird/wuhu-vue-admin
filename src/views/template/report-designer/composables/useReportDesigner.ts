@@ -468,6 +468,7 @@ export function useReportDesigner() {
   const loadError = shallowRef('')
   const exportStatus = shallowRef('已加载样例数据')
   const templateStatus = shallowRef('模板可保存到当前浏览器')
+  let remoteRequestSeq = 0
   const {
     isProcessing,
     processingError,
@@ -778,6 +779,7 @@ export function useReportDesigner() {
       return
     }
 
+    const requestId = ++remoteRequestSeq
     isLoading.value = true
     loadError.value = ''
 
@@ -804,6 +806,8 @@ export function useReportDesigner() {
       const payload = await response.json()
       const nextRows = resolveRowsFromPayload(payload, sourceConfig.dataPath)
 
+      if (requestId !== remoteRequestSeq) return
+
       if (!nextRows.length) {
         throw new Error('没有解析到数组数据')
       }
@@ -814,9 +818,12 @@ export function useReportDesigner() {
       syncActiveDataSource()
       exportStatus.value = `已加载接口数据：${nextRows.length.toLocaleString('zh-CN')} 行`
     } catch (error) {
+      if (requestId !== remoteRequestSeq) return
       loadError.value = error instanceof Error ? error.message : '接口加载失败'
     } finally {
-      isLoading.value = false
+      if (requestId === remoteRequestSeq) {
+        isLoading.value = false
+      }
     }
   }
 

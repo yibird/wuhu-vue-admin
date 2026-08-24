@@ -9,7 +9,6 @@
 </template>
 
 <script setup lang="ts">
-import { onBeforeUnmount, shallowRef, useTemplateRef } from 'vue'
 import { useDeferred } from '@/composables'
 import type { ViewerInstance } from 'jit-viewer'
 

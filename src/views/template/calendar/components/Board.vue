@@ -1,13 +1,17 @@
 <script setup lang="ts">
 import { DayFlowCalendar } from '@dayflow/vue'
-import { nextTick, onMounted, onUnmounted, useTemplateRef } from 'vue'
-
 import type { UseCalendarAppReturn } from '@dayflow/core'
 
-defineProps<{
+const {
+  calendar,
+  hasActiveFilters,
+  visibleEventCount,
+  loading = false,
+} = defineProps<{
   calendar: UseCalendarAppReturn
   hasActiveFilters: boolean
   visibleEventCount: number
+  loading?: boolean
 }>()
 
 defineEmits<{
@@ -50,49 +54,67 @@ onUnmounted(() => {
 
 <template>
   <main ref="calendarRoot" class="calendar">
-    <div
-      class="flex items-center justify-between gap-12 border-b-1 border-color-2 border-b-solid px-14 py-12 max-md:flex-col max-md:items-start"
-    >
-      <div>
-        <div class="flex items-center gap-8 text-sm text-main font-700">
-          <Icon name="i-lucide:calendar-days" :size="16" />
-          日程看板
-        </div>
-        <div class="mt-3 text-xs text-secondary">
-          支持拖拽调整日程，分类筛选会同步影响日历显示。
-        </div>
-      </div>
-      <div class="flex flex-wrap items-center gap-8">
-        <a-tag :bordered="false" color="processing">
-          可见 {{ visibleEventCount }} 项
-        </a-tag>
-        <a-button size="small" @click="$emit('createEvent')">
-          <template #icon>
-            <Icon name="i-lucide:plus" />
-          </template>
-          新建
-        </a-button>
-      </div>
-    </div>
-
-    <div class="relative min-h-0 flex-1">
-      <DayFlowCalendar :calendar="calendar" />
+    <template v-if="loading">
       <div
-        v-if="hasActiveFilters && visibleEventCount === 0"
-        class="pointer-events-auto absolute inset-x-18 top-72 z-2 rounded-8 border-1 border-color-2 border-dashed bg-container/92 p-18 text-center shadow-[var(--w-shadow-elevated)] backdrop-blur-8"
+        class="flex items-center justify-between gap-12 border-b-1 border-color-2 border-b-solid px-14 py-12"
       >
-        <a-empty description="当前筛选下暂无日程">
-          <template #image>
-            <Icon
-              name="i-lucide:calendar-x-2"
-              class="text-secondary"
-              :size="46"
-            />
-          </template>
-        </a-empty>
-        <div class="mt-8 text-xs text-secondary">可在右侧筛选区清空条件。</div>
+        <div>
+          <a-skeleton-input active class="!w-112" />
+          <a-skeleton-input active size="small" class="!mt-6 !w-240" />
+        </div>
+        <a-skeleton-button active />
       </div>
-    </div>
+      <div class="min-h-0 flex-1 p-14">
+        <a-skeleton active :paragraph="{ rows: 12 }" />
+      </div>
+    </template>
+    <template v-else>
+      <div
+        class="flex items-center justify-between gap-12 border-b-1 border-color-2 border-b-solid px-14 py-12 max-md:flex-col max-md:items-start"
+      >
+        <div>
+          <div class="flex items-center gap-8 text-sm text-main font-700">
+            <Icon name="i-lucide:calendar-days" :size="16" />
+            日程看板
+          </div>
+          <div class="mt-3 text-xs text-secondary">
+            支持拖拽调整日程，分类筛选会同步影响日历显示。
+          </div>
+        </div>
+        <div class="flex flex-wrap items-center gap-8">
+          <a-tag :bordered="false" color="processing">
+            可见 {{ visibleEventCount }} 项
+          </a-tag>
+          <a-button @click="$emit('createEvent')">
+            <template #icon>
+              <Icon name="i-lucide:plus" />
+            </template>
+            新建
+          </a-button>
+        </div>
+      </div>
+
+      <div class="relative min-h-0 flex-1">
+        <DayFlowCalendar :calendar="calendar" />
+        <div
+          v-if="hasActiveFilters && visibleEventCount === 0"
+          class="pointer-events-auto absolute inset-x-18 top-72 z-2 rounded-8 border-1 border-color-2 border-dashed bg-container/92 p-18 text-center shadow-[var(--w-shadow-elevated)] backdrop-blur-8"
+        >
+          <a-empty description="当前筛选下暂无日程">
+            <template #image>
+              <Icon
+                name="i-lucide:calendar-x-2"
+                class="text-secondary"
+                :size="46"
+              />
+            </template>
+          </a-empty>
+          <div class="mt-8 text-xs text-secondary">
+            可在右侧筛选区清空条件。
+          </div>
+        </div>
+      </div>
+    </template>
   </main>
 </template>
 

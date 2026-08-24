@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { shallowRef } from 'vue'
 import CapabilityPanel from './CapabilityPanel.vue'
 import ExperiencePanel from './ExperiencePanel.vue'
 import TransformPanel from './TransformPanel.vue'

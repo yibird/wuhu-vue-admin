@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { computed, shallowRef } from 'vue'
 import PaletteItem from './PaletteItem.vue'
 import type {
   DesignerComponentType,

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CodeEditor } from '@/components/codeEditor'
+import { CodeEditor } from '@/components/code-editor'
 
 defineProps<{
   error?: string

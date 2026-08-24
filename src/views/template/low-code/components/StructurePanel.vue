@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { computed, shallowRef } from 'vue'
 import StructureTreeTitle from './StructureTreeTitle.vue'
 import type { DesignerComponentType, DesignerNode } from '../types'
 

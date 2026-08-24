@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { computed } from 'vue'
 import type { ChartDataSource } from '../types'
 
 const props = defineProps<{

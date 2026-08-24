@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CodeEditor } from '@/components/codeEditor'
+import { CodeEditor } from '@/components/code-editor'
 import { APPROVAL_WORKFLOW_SELECTORS } from '../constants'
 
 defineProps<{

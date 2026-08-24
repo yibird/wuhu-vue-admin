@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { computed } from 'vue'
 import { useClipboard } from '@vueuse/core'
-import message from 'antdv-next/dist/message/index'
+import { message } from 'antdv-next'
 import {
   workflowRunStatusMeta,
   workflowStepStatusMeta,

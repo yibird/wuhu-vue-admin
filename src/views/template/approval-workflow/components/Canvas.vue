@@ -1,14 +1,13 @@
 <script setup lang="ts">
-import { computed, useTemplateRef } from 'vue'
+import { APPROVAL_WORKFLOW_SELECTORS } from '../constants'
+import { useApprovalCanvasInteraction } from '../composables/useCanvasInteraction'
+import NodeCard from './NodeCard.vue'
 import type {
   ApprovalNode,
   ApprovalNodeType,
   ApprovalWorkflowSettings,
 } from '../types'
-import type { ScrollbarInstance } from '@/components/scrollbar'
-import { APPROVAL_WORKFLOW_SELECTORS } from '../constants'
-import { useApprovalCanvasInteraction } from '../composables/useCanvasInteraction'
-import NodeCard from './NodeCard.vue'
+import type { ScrollbarInstance } from '@/components'
 
 const props = defineProps<{
   nodes: readonly ApprovalNode[]

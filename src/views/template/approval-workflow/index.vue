@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { shallowRef, watch } from 'vue'
 import {
   Canvas as ApprovalCanvas,
   Header as ApprovalHeader,

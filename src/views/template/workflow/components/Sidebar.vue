@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { computed, shallowRef } from 'vue'
 import { workflowPaletteGroupLabels } from '../data'
 import type { WorkflowPaletteGroup, WorkflowPaletteItem } from '../types'
 

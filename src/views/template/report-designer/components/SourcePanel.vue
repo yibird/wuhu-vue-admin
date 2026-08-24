@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { computed, shallowRef } from 'vue'
 import { defaultDataSourceConfig } from '../data'
 import DataSourceModal from './DataSourceModal.vue'
 import type {

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { computed } from 'vue'
 import PreviewNode from './PreviewNode.vue'
 import type { DesignerNode, DesignerPreviewSize } from '../types'
 

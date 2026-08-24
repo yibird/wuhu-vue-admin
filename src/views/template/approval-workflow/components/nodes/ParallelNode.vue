@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { computed } from 'vue'
 import BaseNode from './BaseNode.vue'
 import { getBranchCount, multiModeText } from './nodeFormatters'
 import type { ApprovalNodeViewProps } from './types'

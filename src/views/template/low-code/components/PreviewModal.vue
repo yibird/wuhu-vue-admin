@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { computed, toRef } from 'vue'
 import { useDesignerPreview } from '../composables/usePreview'
 import { usePreviewStageScale } from '../composables/usePreviewStageScale'
 import DesignerPreviewSurface from './PreviewSurface.vue'

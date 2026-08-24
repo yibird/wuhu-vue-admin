@@ -39,7 +39,6 @@ export interface CalendarMetaOption<
   T extends string = string,
 > extends CalendarSelectOption<T> {
   icon: string
-  className: string
 }
 
 export interface UpcomingEvent {

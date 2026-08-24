@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { computed } from 'vue'
 import { Motion } from 'motion-v'
 import { workflowAlertSeverityMeta } from '../../management/meta'
 import type {

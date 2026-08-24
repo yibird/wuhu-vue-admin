@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { shallowRef } from 'vue'
 import type { ApprovalPaletteItem, ApprovalTemplateItem } from '../types'
 
 defineProps<{

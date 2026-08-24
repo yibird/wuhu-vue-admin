@@ -4,7 +4,7 @@
       <div
         class="h-full min-h-0 grid grid-cols-[290px_minmax(0,1fr)_330px] gap-12 overflow-hidden max-xl:grid-cols-[250px_minmax(0,1fr)] max-xl:grid-rows-[minmax(0,1fr)_minmax(520px,330px)] max-[767px]:grid-cols-1 max-[767px]:grid-rows-[420px_minmax(0,1fr)_330px]"
       >
-        <DesignerSidebarTabs
+        <SidebarTabs
           class="low-code-designer-sidebar"
           :nodes="nodes"
           :palette="palette"
@@ -19,7 +19,7 @@
           @remove="removeNode"
           @select="selectNode"
         />
-        <DesignerCanvas
+        <Canvas
           :active-version-id="activeVersionId"
           :can-redo="canRedo"
           :can-undo="canUndo"
@@ -56,7 +56,7 @@
         <div
           class="low-code-designer-right min-h-0 min-w-0 grid grid-rows-[minmax(210px,0.34fr)_minmax(0,0.66fr)] gap-12 overflow-hidden max-xl:col-span-full"
         >
-          <DesignerAiPanel
+          <AiPanel
             v-model:prompt="aiPrompt"
             :busy="aiBusy"
             :can-update-selected="!!selectedNode"
@@ -66,7 +66,7 @@
             @generate="generateFromPrompt()"
             @update-selected="applyAiToSelectedNode()"
           />
-          <DesignerInspector
+          <Inspector
             class="designer-inspector min-w-0"
             :component-count="componentCount"
             :history-length="history.length"
@@ -82,7 +82,7 @@
       </div>
     </DragDropProvider>
 
-    <DesignerSourcePanel
+    <SourcePanel
       :error="schemaError"
       :open="sourcePanelOpen"
       :source-code="schemaCode"
@@ -94,7 +94,7 @@
       @source-change="updateSchemaCode"
     />
 
-    <DesignerVersionModal
+    <VersionModal
       v-model:open="isVersionModalOpen"
       :versions="versions"
       @restore="handleRestoreVersion"
@@ -103,15 +103,14 @@
 </template>
 
 <script setup lang="ts">
-import { shallowRef } from 'vue'
 import { onKeyStroke, useEventListener } from '@vueuse/core'
 import { DragDropProvider } from '@dnd-kit/vue'
-import { AiPanel as DesignerAiPanel } from './components'
-import { Canvas as DesignerCanvas } from './components'
-import { Inspector as DesignerInspector } from './components'
-import { SidebarTabs as DesignerSidebarTabs } from './components'
-import { SourcePanel as DesignerSourcePanel } from './components'
-import { VersionModal as DesignerVersionModal } from './components'
+import { AiPanel } from './components'
+import { Canvas } from './components'
+import { Inspector } from './components'
+import { SidebarTabs } from './components'
+import { SourcePanel } from './components'
+import { VersionModal } from './components'
 import { useLowCodeDesigner } from './composables/useDesigner'
 
 import type { DesignerComponentType, DesignerVersion } from './types'

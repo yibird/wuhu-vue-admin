@@ -1,4 +1,4 @@
-import { computed, shallowRef, watch } from 'vue'
+import { computed, onBeforeUnmount, shallowRef, watch } from 'vue'
 import type { ChartDesignerSchema } from '../types'
 
 export interface ChartSchemaHistoryEntry {
@@ -73,6 +73,10 @@ export function useChartSchemaWorkspace(
     applyTimer = window.setTimeout(() => {
       applySchemaText(value, '源码实时导入')
     }, 360)
+  })
+
+  onBeforeUnmount(() => {
+    window.clearTimeout(applyTimer)
   })
 
   function applySchemaText(value: string, title: string) {

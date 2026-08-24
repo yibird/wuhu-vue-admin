@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { computed, nextTick, ref, shallowRef, watch } from 'vue'
 import { DragDropProvider } from '@dnd-kit/vue'
 import { move } from '@dnd-kit/helpers'
 import { DraggableItem } from '@/components/draggable'
