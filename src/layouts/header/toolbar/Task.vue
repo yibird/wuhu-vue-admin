@@ -12,8 +12,6 @@
   <TaskCenter v-model:show="show" />
 </template>
 <script lang="ts" setup>
-import { defineAsyncComponent } from 'vue'
-
 const TaskCenter = defineAsyncComponent(
   () => import('@/layouts/config/taskCenter/index.vue')
 )

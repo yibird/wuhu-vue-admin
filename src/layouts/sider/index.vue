@@ -2,7 +2,6 @@
   <component v-if="activeComponent" :is="activeComponent" />
 </template>
 <script lang="ts" setup>
-import { defineAsyncComponent } from 'vue'
 import { MenuMode } from '@/constants'
 import VerticalSider from './VerticalSider.vue'
 import { useCollapse, useSider } from './composables'

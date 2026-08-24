@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useTheme } from '@/composables'
-import { themeColorOptions } from './options'
+import { themeColorOptions } from '@/config'
 import type { Color } from 'antdv-next'
 
 const presets = [

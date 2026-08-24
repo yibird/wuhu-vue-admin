@@ -11,8 +11,6 @@
   </a-popover>
 </template>
 <script lang="ts" setup>
-import { defineAsyncComponent } from 'vue'
-
 const NoticeCenter = defineAsyncComponent(
   () => import('@/layouts/config/noticeCenter/index.vue')
 )

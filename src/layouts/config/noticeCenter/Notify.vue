@@ -4,11 +4,11 @@
       <div
         v-for="item in items"
         :key="item.id"
-        class="flex gap-10 rounded-6 px-10 py-8 cursor-pointer transition-colors hover:bg-hover"
+        class="content-auto-52 flex gap-10 rounded-6 px-10 py-8 cursor-pointer transition-colors hover:bg-hover"
       >
         <div
           class="size-36 flex-center rounded-4"
-          :style="getItemStyle(item.type)"
+          :class="getItemClass(item.type)"
         >
           <Icon :name="getItemIcon(item.type)" :size="18" />
         </div>
@@ -49,37 +49,25 @@ const items = [
   },
 ]
 
-const mapping: Record<
-  number,
-  { background: string; color: string; icon: string }
-> = {
+const mapping: Record<number, { className: string; icon: string }> = {
   1: {
-    background: 'rgb(236, 242, 255)',
-    color: 'rgb(93, 135, 255)',
+    className: 'bg-info-tint text-info',
     icon: 'i-lucide:bell',
   },
   2: {
-    background: 'rgb(230, 255, 250)',
-    color: 'rgb(19, 222, 185)',
+    className: 'bg-success-tint text-success',
     icon: 'i-lucide:volume-2',
   },
   3: {
-    background: 'rgb(253, 237, 232)',
-    color: 'rgb(255, 77, 79)',
+    className: 'bg-error-tint text-error',
     icon: 'i-lucide:heart',
   },
   4: {
-    background: 'rgb(254, 245, 229)',
-    color: 'rgb(255, 174, 31)',
+    className: 'bg-warning-tint text-warning',
     icon: 'i-lucide:mail',
   },
 }
 
-const getItemStyle = (type: number) => {
-  const item = mapping[type]
-  return item ? { background: item.background, color: item.color } : {}
-}
-const getItemIcon = (type: number) => {
-  return mapping[type].icon
-}
+const getItemClass = (type: number) => mapping[type]?.className ?? ''
+const getItemIcon = (type: number) => mapping[type]?.icon ?? 'i-lucide:bell'
 </script>

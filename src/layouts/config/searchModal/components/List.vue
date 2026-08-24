@@ -24,7 +24,7 @@
         data-testid="search-modal-item"
         :aria-selected="activeIndex === index"
         :class="[
-          'group relative min-h-52 w-full min-w-0 flex cursor-pointer items-center gap-10 overflow-hidden rounded-6 border-1 border-transparent border-solid bg-transparent px-9 py-7 text-left text-main transition-[background-color,border-color,box-shadow] duration-motion-base',
+          'content-auto-52 group relative min-h-52 w-full min-w-0 flex cursor-pointer items-center gap-10 overflow-hidden rounded-6 border-1 border-transparent border-solid bg-transparent px-9 py-7 text-left text-main transition-[background-color,border-color,box-shadow] duration-motion-base',
           {
             'border-primary bg-primary-tint': activeIndex === index,
             'hover:(border-color-2 bg-hover-2)': activeIndex !== index,

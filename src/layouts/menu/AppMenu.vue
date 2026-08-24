@@ -12,9 +12,7 @@
   />
 </template>
 <script lang="ts" setup>
-import { computed, nextTick, ref, watch } from 'vue'
 import { useTabs } from '@/composables'
-import { prefetchMenuRoute } from '@/router'
 import { renderIcon, renderMenus } from '@/utils'
 import type { AppMenuProps } from './types'
 import type { MenuProps } from 'antdv-next'
@@ -55,8 +53,6 @@ const items = computed(() => {
         title: item.title,
         disabled: item.disabled,
         icon: renderIcon(item.icon, { size: 22 }),
-        onFocusin: () => void prefetchMenuRoute(item),
-        onPointerenter: () => void prefetchMenuRoute(item),
       }
     },
     (item) => [0, 1].includes(item.type)
@@ -87,8 +83,6 @@ const activeMenuKey = computed(() => {
     current?.id === undefined ? undefined : String(current.id),
     ...(current?.level?.split('-').reverse() ?? []),
   ].filter((key): key is string => Boolean(key))
-
-  // 隐藏路由（type=2）不渲染到菜单中，选中态回退到最近的可见父级。
   return (
     routeKeys.find((key) => visibleMenuKeys.value.has(key)) ??
     (props.selectedKey && visibleMenuKeys.value.has(props.selectedKey)
@@ -104,7 +98,7 @@ const onOpenChange: MenuProps['onOpenChange'] = (openKeys) => {
 
 const onClick: MenuProps['onClick'] = ({ key }) => {
   openTab(String(key))
-  void closeCollapsedPopup()
+  closeCollapsedPopup()
 }
 
 const closeCollapsedPopup = async () => {

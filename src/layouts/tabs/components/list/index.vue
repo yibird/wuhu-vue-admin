@@ -43,7 +43,7 @@ import { isSortable } from '@dnd-kit/vue/sortable'
 import { DraggableItem } from '@/components/draggable'
 import TabItem from './TabItem.vue'
 
-import type { TabListProps } from './types'
+import type { TabListProps } from '../types'
 import type { DragEndEvent } from '@dnd-kit/vue'
 import type { ITab } from '#/config'
 

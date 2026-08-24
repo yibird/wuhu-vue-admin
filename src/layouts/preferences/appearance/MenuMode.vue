@@ -47,14 +47,12 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { storeToRefs } from 'pinia'
-import { appStore } from '@/store'
-import { menuModeOptions } from './options'
-import { type MenuModeType } from '@/constants'
+import { useAppStore } from '@/store'
+import { menuModeOptions, type MenuMode } from '@/config'
 
-const { app } = storeToRefs(appStore())
+const { app } = useAppStore()
 
-const onClick = (mode: MenuModeType) => {
+const onClick = (mode: MenuMode) => {
   app.value.menuMode = mode
 }
 </script>

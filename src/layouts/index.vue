@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import { defineAsyncComponent } from 'vue'
 import LayoutSider from './sider/index.vue'
 import LayoutHeader from './header/index.vue'
 import LayoutTabs from './tabs/index.vue'
@@ -8,6 +7,7 @@ import LayoutFooter from './footer/index.vue'
 import FloatingBar from './preferences/components/FloatingBar.vue'
 import { useGlobalSearch, useLockScreen } from './config/composables'
 import { usePreferences } from './preferences/composables/usePreferences'
+import { useGlobalShortcuts } from './preferences/composables/useShortcuts'
 import { useTabNav } from './tabs/composables'
 import { useAppStore } from '@/store'
 
@@ -16,6 +16,7 @@ const { searchMounted, searchVisible } = useGlobalSearch()
 const { isLocked } = useLockScreen()
 const { preferencesOpen, closePreferences } = usePreferences()
 useTabNav()
+useGlobalShortcuts()
 
 const Preferences = defineAsyncComponent(
   () => import('./preferences/index.vue')

@@ -3,10 +3,9 @@ import { computed, shallowRef, watch } from 'vue'
 import { useTabs } from '@/composables'
 import { useAppStore } from '@/store'
 
-const toMenuId = (id?: number | string | null) =>
-  id === undefined || id === null ? undefined : String(id)
+const toMenuId = (id?: string) => id
 
-export const useMenuSelection = createSharedComposable(() => {
+export const useMenu = createSharedComposable(() => {
   const previewRootMenuId = shallowRef<string>()
   const { app } = useAppStore()
   const { currentTab } = useTabs()
@@ -16,7 +15,7 @@ export const useMenuSelection = createSharedComposable(() => {
     () => previewRootMenuId.value ?? routeRootMenuId.value
   )
 
-  const setPreviewRootMenuId = (id?: number | string | null) => {
+  const setPreviewRootMenuId = (id?: string) => {
     previewRootMenuId.value = toMenuId(id)
   }
 

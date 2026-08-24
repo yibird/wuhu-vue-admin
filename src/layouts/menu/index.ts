@@ -1,3 +1,3 @@
 export { default as AppMenu } from './AppMenu.vue'
-export { useMenuSelection } from './composables/useMenuSelection'
+export { useMenu } from './composables'
 export type { AppMenuProps } from './types'

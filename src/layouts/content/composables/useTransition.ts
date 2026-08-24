@@ -1,8 +1,11 @@
 import { useAppStore } from '@/store'
+import { computedPick } from '@/utils'
 
 export function useTransition() {
   const { animation } = useAppStore()
-  const transitionName = computed(() => animation.value.pageAnimation)
-  const loadingAnimation = computed(() => animation.value.loadingAnimation)
-  return { transitionName, loadingAnimation }
+  return computedPick(animation, [
+    'pageAnimation',
+    'pageAnimationMode',
+    'loadingAnimation',
+  ] as const)
 }

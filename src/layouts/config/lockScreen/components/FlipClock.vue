@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { onScopeDispose, shallowRef, watch } from 'vue'
-
 interface Props {
   hours: string
   minutes: string

@@ -10,18 +10,17 @@
 <script lang="ts" setup>
 import { computed, h, ref, watch } from 'vue'
 import { useAppStore, usePermissionStore } from '@/store'
-import { prefetchMenuRoute } from '@/router'
 import { MenuMode } from '@/constants'
 import { renderIcon, renderMenus } from '@/utils'
 import { useTabs } from '@/composables'
-import { useMenuSelection } from '@/layouts/menu'
+import { useMenu } from '@/layouts/menu'
 
 import type { MenuProps } from 'antdv-next'
 
 const { app } = useAppStore()
 const { menus } = usePermissionStore()
 const { openTab, currentTab } = useTabs()
-const { activeRootMenuId, setPreviewRootMenuId } = useMenuSelection()
+const { activeRootMenuId, setPreviewRootMenuId } = useMenu()
 const selectedKeys = ref<string[]>([])
 
 const options = computed(() => {
@@ -35,8 +34,6 @@ const options = computed(() => {
       'span',
       {
         class: 'inline-block align-middle',
-        onFocusin: () => void prefetchMenuRoute(item),
-        onPointerenter: () => void prefetchMenuRoute(item),
       },
       item.title
     ),

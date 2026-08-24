@@ -1,140 +1,36 @@
 <script setup lang="ts">
-import { computed, shallowRef } from 'vue'
-import dayjs from 'dayjs'
 import { useMediaQuery } from '@vueuse/core'
-import message from 'antdv-next/dist/message/index'
+import { message } from 'antdv-next'
 import { Icon } from '@/components/icon'
+import { useNotebook } from './composables/useNotebook'
+import type { NoteItem } from './types'
 
-interface NoteItem {
-  id: string
-  title: string
-  content: string
-  pinned: boolean
-  updatedAt: string
-}
-
-const storageKey = 'wuhu-note-book-items'
 const show = defineModel('show', { default: false })
 const isNarrowScreen = useMediaQuery('(max-width: 768px)')
 const drawerSize = computed(() => (isNarrowScreen.value ? '100%' : 920))
-
-function createId() {
-  return `note-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`
-}
-
-function createDefaultNotes(): NoteItem[] {
-  const now = dayjs().format('YYYY-MM-DD HH:mm:ss')
-  return [
-    {
-      id: createId(),
-      title: '今日跟进',
-      content: '客户转化报表导出后，核对华南区发票归档与活动素材下载状态。',
-      pinned: true,
-      updatedAt: now,
-    },
-    {
-      id: createId(),
-      title: '发布检查',
-      content: '确认任务中心、下载中心、记事本入口在顶部工具栏都可打开。',
-      pinned: false,
-      updatedAt: now,
-    },
-  ]
-}
-
-function readNotes() {
-  if (typeof window === 'undefined') return createDefaultNotes()
-
-  try {
-    const rawValue = window.localStorage.getItem(storageKey)
-    if (!rawValue) return createDefaultNotes()
-
-    const payload = JSON.parse(rawValue)
-    return Array.isArray(payload) && payload.length
-      ? (payload as NoteItem[])
-      : createDefaultNotes()
-  } catch {
-    return createDefaultNotes()
-  }
-}
-
-function persistNotes(items: NoteItem[]) {
-  if (typeof window === 'undefined') return
-  window.localStorage.setItem(storageKey, JSON.stringify(items))
-}
-
-const notes = shallowRef<NoteItem[]>(readNotes())
-const activeId = shallowRef(notes.value[0]?.id ?? '')
-const keyword = shallowRef('')
-
-const sortedNotes = computed(() => {
-  return [...notes.value].sort((left, right) => {
-    if (left.pinned !== right.pinned) return left.pinned ? -1 : 1
-    return dayjs(right.updatedAt).valueOf() - dayjs(left.updatedAt).valueOf()
-  })
-})
-
-const filteredNotes = computed(() => {
-  const value = keyword.value.trim().toLowerCase()
-  if (!value) return sortedNotes.value
-
-  return sortedNotes.value.filter((note) => {
-    return [note.title, note.content].join(' ').toLowerCase().includes(value)
-  })
-})
-
-const activeNote = computed(() => {
-  return (
-    notes.value.find((note) => note.id === activeId.value) ??
-    filteredNotes.value[0] ??
-    null
-  )
-})
-
-const noteCountLabel = computed(() => {
-  const pinnedCount = notes.value.filter((note) => note.pinned).length
-  return `${notes.value.length} 条笔记 · ${pinnedCount} 条置顶`
-})
-
-function updateNote(id: string, patch: Partial<NoteItem>) {
-  const updatedAt = dayjs().format('YYYY-MM-DD HH:mm:ss')
-  notes.value = notes.value.map((note) => {
-    return note.id === id ? { ...note, ...patch, updatedAt } : note
-  })
-  persistNotes(notes.value)
-}
-
-function addNote() {
-  const note: NoteItem = {
-    id: createId(),
-    title: '未命名笔记',
-    content: '',
-    pinned: false,
-    updatedAt: dayjs().format('YYYY-MM-DD HH:mm:ss'),
-  }
-
-  notes.value = [note, ...notes.value]
-  activeId.value = note.id
-  persistNotes(notes.value)
-}
-
-function selectNote(id: string) {
-  activeId.value = id
-}
-
-function togglePin(note: NoteItem) {
-  updateNote(note.id, { pinned: !note.pinned })
-}
-
-function deleteNote(note: NoteItem) {
-  notes.value = notes.value.filter((item) => item.id !== note.id)
-  activeId.value = filteredNotes.value[0]?.id ?? notes.value[0]?.id ?? ''
-  persistNotes(notes.value)
-}
+const {
+  activeNote,
+  filteredNotes,
+  keyword,
+  noteCountLabel,
+  addNote,
+  deleteNote,
+  selectNote,
+  togglePin,
+  updateNote,
+} = useNotebook()
 
 async function copyNote(note: NoteItem) {
-  await navigator.clipboard?.writeText(`${note.title}\n${note.content}`)
-  message.success('已复制笔记内容')
+  if (!navigator.clipboard) {
+    message.warning('当前环境不支持复制')
+    return
+  }
+  try {
+    await navigator.clipboard.writeText(`${note.title}\n${note.content}`)
+    message.success('已复制笔记内容')
+  } catch {
+    message.error('复制失败，请检查剪贴板权限')
+  }
 }
 </script>
 
@@ -298,7 +194,7 @@ async function copyNote(note: NoteItem) {
                   :value="activeNote.content"
                   class="mt-12 flex-1"
                   placeholder="记录想法、待办或临时信息"
-                  :bordered="false"
+                  variant="borderless"
                   @update:value="
                     updateNote(activeNote.id, { content: String($event) })
                   "

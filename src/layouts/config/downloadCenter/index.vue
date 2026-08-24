@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { computed } from 'vue'
 import { useMediaQuery } from '@vueuse/core'
 import { Icon } from '@/components/icon'
 import {

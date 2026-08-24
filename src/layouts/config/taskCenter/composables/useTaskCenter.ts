@@ -1,8 +1,7 @@
-import dayjs from 'dayjs'
-import message from 'antdv-next/dist/message/index'
-import Modal from 'antdv-next/dist/modal/index'
-import { refDebounced, useClipboard, useIntervalFn } from '@vueuse/core'
 import { computed, ref, shallowRef, watch } from 'vue'
+import { refDebounced, useClipboard, useIntervalFn } from '@vueuse/core'
+import { message, Modal } from 'antdv-next'
+import dayjs from 'dayjs'
 import type { Ref } from 'vue'
 import {
   finishedTaskStatuses,

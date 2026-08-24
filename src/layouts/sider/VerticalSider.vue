@@ -26,7 +26,6 @@
   </a-layout-sider>
 </template>
 <script lang="ts" setup>
-import { computed, ref } from 'vue'
 import { useDebounceFn } from '@vueuse/core'
 import { useAppStore, usePermissionStore } from '@/store'
 import { ThemeMode } from '@/constants'
@@ -34,12 +33,13 @@ import { useTheme } from '@/composables'
 import { AppMenu } from '@/layouts/menu'
 import Logo from './Logo.vue'
 import Search from './Search.vue'
+import { matchesMenuTree } from './search'
 
 const { sider, setCollapsed } = useAppStore()
 const { menus } = usePermissionStore()
 const { themeMode } = useTheme()
-const rawSearchValue = ref('')
-const searchValue = ref('')
+const rawSearchValue = shallowRef('')
+const searchValue = shallowRef('')
 
 const debouncedUpdate = useDebounceFn(() => {
   searchValue.value = rawSearchValue.value
@@ -57,10 +57,6 @@ const siderTheme = computed(() =>
 const items = computed(() => {
   const v = searchValue.value.trim().toLowerCase()
   if (!v) return menus.value
-  return menus.value.filter(
-    (item) =>
-      item.title.toLowerCase().includes(v) ||
-      item.children?.some((c) => c.title.toLowerCase().includes(v))
-  )
+  return menus.value.filter((item) => matchesMenuTree(item, v))
 })
 </script>

@@ -1,9 +1,7 @@
 <script setup lang="ts">
-import { onUnmounted } from 'vue'
 import dayjs from 'dayjs'
 import { useMediaQuery } from '@vueuse/core'
-import { Icon } from '@/components/icon'
-import type { ScrollbarInstance } from '@/components/scrollbar'
+import { type ScrollbarInstance } from '@/components'
 
 type AiRole = 'assistant' | 'user'
 

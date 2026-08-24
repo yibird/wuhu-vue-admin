@@ -13,8 +13,6 @@
   <ChatModal v-model:show="show" />
 </template>
 <script lang="ts" setup>
-import { defineAsyncComponent } from 'vue'
-
 const ChatModal = defineAsyncComponent(
   () => import('@/layouts/config/chatModal/index.vue')
 )

@@ -44,7 +44,7 @@ import {
   TabRefresh,
   TabAction,
 } from './components'
-import './style/index.less'
+import './style'
 
 const {
   tabs,

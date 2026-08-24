@@ -84,16 +84,12 @@
 </template>
 
 <script setup lang="ts">
-import { computed, defineAsyncComponent, shallowRef, useTemplateRef } from 'vue'
 import { useConfig } from './composables'
-import { useGlobalShortcuts } from './composables'
 import type { SettingEmit } from './types'
 
 const open = defineModel<boolean>('open', { default: false })
 const emits = defineEmits<SettingEmit>()
 const importInput = useTemplateRef<HTMLInputElement>('importInput')
-
-useGlobalShortcuts()
 
 const drawerStyles = {
   header: {

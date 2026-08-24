@@ -4,7 +4,7 @@
       <div
         v-for="item in items"
         :key="item.id"
-        class="flex gap-10 rounded-6 px-10 py-8 cursor-pointer transition-colors hover:bg-hover"
+        class="content-auto-52 flex gap-10 rounded-6 px-10 py-8 cursor-pointer transition-colors hover:bg-hover"
       >
         <a-avatar :size="36" />
         <div class="flex-1 overflow-hidden">

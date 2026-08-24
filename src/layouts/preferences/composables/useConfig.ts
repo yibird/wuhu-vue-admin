@@ -1,13 +1,15 @@
-import message from 'antdv-next/dist/message/index'
-import Modal from 'antdv-next/dist/modal/index'
-import { appStore, type AppState } from '@/store'
+import { message, Modal } from 'antdv-next'
+import { appStore } from '@/store'
+import { createAppConfigFile, parseAppConfig } from './configSchema'
 
 export function useConfig() {
   const store = appStore()
 
   const copyConfig = async () => {
     try {
-      await navigator.clipboard.writeText(JSON.stringify(store.$state, null, 2))
+      await navigator.clipboard.writeText(
+        JSON.stringify(createAppConfigFile(store.$state), null, 2)
+      )
       message.success('配置已复制到剪贴板')
     } catch {
       message.error('复制配置失败，请检查浏览器剪贴板权限')
@@ -16,11 +18,13 @@ export function useConfig() {
 
   const parseConfig = async (file: File) => {
     try {
-      const config = JSON.parse(await file.text()) as AppState
+      const rawConfig: unknown = JSON.parse(await file.text())
+      const config = parseAppConfig(rawConfig, store.$state)
       store.$patch(config)
       message.success('配置导入成功')
-    } catch {
-      message.error('配置文件格式不正确，导入失败')
+    } catch (error) {
+      const reason = error instanceof Error ? error.message : '未知错误'
+      message.error(`配置导入失败：${reason}`)
     }
   }
 

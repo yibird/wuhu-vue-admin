@@ -23,15 +23,14 @@
   </a-layout-sider>
 </template>
 <script lang="ts" setup>
-import { computed } from 'vue'
 import { permissionStore, useAppStore } from '@/store'
-import { AppMenu, useMenuSelection } from '@/layouts/menu'
+import { AppMenu, useMenu } from '@/layouts/menu'
 import { ThemeMode } from '@/constants'
 import { useTheme } from '@/composables'
 import Search from './Search.vue'
 
 const { sider, setCollapsed } = useAppStore()
-const { activeRootMenuId } = useMenuSelection()
+const { activeRootMenuId } = useMenu()
 const { themeMode } = useTheme()
 
 const siderTheme = computed(() =>

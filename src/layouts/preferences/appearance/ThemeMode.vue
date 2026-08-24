@@ -48,6 +48,6 @@
 </template>
 <script lang="ts" setup>
 import { useTheme } from '@/composables'
-import { themeModeOptions } from './options'
+import { themeModeOptions } from '@/config'
 const { appThemeMode, changeThemeMode } = useTheme()
 </script>

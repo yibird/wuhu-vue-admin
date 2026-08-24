@@ -15,10 +15,10 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { useLocale } from '@/locales'
 import { useAppStore } from '@/store'
+import { useLocale } from '@/locales'
+import { localeOptions } from '@/config'
 import { ConfigItem } from '../components'
-import { localeOptions } from './options'
 
 const { app } = useAppStore()
 const { appLocale, changeLocale } = useLocale()

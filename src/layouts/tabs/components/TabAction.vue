@@ -12,12 +12,12 @@
 <script lang="ts" setup>
 import { renderIcon } from '@/utils'
 import { EmitEvent } from './constant'
-
+import type { MenuProps } from 'antdv-next'
 import type { TabActionEmits, TabActionKey } from './types'
 
 const emits = defineEmits<TabActionEmits>()
 
-const options: any[] = [
+const options = [
   {
     key: EmitEvent.REFRESH,
     label: '刷新当前',
@@ -48,9 +48,22 @@ const options: any[] = [
     label: '关闭全部标签页',
     icon: renderIcon('i-lucide:square-x'),
   },
+] satisfies NonNullable<MenuProps['items']>
+
+const actionKeys: readonly TabActionKey[] = [
+  EmitEvent.REFRESH,
+  EmitEvent.CLOSE_CURRENT,
+  EmitEvent.CLOSE_LEFT,
+  EmitEvent.CLOSE_RIGHT,
+  EmitEvent.CLOSE_OTHER,
+  EmitEvent.CLOSE_ALL,
 ]
 
-const handleSelect = ({ key }: { key: string }) => {
-  emits(key as TabActionKey)
+function isTabActionKey(value: unknown): value is TabActionKey {
+  return actionKeys.some((key) => key === value)
+}
+
+const handleSelect: MenuProps['onClick'] = ({ key }) => {
+  if (isTabActionKey(key)) emits(key)
 }
 </script>

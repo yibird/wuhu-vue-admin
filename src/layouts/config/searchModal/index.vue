@@ -1,8 +1,8 @@
 <template>
   <Teleport to="body">
-    <Transition name="fade" @after-leave="restoreFocus">
+    <Transition name="fade" appear @after-leave="restoreFocus">
       <div
-        v-if="open"
+        v-show="open"
         data-testid="search-modal"
         class="fixed inset-0 z-[var(--w-global-search-z-index)] full bg-mask-5 backdrop-blur-3"
         role="dialog"
@@ -19,6 +19,7 @@
         >
           <Transition name="fade-zoom" appear>
             <div
+              v-show="open"
               class="w-full origin-top translate-y-0 scale-100 transform-gpu overflow-hidden rounded-8 border-1 border-color-2 border-solid bg-elevated shadow-[0_28px_80px_rgb(var(--w-bg-mask-rgb)_/_28%)] will-change-[transform,opacity]"
             >
               <Search ref="searchRef" v-model.lazy="searchValue" />

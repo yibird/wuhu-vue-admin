@@ -12,9 +12,14 @@ import HeaderToolbar from './toolbar/index.vue'
 </script>
 
 <style scoped>
-.w-layout-header {
-  @apply relative h-50! px-10! flex items-center justify-between z-10;
-
+.ant-layout-header.w-layout-header {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 50px;
+  padding: 0 10px;
   background-color: var(--w-header-bg);
   border-bottom: 1px solid rgb(var(--w-header-border-color));
   backdrop-filter: var(--w-header-filter);
