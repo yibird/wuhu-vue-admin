@@ -1,9 +1,9 @@
 import { computed, shallowRef, watch } from 'vue'
-import { initialWorkflowDefinitions } from '../../management/data'
+import { initialWorkflowDefinitions } from '../../shared/data'
 import type {
   WorkflowDefinition,
   WorkflowDefinitionStatus,
-} from '../../management/types'
+} from '../../shared/types'
 
 export type WorkflowListStatusFilter = WorkflowDefinitionStatus | 'all'
 export type WorkflowListSort = 'created-desc' | 'runs-desc' | 'updated-desc'

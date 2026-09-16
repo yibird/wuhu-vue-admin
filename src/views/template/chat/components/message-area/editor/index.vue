@@ -34,7 +34,7 @@
 
     <div
       v-if="activeTipMessage"
-      class="mb-10 rounded-6 border-l-4 border-primary bg-fill-quaternary p-10"
+      class="mb-10 rounded-6 border-1 border-color-2 bg-primary-tint p-10"
     >
       <div class="flex items-center justify-between">
         <div class="min-w-0">
@@ -116,7 +116,7 @@
           </button>
         </a-popover>
 
-        <Transition name="emoji-feedback">
+        <Transition name="fade-pop">
           <span
             v-if="emojiFeedback"
             class="pointer-events-none absolute -top-18 left-0 whitespace-nowrap rounded-full bg-primary/10 px-7 py-2 text-11px text-primary shadow-all-sm"
@@ -331,8 +331,7 @@
 <script setup lang="ts">
 import { useTextareaAutosize } from '@vueuse/core'
 import EmojiPicker from './EmojiPicker.vue'
-import { useImageAttachments } from './composables/useImageAttachments'
-import { useMessageRecording } from './composables/useMessageRecording'
+import { useImageAttachments, useMessageRecording } from './composables'
 import type { ChatSendPayload, Message, MessageEditorEmits } from '../../types'
 import type { EditorProps } from './types'
 
@@ -637,24 +636,3 @@ defineExpose({
   },
 })
 </script>
-
-<style scoped>
-.emoji-feedback-enter-active,
-.emoji-feedback-leave-active {
-  transition:
-    opacity var(--w-motion-duration-base) var(--w-motion-ease-standard),
-    transform var(--w-motion-duration-base) var(--w-motion-ease-standard);
-}
-
-.emoji-feedback-enter-from,
-.emoji-feedback-leave-to {
-  opacity: 0;
-  transform: translateY(6px) scale(0.92);
-}
-
-.emoji-feedback-enter-to,
-.emoji-feedback-leave-from {
-  opacity: 1;
-  transform: translateY(0) scale(1);
-}
-</style>

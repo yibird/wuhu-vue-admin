@@ -13,9 +13,12 @@ import {
   SchemaModal,
   ShareModal,
 } from './components'
-import { cloneDataSource, cloneWidget } from './composables/schema'
-import { useChartDesigner } from './composables/useDesigner'
-import { useChartSchemaWorkspace } from './composables/useSchemaWorkspace'
+import {
+  cloneDataSource,
+  cloneWidget,
+  useChartDesigner,
+  useChartSchemaWorkspace,
+} from './composables'
 import type { ChartDesignerSchema, ChartPaletteItem } from './types'
 
 const {

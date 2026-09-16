@@ -2,14 +2,16 @@
 import message from 'antdv-next/dist/message/index'
 import Modal from 'antdv-next/dist/modal/index'
 import { useRouter } from 'vue-router'
-import { useLoading } from '@/composables'
-import Card from './components/Card.vue'
-import Toolbar from './components/Toolbar.vue'
-import { useWorkflowList } from './composables/useWorkflowList'
-import type { WorkflowDefinition } from '../management/types'
+import { useLoading, usePageEnter } from '@/composables'
+import { WorkflowCard, WorkflowToolbar } from './components'
+import { useWorkflowList } from './composables'
+import type { WorkflowDefinition } from '../shared/types'
 
 const router = useRouter()
+const pageRef = useTemplateRef<HTMLElement>('pageRef')
 const { isLoading } = useLoading({ delay: 280 })
+
+usePageEnter(pageRef)
 const {
   currentPage,
   draftCount,
@@ -29,7 +31,7 @@ const {
 } = useWorkflowList()
 
 function openDesigner(workflow?: WorkflowDefinition) {
-  void router.push({
+  router.push({
     path: '/template/workflow/designer',
     query: workflow ? { workflowId: workflow.id } : { mode: 'create' },
   })
@@ -77,9 +79,12 @@ function handleCardAction(
 
 <template>
   <WView :full="true" :padding="0">
-    <div class="h-full min-h-0 flex flex-col overflow-hidden bg-page">
-      <Toolbar
-        class="flex-none"
+    <div
+      ref="pageRef"
+      class="h-full min-h-0 flex flex-col overflow-hidden bg-page"
+    >
+      <WorkflowToolbar
+        class="page-enter page-enter--1 flex-none"
         v-model:keyword="keyword"
         v-model:owner="ownerFilter"
         v-model:sort="sortBy"
@@ -91,7 +96,9 @@ function handleCardAction(
         @create="openDesigner()"
       />
 
-      <main class="min-h-0 flex-1 overflow-y-auto p-12 sm:p-16">
+      <main
+        class="page-enter page-enter--2 min-h-0 flex-1 overflow-y-auto p-12 sm:p-16"
+      >
         <div
           v-if="isLoading"
           class="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6"
@@ -119,7 +126,7 @@ function handleCardAction(
           tag="div"
           class="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6"
         >
-          <Card
+          <WorkflowCard
             v-for="workflow in paginatedWorkflows"
             :key="workflow.id"
             :workflow="workflow"
@@ -131,7 +138,7 @@ function handleCardAction(
 
       <footer
         v-if="!isLoading && filteredWorkflows.length > 0"
-        class="flex flex-none justify-center border-t-1 border-color-2 border-t-solid px-12 py-10 sm:px-16"
+        class="page-enter page-enter--3 flex flex-none justify-center border-t-1 border-color-2 border-t-solid px-12 py-10 sm:px-16"
       >
         <a-pagination
           v-model:current="currentPage"

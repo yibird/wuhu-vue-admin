@@ -53,7 +53,10 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <main ref="calendarRoot" class="calendar">
+  <main
+    ref="calendarRoot"
+    class="calendar min-h-0 flex flex-col overflow-hidden rounded-8 border-1 border-color-2 border-solid bg-container"
+  >
     <template v-if="loading">
       <div
         class="flex items-center justify-between gap-12 border-b-1 border-color-2 border-b-solid px-14 py-12"
@@ -120,8 +123,6 @@ onUnmounted(() => {
 
 <style scoped lang="less">
 .calendar {
-  @apply min-h-0 overflow-hidden rounded-8 border-1 border-color-2 border-solid bg-container flex flex-col;
-
   box-shadow: var(--w-shadow-elevated);
 
   --df-calendar-height: calc(var(--calendar-content-height) - 62px);
@@ -139,9 +140,12 @@ onUnmounted(() => {
   --df-color-secondary-foreground: #fff;
 
   :deep(.df-calendar-container) {
-    @apply h-full w-full border-none rounded-0 shadow-none;
-
+    width: 100%;
+    height: 100%;
     font-family: var(--w-font-family);
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
   }
 
   :deep(.df-event) {

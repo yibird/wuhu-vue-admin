@@ -202,7 +202,7 @@ export function useChartDesigner() {
 
   function applySuggestion(prompt: string) {
     aiPrompt.value = prompt
-    void generateFromPrompt(prompt)
+    generateFromPrompt(prompt)
   }
 
   async function applyAiToSelectedWidget(prompt = aiPrompt.value) {

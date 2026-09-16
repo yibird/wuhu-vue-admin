@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { CHART_DESIGNER_SELECTORS } from '../constants'
-import { useChartCanvasDrag } from '../composables/useCanvasDrag'
-import { useChartCanvasSelection } from '../composables/useCanvasSelection'
+import { useChartCanvasDrag, useChartCanvasSelection } from '../composables'
 import type {
   ChartDataSource,
   ChartDesignerStats,

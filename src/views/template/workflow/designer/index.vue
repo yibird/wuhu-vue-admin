@@ -3,13 +3,12 @@ import { useRoute } from 'vue-router'
 import {
   Canvas as WorkflowCanvas,
   ContextMenu as WorkflowContextMenu,
-  Header as WorkflowHeader,
   Inspector as WorkflowInspector,
   SourcePanel as WorkflowSourcePanel,
-} from '../components'
-import { workflowPalette } from '../data'
-import { useWorkflowDesigner } from '../composables/useDesigner'
-import { findWorkflowDefinition } from '../management/data'
+} from './components'
+import { workflowPalette } from './data'
+import { useWorkflowDesigner } from './composables'
+import { findWorkflowDefinition } from '../shared/data'
 
 const route = useRoute()
 const workflowId =
@@ -24,16 +23,19 @@ const {
   canRedo,
   canRemoveSelected,
   canUndo,
+  cancelWorkflow,
   contextActions,
   contextMenu,
   defaultEdgeOptions,
   edges,
-  fitView,
+  isPaused,
   isRunning,
   nodes,
   nodesLocked,
   runLogs,
+  validationIssues,
   schemaError,
+  sourceStatus,
   selectedNodeData,
   selectedNodeId,
   selectedTestCaseId,
@@ -41,8 +43,6 @@ const {
   sourcePanelOpen,
   testCases,
   workflowSchema,
-  zoomIn,
-  zoomOut,
   addNode,
   arrangeNodes,
   applySourceCode,
@@ -62,7 +62,10 @@ const {
   openNodeContextMenu,
   openPaneContextMenu,
   removeSelectedNode,
+  publishWorkflow,
+  resumeWorkflow,
   runWorkflow,
+  shareWorkflow,
   selectTestCase,
   toggleNodesLocked,
   toggleSourcePanel,
@@ -75,22 +78,8 @@ const {
 
 <template>
   <div
-    class="h-full min-h-0 flex flex-col gap-10 overflow-hidden bg-page p-10 max-sm:p-8"
+    class="workflow-designer h-full min-h-0 flex flex-col gap-10 overflow-hidden bg-page p-10 max-sm:p-8"
   >
-    <WorkflowHeader
-      class="flex-none"
-      :edges-count="edges.length"
-      :is-running="isRunning"
-      :nodes-count="nodes.length"
-      :source-panel-open="sourcePanelOpen"
-      :title="workflowSchema.title"
-      @copy-schema="copyWorkflowSchema"
-      @download-schema="downloadWorkflowSchema"
-      @fit-view="fitView()"
-      @run="runWorkflow"
-      @toggle-source="toggleSourcePanel"
-    />
-
     <div class="relative min-h-0 min-w-0 flex-1 overflow-hidden">
       <WorkflowCanvas
         v-model:nodes="nodes"
@@ -99,17 +88,23 @@ const {
         :can-remove-selected="canRemoveSelected"
         :can-undo="canUndo"
         :default-edge-options="defaultEdgeOptions"
+        :is-paused="isPaused"
         :is-running="isRunning"
         :nodes-locked="nodesLocked"
         :palette="workflowPalette"
         :run-logs="runLogs"
+        :source-panel-open="sourcePanelOpen"
+        :title="workflowSchema.title"
+        :validation-issues="validationIssues"
         :selected-test-case-id="selectedTestCaseId"
         :test-cases="testCases"
         @add-node="addNode"
         @arrange-nodes="arrangeNodes"
         @connect="handleConnect"
+        @cancel-run="cancelWorkflow"
+        @copy-schema="copyWorkflowSchema"
         @edge-context-menu="openEdgeContextMenu"
-        @fit-view="fitView()"
+        @download-schema="downloadWorkflowSchema"
         @node-click="handleNodeClick"
         @node-context-menu="openNodeContextMenu"
         @node-drag-start="handleNodeDragStart"
@@ -119,17 +114,20 @@ const {
         @remove-selected="removeSelectedNode"
         @redo="redoWorkflow"
         @run="runWorkflow"
+        @resume-run="resumeWorkflow"
         @select-test-case="selectTestCase"
+        @publish="publishWorkflow"
+        @share-workflow="shareWorkflow"
         @toggle-nodes-locked="toggleNodesLocked"
+        @toggle-source="toggleSourcePanel"
         @undo="undoWorkflow"
-        @zoom-in="zoomIn()"
-        @zoom-out="zoomOut()"
       />
 
       <WorkflowSourcePanel
         :error="schemaError"
         :open="sourcePanelOpen"
         :source-code="sourceCode"
+        :source-status="sourceStatus"
         @apply="applySourceCode()"
         @close="closeSourcePanel"
         @copy="copyWorkflowSchema"
@@ -160,3 +158,7 @@ const {
     />
   </div>
 </template>
+
+<style lang="less" scoped>
+@import './token.less';
+</style>

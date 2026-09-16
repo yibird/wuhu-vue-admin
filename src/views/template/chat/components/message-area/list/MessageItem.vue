@@ -82,7 +82,7 @@
 
           <div
             v-if="message.replyInfo"
-            class="max-w-full rounded-6 border-l-3 border-primary bg-fill-quaternary px-8 py-6 text-left text-xs text-secondary"
+            class="max-w-full rounded-6 border-1 border-color-2 bg-primary-tint px-8 py-6 text-left text-xs text-secondary"
           >
             <div class="mb-2 text-primary">
               {{ message.replyInfo.senderName }}
@@ -133,7 +133,7 @@
                 :size="12"
                 :class="{ 'fill-current': favorite }"
               />
-              <Transition name="favorite-pop">
+              <Transition name="fade-pop">
                 <span
                   v-if="favoritePulse"
                   class="pointer-events-none absolute -top-22 left-0 whitespace-nowrap rounded-full bg-warning-tint px-7 py-2 text-11px text-warning shadow-all-sm"
@@ -371,24 +371,3 @@ onBeforeUnmount(() => {
   if (favoritePulseTimer) window.clearTimeout(favoritePulseTimer)
 })
 </script>
-
-<style scoped>
-.favorite-pop-enter-active,
-.favorite-pop-leave-active {
-  transition:
-    opacity var(--w-motion-duration-base) var(--w-motion-ease-standard),
-    transform var(--w-motion-duration-base) var(--w-motion-ease-standard);
-}
-
-.favorite-pop-enter-from,
-.favorite-pop-leave-to {
-  opacity: 0;
-  transform: translateY(6px) scale(0.9);
-}
-
-.favorite-pop-enter-to,
-.favorite-pop-leave-from {
-  opacity: 1;
-  transform: translateY(0) scale(1);
-}
-</style>

@@ -1,9 +1,6 @@
 <script setup lang="ts">
-import { workflowRunStatusMeta } from '../../management/meta'
-import type {
-  WorkflowRunInstance,
-  WorkflowRunStatus,
-} from '../../management/types'
+import { workflowRunStatusMeta } from '../../shared/meta'
+import type { WorkflowRunInstance, WorkflowRunStatus } from '../../shared/types'
 import type { TableProps } from 'antdv-next'
 
 defineProps<{

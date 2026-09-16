@@ -1,8 +1,5 @@
 <script setup lang="ts">
-import type {
-  WorkflowListSort,
-  WorkflowListStatusFilter,
-} from '../composables/useWorkflowList'
+import type { WorkflowListSort, WorkflowListStatusFilter } from '../composables'
 
 const props = defineProps<{
   draftCount: number

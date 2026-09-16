@@ -1,0 +1,6 @@
+export { default as Canvas } from './Canvas.vue'
+export { default as CanvasHeader } from './CanvasHeader.vue'
+export { default as CanvasToolbar } from './CanvasToolbar.vue'
+export { default as ContextMenu } from './ContextMenu.vue'
+export { default as Inspector } from './Inspector.vue'
+export { default as SourcePanel } from './SourcePanel.vue'

@@ -4,8 +4,8 @@ import { message } from 'antdv-next'
 import {
   workflowRunStatusMeta,
   workflowStepStatusMeta,
-} from '../../management/meta'
-import type { WorkflowRunInstance } from '../../management/types'
+} from '../../shared/meta'
+import type { WorkflowRunInstance } from '../../shared/types'
 
 const props = defineProps<{
   instance?: WorkflowRunInstance

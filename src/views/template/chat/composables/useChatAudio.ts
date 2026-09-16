@@ -101,7 +101,7 @@ export function useChatAudio() {
 
     outgoingToneActive = true
     const generation = ++outgoingToneGeneration
-    void getRunningAudioContext().then((context) => {
+    getRunningAudioContext().then((context) => {
       if (
         !context ||
         !outgoingToneActive ||
@@ -143,7 +143,7 @@ export function useChatAudio() {
   }
 
   function playIncomingMessageTone() {
-    void getRunningAudioContext().then((context) => {
+    getRunningAudioContext().then((context) => {
       if (!context) return
 
       const startAt = context.currentTime + 0.01
@@ -163,7 +163,7 @@ export function useChatAudio() {
   }
 
   function unlockAudio() {
-    void getRunningAudioContext().then((context) => {
+    getRunningAudioContext().then((context) => {
       if (context) removeUnlockListeners()
     })
   }
@@ -180,7 +180,7 @@ export function useChatAudio() {
     const context = audioContext.value
     audioContext.value = undefined
     if (context && context.state !== 'closed') {
-      void context.close()
+      context.close()
     }
   }
 

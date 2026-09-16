@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { APPROVAL_WORKFLOW_SELECTORS } from '../constants'
-import { useApprovalNodeContextMenu } from '../composables/useNodeContextMenu'
+import { useApprovalNodeContextMenu } from '../composables'
 import { resolveApprovalNodeComponent } from './nodes'
 import type { ApprovalBranch, ApprovalNode, ApprovalNodeType } from '../types'
 

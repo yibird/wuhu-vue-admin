@@ -115,7 +115,7 @@ export function useApprovalNodeContextMenu(
     const point = getContextMenuPoint(event)
     contextMenuX.value = point.x
     contextMenuY.value = point.y
-    void nextTick(() => {
+    nextTick(() => {
       contextMenuOpen.value = true
     })
   }

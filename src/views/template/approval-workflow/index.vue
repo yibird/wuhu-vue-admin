@@ -7,7 +7,7 @@ import {
   Simulator as ApprovalSimulator,
   SourcePanel as ApprovalSourcePanel,
 } from './components'
-import { useApprovalWorkflowDesigner } from './composables/useWorkflowDesigner'
+import { useApprovalWorkflowDesigner } from './composables'
 import { APPROVAL_WORKFLOW_SELECTORS } from './constants'
 
 const {

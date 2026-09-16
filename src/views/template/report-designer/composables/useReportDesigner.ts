@@ -882,7 +882,7 @@ export function useReportDesigner() {
     }
 
     if (sourceConfig.kind === 'rest') {
-      void loadRemoteData()
+      loadRemoteData()
       return
     }
 

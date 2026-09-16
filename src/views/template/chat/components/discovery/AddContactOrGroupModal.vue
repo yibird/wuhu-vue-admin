@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Icon } from '@/components/icon'
 import { defaultDirectorySearchHistory } from '../../data'
-import { useSearchHistory } from '../../composables/useSearchHistory'
+import { useSearchHistory } from '../../composables'
 import type {
   Contact,
   Conversation,
@@ -256,11 +256,7 @@ function handleAdd(item: DirectoryItem) {
           </div>
         </div>
 
-        <TransitionGroup
-          name="history-item"
-          tag="div"
-          class="flex flex-wrap gap-7"
-        >
+        <TransitionGroup name="fade-pop" tag="div" class="flex flex-wrap gap-7">
           <span
             v-for="record in visibleRecords"
             :key="record"
@@ -304,7 +300,7 @@ function handleAdd(item: DirectoryItem) {
           "
         />
 
-        <TransitionGroup v-else name="directory-result" tag="div">
+        <TransitionGroup v-else name="fade-slide" tag="div">
           <div
             v-for="item in filteredResults"
             :key="`${item.type}:${item.id}`"
@@ -379,35 +375,3 @@ function handleAdd(item: DirectoryItem) {
     </div>
   </a-modal>
 </template>
-
-<style scoped>
-.history-item-enter-active,
-.history-item-leave-active,
-.directory-result-enter-active,
-.directory-result-leave-active {
-  transition:
-    opacity var(--w-motion-duration-base) var(--w-motion-ease-standard),
-    transform var(--w-motion-duration-base) var(--w-motion-ease-enter);
-}
-
-.history-item-enter-from,
-.history-item-leave-to {
-  opacity: 0;
-  transform: scale(0.94);
-}
-
-.directory-result-enter-from,
-.directory-result-leave-to {
-  opacity: 0;
-  transform: translateY(6px);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .history-item-enter-active,
-  .history-item-leave-active,
-  .directory-result-enter-active,
-  .directory-result-leave-active {
-    transition-duration: 1ms;
-  }
-}
-</style>

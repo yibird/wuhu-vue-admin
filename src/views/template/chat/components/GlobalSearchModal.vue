@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { Icon } from '@/components'
-import { useSearchHistory } from '../composables/useSearchHistory'
-import { useChatGlobalSearch } from '../composables/useChatGlobalSearch'
-import type { MessageSearchResult } from '../composables/useChatGlobalSearch'
+import {
+  useChatGlobalSearch,
+  useSearchHistory,
+  type MessageSearchResult,
+} from '../composables'
 import { statusText } from '../utils'
 import type {
   Contact,
@@ -212,7 +214,7 @@ function handleSelectMessage(result: MessageSearchResult) {
           </div>
 
           <TransitionGroup
-            name="global-search-history"
+            name="fade-pop"
             tag="div"
             class="flex flex-wrap gap-7"
           >
@@ -290,7 +292,7 @@ function handleSelectMessage(result: MessageSearchResult) {
 
           <TransitionGroup
             v-else
-            name="global-search-result"
+            name="fade-slide"
             tag="div"
             class="space-y-14"
           >
@@ -511,30 +513,9 @@ function handleSelectMessage(result: MessageSearchResult) {
   border-radius: 4px;
 }
 
-.global-search-history-enter-active,
-.global-search-history-leave-active,
-.global-search-result-enter-active,
-.global-search-result-leave-active {
-  transition:
-    opacity var(--w-motion-duration-base) var(--w-motion-ease-standard),
-    transform var(--w-motion-duration-base) var(--w-motion-ease-enter);
-}
-
-.global-search-history-enter-from,
-.global-search-history-leave-to,
-.global-search-result-enter-from,
-.global-search-result-leave-to {
-  opacity: 0;
-  transform: translateY(6px);
-}
-
 @media (prefers-reduced-motion: reduce) {
   .global-search-scope,
-  .global-search-result-item,
-  .global-search-history-enter-active,
-  .global-search-history-leave-active,
-  .global-search-result-enter-active,
-  .global-search-result-leave-active {
+  .global-search-result-item {
     transition-duration: 1ms;
   }
 }

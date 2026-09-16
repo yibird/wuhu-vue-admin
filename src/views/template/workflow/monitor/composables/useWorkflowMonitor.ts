@@ -11,11 +11,8 @@ import { message } from 'antdv-next'
 import {
   initialWorkflowAlerts,
   initialWorkflowInstances,
-} from '../../management/data'
-import type {
-  WorkflowRunInstance,
-  WorkflowRunStatus,
-} from '../../management/types'
+} from '../../shared/data'
+import type { WorkflowRunInstance, WorkflowRunStatus } from '../../shared/types'
 
 export type WorkflowRunStatusFilter = WorkflowRunStatus | 'all'
 export type WorkflowEnvironmentFilter =

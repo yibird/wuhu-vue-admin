@@ -80,7 +80,7 @@ import CalendarBoard from './components/Board.vue'
 import CalendarEventForm from './components/EventForm.vue'
 import CalendarSummary from './components/Summary.vue'
 import CalendarToolbar from './components/Toolbar.vue'
-import { useCalendarEvents } from './composables/useEvents'
+import { useCalendarEvents } from './composables'
 import {
   eventPriorityOptions,
   eventStatusOptions,

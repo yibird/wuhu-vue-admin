@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { APPROVAL_WORKFLOW_SELECTORS } from '../constants'
-import { useApprovalCanvasInteraction } from '../composables/useCanvasInteraction'
+import { useApprovalCanvasInteraction } from '../composables'
 import NodeCard from './NodeCard.vue'
 import type {
   ApprovalNode,

@@ -10,7 +10,7 @@ defineProps<{
 <template>
   <div class="mb-14 flex items-end justify-between gap-16">
     <div class="min-w-0">
-      <p class="m-0 text-12px text-cyan-200/66">LIVE DATA BOARD</p>
+      <p class="m-0 text-12px text-[#a5f3fc]/66">LIVE DATA BOARD</p>
       <h3 class="m-0 mt-6 truncate text-26px font-800 text-white">
         {{ screenConfig.title }}
       </h3>
@@ -22,7 +22,7 @@ defineProps<{
       <span
         >Widgets<br /><b class="text-white">{{ stats.widgetCount }}</b></span
       >
-      <span>Status<br /><b class="text-emerald-300">Ready</b></span>
+      <span>Status<br /><b class="text-[#6ee7b7]">Ready</b></span>
     </div>
   </div>
 </template>

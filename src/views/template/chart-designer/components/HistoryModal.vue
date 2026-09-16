@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { ChartSchemaHistoryEntry } from '../composables/useSchemaWorkspace'
+import type { ChartSchemaHistoryEntry } from '../composables'
 
 defineProps<{
   history: readonly ChartSchemaHistoryEntry[]

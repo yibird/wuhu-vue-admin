@@ -16,7 +16,7 @@ import {
   exportOptions,
   requirementPhases,
 } from './data'
-import { useReportDesigner } from './composables/useReportDesigner'
+import { useReportDesigner } from './composables'
 import type { DataSourceConfig } from './types'
 
 type SourceModalMode = 'create' | 'edit'

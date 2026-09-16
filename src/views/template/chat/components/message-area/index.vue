@@ -118,7 +118,7 @@
           </div>
         </div>
 
-        <Transition name="conversation-content" mode="out-in">
+        <Transition name="fade-slide-swap" mode="out-in">
           <div :key="conversation.id" class="flex-1 overflow-hidden">
             <MessageList
               ref="messageListRef"
@@ -334,29 +334,5 @@ function handleHeaderAction({ key }: { key: string }) {
   color: rgb(var(--w-text-secondary));
   background-color: rgb(var(--w-bg-fill-1));
   border-radius: 4px;
-}
-
-.conversation-content-enter-active,
-.conversation-content-leave-active {
-  transition:
-    opacity var(--w-motion-duration-base) var(--w-motion-ease-standard),
-    transform var(--w-motion-duration-moderate) var(--w-motion-ease-enter);
-}
-
-.conversation-content-enter-from {
-  opacity: 0;
-  transform: translateX(10px);
-}
-
-.conversation-content-leave-to {
-  opacity: 0;
-  transform: translateX(-8px);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .conversation-content-enter-active,
-  .conversation-content-leave-active {
-    transition-duration: 1ms;
-  }
 }
 </style>

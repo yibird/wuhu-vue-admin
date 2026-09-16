@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import { useLoading } from '@/composables'
-import { workflowLatencyRanks, workflowThroughput } from '../management/data'
-import ExecutionDetailDrawer from './components/ExecutionDetailDrawer.vue'
-import ExecutionTable from './components/ExecutionTable.vue'
-import Header from './components/Header.vue'
-import Insights from './components/Insights.vue'
-import Overview from './components/Overview.vue'
-import { useWorkflowMonitor } from './composables/useWorkflowMonitor'
+import { workflowLatencyRanks, workflowThroughput } from '../shared/data'
+import {
+  ExecutionDetailDrawer,
+  ExecutionTable,
+  WorkflowInsights,
+  WorkflowMonitorHeader,
+  WorkflowOverview,
+} from './components'
+import { useWorkflowMonitor } from './composables'
 
 const { isLoading } = useLoading({ delay: 260 })
 const {
@@ -38,7 +40,7 @@ const {
 <template>
   <WView :full="true" :padding="0">
     <Scrollbar class="h-full bg-page">
-      <Header
+      <WorkflowMonitorHeader
         v-model:auto-refresh="autoRefresh"
         v-model:environment="environmentFilter"
         v-model:keyword="keyword"
@@ -53,14 +55,14 @@ const {
       />
 
       <main class="flex flex-col gap-10 p-12 sm:p-16">
-        <Overview
+        <WorkflowOverview
           :failure-count="failureCount"
           :loading="isLoading"
           :running-count="runningCount"
           :success-rate="successRate"
           :unresolved-alert-count="unresolvedAlerts.length"
         />
-        <Insights
+        <WorkflowInsights
           :alerts="alerts"
           :latency-ranks="workflowLatencyRanks"
           :throughput="workflowThroughput"

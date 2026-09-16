@@ -1,5 +1,5 @@
 import { computed, shallowRef, type Ref } from 'vue'
-import { Modal } from 'antdv-next'
+import { Modal, message } from 'antdv-next'
 import { getMessageSummary } from '../model/message'
 import { useChatSimulation } from './useChatSimulation'
 import type {
@@ -124,11 +124,11 @@ export function useChatMessages(options: UseChatMessagesOptions) {
       minute: '2-digit',
     })
     if (wasLastMessage) refreshConversationSummary(conversationId)
-    messageToast.success('消息已更新')
+    message.success('消息已更新')
   }
 
   function handleMessageRetry(target: Message) {
-    retryMessage(target, () => messageToast.success('已重新发送'))
+    retryMessage(target, () => message.success('已重新发送'))
   }
 
   function handleMessageRecall(target: Message) {
@@ -172,14 +172,14 @@ export function useChatMessages(options: UseChatMessagesOptions) {
 
   async function handleMessageCopy(target: Message) {
     if (!navigator.clipboard?.writeText) {
-      messageToast.error('当前环境不支持复制')
+      message.error('当前环境不支持复制')
       return
     }
     try {
       await navigator.clipboard.writeText(target.content)
-      messageToast.success('已复制消息')
+      message.success('已复制消息')
     } catch {
-      messageToast.error('复制失败，请检查浏览器权限')
+      message.error('复制失败，请检查浏览器权限')
     }
   }
 
@@ -234,7 +234,7 @@ export function useChatMessages(options: UseChatMessagesOptions) {
     link.download = fileName
     link.click()
     if (!isDownloadableUrl) URL.revokeObjectURL(downloadUrl)
-    messageToast.success(`已开始下载：${fileName}`)
+    message.success(`已开始下载：${fileName}`)
   }
 
   function handleMessagesClear(conversation: Conversation) {

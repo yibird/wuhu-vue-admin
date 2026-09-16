@@ -8,7 +8,7 @@ import {
   type Ref,
 } from 'vue'
 import type { CallStatus } from './types'
-import { useChatAudio } from '../../composables/useChatAudio'
+import { useChatAudio } from '../../composables'
 
 interface UseCallSessionOptions {
   open: Ref<boolean>

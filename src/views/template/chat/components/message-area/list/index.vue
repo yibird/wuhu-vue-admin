@@ -212,15 +212,16 @@ defineExpose({
   height: 5px;
   background-color: rgb(var(--w-text-secondary));
   border-radius: 50%;
-  animation: typing-bounce 1s ease-in-out infinite;
+  animation: typing-bounce var(--w-motion-duration-loop-fast)
+    var(--w-motion-ease-standard) infinite;
 }
 
 .typing-bubble span:nth-child(2) {
-  animation-delay: 0.15s;
+  animation-delay: var(--w-motion-delay-stagger);
 }
 
 .typing-bubble span:nth-child(3) {
-  animation-delay: 0.3s;
+  animation-delay: var(--w-motion-delay-stagger-long);
 }
 
 @keyframes typing-bounce {

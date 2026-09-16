@@ -191,13 +191,13 @@ import { Icon } from '@/components/icon'
 import VirtualList from '../VirtualList.vue'
 import Search from '../Search.vue'
 import Tabs from '../Tabs.vue'
-import { useContactGroups } from '../../composables/useContactGroups'
+import {
+  useContactGroups,
+  type ContactGroupMode,
+  type ContactRow,
+} from '../../composables'
 import type { MenuProps } from 'antdv-next'
 import type { Contact, FriendGroup } from '../types'
-import type {
-  ContactGroupMode,
-  ContactRow,
-} from '../../composables/useContactGroups'
 import { statusText } from '../../utils'
 
 interface Props {

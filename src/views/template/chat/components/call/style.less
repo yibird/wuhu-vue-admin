@@ -137,11 +137,12 @@
     content: '';
     border: 1px solid rgb(var(--w-color-primary) / 24%);
     border-radius: 999px;
-    animation: callPulse 1.8s ease-out infinite;
+    animation: callPulse var(--w-motion-duration-loop) var(--w-motion-ease-exit)
+      infinite;
   }
 
   &::after {
-    animation-delay: 0.6s;
+    animation-delay: var(--w-motion-delay-loop-phase);
   }
 }
 

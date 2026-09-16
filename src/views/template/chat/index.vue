@@ -135,8 +135,7 @@ import GlobalSearchModal from './components/GlobalSearchModal.vue'
 import GroupDrawer from './components/group/Drawer.vue'
 import SettingsModal from './components/settings/Modal.vue'
 import UserDetailModal from './components/user/DetailModal.vue'
-import { useChat } from './composables/useChat'
-import { useChatPanels } from './composables/useChatPanels'
+import { useChat, useChatPanels } from './composables'
 
 const {
   activeKey,

@@ -1,0 +1,35 @@
+/**
+ * 工作流设计器模块 token
+ *
+ * 仅在 .workflow-designer 作用域内生效，避免污染全局设计 token。
+ */
+.workflow-designer {
+  // 画布与网格
+  --w-workflow-canvas-background: radial-gradient(
+    circle at 50% 0%,
+    rgb(var(--w-bg-container)) 0%,
+    rgb(var(--w-bg-page)) 72%
+  );
+  --w-workflow-grid-color: var(--w-border-color-2);
+  --w-workflow-minimap-node-color: var(--w-border-color-3);
+  --w-workflow-minimap-mask: var(--w-bg-mask-1);
+
+  // 节点渐变
+  --w-workflow-node-accent-opacity: 14%;
+  --w-workflow-node-accent-stop: 58%;
+  --w-workflow-node-accent-ring-opacity: 26%;
+  --w-workflow-node-active-ring-size: 3px;
+
+  // 节点、浮层与缩略图阴影
+  --w-shadow-node: 0 2px 6px rgb(15 23 42 / 8%), 0 10px 24px rgb(15 23 42 / 6%);
+  --w-shadow-node-active: 0 10px 28px rgb(15 23 42 / 18%);
+  --w-shadow-floating: 0 8px 24px rgb(15 23 42 / 14%);
+  --w-shadow-minimap: 0 8px 24px rgb(15 23 42 / 12%);
+}
+
+[data-theme='dark'] .workflow-designer {
+  --w-shadow-node: 0 2px 6px rgb(0 0 0 / 45%), 0 10px 24px rgb(0 0 0 / 35%);
+  --w-shadow-node-active: 0 12px 30px rgb(0 0 0 / 60%);
+  --w-shadow-floating: 0 8px 24px rgb(0 0 0 / 55%);
+  --w-shadow-minimap: 0 8px 24px rgb(0 0 0 / 50%);
+}

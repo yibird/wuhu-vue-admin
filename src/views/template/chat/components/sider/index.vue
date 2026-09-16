@@ -3,7 +3,7 @@
     class="chat-sidebar relative h-full shrink-0 border-r-1 border-r-solid border-color-1 bg-container"
     :class="{ 'is-resizing': resizing }"
   >
-    <Transition name="sidebar-view" mode="out-in">
+    <Transition name="fade-slide-swap" mode="out-in">
       <ConversationList
         v-if="activeKey === 'conversation'"
         key="conversation"
@@ -130,23 +130,6 @@ function handleContactChat(contact: Contact) {
   max-width: 440px;
 }
 
-.sidebar-view-enter-active,
-.sidebar-view-leave-active {
-  transition:
-    opacity var(--w-motion-duration-base) var(--w-motion-ease-standard),
-    transform var(--w-motion-duration-moderate) var(--w-motion-ease-enter);
-}
-
-.sidebar-view-enter-from {
-  opacity: 0;
-  transform: translateX(10px);
-}
-
-.sidebar-view-leave-to {
-  opacity: 0;
-  transform: translateX(-8px);
-}
-
 .chat-sidebar-resize-handle {
   position: absolute;
   top: 0;
@@ -195,13 +178,6 @@ function handleContactChat(contact: Contact) {
 
   .chat-sidebar-resize-handle {
     display: none;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .sidebar-view-enter-active,
-  .sidebar-view-leave-active {
-    transition-duration: 1ms;
   }
 }
 </style>

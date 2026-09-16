@@ -1,5 +1,5 @@
 import { computed, onBeforeUnmount, onMounted, type Ref } from 'vue'
-import { useRangeSelection } from '@/composables/useRangeSelection'
+import { useRangeSelection } from '@/composables'
 import type { ChartWidget } from '../types'
 
 interface UseChartCanvasSelectionOptions {

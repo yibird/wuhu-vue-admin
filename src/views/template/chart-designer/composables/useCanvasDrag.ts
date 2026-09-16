@@ -289,7 +289,7 @@ export function useChartCanvasDrag(options: UseChartCanvasDragOptions) {
   function refreshAfterDomUpdate(container?: HTMLElement) {
     if (!container) return
 
-    void nextTick(() => updateRects(container))
+    nextTick(() => updateRects(container))
   }
 
   onBeforeUnmount(() => {

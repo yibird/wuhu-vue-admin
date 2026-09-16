@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { APPROVAL_WORKFLOW_SELECTORS } from '../constants'
-import { useApprovalInspectorActions } from '../composables/useInspectorActions'
+import { useApprovalInspectorActions } from '../composables'
 import FieldPermissions from './FieldPermissions.vue'
 import type {
   ApprovalAssigneeMode,

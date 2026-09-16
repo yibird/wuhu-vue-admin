@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { Motion } from 'motion-v'
-import { workflowAlertSeverityMeta } from '../../management/meta'
+import { workflowAlertSeverityMeta } from '../../shared/meta'
 import type {
   WorkflowAlert,
   WorkflowLatencyRank,
   WorkflowThroughputPoint,
-} from '../../management/types'
+} from '../../shared/types'
 
 const props = defineProps<{
   alerts: WorkflowAlert[]
