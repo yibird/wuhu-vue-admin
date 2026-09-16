@@ -5,7 +5,7 @@
     data-swapy-slot="dynamic"
     class="page-enter page-enter--4 min-w-0"
   >
-    <a-card :styles="{ body: { padding: 0 } }" data-swapy-item="dynamic">
+    <WCard :styles="{ body: { padding: 0 } }" data-swapy-item="dynamic">
       <template #title>
         <span class="text-base text-main font-700">团队动态</span>
       </template>
@@ -40,11 +40,12 @@
           </div>
         </div>
       </div>
-    </a-card>
+    </WCard>
   </section>
 </template>
 
 <script lang="ts" setup>
+import { WCard } from '@/components'
 import DynamicSkeleton from './DynamicSkeleton.vue'
 import type { Dynamic } from './types'
 

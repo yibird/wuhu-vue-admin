@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { WCard } from '@/components'
 import { NumberTicker } from '@/components/number-ticker'
 import ItemExtra from './ItemExtra.vue'
 import type { CardItemProps, CardItemEmits } from '../types.ts'
@@ -11,11 +12,11 @@ const onChange = (val: string) => {
 </script>
 
 <template>
-  <a-card
+  <WCard
     v-if="item"
     variant="outlined"
     size="small"
-    class="analysis-overview-card overflow-hidden rounded-8 shadow-[var(--w-shadow-card)]"
+    class="page-enter analysis-overview-card group overflow-hidden rounded-8 shadow-[var(--w-shadow-card)] transition-[border-color,transform] duration-motion-base ease-motion-standard hover:(-translate-y-2 border-primary) focus-visible:(-translate-y-2 border-primary outline-2 outline-primary/48 outline-offset-2) motion-reduce:(transform-none transition-none)"
     tabindex="0"
     :styles="{ body: { padding: '14px' } }"
   >
@@ -29,69 +30,37 @@ const onChange = (val: string) => {
 
     <div class="mt-16 flex items-end justify-between gap-12">
       <div class="min-w-0">
-        <div class="text-2xl text-main font-800 leading-none">
+        <div
+          class="tabular-nums text-3xl text-main font-800 leading-none tracking-tight"
+        >
           <NumberTicker :value="item.value ?? 0" />
         </div>
         <div class="mt-10 flex items-center gap-6 text-xs text-secondary">
           <span>累计</span>
-          <span class="text-sm text-main font-700">
+          <span class="tabular-nums text-sm text-main font-700">
             <NumberTicker :value="item.totalValue" />
           </span>
         </div>
       </div>
       <div
-        class="analysis-overview-icon size-44 flex shrink-0 items-center justify-center rounded-10 bg-primary/8 border-1 border-primary/15 border-solid"
+        class="analysis-overview-icon size-44 flex shrink-0 items-center justify-center rounded-10 border-1 border-primary/15 border-solid transition-[transform] duration-motion-base ease-motion-standard group-hover:(-translate-y-1 scale-104) group-focus-visible:(-translate-y-1 scale-104) motion-reduce:transition-none motion-reduce:group-hover:transform-none motion-reduce:group-focus-visible:transform-none"
       >
         <img :src="item.icon" alt="" class="size-26" />
       </div>
     </div>
-  </a-card>
+  </WCard>
 </template>
 
-<style scoped>
+<style lang="less" scoped>
 .analysis-overview-card {
-  cursor: default;
-  transition:
-    border-color var(--w-motion-duration-base) var(--w-motion-ease-standard),
-    box-shadow var(--w-motion-duration-base) var(--w-motion-ease-standard),
-    transform var(--w-motion-duration-base) var(--w-motion-ease-standard);
-}
-
-.analysis-overview-card:hover,
-.analysis-overview-card:focus-visible {
-  border-color: rgb(var(--w-color-primary) / 34%);
-  box-shadow: 0 12px 28px rgb(var(--w-shadow-color) / 14%);
-  transform: translateY(-2px);
-}
-
-.analysis-overview-card:focus-visible {
-  outline: 2px solid rgb(var(--w-color-primary) / 48%);
-  outline-offset: 2px;
+  position: relative;
 }
 
 .analysis-overview-icon {
-  transition:
-    background-color var(--w-motion-duration-base) var(--w-motion-ease-standard),
-    transform var(--w-motion-duration-base) var(--w-motion-ease-standard);
-}
-
-.analysis-overview-card:hover .analysis-overview-icon,
-.analysis-overview-card:focus-visible .analysis-overview-icon {
-  background-color: rgb(var(--w-color-primary) / 18%);
-  transform: translateY(-1px) scale(1.04);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .analysis-overview-card,
-  .analysis-overview-icon {
-    transition: none;
-  }
-
-  .analysis-overview-card:hover,
-  .analysis-overview-card:focus-visible,
-  .analysis-overview-card:hover .analysis-overview-icon,
-  .analysis-overview-card:focus-visible .analysis-overview-icon {
-    transform: none;
-  }
+  background: linear-gradient(
+    135deg,
+    rgb(var(--w-color-primary) / 12%),
+    rgb(var(--w-color-primary) / 4%)
+  );
 }
 </style>

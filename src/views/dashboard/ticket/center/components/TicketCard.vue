@@ -33,7 +33,7 @@ function openTicket() {
 
 <template>
   <article
-    class="group min-w-0 cursor-pointer overflow-hidden rounded-8 border-1 border-color-2 border-solid bg-container shadow-[var(--w-shadow-card)] outline-none transition-[border-color,box-shadow,transform] duration-motion-base hover:-translate-y-2 hover:border-primary/45 hover:shadow-[var(--w-shadow-elevated)] focus-visible:border-primary motion-reduce:transition-none motion-reduce:hover:transform-none"
+    class="group min-w-0 cursor-pointer overflow-hidden rounded-8 border-1 border-color-2 border-solid bg-container shadow-[var(--w-shadow-card)] outline-none transition-[border-color,box-shadow,transform] duration-motion-base hover:-translate-y-2 hover:border-primary hover:shadow-[var(--w-shadow-elevated)] focus-visible:border-primary motion-reduce:transition-none motion-reduce:hover:transform-none"
     :aria-label="`查看工单：${props.ticket.subject}`"
     role="button"
     tabindex="0"

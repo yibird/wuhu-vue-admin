@@ -70,6 +70,7 @@ const insights = [
 
 <template>
   <Card
+    class="page-enter page-enter--5"
     title="转化漏斗"
     icon="i-lucide:funnel"
     description="从访问到成交的关键链路"

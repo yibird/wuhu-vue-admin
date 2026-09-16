@@ -5,7 +5,7 @@
     data-swapy-slot="team"
     class="page-enter page-enter--6 min-w-0"
   >
-    <a-card :styles="{ body: { padding: 0 } }" data-swapy-item="team">
+    <WCard :styles="{ body: { padding: 0 } }" data-swapy-item="team">
       <template #title>
         <span class="text-base text-main font-700">协作团队</span>
       </template>
@@ -52,11 +52,12 @@
           </div>
         </div>
       </div>
-    </a-card>
+    </WCard>
   </section>
 </template>
 
 <script lang="ts" setup>
+import { WCard } from '@/components'
 import TeamSkeleton from './TeamSkeleton.vue'
 import type { TeamItem } from './types'
 

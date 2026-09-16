@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useEChartsTheme } from '@/composables/useEChartsTheme'
+import { useEChartsTheme } from '@/composables'
 import { useDashboardECharts } from '@/plugins/echartsDashboard'
 import Card from './Card.vue'
 import VChart from 'vue-echarts'
@@ -62,6 +62,7 @@ const chartOption = computed<EChartsCoreOption>(() => ({
 
 <template>
   <Card
+    class="page-enter page-enter--4"
     title="热门搜索"
     icon="i-lucide:search"
     description="搜索占比分布"

@@ -571,13 +571,7 @@ function handleCancel() {
               class="size-52 flex shrink-0 items-center justify-center rounded-12 border-1 border-solid shadow-all-sm transition-[border-color,background-color,color,transform] duration-motion-base ease-motion-standard motion-reduce:transition-none"
               :class="selectedLogo.class"
             >
-              <Transition
-                mode="out-in"
-                enter-active-class="transition-[opacity,transform] duration-motion-base ease-motion-standard motion-reduce:transition-none"
-                leave-active-class="transition-[opacity,transform] duration-motion-base ease-motion-standard motion-reduce:transition-none"
-                enter-from-class="-rotate-8 scale-75 opacity-0 motion-reduce:(rotate-0 scale-100)"
-                leave-to-class="scale-75 rotate-8 opacity-0 motion-reduce:(scale-100 rotate-0)"
-              >
+              <Transition name="fade-pop" mode="out-in">
                 <Icon
                   :key="selectedLogo.icon"
                   :name="selectedLogo.icon"

@@ -10,7 +10,7 @@ import TicketConversation from './components/TicketConversation.vue'
 import TicketProperties from './components/TicketProperties.vue'
 import TicketQueue from './components/TicketQueue.vue'
 import { supportTeamOptions } from './data'
-import { useTicketManagement } from './composables/useTicketManagement'
+import { useTicketManagement } from './composables'
 import type {
   TicketAssignment,
   TicketQueueKey,

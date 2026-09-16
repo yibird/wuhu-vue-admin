@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { useRouter } from 'vue-router'
+import { WCard } from '@/components'
 import AnnouncementSkeleton from './AnnouncementSkeleton.vue'
 import type { WorkbenchAnnouncement } from './types'
 
@@ -109,7 +110,7 @@ async function openNoticeCenter() {
     data-swapy-slot="announcement"
     class="page-enter page-enter--6 min-w-0"
   >
-    <a-card
+    <WCard
       data-swapy-item="announcement"
       :styles="{ body: { padding: '12px' } }"
     >
@@ -203,7 +204,7 @@ async function openNoticeCenter() {
         查看全部公告
         <Icon name="i-lucide:arrow-right" :size="14" />
       </button>
-    </a-card>
+    </WCard>
   </section>
 
   <a-modal

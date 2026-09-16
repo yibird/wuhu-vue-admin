@@ -28,7 +28,7 @@ const priority = defineModel<'all' | TicketPriority>('priority', {
 
 <template>
   <section
-    class="flex flex-none flex-wrap items-center gap-8 border-b-1 border-color-2 border-b-solid bg-container px-12 py-10 sm:px-16"
+    class="flex flex-wrap items-center gap-8 bg-container px-12 py-10 sm:px-16"
   >
     <a-input
       v-model:value="keyword"

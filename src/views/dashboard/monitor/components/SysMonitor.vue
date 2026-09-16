@@ -1,10 +1,6 @@
 <script lang="ts" setup>
 import { NumberTicker } from '@/components/number-ticker'
-import {
-  getCssRgbVar,
-  getCssRgbVarAlpha,
-  useEChartsTheme,
-} from '@/composables/useEChartsTheme'
+import { getCssRgbVar, getCssRgbVarAlpha, useEChartsTheme } from '@/composables'
 import { useECharts } from '@/plugins/echarts'
 import Card from './Card.vue'
 import { metricLabels } from '../config'

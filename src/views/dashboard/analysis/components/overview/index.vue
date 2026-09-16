@@ -11,6 +11,7 @@ const { items = [] } = defineProps<CardListProps>()
       :key="item.id"
       :item="item"
       :index="index"
+      :class="`page-enter--${index + 2}`"
     />
   </div>
 </template>

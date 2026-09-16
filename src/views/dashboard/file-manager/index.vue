@@ -1,7 +1,11 @@
 <script lang="ts" setup>
+import { usePageEnter } from '@/composables'
 import { Sider, Content } from './components'
-import { useFileExplorer } from './composables/useFileExplorer'
-import { useFileOperations } from './composables/useFileOperations'
+import { useFileExplorer, useFileOperations } from './composables'
+
+const pageRef = useTemplateRef<HTMLElement>('pageRef')
+
+usePageEnter(pageRef)
 
 const explorer = useFileExplorer()
 const operations = useFileOperations(explorer)
@@ -53,10 +57,11 @@ const {
 <template>
   <WView full :padding="false" class="bg-page">
     <div
+      ref="pageRef"
       class="h-full bg-page min-h-full grid gap-10 p-10 grid-cols-[minmax(220px,280px)_minmax(0,1fr)] max-[1199px]:grid-cols-1 max-[1199px]:grid-rows-[auto_minmax(0,1fr)] max-[575px]:(gap-8 p-8)"
     >
       <aside
-        class="min-h-0 min-w-0 overflow-hidden max-[1199px]:overflow-visible"
+        class="page-enter page-enter--1 min-h-0 min-w-0 overflow-hidden max-[1199px]:overflow-visible"
       >
         <Sider
           :active-category="activeCategory"
@@ -68,7 +73,7 @@ const {
       </aside>
 
       <main
-        class="min-h-0 min-w-0 overflow-hidden max-[1199px]:overflow-visible"
+        class="page-enter page-enter--2 min-h-0 min-w-0 overflow-hidden max-[1199px]:overflow-visible"
       >
         <Content
           v-model:active-category="activeCategory"

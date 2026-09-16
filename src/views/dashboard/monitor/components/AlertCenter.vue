@@ -83,13 +83,9 @@ function handleSeverityChange(value: string | number) {
     </template>
 
     <TransitionGroup
+      name="list"
       tag="div"
       class="relative flex flex-col gap-10"
-      enter-active-class="transition-[opacity,transform] duration-motion-moderate ease-motion-enter motion-reduce:transition-none"
-      enter-from-class="-translate-y-6 scale-[0.985] opacity-0 motion-reduce:(translate-y-0 scale-100)"
-      leave-active-class="absolute inset-x-0 transition-[opacity,transform] duration-motion-moderate ease-motion-enter motion-reduce:transition-none"
-      leave-to-class="-translate-y-6 scale-[0.985] opacity-0 motion-reduce:(translate-y-0 scale-100)"
-      move-class="transition-transform duration-motion-moderate ease-motion-enter motion-reduce:transition-none"
     >
       <div
         v-for="item in filteredItems"

@@ -64,6 +64,7 @@ const rankedItems = items.slice(1)
 
 <template>
   <Card
+    class="page-enter page-enter--5"
     title="热门榜单"
     icon="i-lucide:trophy"
     description="当前热度排行"

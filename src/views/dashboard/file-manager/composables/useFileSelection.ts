@@ -1,5 +1,5 @@
 import { computed, nextTick, shallowRef, type Ref } from 'vue'
-import { useRangeSelection } from '@/composables/useRangeSelection'
+import { useRangeSelection } from '@/composables'
 import type { FileSelectionKey, FileViewMode, IFile } from '../components/types'
 import type { ScrollbarInstance } from '@/components/scrollbar'
 
@@ -269,7 +269,7 @@ export function useFileSelection({
     } else {
       selectOnly(nextItem.id)
     }
-    void scrollItemIntoView(nextItem.id)
+    scrollItemIntoView(nextItem.id)
   }
 
   function syncAfterItemsChange() {

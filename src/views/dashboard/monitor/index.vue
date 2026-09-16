@@ -154,7 +154,7 @@ function installApp(item: AppType) {
 <template>
   <WView :full="true" :padding="0">
     <Scrollbar>
-      <div class="min-h-full bg-page p-10 sm:p-12">
+      <div class="dash-canvas min-h-full bg-page p-10 sm:p-12">
         <MonitorHeader
           :auto-refresh="autoRefresh"
           :critical-alert-count="criticalAlertCount"
@@ -286,3 +286,20 @@ function installApp(item: AppType) {
     </a-modal>
   </WView>
 </template>
+
+<style lang="less" scoped>
+.dash-canvas {
+  background-image:
+    radial-gradient(
+      1100px 520px at -10% -8%,
+      rgb(var(--w-color-primary) / 12%),
+      transparent 70%
+    ),
+    radial-gradient(
+      900px 460px at 108% -6%,
+      rgb(var(--w-color-primary) / 9%),
+      transparent 72%
+    );
+  background-repeat: no-repeat;
+}
+</style>

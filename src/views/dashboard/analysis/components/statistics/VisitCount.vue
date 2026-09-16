@@ -1,8 +1,5 @@
 <script lang="ts" setup>
-import {
-  getCssRgbVarAlpha,
-  useEChartsTheme,
-} from '@/composables/useEChartsTheme'
+import { getCssRgbVarAlpha, useEChartsTheme } from '@/composables'
 import { useDashboardECharts } from '@/plugins/echartsDashboard'
 import VChart from 'vue-echarts'
 import type { EChartsCoreOption } from 'echarts/core'

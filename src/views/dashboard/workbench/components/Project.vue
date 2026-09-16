@@ -5,7 +5,7 @@
     data-swapy-slot="project"
     class="page-enter page-enter--3 min-w-0"
   >
-    <a-card :styles="{ body: { padding: 0 } }" data-swapy-item="project">
+    <WCard :styles="{ body: { padding: 0 } }" data-swapy-item="project">
       <template #title>
         <div class="min-w-0 flex items-center gap-8">
           <span class="text-base text-main font-700">重点项目</span>
@@ -113,11 +113,12 @@
           </div>
         </article>
       </div>
-    </a-card>
+    </WCard>
   </section>
 </template>
 
 <script lang="ts" setup>
+import { WCard } from '@/components'
 import { getProjectLogoOption } from '../data'
 import ProjectSkeleton from './ProjectSkeleton.vue'
 import type { Project } from './types'

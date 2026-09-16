@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { useMediaQuery } from '@vueuse/core'
 import { LazyContainer } from '@/components'
+import { usePageEnter } from '@/composables'
 import AnalysisBlockSkeleton from './components/AnalysisBlockSkeleton.vue'
 import Overview from './components/overview/index.vue'
 import { cards } from './config'
@@ -22,6 +23,10 @@ const HotItems = defineAsyncComponent(() => import('./components/HotItems.vue'))
 const isMobileViewport = useMediaQuery('(max-width: 767px)')
 const isWideViewport = useMediaQuery('(min-width: 1536px)')
 
+const pageRef = useTemplateRef<HTMLElement>('pageRef')
+
+usePageEnter(pageRef)
+
 const trendMinHeight = computed(() => (isMobileViewport.value ? 539 : 483))
 const chartMinHeight = computed(() => (isMobileViewport.value ? 361 : 481))
 const funnelMinHeight = computed(() => (isWideViewport.value ? 593 : 1078))
@@ -30,13 +35,9 @@ const rankingMinHeight = 619
 
 <template>
   <WView :full="false" class="overflow-hidden bg-page">
-    <div class="flex flex-col gap-12">
-      <Overview class="page-enter page-enter--2" :items="cards" />
-      <LazyContainer
-        :min-height="trendMinHeight"
-        root-margin="0px 0px 128px"
-        class="page-enter page-enter--3"
-      >
+    <div ref="pageRef" class="dash-canvas flex flex-col gap-12">
+      <Overview :items="cards" />
+      <LazyContainer :min-height="trendMinHeight" root-margin="0px 0px 128px">
         <template #placeholder>
           <AnalysisBlockSkeleton :min-height="trendMinHeight" variant="trend" />
         </template>
@@ -58,7 +59,6 @@ const rankingMinHeight = 619
           <LazyContainer
             :min-height="chartMinHeight"
             root-margin="0px 0px 96px"
-            class="page-enter page-enter--4"
           >
             <template #placeholder>
               <AnalysisBlockSkeleton
@@ -79,7 +79,6 @@ const rankingMinHeight = 619
           <LazyContainer
             :min-height="funnelMinHeight"
             root-margin="0px 0px 128px"
-            class="page-enter page-enter--5"
           >
             <template #placeholder>
               <AnalysisBlockSkeleton
@@ -102,7 +101,6 @@ const rankingMinHeight = 619
           <LazyContainer
             :min-height="isMobileViewport ? 381 : 481"
             root-margin="0px 0px 96px"
-            class="page-enter page-enter--4"
           >
             <template #placeholder>
               <AnalysisBlockSkeleton
@@ -123,7 +121,6 @@ const rankingMinHeight = 619
           <LazyContainer
             :min-height="rankingMinHeight"
             root-margin="0px 0px 128px"
-            class="page-enter page-enter--5"
           >
             <template #placeholder>
               <AnalysisBlockSkeleton
@@ -146,3 +143,20 @@ const rankingMinHeight = 619
     </div>
   </WView>
 </template>
+
+<style lang="less" scoped>
+.dash-canvas {
+  background-image:
+    radial-gradient(
+      1100px 520px at -10% -8%,
+      rgb(var(--w-color-primary) / 12%),
+      transparent 70%
+    ),
+    radial-gradient(
+      900px 460px at 108% -6%,
+      rgb(var(--w-color-primary) / 9%),
+      transparent 72%
+    );
+  background-repeat: no-repeat;
+}
+</style>

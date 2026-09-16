@@ -1,6 +1,6 @@
 <template>
   <div
-    class="task-card-panel rounded-6 border-1 border-color-2 border-solid bg-container transition-[border-color,box-shadow] hover:(border-color-primary shadow-all-md)"
+    class="task-card-panel rounded-6 border-1 border-color-3 border-solid bg-container transition-[border-color,box-shadow] hover:(border-color-primary shadow-all-md)"
   >
     <div class="p-10 pb-6">
       <div class="flex items-start justify-between gap-8">
@@ -57,7 +57,7 @@
       </span>
     </div>
     <div
-      class="p-10 flex items-center border-t-1 border-t-solid border-color-2"
+      class="p-10 flex items-center border-t-1 border-t-solid border-color-3"
     >
       <span
         class="flex-1 inline-flex items-center justify-center gap-4 text-xs text-muted cursor-pointer hover:text-primary"

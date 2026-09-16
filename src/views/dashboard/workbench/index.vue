@@ -2,7 +2,7 @@
   <WView :full="false" :padding="false" class="bg-page">
     <Scrollbar content-class="min-h-full">
       <div
-        class="min-h-full w-full p-12 flex flex-col gap-12 overflow-x-hidden lg:p-16"
+        class="dash-canvas min-h-full w-full p-12 flex flex-col gap-12 overflow-x-hidden lg:p-16"
       >
         <section
           class="page-enter page-enter--1 flex flex-wrap gap-12 justify-between"
@@ -39,7 +39,7 @@
             >
               <button
                 type="button"
-                class="size-34 flex items-center justify-center rounded-6 border-1 border-color-2 border-solid bg-container text-regular transition-[border-color,background-color,box-shadow,transform,color] duration-motion-base hover:(border-color-primary bg-hover shadow-all -translate-y-1) active:translate-y-0"
+                class="size-34 flex-center rounded-6 border-1 border-color-2 border-solid bg-container text-regular cursor-pointer transition-[border-color,background-color,box-shadow,transform,color] duration-motion-base hover:(border-color-primary bg-primary-tint shadow-all -translate-y-1) active:translate-y-0"
                 :class="{
                   'border-color-primary bg-primary-tint text-primary shadow-all':
                     dragEnabled,
@@ -65,7 +65,7 @@
 
         <div
           ref="container"
-          class="workbench-grid min-w-0 [&_[data-swapy-highlighted]]:(bg-primary-tint outline-1 outline-primary outline-dashed)"
+          class="workbench-grid min-w-0 [&_[data-swapy-highlighted]]:(bg-primary-tint)"
           :class="{ 'workbench-grid--drag': dragEnabled }"
         >
           <a-row
@@ -262,29 +262,42 @@ watch(isLoading, async (value) => {
 })
 </script>
 
-<style scoped>
-.workbench-grid :deep([data-swapy-item]) {
-  transition:
-    box-shadow var(--w-motion-duration-base) var(--w-motion-ease-standard),
-    border-color var(--w-motion-duration-base) var(--w-motion-ease-standard),
-    background-color var(--w-motion-duration-base) var(--w-motion-ease-standard);
+<style lang="less" scoped>
+.dash-canvas {
+  background-image:
+    radial-gradient(
+      1100px 520px at -10% -8%,
+      rgb(var(--w-color-primary) / 12%),
+      transparent 70%
+    ),
+    radial-gradient(
+      900px 460px at 108% -6%,
+      rgb(var(--w-color-primary) / 9%),
+      transparent 72%
+    );
+  background-repeat: no-repeat;
 }
 
-.workbench-grid--drag :deep([data-swapy-item]) {
-  cursor: grab;
-  outline: 1px dashed rgb(var(--w-color-primary) / 22%);
-  outline-offset: 3px;
-}
+.workbench-grid {
+  :deep([data-swapy-item]) {
+    transition:
+      box-shadow var(--w-motion-duration-base) var(--w-motion-ease-standard),
+      border-color var(--w-motion-duration-base) var(--w-motion-ease-standard),
+      background-color var(--w-motion-duration-base)
+        var(--w-motion-ease-standard);
+  }
 
-.workbench-grid--drag :deep([data-swapy-dragging]) {
-  z-index: 1001 !important;
-  cursor: grabbing;
-  transition: none;
-  will-change: transform;
-}
+  &--drag {
+    :deep([data-swapy-item]) {
+      cursor: grab;
+      outline: 1px dashed rgb(var(--w-color-primary) / 22%);
+      outline-offset: 3px;
+    }
 
-.workbench-grid--drag :deep([data-swapy-slot]:has(> [data-swapy-dragging])) {
-  position: relative;
-  z-index: 1000;
+    :deep([data-swapy-slot]:has(> [data-swapy-dragging])) {
+      position: relative;
+      z-index: 1000;
+    }
+  }
 }
 </style>

@@ -5,7 +5,7 @@
     data-swapy-slot="action"
     class="page-enter page-enter--5 min-w-0"
   >
-    <a-card :styles="{ body: { padding: 0 } }" data-swapy-item="action">
+    <WCard :styles="{ body: { padding: 0 } }" data-swapy-item="action">
       <template #title>
         <span class="text-base text-main font-700">快捷操作</span>
       </template>
@@ -57,7 +57,7 @@
           </span>
         </button>
       </div>
-    </a-card>
+    </WCard>
   </section>
 
   <QuickActionManagerModal
@@ -69,6 +69,7 @@
 
 <script lang="ts" setup>
 import { useRouter } from 'vue-router'
+import { WCard } from '@/components'
 import { defaultWorkbenchActionIds, workbenchActions } from '../data'
 import ActionSkeleton from './ActionSkeleton.vue'
 import QuickActionManagerModal from './QuickActionManagerModal.vue'

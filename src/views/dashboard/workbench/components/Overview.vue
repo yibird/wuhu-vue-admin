@@ -2,12 +2,15 @@
   <OverviewSkeleton v-if="loading" />
   <section
     v-else
-    class="overflow-hidden rounded-4 border-1 border-color-2 border-solid bg-container transition-[border-color,box-shadow] duration-motion-base hover:(border-color-1 shadow-all-sm)"
+    class="workbench-hero overflow-hidden rounded-4 border-1 border-color-2 border-solid bg-container transition-[border-color,box-shadow] duration-motion-base hover:(border-color-1 shadow-all-sm)"
   >
     <div class="grid gap-0 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)]">
       <div class="min-w-0 p-16 sm:p-20">
         <div class="flex flex-col gap-14 sm:flex-row sm:items-center">
-          <a-avatar :size="54" class="shrink-0 bg-primary text-white">
+          <a-avatar
+            :size="54"
+            class="shrink-0 bg-gradient-to-br from-primary to-primary/65 text-white shadow-[0_10px_24px_rgb(var(--w-color-primary)_/_28%)]"
+          >
             吴
           </a-avatar>
           <div class="min-w-0">
@@ -113,3 +116,15 @@ const metrics: OverviewMetric[] = [
   },
 ]
 </script>
+
+<style lang="less" scoped>
+.workbench-hero {
+  background-image:
+    radial-gradient(
+      520px 230px at 0% 0%,
+      rgb(var(--w-color-primary) / 16%),
+      transparent 72%
+    ),
+    linear-gradient(135deg, rgb(var(--w-color-primary) / 8%), transparent 55%);
+}
+</style>

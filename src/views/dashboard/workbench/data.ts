@@ -113,7 +113,7 @@ export const workbenchActions: WorkbenchAction[] = [
     desc: '访问团队文件',
     tone: 'bg-warning-tint',
     text: 'text-warning',
-    path: '/dashboard/fileManger',
+    path: '/dashboard/file-manager',
   },
   {
     id: 'articles',

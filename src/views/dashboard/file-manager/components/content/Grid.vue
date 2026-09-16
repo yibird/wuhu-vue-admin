@@ -9,7 +9,7 @@ import {
   getFileExtension,
   getFileNameWithoutExtension,
 } from '../utils'
-import { useFileSelection } from '../../composables/useFileSelection'
+import { useFileSelection } from '../../composables'
 import textIcon from '@/assets/svg/text.svg'
 import videoIcon from '@/assets/svg/video.svg'
 import mp3Icon from '@/assets/svg/mp3.svg'
@@ -144,6 +144,14 @@ function handleDoubleClick(file: IFile) {
     return
   }
   emit('preview', file)
+}
+
+function handleGridItemClick(file: IFile, event: MouseEvent) {
+  if (event.detail === 2) {
+    handleDoubleClick(file)
+    return
+  }
+  handleItemClick(file, event)
 }
 
 function isImageFile(file: IFile) {
@@ -395,9 +403,8 @@ function handleAction(file: IFile, { key }: { key: string }) {
               ? 'border-color-primary bg-selected text-primary'
               : 'border-color-1 text-main',
           ]"
-          @click="handleItemClick(item, $event)"
-          @dblclick="handleDoubleClick(item)"
-          @keydown.enter.prevent="handleItemClick(item, $event)"
+          @click="handleGridItemClick(item, $event)"
+          @keydown.enter.prevent="handleDoubleClick(item)"
           @keydown.space.prevent="handleItemClick(item, $event)"
           @contextmenu.stop
         >
@@ -421,14 +428,18 @@ function handleAction(file: IFile, { key }: { key: string }) {
               class="text-warning"
             />
             <a-dropdown :trigger="['click']" :menu="getActionMenu(item)">
-              <span
+              <button
+                type="button"
                 data-file-manager-action
-                class="size-26 translate-y-1 flex-center rounded-4 text-secondary opacity-0 transition-[background-color,color,opacity,transform] group-hover:translate-y-0 group-hover:opacity-100 hover:(bg-hover text-primary) focus:translate-y-0 focus:opacity-100"
+                class="button size-26 translate-y-1 rounded-4 text-secondary opacity-0 transition-[background-color,color,opacity,transform] group-hover:translate-y-0 group-hover:opacity-100 hover:(bg-hover text-primary) focus-visible:(translate-y-0 bg-hover text-primary opacity-100)"
+                aria-label="更多操作"
+                @pointerdown.stop
                 @click.stop
+                @dblclick.stop
                 @contextmenu.stop
               >
                 <Icon name="i-lucide:more-horizontal" :size="16" />
-              </span>
+              </button>
             </a-dropdown>
           </div>
           <div class="mt-18 flex flex-col items-center text-center">

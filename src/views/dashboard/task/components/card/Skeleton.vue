@@ -32,7 +32,7 @@ const scrollbarOptions = {
             <div
               v-for="item in group === 4 ? 2 : 3"
               :key="item"
-              class="min-h-176 rounded-6 border-1 border-color-2 border-solid p-10"
+              class="min-h-176 rounded-6 border-1 border-color-3 border-solid p-10"
             >
               <div class="flex justify-between gap-8">
                 <a-skeleton-input active size="small" class="!w-136" />

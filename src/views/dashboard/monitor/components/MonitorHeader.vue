@@ -48,7 +48,7 @@ const emit = defineEmits<{
 
   <section
     v-else
-    class="page-enter page-enter--1 mb-12 overflow-hidden rounded-8 border-1 border-solid border-color-2 bg-container shadow-[var(--w-shadow-card)]"
+    class="monitor-hero page-enter page-enter--1 mb-12 overflow-hidden rounded-8 border-1 border-solid border-color-2 bg-container shadow-[var(--w-shadow-card)]"
   >
     <div
       class="flex flex-wrap items-center justify-between gap-12 border-b-1 border-b-solid border-color-2 px-14 py-14 sm:px-18 sm:py-16"
@@ -107,7 +107,7 @@ const emit = defineEmits<{
       <div class="px-14 py-12 sm:px-18 sm:py-14">
         <div class="text-xs text-secondary">健康评分</div>
         <div class="mt-6 flex items-end gap-6">
-          <span class="text-xl text-main font-800 sm:text-2xl">{{
+          <span class="monitor-hero__score text-xl font-800 sm:text-2xl">{{
             props.healthScore
           }}</span>
           <span class="pb-2 text-xs text-secondary">/ 100</span>
@@ -131,3 +131,25 @@ const emit = defineEmits<{
     </div>
   </section>
 </template>
+
+<style lang="less" scoped>
+.monitor-hero {
+  background-image:
+    radial-gradient(
+      520px 210px at 100% 0%,
+      rgb(var(--w-color-primary) / 16%),
+      transparent 70%
+    ),
+    linear-gradient(120deg, rgb(var(--w-color-primary) / 8%), transparent 52%);
+}
+
+.monitor-hero__score {
+  background: linear-gradient(
+    135deg,
+    rgb(var(--w-color-primary)),
+    rgb(var(--w-color-primary) / 62%)
+  );
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+</style>

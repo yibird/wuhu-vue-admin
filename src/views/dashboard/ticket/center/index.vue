@@ -15,7 +15,7 @@ import {
   TicketSummary,
   TicketCard,
 } from './components'
-import { useTickets } from './composables/useTickets'
+import { useTickets } from './composables'
 import { getTicketStatusMeta } from './data'
 import type { TicketDraft, TicketRecord, TicketStatus } from './types'
 

@@ -1,11 +1,7 @@
 <script lang="ts" setup>
 import VChart from 'vue-echarts'
 import Card from './Card.vue'
-import {
-  getCssRgbVar,
-  getCssRgbVarAlpha,
-  useEChartsTheme,
-} from '@/composables/useEChartsTheme'
+import { getCssRgbVar, getCssRgbVarAlpha, useEChartsTheme } from '@/composables'
 import { useDashboardECharts } from '@/plugins/echartsDashboard'
 import type { EChartsCoreOption } from 'echarts/core'
 
@@ -79,6 +75,7 @@ const chartOption = computed<EChartsCoreOption>(() => ({
 
 <template>
   <Card
+    class="page-enter page-enter--4"
     title="最近访问"
     icon="i-lucide:chart-area"
     description="近 9 日访问趋势"

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { CSSProperties } from 'vue'
+import { WCard } from '@/components'
 
 const props = withDefaults(
   defineProps<{
@@ -20,17 +21,16 @@ const cardStyles = computed<Record<string, CSSProperties>>(() => ({
     minHeight: '52px',
     borderBottom: '0',
     background:
-      'linear-gradient(135deg, rgb(var(--w-color-primary) / 8%) 0%, rgb(var(--w-color-info) / 5%) 48%, rgb(var(--w-bg-container)) 100%)',
+      'linear-gradient(135deg, rgb(var(--w-color-primary) / 5%) 0%, transparent 68%)',
   },
   body: {
     padding: props.bodyClass ? undefined : '16px',
-    background: 'rgb(var(--w-bg-container))',
   },
 }))
 </script>
 
 <template>
-  <a-card
+  <WCard
     class="overflow-hidden rounded-8 border-1 border-solid border-color-2 shadow-[var(--w-shadow-card)] transition-[border-color,box-shadow,transform] duration-motion-moderate ease-motion-enter hover:(-translate-y-2 shadow-[var(--w-shadow-elevated)]) motion-reduce:transition-none motion-reduce:hover:translate-y-0"
     variant="borderless"
     :body-class="bodyClass"
@@ -64,5 +64,5 @@ const cardStyles = computed<Record<string, CSSProperties>>(() => ({
     </template>
 
     <slot />
-  </a-card>
+  </WCard>
 </template>

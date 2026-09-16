@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import type { CSSProperties } from 'vue'
+import { WCard } from '@/components'
 
 withDefaults(
   defineProps<{
@@ -20,17 +21,14 @@ const cardStyles: Record<string, CSSProperties> = {
     minHeight: '52px',
     borderBottom: '0',
     background:
-      'linear-gradient(135deg, rgb(var(--w-color-primary) / 6%) 0%, rgb(var(--w-bg-container)) 68%)',
-  },
-  body: {
-    background: 'rgb(var(--w-bg-container))',
+      'linear-gradient(135deg, rgb(var(--w-color-primary) / 5%) 0%, transparent 68%)',
   },
 }
 </script>
 
 <template>
-  <a-card
-    class="analysis-card overflow-hidden rounded-8 border-1 border-solid border-color-2 shadow-[var(--w-shadow-card)]"
+  <WCard
+    class="overflow-hidden rounded-8 border-1 border-solid border-color-2 transition-[transform] duration-motion-base ease-motion-standard hover:(-translate-y-1) motion-reduce:(transform-none transition-none)"
     variant="borderless"
     :body-class="bodyClass"
     :styles="cardStyles"
@@ -63,30 +61,5 @@ const cardStyles: Record<string, CSSProperties> = {
     </template>
 
     <slot />
-  </a-card>
+  </WCard>
 </template>
-
-<style scoped>
-.analysis-card {
-  transition:
-    border-color var(--w-motion-duration-base) var(--w-motion-ease-standard),
-    box-shadow var(--w-motion-duration-base) var(--w-motion-ease-standard),
-    transform var(--w-motion-duration-base) var(--w-motion-ease-standard);
-}
-
-.analysis-card:hover {
-  border-color: rgb(var(--w-color-primary) / 22%);
-  box-shadow: 0 10px 28px rgb(var(--w-shadow-color) / 12%);
-  transform: translateY(-1px);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .analysis-card {
-    transition: none;
-  }
-
-  .analysis-card:hover {
-    transform: none;
-  }
-}
-</style>

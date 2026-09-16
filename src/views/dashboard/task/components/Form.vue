@@ -191,7 +191,7 @@
 import dayjs from 'dayjs'
 import type { Dayjs } from 'dayjs'
 import type { FormInstance } from 'antdv-next'
-import { UserPicker } from '@/features/UserPicker'
+import { UserPicker } from '@/features'
 import type { TaskFormState, TaskPriorityValue } from './types'
 import {
   getTaskAssigneeMeta,

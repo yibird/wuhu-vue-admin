@@ -5,7 +5,7 @@
     data-swapy-slot="analysis"
     class="page-enter page-enter--7 min-w-0"
   >
-    <a-card :styles="{ body: { padding: 0 } }" data-swapy-item="analysis">
+    <WCard :styles="{ body: { padding: 0 } }" data-swapy-item="analysis">
       <template #title>
         <span class="text-base text-main font-700">数据概览</span>
       </template>
@@ -76,11 +76,12 @@
           </div>
         </div>
       </div>
-    </a-card>
+    </WCard>
   </section>
 </template>
 
 <script lang="ts" setup>
+import { WCard } from '@/components'
 import { NumberTicker } from '@/components/number-ticker'
 import DataAnalysisSkeleton from './DataAnalysisSkeleton.vue'
 import type { AnalysisMetric, AnalysisRankItem } from './types'
