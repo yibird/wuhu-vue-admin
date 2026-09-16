@@ -2,9 +2,10 @@
 import { Loading } from '@/components/loading'
 import { Icon } from '@/components/icon'
 import { Scrollbar } from '@/components/scrollbar'
-import { LoadingAnimation, type LoadingAnimationType } from '@/constants'
+import { LoadingAnimation } from '@/constants'
+import type { LoadingAnimation as LoadingAnimationValue } from '@/config'
 
-const loadingType = shallowRef<LoadingAnimationType>(LoadingAnimation.Beat)
+const loadingType = shallowRef<LoadingAnimationValue>(LoadingAnimation.Beat)
 const showDescription = shallowRef(true)
 const fullScreenVisible = shallowRef(false)
 let fullScreenTimer: ReturnType<typeof setTimeout> | undefined
@@ -15,7 +16,7 @@ const loadingOptions = [
   { label: '脉冲扩散', value: LoadingAnimation.Pulse },
   { label: '柱状跳动', value: LoadingAnimation.Bars },
   { label: '圆环旋转', value: LoadingAnimation.Ring },
-] satisfies Array<{ label: string; value: LoadingAnimationType }>
+] satisfies Array<{ label: string; value: LoadingAnimationValue }>
 
 function previewFullScreen() {
   if (fullScreenTimer) clearTimeout(fullScreenTimer)
@@ -83,7 +84,7 @@ onBeforeUnmount(() => {
       v-if="fullScreenVisible"
       :type="loadingType"
       description="Wuhu-admin"
-      full-screen
+      full
     />
   </WView>
 </template>

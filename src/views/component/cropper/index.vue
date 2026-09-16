@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { message } from 'antdv-next'
-import { Icon, Scrollbar, Cropper, CropperPicker } from '@/components'
+import { Cropper, CropperPicker, Icon, Scrollbar } from '@/components'
 import loginBanner from '@/assets/svg/login-banner.svg'
 import type { CropperExpose } from '@/components'
 

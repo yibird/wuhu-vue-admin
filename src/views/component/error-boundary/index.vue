@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import {
+  ErrorBoundary,
   Icon,
   Scrollbar,
-  ErrorBoundary,
   type ErrorBoundaryErrorPayload,
 } from '@/components'
 import DemoFault from './DemoFault.vue'

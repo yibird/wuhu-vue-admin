@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { WView, Scrollbar } from '@/components'
+import { Scrollbar, WView } from '@/components'
 
 const headerCollapsed = shallowRef(false)
 const siderCollapsed = shallowRef(false)

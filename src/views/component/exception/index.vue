@@ -4,8 +4,8 @@ import {
   Error as ServerError,
   NotAuthorized,
   NotFound,
+  Scrollbar,
 } from '@/components'
-import { Scrollbar } from '@/components/scrollbar'
 
 const exceptionType = shallowRef('not-found')
 const exceptionOptions = [

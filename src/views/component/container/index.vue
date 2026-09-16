@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { usePreferredReducedMotion, useScroll, useToggle } from '@vueuse/core'
-import { Icon, Scrollbar, LazyContainer, ResizeContainer } from '@/components'
+import { Icon, LazyContainer, ResizeContainer, Scrollbar } from '@/components'
 import type { ContainerSize } from '@/components/container'
 
 const lazyViewportRef = useTemplateRef<HTMLElement>('lazyViewportRef')
