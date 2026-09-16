@@ -9,6 +9,7 @@ import {
 } from 'vue'
 import { useTabs } from '@/composables'
 import { useAppStore } from '@/store'
+import { normalizeSearchKeyword } from '@/utils'
 import { getMenuSearchScore } from '../search'
 import { useSearchHistory } from './useSearchHistory'
 
@@ -65,7 +66,7 @@ export function useSearch(options: UseSearchOptions) {
   }
 
   const allResults = computed<SiderSearchResult[]>(() => {
-    const keyword = options.value.value.trim().toLowerCase()
+    const keyword = normalizeSearchKeyword(options.value.value)
     if (!keyword) return []
 
     return searchableMenus.value

@@ -11,6 +11,7 @@ import { ConfigProvider } from 'antdv-next'
 import { useTheme } from '@/composables'
 import { useLocale } from '@/locales'
 import { Watermark } from '@/layouts/preferences/components'
+import type { VNodeChild } from 'vue'
 
 const { themeConfig } = useTheme()
 const { locale } = useLocale()

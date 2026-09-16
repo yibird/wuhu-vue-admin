@@ -1,6 +1,6 @@
 import { useRequest } from '@/utils'
 import { apiRequest } from '@/utils'
-import { usePagination } from './usePagination'
+import { usePagination, type TablePlusPagination } from './usePagination'
 import { useRowSelection } from './useRowSelection'
 
 import type { Result, PageResult } from '#/http'
@@ -10,10 +10,10 @@ type Api<T, P> = string | ((params: P) => Promise<Data<T>>) | Promise<Data<T>>
 
 export interface UseTableOptions<T, P> {
   /**
-   * @description 请求api,可以是api url,也可以是Promise或者返回一个Promise的函数
-   * @default
+   * @desc api请求,可以是api url,也可以是Promise或者返回一个Promise的函数
+   * @desc 不传时不会自动发起请求,适用于 TablePlus 通过 api 属性自行请求的场景
    */
-  api: Api<T, P>
+  api?: Api<T, P>
   /**
    * @desc api请求参数
    * @default {}
@@ -21,15 +21,12 @@ export interface UseTableOptions<T, P> {
   params?: P
   /**
    * @desc rowKey属性
-   * @default
    */
   rowKey?: (row: T) => string
-
   /**
    * @desc 分页的初始值
-   * @default
    */
-  initialPagination?: any
+  initialPagination?: Partial<TablePlusPagination>
 
   /**
    * 数据转换函数
@@ -53,9 +50,12 @@ export interface UseTableOptions<T, P> {
 }
 
 function getPromise<T, P>(
-  api: Api<T, P>,
+  api: Api<T, P> | undefined,
   params: P | undefined
 ): () => Promise<Data<T>> {
+  if (api === undefined) {
+    return async () => undefined as unknown as Data<T>
+  }
   if (typeof api === 'function') {
     return () => api(params as P)
   }
@@ -79,7 +79,7 @@ function getPromise<T, P>(
 export function useTable<
   T extends Record<string, any> = any,
   P extends Record<string, any> | undefined = any,
->(options: UseTableOptions<T, P> = { api: '' as any }) {
+>(options: UseTableOptions<T, P> = {}) {
   const {
     api,
     params,
@@ -98,6 +98,7 @@ export function useTable<
   const { data, loading, error, run, runAsync } = useRequest<Data<T>, [P]>(
     apiPromise,
     {
+      manual: api === undefined,
       onSuccess: (data, params) => onSuccess?.(data, params[0]),
       onAfter: (params) => onAfter?.(params[0]),
       onBefore: (params) => onBefore?.(params[0]),
@@ -129,7 +130,14 @@ export function useTable<
     return data.value?.data?.list ?? []
   })
 
-  const onCheckedRowKeys = (keys: any[], rows: any[], meta: any) => {
+  const onCheckedRowKeys = (
+    keys: Array<string | number>,
+    rows: T[],
+    meta: {
+      row?: T | undefined
+      action?: 'check' | 'uncheck' | 'checkAll' | 'uncheckAll'
+    }
+  ) => {
     handleCheck(keys, rows, meta)
   }
 

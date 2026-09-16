@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { onKeyStroke, useDateFormat, useNow } from '@vueuse/core'
-import { useAppStore, useAuthStore } from '@/store'
+import { useAppStore, useAuthStore, authStore } from '@/store'
+import { useGo } from '@/router'
 import { useLockScreen } from '../composables'
 import FlipClock from './components/FlipClock.vue'
 
@@ -22,7 +23,28 @@ const items = [
 const open = defineModel('open', { default: false })
 const { app } = useAppStore()
 const { user } = useAuthStore()
-const { unlock } = useLockScreen()
+const { to } = useGo()
+const {
+  isSetting,
+  failedAttempts,
+  maxAttempts,
+  confirmPin,
+  cancelSetting,
+  unlock,
+  clearPin,
+} = useLockScreen()
+
+const PIN_PATTERN = /^\d{4,8}$/
+const pin = shallowRef('')
+const pinError = shallowRef('')
+const submitting = shallowRef(false)
+
+const pinPlaceholder = computed(() =>
+  isSetting.value ? '设置 4-8 位数字解锁 PIN' : '输入解锁 PIN'
+)
+const actionLabel = computed(() =>
+  isSetting.value ? '开始锁定' : '解锁工作区'
+)
 
 const now = useNow({ interval: 1000 })
 const dateFormatter = new Intl.DateTimeFormat('zh-CN', {
@@ -59,8 +81,52 @@ const displayName = computed(
 )
 const userAvatar = computed(() => user.value?.avatar)
 
-function handleUnlock() {
-  unlock()
+function pinErrorMessage() {
+  if (failedAttempts.value === 0) return 'PIN 错误，请重试'
+  const remaining = maxAttempts - failedAttempts.value
+  return `PIN 错误，还可尝试 ${remaining} 次`
+}
+
+async function handleSubmit() {
+  if (submitting.value) return
+  const value = pin.value.trim()
+  if (!PIN_PATTERN.test(value)) {
+    pinError.value = '请输入 4-8 位数字 PIN'
+    return
+  }
+
+  submitting.value = true
+  try {
+    if (isSetting.value) {
+      await confirmPin(value)
+      pin.value = ''
+      pinError.value = ''
+      return
+    }
+
+    const result = await unlock(value)
+    if (result === 'unlocked') {
+      pin.value = ''
+      pinError.value = ''
+      return
+    }
+    if (result === 'exceeded') {
+      clearPin()
+      authStore().logout()
+      await to('/login', true)
+      return
+    }
+    pinError.value = pinErrorMessage()
+    pin.value = ''
+  } finally {
+    submitting.value = false
+  }
+}
+
+function handleCancelSetting() {
+  cancelSetting()
+  pin.value = ''
+  pinError.value = ''
 }
 
 onKeyStroke(
@@ -69,7 +135,7 @@ onKeyStroke(
     if (!open.value || event.defaultPrevented || event.isComposing) return
 
     event.preventDefault()
-    handleUnlock()
+    handleSubmit()
   },
   { dedupe: true }
 )
@@ -167,19 +233,51 @@ onKeyStroke(
               </h1>
             </div>
 
-            <a-button
-              type="primary"
-              size="large"
-              autofocus
-              data-testid="lock-screen-unlock"
-              class="mt-24 h-44! min-w-220 rounded-8! px-24! shadow-[0_8px_20px_rgb(var(--w-color-primary)_/_18%)] transition-[transform,box-shadow] duration-motion-base hover:(-translate-y-1 shadow-[0_12px_24px_rgb(var(--w-color-primary)_/_24%)]) active:translate-y-0 motion-reduce:(transform-none transition-none)"
-              @click="handleUnlock"
-            >
-              <template #icon>
-                <Icon name="i-lucide:unlock-keyhole" />
-              </template>
-              解锁工作区
-            </a-button>
+            <div class="mt-24 w-full max-w-320 flex flex-col items-center">
+              <a-input-password
+                v-model:value="pin"
+                :maxlength="8"
+                autocomplete="off"
+                autofocus
+                :placeholder="pinPlaceholder"
+                size="large"
+                @change="pinError = ''"
+              />
+              <span
+                v-if="pinError"
+                role="alert"
+                class="mt-8 min-h-22 text-sm text-error"
+              >
+                {{ pinError }}
+              </span>
+              <div class="mt-8 flex items-center gap-12">
+                <a-button
+                  v-if="isSetting"
+                  size="large"
+                  :disabled="submitting"
+                  @click="handleCancelSetting"
+                >
+                  取消
+                </a-button>
+                <a-button
+                  type="primary"
+                  size="large"
+                  data-testid="lock-screen-unlock"
+                  :loading="submitting"
+                  class="h-44! min-w-220 rounded-8! shadow-[0_8px_20px_rgb(var(--w-color-primary)_/_18%)] transition-[transform,box-shadow] duration-motion-base hover:(-translate-y-1 shadow-[0_12px_24px_rgb(var(--w-color-primary)_/_24%)]) active:translate-y-0 motion-reduce:(transform-none transition-none)"
+                  @click="handleSubmit"
+                >
+                  <template #icon>
+                    <Icon
+                      :name="
+                        isSetting ? 'i-lucide:lock' : 'i-lucide:unlock-keyhole'
+                      "
+                    />
+                  </template>
+                  {{ actionLabel }}
+                </a-button>
+              </div>
+            </div>
           </main>
         </div>
       </div>

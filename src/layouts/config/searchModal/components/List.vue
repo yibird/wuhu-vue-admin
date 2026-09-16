@@ -94,10 +94,11 @@
 <script setup lang="ts">
 import { onKeyStroke } from '@vueuse/core'
 import {
-  getPinyinSearchMatch,
+  getSearchMatch,
   getSearchTextSegments,
+  normalizeSearchKeyword,
   type SearchTextSegment,
-} from './pinyin'
+} from '@/utils'
 import type { ListEmits, ListProps } from './types'
 import type { IMenu } from '#/config'
 import type { ScrollbarInstance } from '@/components/scrollbar'
@@ -115,7 +116,7 @@ interface SearchResult {
 }
 
 const renderItems = computed(() => {
-  const keyword = searchValue.trim()
+  const keyword = normalizeSearchKeyword(searchValue)
   if (!keyword) {
     return items.map<SearchResult>((item, index) => ({
       item,
@@ -127,7 +128,7 @@ const renderItems = computed(() => {
 
   const results: SearchResult[] = []
   items.forEach((item, index) => {
-    const match = getPinyinSearchMatch(item.title, keyword)
+    const match = getSearchMatch(item.title, keyword)
     if (!match) return
 
     results.push({

@@ -88,7 +88,7 @@ watch(
   () => formData.password,
   () => {
     if (formData.confirmPassword) {
-      void formRef.value?.validateFields(['confirmPassword'])
+      formRef.value?.validateFields(['confirmPassword'])
     }
   }
 )

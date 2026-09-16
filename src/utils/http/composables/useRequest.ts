@@ -176,7 +176,7 @@ export function useRequest<TData, TParams extends unknown[] = []>(
     } else {
       const debouncedRun = useDebounceFn(run, debounceWait)
       wrappedRun = (...args: TParams) => {
-        void debouncedRun(...args)
+        debouncedRun(...args)
       }
       cancelScheduledRun = () =>
         (debouncedRun as CancellableFunction).cancel?.()
@@ -184,7 +184,7 @@ export function useRequest<TData, TParams extends unknown[] = []>(
   } else if (throttleWait && throttleWait > 0) {
     const throttledRun = useThrottleFn(run, throttleWait, true, throttleLeading)
     wrappedRun = (...args: TParams) => {
-      void throttledRun(...args)
+      throttledRun(...args)
     }
     cancelScheduledRun = () => (throttledRun as CancellableFunction).cancel?.()
   }
@@ -228,16 +228,15 @@ export function useRequest<TData, TParams extends unknown[] = []>(
       true,
       true
     )
-    const onFocus = () => void throttledRefresh()
-    const onVisibilityChange = () => {
-      if (document.visibilityState === 'visible') void throttledRefresh()
-    }
+    const onFocus = () => throttledRefresh()
+    const stopFocusVisibilityWatch = watch(docVisibility, (visibility) => {
+      if (visibility === 'visible') throttledRefresh()
+    })
 
     window.addEventListener('focus', onFocus)
-    window.addEventListener('visibilitychange', onVisibilityChange)
     cleanupWindowFocus = () => {
       window.removeEventListener('focus', onFocus)
-      window.removeEventListener('visibilitychange', onVisibilityChange)
+      stopFocusVisibilityWatch()
       ;(throttledRefresh as CancellableFunction).cancel?.()
     }
   }

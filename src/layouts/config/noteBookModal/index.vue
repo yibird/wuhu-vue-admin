@@ -2,7 +2,7 @@
 import { useMediaQuery } from '@vueuse/core'
 import { message } from 'antdv-next'
 import { Icon } from '@/components/icon'
-import { useNotebook } from './composables/useNotebook'
+import { useNotebook } from './composables'
 import type { NoteItem } from './types'
 
 const show = defineModel('show', { default: false })

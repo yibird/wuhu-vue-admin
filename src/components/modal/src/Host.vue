@@ -136,7 +136,7 @@ function destroy() {
 }
 
 function retryLoad() {
-  void loadComponent(options.value.component)
+  loadComponent(options.value.component)
 }
 
 defineExpose({ close, destroy })

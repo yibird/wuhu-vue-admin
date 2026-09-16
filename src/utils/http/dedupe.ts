@@ -29,6 +29,7 @@ export function buildRequestDedupKey(
   options: ApiRequestOptions = {}
 ): string | null {
   if (options.signal) return null
+  if (options.responseType && options.responseType !== 'json') return null
   const method = getRequestMethod(input, options)
   const canUseAutoKey = method === RequestMethod.GET
   const shouldDedupe = options.dedupe ?? canUseAutoKey

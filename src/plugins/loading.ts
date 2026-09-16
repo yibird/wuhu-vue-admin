@@ -1,4 +1,5 @@
 import { formatRgbColor } from '../utils/color.ts'
+import { replayPageEnterAnimations } from '../composables/usePageEnter.ts'
 
 interface LoadingThemeOptions {
   themeColor?: string
@@ -39,6 +40,7 @@ export function hideAppLoading() {
       window.setTimeout(() => {
         loadingEl.remove()
         loadingStyleEl?.remove()
+        replayPageEnterAnimations()
       }, 320)
     })
   })

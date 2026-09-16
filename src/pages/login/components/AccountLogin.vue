@@ -221,7 +221,7 @@ const removeClearButtonFromTabOrder = () => {
 }
 
 onMounted(() => {
-  void nextTick(removeClearButtonFromTabOrder)
+  nextTick(removeClearButtonFromTabOrder)
 
   try {
     const account = localStorage.getItem(rememberedAccountKey)
@@ -235,6 +235,6 @@ onMounted(() => {
 
 watch(
   () => formData.account,
-  () => void nextTick(removeClearButtonFromTabOrder)
+  () => nextTick(removeClearButtonFromTabOrder)
 )
 </script>

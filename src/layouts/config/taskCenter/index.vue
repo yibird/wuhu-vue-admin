@@ -5,7 +5,7 @@ import TaskCenterFilters from './components/TaskCenterFilters.vue'
 import TaskCenterList from './components/TaskCenterList.vue'
 import TaskCenterStats from './components/TaskCenterStats.vue'
 import TaskCreateModal from './components/TaskCreateModal.vue'
-import { useTaskCenter } from './composables/useTaskCenter'
+import { useTaskCenter } from './composables'
 
 const show = defineModel('show', { default: false })
 const isNarrowScreen = useMediaQuery('(max-width: 768px)')

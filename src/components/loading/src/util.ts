@@ -39,8 +39,8 @@ export function createLoading() {
 
   instance = createApp(Loading, {
     description: import.meta.env.VITE_APP_NAME,
-    fullScreen: true,
-    animation: store.animation.loadingAnimation,
+    full: true,
+    type: store.animation.loadingAnimation,
   })
   instance.mount(container)
 }

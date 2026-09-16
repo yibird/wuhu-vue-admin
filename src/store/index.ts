@@ -13,8 +13,5 @@ export type { TabState } from './tabs/types'
 export { permissionStore, usePermissionStore } from './permission'
 export type { PermissionState } from './permission/types'
 
-export { dictStore, useDictStore } from './dict'
-export type { DictState } from './dict/types'
-
 export { authStore, useAuthStore } from './auth'
 export type { AuthState } from './auth/types'

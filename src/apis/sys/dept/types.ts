@@ -4,6 +4,10 @@ export type DeptType = 1 | 2
 
 export interface DeptResp extends BaseResp {
   /**
+   * @desc 上级部门ID，0表示根部门
+   */
+  parentId: string
+  /**
    * @desc 部门名称
    */
   name: string
@@ -30,6 +34,7 @@ export interface DeptResp extends BaseResp {
 }
 
 export interface CreateDeptReq {
+  parentId: string
   name: string
   code: string
   type: DeptType

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import Exception from './Exception.vue'
 import clientErrorSvg from '@/assets/svg/500.svg'
-import type { ErrorBoundaryErrorPayload } from '@/components/error-boundary'
+import type { ErrorBoundaryErrorPayload } from '../../error-boundary'
 
 interface ClientErrorProps {
   readonly error: ErrorBoundaryErrorPayload | null

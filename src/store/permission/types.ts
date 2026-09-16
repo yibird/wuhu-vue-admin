@@ -9,4 +9,6 @@ export interface PermissionState {
   flatMenusCache: Map<string, IMenu>
   // 权限列表
   permissions: string[]
+  // 菜单版本号,菜单变化时递增,用于派生缓存失效
+  menusVersion: number
 }

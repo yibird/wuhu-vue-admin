@@ -15,8 +15,19 @@ const tokenRequestHook: BeforeRequestHook = ({ request: req }) => {
   return req
 }
 
+function createTraceId(): string {
+  if (
+    typeof crypto !== 'undefined' &&
+    typeof crypto.randomUUID === 'function'
+  ) {
+    return crypto.randomUUID()
+  }
+  const random = () => Math.random().toString(36).slice(2, 10)
+  return `${Date.now().toString(36)}-${random()}-${random()}`
+}
+
 const traceIdRequestHook: BeforeRequestHook = ({ request: req }) => {
-  req.headers.set('X-Trace-Id', crypto.randomUUID())
+  req.headers.set('X-Trace-Id', createTraceId())
 }
 
 export const beforeRequest: BeforeRequestHook[] = [

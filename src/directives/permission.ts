@@ -5,7 +5,6 @@ import type { Directive, DirectiveBinding } from 'vue'
 type PermissionValue = string | string[]
 
 interface PermissionElement extends HTMLElement {
-  _permissionParent?: ParentNode | null
   _permissionComment?: Comment
 }
 
@@ -19,7 +18,6 @@ export const permission: Directive<PermissionElement, PermissionValue> = {
     if (!checkPermission(binding.value)) {
       const comment = document.createComment('v-permission')
       el._permissionComment = comment
-      el._permissionParent = el.parentNode
       el.parentNode?.replaceChild(comment, el)
     }
   },
@@ -35,7 +33,6 @@ export const permission: Directive<PermissionElement, PermissionValue> = {
       // 移除元素，用注释占位
       const newComment = document.createComment('v-permission')
       el._permissionComment = newComment
-      el._permissionParent = el.parentNode
       el.parentNode?.replaceChild(newComment, el)
     }
   },

@@ -9,10 +9,10 @@ export type TablePlusColumn<T = Record<string, unknown>> = {
   title?: string | (() => VNodeChild)
   show?: boolean
   customRender?: (opt: {
-    text: any
+    text: unknown
     record: T
     index: number
-    column: any
+    column: unknown
   }) => VNodeChild
   [key: string]: any
 }
@@ -22,7 +22,7 @@ export interface TablePlusProps<T = any> extends Omit<
   'columns' | 'rowSelection'
 > {
   checkedRowKeys?: Array<string | number>
-  customRow?: (record: T, index: number) => any
+  customRow?: (record: T, index: number) => Record<string, unknown>
   columns?: TablePlusColumn<T>[]
   striped?: boolean
   singleColumn?: boolean
@@ -67,9 +67,17 @@ export interface TablePlusEmits<T = any> {
   (e: 'refresh'): void
 }
 
-export interface TablePlusSlots {
+export interface TablePlusSlots<
+  T extends Record<string, any> = Record<string, any>,
+> {
   headerLeft?: () => VNode[]
   headerRight?: () => VNode[]
+  bodyCell?: (props: {
+    text: unknown
+    record: T
+    index: number
+    column: TablePlusColumn<T>
+  }) => VNodeChild
 }
 
 export interface TableContextState<T> extends TablePlusProps<T> {

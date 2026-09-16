@@ -1,18 +1,8 @@
 <script lang="ts" setup>
-import type { SelectProps } from 'antdv-next'
-import type { UserPickerOption } from './types'
+import { matchesOption } from '@/utils'
+import type { UserPickerProps, UserPickerOption } from './types'
 
-interface Props {
-  options?: UserPickerOption[]
-  placeholder?: string
-  disabled?: boolean
-  allowClear?: boolean
-  loading?: boolean
-  size?: SelectProps['size']
-  popupMatchSelectWidth?: SelectProps['popupMatchSelectWidth']
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<UserPickerProps>(), {
   options: () => [],
   placeholder: '请选择用户',
   disabled: false,
@@ -35,15 +25,14 @@ function getAvatarClass(option?: UserPickerOption) {
   return option?.avatarClass ?? 'bg-fill-secondary text-secondary'
 }
 
-function getOptionText(option?: UserPickerOption) {
-  return [option?.label, option?.role, option?.department, option?.email]
-    .filter(Boolean)
-    .join(' ')
-    .toLowerCase()
-}
-
 function filterOption(inputValue: string, option?: UserPickerOption) {
-  return getOptionText(option).includes(inputValue.trim().toLowerCase())
+  return matchesOption(
+    inputValue,
+    option?.label,
+    option?.role,
+    option?.department,
+    option?.email
+  )
 }
 </script>
 

@@ -83,12 +83,7 @@ function onComplete(value: Color) {
           ]"
           :style="item.style"
         >
-          <Transition
-            enter-active-class="transition-[opacity,transform] duration-motion-base ease-motion-enter motion-reduce:transition-none"
-            enter-from-class="scale-60 -rotate-10 opacity-0 motion-reduce:(scale-100 rotate-0)"
-            leave-active-class="transition-[opacity,transform] duration-motion-fast ease-motion-exit motion-reduce:transition-none"
-            leave-to-class="scale-60 -rotate-10 opacity-0 motion-reduce:(scale-100 rotate-0)"
-          >
+          <Transition name="fade-pop">
             <span
               v-if="item.selected"
               class="size-18 flex items-center justify-center rounded-full text-white"

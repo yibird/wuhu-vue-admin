@@ -3,11 +3,12 @@ import enGB from 'antdv-next/locale/en_GB'
 import { useAppStore } from '@/store'
 import type { Locale as AntdvLocale } from 'antdv-next/dist/locale'
 
-import { Locale, type LocaleType } from '@/constants'
+import { Locale } from '@/constants'
+import type { Locale as LocaleValue } from '@/config'
 import { useI18n } from 'vue-i18n'
 
 const locales: Record<
-  LocaleType,
+  LocaleValue,
   {
     locale: AntdvLocale
   }
@@ -30,7 +31,7 @@ export function useLocale() {
     return item.locale
   })
 
-  const changeLocale = (newLocale: LocaleType) => {
+  const changeLocale = (newLocale: LocaleValue) => {
     app.value.locale = newLocale
     i18nLocale.value = newLocale
   }

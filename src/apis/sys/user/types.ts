@@ -8,6 +8,18 @@ export type UserSource = 0 | 1 | 2
 
 export interface UserResp extends BaseResp {
   /**
+   * @desc 所属部门ID
+   */
+  deptId?: string
+  /**
+   * @desc 所属岗位ID
+   */
+  postId?: string
+  /**
+   * @desc 角色ID
+   */
+  roleId?: string
+  /**
    * @desc 角色名称
    */
   username: string
@@ -39,6 +51,10 @@ export interface UserResp extends BaseResp {
    * @desc 手机号
    */
   phone: string
+  /**
+   * @desc 微信号
+   */
+  wechat: string
   /**
    * @desc 邮箱
    */
@@ -82,6 +98,10 @@ export interface CreateUserReq {
   work_experience: UserWorkExperience
   marital_status: UserMaritalStatus
   source: UserSource
+  deptId: string
+  postId: string
+  roleId: string
+  wechat: string
   small_avatar?: string
   big_avatar?: string
   birthday?: string

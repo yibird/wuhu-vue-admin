@@ -1,5 +1,4 @@
-import PinyinMatch from 'pinyin-match'
-
+import { getSearchMatch, normalizeSearchKeyword } from '@/utils'
 import type { IMenu } from '#/config'
 
 const PINYIN_SCORE_OFFSET = 1000
@@ -7,11 +6,10 @@ const CONTEXT_SCORE_OFFSET = 2000
 const CONTEXT_PINYIN_SCORE_OFFSET = 3000
 
 function getPinyinScore(text: string, keyword: string, offset: number) {
-  const range = PinyinMatch.match(text, keyword)
-  if (!range) return Number.POSITIVE_INFINITY
+  const match = getSearchMatch(text, keyword)
+  if (!match || match.source !== 'pinyin') return Number.POSITIVE_INFINITY
 
-  const [start, end] = range
-  return offset + start * 10 + end - start
+  return offset + match.start * 10 + match.end - match.start
 }
 
 export function getMenuSearchScore(
@@ -19,7 +17,7 @@ export function getMenuSearchScore(
   keyword: string,
   breadcrumb = ''
 ) {
-  const normalizedKeyword = keyword.trim().toLowerCase()
+  const normalizedKeyword = normalizeSearchKeyword(keyword)
   if (!normalizedKeyword) return Number.POSITIVE_INFINITY
 
   const title = item.title.toLowerCase()

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { Icon } from '@/components/icon'
-import { CodeEditor } from '@/components/code-editor'
+import { CodeEditor } from '../../code-editor'
+import { Icon } from '../../icon'
 import { inferFilePreviewKind, resolveFilePreviewUrl } from './source'
 import { useTextPreview } from './useTextPreview'
 import type { FilePreviewLocale, FilePreviewProps } from './types'

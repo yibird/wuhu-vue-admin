@@ -22,7 +22,7 @@
           >
             <div
               v-for="(item, index) in settingColumns"
-              :key="item.key ?? index"
+              :key="item.key ?? item.dataIndex ?? index"
               :index="index"
               class="group flex items-center justify-between py-6 px-5 rounded-4 cursor-pointer hover:(bg-[#f8f8f8])"
             >
@@ -31,7 +31,10 @@
                 <a-checkbox
                   class="ml-10"
                   :checked="item.show"
-                  @change="(e: any) => onChecked(index, e.target.checked)"
+                  @change="
+                    (e: { target: { checked: boolean } }) =>
+                      onChecked(index, e.target.checked)
+                  "
                   >{{ getTitle(item.title) }}</a-checkbox
                 >
               </div>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Icon } from '@/components'
+import { Icon } from '../../icon'
 import { getCssSize, viewContextKey } from './context'
 import type {
   ViewCollapseEmits,

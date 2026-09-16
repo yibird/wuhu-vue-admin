@@ -2,7 +2,7 @@
   <a-dropdown
     :trigger="['hover']"
     :menu="{
-      items: localeOptions,
+      items: menuItems,
       selectedKeys: [appLocale],
       onClick: onLocaleClick,
     }"
@@ -17,6 +17,13 @@ import { useLocale } from '@/locales'
 import { localeOptions, type Locale } from '@/config'
 
 const { appLocale, changeLocale } = useLocale()
+
+const menuItems = computed(() =>
+  localeOptions.map((option) => ({
+    key: option.value,
+    label: option.label,
+  }))
+)
 
 const onLocaleClick = ({ key }: { key: string }) => {
   changeLocale(key as Locale)

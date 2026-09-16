@@ -1,8 +1,27 @@
+import type { Ref, VNodeChild } from 'vue'
+
+export interface TablePlusPaginationInfo {
+  itemCount?: number
+}
+
+export interface TablePlusPagination {
+  page?: number
+  pageSize?: number
+  itemCount?: number
+  pageSizes?: number[]
+  showQuickJumpDropdown?: boolean
+  showQuickJumper?: boolean
+  showSizePicker?: boolean
+  prefix?: (info: TablePlusPaginationInfo) => VNodeChild
+  onUpdatePage?: (page: number) => void
+  onUpdatePageSize?: (pageSize: number) => void
+}
+
 export interface UsePaginationOptions {
   /**
    * 分页的初始值
    */
-  initial?: any
+  initial?: Partial<TablePlusPagination>
   /**
    * @desc 总条数
    * @default 0
@@ -17,14 +36,14 @@ export interface UsePaginationOptions {
   onPaginate?: (page: number, pageSize: number) => void
 }
 
-const defaultPagination: any = {
+const defaultPagination: TablePlusPagination = {
   pageSizes: [10, 20, 30, 50, 100, 200],
   pageSize: 10,
   page: 1,
   showQuickJumpDropdown: true,
   showQuickJumper: true,
   showSizePicker: true,
-  prefix(info: any) {
+  prefix(info) {
     return h('div', [
       h('span', '共'),
       h(
@@ -41,7 +60,7 @@ export function usePagination(options?: UsePaginationOptions) {
   const { itemCount = ref(0), onPaginate } = options || {}
 
   const initialPagination = { ...defaultPagination, ...options?.initial }
-  const pagination = reactive<any>(initialPagination)
+  const pagination = reactive<TablePlusPagination>(initialPagination)
 
   const changePage = (page: number) => {
     Object.assign(pagination, {
@@ -70,7 +89,7 @@ export function usePagination(options?: UsePaginationOptions) {
   pagination.onUpdatePageSize = changePageSize
 
   return {
-    pagination: pagination as any,
+    pagination,
     changePage,
     changePageSize,
   }

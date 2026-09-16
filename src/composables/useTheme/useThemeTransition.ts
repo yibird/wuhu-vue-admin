@@ -1,10 +1,11 @@
 import { nextTick } from 'vue'
-import { ThemeMode, type ThemeModeType } from '@/constants'
+import { ThemeMode } from '@/constants'
+import type { ThemeMode as ThemeModeValue } from '@/config'
 
 const THEME_VIEW_TRANSITION_DURATION = 450
 const THEME_TRANSITION_CLASS = 'w-theme-transitioning'
 
-type ResolvedThemeMode = Exclude<ThemeModeType, typeof ThemeMode.Auto>
+type ResolvedThemeMode = Exclude<ThemeModeValue, typeof ThemeMode.Auto>
 
 const prefersReducedMotionQuery =
   typeof window !== 'undefined'
@@ -17,7 +18,7 @@ function getSystemTheme(): ResolvedThemeMode {
     : ThemeMode.Light
 }
 
-function resolveThemeMode(mode: ThemeModeType): ResolvedThemeMode {
+function resolveThemeMode(mode: ThemeModeValue): ResolvedThemeMode {
   return mode === ThemeMode.Auto ? getSystemTheme() : mode
 }
 
@@ -74,12 +75,12 @@ function createThemeClipPath(x: number, y: number) {
 }
 
 export function useThemeTransition(options: {
-  appThemeMode: () => ThemeModeType
+  appThemeMode: () => ThemeModeValue
   resolvedThemeMode: () => ResolvedThemeMode
-  changeThemeMode: (mode: ThemeModeType) => void
+  changeThemeMode: (mode: ThemeModeValue) => void
 }) {
   let transitioning = false
-  async function changeThemeWithAnimation(event: Event, mode: ThemeModeType) {
+  async function changeThemeWithAnimation(event: Event, mode: ThemeModeValue) {
     if (transitioning || options.appThemeMode() === mode) {
       return
     }

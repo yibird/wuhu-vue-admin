@@ -20,7 +20,7 @@
   <DownloadCenter v-model:show="show" />
 </template>
 <script lang="ts" setup>
-import { useDownloadCenter } from '@/layouts/config/downloadCenter/composables/useDownloadCenter'
+import { useDownloadCenter } from '@/layouts/config/downloadCenter/composables'
 
 const show = ref(false)
 const DownloadCenter = defineAsyncComponent(

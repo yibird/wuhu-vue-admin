@@ -248,6 +248,11 @@
   --w-shadow-elevated: 0 12px 32px rgb(15 23 42 / 10%);
   // 阴影次要色
   --w-shadow-sider: 8px 0 12px -6px rgb(15 23 42 / 12%);
+  // 卡片阴影
+  --w-shadow-card: 0 1px 2px rgb(15 23 42 / 6%), 0 6px 16px rgb(15 23 42 / 6%);
+  // 焦点环
+  --w-shadow-focus: 0 0 0 3px rgb(var(--w-color-primary) / 16%);
+  --w-shadow-focus-strong: 0 0 0 3px rgb(var(--w-color-primary) / 28%);
 
   // ===================================== 动效
   // 动效时长：交互影响范围越大，持续时间越长；离场动画通常比入场动画短一级。
@@ -308,61 +313,63 @@
 [data-theme='dark'] {
   color-scheme: dark;
   // ===================================== 文字颜色
-  --w-text-main: 248, 250, 252;
-  --w-text-regular: 203, 213, 225;
-  --w-text-secondary: 148, 163, 184;
-  --w-text-muted: 100, 116, 139;
-  --w-text-placeholder: 71, 85, 105;
-  --w-text-disabled: 51, 65, 85;
+  // 对齐 antdv-next dark：主文字 #fff，其余为透明白叠加在 #141414 上的等效实色
+  --w-text-main: 255, 255, 255;
+  --w-text-regular: 220, 220, 220;
+  --w-text-secondary: 173, 173, 173;
+  --w-text-muted: 126, 126, 126;
+  --w-text-placeholder: 79, 79, 79;
+  --w-text-disabled: 64, 64, 64;
   --w-text-link: 96, 165, 250;
 
   // ===================================== 背景颜色
-  --w-bg-page: 15, 23, 42;
-  --w-bg-base: 15, 23, 42;
-  --w-bg-elevated: 30, 41, 59;
-  --w-bg-container: 30, 41, 59;
-  --w-bg-container-secondary: 15, 23, 42;
-  --w-bg-secondary: 15, 23, 42;
+  // 对齐 antdv-next dark：layout #000 < container #141414 < elevated #1f1f1f
+  --w-bg-page: 0, 0, 0;
+  --w-bg-base: 20, 20, 20;
+  --w-bg-elevated: 31, 31, 31;
+  --w-bg-container: 20, 20, 20;
+  --w-bg-container-secondary: 31, 31, 31;
+  --w-bg-secondary: 31, 31, 31;
 
   // ===================================== 悬浮色
-  --w-bg-hover-1: 30 41 59;
-  --w-bg-hover-2: 35 48 68;
-  --w-bg-hover-3: 41 56 79;
-  --w-bg-hover-4: 51 65 85;
-  --w-bg-hover-5: 61 78 102;
-  --w-bg-hover-6: 71 85 105;
-  --w-bg-hover-7: 86 102 124;
-  --w-bg-hover-8: 100 116 139;
+  --w-bg-hover-1: 24 24 24;
+  --w-bg-hover-2: 29 29 29;
+  --w-bg-hover-3: 34 34 34;
+  --w-bg-hover-4: 39 39 39;
+  --w-bg-hover-5: 44 44 44;
+  --w-bg-hover-6: 48 48 48;
+  --w-bg-hover-7: 55 55 55;
+  --w-bg-hover-8: 62 62 62;
 
   // ===================================== 激活颜色
-  --w-bg-active-1: 23 37 84;
-  --w-bg-active-2: 30 58 138;
-  --w-bg-active-3: 29 78 216;
-  --w-bg-active-4: 37 99 235;
-  --w-bg-active-5: 59 130 246;
-  --w-bg-active-6: 96 165 250;
-  --w-bg-active-7: 147 197 253;
-  --w-bg-active-8: 191 219 254;
+  --w-bg-active-1: 20 26 34;
+  --w-bg-active-2: 20 30 44;
+  --w-bg-active-3: 20 35 55;
+  --w-bg-active-4: 20 40 67;
+  --w-bg-active-5: 21 48 86;
+  --w-bg-active-6: 21 58 109;
+  --w-bg-active-7: 21 70 138;
+  --w-bg-active-8: 21 84 173;
 
   // ===================================== 选中颜色
-  --w-bg-selected-1: 23 37 84;
-  --w-bg-selected-2: 30 58 138;
-  --w-bg-selected-3: 29 78 216;
-  --w-bg-selected-4: 37 99 235;
-  --w-bg-selected-5: 59 130 246;
-  --w-bg-selected-6: 96 165 250;
-  --w-bg-selected-7: 147 197 253;
-  --w-bg-selected-8: 191 219 254;
+  --w-bg-selected-1: 20 26 34;
+  --w-bg-selected-2: 20 30 44;
+  --w-bg-selected-3: 20 35 55;
+  --w-bg-selected-4: 20 40 67;
+  --w-bg-selected-5: 21 48 86;
+  --w-bg-selected-6: 21 58 109;
+  --w-bg-selected-7: 21 70 138;
+  --w-bg-selected-8: 21 84 173;
 
   // ===================================== 禁用颜色
-  --w-bg-disabled-1: 15 23 42;
-  --w-bg-disabled-2: 17 24 39;
-  --w-bg-disabled-3: 22 30 46;
-  --w-bg-disabled-4: 30 41 59;
-  --w-bg-disabled-5: 35 48 68;
-  --w-bg-disabled-6: 41 56 79;
-  --w-bg-disabled-7: 51 65 85;
-  --w-bg-disabled-8: 71 85 105;
+  --w-bg-disabled-1: 20 20 20;
+  --w-bg-disabled-2: 24 24 24;
+  --w-bg-disabled-3: 24 24 24;
+  --w-bg-disabled-4: 29 29 29;
+  --w-bg-disabled-5: 34 34 34;
+  --w-bg-disabled-6: 39 39 39;
+  --w-bg-disabled-7: 44 44 44;
+  --w-bg-disabled-8: 48 48 48;
 
   // ===================================== 蒙层颜色
   --w-bg-mask-rgb: 0 0 0;
@@ -376,17 +383,17 @@
   --w-bg-mask-8: rgb(var(--w-bg-mask-rgb) / 90%);
 
   // ===================================== 填充色
-  --w-bg-fill-1: 15 23 42;
-  --w-bg-fill-2: 20 28 48;
-  --w-bg-fill-3: 25 35 53;
-  --w-bg-fill-4: 30 41 59;
-  --w-bg-fill-5: 35 48 68;
-  --w-bg-fill-6: 41 56 79;
-  --w-bg-fill-7: 51 65 85;
-  --w-bg-fill-8: 71 85 105;
-  --w-fill-secondary: 30, 41, 59;
-  --w-fill-tertiary: 25, 35, 53;
-  --w-fill-quaternary: 15, 23, 42;
+  --w-bg-fill-1: 24 24 24;
+  --w-bg-fill-2: 29 29 29;
+  --w-bg-fill-3: 34 34 34;
+  --w-bg-fill-4: 39 39 39;
+  --w-bg-fill-5: 44 44 44;
+  --w-bg-fill-6: 48 48 48;
+  --w-bg-fill-7: 55 55 55;
+  --w-bg-fill-8: 62 62 62;
+  --w-fill-secondary: 48, 48, 48;
+  --w-fill-tertiary: 39, 39, 39;
+  --w-fill-quaternary: 29, 29, 29;
 
   // ===================================== 语义色背景
   --w-bg-primary-tint: color-mix(
@@ -409,20 +416,21 @@
   --w-bg-info-tint-hover: 30, 58, 138;
 
   // ===================================== 边框颜色
-  --w-border-color-main: 71, 85, 105;
-  --w-border-color-regular: 51, 65, 85;
-  --w-border-color-secondary: 30, 41, 59;
-  --w-border-color-muted: 15, 23, 42;
-  --w-border-color-placeholder: 15, 23, 42;
-  --w-border-color-disabled: 15, 23, 42;
-  --w-border-color-1: 15, 23, 42;
-  --w-border-color-2: 30, 41, 59;
-  --w-border-color-3: 51, 65, 85;
-  --w-border-color-4: 71, 85, 105;
-  --w-border-color-5: 100, 116, 139;
-  --w-border-color-6: 148, 163, 184;
-  --w-border-color-7: 203, 213, 225;
-  --w-border-color-8: 226, 232, 240;
+  // 对齐 antdv-next dark：colorBorder #424242 / colorBorderSecondary #303030
+  --w-border-color-main: 66, 66, 66;
+  --w-border-color-regular: 66, 66, 66;
+  --w-border-color-secondary: 48, 48, 48;
+  --w-border-color-muted: 31, 31, 31;
+  --w-border-color-placeholder: 48, 48, 48;
+  --w-border-color-disabled: 31, 31, 31;
+  --w-border-color-1: 31, 31, 31;
+  --w-border-color-2: 48, 48, 48;
+  --w-border-color-3: 66, 66, 66;
+  --w-border-color-4: 79, 79, 79;
+  --w-border-color-5: 97, 97, 97;
+  --w-border-color-6: 126, 126, 126;
+  --w-border-color-7: 173, 173, 173;
+  --w-border-color-8: 220, 220, 220;
 
   // ===================================== 阴影
   --w-shadow-color-1: 0, 0, 0 / 20%;
@@ -432,28 +440,33 @@
   --w-shadow-elevated: 0 12px 32px rgb(0 0 0 / 80%);
   --w-shadow-sider:
     12px 0 28px -10px rgb(0 0 0 / 85%), 1px 0 0 rgb(148 163 184 / 18%);
+  // 卡片阴影
+  --w-shadow-card: 0 1px 2px rgb(0 0 0 / 45%), 0 6px 16px rgb(0 0 0 / 40%);
+  // 焦点环
+  --w-shadow-focus: 0 0 0 3px rgb(var(--w-color-primary) / 22%);
+  --w-shadow-focus-strong: 0 0 0 3px rgb(var(--w-color-primary) / 36%);
 
   // ===================================== app token
 
   // 侧边栏背景色
-  --w-sider-bg: 30 41 59;
+  --w-sider-bg: 20 20 20;
   // 侧边栏边框色
-  --w-sider-border-color: 51 65 85;
+  --w-sider-border-color: 48 48 48;
   // 侧边栏阴影
   --w-sider-shadow: var(--w-shadow-sider);
   // 侧边栏垂直阴影
   --w-sider-vertical-shadow: var(--w-shadow-sider);
   // 侧边栏项背景色
-  --w-sider-item-bg: 15 23 42;
+  --w-sider-item-bg: 31 31 31;
   // 侧边栏项悬停背景色
-  --w-sider-item-hover-bg: 51 65 85;
+  --w-sider-item-hover-bg: 39 39 39;
   // 侧边栏项激活背景色
-  --w-sider-item-active-bg: 71 85 105;
+  --w-sider-item-active-bg: 48 48 48;
   // 侧边栏项颜色
-  --w-sider-item-color: 203 213 225;
+  --w-sider-item-color: 173 173 173;
 
   // 头部背景色
-  --w-header-bg: rgb(17 24 39 / 72%);
+  --w-header-bg: rgb(20 20 20 / 72%);
   // 头部边框色
-  --w-header-border-color: 51 65 85;
+  --w-header-border-color: 48 48 48;
 }

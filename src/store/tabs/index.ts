@@ -1,10 +1,20 @@
 import { defineStore, storeToRefs } from 'pinia'
 import { nextTick } from 'vue'
+import { appStore } from '../app'
 import { permissionStore } from '../permission'
 import { menuToTab } from './util'
 
+import type { StorageLike } from 'pinia-plugin-persistedstate'
 import type { TabOption, TabState } from './types'
 import type { IMenu, ITab } from '#/config'
+
+const tabPersistStorage: StorageLike = {
+  getItem: (key: string) =>
+    appStore().tab.enablePersist ? window.localStorage.getItem(key) : null,
+  setItem: (key: string, value: string) => {
+    window.localStorage.setItem(key, value)
+  },
+}
 
 const initialState = (): TabState => ({
   current: -1,
@@ -17,6 +27,10 @@ const initialState = (): TabState => ({
 
 export const tabStore = defineStore('tab', {
   state: initialState,
+  persist: {
+    storage: tabPersistStorage,
+    pick: ['tabs', 'current', 'cachedTabs'],
+  },
   getters: {
     currentTab(state): Maybe<ITab> {
       return this.current === -1 ? this.homeTab : state.tabs[state.current]

@@ -1,6 +1,7 @@
 import { computed } from 'vue'
 import { useAppStore } from '@/store'
-import { HeaderWidget, type HeaderWidgetType } from '@/constants'
+import { HeaderWidget } from '@/constants'
+import type { HeaderWidget as HeaderWidgetValue } from '@/config'
 
 export function useWidget() {
   const { header } = useAppStore()
@@ -30,7 +31,7 @@ export function useWidget() {
   )
   const enableAI = computed(() => widgetSet.value.has(HeaderWidget.AI))
 
-  const onChange = (checked: boolean, value: HeaderWidgetType) => {
+  const onChange = (checked: boolean, value: HeaderWidgetValue) => {
     if (checked) {
       header.value.widgets.push(value)
     } else {

@@ -47,7 +47,6 @@ const pendingRequests = new Map<
   string,
   {
     controller: AbortController
-    generation: number
     promise: Promise<DictRawItem[]>
   }
 >()
@@ -266,7 +265,7 @@ export async function refreshDict(
       }
     })
 
-  pendingRequests.set(key, { controller, generation, promise: request })
+  pendingRequests.set(key, { controller, promise: request })
   return await request
 }
 
@@ -292,9 +291,7 @@ export function useDict(
 
   const currentCode = computed(() => normalizeCode(toValue(code)))
 
-  const options_computed = computed(() =>
-    getDictOptions(currentCode.value, options)
-  )
+  const dictOptions = computed(() => getDictOptions(currentCode.value, options))
 
   const loading = computed(() => isDictLoading(currentCode.value))
   const error = computed(() => getDictError(currentCode.value))
@@ -319,7 +316,7 @@ export function useDict(
   }
 
   function getItem(value: DictValue | null | undefined): DictItem | undefined {
-    return findItemByValue(options_computed.value, value)
+    return findItemByValue(dictOptions.value, value)
   }
 
   function getLabel(
@@ -343,7 +340,7 @@ export function useDict(
 
   return {
     code: currentCode,
-    options: options_computed,
+    options: dictOptions,
     loading,
     error,
     hasCache,

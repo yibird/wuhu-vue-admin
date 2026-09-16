@@ -1,9 +1,17 @@
+import { debounce as createDebounced } from 'es-toolkit'
 import type { Directive } from 'vue'
 
+type EventCallback = (event: Event) => unknown
+
+interface CancellableEventListener extends EventListener {
+  cancel: () => void
+}
+
 interface DebounceContext {
-  timer?: ReturnType<typeof setTimeout>
-  handler: EventListener
-  callback: AnyFunction
+  callback: EventCallback
+  event: string
+  wait: number
+  listener: CancellableEventListener
 }
 
 const contexts = new WeakMap<HTMLElement, DebounceContext>()
@@ -20,44 +28,56 @@ function resolveEvent(arg?: string) {
   return arg
 }
 
-export const debounce: Directive<HTMLElement, AnyFunction> = {
+function removeContext(el: HTMLElement) {
+  const context = contexts.get(el)
+  if (!context) return
+
+  el.removeEventListener(context.event, context.listener)
+  context.listener.cancel()
+  contexts.delete(el)
+}
+
+function mountContext(el: HTMLElement, callback: EventCallback, arg?: string) {
+  const event = resolveEvent(arg)
+  const wait = resolveDelay(arg)
+  const listener = createDebounced((domEvent: Event) => {
+    contexts.get(el)?.callback(domEvent)
+  }, wait) as CancellableEventListener
+
+  contexts.set(el, { callback, event, wait, listener })
+  el.addEventListener(event, listener)
+}
+
+export const debounce: Directive<HTMLElement, EventCallback> = {
   mounted(el, binding) {
     if (typeof binding.value !== 'function') {
       console.warn('[v-debounce]: value must be a function')
       return
     }
 
-    const context: DebounceContext = {
-      callback: binding.value,
-      handler: (...args: Event[]) => {
-        const ctx = contexts.get(el)
-        if (!ctx) return
-        clearTimeout(ctx.timer)
-        ctx.timer = setTimeout(() => {
-          ctx.callback(...args)
-        }, resolveDelay(binding.arg))
-      },
-    }
-
-    contexts.set(el, context)
-    el.addEventListener(resolveEvent(binding.arg), context.handler)
+    mountContext(el, binding.value, binding.arg)
   },
 
   updated(el, binding) {
-    const context = contexts.get(el)
-    if (!context) return
-    if (typeof binding.value === 'function') {
-      context.callback = binding.value
+    if (typeof binding.value !== 'function') {
+      console.warn('[v-debounce]: value must be a function')
+      removeContext(el)
+      return
     }
+
+    const context = contexts.get(el)
+    const event = resolveEvent(binding.arg)
+    const wait = resolveDelay(binding.arg)
+    if (context?.event === event && context.wait === wait) {
+      context.callback = binding.value
+      return
+    }
+
+    removeContext(el)
+    mountContext(el, binding.value, binding.arg)
   },
 
-  unmounted(el, binding) {
-    const context = contexts.get(el)
-    if (!context) return
-    el.removeEventListener(resolveEvent(binding.arg), context.handler)
-    if (context.timer) {
-      clearTimeout(context.timer)
-    }
-    contexts.delete(el)
+  unmounted(el) {
+    removeContext(el)
   },
 }

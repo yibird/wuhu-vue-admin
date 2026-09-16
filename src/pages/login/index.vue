@@ -74,6 +74,7 @@ import { message } from 'antdv-next'
 import { useRoute } from 'vue-router'
 import { useAuth } from '@/composables'
 import { getSafeRedirect, useGo } from '@/router'
+import { isApiError } from '@/utils'
 
 import type { LoginRequest } from '@/apis'
 
@@ -118,6 +119,7 @@ const onSubmit = async (credentials: LoginRequest) => {
     message.success(t('login.success'))
     await to(getSafeRedirect(route.query.redirect), true)
   } catch (error) {
+    if (isApiError(error)) return
     message.error(error instanceof Error ? error.message : t('login.error'))
   }
 }

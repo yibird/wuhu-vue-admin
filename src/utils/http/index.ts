@@ -55,4 +55,6 @@ export type {
   UseRequestReturn,
 } from './composables'
 export type { ApiRequestOptions, ApiResponseType } from './dedupe'
+export { ApiError, isApiError } from './errors'
+export { onSessionExpired } from './sessionEvents'
 export { getToken, setToken, removeToken } from './util'

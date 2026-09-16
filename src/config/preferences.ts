@@ -1,6 +1,8 @@
 import {
   ThemeMode,
   MenuMode,
+  SiderTheme,
+  HeaderWidget,
   TabsTheme,
   Locale,
   LoadingAnimation,
@@ -90,11 +92,11 @@ export const tabThemeOptions = [
   },
   {
     label: '卡片',
-    value: 'card',
+    value: TabsTheme.Card,
   },
   {
     label: '谷歌',
-    value: 'google',
+    value: TabsTheme.Google,
   },
 ]
 
@@ -173,7 +175,9 @@ export const pageAnimationModeOptions = [
 export type ThemeMode = (typeof themeModeOptions)[number]['value']
 export type MenuMode = (typeof menuModeOptions)[number]['value']
 export type Locale = (typeof localeOptions)[number]['value']
-export type TabTheme = (typeof pageAnimationOptions)[number]['value']
+export type SiderTheme = (typeof SiderTheme)[keyof typeof SiderTheme]
+export type HeaderWidget = (typeof HeaderWidget)[keyof typeof HeaderWidget]
+export type TabsTheme = (typeof TabsTheme)[keyof typeof TabsTheme]
 export type PageAnimation = (typeof pageAnimationOptions)[number]['value']
 export type LoadingAnimation = (typeof loadingAnimationOptions)[number]['value']
 export type PageAnimationMode =

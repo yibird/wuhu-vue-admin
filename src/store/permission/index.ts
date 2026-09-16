@@ -8,26 +8,30 @@ const createInitialState = (): PermissionState => ({
   flatMenus: [],
   flatMenusCache: new Map<string, IMenu>(),
   permissions: [],
+  menusVersion: 0,
 })
 
 export const permissionStore = defineStore('permission', {
   state: createInitialState,
   actions: {
-    setMenus(menus: IMenu[]) {
+    setMenus(menus: IMenu[], permissions?: string[]) {
       const flatMenus = treeToList(menus)
       const flatMenusCache = new Map(flatMenus.map((m) => [m.id, m]))
-      const permissions = flatMenus.flatMap((item) =>
+      const derivedPermissions = flatMenus.flatMap((item) =>
         item.permission ? [item.permission] : []
       )
       Object.assign(this, {
         menus,
         flatMenus,
         flatMenusCache,
-        permissions,
+        permissions: permissions ?? derivedPermissions,
+        menusVersion: this.menusVersion + 1,
       })
     },
     clear() {
-      Object.assign(this, createInitialState())
+      Object.assign(this, createInitialState(), {
+        menusVersion: this.menusVersion + 1,
+      })
     },
   },
 })

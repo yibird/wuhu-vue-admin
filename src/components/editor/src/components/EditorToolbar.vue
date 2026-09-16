@@ -59,96 +59,68 @@ function toOptionValue(value: unknown): string | number {
     <template v-if="showSelectControls">
       <a-select
         :value="currentBlock"
-        class="w-112"
-        size="small"
+        class="w-112!"
         :disabled="disabled"
+        :options="blockOptions"
         @change="emit('setBlock', toOptionValue($event))"
-      >
-        <a-select-option
-          v-for="option in blockOptions"
-          :key="option.value"
-          :value="option.value"
-        >
-          {{ option.label }}
-        </a-select-option>
-      </a-select>
+      />
 
       <a-select
         :value="currentFontFamily"
-        class="w-148"
-        size="small"
+        class="w-140!"
         :disabled="disabled"
+        :options="fontFamilyOptions"
         @change="emit('setFontFamily', toOptionValue($event))"
       >
-        <a-select-option
-          v-for="option in fontFamilyOptions"
-          :key="option.value || 'default-font'"
-          :value="option.value"
-        >
-          <span :style="{ fontFamily: option.value || undefined }">
-            {{ option.label }}
+        <template #optionRender="{ option }">
+          <span :style="{ fontFamily: option.data.value || undefined }">
+            {{ option.data.label }}
           </span>
-        </a-select-option>
+        </template>
       </a-select>
 
       <a-select
         :value="currentFontSize"
-        class="w-98"
-        size="small"
+        class="w-60!"
         :disabled="disabled"
+        :options="fontSizeOptions"
         @change="emit('setFontSize', toOptionValue($event))"
-      >
-        <a-select-option
-          v-for="option in fontSizeOptions"
-          :key="option.value || 'default-size'"
-          :value="option.value"
-        >
-          {{ option.label }}
-        </a-select-option>
-      </a-select>
+      />
 
       <a-select
         :value="currentTextColor"
-        class="w-112"
-        size="small"
+        class="w-100!"
         :disabled="disabled"
+        :options="textColorOptions"
         @change="emit('setTextColor', toOptionValue($event))"
       >
-        <a-select-option
-          v-for="option in textColorOptions"
-          :key="option.value || 'default-text-color'"
-          :value="option.value"
-        >
+        <template #optionRender="{ option }">
           <span class="inline-flex items-center gap-6">
             <span
               class="size-12 rounded-3 border-1 border-solid border-color-1"
-              :style="{ backgroundColor: option.color }"
+              :style="{ backgroundColor: option.data.color }"
             />
-            <span>{{ option.label }}</span>
+            <span>{{ option.data.label }}</span>
           </span>
-        </a-select-option>
+        </template>
       </a-select>
 
       <a-select
         :value="currentHighlightColor"
-        class="w-112"
-        size="small"
+        class="w-112!"
         :disabled="disabled"
+        :options="highlightColorOptions"
         @change="emit('setHighlightColor', toOptionValue($event))"
       >
-        <a-select-option
-          v-for="option in highlightColorOptions"
-          :key="option.value || 'default-highlight-color'"
-          :value="option.value"
-        >
+        <template #optionRender="{ option }">
           <span class="inline-flex items-center gap-6">
             <span
               class="size-12 rounded-3 border-1 border-solid border-color-1"
-              :style="{ backgroundColor: option.color }"
+              :style="{ backgroundColor: option.data.color }"
             />
-            <span>{{ option.label }}</span>
+            <span>{{ option.data.label }}</span>
           </span>
-        </a-select-option>
+        </template>
       </a-select>
     </template>
 

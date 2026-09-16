@@ -1,7 +1,10 @@
 export {
+  ApiError,
   apiRequest,
   getToken,
+  isApiError,
   kyInstance,
+  onSessionExpired,
   parseApiResponse,
   removeToken,
   setToken,
@@ -30,4 +33,15 @@ export {
 } from './color'
 export type { ColorValue, RgbColor } from './color'
 export { validMobile, validateCode, validateMobile } from './validator'
+export {
+  getSearchMatch,
+  getSearchTextSegments,
+  matchesOption,
+  normalizeSearchKeyword,
+} from './search'
+export type {
+  SearchMatch,
+  SearchMatchSource,
+  SearchTextSegment,
+} from './search'
 export * from './core'

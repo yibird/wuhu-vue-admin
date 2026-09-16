@@ -4,4 +4,7 @@ import type { RoleResp, CreateRoleReq, UpdateRoleReq } from './types'
 export const {
   getPageListApi: getRolePageListApi,
   getRecordApi: getRoleRecordApi,
-} = getBaseApi<RoleResp, RoleResp, CreateRoleReq, UpdateRoleReq>('sys/role')
+  createApi: createRoleApi,
+  updateApi: updateRoleApi,
+  deleteApi: deleteRoleApi,
+} = getBaseApi<RoleResp, RoleResp, CreateRoleReq, UpdateRoleReq>('/sys/role')

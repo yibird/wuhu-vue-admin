@@ -41,7 +41,7 @@ function getWindow() {
 }
 
 function createTimeoutScheduler(callback: DeferredTask, timeout: number) {
-  const timer = window.setTimeout(() => void callback(), timeout)
+  const timer = window.setTimeout(() => callback(), timeout)
   return () => window.clearTimeout(timer)
 }
 
@@ -51,7 +51,7 @@ function createAnimationFrameScheduler(callback: DeferredTask) {
 
   const frames: number[] = []
   frames[0] = currentWindow.requestAnimationFrame(() => {
-    frames[1] = currentWindow.requestAnimationFrame(() => void callback())
+    frames[1] = currentWindow.requestAnimationFrame(() => callback())
   })
 
   return () => {
@@ -64,7 +64,7 @@ function createIdleScheduler(callback: DeferredTask, timeout: number) {
   if (!currentWindow) return undefined
 
   if (currentWindow.requestIdleCallback) {
-    const handle = currentWindow.requestIdleCallback(() => void callback(), {
+    const handle = currentWindow.requestIdleCallback(() => callback(), {
       timeout,
     })
     return () => currentWindow.cancelIdleCallback?.(handle)
@@ -80,7 +80,7 @@ function requestDeferredTask(
   const currentWindow = getWindow()
 
   if (!currentWindow) {
-    const timer = setTimeout(() => void callback(), 0)
+    const timer = setTimeout(() => callback(), 0)
     return () => clearTimeout(timer)
   }
 

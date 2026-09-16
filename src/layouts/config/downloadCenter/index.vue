@@ -7,7 +7,7 @@ import {
   statusMeta,
   statusOptions,
 } from './data'
-import { useDownloadCenter } from './composables/useDownloadCenter'
+import { useDownloadCenter } from './composables'
 import type { DownloadItem } from './types'
 
 const show = defineModel('show', { default: false })

@@ -72,13 +72,15 @@ export const useTheme = createSharedComposable(() => {
    * Ant Design Vue Theme Token
    */
   const themeConfig = computed(() => {
+    const colorPrimary = `rgb(${themeColor.value})`
+    const isDark = themeMode.value === ThemeMode.Dark
+
     return {
-      algorithm:
-        themeMode.value === ThemeMode.Dark
-          ? antTheme.darkAlgorithm
-          : antTheme.defaultAlgorithm,
+      algorithm: isDark ? antTheme.darkAlgorithm : antTheme.defaultAlgorithm,
       token: {
-        colorPrimary: `rgb(${themeColor.value})`,
+        colorPrimary,
+        colorLink: colorPrimary,
+        borderRadius: app.value.borderRadius,
       },
     }
   })
@@ -123,8 +125,8 @@ export const useTheme = createSharedComposable(() => {
     () => [app.value.colourWeakness, app.value.greyMode],
     ([colourWeakness, greyMode]) => {
       const root = document.documentElement
-      root.classList.toggle('color-weakness-mode', Boolean(colourWeakness))
-      root.classList.toggle('grey-mode', Boolean(greyMode))
+      root.classList.toggle('w-color-weakness-mode', Boolean(colourWeakness))
+      root.classList.toggle('w-grey-mode', Boolean(greyMode))
     },
     {
       immediate: true,

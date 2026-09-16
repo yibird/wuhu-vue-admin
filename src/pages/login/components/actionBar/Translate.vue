@@ -14,7 +14,8 @@
 </template>
 
 <script setup lang="ts">
-import { Locale, type LocaleType } from '@/constants'
+import { Locale } from '@/constants'
+import type { Locale as LocaleValue } from '@/config'
 import { useLocale } from '@/locales'
 
 const options = [
@@ -31,6 +32,6 @@ const options = [
 const { appLocale, changeLocale } = useLocale()
 
 const onSelect = ({ key }: { key: string }) => {
-  changeLocale(key as LocaleType)
+  changeLocale(key as LocaleValue)
 }
 </script>

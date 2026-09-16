@@ -126,11 +126,11 @@ const removeClearButtonFromTabOrder = () => {
 }
 
 onMounted(() => {
-  void nextTick(removeClearButtonFromTabOrder)
+  nextTick(removeClearButtonFromTabOrder)
 })
 
 watch(
   () => formData.mobile,
-  () => void nextTick(removeClearButtonFromTabOrder)
+  () => nextTick(removeClearButtonFromTabOrder)
 )
 </script>

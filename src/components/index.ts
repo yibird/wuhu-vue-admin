@@ -1,8 +1,23 @@
+import { defineAsyncComponent } from 'vue'
+
 export { Icon } from './icon'
 export type { IconProps } from './icon'
 
+export { WCard } from './card'
+export type { WCardProps, WCardSlots } from './card'
+
 export { LazyContainer, ResizeContainer } from './container'
-export type { LazyContainerProps, ResizeContainerProps } from './container'
+export type {
+  ContainerSize,
+  ContainerTag,
+  LazyContainerEmits,
+  LazyContainerProps,
+  LazyContainerSlotProps,
+  LazyContainerSlots,
+  ResizeContainerEmits,
+  ResizeContainerProps,
+  ResizeContainerSlots,
+} from './container'
 
 export {
   WView,
@@ -37,28 +52,76 @@ export type {
 
 export { DatePicker, DateRangePicker } from './date-picker'
 
-export { Cropper, CropperPicker } from './cropper'
-export type { CropperProps, CropperPickerProps, CropperExpose } from './cropper'
+export const Cropper = defineAsyncComponent(async () => {
+  const { Cropper } = await import('./cropper')
+  return Cropper
+})
+export const CropperPicker = defineAsyncComponent(async () => {
+  const { CropperPicker } = await import('./cropper')
+  return CropperPicker
+})
+export type {
+  CropperCanvasOptions,
+  CropperExpose,
+  CropperPickerProps,
+  CropperProps,
+} from './cropper'
 
-export { IconPicker, IconSelector } from './icon-picker'
+export const IconPicker = defineAsyncComponent(async () => {
+  const { IconPicker } = await import('./icon-picker')
+  return IconPicker
+})
+export const IconSelector = defineAsyncComponent(async () => {
+  const { IconSelector } = await import('./icon-picker')
+  return IconSelector
+})
 export type { IconPickerProps, IconSelectorProps } from './icon-picker'
 
-export { JsonView } from './json-view'
-export type { JsonViewProps } from './json-view'
+export const JsonView = defineAsyncComponent(async () => {
+  const { JsonView } = await import('./json-view')
+  return JsonView
+})
+export type { JsonPrimitive, JsonValue, JsonViewProps } from './json-view'
 
-export { CodeEditor } from './code-editor'
+export const CodeEditor = defineAsyncComponent(async () => {
+  const { CodeEditor } = await import('./code-editor')
+  return CodeEditor
+})
 export type { CodeEditorProps } from './code-editor'
 
-export { Editor } from './editor'
-export type { EditorProps } from './editor'
+export const Editor = defineAsyncComponent(async () => {
+  const { Editor } = await import('./editor')
+  return Editor
+})
+export type {
+  EditorExpose,
+  EditorLocale,
+  EditorProps,
+  EditorSelectOption,
+} from './editor'
 
 export { Draggable, DraggableItem, useDraggable } from './draggable'
-export type { DraggableProps } from './draggable'
+export type {
+  DraggableDisabled,
+  DraggableEmits,
+  DraggableIdentifier,
+  DraggableItemData,
+  DraggableItemKey,
+  DraggableItemProps,
+  DraggableItemSlotProps,
+  DraggableItemState,
+  DraggableProps,
+  DraggableSlots,
+  UseDraggableInput,
+} from './draggable'
 
 export { ClientError, Error, NotAuthorized, NotFound } from './exception'
 export type { ExceptionProps } from './exception'
 
-export { FilePreview } from './file-preview'
+export const FilePreview = defineAsyncComponent(async () => {
+  const { FilePreview } = await import('./file-preview')
+  return FilePreview
+})
 export type {
   FilePreviewKind,
   FilePreviewLocale,
@@ -66,20 +129,81 @@ export type {
   FilePreviewSource,
 } from './file-preview'
 
-export { Gantt, createGanttTaskSignature, normalizeGanttTasks } from './gantt'
+export const Gantt = defineAsyncComponent(async () => {
+  const { Gantt } = await import('./gantt')
+  return Gantt
+})
+export {
+  createGanttTaskSignature,
+  normalizeGanttTasks,
+} from './gantt/src/utils'
+export type {
+  GanttContextMenuEvent,
+  GanttProps,
+  GanttTask,
+  GanttViewMode,
+  GanttViewModeDefinition,
+} from './gantt'
 export {
   Highlight,
   createHighlightSegments,
   findLiteralHighlightMatches,
   normalizeHighlightKeywords,
 } from './highlight'
+export type {
+  HighlightClassValue,
+  HighlightKeyword,
+  HighlightMatch,
+  HighlightMatcher,
+  HighlightMatcherContext,
+  HighlightMatchSegment,
+  HighlightProps,
+  HighlightSegment,
+  HighlightTag,
+  HighlightTextSegment,
+} from './highlight'
 export { Modal } from './modal'
+export type {
+  ModalAction,
+  ModalComponent,
+  ModalController,
+  ModalInstance,
+  ModalMaybePromise,
+  ModalOpenOptions,
+  ModalOpenPromise,
+  ModalPosition,
+  ModalProps,
+  ModalResult,
+  ModalUpdateOptions,
+} from './modal'
 
 export { FormPlus } from './form-plus'
-export { TablePlus } from './table-plus'
-export { useRowProps } from './table-plus/src/composables/useRowProps'
-export { useRowSelection } from './table-plus/src/composables/useRowSelection'
-export { useSize } from './table-plus/src/composables/useSize'
-export { useTable } from './table-plus/src/composables/useTable'
+export type {
+  ComponentType,
+  FormContextState,
+  FormPlusContext,
+  FormPlusControlProps,
+  FormPlusInstance,
+  FormPlusItem,
+  FormPlusModel,
+  FormPlusProps,
+  FormPlusValue,
+} from './form-plus'
+export {
+  TablePlus,
+  useRowProps,
+  useRowSelection,
+  useSize,
+  useTable,
+} from './table-plus'
+export type {
+  TableContextState,
+  TablePlusColumn,
+  TablePlusContext,
+  TablePlusContextMenuInstance,
+  TablePlusProps,
+  UseRowSelectionOptions,
+  UseTableOptions,
+} from './table-plus'
 
 export { globalComponents } from './setup'

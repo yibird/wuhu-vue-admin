@@ -1,6 +1,6 @@
 <script lang="ts">
 import dayjs from 'dayjs'
-import { ClientError } from '@/components/exception'
+import { ClientError } from '../../exception'
 import type { Component } from 'vue'
 import type { ComponentPublicInstance, PropType } from 'vue'
 import type { ErrorBoundaryErrorPayload, ErrorBoundaryEmits } from './types'

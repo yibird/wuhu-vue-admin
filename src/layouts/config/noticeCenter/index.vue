@@ -21,7 +21,7 @@
         :name="item.name"
         :tab="item.tab"
       >
-        <component :is="component" />
+        <component :is="item.component" />
       </a-tab-pane>
     </a-tabs>
   </div>
@@ -39,14 +39,15 @@ const items = [
     component: defineAsyncComponent(() => import('./Message.vue')),
   },
   {
+    name: 'mention',
+    tab: '@我',
+    component: defineAsyncComponent(() => import('./Mention.vue')),
+  },
+  {
     name: 'todo',
     tab: '代办',
     component: defineAsyncComponent(() => import('./Todo.vue')),
   },
 ]
 const value = ref('notify')
-const component = computed(() => {
-  const item = items.find((item) => item.name === value.value)
-  return item?.component
-})
 </script>

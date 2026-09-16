@@ -1,7 +1,6 @@
 import { defineStore, storeToRefs } from 'pinia'
-import { loginApi } from '@/apis'
+import { getAuthSessionApi, loginApi } from '@/apis'
 import { menus } from '@/config'
-import { ApiCode } from '@/constants'
 import { clearDictCache, setDictCacheScope } from '@/composables/useDict'
 import { getToken, removeToken, setToken } from '@/utils'
 import { permissionStore } from '../permission'
@@ -27,18 +26,42 @@ export const authStore = defineStore('auth', {
 
       try {
         const response = await loginApi(credentials)
-        if (response.code !== ApiCode.Ok || !response.data) {
+        const session = response.data
+        if (!session?.accessToken || !session.user) {
           throw new Error(response.message || '登录失败')
         }
 
-        const { accessToken, user } = response.data
-        this.accessToken = accessToken
-        this.user = user
-        setToken(accessToken)
-        setDictCacheScope(`user:${user.id}`)
-        permissionStore().setMenus(menus)
+        this.accessToken = session.accessToken
+        this.user = session.user
+        setToken(session.accessToken)
+        setDictCacheScope(`user:${session.user.id}`)
+        permissionStore().setMenus(menus, session.permissions)
       } finally {
         this.loginLoading = false
+      }
+    },
+
+    async restoreSession() {
+      if (!this.accessToken) return false
+      if (this.user) {
+        if (permissionStore().menus.length === 0) {
+          permissionStore().setMenus(menus)
+        }
+        return true
+      }
+
+      try {
+        const response = await getAuthSessionApi()
+        const session = response.data
+        if (!session?.user) return false
+
+        this.user = session.user
+        setDictCacheScope(`user:${session.user.id}`)
+        permissionStore().setMenus(menus, session.permissions)
+        return true
+      } catch {
+        this.logout()
+        return false
       }
     },
 

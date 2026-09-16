@@ -23,7 +23,7 @@ const options = [
     key: 'userProfile',
     label: '个人中心',
     icon: renderIcon('i-lucide:user', { size: 16 }),
-    path: '/sys/userProfile',
+    path: '/sys/user-profile',
   },
   {
     key: 'changePassword',
@@ -46,7 +46,7 @@ const { logout } = useAuth()
 const onSelect = ({ key }: { key: string }) => {
   switch (key) {
     case 'userProfile':
-      to('/sys/userProfile')
+      to('/sys/user-profile')
       break
     case 'changePassword':
       break

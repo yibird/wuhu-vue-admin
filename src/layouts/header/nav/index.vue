@@ -10,7 +10,8 @@
 </template>
 <script lang="ts" setup>
 import { useAppStore } from '@/store'
-import { MenuMode, type MenuModeType } from '@/constants'
+import { MenuMode } from '@/constants'
+import type { MenuMode as MenuModeValue } from '@/config'
 import Collapsed from './Collapsed.vue'
 import Breadcrumb from './Breadcrumb.vue'
 import Menu from './Menu.vue'
@@ -18,7 +19,7 @@ import Menu from './Menu.vue'
 const { app } = useAppStore()
 
 const showNav = computed(() => {
-  const modes = [MenuMode.Vertical, MenuMode.Split] as MenuModeType[]
+  const modes: MenuModeValue[] = [MenuMode.Vertical, MenuMode.Split]
   return modes.includes(app.value.menuMode)
 })
 </script>

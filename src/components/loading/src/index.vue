@@ -4,7 +4,7 @@ import type { LoadingProps } from './types'
 
 const props = withDefaults(defineProps<LoadingProps>(), {
   description: 'Loading...',
-  fullScreen: false,
+  full: false,
 })
 
 const loadingComponents = {

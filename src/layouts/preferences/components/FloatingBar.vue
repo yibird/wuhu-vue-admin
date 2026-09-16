@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { usePreferences } from '../composables/usePreferences'
+import { usePreferences } from '../composables'
 
 const { preferencesOpen, openPreferences } = usePreferences()
 </script>

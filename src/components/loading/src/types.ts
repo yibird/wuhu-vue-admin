@@ -1,4 +1,4 @@
-import type { LoadingAnimationType } from '@/constants'
+import type { LoadingAnimation } from '@/config'
 
 export interface LoadingProps {
   /**
@@ -15,5 +15,5 @@ export interface LoadingProps {
    * @desc loading的类型
    * @default ''
    */
-  type?: LoadingAnimationType
+  type?: LoadingAnimation
 }

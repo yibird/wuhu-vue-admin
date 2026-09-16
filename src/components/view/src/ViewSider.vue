@@ -117,6 +117,7 @@ function toggle() {
 
   &__content {
     box-sizing: border-box;
+    height: 100%;
     min-height: 100%;
     overflow: hidden;
     transition:

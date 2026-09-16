@@ -1,8 +1,9 @@
 import { computed, type Component } from 'vue'
 import { useAppStore } from '@/store'
-import { MenuMode, type MenuModeType } from '@/constants'
+import { MenuMode } from '@/constants'
+import type { MenuMode as MenuModeValue } from '@/config'
 
-type SiderMenuMode = Exclude<MenuModeType, (typeof MenuMode)['Horizontal']>
+type SiderMenuMode = Exclude<MenuModeValue, (typeof MenuMode)['Horizontal']>
 
 export function useSider(
   components: Readonly<Record<SiderMenuMode, Component>>

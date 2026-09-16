@@ -43,7 +43,7 @@ async function readLimitedText(
       chunks.push(value)
     }
   } finally {
-    if (signal.aborted || receivedBytes > maxBytes) void reader.cancel()
+    if (signal.aborted || receivedBytes > maxBytes) reader.cancel()
   }
 
   const bytes = new Uint8Array(receivedBytes)
@@ -89,7 +89,7 @@ export function useTextPreview(options: UseTextPreviewOptions) {
       onCleanup(() => controller.abort())
       loading.value = true
 
-      void fetch(url, {
+      fetch(url, {
         credentials: 'same-origin',
         referrerPolicy: 'no-referrer',
         signal: controller.signal,

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useClipboard } from '@vueuse/core'
 import { message } from 'antdv-next'
-import { CodeEditor } from '@/components/code-editor'
+import { CodeEditor } from '../../code-editor'
 import type { JsonValue, JsonViewEmits, JsonViewProps } from './types'
 
 const props = withDefaults(defineProps<JsonViewProps>(), {

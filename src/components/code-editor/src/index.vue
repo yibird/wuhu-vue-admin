@@ -39,11 +39,18 @@ const editorTheme = EditorView.theme({
     fontFamily:
       '"Cascadia Code", "JetBrains Mono", Consolas, "SFMono-Regular", monospace',
     lineHeight: '1.65',
+    overflow: 'auto',
   },
   '.cm-gutters': {
+    minWidth: '46px',
     backgroundColor: 'rgb(var(--w-bg-fill))',
     color: 'rgb(var(--w-text-muted))',
     borderRight: '1px solid rgb(var(--w-border-color-2))',
+  },
+  '.cm-lineNumbers .cm-gutterElement': {
+    minWidth: '46px',
+    padding: '0 12px 0 8px',
+    textAlign: 'right',
   },
   '.cm-activeLineGutter': {
     backgroundColor: 'rgb(var(--w-color-primary) / 8%)',
@@ -52,13 +59,32 @@ const editorTheme = EditorView.theme({
     backgroundColor: 'rgb(var(--w-color-primary) / 6%)',
   },
   '.cm-content': {
-    padding: '14px 0',
+    padding: '16px 0 24px',
+    caretColor: 'rgb(var(--w-color-primary))',
   },
   '.cm-line': {
     padding: '0 14px',
   },
+  '.cm-cursor': {
+    borderLeftColor: 'rgb(var(--w-color-primary))',
+    borderLeftWidth: '2px',
+  },
   '.cm-selectionBackground': {
     backgroundColor: 'rgb(var(--w-color-primary) / 20%) !important',
+  },
+  '.cm-foldPlaceholder': {
+    border: '1px solid rgb(var(--w-border-color-2))',
+    borderRadius: '4px',
+    backgroundColor: 'rgb(var(--w-bg-fill))',
+    color: 'rgb(var(--w-text-muted))',
+    padding: '0 4px',
+  },
+  '.cm-tooltip': {
+    border: '1px solid rgb(var(--w-border-color-2))',
+    borderRadius: '6px',
+    backgroundColor: 'rgb(var(--w-bg-container))',
+    color: 'rgb(var(--w-text-main))',
+    boxShadow: '0 12px 28px rgb(0 0 0 / 18%)',
   },
   '.cm-focused': {
     outline: 'none',

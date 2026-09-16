@@ -53,14 +53,14 @@ const fallbackTheme: Record<
     tooltipText: '#21252c',
   },
   [ThemeMode.Dark]: {
-    primaryText: '#fdfdfd',
-    secondaryText: '#bbbdc3',
-    tertiaryText: '#888c93',
-    axisLine: 'rgba(148, 163, 184, 0.28)',
-    splitLine: 'rgba(148, 163, 184, 0.16)',
-    tooltipBg: 'rgba(21, 24, 31, 0.96)',
-    tooltipBorder: 'rgba(148, 163, 184, 0.24)',
-    tooltipText: '#f8fafc',
+    primaryText: '#ffffff',
+    secondaryText: '#adadad',
+    tertiaryText: '#7e7e7e',
+    axisLine: 'rgba(255, 255, 255, 0.28)',
+    splitLine: 'rgba(255, 255, 255, 0.16)',
+    tooltipBg: 'rgba(31, 31, 31, 0.96)',
+    tooltipBorder: '#424242',
+    tooltipText: '#ffffff',
   },
 }
 
@@ -176,7 +176,7 @@ export const useEChartsTheme = createSharedComposable(() => {
       borderWidth: 1,
       confine: true,
       extraCssText:
-        'box-shadow: 0 12px 30px rgb(15 23 42 / 0.14); border-radius: 8px;',
+        'box-shadow: 0 12px 30px rgb(0 0 0 / 18%); border-radius: 8px;',
       textStyle: {
         color: getEChartsColor('tooltipText'),
       },

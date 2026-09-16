@@ -16,11 +16,14 @@
   >
     <div class="flex flex-col overflow-hidden bg-container">
       <TableHeader>
-        <template v-for="(_, key) in slots" :key="key" v-slot:[key]>
-          <slot :name="key"></slot>
-        </template>
+        <template #headerLeft><slot name="headerLeft" /></template>
+        <template #headerRight><slot name="headerRight" /></template>
       </TableHeader>
-      <TableContent />
+      <TableContent>
+        <template #bodyCell="slotProps">
+          <slot name="bodyCell" v-bind="forwardBodyCell(slotProps)" />
+        </template>
+      </TableContent>
     </div>
   </Motion>
 </template>
@@ -36,6 +39,10 @@ import type {
   TablePlusSlots,
 } from './types'
 
+type TableCellSlot<T extends Record<string, any>> = Parameters<
+  NonNullable<TablePlusSlots<T>['bodyCell']>
+>[0]
+
 const props = withDefaults(defineProps<TablePlusProps<T>>(), {
   autoSize: true,
   selectionCol: true,
@@ -48,7 +55,13 @@ const props = withDefaults(defineProps<TablePlusProps<T>>(), {
   size: 'small',
 })
 const emits = defineEmits<TablePlusEmits<T>>()
-const slots = defineSlots<TablePlusSlots>()
+defineSlots<TablePlusSlots<T>>()
+
+function forwardBodyCell(
+  slotProps: TableCellSlot<Record<string, any>>
+): TableCellSlot<T> {
+  return slotProps as TableCellSlot<T>
+}
 // const tRef = ref<HTMLDivElement>()
 
 const initialConlumns = props.columns.map((item) => {

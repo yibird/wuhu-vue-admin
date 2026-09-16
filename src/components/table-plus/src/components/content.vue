@@ -78,7 +78,7 @@ const indexColumn: TablePlusColumn<T> = {
   key: 'index',
   fixed: 'left',
   width: 80,
-  customRender: ({ index }: any) => index + 1,
+  customRender: ({ index }) => index + 1,
 }
 const tableRef = ref<HTMLDivElement>()
 const { height, width, calculateSize } = useSize(tableRef, { autoSize })
@@ -92,7 +92,7 @@ const getColumns = computed(() => {
   return cols
 })
 
-const getRowProps = useRowProps(customRow, (row: any, rowIndex: number) => {
+const getRowProps = useRowProps(customRow.value, (row: T, rowIndex: number) => {
   const { contextMenu = [] } = proxyRefs(context)
   return {
     onContextmenu(e: MouseEvent) {
@@ -107,8 +107,8 @@ const getRowProps = useRowProps(customRow, (row: any, rowIndex: number) => {
   }
 })
 
-const onCheckedRowKeys = (keys: Array<string | number>, rows: any[]) => {
-  emits('update:checked-row-keys', keys, rows as T[], {
+const onCheckedRowKeys = (keys: Array<string | number>, rows: T[]) => {
+  emits('update:checked-row-keys', keys, rows, {
     row: undefined,
     action: 'check',
   })

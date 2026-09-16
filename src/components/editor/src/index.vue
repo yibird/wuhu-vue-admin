@@ -13,10 +13,13 @@ import {
   textColorOptions as defaultTextColorOptions,
 } from './constants'
 import { sizeValue } from './utils'
-import { useEditorCommands } from './composables/useEditorCommands'
-import { useEditorState } from './composables/useEditorState'
-import { useEditorToolbar } from './composables/useEditorToolbar'
+import {
+  useEditorCommands,
+  useEditorState,
+  useEditorToolbar,
+} from './composables'
 import type { Editor as TiptapEditor } from '@tiptap/vue-3'
+import type { CSSProperties } from 'vue'
 import type {
   EditorEmits,
   EditorExpose,
@@ -230,7 +233,7 @@ defineExpose<EditorExpose>({
       ref="imageInput"
       type="file"
       accept="image/*"
-      class="hidden"
+      class="!hidden"
       @change="commands.handleImageSelect"
     />
   </div>

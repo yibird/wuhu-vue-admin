@@ -1,10 +1,11 @@
 export { default as TablePlus } from './src/index.vue'
-export { useRowProps } from './src/composables/useRowProps'
-export { useRowSelection } from './src/composables/useRowSelection'
-export { useSize } from './src/composables/useSize'
-export { useTable } from './src/composables/useTable'
-export type { UseRowSelectionOptions } from './src/composables/useRowSelection'
-export type { UseTableOptions } from './src/composables/useTable'
+export {
+  useRowProps,
+  useRowSelection,
+  useSize,
+  useTable,
+} from './src/composables'
+export type { UseRowSelectionOptions, UseTableOptions } from './src/composables'
 export type {
   TableContextState,
   TablePlusColumn,
