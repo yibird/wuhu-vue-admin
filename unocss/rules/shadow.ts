@@ -50,10 +50,25 @@ function generateBoxShadows() {
 }
 
 const shadows = generateBoxShadows()
+const semanticShadows = [
+  'card',
+  'elevated',
+  'floating',
+  'focus',
+  'focus-strong',
+  'node',
+  'node-active',
+  'minimap',
+] as const
+const semanticShadowPattern = semanticShadows.join('|')
 
-export const shadowRule: Rule = [
-  /^shadow-(t|r|b|l|all)(?:-(sm|md|lg|xl|2xl))?$/,
-  ([s]) => {
-    return shadows[s.replace('shadow-', '')]
-  },
+export const shadowRule: Rule[] = [
+  [
+    /^shadow-(t|r|b|l|all)(?:-(sm|md|lg|xl|2xl))?$/,
+    ([s]) => shadows[s.replace('shadow-', '')],
+  ],
+  [
+    new RegExp(`^shadow-(${semanticShadowPattern})$`),
+    ([, key]) => ({ 'box-shadow': `var(--w-shadow-${key})` }),
+  ],
 ]

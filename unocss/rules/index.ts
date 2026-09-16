@@ -15,5 +15,5 @@ export const rules = [
   borderRule,
   ...borderColorRule,
   ...motionRule,
-  shadowRule,
+  ...shadowRule,
 ]

@@ -38,7 +38,8 @@ export const shortcuts = {
 
   'span-button':
     'p-0 m-0 bg-transparent border-none outline-none appearance-none touch-none cursor-pointer',
-  // 动画
-  //   "hover-scale-120": "hover:scale-120 transition-scale ease-in-out",
-  //   "active-scale": "scale-95 transition-transform duration-300 ease-in-out",
+  // motion
+  'motion-interactive':
+    'transition-[background-color,border-color,box-shadow,color,transform,translate,scale,rotate] duration-motion-base ease-motion-standard motion-reduce:transition-none',
+  'motion-press': 'active:scale-motion-pressed motion-reduce:active:scale-100',
 }

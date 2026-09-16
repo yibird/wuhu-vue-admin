@@ -3,6 +3,7 @@ import { fontsPlugin } from './fonts.ts'
 import { componentsPlugin } from './components.ts'
 import { vuePlugin } from './vue.ts'
 import { autoImportPlugin } from './auto-import.ts'
+import { pwaPlugin } from './pwa.ts'
 import type { PluginOption } from 'vite'
 
 interface CreatePluginOptions {
@@ -39,10 +40,11 @@ export async function createPlugin({ command }: CreatePluginOptions) {
   const isDev = command === 'serve'
   const plugins: PluginOption[] = [
     vuePlugin(),
-    componentsPlugin({ isDev }),
+    componentsPlugin(),
     autoImportPlugin({ isDev }),
     fontsPlugin(),
     unocssPlugin(),
+    pwaPlugin(),
   ]
   const devPlugins = await getDevPlugins(command)
   const prodPlugins = await getProdPlugins(command)

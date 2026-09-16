@@ -4,7 +4,12 @@ import { postprocess, presets, rules, shortcuts, transformers } from './unocss'
 const rgbVar = (name: string) => `rgb(var(${name}))`
 
 export default defineConfig({
-  blocklist: ['?'],
+  blocklist: [
+    '?',
+    // Antdv color props are values, not Uno utilities.
+    /^(?:slate|gray|zinc|neutral|stone|red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose)$/,
+    /^\[color~="(?:slate|gray|zinc|neutral|stone|red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose)"\]$/,
+  ],
   content: {
     pipeline: {
       include: ['src/**/*.{vue,ts,tsx}'],

@@ -16,9 +16,11 @@ const motionEaseKeys = [
   'emphasized',
   'spring',
 ]
+const motionScaleKeys = ['pressed', 'enter', 'pop', 'emphasized']
 
 const durationPattern = motionDurationKeys.join('|')
 const easePattern = motionEaseKeys.join('|')
+const scalePattern = motionScaleKeys.join('|')
 
 export const motionRule: Rule[] = [
   [
@@ -32,5 +34,9 @@ export const motionRule: Rule[] = [
     ([, key]) => ({
       'transition-timing-function': `var(--w-motion-ease-${key})`,
     }),
+  ],
+  [
+    new RegExp(`^scale-motion-(${scalePattern})$`),
+    ([, key]) => ({ scale: `var(--w-motion-scale-${key})` }),
   ],
 ]

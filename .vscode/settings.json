@@ -22,6 +22,5 @@
     "editor.defaultFormatter": "oxc.oxc-vscode"
   },
   "css.customData": [".vscode/unocss.json"],
-  "less.customData": [".vscode/unocss.json"],
-  "scss.customData": [".vscode/unocss.json"]
+  "less.customData": [".vscode/unocss.json"]
 }

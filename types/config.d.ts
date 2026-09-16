@@ -1,9 +1,9 @@
-import type { SiderThemeType, HeaderWidgetType } from '@/constants'
-
 import type {
   MenuMode,
   ThemeMode,
   Locale,
+  SiderTheme,
+  HeaderWidget,
   TabsTheme,
   PageAnimation,
   LoadingAnimation,
@@ -157,7 +157,7 @@ export interface SiderConfig {
    * @desc 侧边栏主题
    * @default
    */
-  theme: SiderThemeType
+  theme: SiderTheme
   /**
    * @desc 侧边菜单是否固定
    * @default false
@@ -221,7 +221,7 @@ export interface HeaderConfig {
    * @desc header右侧部件
    * @default [HeaderWidget.Search,HeaderWidget.Translate,HeaderWidget.FullScreen,HeaderWidget.LockScreen,HeaderWidget.Setting]
    */
-  widgets: HeaderWidgetType[]
+  widgets: HeaderWidget[]
 }
 
 export interface TabConfig {
