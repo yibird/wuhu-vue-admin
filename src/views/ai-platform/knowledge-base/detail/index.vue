@@ -44,7 +44,7 @@ const overviewStats = computed(() => [
 ])
 
 function goBack() {
-  void router.push('/ai-platform/knowledge-base')
+  router.push('/ai-platform/knowledge-base')
 }
 </script>
 

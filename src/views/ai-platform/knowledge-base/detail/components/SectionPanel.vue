@@ -34,18 +34,6 @@ function getToneLabel(
   }
   return labelMap[tone ?? 'default']
 }
-
-function getItemBorderClass(
-  tone: KnowledgeSectionWorkspace['items'][number]['tone']
-) {
-  const classMap = {
-    default: 'border-color-2',
-    primary: 'border-primary/35',
-    success: 'border-success/35',
-    warning: 'border-warning/35',
-  }
-  return classMap[tone ?? 'default']
-}
 </script>
 
 <template>
@@ -165,8 +153,7 @@ function getItemBorderClass(
           <article
             v-for="item in props.section.items"
             :key="item.title"
-            class="border-l-3 border-l-solid p-14 transition-colors duration-motion-base hover:bg-hover"
-            :class="getItemBorderClass(item.tone)"
+            class="p-14 transition-colors duration-motion-base hover:bg-hover"
           >
             <div class="flex items-start gap-12">
               <span

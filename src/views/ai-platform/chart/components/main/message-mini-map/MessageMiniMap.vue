@@ -125,7 +125,7 @@ onBeforeUnmount(() => cancelAnimationFrame(scrollFrame))
       @click="jump(item)"
     />
 
-    <Transition name="message-preview">
+    <Transition name="fade-slide-right">
       <div v-if="preview" class="message-preview" :style="previewStyle">
         <span class="message-preview__type">
           {{
@@ -258,20 +258,6 @@ onBeforeUnmount(() => cancelAnimationFrame(scrollFrame))
   -webkit-box-orient: vertical;
 }
 
-.message-preview-enter-active,
-.message-preview-leave-active {
-  transition:
-    opacity var(--w-motion-duration-base) var(--w-motion-ease-standard),
-    transform var(--w-motion-duration-slow) var(--w-motion-ease-enter);
-}
-
-.message-preview-enter-from,
-.message-preview-leave-to {
-  opacity: 0;
-  transform: translate3d(8px, calc(-50% + var(--message-preview-offset-y)), 0)
-    scale(0.96);
-}
-
 @media (width <= 900px) {
   .message-minimap {
     display: none;
@@ -280,10 +266,8 @@ onBeforeUnmount(() => cancelAnimationFrame(scrollFrame))
 
 @media (prefers-reduced-motion: reduce) {
   .message-marker,
-  .message-preview,
-  .message-preview-enter-active,
-  .message-preview-leave-active {
-    transition-duration: 1ms;
+  .message-preview {
+    transition: none;
   }
 }
 </style>

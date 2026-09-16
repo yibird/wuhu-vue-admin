@@ -2,7 +2,7 @@
 import { useRouter } from 'vue-router'
 import { message, Modal } from 'antdv-next'
 import { AnimatePresence, LayoutGroup, Motion, MotionConfig } from 'motion-v'
-import { useLoading } from '@/composables'
+import { useLoading, usePageEnter } from '@/composables'
 import {
   cardListMotionAnimate,
   cardListMotionExit,
@@ -12,7 +12,7 @@ import {
 import Card from './Card.vue'
 import CreateModal from './CreateModal.vue'
 import Toolbar from './Toolbar.vue'
-import { useAgentList } from '../composables/useAgentList'
+import { useAgentList } from '../composables'
 import type {
   AgentAction,
   AgentCreateInput,
@@ -29,7 +29,10 @@ const props = defineProps<{
 
 const router = useRouter()
 const createModalOpen = shallowRef(false)
+const pageRef = useTemplateRef<HTMLElement>('pageRef')
 const { isLoading } = useLoading({ delay: 220 })
+
+usePageEnter(pageRef)
 const {
   currentPage,
   draftCount,
@@ -105,7 +108,7 @@ function handleCardAction(action: AgentAction, item: AgentItem) {
 
   if (action === 'edit') {
     if (props.editPath) {
-      void router.push({ path: props.editPath, query: { id: item.id } })
+      router.push({ path: props.editPath, query: { id: item.id } })
       return
     }
     message.info(`编辑「${item.name}」功能待接入`)
@@ -113,7 +116,7 @@ function handleCardAction(action: AgentAction, item: AgentItem) {
   }
 
   if (props.detailPath) {
-    void router.push({ path: props.detailPath, query: { id: item.id } })
+    router.push({ path: props.detailPath, query: { id: item.id } })
     return
   }
 }
@@ -121,8 +124,12 @@ function handleCardAction(action: AgentAction, item: AgentItem) {
 
 <template>
   <WView :full="true" :padding="0">
-    <div class="h-full min-h-0 flex flex-col overflow-hidden bg-page">
+    <div
+      ref="pageRef"
+      class="h-full min-h-0 flex flex-col overflow-hidden bg-page"
+    >
       <Toolbar
+        class="page-enter page-enter--1"
         v-model:keyword="keyword"
         v-model:sort="sortBy"
         v-model:status="statusFilter"
@@ -135,11 +142,11 @@ function handleCardAction(action: AgentAction, item: AgentItem) {
 
       <main
         data-testid="ai-resource-scroll"
-        class="min-h-0 flex-1 p-12 overflow-y-auto overflow-x-hidden sm:p-16"
+        class="page-enter page-enter--2 min-h-0 flex-1 p-12 overflow-y-auto overflow-x-hidden sm:p-16 lg:p-20"
       >
         <div
           v-if="isLoading"
-          class="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6"
+          class="grid grid-cols-1 gap-16 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4"
         >
           <div
             v-for="index in 12"
@@ -164,7 +171,7 @@ function handleCardAction(action: AgentAction, item: AgentItem) {
               as="div"
               mode="popLayout"
               :initial="false"
-              class="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6"
+              class="grid grid-cols-1 gap-16 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4"
             >
               <Motion
                 v-for="item in paginatedItems"
@@ -192,7 +199,7 @@ function handleCardAction(action: AgentAction, item: AgentItem) {
 
       <footer
         data-testid="ai-resource-pagination"
-        class="flex flex-none justify-center border-t-1 border-color-2 border-t-solid bg-container px-12 py-10 sm:px-16"
+        class="page-enter page-enter--3 flex flex-none justify-center border-t-1 border-color-2 border-t-solid bg-container px-12 py-10 sm:px-16"
       >
         <a-pagination
           v-if="!isLoading && filteredItems.length > 0"

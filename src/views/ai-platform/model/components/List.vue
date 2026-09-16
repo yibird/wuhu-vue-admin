@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { message, Modal } from 'antdv-next'
 import { AnimatePresence, LayoutGroup, Motion, MotionConfig } from 'motion-v'
-import { useLoading } from '@/composables'
+import { useLoading, usePageEnter } from '@/composables'
 import {
   cardListMotionAnimate,
   cardListMotionExit,
@@ -11,7 +11,7 @@ import {
 import ModelCard from './ModelCard.vue'
 import ModelConfigDrawer from './ModelConfigDrawer.vue'
 import Toolbar from './Toolbar.vue'
-import { useModelList } from '../composables/useModelList'
+import { useModelList } from '../composables'
 import type {
   ModelAction,
   ModelCreateInput,
@@ -27,6 +27,9 @@ const props = defineProps<{
 const { isLoading } = useLoading({ delay: 220 })
 const createDrawerOpen = shallowRef(false)
 const editingItem = shallowRef<ModelItem>()
+const pageRef = useTemplateRef<HTMLElement>('pageRef')
+
+usePageEnter(pageRef)
 const {
   configuredCount,
   currentPage,
@@ -117,8 +120,12 @@ function handleCardAction(action: ModelAction, item: ModelItem) {
 
 <template>
   <WView :full="true" :padding="0">
-    <div class="h-full min-h-0 flex flex-col overflow-hidden bg-page">
+    <div
+      ref="pageRef"
+      class="h-full min-h-0 flex flex-col overflow-hidden bg-page"
+    >
       <Toolbar
+        class="page-enter page-enter--1"
         v-model:keyword="keyword"
         v-model:provider="providerFilter"
         v-model:sort="sortBy"
@@ -133,7 +140,7 @@ function handleCardAction(action: ModelAction, item: ModelItem) {
 
       <main
         data-testid="model-list-scroll"
-        class="min-h-0 flex-1 overflow-y-auto p-12 sm:p-16 lg:p-20"
+        class="page-enter page-enter--2 min-h-0 flex-1 overflow-y-auto p-12 sm:p-16 lg:p-20"
       >
         <div
           v-if="isLoading"
@@ -189,7 +196,7 @@ function handleCardAction(action: ModelAction, item: ModelItem) {
 
       <footer
         data-testid="model-list-pagination"
-        class="flex flex-none justify-center border-t-1 border-color-2 border-t-solid bg-container px-12 py-10 sm:px-16"
+        class="page-enter page-enter--3 flex flex-none justify-center border-t-1 border-color-2 border-t-solid bg-container px-12 py-10 sm:px-16"
       >
         <a-pagination
           v-if="!isLoading && filteredItems.length > 0"

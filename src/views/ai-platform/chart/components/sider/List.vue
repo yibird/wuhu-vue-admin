@@ -20,9 +20,9 @@
         key="list"
         name="fade-scale"
         tag="div"
-        class="conversation-list relative flex flex-col gap-4 px-8 pb-10 pt-4 max-lg:grid max-lg:grid-cols-[repeat(3,minmax(210px,1fr))] max-lg:overflow-x-auto max-sm:grid-cols-[repeat(3,minmax(196px,1fr))] max-sm:p-10"
+        class="conversation-list relative flex flex-col gap-6 px-8 pb-10 pt-4 max-lg:grid max-lg:grid-cols-[repeat(3,minmax(210px,1fr))] max-lg:overflow-x-auto max-sm:grid-cols-[repeat(3,minmax(196px,1fr))] max-sm:p-10"
         leave-active-class="conversation-list-leave-active fade-scale-leave-active"
-        move-class="conversation-list-move"
+        move-class="list-move"
       >
         <div
           v-for="item in items"
@@ -30,19 +30,17 @@
           class="conversation-list-item min-w-0"
         >
           <article
-            class="group relative min-h-48 w-full min-w-0 overflow-hidden rounded-8 border-1 border-transparent border-solid bg-container text-regular transition-[background-color,border-color,box-shadow,color,transform] duration-motion-base ease-motion-enter hover:(-translate-y-1 border-color-3 bg-hover shadow-all-sm) focus-within:(border-primary/35 bg-hover shadow-[0_0_0_2px_rgb(var(--w-color-primary)_/_10%)]) active:translate-y-0 motion-reduce:(transform-none transition-none)"
+            class="group conversation-card relative min-h-48 w-full min-w-0 overflow-hidden rounded-8 border-1 border-transparent border-solid bg-container text-regular hover:(border-color-3 shadow-all-sm) focus-within:(border-primary/35 bg-hover shadow-[0_0_0_2px_rgb(var(--w-color-primary)_/_10%)])"
             :class="
               item.id === activeId
-                ? 'border-primary/35! bg-selected! text-main shadow-all-sm'
+                ? 'conversation-card--active border-primary/35! bg-selected! text-main shadow-all-sm'
                 : ''
             "
           >
             <button
               type="button"
               class="min-h-48 w-full min-w-0 flex items-center border-0 bg-transparent text-left text-regular outline-none cursor-pointer"
-              :class="
-                collapsed ? 'h-48 justify-center p-6' : 'px-8 py-8 pr-104'
-              "
+              :class="collapsed ? 'h-48 justify-center p-6' : 'px-8 py-8 pr-40'"
               :title="item.title"
               :aria-current="item.id === activeId ? 'true' : undefined"
               @click="emit('change', item.id)"
@@ -65,7 +63,7 @@
                 </span>
 
                 <span
-                  class="min-w-0 flex-1 flex-col gap-3 overflow-hidden transition-[max-width,opacity,transform] duration-motion-fast ease-motion-enter motion-reduce:transition-none"
+                  class="min-w-0 flex-1 flex-col gap-6 overflow-hidden transition-[max-width,opacity,transform] duration-motion-fast ease-motion-enter motion-reduce:transition-none"
                   :class="
                     collapsed
                       ? 'hidden max-h-0 max-w-0 translate-x-4 opacity-0 pointer-events-none'
@@ -82,7 +80,7 @@
                       class="shrink-0 text-primary"
                     />
                     <strong
-                      class="min-w-0 truncate text-13px text-main font-600 leading-19px"
+                      class="min-w-0 truncate text-sm text-main font-600 leading-20px"
                     >
                       {{ item.title }}
                     </strong>
@@ -91,7 +89,7 @@
                     {{ item.description }}
                   </span>
                   <span
-                    class="min-w-0 flex items-center justify-between gap-8 text-xs text-secondary leading-18px"
+                    class="min-w-0 flex items-center justify-between gap-8 text-11px text-muted leading-16px"
                   >
                     <span class="truncate">{{
                       item.updateTime ?? item.createTime
@@ -101,7 +99,9 @@
                         class="size-5 rounded-full"
                         :class="statusClass(item)"
                       />
-                      {{ statusLabel(item) }}
+                      <span class="text-secondary">{{
+                        statusLabel(item)
+                      }}</span>
                     </span>
                   </span>
                 </span>
@@ -109,22 +109,18 @@
             </button>
             <div
               v-if="!collapsed"
-              class="absolute right-7 top-7 translate-x-4 flex items-center gap-2 rounded-6 bg-container/92 p-1 opacity-0 shadow-all-sm backdrop-blur-6 transition-[opacity,transform] duration-motion-fast ease-motion-enter group-focus-within:(translate-x-0 opacity-100) group-hover:(translate-x-0 opacity-100) motion-reduce:(transform-none transition-none)"
+              class="absolute right-7 top-7 translate-x-4 flex items-center rounded-6 bg-container/92 p-1 opacity-0 shadow-all-sm backdrop-blur-6 transition-[opacity,transform] duration-motion-fast ease-motion-enter group-focus-within:(translate-x-0 opacity-100) group-hover:(translate-x-0 opacity-100) motion-reduce:(transform-none transition-none)"
             >
-              <button
-                v-for="action in getActions(item)"
-                :key="action.key"
-                type="button"
-                class="size-22 inline-flex items-center justify-center rounded-5 border-0 bg-transparent p-0 text-muted cursor-pointer transition-[background-color,color,transform] duration-motion-fast hover:(bg-hover text-main -translate-y-1) focus-visible:(bg-hover text-main outline-none) active:(translate-y-0 scale-90) motion-reduce:(transform-none transition-none)"
-                :class="
-                  action.danger ? 'hover:bg-error-tint hover:text-error' : ''
-                "
-                :aria-label="action.label"
-                :title="action.label"
-                @click="handleAction(action.key, item.id)"
-              >
-                <Icon :name="action.icon" :size="13" />
-              </button>
+              <a-dropdown :trigger="['click']" :menu="getActionMenu(item)">
+                <button
+                  type="button"
+                  class="size-22 inline-flex items-center justify-center rounded-5 border-0 bg-transparent p-0 text-muted cursor-pointer transition-[background-color,color,transform] duration-motion-fast hover:(bg-white text-main -translate-y-1) focus-visible:(bg-white text-main outline-none) active:(translate-y-0 scale-90) motion-reduce:(transform-none transition-none)"
+                  :aria-label="`更多${item.title}操作`"
+                  title="更多操作"
+                >
+                  <Icon name="i-lucide:more-horizontal" :size="14" />
+                </button>
+              </a-dropdown>
             </div>
           </article>
         </div>
@@ -134,6 +130,8 @@
 </template>
 
 <script setup lang="ts">
+import type { MenuProps } from 'antdv-next'
+import { renderIcon } from '@/utils'
 import type { AgentStatus, ChatItem, ListEmits, ListProps } from '../types'
 
 withDefaults(defineProps<ListProps>(), {
@@ -175,30 +173,48 @@ function statusClass(item: ChatItem) {
   return getStatus(item).class
 }
 
-function getActions(item: ChatItem) {
-  return [
+function getActionMenu(item: ChatItem) {
+  const items: MenuProps['items'] = [
     {
-      key: 'pin' as const,
+      key: 'pin',
       label: item.pinned ? '取消置顶' : '置顶',
-      icon: item.pinned ? 'i-lucide:pin-off' : 'i-lucide:pin',
+      icon: renderIcon(item.pinned ? 'i-lucide:pin-off' : 'i-lucide:pin'),
     },
     {
-      key: 'rename' as const,
+      key: 'rename',
       label: '重命名',
-      icon: 'i-lucide:pencil',
+      icon: renderIcon('i-lucide:pencil'),
     },
     {
-      key: 'archive' as const,
+      key: 'archive',
       label: item.archived ? '恢复会话' : '归档',
-      icon: item.archived ? 'i-lucide:archive-restore' : 'i-lucide:archive',
+      icon: renderIcon(
+        item.archived ? 'i-lucide:archive-restore' : 'i-lucide:archive'
+      ),
     },
+    { type: 'divider' },
     {
-      key: 'delete' as const,
+      key: 'delete',
       label: '删除',
-      icon: 'i-lucide:trash-2',
       danger: true,
+      icon: renderIcon('i-lucide:trash-2'),
     },
   ]
+
+  return {
+    items,
+    onClick: ({ key }: { key: string | number }) => {
+      const action = String(key)
+      if (
+        action === 'archive' ||
+        action === 'delete' ||
+        action === 'pin' ||
+        action === 'rename'
+      ) {
+        handleAction(action, item.id)
+      }
+    },
+  }
 }
 
 function handleAction(action: ChatActionKey, id: string) {
@@ -207,15 +223,46 @@ function handleAction(action: ChatActionKey, id: string) {
 </script>
 
 <style scoped>
-.conversation-list-item {
-  transform-origin: center;
-  backface-visibility: hidden;
+.conversation-card {
+  transition:
+    background-color var(--w-motion-duration-base) var(--w-motion-ease-spring),
+    border-color var(--w-motion-duration-base) var(--w-motion-ease-spring),
+    box-shadow var(--w-motion-duration-base) var(--w-motion-ease-spring),
+    color var(--w-motion-duration-base) var(--w-motion-ease-spring),
+    scale var(--w-motion-duration-base) var(--w-motion-ease-spring);
 }
 
-.conversation-list-move {
-  transition: transform var(--w-motion-duration-moderate)
-    var(--w-motion-ease-enter);
-  will-change: transform;
+.conversation-card:active {
+  scale: 0.98;
+}
+
+.conversation-card--active {
+  animation: conversation-card-pop var(--w-motion-duration-moderate)
+    var(--w-motion-ease-spring);
+}
+
+@keyframes conversation-card-pop {
+  from {
+    scale: 0.96;
+  }
+
+  to {
+    scale: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .conversation-card {
+    transition: none;
+  }
+
+  .conversation-card:active {
+    scale: 1;
+  }
+
+  .conversation-card--active {
+    animation: none;
+  }
 }
 
 @media (width >= 1025px) {
@@ -225,13 +272,6 @@ function handleAction(action: ChatActionKey, id: string) {
     left: 8px;
     z-index: 1;
     pointer-events: none;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .conversation-list-move {
-    transition: none;
-    will-change: auto;
   }
 }
 </style>

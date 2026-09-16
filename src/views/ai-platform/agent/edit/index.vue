@@ -121,7 +121,7 @@ const previewStatusLabel = computed(() => {
 })
 
 function goBack() {
-  void router.push('/ai-platform/agent')
+  router.push('/ai-platform/agent')
 }
 
 function saveDraft() {

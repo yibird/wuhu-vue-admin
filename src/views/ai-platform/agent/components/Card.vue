@@ -13,10 +13,6 @@ const emit = defineEmits<{
   action: [key: AgentAction, item: AgentItem]
 }>()
 
-type TooltipAction = 'edit' | 'delete'
-
-const openTooltip = shallowRef<TooltipAction>()
-
 const iconStyle = computed(() => ({
   backgroundColor: props.item.iconBackground,
   color: getAgentIconForeground(props.item.iconBackground),
@@ -51,6 +47,11 @@ const moreActionItems = computed(() => [
     icon: renderIcon('i-lucide:arrow-up-right'),
   },
   {
+    key: 'edit',
+    label: '编辑',
+    icon: renderIcon('i-lucide:pencil'),
+  },
+  {
     key: 'duplicate',
     label: '创建副本',
     icon: renderIcon('i-lucide:copy-plus'),
@@ -70,22 +71,26 @@ const moreActionItems = computed(() => [
     label: '归档',
     icon: renderIcon('i-lucide:archive'),
   },
+  { type: 'divider' },
+  {
+    key: 'delete',
+    label: '删除',
+    danger: true,
+    icon: renderIcon('i-lucide:trash-2'),
+  },
 ])
 
 function handleAction(key: AgentAction) {
-  openTooltip.value = undefined
   emit('action', key, props.item)
-}
-
-function handleTooltipOpen(action: TooltipAction, open: boolean) {
-  openTooltip.value = open ? action : undefined
 }
 
 function handleMoreAction(info: { key: string | number }) {
   const key = String(info.key)
   if (
     key === 'archive' ||
+    key === 'delete' ||
     key === 'duplicate' ||
+    key === 'edit' ||
     key === 'open' ||
     key === 'toggle'
   ) {
@@ -96,7 +101,7 @@ function handleMoreAction(info: { key: string | number }) {
 
 <template>
   <article
-    class="group min-w-0 cursor-pointer overflow-hidden rounded-8 border-1 border-color-2 border-solid bg-container shadow-[var(--w-shadow-card)] outline-none transition-[border-color,box-shadow,transform] duration-motion-base hover:-translate-y-2 hover:border-primary/45 hover:shadow-[var(--w-shadow-elevated)] focus-visible:border-primary"
+    class="group min-w-0 flex flex-col cursor-pointer overflow-hidden rounded-8 border-1 border-color-2 border-solid bg-container shadow-[var(--w-shadow-card)] outline-none transition-[border-color,box-shadow,transform] duration-motion-base hover:(-translate-y-2 translate-x-2) hover:border-primary hover:shadow-[var(--w-shadow-elevated)] focus-visible:border-primary"
     :aria-label="`${props.subject}：${props.item.name}`"
     role="button"
     tabindex="0"
@@ -133,43 +138,6 @@ function handleMoreAction(info: { key: string | number }) {
             @click.stop
             @dblclick.stop
           >
-            <a-tooltip
-              :open="openTooltip === 'edit'"
-              placement="top"
-              destroy-on-hidden
-              title="编辑"
-              @open-change="handleTooltipOpen('edit', $event)"
-            >
-              <a-button
-                type="text"
-                size="small"
-                :aria-label="`编辑${props.item.name}`"
-                @click="handleAction('edit')"
-              >
-                <template #icon>
-                  <Icon name="i-lucide:pencil" />
-                </template>
-              </a-button>
-            </a-tooltip>
-            <a-tooltip
-              :open="openTooltip === 'delete'"
-              placement="top"
-              destroy-on-hidden
-              title="删除"
-              @open-change="handleTooltipOpen('delete', $event)"
-            >
-              <a-button
-                danger
-                type="text"
-                size="small"
-                :aria-label="`删除${props.item.name}`"
-                @click="handleAction('delete')"
-              >
-                <template #icon>
-                  <Icon name="i-lucide:trash-2" />
-                </template>
-              </a-button>
-            </a-tooltip>
             <a-dropdown
               :trigger="['click']"
               :menu="{ items: moreActionItems }"
@@ -202,7 +170,7 @@ function handleMoreAction(info: { key: string | number }) {
     </div>
 
     <footer
-      class="flex min-w-0 items-center gap-10 border-t-1 border-color-2 border-t-solid px-14 py-12"
+      class="mt-auto flex min-w-0 items-center gap-10 border-t-1 border-color-2 border-t-solid px-14 py-12"
     >
       <span
         class="size-30 flex flex-none items-center justify-center rounded-full text-xs text-white font-700"

@@ -66,7 +66,7 @@ export function useAgentMessageMiniMap(options: UseAgentMessageMiniMapOptions) {
       toValue(options.messages).map(
         (message) => `${message.id}:${message.role}:${message.content}`
       ),
-    () => void nextTick(syncItems),
+    () => nextTick(syncItems),
     { flush: 'post', immediate: true }
   )
 

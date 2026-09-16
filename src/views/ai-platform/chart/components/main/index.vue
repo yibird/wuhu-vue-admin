@@ -1,6 +1,6 @@
 <template>
   <main
-    class="min-h-0 min-w-0 flex-1 grid grid-rows-[auto_minmax(0,1fr)_auto] overflow-hidden bg-container"
+    class="agent-main min-h-0 min-w-0 flex-1 grid grid-rows-[auto_minmax(0,1fr)_auto] overflow-hidden bg-container"
   >
     <header
       class="h-56 min-w-0 flex items-center justify-between gap-10 border-0 border-b-1 border-color-1 border-solid px-20 max-md:px-14"
@@ -259,7 +259,7 @@
         </div>
       </Scrollbar>
 
-      <Transition name="agent-minimap-fade">
+      <Transition name="fade-slide-right">
         <MessageMiniMap
           v-if="miniMapItems.length > 1"
           :messages="miniMapItems"
@@ -381,8 +381,8 @@ import Tool from './Tool.vue'
 import Issue from './Issue.vue'
 import Attachment from './Attachment.vue'
 import MessageItem from './MessageItem.vue'
-import MessageMiniMap from './MessageMiniMap/MessageMiniMap.vue'
-import { useAgentMessageMiniMap } from './MessageMiniMap/useAgentMessageMiniMap'
+import MessageMiniMap from './message-mini-map/MessageMiniMap.vue'
+import { useAgentMessageMiniMap } from './message-mini-map/useAgentMessageMiniMap'
 import Send from './Send.vue'
 import type { ScrollbarInstance } from '@/components'
 import type {
@@ -475,7 +475,7 @@ watch(
   ],
   ([chatId], previous) => {
     const isChatSwitch = chatId !== previous?.[0]
-    void nextTick(() => {
+    nextTick(() => {
       window.cancelAnimationFrame(scrollFrame)
       scrollFrame = window.requestAnimationFrame(() => {
         const target = messagePanelRef.value?.getScrollElement()
@@ -495,7 +495,7 @@ watch(
   () => {
     prompt.value = ''
     if (!props.messages.length) {
-      void nextTick(() => editorRef.value?.focus())
+      nextTick(() => editorRef.value?.focus())
     }
   }
 )
@@ -564,6 +564,28 @@ function saveEditingMessage() {
 </script>
 
 <style scoped>
+.agent-main {
+  background-image:
+    radial-gradient(
+      560px 360px at 50% 100%,
+      rgb(var(--w-color-primary) / 10%),
+      transparent 72%
+    ),
+    linear-gradient(
+      to right,
+      rgb(var(--w-color-primary) / 12%),
+      rgb(var(--w-color-primary) / 4%) 220px,
+      transparent 560px
+    ),
+    linear-gradient(
+      to left,
+      rgb(var(--w-color-primary) / 12%),
+      rgb(var(--w-color-primary) / 4%) 220px,
+      transparent 560px
+    );
+  background-repeat: no-repeat;
+}
+
 .agent-message-list {
   padding-right: 76px;
 }
@@ -580,19 +602,6 @@ function saveEditingMessage() {
   box-shadow: 0 0 0 1px rgb(var(--w-color-primary) / 16%);
 }
 
-.agent-minimap-fade-enter-active,
-.agent-minimap-fade-leave-active {
-  transition:
-    opacity var(--w-motion-duration-base) var(--w-motion-ease-standard),
-    transform var(--w-motion-duration-moderate) var(--w-motion-ease-enter);
-}
-
-.agent-minimap-fade-enter-from,
-.agent-minimap-fade-leave-to {
-  opacity: 0;
-  transform: translateX(10px);
-}
-
 @media (width <= 900px) {
   .agent-message-list {
     padding-right: 0;
@@ -600,9 +609,7 @@ function saveEditingMessage() {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .agent-message-anchor,
-  .agent-minimap-fade-enter-active,
-  .agent-minimap-fade-leave-active {
+  .agent-message-anchor {
     transition-duration: 1ms;
   }
 }

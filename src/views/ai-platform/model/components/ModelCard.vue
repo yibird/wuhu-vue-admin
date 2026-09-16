@@ -91,7 +91,7 @@ function handleMenuClick(info: { key: string | number }) {
 
 <template>
   <article
-    class="group min-w-0 overflow-hidden rounded-8 border-1 border-color-2 border-solid bg-container shadow-[var(--w-shadow-card)] transition-[border-color,box-shadow,transform] duration-motion-base hover:-translate-y-2 hover:border-primary/45 hover:shadow-[var(--w-shadow-elevated)] motion-reduce:transform-none"
+    class="group min-w-0 overflow-hidden rounded-8 border-1 border-color-2 border-solid bg-container shadow-[var(--w-shadow-card)] transition-[border-color,box-shadow,transform] duration-motion-base hover:-translate-y-2 hover:border-primary hover:shadow-[var(--w-shadow-elevated)] motion-reduce:transform-none"
   >
     <header class="flex min-w-0 items-start gap-10 p-14 pb-12">
       <span

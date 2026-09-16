@@ -1,6 +1,11 @@
 <script setup lang="ts">
+import { usePageEnter } from '@/composables'
 import { Main, Sider } from './components'
-import { useAgent } from './composables/useAgent'
+import { useAgent } from './composables'
+
+const pageRef = useTemplateRef<HTMLElement>('pageRef')
+
+usePageEnter(pageRef)
 
 const {
   activeChat,
@@ -42,11 +47,15 @@ const {
 
 <template>
   <WView full :padding="false" class="bg-page">
-    <div class="box-border h-full min-h-full min-w-0 bg-page p-10 max-md:p-8">
+    <div
+      ref="pageRef"
+      class="box-border h-full min-h-full min-w-0 bg-page p-10 max-md:p-8"
+    >
       <div
         class="h-full min-h-0 min-w-0 flex overflow-hidden rounded-8 border-1 border-color-1 border-solid bg-container shadow-b-sm max-xl:flex-col"
       >
         <Sider
+          class="page-enter page-enter--1"
           :items="chats"
           :active-id="activeChatId"
           @archive="handleArchiveChat"
@@ -58,6 +67,7 @@ const {
         />
 
         <Main
+          class="page-enter page-enter--2"
           :attachments="draftAttachments"
           :chat="activeChat"
           :config="generationConfig"

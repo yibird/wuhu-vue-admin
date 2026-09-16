@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { KnowledgeBasePageConfig, KnowledgeBaseSort } from '../../types'
-import type { KnowledgeBaseStatusFilter } from '../composables/useKnowledgeBaseList'
+import type { KnowledgeBaseStatusFilter } from '../composables'
 
 const props = defineProps<{
   config: KnowledgeBasePageConfig

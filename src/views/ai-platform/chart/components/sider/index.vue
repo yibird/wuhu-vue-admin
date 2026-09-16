@@ -1,11 +1,13 @@
 <template>
   <aside
-    class="h-full min-h-0 shrink-0 flex flex-col overflow-hidden border-0 border-r-1 border-solid border-color-2 bg-container transition-[width,min-width,max-height] duration-motion-base ease-motion-enter will-change-[width] motion-reduce:transition-none max-xl:h-auto max-xl:max-h-260 max-xl:w-full max-xl:min-w-0 max-xl:border-r-0 max-xl:border-b-1 max-md:max-h-230"
+    ref="siderRef"
+    class="relative h-full min-h-0 shrink-0 flex flex-col overflow-hidden border-0 border-r-1 border-solid border-color-3 bg-container transition-[width,min-width,max-height] duration-motion-base ease-motion-enter will-change-[width] motion-reduce:transition-none max-xl:h-auto max-xl:max-h-260 max-xl:w-full max-xl:min-w-0 max-xl:border-r-0 max-xl:border-b-1 max-md:max-h-230"
     :class="
       collapsed
         ? 'w-72 min-w-72 max-xl:max-h-56'
         : 'w-320 min-w-320 max-2xl:w-300 max-2xl:min-w-300'
     "
+    :style="asideStyle"
   >
     <Header v-model:collapsed="collapsed" @create="emit('create')" />
     <div
@@ -67,10 +69,27 @@
       @pin="emit('pin', $event)"
       @rename="emit('rename', $event)"
     />
+
+    <div
+      v-if="!collapsed"
+      class="group absolute bottom-0 right-0 top-0 z-10 w-6 flex justify-end cursor-col-resize touch-none select-none max-xl:hidden"
+      role="separator"
+      aria-orientation="vertical"
+      aria-label="拖拽调整侧边栏宽度，双击恢复默认"
+      title="拖拽调整宽度，双击恢复默认"
+      @pointerdown="handleResizeStart"
+      @dblclick="handleResizeReset"
+    >
+      <span
+        class="h-full w-2 bg-transparent transition-colors duration-motion-fast group-hover:bg-primary"
+        :class="isResizing ? 'bg-primary' : ''"
+      />
+    </div>
   </aside>
 </template>
 
 <script setup lang="ts">
+import { useMediaQuery } from '@vueuse/core'
 import Header from './Header.vue'
 import List from './List.vue'
 import type { SiderEmits, SiderProps } from '../types'
@@ -84,6 +103,70 @@ const emit = defineEmits<SiderEmits>()
 const collapsed = shallowRef(false)
 const keyword = shallowRef('')
 type SiderView = 'all' | 'pinned' | 'archived'
+
+const SIDER_MIN_WIDTH = 240
+const SIDER_MAX_WIDTH = 480
+
+const siderRef = useTemplateRef<HTMLElement>('siderRef')
+const siderWidth = shallowRef(0)
+const isResizing = shallowRef(false)
+const stopResize = shallowRef<() => void>()
+const isWideScreen = useMediaQuery('(min-width: 1280px)')
+
+const asideStyle = computed(() => {
+  const style: Record<string, string> = {}
+
+  if (isWideScreen.value && !collapsed.value && siderWidth.value > 0) {
+    style.width = `${siderWidth.value}px`
+    style.minWidth = `${siderWidth.value}px`
+  }
+
+  if (isResizing.value) style.transition = 'none'
+
+  return style
+})
+
+function clampWidth(width: number) {
+  return Math.min(SIDER_MAX_WIDTH, Math.max(SIDER_MIN_WIDTH, Math.round(width)))
+}
+
+function handleResizeStart(event: PointerEvent) {
+  const aside = siderRef.value
+  const handle = event.currentTarget
+  if (!aside || !(handle instanceof HTMLElement) || collapsed.value) return
+
+  const startX = event.clientX
+  const startWidth = aside.getBoundingClientRect().width
+  isResizing.value = true
+  document.body.style.cursor = 'col-resize'
+  document.body.style.userSelect = 'none'
+
+  const handleMove = (moveEvent: PointerEvent) => {
+    siderWidth.value = clampWidth(startWidth + moveEvent.clientX - startX)
+  }
+
+  const handleEnd = () => {
+    isResizing.value = false
+    stopResize.value = undefined
+    document.body.style.cursor = ''
+    document.body.style.userSelect = ''
+    handle.removeEventListener('pointermove', handleMove)
+    handle.removeEventListener('pointerup', handleEnd)
+    handle.removeEventListener('pointercancel', handleEnd)
+  }
+
+  stopResize.value = handleEnd
+  handle.setPointerCapture(event.pointerId)
+  handle.addEventListener('pointermove', handleMove)
+  handle.addEventListener('pointerup', handleEnd)
+  handle.addEventListener('pointercancel', handleEnd)
+}
+
+function handleResizeReset() {
+  siderWidth.value = 0
+}
+
+onBeforeUnmount(() => stopResize.value?.())
 
 const activeView = shallowRef<SiderView>('all')
 
