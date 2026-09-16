@@ -31,7 +31,7 @@
 <script setup lang="ts">
 import { getRolePageListApi } from '@/apis'
 import { FormPlus } from '@/components/form-plus'
-import type { FormPlusProps } from '@/components/form-plus'
+import type { FormPlusModel, FormPlusProps } from '@/components/form-plus'
 import { TablePlus, useTable } from '@/components/table-plus'
 import type { TablePlusColumn } from '@/components/table-plus'
 import Detail from './components/Detail.vue'
@@ -120,7 +120,7 @@ const contextMenu = () => [
   },
 ]
 
-const onSearch = (values: any) => {
+const onSearch = (values: FormPlusModel) => {
   tableRef.value?.run(values)
 }
 const onReset = () => {

@@ -35,13 +35,13 @@
 </template>
 
 <script setup lang="ts">
-import { getMenuPageListApi } from '@/apis'
+import { getMenuPageListApi, type MenuResp } from '@/apis'
 import { FormPlus } from '@/components/form-plus'
 import { Icon } from '@/components/icon'
 import { TablePlus, useTable } from '@/components/table-plus'
 import FormModal from './components/FormModal.vue'
 
-import type { FormPlusProps } from '@/components/form-plus'
+import type { FormPlusModel, FormPlusProps } from '@/components/form-plus'
 import type { TablePlusColumn } from '@/components/table-plus'
 
 const tableRef = ref()
@@ -70,7 +70,7 @@ const formOptions = ref<FormPlusProps['options']>({
   ],
 })
 
-const columns = ref<TablePlusColumn[]>([
+const columns = ref<TablePlusColumn<MenuResp>[]>([
   {
     title: '菜单名称',
     dataIndex: 'title',
@@ -121,7 +121,7 @@ const columns = ref<TablePlusColumn[]>([
         h(
           'a',
           {
-            class: 'text-red-500',
+            class: 'text-error',
           },
           '删除'
         ),
@@ -145,7 +145,7 @@ const contextMenu = () => [
   },
 ]
 
-const onSearch = (values: any) => {
+const onSearch = (values: FormPlusModel) => {
   tableRef.value?.run(values)
 }
 const onReset = () => {
@@ -156,7 +156,7 @@ const onAdd = () => {
   modalRef.value?.show()
 }
 
-const onEdit = (record: any) => {
+const onEdit = (record: MenuResp) => {
   modalRef.value?.show(record)
 }
 

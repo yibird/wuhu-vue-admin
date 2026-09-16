@@ -1,80 +1,106 @@
 <template>
-  <div class="full-flex p-10">
+  <div class="h-full flex flex-col gap-10 p-10">
+    <FormPlus :options="formOptions" @submit="onSearch" />
     <TablePlus
-      :loading="loading"
-      :columns="columns"
-      :data="dataSource"
-      :rowSelection="rowSelection"
-      :row-key="rowKey"
       v-model:checked-row-keys="selectedKeys"
-      :pagination="pagination"
       class="flex-1 overflow-hidden"
+      :columns="columns"
+      :data-source="dataSource"
+      :loading="loading"
+      :pagination="pagination"
+      :row-key="rowKey"
+      :row-selection="rowSelection"
       @update:checked-row-keys="handleCheck"
     >
-      <template #headerLeft>
-        <FormPlus ref="formRef" :options="formOptions" @submit="onSearch" />
-      </template>
       <template #headerRight>
-        <a-button type="primary">新增</a-button>
-        <a-button type="primary">组织架构图</a-button>
+        <a-button type="primary" @click="openCreate">
+          <template #icon><Icon name="i-lucide:plus" /></template>
+          新增
+        </a-button>
+        <a-button type="primary" ghost>
+          <template #icon><Icon name="i-lucide:network" /></template>
+          组织架构图
+        </a-button>
       </template>
     </TablePlus>
+    <DeptForm
+      v-model:open="formOpen"
+      :id="editingDeptId"
+      @success="onSuccess"
+    />
   </div>
 </template>
+
 <script lang="ts" setup>
-import { message } from 'antdv-next'
-import { getRolePageListApi, type RoleResp } from '@/apis'
-import { FormPlus } from '@/components/form-plus'
+import { Button, Tag } from 'antdv-next'
+import { getDeptPageListApi, type DeptResp } from '@/apis'
+import { FormPlus, Icon } from '@/components'
 import type { FormPlusProps } from '@/components/form-plus'
 import { TablePlus, useTable } from '@/components/table-plus'
 import type { TablePlusColumn } from '@/components/table-plus'
+import { DeptForm } from './components'
 
-interface FormState {
-  roleName?: string
+interface DeptSearchForm {
+  name?: string
+  type?: 1 | 2
 }
 
-const formOptions = ref<FormPlusProps['options']>({
+const formOpen = shallowRef(false)
+const editingDeptId = shallowRef<string>()
+const query = shallowRef({ pageNum: 1, pageSize: 10 })
+
+const formOptions = shallowRef<FormPlusProps['options']>({
   labelPlacement: 'left',
   labelWidth: 80,
-  grid: { xGap: 10, yGap: 10 },
   items: [
     {
-      label: '部门名称',
       type: 'input',
-      field: 'roleName',
-      props: {
-        clearable: true,
-        placeholder: '请输入部门名称',
-        span: 6,
-      },
+      field: 'name',
+      label: '部门名称',
+      props: { clearable: true, placeholder: '请输入部门名称' },
     },
     {
-      label: '是否启用',
-      type: 'input',
-      field: 'test2',
+      type: 'select',
+      field: 'type',
+      label: '部门类型',
       props: {
-        span: 6,
+        clearable: true,
+        options: [
+          { label: '部门', value: 1 },
+          { label: '岗位', value: 2 },
+        ],
       },
     },
   ],
 })
 
-const query = ref({ pageNum: 1, pageSize: 10 })
-
-const columns: TablePlusColumn<RoleResp>[] = [
+const columns: TablePlusColumn<DeptResp>[] = [
+  { title: '部门名称', dataIndex: 'name' },
+  { title: '部门编码', dataIndex: 'code' },
   {
-    title: '角色名称',
-    key: 'roleName',
+    title: '类型',
+    dataIndex: 'type',
+    customRender: ({ text }) =>
+      h(
+        Tag,
+        { bordered: false, color: text === 2 ? 'purple' : 'blue' },
+        { default: () => (text === 2 ? '岗位' : '部门') }
+      ),
   },
+  { title: '负责人', dataIndex: 'leader' },
+  { title: '联系电话', dataIndex: 'phone' },
+  { title: '联系邮箱', dataIndex: 'email' },
   {
-    title: '作用域',
-    key: 'roleCode',
-    minWidth: 100,
-    resizable: true,
-  },
-  {
-    title: '描述',
-    key: 'remark',
+    title: '操作',
+    key: 'action',
+    fixed: 'right',
+    width: 80,
+    customRender: ({ record }) =>
+      h(
+        Button,
+        { type: 'link', onClick: () => openEdit(record.id) },
+        { default: () => '编辑' }
+      ),
   },
 ]
 
@@ -87,20 +113,37 @@ const {
   rowKey,
   handleCheck,
   run,
-} = useTable<RoleResp, { pageNum: number; pageSize: number }>({
-  api: () => getRolePageListApi(query.value),
-  rowKey: (row) => String(row.id),
-  onPaginate: (page, size) => {
-    query.value.pageNum = page
-    query.value.pageSize = size
+} = useTable<DeptResp, typeof query.value>({
+  api: () => getDeptPageListApi(query.value),
+  rowKey: (row) => row.id,
+  onPaginate: (pageNum, pageSize) => {
+    query.value = { ...query.value, pageNum, pageSize }
     run(query.value)
   },
 })
 
-const onSearch = (values: FormState) => {
-  query.value.pageNum = 1
+function onSearch(values: DeptSearchForm) {
+  query.value = {
+    ...query.value,
+    pageNum: 1,
+    ...(values.name?.trim() ? { name: values.name.trim() } : {}),
+    ...(values.type ? { type: values.type } : {}),
+  }
   run(query.value)
-  const keyword = values.roleName?.trim()
-  message.success(keyword ? `已按「${keyword}」查询部门` : '已刷新部门列表')
+}
+
+function openCreate() {
+  editingDeptId.value = undefined
+  formOpen.value = true
+}
+
+function openEdit(id: string) {
+  editingDeptId.value = id
+  formOpen.value = true
+}
+
+function onSuccess() {
+  query.value = { ...query.value, pageNum: 1 }
+  run(query.value)
 }
 </script>

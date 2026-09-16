@@ -1,49 +1,37 @@
+<script setup lang="ts">
+import type { DropdownEmits, DropdownProps } from './types'
+
+const props = defineProps<DropdownProps>()
+const emit = defineEmits<DropdownEmits>()
+
+const options = [
+  { key: 'edit', label: '编辑' },
+  { key: 'delete', label: '删除', danger: true },
+]
+
+function handleMenuClick({ key }: { key: string }) {
+  if (key === 'edit') {
+    emit('edit', props.item)
+    return
+  }
+
+  emit('delete', props.item)
+}
+</script>
+
 <template>
   <a-dropdown
     :menu="{ items: options }"
-    placement="bottomLeft"
-    @menu-click="onSelect"
+    placement="bottomRight"
+    @menu-click="handleMenuClick"
   >
-    <span class="size-25 grid-center rounded-4 hover:bg-white">
-      <Icon name="i-lucide:ellipsis" :size="18" />
-    </span>
+    <button
+      type="button"
+      class="size-28 grid-center rounded-4 text-secondary transition-colors hover:bg-hover hover:text-main"
+      title="更多操作"
+      @click.stop
+    >
+      <Icon name="i-lucide:ellipsis" :size="17" />
+    </button>
   </a-dropdown>
 </template>
-<script lang="ts" setup>
-import { Modal } from 'antdv-next'
-import type { DropdownProps, DropdownEmits } from './types'
-
-const props = defineProps<DropdownProps>()
-const emits = defineEmits<DropdownEmits>()
-
-const options = [
-  {
-    key: 'update',
-    label: '修改',
-    props: { class: 'w-100' },
-  },
-  {
-    key: 'del',
-    label: '删除',
-    props: { class: 'w-100' },
-  },
-]
-
-const onSelect = ({ key }: { key: string }) => {
-  switch (key) {
-    case 'update':
-      break
-    case 'del':
-      Modal.confirm({
-        title: '删除',
-        content: '确定删除吗？',
-        okText: '确定',
-        cancelText: '取消',
-        onCancel: () => {
-          emits('del')
-        },
-      })
-      break
-  }
-}
-</script>

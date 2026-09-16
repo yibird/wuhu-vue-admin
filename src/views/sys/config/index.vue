@@ -1,57 +1,40 @@
 <template>
-  <div class="p-10 full-flex">
-    <div class="full flex bg-container">
-      <!-- <a-tabs
-        v-model:active-key="activeKey"
-        type="line"
-        placement="left"
-        :tabs-padding="10"
-        :bar-width="0"
-        @update:value="onChange"
-      >
-      
-        <a-tab-pane v-for="item in items" :name="item.key">
-          <template #tab>
-            <div
-              :class="[
-                'w-300 px-20 py-10 flex items-center rounded-6 transition-colors hover:bg-[#f2f3f5]',
-                { 'bg-[#f2f3f5]': item.key === activeKey },
-              ]"
-            >
-              <Icon :name="item.icon" :size="20" />
-              <span class="ml-6">{{ item.label }}</span>
-            </div>
-          </template>
-        </a-tab-pane>
-      </a-tabs> -->
-      <div
-        class="h-full px-10 py-20 flex flex-col gap-10 border-r-1 border-r-solid border-color-1"
-      >
+  <WView :full="true" :padding="0">
+    <div class="h-full min-h-0 bg-page p-10">
+      <div class="h-full min-h-0 flex overflow-hidden bg-container">
         <div
-          v-for="item in items"
-          :key="item.key"
-          :class="[
-            'w-300 px-20 py-10 flex items-center rounded-6 cursor-pointer select-none transition-colors hover:bg-hover-3',
-            { 'bg-hover-3 text-theme': item.key === activeKey },
-          ]"
-          @click="onClick(item.key)"
+          class="w-240 shrink-0 overflow-y-auto px-10 py-20 flex flex-col gap-10 border-r-1 border-r-solid border-color-1 max-sm:w-72 max-sm:px-6"
         >
-          <Icon :name="item.icon" :size="22" />
-          <span class="ml-8 text-base">{{ item.label }}</span>
+          <button
+            v-for="item in items"
+            :key="item.key"
+            type="button"
+            :class="[
+              'w-full px-12 py-10 flex items-center rounded-6 border-0 bg-transparent text-left cursor-pointer select-none transition-colors duration-motion-base hover:bg-hover-3 focus-visible:bg-hover-3 focus-visible:outline-none',
+              { 'bg-hover-3 text-primary': item.key === activeKey },
+            ]"
+            :aria-pressed="item.key === activeKey"
+            :title="item.label"
+            @click="onClick(item.key)"
+          >
+            <Icon :name="item.icon" :size="22" />
+            <span class="ml-8 text-base max-sm:hidden">{{ item.label }}</span>
+          </button>
+        </div>
+        <div class="h-full min-w-0 flex-1 p-20 max-sm:p-12">
+          <Transition name="slide-right" mode="out-in">
+            <div :key="activeKey" class="h-full">
+              <component :is="currentComponent" />
+            </div>
+          </Transition>
         </div>
       </div>
-      <div class="h-full p-20">
-        <Transition name="slide-right" mode="out-in">
-          <div :key="activeKey" class="h-full">
-            <component :is="currentComponent" />
-          </div>
-        </Transition>
-      </div>
     </div>
-  </div>
+  </WView>
 </template>
 <script lang="ts" setup>
 import { App, Security, Login, Mail, Sms, Oss, Client } from './components'
+
 const items = [
   {
     key: 'app',
@@ -95,13 +78,16 @@ const items = [
     icon: 'i-lucide:pyramid',
     component: Client,
   },
-]
-const activeKey = ref('app')
+] as const
+
+type ConfigKey = (typeof items)[number]['key']
+
+const activeKey = shallowRef<ConfigKey>('app')
 const currentComponent = computed(
   () => items.find((item) => item.key === activeKey.value)?.component ?? App
 )
 
-const onClick = (key: string) => {
+function onClick(key: ConfigKey) {
   activeKey.value = key
 }
 </script>

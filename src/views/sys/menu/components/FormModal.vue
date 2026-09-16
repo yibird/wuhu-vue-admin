@@ -7,6 +7,7 @@
     :width="800"
   >
     <a-form
+      ref="formRef"
       :rules="rules"
       :model="formState"
       :label-col="{ style: { width: '88px' } }"
@@ -48,43 +49,62 @@
 
         <a-col :span="12">
           <a-form-item label="菜单图标" name="icon">
-            <a-input />
+            <IconSelector
+              v-model:value="formState.icon"
+              empty-text="没有匹配的图标"
+              placeholder="请选择菜单图标"
+              search-placeholder="搜索图标名称"
+            />
           </a-form-item>
         </a-col>
 
-        <a-col :span="12">
+        <a-col v-if="formState.menuType !== 3" :span="12">
           <a-form-item label="路由地址" name="path">
-            <a-input />
+            <a-input
+              v-model:value="formState.path"
+              allow-clear
+              placeholder="请输入路由地址"
+            />
           </a-form-item>
         </a-col>
 
-        <a-col :span="12">
-          <a-form-item label="重定向" name="redirect">
-            <a-input />
+        <a-col v-if="formState.menuType !== 3" :span="24">
+          <a-form-item name="component">
+            <template #label>
+              <span class="inline-flex items-center gap-4">
+                <span>组件路径</span>
+                <a-tooltip
+                  title="填写相对于 src/views 的页面组件路径，例如 sys/user/index.vue"
+                >
+                  <Icon
+                    name="i-lucide:circle-help"
+                    class="cursor-help text-muted"
+                    :size="14"
+                  />
+                </a-tooltip>
+              </span>
+            </template>
+            <a-input
+              v-model:value="formState.component"
+              allow-clear
+              placeholder="请输入组件路径"
+            />
           </a-form-item>
         </a-col>
 
-        <a-col :span="24">
-          <a-form-item label="组件路径" name="component">
-            <a-input />
-          </a-form-item>
-        </a-col>
-
-        <a-col :span="12">
-          <a-form-item label="组件名称" name="componentName">
-            <a-input />
-          </a-form-item>
-        </a-col>
-
-        <a-col :span="12">
-          <a-form-item label="权限标识" name="permission">
-            <a-input />
+        <a-col v-if="formState.menuType === 3" :span="12">
+          <a-form-item label="权限标识" name="perms">
+            <a-input
+              v-model:value="formState.perms"
+              allow-clear
+              placeholder="请输入权限标识"
+            />
           </a-form-item>
         </a-col>
 
         <a-col :span="12">
           <a-form-item label="是否隐藏" name="hidden">
-            <a-switch />
+            <a-switch v-model:checked="formState.hidden" />
           </a-form-item>
         </a-col>
 
@@ -96,13 +116,11 @@
 
         <a-col :span="12">
           <a-form-item label="菜单排序" name="sort">
-            <a-input-number :min="0" :max="99999999" />
-          </a-form-item>
-        </a-col>
-
-        <a-col :span="12">
-          <a-form-item label="是否启用" name="enabled">
-            <a-switch />
+            <a-input-number
+              v-model:value="formState.sort"
+              :min="0"
+              :max="99999999"
+            />
           </a-form-item>
         </a-col>
       </a-row>
@@ -111,8 +129,13 @@
 </template>
 
 <script lang="ts" setup>
+import { IconSelector } from '@/components'
+import type { MenuResp } from '@/apis'
+import type { FormInstance } from 'antdv-next'
+
 const open = ref(false)
-const show = (_record?: any) => {
+const formRef = shallowRef<FormInstance>()
+const show = (_record?: MenuResp) => {
   open.value = true
 }
 
@@ -120,30 +143,32 @@ defineExpose({ show })
 
 const menuTypeOptions = [
   {
-    label: '目录',
-    value: 0,
-  },
-  {
     label: '菜单',
-    value: 1,
+    value: 1 as const,
   },
   {
     label: '子页面',
-    value: 2,
+    value: 2 as const,
   },
   {
     label: '按钮',
-    value: 3,
+    value: 3 as const,
   },
 ]
 
-const formState = ref({
-  menuType: 0,
+const formState = reactive({
+  menuType: 1 as 1 | 2 | 3,
   menuName: '',
+  icon: '',
+  path: '',
+  component: '',
+  perms: '',
+  hidden: false,
   keepAlive: true,
+  sort: 0,
 })
 
-const rules = {
+const rules = computed(() => ({
   menuName: [
     {
       required: true,
@@ -151,5 +176,34 @@ const rules = {
       trigger: 'blur',
     },
   ],
-}
+  path: [
+    {
+      required: formState.menuType !== 3,
+      whitespace: true,
+      message: '请输入路由地址',
+      trigger: 'blur',
+    },
+  ],
+  perms: [
+    {
+      required: formState.menuType === 3,
+      whitespace: true,
+      message: '请输入权限标识',
+      trigger: 'blur',
+    },
+  ],
+}))
+
+watch(
+  () => formState.menuType,
+  (menuType) => {
+    formRef.value?.clearValidate(['path', 'component', 'perms'])
+    if (menuType === 3) {
+      formState.path = ''
+      formState.component = ''
+    } else {
+      formState.perms = ''
+    }
+  }
+)
 </script>
