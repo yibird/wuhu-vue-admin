@@ -1,243 +1,114 @@
 <template>
-  <WView class="p-10 absolute overflow-hidden bg-page">
-    <DragDropProvider>
+  <WView class="absolute overflow-hidden bg-page">
+    <div class="h-full min-h-0 flex flex-col">
+      <DesignerHeader
+        @open-data="dataOpen = true"
+        @open-materials="materialsOpen = true"
+        @open-source="sourceOpen = true"
+        @open-preview="previewOpen = true"
+        @open-versions="versionOpen = true"
+        @open-publish="publishOpen = true"
+      />
+
       <div
-        class="h-full min-h-0 grid grid-cols-[290px_minmax(0,1fr)_330px] gap-12 overflow-hidden max-xl:grid-cols-[250px_minmax(0,1fr)] max-xl:grid-rows-[minmax(0,1fr)_minmax(520px,330px)] max-[767px]:grid-cols-1 max-[767px]:grid-rows-[420px_minmax(0,1fr)_330px]"
+        class="min-h-0 flex-1 overflow-hidden py-8"
+        :class="
+          fullscreen
+            ? 'grid grid-cols-1'
+            : 'grid grid-cols-[280px_minmax(0,1fr)_320px] gap-8'
+        "
       >
-        <SidebarTabs
-          class="low-code-designer-sidebar"
-          :nodes="nodes"
-          :palette="palette"
-          :palette-tabs="paletteTabs"
-          :selected-ids="selectedIds"
-          @add="addNode"
-          @add-favorite="addNode"
-          @apply-template="handleApplyPageTemplate"
-          @duplicate="duplicateNode"
-          @move-down="moveNodeDown"
-          @move-up="moveNodeUp"
-          @remove="removeNode"
-          @select="selectNode"
-        />
-        <Canvas
-          :active-version-id="activeVersionId"
-          :can-redo="canRedo"
-          :can-undo="canUndo"
-          :nodes="nodes"
-          :platform="platform"
-          :platform-label="activePlatform?.label ?? 'PC'"
-          :platform-width="activePlatform?.width ?? 1440"
-          :platforms="platforms"
-          :selected-id="selectedId"
-          :selected-ids="selectedIds"
-          :source-panel-open="sourcePanelOpen"
-          :versions="versions"
-          @add-empty="addNode('card')"
-          @change-platform="platform = $event"
-          @change-version="restoreVersionById"
-          @canvas-active-change="canvasActive = $event"
-          @clear-selection="clearSelection"
-          @duplicate="duplicateNode"
-          @duplicate-selected="duplicateSelectedNode"
-          @drop-component="addNode"
-          @move-down="moveNodeDown"
-          @move-node="moveNodeToTarget"
-          @move-up="moveNodeUp"
-          @redo="redo"
-          @reorder="handleReorderNodes"
-          @remove="removeNode"
-          @remove-selected="removeSelectedNode"
-          @save-version="saveVersion"
-          @select="selectNode"
-          @select-many="selectNodes"
-          @toggle-source="toggleSourcePanel"
-          @undo="undo"
-        />
-        <div
-          class="low-code-designer-right min-h-0 min-w-0 grid grid-rows-[minmax(210px,0.34fr)_minmax(0,0.66fr)] gap-12 overflow-hidden max-xl:col-span-full"
+        <aside
+          v-show="!fullscreen"
+          class="min-h-0 overflow-hidden rounded-8 border-1 border-color-2 border-solid bg-container shadow-elevated"
         >
-          <AiPanel
-            v-model:prompt="aiPrompt"
-            :busy="aiBusy"
-            :can-update-selected="!!selectedNode"
-            :messages="aiMessages"
-            :suggestions="aiSuggestions"
-            @apply-suggestion="applySuggestion"
-            @generate="generateFromPrompt()"
-            @update-selected="applyAiToSelectedNode()"
-          />
-          <Inspector
-            class="designer-inspector min-w-0"
-            :component-count="componentCount"
-            :history-length="history.length"
-            :node="selectedNode"
-            :selected-count="selectedCount"
-            :versions="versions"
-            @open-versions="isVersionModalOpen = true"
-            @remove="removeSelectedNode"
-            @save-version="saveVersion"
-            @update="updateSelectedNode"
-          />
-        </div>
+          <SidebarPanel />
+        </aside>
+
+        <CanvasStage
+          class="min-h-0 rounded-8 border-1 border-color-2 border-solid bg-container shadow-elevated"
+          :space-pressed="spacePressed"
+          :fullscreen="fullscreen"
+          @toggle-fullscreen="fullscreen = !fullscreen"
+        />
+
+        <aside
+          v-show="!fullscreen"
+          class="min-h-0 overflow-hidden rounded-8 border-1 border-color-2 border-solid bg-container shadow-elevated"
+        >
+          <InspectorPanel />
+        </aside>
       </div>
-    </DragDropProvider>
+    </div>
 
-    <SourcePanel
-      :error="schemaError"
-      :open="sourcePanelOpen"
-      :source-code="schemaCode"
-      @apply="applySchemaCode()"
-      @close="closeSourcePanel"
-      @copy="copySchemaCode"
-      @download="downloadSchemaCode"
-      @format="formatSchemaCode"
-      @source-change="updateSchemaCode"
+    <DataDrawer :open="dataOpen" @close="dataOpen = false" />
+    <MaterialCenterDrawer
+      :open="materialsOpen"
+      @close="materialsOpen = false"
     />
-
-    <VersionModal
-      v-model:open="isVersionModalOpen"
-      :versions="versions"
-      @restore="handleRestoreVersion"
-    />
+    <SourceModal :open="sourceOpen" @close="sourceOpen = false" />
+    <PreviewModal :open="previewOpen" @close="previewOpen = false" />
+    <VersionModal :open="versionOpen" @close="versionOpen = false" />
+    <PublishModal :open="publishOpen" @close="publishOpen = false" />
   </WView>
 </template>
 
 <script setup lang="ts">
-import { onKeyStroke, useEventListener } from '@vueuse/core'
-import { DragDropProvider } from '@dnd-kit/vue'
-import { AiPanel } from './components'
-import { Canvas } from './components'
-import { Inspector } from './components'
-import { SidebarTabs } from './components'
-import { SourcePanel } from './components'
-import { VersionModal } from './components'
-import { useLowCodeDesigner } from './composables/useDesigner'
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
+import { WView } from '@/components'
+import {
+  CanvasStage,
+  DataDrawer,
+  DesignerHeader,
+  InspectorPanel,
+  MaterialCenterDrawer,
+  PreviewModal,
+  PublishModal,
+  SidebarPanel,
+  SourceModal,
+  VersionModal,
+} from './components'
+import {
+  provideDesigner,
+  useDesigner,
+  useDesignerShortcuts,
+} from './composables'
+import { setupLowCodePlatform } from './core/setup'
 
-import type { DesignerComponentType, DesignerVersion } from './types'
+setupLowCodePlatform()
 
-const {
-  activePlatform,
-  activeVersionId,
-  aiBusy,
-  aiMessages,
-  aiPrompt,
-  aiSuggestions,
-  batchAddNodes,
-  canRedo,
-  canUndo,
-  componentCount,
-  history,
-  nodes,
-  palette,
-  paletteTabs,
-  platform,
-  platforms,
-  schemaCode,
-  schemaError,
-  selectedId,
-  selectedIds,
-  selectedCount,
-  selectedNode,
-  sourcePanelOpen,
-  versions,
-  addNode,
-  applyAiToSelectedNode,
-  applySuggestion,
-  applySchemaCode,
-  clearSelection,
-  closeSourcePanel,
-  copySchemaCode,
-  downloadSchemaCode,
-  duplicateNode,
-  duplicateSelectedNode,
-  formatSchemaCode,
-  generateFromPrompt,
-  moveNodeDown,
-  moveNodeToTarget,
-  moveNodeUp,
-  redo,
-  removeNode,
-  removeSelectedNode,
-  reorderNodes,
-  restoreVersion,
-  restoreVersionById,
-  saveVersion,
-  selectNode,
-  selectNodes,
-  toggleSourcePanel,
-  undo,
-  updateSchemaCode,
-  updateSelectedNode,
-} = useLowCodeDesigner()
+const designer = useDesigner()
+provideDesigner(designer)
 
-const isVersionModalOpen = shallowRef(false)
-const canvasActive = shallowRef(false)
+const fullscreen = ref(false)
+const dataOpen = ref(false)
+const materialsOpen = ref(false)
+const sourceOpen = ref(false)
+const previewOpen = ref(false)
+const versionOpen = ref(false)
+const publishOpen = ref(false)
 
-function isEditableTarget(target: EventTarget | null) {
-  if (!(target instanceof HTMLElement)) return false
-  return !!target.closest('input, textarea, select, [contenteditable="true"]')
-}
-
-onKeyStroke(
-  ['Delete', 'Backspace'],
-  (event) => {
-    if (
-      event.defaultPrevented ||
-      event.isComposing ||
-      selectedCount.value === 0 ||
-      isEditableTarget(event.target)
-    ) {
-      return
-    }
-
-    event.preventDefault()
-    removeSelectedNode()
-  },
-  { dedupe: true }
+const overlayOpen = computed(
+  () =>
+    dataOpen.value ||
+    materialsOpen.value ||
+    sourceOpen.value ||
+    previewOpen.value ||
+    versionOpen.value ||
+    publishOpen.value
 )
 
-useEventListener(window, 'keydown', (event) => {
-  if (
-    event.defaultPrevented ||
-    event.isComposing ||
-    !canvasActive.value ||
-    isEditableTarget(event.target)
-  ) {
-    return
-  }
-
-  const isCtrlOrMeta = event.ctrlKey || event.metaKey
-
-  if (isCtrlOrMeta && event.key.toLowerCase() === 'z') {
-    event.preventDefault()
-    if (event.shiftKey) {
-      redo()
-    } else {
-      undo()
-    }
-    return
-  }
-
-  if (
-    isCtrlOrMeta &&
-    event.key.toLowerCase() === 'c' &&
-    selectedCount.value > 0
-  ) {
-    event.preventDefault()
-    duplicateSelectedNode()
-  }
+const { spacePressed } = useDesignerShortcuts({
+  designer,
+  disabled: () => overlayOpen.value,
 })
 
-function handleRestoreVersion(version: DesignerVersion) {
-  restoreVersion(version)
-  isVersionModalOpen.value = false
-}
+onMounted(() => {
+  designer.runtime.refreshAutoQueries()
+})
 
-function handleReorderNodes(orderedIds: string[], nextSelectedId: string) {
-  reorderNodes(orderedIds, nextSelectedId)
-}
-
-function handleApplyPageTemplate(components: DesignerComponentType[]) {
-  batchAddNodes(components)
-}
+onBeforeUnmount(() => {
+  designer.saveDraftNow()
+  designer.runtime.dispose()
+})
 </script>

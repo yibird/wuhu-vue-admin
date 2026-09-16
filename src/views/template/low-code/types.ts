@@ -1,239 +1,123 @@
-export type DesignerPlatform = 'pc' | 'tablet' | 'mobile'
+import type { ComponentSchema, LayoutMode } from './core/schema/types'
+import type { DeviceKind } from './core/runtime/style'
 
-export type DesignerPreviewMode = DesignerPlatform | 'custom'
+export type DesignerDevice = DeviceKind
 
-export interface DesignerPreviewSize {
+export interface DevicePreset {
+  value: DesignerDevice
+  label: string
+  icon: string
   width: number
   height: number
 }
 
-export type DesignerComponentType =
-  | 'flex'
-  | 'hero'
-  | 'stats'
-  | 'form'
-  | 'table'
-  | 'chart'
-  | 'notice'
-  | 'button'
-  | 'card'
-  | 'datePicker'
-  | 'input'
-  | 'textarea'
-  | 'inputNumber'
-  | 'select'
-  | 'radioGroup'
-  | 'checkbox'
-  | 'switch'
-  | 'slider'
-  | 'rate'
-  | 'image'
-  | 'alert'
-  | 'progress'
-  | 'tag'
-  | 'dataTable'
+export const DEVICE_PRESETS: DevicePreset[] = [
+  {
+    value: 'pc',
+    label: 'PC',
+    icon: 'i-lucide:monitor',
+    width: 1440,
+    height: 900,
+  },
+  {
+    value: 'tablet',
+    label: '平板',
+    icon: 'i-lucide:tablet',
+    width: 768,
+    height: 1024,
+  },
+  {
+    value: 'mobile',
+    label: '移动端',
+    icon: 'i-lucide:smartphone',
+    width: 390,
+    height: 844,
+  },
+  {
+    value: 'custom',
+    label: '自定义',
+    icon: 'i-lucide:settings-2',
+    width: 1280,
+    height: 800,
+  },
+]
 
-export type DesignerPaletteCategory = 'antd' | 'basic' | 'data'
-
-export interface DesignerPaletteTab {
-  key: DesignerPaletteCategory
-  label: string
-  icon: string
-}
-
-export interface DesignerPaletteItem {
-  type: DesignerComponentType
-  category: DesignerPaletteCategory
-  title: string
-  description: string
-  icon: string
-  badge?: string
-}
-
-export interface DesignerPlatformOption {
-  value: DesignerPlatform
-  label: string
-  icon: string
-  width: number
-}
-
-export type DesignerNodeDensity = 'compact' | 'comfortable' | 'spacious'
-
-export type DesignerNodeTone = 'neutral' | 'primary' | 'success' | 'warning'
-
-export interface DesignerNodeStyle {
-  columns?: number
-  density?: DesignerNodeDensity
-  gridColumn?: number
-  tone?: DesignerNodeTone
-}
-
-export interface DesignerOption {
-  label: string
-  value: string | number | boolean
-}
-
-export interface DesignerTableColumn {
-  dataIndex: string
-  title: string
-}
-
-export interface DesignerTableRow {
-  key: string
-  name: string
-  status: string
-  owner: string
-}
-
-export interface DesignerControlPropsByType {
-  flex: {
-    align: 'start' | 'center' | 'end' | 'stretch'
-    direction: 'row' | 'column'
-    gap: number
-    justify: 'start' | 'center' | 'end' | 'between'
-  }
-  hero: { badge: string; buttonText: string }
-  stats: { items: string[] }
-  form: { fields: string[] }
-  table: { rows: string[] }
-  chart: { bars: number[] }
-  notice: { icon: string }
-  button: {
-    block: boolean
-    danger: boolean
-    label: string
-    type: 'default' | 'primary' | 'dashed'
-  }
-  input: {
-    allowClear: boolean
-    placeholder: string
-    prefixIcon: string
-    value: string
-  }
-  textarea: { placeholder: string; rows: number; value: string }
-  inputNumber: {
-    max: number
-    min: number
-    prefix: string
-    step: number
-    value: number
-  }
-  select: {
-    mode: 'default' | 'multiple' | 'tags'
-    options: DesignerOption[]
-    placeholder: string
-    value: string | string[]
-  }
-  radioGroup: {
-    buttonStyle: 'outline' | 'solid'
-    optionType: 'default' | 'button'
-    options: DesignerOption[]
-    value: string | number | boolean
-  }
-  checkbox: { checked: boolean; label: string }
-  switch: { checked: boolean; checkedText: string; uncheckedText: string }
-  slider: { max: number; min: number; step: number; value: number }
-  rate: { allowHalf: boolean; count: number; value: number }
-  datePicker: {
-    placeholder: string
-    picker: 'date' | 'month' | 'week' | 'year'
-  }
-  image: {
-    alt: string
-    height: number
-    preview: boolean
-    src: string
-    width: number
-  }
-  card: { extra: string; content: string }
-  alert: {
-    message: string
-    showIcon: boolean
-    type: 'success' | 'info' | 'warning' | 'error'
-  }
-  progress: {
-    percent: number
-    status: 'normal' | 'active' | 'exception' | 'success'
-  }
-  tag: { color: string; label: string }
-  dataTable: { columns: DesignerTableColumn[]; rows: DesignerTableRow[] }
-}
-
-export type DesignerControlProps =
-  DesignerControlPropsByType[DesignerComponentType]
-
-export interface DesignerNode<
-  T extends DesignerComponentType = DesignerComponentType,
-> {
-  id: string
-  type: T
-  title: string
-  description: string
-  props: DesignerControlPropsByType[T]
-  style: DesignerNodeStyle
-  children?: DesignerNode[]
-}
-
-export interface DesignerDropTarget {
-  parentId?: string
+export interface DropTarget {
+  parentId: string
   index: number
-}
-
-export interface DesignerNodeUpdate {
-  description?: string
-  props?: Record<string, unknown>
-  style?: Partial<DesignerNodeStyle>
-  title?: string
-}
-
-export interface DesignerVersion {
-  id: string
-  name: string
-  time: string
-  nodes: DesignerNode[]
-  schema: DesignerJsonSchema
-}
-
-export interface DesignerJsonSchema {
-  $schema: string
-  version: string
-  title: string
-  layout: {
-    type: 'grid'
-    columns: number
-    gap: number
+  layout: LayoutMode
+  /** 放置指示线（stage 坐标系） */
+  indicator: {
+    x: number
+    y: number
+    length: number
+    direction: 'horizontal' | 'vertical'
   }
-  components: DesignerNode[]
+  /** 目标容器高亮区域 */
+  containerRect: { x: number; y: number; width: number; height: number }
+  allowed: boolean
+  reason?: string
 }
 
-export type DesignerAiMessageRole = 'assistant' | 'user'
-
-export interface DesignerAiMessage {
+export interface GuideLine {
   id: string
-  role: DesignerAiMessageRole
-  content: string
-  createdAt: string
+  orientation: 'vertical' | 'horizontal'
+  /** stage 坐标系位置 */
+  position: number
+  start: number
+  end: number
+  type: 'edge' | 'center' | 'spacing'
 }
 
-export interface DesignerAiSuggestion {
+export interface DragState {
+  ids: string[]
+  startX: number
+  startY: number
+  active: boolean
+  pointerX: number
+  pointerY: number
+  target: DropTarget | null
+  free: { left: number; top: number } | null
+  /** 自由布局拖拽时的节点尺寸（stage 坐标） */
+  freeSize?: { width: number; height: number }
+}
+
+export interface MarqueeState {
+  active: boolean
+  startX: number
+  startY: number
+  currentX: number
+  currentY: number
+}
+
+export interface ResizeState {
   id: string
-  title: string
-  prompt: string
-  icon: string
+  handle: string
+  startX: number
+  startY: number
+  active: boolean
+  width: number
+  height: number
+  left: number
+  top: number
 }
 
-export type DesignerNodeActionKey =
-  | 'copy'
-  | 'delete'
-  | 'down'
-  | 'move-down'
-  | 'move-up'
-  | 'up'
+export interface ContextMenuState {
+  open: boolean
+  x: number
+  y: number
+  nodeId?: string
+}
 
-export interface DesignerNodeAction {
-  key: DesignerNodeActionKey
-  label: string
-  icon: string
-  danger?: boolean
-  disabled?: boolean
+export interface CanvasViewState {
+  zoom: number
+  panX: number
+  panY: number
+}
+
+export type DesignerMode = 'design' | 'preview'
+
+export interface NodeMeta {
+  node: ComponentSchema
+  depth: number
 }
