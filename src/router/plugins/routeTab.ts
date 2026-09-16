@@ -6,8 +6,7 @@ import type { IMenu } from '#/config'
 
 let menuPathIndexCache:
   | {
-      source: Map<string, IMenu>
-      size: number
+      version: number
       index: Map<string, IMenu>
     }
   | undefined
@@ -17,11 +16,11 @@ let menuPathIndexCache:
  *
  * 将菜单 path 映射为 Menu，方便路由切换时快速查找
  */
-function getMenuPathIndex(menus: Map<string, IMenu>): Map<string, IMenu> {
-  if (
-    menuPathIndexCache?.source === menus &&
-    menuPathIndexCache.size === menus.size
-  ) {
+function getMenuPathIndex(
+  menus: Map<string, IMenu>,
+  version: number
+): Map<string, IMenu> {
+  if (menuPathIndexCache?.version === version) {
     return menuPathIndexCache.index
   }
   const index = new Map<string, IMenu>()
@@ -31,11 +30,7 @@ function getMenuPathIndex(menus: Map<string, IMenu>): Map<string, IMenu> {
     }
     index.set(normalizePath(menu.path), menu)
   }
-  menuPathIndexCache = {
-    source: menus,
-    size: menus.size,
-    index,
-  }
+  menuPathIndexCache = { version, index }
   return index
 }
 
@@ -44,9 +39,11 @@ function getMenuPathIndex(menus: Map<string, IMenu>): Map<string, IMenu> {
  */
 function activateRouteTab(path: string) {
   const normalizedPath = normalizePath(path)
-  const { flatMenusCache } = permissionStore()
+  const { flatMenusCache, menusVersion } = permissionStore()
   const { openTab } = tabStore()
-  const menu = getMenuPathIndex(flatMenusCache).get(normalizedPath)
+  const menu = getMenuPathIndex(flatMenusCache, menusVersion).get(
+    normalizedPath
+  )
   if (!menu) return
   openTab(String(menu.id))
 }

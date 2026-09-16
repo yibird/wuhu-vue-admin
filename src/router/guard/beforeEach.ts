@@ -1,6 +1,6 @@
 import { authStore, permissionStore } from '@/store'
 import { menus } from '@/config'
-import { usePermission } from '@/composables'
+import { usePermission } from '@/composables/usePermission'
 import { getToken } from '@/utils'
 import { getSafeRedirect } from '../utils'
 
@@ -10,7 +10,7 @@ import type { IRouteMeta } from '../types'
 export function setupGlobalBeforeEachRouteGuard(router: Router) {
   const { hasPermission } = usePermission()
 
-  return router.beforeEach((to) => {
+  return router.beforeEach(async (to) => {
     const auth = authStore()
     const permissions = permissionStore()
     const token = getToken()
@@ -29,6 +29,17 @@ export function setupGlobalBeforeEachRouteGuard(router: Router) {
         path: '/login',
         query: to.fullPath === '/' ? undefined : { redirect: to.fullPath },
         replace: true,
+      }
+    }
+
+    if (!auth.user) {
+      const restored = await auth.restoreSession()
+      if (!restored) {
+        return {
+          path: '/login',
+          query: to.fullPath === '/' ? undefined : { redirect: to.fullPath },
+          replace: true,
+        }
       }
     }
 
