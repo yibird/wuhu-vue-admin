@@ -5,7 +5,7 @@ import { useLoading } from '@/composables'
 import { articleItems } from '../../data'
 import ArticleCard from './ArticleCard.vue'
 import ArticleToolbar from './ArticleToolbar.vue'
-import { useArticleList } from '../composables/useArticleList'
+import { useArticleList } from '../composables'
 import type { ArticleAction, ArticleItem } from '../../types'
 
 const router = useRouter()
@@ -31,11 +31,11 @@ const {
 } = useArticleList(articleItems)
 
 function openEditor(id: string) {
-  void router.push({ path: '/article/editor', query: { id } })
+  router.push({ path: '/article/editor', query: { id } })
 }
 
 function createArticle() {
-  void router.push({ path: '/article/editor', query: { create: '1' } })
+  router.push({ path: '/article/editor', query: { create: '1' } })
 }
 
 function paginationTotalText(total: number) {

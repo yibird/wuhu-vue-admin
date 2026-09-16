@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { ArticleSort } from '../../types'
-import type { ArticleStatusFilter } from '../composables/useArticleList'
+import type { ArticleStatusFilter } from '../composables'
 
 const props = defineProps<{
   categories: string[]

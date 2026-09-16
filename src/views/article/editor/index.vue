@@ -5,7 +5,7 @@ import Header from './components/Header.vue'
 import Content from './components/Content.vue'
 import DocumentInfoPanel from './components/DocumentInfoPanel.vue'
 import DocumentPreview from './components/DocumentPreview.vue'
-import { useEditor } from './composables/useEditor'
+import { useEditor } from './composables'
 
 const route = useRoute()
 const router = useRouter()
@@ -75,7 +75,7 @@ watch(
 
     createRequestHandled = true
     const document = createDocument()
-    void router.replace({ path: '/article/editor', query: { id: document.id } })
+    router.replace({ path: '/article/editor', query: { id: document.id } })
   },
   { immediate: true }
 )
