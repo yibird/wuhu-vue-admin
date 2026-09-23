@@ -71,11 +71,15 @@ export function renderMenus<T extends object>(
  * @returns 选项列表
  */
 export function menusToOptions(menus: IMenu[] = []) {
-  return renderMenus(menus, (item) => ({
-    key: String(item.id),
-    label: item.title,
-    title: item.title,
-    disabled: item.disabled,
-    icon: renderIcon(item.icon),
-  }))
+  return renderMenus(
+    menus,
+    (item) => ({
+      key: item.id,
+      label: item.title,
+      title: item.title,
+      disabled: item.disabled,
+      icon: renderIcon(item.icon),
+    }),
+    (item) => item.type !== 2
+  )
 }

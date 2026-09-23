@@ -9,6 +9,11 @@ import {
 export const kyInstance = ky.create({
   prefix: import.meta.env.VITE_API_BASE_URL,
   timeout: 10_000,
+  retry: {
+    limit: 2,
+    // 避免服务端返回超大 Retry-After 时请求长时间挂起
+    maxRetryAfter: 30_000,
+  },
   hooks: {
     beforeRequest,
     beforeError,
@@ -47,14 +52,7 @@ export async function parseApiResponse<T>(
   return (text ? JSON.parse(text) : undefined) as T
 }
 
-export { useRequest } from './composables'
-export type {
-  RequestContext,
-  Service,
-  UseRequestOptions,
-  UseRequestReturn,
-} from './composables'
 export type { ApiRequestOptions, ApiResponseType } from './dedupe'
-export { ApiError, isApiError } from './errors'
+export { ApiError, isApiError } from '@/errors'
 export { onSessionExpired } from './sessionEvents'
 export { getToken, setToken, removeToken } from './util'

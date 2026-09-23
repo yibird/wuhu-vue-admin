@@ -1,6 +1,10 @@
 import { message } from 'antdv-next'
-import { isHTTPError, type BeforeErrorHook } from 'ky'
-import { ContentType, HttpHeader } from '@/constants'
+import {
+  isHTTPError,
+  isNetworkError,
+  isTimeoutError,
+  type BeforeErrorHook,
+} from 'ky'
 import { buildResponseDedupKey, dedupeResponse } from '../dedupe'
 
 interface ResponseErrorInfo {
@@ -10,66 +14,66 @@ interface ResponseErrorInfo {
 
 const DEFAULT_NETWORK_ERROR = '网络异常，请稍后重试'
 const DEFAULT_RESPONSE_ERROR = '请求失败，请稍后重试'
+const DEFAULT_TIMEOUT_ERROR = '请求超时，请稍后重试'
 const NO_AUTH_TOKEN_ERROR = 'NO_AUTH_TOKEN'
 
 export const beforeErrorHook: BeforeErrorHook = async ({ error }) => {
-  const errorInfo = await resolveResponseErrorInfo(error)
+  try {
+    const errorInfo = resolveResponseErrorInfo(error)
 
-  dedupeResponse(
-    buildResponseDedupKey(errorInfo.status, errorInfo.message),
-    () => {
-      message.error(errorInfo.message)
+    if (errorInfo) {
+      dedupeResponse(
+        buildResponseDedupKey(errorInfo.status, errorInfo.message),
+        () => {
+          message.error(errorInfo.message)
+        }
+      )
     }
-  )
+  } catch {
+    // 提示逻辑异常不能掩盖原始请求错误
+  }
 
   return error
 }
 
 export const beforeError: BeforeErrorHook[] = [beforeErrorHook]
 
-async function resolveResponseErrorInfo(
-  error: Error
-): Promise<ResponseErrorInfo> {
-  if (!isHTTPError(error) || !error.response) {
+function resolveResponseErrorInfo(error: Error): ResponseErrorInfo | undefined {
+  // 主动取消（useRequest.cancel / 重复请求中止）不提示
+  if (error.name === 'AbortError') return undefined
+
+  if (isHTTPError(error)) {
+    // ky 在 beforeError 前已消费响应体并将结果写入 error.data，
+    // 这里直接读取，不能再 clone / 读取 response body
+    const payloadMessage = getPayloadMessage(error.data)
+
     return {
-      status: error.message || 'NETWORK',
+      status: error.response.status,
       message:
-        error.message === NO_AUTH_TOKEN_ERROR
-          ? '登录状态已失效，请重新登录'
-          : error.message || DEFAULT_NETWORK_ERROR,
+        payloadMessage || error.response.statusText || DEFAULT_RESPONSE_ERROR,
     }
   }
 
-  const { response } = error
-  const message =
-    (await readResponseErrorMessage(response)) ||
-    response.statusText ||
-    DEFAULT_RESPONSE_ERROR
+  if (isTimeoutError(error)) {
+    return { status: 'TIMEOUT', message: DEFAULT_TIMEOUT_ERROR }
+  }
+
+  if (isNetworkError(error)) {
+    return { status: 'NETWORK', message: DEFAULT_NETWORK_ERROR }
+  }
+
+  if (error.message === NO_AUTH_TOKEN_ERROR) {
+    return { status: 'NO_AUTH_TOKEN', message: '登录状态已失效，请重新登录' }
+  }
 
   return {
-    status: response.status,
-    message,
+    status: 'UNKNOWN',
+    message: error.message || DEFAULT_NETWORK_ERROR,
   }
-}
-
-async function readResponseErrorMessage(response: Response): Promise<string> {
-  const contentType = response.headers.get(HttpHeader.ContentType) ?? ''
-
-  if (contentType.toLowerCase().includes(ContentType.Json)) {
-    const payload = await response
-      .clone()
-      .json()
-      .catch(() => null)
-    return getPayloadMessage(payload)
-  }
-
-  return response
-    .clone()
-    .text()
-    .catch(() => '')
 }
 
 function getPayloadMessage(payload: unknown): string {
+  if (typeof payload === 'string') return payload.trim()
   if (!payload || typeof payload !== 'object') return ''
 
   const data = payload as Record<string, unknown>

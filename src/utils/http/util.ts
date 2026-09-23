@@ -1,13 +1,23 @@
 import { RequestMethod } from '@/constants'
 import { AUTH_WHITE_LIST, TOKEN_KEY } from './constant'
+import { resetSessionExpiredNotification } from './sessionEvents'
+
+/**
+ * 去掉 API 基础前缀，使白名单匹配不依赖部署前缀（/api 等）
+ */
+function normalizeApiPath(pathname: string) {
+  const base = import.meta.env.VITE_API_BASE_URL || '/api'
+  if (!base || !pathname.startsWith(base)) return pathname
+
+  return pathname.slice(base.length) || '/'
+}
 
 export function isWhiteListed(url: string) {
-  const pathname = new URL(url).pathname
-  return AUTH_WHITE_LIST.some((rule) => {
-    return typeof rule === 'string'
-      ? pathname.startsWith(rule)
-      : rule.test(pathname)
-  })
+  const pathname = normalizeApiPath(new URL(url).pathname)
+
+  return AUTH_WHITE_LIST.some(
+    (rule) => pathname === rule || pathname.startsWith(`${rule}/`)
+  )
 }
 
 /**
@@ -40,6 +50,7 @@ export function getToken() {
 export function setToken(token: string) {
   if (typeof localStorage === 'undefined') return
   localStorage.setItem(TOKEN_KEY, token)
+  resetSessionExpiredNotification()
 }
 
 export function removeToken() {
