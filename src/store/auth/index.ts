@@ -1,13 +1,13 @@
 import { defineStore, storeToRefs } from 'pinia'
 import { getAuthSessionApi, loginApi } from '@/apis'
 import { menus } from '@/config'
-import { clearDictCache, setDictCacheScope } from '@/composables/useDict'
+import { clearDictCache } from '@/hooks/useDict'
 import { getToken, removeToken, setToken } from '@/utils'
 import { permissionStore } from '../permission'
-import { tabStore } from '../tabs'
 
 import type { LoginRequest } from '@/apis'
 import type { AuthState } from './types'
+import { tabsStore } from '../tabs'
 
 const createInitialState = (): AuthState => ({
   accessToken: getToken(),
@@ -34,8 +34,7 @@ export const authStore = defineStore('auth', {
         this.accessToken = session.accessToken
         this.user = session.user
         setToken(session.accessToken)
-        setDictCacheScope(`user:${session.user.id}`)
-        permissionStore().setMenus(menus, session.permissions)
+        permissionStore().setMenus(menus)
       } finally {
         this.loginLoading = false
       }
@@ -49,15 +48,12 @@ export const authStore = defineStore('auth', {
         }
         return true
       }
-
       try {
         const response = await getAuthSessionApi()
         const session = response.data
         if (!session?.user) return false
-
         this.user = session.user
-        setDictCacheScope(`user:${session.user.id}`)
-        permissionStore().setMenus(menus, session.permissions)
+        permissionStore().setMenus(menus)
         return true
       } catch {
         this.logout()
@@ -68,9 +64,8 @@ export const authStore = defineStore('auth', {
     logout() {
       removeToken()
       clearDictCache()
-      setDictCacheScope('anonymous')
       permissionStore().clear()
-      tabStore().$reset()
+      tabsStore().$reset()
       this.$reset()
     },
   },

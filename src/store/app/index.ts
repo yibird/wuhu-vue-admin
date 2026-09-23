@@ -9,6 +9,7 @@ import {
   PageAnimation,
   LoadingAnimation,
   PageAnimationMode,
+  FontFamily,
 } from '@/constants'
 import logo from '@/assets/svg/logo.svg'
 import type { AppState } from './types'
@@ -45,11 +46,9 @@ const createInitialState = (): AppState => {
         HeaderWidget.AI,
       ],
     },
-    tab: {
+    tabs: {
       show: true,
       showIcon: true,
-      enableDrag: true,
-      enablePersist: true,
       theme: TabsTheme.Block,
     },
     footer: { show: false, fixed: false },
@@ -58,7 +57,7 @@ const createInitialState = (): AppState => {
       enablePageLoading: true,
       loadingAnimation: LoadingAnimation.Beat,
       pageAnimation: PageAnimation.SlideLeft,
-      pageAnimationMode: PageAnimationMode.DEFAULT,
+      pageAnimationMode: PageAnimationMode.OUT_INT,
     },
     lockscreen: {},
     app: {
@@ -67,6 +66,7 @@ const createInitialState = (): AppState => {
       themeMode: ThemeMode.Light,
       themeColor: '22, 119, 255',
       locale: Locale.ZH_CN,
+      fontFamily: FontFamily.Outfit,
       menuMode: MenuMode.Vertical,
       pageCache: true,
       pageCacheMax: 10,
