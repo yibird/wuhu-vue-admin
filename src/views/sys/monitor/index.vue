@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useSystemMonitor } from './composables'
+import { useSystemMonitor } from './hooks'
 import {
   DatabasePanel,
   ProcessPanel,
@@ -120,7 +120,7 @@ function handleEnvironmentChange(value: MonitorEnvironment) {
 
 <template>
   <WView :full="true" :padding="0">
-    <Scrollbar>
+    <div class="w-full h-full overflow-x-hidden overflow-y-auto">
       <div class="min-h-full bg-page p-10 sm:p-12">
         <header
           class="mb-12 overflow-hidden rounded-8 border-1 border-solid border-color-2 bg-container shadow-[var(--w-shadow-card)]"
@@ -233,7 +233,7 @@ function handleEnvironmentChange(value: MonitorEnvironment) {
           />
         </div>
       </div>
-    </Scrollbar>
+    </div>
 
     <a-modal
       :open="Boolean(selectedProcess)"

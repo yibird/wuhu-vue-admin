@@ -30,11 +30,11 @@
 <script setup lang="ts">
 import VChart from 'vue-echarts'
 import type { EChartsCoreOption } from 'echarts/core'
-import { getCssRgbVar, getCssRgbVarAlpha, useEChartsTheme } from '@/composables'
-import { useDashboardECharts } from '@/plugins/echartsDashboard'
+import { getCssRgbVar, getCssRgbVarAlpha, useEChartsTheme } from '@/theme'
+import { useECharts } from '@/plugins/echarts'
 import type { MonitorTone, ResourceMetric } from './types'
 
-useDashboardECharts()
+useECharts()
 
 const props = defineProps<{
   resources: ResourceMetric[]

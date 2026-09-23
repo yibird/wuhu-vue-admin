@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useSystemConfig } from '../composables'
+import { useSystemConfig } from '../hooks'
 import ConfigPanel from './ConfigPanel.vue'
 
 interface OssConfigForm {
