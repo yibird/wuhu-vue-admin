@@ -1,3 +1,5 @@
+import type { LocaleMessages } from './types'
+
 export default {
   common: {
     ok: 'OK',
@@ -76,4 +78,4 @@ export default {
     github: 'GitHub',
     google: 'Google',
   },
-}
+} satisfies LocaleMessages

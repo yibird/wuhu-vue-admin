@@ -1,4 +1,4 @@
-import { usePermission } from '@/composables'
+import { usePermission } from '@/hooks'
 
 import type { Directive, DirectiveBinding } from 'vue'
 

@@ -3,14 +3,14 @@
     <div class="full">
       <RouterView />
     </div>
-    <Watermark />
+    <AppWatermark />
   </ConfigProvider>
 </template>
 <script lang="ts" setup>
 import { ConfigProvider } from 'antdv-next'
-import { useTheme } from '@/composables'
+import { useTheme } from '@/theme'
 import { useLocale } from '@/locales'
-import { Watermark } from '@/layouts/preferences/components'
+import { AppWatermark } from '@/components'
 import type { VNodeChild } from 'vue'
 
 const { themeConfig } = useTheme()

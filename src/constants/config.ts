@@ -19,6 +19,26 @@ export const Locale = {
 } as const
 
 /**
+ * 字体
+ */
+export const FontFamily = {
+  // 跟随系统
+  System: 'system',
+  // Outfit
+  Outfit: 'outfit',
+  // Inter
+  Inter: 'inter',
+  // DM Sans
+  DmSans: 'dm-sans',
+  // Space Grotesk
+  SpaceGrotesk: 'space-grotesk',
+  // Roboto Mono
+  RobotoMono: 'roboto-mono',
+  // 微软雅黑
+  MicrosoftYaHei: 'microsoft-yahei',
+} as const
+
+/**
  * 菜单模式
  */
 export const MenuMode = {

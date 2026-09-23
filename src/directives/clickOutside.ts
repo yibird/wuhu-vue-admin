@@ -20,9 +20,7 @@ export const clickOutside: Directive<HTMLElement, ClickOutsideHandler> = {
     const handler = (event: MouseEvent) => {
       const target = event.target as Node | null
       if (!target) return
-      if (el === target || el.contains(target)) {
-        return
-      }
+      if (el === target || el.contains(target)) return
       callback(event)
     }
 

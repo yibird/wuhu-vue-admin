@@ -1,6 +1,7 @@
-export { DeptPick, DeptPicker } from './dept-picker'
-export type { DeptPickerOption } from './dept-picker'
-export { RolePicker } from './role-picker'
-export type { RolePickerOption } from './role-picker'
-export { UserPicker } from './user-picker'
-export type { UserPickerProps, UserPickerOption } from './user-picker'
+export { DeptPick, DeptPicker, type DeptPickerOption } from './dept-picker'
+export { RolePicker, type RolePickerOption } from './role-picker'
+export {
+  UserPicker,
+  type UserPickerProps,
+  type UserPickerOption,
+} from './user-picker'

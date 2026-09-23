@@ -234,7 +234,6 @@ export const ellipsisTooltip: Directive<HTMLElement, EllipsisTooltipValue> = {
   beforeUnmount(el) {
     const context = contexts.get(el)
     if (!context) return
-
     el.removeEventListener('mouseenter', context.onMouseEnter)
     el.removeEventListener('mouseleave', context.onMouseLeave)
     el.removeEventListener('focus', context.onFocus)
