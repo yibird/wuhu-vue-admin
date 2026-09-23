@@ -1,4 +1,3 @@
-export { default as Gantt } from './src/index.vue'
 export type {
   GanttContextMenuEvent,
   GanttProps,
@@ -7,3 +6,5 @@ export type {
   GanttViewModeDefinition,
 } from './src/types'
 export { createGanttTaskSignature, normalizeGanttTasks } from './src/utils'
+
+export const Gantt = defineAsyncComponent(() => import('./src/index.vue'))

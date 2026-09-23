@@ -46,7 +46,7 @@
 </template>
 <script lang="ts" setup generic="T extends Record<string, any>">
 import { SelectionArea, type SelectionEvent } from '@viselect/vue'
-import { useRowProps, useSize } from '../composables'
+import { useRowProps, useSize } from '../hooks'
 import ContextMenu from './ContextMenu.vue'
 import { useTablePlusInject } from '../context'
 

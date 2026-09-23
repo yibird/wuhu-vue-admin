@@ -32,6 +32,7 @@ const forwardedSlotNames = computed(() =>
 )
 
 const omittedModalPropNames = new Set([
+  'afterOpenChange',
   'draggable',
   'exitFullscreenText',
   'fullscreen',
@@ -49,8 +50,17 @@ function hasOwnProperty(object: object, property: string) {
   return Object.prototype.hasOwnProperty.call(object, property)
 }
 
+const hyphenatedPropNames = new Map<string, string>()
+
 function hyphenatePropertyName(property: string) {
-  return property.replace(/\B([A-Z])/g, '-$1').toLowerCase()
+  let hyphenated = hyphenatedPropNames.get(property)
+
+  if (!hyphenated) {
+    hyphenated = property.replace(/\B([A-Z])/g, '-$1').toLowerCase()
+    hyphenatedPropNames.set(property, hyphenated)
+  }
+
+  return hyphenated
 }
 
 function getModalBindings(): AntdvModalProps {
@@ -143,6 +153,10 @@ function getPointerPosition(event: PointerEvent): ModalPosition {
   return { x: event.clientX, y: event.clientY }
 }
 
+function clamp(value: number, min: number, max: number) {
+  return Math.min(Math.max(value, min), max)
+}
+
 function clampDragOffset(
   initialRect: DOMRect,
   offset: ModalPosition
@@ -155,11 +169,8 @@ function clampDragOffset(
   const boundedVerticalMax = Math.max(verticalMin, verticalMax)
 
   return {
-    x:
-      offset.x >= horizontalMin && offset.x <= boundedHorizontalMax
-        ? offset.x
-        : Math.min(Math.max(offset.x, horizontalMin), boundedHorizontalMax),
-    y: Math.min(Math.max(offset.y, verticalMin), boundedVerticalMax),
+    x: clamp(offset.x, horizontalMin, boundedHorizontalMax),
+    y: clamp(offset.y, verticalMin, boundedVerticalMax),
   }
 }
 
@@ -243,19 +254,30 @@ function handleCancel(event: MouseEvent | KeyboardEvent) {
 }
 
 function handleOpenChange(open: boolean) {
-  if (!open) {
-    resetPosition()
-    setFullscreen(false)
-  }
   emit('update:open', open)
+}
+
+/**
+ * 关闭动画结束后再重置，
+ * 避免弹窗在退场过程中跳回初始位置或尺寸。
+ *
+ * afterOpenChange 同时以事件（@after-open-change）与属性（:after-open-change）形式兼容。
+ */
+function handleAfterOpenChange(open: boolean) {
+  emit('afterOpenChange', open)
+  props.afterOpenChange?.(open)
+
+  if (open) return
+
+  resetPosition()
+  setFullscreen(false)
 }
 
 watch(
   () => props.open,
   (open, previousOpen) => {
     if (previousOpen && !open) {
-      resetPosition()
-      setFullscreen(false)
+      stopDragging()
     }
   }
 )
@@ -278,6 +300,7 @@ defineExpose<ModalInstance>({
     :root-class="rootClass"
     :width="modalWidth"
     :wrap-class-name="wrapClassName"
+    :after-open-change="handleAfterOpenChange"
     @cancel="handleCancel"
     @ok="handleOk"
     @update:open="handleOpenChange"
@@ -338,12 +361,9 @@ defineExpose<ModalInstance>({
 </template>
 
 <style scoped>
+/* 使用独立的 translate 属性，避免覆盖弹窗进出场的缩放动画 */
 :global(.w-modal--translated) {
-  transform: translate3d(
-    var(--w-modal-translate-x, 0),
-    var(--w-modal-translate-y, 0),
-    0
-  ) !important;
+  translate: var(--w-modal-translate-x, 0) var(--w-modal-translate-y, 0);
 }
 
 :global(.w-modal--dragging) {
@@ -369,13 +389,15 @@ defineExpose<ModalInstance>({
   height: 100vh;
   padding-bottom: 0;
   margin: 0;
-  transform: none !important;
+  translate: none !important;
 }
 
-:global(.w-modal-root--fullscreen .ant-modal-content) {
+/* antdv-next 的内容容器类名是 .ant-modal-container（modalRender 时为 .ant-modal-render） */
+:global(.w-modal-root--fullscreen .ant-modal-container),
+:global(.w-modal-root--fullscreen .ant-modal-render) {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: 100%;
   border-radius: 0;
 }
 

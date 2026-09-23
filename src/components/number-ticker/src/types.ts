@@ -1,20 +1,42 @@
 import { TransitionPresets } from '@vueuse/core'
 
 export interface NumberTickerProps {
-  /** 目标数字 */
+  /**
+   * @desc 目标数字
+   */
   value: number | string
-  /** 动画时长 (毫秒)，默认 1500ms */
+  /**
+   * @desc 动画时长（毫秒）
+   * @default 1500
+   */
   duration?: number
-  /** 保留小数位数，默认 0 */
+  /**
+   * @desc 保留小数位数
+   * @default 0
+   */
   decimals?: number
-  /** 前缀，如 "￥" 或 "$" */
+  /**
+   * @desc 前缀，如 "￥" 或 "$"
+   * @default ''
+   */
   prefix?: string
-  /** 后缀，如 "%" 或 "元" */
+  /**
+   * @desc 后缀，如 "%" 或 "元"
+   * @default ''
+   */
   suffix?: string
-  /** 是否使用千分位分隔符 (如 1,234,567)，默认 true */
+  /**
+   * @desc 是否使用千分位分隔符（如 1,234,567）
+   * @default true
+   */
   useGrouping?: boolean
-  /** Intl.NumberFormat 使用的区域设置。 */
+  /**
+   * @desc Intl.NumberFormat 使用的区域设置
+   */
   locale?: string | string[]
-  /** 缓动曲线类型，默认 easeOutCubic */
+  /**
+   * @desc 缓动曲线类型
+   * @default 'easeOutCubic'
+   */
   transition?: keyof typeof TransitionPresets
 }

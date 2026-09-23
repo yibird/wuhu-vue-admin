@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import { useIntersectionObserver } from '@vueuse/core'
-import { toPx } from '@/utils'
 import type {
   LazyContainerEmits,
   LazyContainerProps,
   LazyContainerSlots,
-} from './types'
+} from './types.ts'
 
 defineOptions({ name: 'LazyContainer' })
 
@@ -18,33 +17,39 @@ const props = withDefaults(defineProps<LazyContainerProps>(), {
   threshold: 0,
 })
 
-const emit = defineEmits<LazyContainerEmits>()
+const emits = defineEmits<LazyContainerEmits>()
 defineSlots<LazyContainerSlots>()
 
 const containerRef = useTemplateRef<HTMLElement>('containerRef')
+
 const visible = shallowRef(props.eager)
 const loaded = shallowRef(props.eager)
-const shouldRender = computed(() => (props.once ? loaded.value : visible.value))
-const containerStyle = computed(() => ({
-  minHeight: toPx(props.minHeight),
-}))
+
+const shouldRender = computed(() => {
+  return props.once ? loaded.value : visible.value
+})
 
 const setVisible = (nextVisible: boolean) => {
   if (visible.value !== nextVisible) {
     visible.value = nextVisible
-    emit('visible-change', nextVisible)
+    emits('visible-change', nextVisible)
   }
 
   if (!nextVisible || loaded.value) return
 
   loaded.value = true
-  emit('load')
-  if (props.once) stop()
+  emits('load')
+
+  if (props.once) {
+    stop()
+  }
 }
 
 const { isSupported, stop } = useIntersectionObserver(
   containerRef,
-  ([entry]) => setVisible(Boolean(entry?.isIntersecting)),
+  ([entry]) => {
+    setVisible(Boolean(entry?.isIntersecting))
+  },
   {
     immediate: !props.eager,
     rootMargin: () => props.rootMargin,
@@ -53,7 +58,9 @@ const { isSupported, stop } = useIntersectionObserver(
 )
 
 onMounted(() => {
-  if (!isSupported.value) setVisible(true)
+  if (!isSupported.value) {
+    setVisible(true)
+  }
 })
 </script>
 
@@ -62,7 +69,7 @@ onMounted(() => {
     :is="props.tag"
     ref="containerRef"
     class="w-lazy-container"
-    :style="containerStyle"
+    :style="{ minHeight: props.minHeight }"
     :aria-busy="shouldRender ? undefined : 'true'"
     :data-loaded="loaded || undefined"
   >

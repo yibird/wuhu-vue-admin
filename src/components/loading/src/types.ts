@@ -3,7 +3,7 @@ import type { LoadingAnimation } from '@/config'
 export interface LoadingProps {
   /**
    * @desc Loading 描述
-   * @default
+   * @default 'Loading...'
    */
   description?: string
   /**
@@ -12,8 +12,7 @@ export interface LoadingProps {
    */
   full?: boolean
   /**
-   * @desc loading的类型
-   * @default ''
+   * @desc loading 的类型，未设置时回退为 beat
    */
   type?: LoadingAnimation
 }

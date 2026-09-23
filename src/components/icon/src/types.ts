@@ -1,19 +1,19 @@
 export interface IconProps {
   /**
-   * @desc icon 名称
+   * @desc 图标名称
    */
   name: string
   /**
-   * @desc icon 大小
+   * @desc 图标大小
    * @default 14
    */
   size?: number | string
   /**
-   * @desc icon color
+   * @desc 图标颜色
    */
   color?: string
   /**
-   * @desc icon prefix
+   * @desc 图标类名前缀
    */
   prefix?: string
   /**
@@ -21,7 +21,7 @@ export interface IconProps {
    */
   label?: string
   /**
-   * @desc rendered HTML tag
+   * @desc 渲染的 HTML 标签
    * @default "i"
    */
   tag?: keyof HTMLElementTagNameMap

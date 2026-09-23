@@ -1,15 +1,19 @@
 import type { Component, StyleValue, VNodeChild } from 'vue'
 
-/** A single keyword or a readonly list of keywords to highlight. */
+/**
+ * 单个关键词或只读的关键词列表
+ */
 export type HighlightKeyword = string | readonly string[]
 
 /**
- * Native HTML tags cover the common case, while Component keeps wrapper and
- * mark rendering extensible for design-system components.
+ * 原生 HTML 标签覆盖常见场景，Component 则让包装元素与标记元素的渲染
+ * 可扩展到设计系统组件
  */
 export type HighlightTag = keyof HTMLElementTagNameMap | Component
 
-/** Values accepted by Vue's class normalization at runtime. */
+/**
+ * Vue class 规范化在运行时接受的值
+ */
 export type HighlightClassValue =
   | string
   | Readonly<Record<string, boolean | null | undefined>>
@@ -19,86 +23,161 @@ export type HighlightClassValue =
   | undefined
 
 /**
- * A match uses UTF-16 offsets, matching String#slice, RegExp#index and the
- * offsets returned by most JavaScript search libraries.
+ * 匹配区间使用 UTF-16 偏移量，与 String#slice、RegExp#index
+ * 以及多数 JavaScript 搜索库返回的偏移量保持一致
  */
 export interface HighlightMatch {
-  /** Inclusive UTF-16 start offset. */
+  /**
+   * 包含起始位置的 UTF-16 偏移量
+   */
   readonly start: number
-  /** Exclusive UTF-16 end offset. */
+  /**
+   * 不包含结束位置的 UTF-16 偏移量
+   */
   readonly end: number
-  /** Optional source keyword, exposed to the match slot. */
+  /**
+   * 可选的来源关键词，会暴露给 match 插槽
+   */
   readonly keyword?: string
 }
 
-/** Context supplied to a custom matcher. */
+/**
+ * 提供给自定义匹配器的上下文
+ */
 export interface HighlightMatcherContext {
+  /**
+   * 待匹配的原始文本
+   */
   readonly text: string
-  /** Empty keywords are removed and duplicate keywords are collapsed. */
+  /**
+   * 已移除空关键词并折叠重复项的关键词列表
+   */
   readonly keywords: readonly string[]
+  /**
+   * 是否区分大小写
+   */
   readonly caseSensitive: boolean
+  /**
+   * 是否仅匹配完整单词
+   */
   readonly wholeWord: boolean
-  /** Zero means unlimited. The component applies this limit after matching. */
+  /**
+   * 最大匹配数量，0 表示不限制；组件会在匹配完成后应用该限制
+   */
   readonly maxMatches: number
 }
 
 /**
- * Custom matchers make non-literal strategies possible, such as pinyin,
- * fuzzy search or server-provided match ranges. Returned ranges are validated,
- * sorted and merged before rendering.
+ * 自定义匹配器可实现非字面量策略，例如拼音、模糊搜索或服务端返回的匹配区间；
+ * 返回的区间在渲染前会被校验、排序与合并
  */
 export type HighlightMatcher = (
   context: HighlightMatcherContext
 ) => readonly HighlightMatch[]
 
 interface HighlightSegmentBase {
-  /** Stable position in the final segment list. */
+  /**
+   * 在最终分段列表中的稳定位置
+   */
   readonly index: number
-  /** Inclusive UTF-16 offset in the original text. */
+  /**
+   * 在原始文本中包含起始位置的 UTF-16 偏移量
+   */
   readonly start: number
-  /** Exclusive UTF-16 offset in the original text. */
+  /**
+   * 在原始文本中不包含结束位置的 UTF-16 偏移量
+   */
   readonly end: number
-  /** Exact text sliced from the original input. */
+  /**
+   * 从原始输入中截取出的精确文本
+   */
   readonly text: string
-  /** Raw matches contributing to this segment. Empty for plain text. */
+  /**
+   * 构成本分段的原始匹配，纯文本分段的值为空
+   */
   readonly matches: readonly HighlightMatch[]
 }
 
+/**
+ * 纯文本分段
+ */
 export interface HighlightTextSegment extends HighlightSegmentBase {
   readonly kind: 'text'
 }
 
+/**
+ * 匹配分段
+ */
 export interface HighlightMatchSegment extends HighlightSegmentBase {
   readonly kind: 'match'
 }
 
+/**
+ * 高亮分段
+ */
 export type HighlightSegment = HighlightTextSegment | HighlightMatchSegment
 
 export interface HighlightProps {
-  /** Source text. It is rendered as text nodes and is never parsed as HTML. */
+  /**
+   * @desc 源文本，仅作为文本节点渲染，永远不会解析为 HTML
+   */
   text: string
-  /** Keyword or keywords to highlight. Empty values are ignored. */
+  /**
+   * @desc 要高亮的关键词，空值会被忽略
+   * @default ''
+   */
   keyword?: HighlightKeyword
-  /** Compare keyword casing exactly. @default false */
+  /**
+   * @desc 是否严格区分关键词大小写
+   * @default false
+   */
   caseSensitive?: boolean
-  /** Match only at Unicode letter/number/underscore boundaries. @default false */
+  /**
+   * @desc 是否仅在 Unicode 字母/数字/下划线边界处匹配
+   * @default false
+   */
   wholeWord?: boolean
-  /** Maximum raw matches to render. Zero means unlimited. @default 0 */
+  /**
+   * @desc 最多渲染的原始匹配数量，0 表示不限制
+   * @default 0
+   */
   maxMatches?: number
-  /** Optional custom matching strategy. */
+  /**
+   * @desc 可选的自定义匹配策略
+   */
   matcher?: HighlightMatcher
-  /** Root element or component. @default 'span' */
+  /**
+   * @desc 根元素或组件
+   * @default 'span'
+   */
   tag?: HighlightTag
-  /** Element or component used for matched segments. @default 'mark' */
+  /**
+   * @desc 用于匹配分段的元素或组件
+   * @default 'mark'
+   */
   highlightTag?: HighlightTag
-  /** Additional class value applied to every matched segment. */
+  /**
+   * @desc 应用于每个匹配分段的额外 class
+   */
   highlightClass?: HighlightClassValue
-  /** Additional inline style applied to every matched segment. */
+  /**
+   * @desc 应用于每个匹配分段的额外内联样式
+   */
   highlightStyle?: StyleValue
 }
 
-/** Strongly typed named slots for complete segment-level customization. */
+/**
+ * 强类型的具名插槽，用于完全自定义分段渲染
+ */
 export interface HighlightSlots {
+  /**
+   * @desc 自定义匹配分段的渲染
+   * @param props 匹配分段
+   */
   match?: (props: HighlightMatchSegment) => VNodeChild
+  /**
+   * @desc 自定义纯文本分段的渲染
+   * @param props 纯文本分段
+   */
   text?: (props: HighlightTextSegment) => VNodeChild
 }

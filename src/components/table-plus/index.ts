@@ -4,8 +4,8 @@ export {
   useRowSelection,
   useSize,
   useTable,
-} from './src/composables'
-export type { UseRowSelectionOptions, UseTableOptions } from './src/composables'
+} from './src/hooks'
+export type { UseRowSelectionOptions, UseTableOptions } from './src/hooks'
 export type {
   TableContextState,
   TablePlusColumn,

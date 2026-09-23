@@ -1,21 +1,3 @@
-<script lang="ts" setup>
-import type { ExceptionEmits, ExceptionProps, ExceptionSlots } from './types'
-
-const props = withDefaults(defineProps<ExceptionProps>(), {
-  buttonText: '返回首页',
-  description: '',
-  imageAlt: '',
-  showBtn: true,
-  title: '',
-})
-const emit = defineEmits<ExceptionEmits>()
-const slots = defineSlots<ExceptionSlots>()
-
-const showDesc = computed(() => {
-  return !!slots.description || !!props.description
-})
-</script>
-
 <template>
   <div
     class="full flex flex-col items-center justify-center gap-24 overflow-auto px-24 py-36 text-center md:flex-row md:gap-40 md:text-left"
@@ -36,10 +18,30 @@ const showDesc = computed(() => {
         <div v-else>{{ props.description }}</div>
       </div>
       <div v-if="props.showBtn" class="mt-20">
-        <a-button type="primary" @click="emit('click')">
+        <a-button type="primary" @click="openHomeTab">
           {{ props.buttonText }}
         </a-button>
       </div>
     </div>
   </div>
 </template>
+
+<script lang="ts" setup>
+import { useTabs } from '@/hooks'
+import type { ExceptionProps, ExceptionSlots } from './types'
+
+const props = withDefaults(defineProps<ExceptionProps>(), {
+  buttonText: '返回首页',
+  description: '',
+  imageAlt: '',
+  showBtn: true,
+  title: '',
+})
+const slots = defineSlots<ExceptionSlots>()
+
+const showDesc = computed(() => {
+  return !!slots.description || !!props.description
+})
+
+const { openHomeTab } = useTabs()
+</script>

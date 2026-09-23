@@ -1,4 +1,4 @@
-export { default as Editor } from './src/index.vue'
+export const Editor = defineAsyncComponent(() => import('./src/index.vue'))
 export type {
   EditorLocale,
   EditorExpose,

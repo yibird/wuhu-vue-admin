@@ -1,21 +1,14 @@
 <script setup lang="ts">
+import { useTabs } from '@/hooks'
 import Exception from './Exception.vue'
-import clientErrorSvg from '@/assets/svg/500.svg'
-import type { ErrorBoundaryErrorPayload } from '../../error-boundary'
-
-interface ClientErrorProps {
-  readonly error: ErrorBoundaryErrorPayload | null
-  readonly showDetails?: boolean
-}
-
-interface ClientErrorEmits {
-  reset: []
-}
+import clientErrorImage from '@/assets/svg/500.svg'
+import type { ClientErrorProps } from './types.ts'
 
 const props = withDefaults(defineProps<ClientErrorProps>(), {
   showDetails: false,
 })
-const emit = defineEmits<ClientErrorEmits>()
+
+const { refreshCurrentTab } = useTabs()
 
 const title = '抱歉，页面组件发生了客户端错误'
 const defaultMessage = '页面渲染时捕获到异常，请稍后重试或联系管理员。'
@@ -30,12 +23,12 @@ const detailRows = computed(() => [
 ])
 
 const handleReset = () => {
-  emit('reset')
+  refreshCurrentTab()
 }
 </script>
 
 <template>
-  <Exception :image="clientErrorSvg" :show-btn="false" :title="title">
+  <Exception :image="clientErrorImage" :show-btn="false" :title="title">
     <template #description>
       <div class="mt-12 max-w-760 text-left">
         <p class="m-0 text-sm text-secondary">

@@ -280,7 +280,9 @@ function toggleFullscreen() {
   margin: 0;
 }
 
-:global(.w-file-preview-modal-wrap--fullscreen .ant-modal-content) {
+/* antdv-next 的内容容器类名是 .ant-modal-container（modalRender 时为 .ant-modal-render） */
+:global(.w-file-preview-modal-wrap--fullscreen .ant-modal-container),
+:global(.w-file-preview-modal-wrap--fullscreen .ant-modal-render) {
   min-height: 100vh;
   border-radius: 0;
 }

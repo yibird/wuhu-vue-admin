@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { computed, inject, useId, type CSSProperties } from 'vue'
-import { toPx } from '@/utils'
 import { Icon } from '../../icon'
 import { getCssSize, viewContextKey } from './context'
 import type {
@@ -26,10 +25,13 @@ defineOptions({ name: 'WViewSider', inheritAttrs: false })
 const contentId = useId()
 const viewContext = inject(viewContextKey, null)
 const showTrigger = computed(() => props.collapsible && props.trigger)
-const expandedWidth = computed(() => toPx(props.width))
+const expandedWidth = computed(() =>
+  typeof props.width === 'string' ? props.width : `${props.width}px`
+)
 
 const siderStyle = computed<CSSProperties>(() => {
-  const width = toPx(collapsed.value ? props.collapsedWidth : props.width)
+  const siderWidth = collapsed.value ? props.collapsedWidth : props.width
+  const width = typeof siderWidth === 'string' ? siderWidth : `${siderWidth}px`
   const gap = viewContext?.gap.value ?? '0px'
   const shouldOffsetGap =
     collapsed.value && viewContext?.direction.value === 'horizontal'

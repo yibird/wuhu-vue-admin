@@ -1,4 +1,9 @@
-import { defineAsyncComponent } from 'vue'
+export { AppWatermark } from './app-watermark'
+export {
+  AnimatedGroup,
+  type AnimatedGroupProps,
+  type MotionType,
+} from './animated'
 
 export { Icon } from './icon'
 export type { IconProps } from './icon'
@@ -52,14 +57,7 @@ export type {
 
 export { DatePicker, DateRangePicker } from './date-picker'
 
-export const Cropper = defineAsyncComponent(async () => {
-  const { Cropper } = await import('./cropper')
-  return Cropper
-})
-export const CropperPicker = defineAsyncComponent(async () => {
-  const { CropperPicker } = await import('./cropper')
-  return CropperPicker
-})
+export { Cropper, CropperPicker } from './cropper'
 export type {
   CropperCanvasOptions,
   CropperExpose,
@@ -67,32 +65,15 @@ export type {
   CropperProps,
 } from './cropper'
 
-export const IconPicker = defineAsyncComponent(async () => {
-  const { IconPicker } = await import('./icon-picker')
-  return IconPicker
-})
-export const IconSelector = defineAsyncComponent(async () => {
-  const { IconSelector } = await import('./icon-picker')
-  return IconSelector
-})
+export { IconPicker, IconSelector } from './icon-picker'
 export type { IconPickerProps, IconSelectorProps } from './icon-picker'
 
-export const JsonView = defineAsyncComponent(async () => {
-  const { JsonView } = await import('./json-view')
-  return JsonView
-})
+export type { JsonView } from './json-view'
 export type { JsonPrimitive, JsonValue, JsonViewProps } from './json-view'
 
-export const CodeEditor = defineAsyncComponent(async () => {
-  const { CodeEditor } = await import('./code-editor')
-  return CodeEditor
-})
-export type { CodeEditorProps } from './code-editor'
+export { CodeEditor, type CodeEditorProps } from './code-editor'
 
-export const Editor = defineAsyncComponent(async () => {
-  const { Editor } = await import('./editor')
-  return Editor
-})
+export { Editor } from './editor'
 export type {
   EditorExpose,
   EditorLocale,
@@ -115,13 +96,17 @@ export type {
   UseDraggableInput,
 } from './draggable'
 
-export { ClientError, Error, NotAuthorized, NotFound } from './exception'
+export { SlidingHighlight } from './sliding-highlight'
+export type {
+  SlidingHighlightInstance,
+  SlidingHighlightProps,
+  SlidingHighlightSlots,
+} from './sliding-highlight'
+
+export { ClientError, ServerError, NotAuthorized, NotFound } from './exception'
 export type { ExceptionProps } from './exception'
 
-export const FilePreview = defineAsyncComponent(async () => {
-  const { FilePreview } = await import('./file-preview')
-  return FilePreview
-})
+export { FilePreview } from './file-preview'
 export type {
   FilePreviewKind,
   FilePreviewLocale,
@@ -129,14 +114,7 @@ export type {
   FilePreviewSource,
 } from './file-preview'
 
-export const Gantt = defineAsyncComponent(async () => {
-  const { Gantt } = await import('./gantt')
-  return Gantt
-})
-export {
-  createGanttTaskSignature,
-  normalizeGanttTasks,
-} from './gantt/src/utils'
+export { Gantt, createGanttTaskSignature, normalizeGanttTasks } from './gantt'
 export type {
   GanttContextMenuEvent,
   GanttProps,
@@ -162,20 +140,9 @@ export type {
   HighlightTag,
   HighlightTextSegment,
 } from './highlight'
+
 export { Modal } from './modal'
-export type {
-  ModalAction,
-  ModalComponent,
-  ModalController,
-  ModalInstance,
-  ModalMaybePromise,
-  ModalOpenOptions,
-  ModalOpenPromise,
-  ModalPosition,
-  ModalProps,
-  ModalResult,
-  ModalUpdateOptions,
-} from './modal'
+export type { ModalInstance, ModalPosition, ModalProps } from './modal'
 
 export { FormPlus } from './form-plus'
 export type {

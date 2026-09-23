@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useResizeObserver } from '@vueuse/core'
 import { Nav, List, Preview } from './components'
-import { useIconCategories, useIconOptions } from './composables'
+import { useIconCategories, useIconOptions } from './hooks'
 import { ALL_ICON_CATEGORY } from './data'
 import type {
   IconOptionEmits,

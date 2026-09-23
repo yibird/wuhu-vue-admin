@@ -107,8 +107,8 @@ function toggle() {
     min-height: 0;
     overflow: hidden;
     transition:
-      opacity var(--w-motion-duration-base) var(--w-motion-ease-standard),
-      transform var(--w-motion-duration-slow) var(--w-motion-ease-standard);
+      opacity var(--w-motion-duration-moderate) var(--w-motion-ease-enter),
+      transform var(--w-motion-duration-moderate) var(--w-motion-ease-enter);
   }
 
   &__content {

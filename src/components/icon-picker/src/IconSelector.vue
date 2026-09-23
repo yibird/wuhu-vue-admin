@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Nav, List, Preview } from './components'
-import { useIconCategories, useIconOptions } from './composables'
+import { useIconCategories, useIconOptions } from './hooks'
 import type { CSSProperties } from 'vue'
 import type { SelectProps } from 'antdv-next'
 import type {

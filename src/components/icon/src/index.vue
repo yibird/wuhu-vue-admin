@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import { loadLucideIcon } from './lucide'
 import type { IconProps } from './types'
 
 defineOptions({
@@ -26,25 +25,6 @@ const iconStyle = computed(() => {
     color: props.color,
   }
 })
-
-type InlineIcon = Awaited<ReturnType<typeof loadLucideIcon>>
-const inlineIcon = shallowRef<InlineIcon>()
-let requestId = 0
-
-watch(
-  () => iconName.value,
-  async (name) => {
-    const currentRequestId = ++requestId
-    inlineIcon.value = undefined
-    const icon = await loadLucideIcon(name)
-    if (currentRequestId === requestId) {
-      inlineIcon.value = icon
-    }
-  },
-  {
-    immediate: true,
-  }
-)
 </script>
 
 <template>
@@ -53,6 +33,9 @@ watch(
     class="w-icon"
     :class="iconName"
     :style="iconStyle"
+    :role="props.label ? 'img' : undefined"
+    :aria-label="props.label"
+    :aria-hidden="props.label ? undefined : 'true'"
   />
 </template>
 

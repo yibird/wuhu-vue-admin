@@ -1,4 +1,4 @@
-import { useRequest } from '@/utils'
+import { useRequest } from '@/hooks'
 import { apiRequest } from '@/utils'
 import { usePagination, type TablePlusPagination } from './usePagination'
 import { useRowSelection } from './useRowSelection'
@@ -95,14 +95,15 @@ export function useTable<
 
   const apiPromise = getPromise<T, P>(api, params)
 
-  const { data, loading, error, run, runAsync } = useRequest<Data<T>, [P]>(
-    apiPromise,
+  const { data, loading, error, run, runAsync } = useRequest(
+    // service 忽略调用参数,请求参数由 getPromise 在创建时闭包捕获
+    (_params?: P) => apiPromise(),
     {
       manual: api === undefined,
-      onSuccess: (data, params) => onSuccess?.(data, params[0]),
-      onAfter: (params) => onAfter?.(params[0]),
-      onBefore: (params) => onBefore?.(params[0]),
-      onError: (error, params) => onError?.(error, params[0]),
+      onSuccess: (result, args) => onSuccess?.(result, args[0] as P),
+      onAfter: (args) => onAfter?.(args[0] as P),
+      onBefore: (args) => onBefore?.(args[0] as P),
+      onError: (error, args) => onError?.(error, args[0] as P),
     }
   )
 

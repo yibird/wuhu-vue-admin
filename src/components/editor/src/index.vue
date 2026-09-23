@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Editor as TiptapEditorCore, EditorContent } from '@tiptap/vue-3'
-import { useDeferred } from '@/composables'
+import { useDeferred } from '@/hooks'
 import EditorFooter from './components/EditorFooter.vue'
 import EditorToolbar from './components/EditorToolbar.vue'
 import { createEditorExtensions } from './extensions'
@@ -17,7 +17,7 @@ import {
   useEditorCommands,
   useEditorState,
   useEditorToolbar,
-} from './composables'
+} from './hooks'
 import type { Editor as TiptapEditor } from '@tiptap/vue-3'
 import type { CSSProperties } from 'vue'
 import type {
@@ -215,13 +215,12 @@ defineExpose<EditorExpose>({
       @redo="commands.redo"
     />
 
-    <Scrollbar
-      class="w-editor__surface min-h-0 flex-1 overflow-hidden bg-container"
-      content-class="min-h-full"
+    <div
+      class="w-editor__surface min-h-0 flex-1 w-full h-full bg-container overflow-x-hidden overflow-y-auto"
       :style="contentStyle"
     >
       <EditorContent :editor="editor" />
-    </Scrollbar>
+    </div>
 
     <EditorFooter
       :character-count="characterCount"

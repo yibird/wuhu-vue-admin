@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import { toPx } from '@/utils'
 import { viewContextKey } from './context'
 import type { CSSProperties } from 'vue'
 import type { WViewProps } from './types'
@@ -13,7 +12,13 @@ const props = withDefaults(defineProps<WViewProps>(), {
   direction: 'vertical',
 })
 
-const gap = computed(() => (props.gap === undefined ? '0px' : toPx(props.gap)))
+const gap = computed(() =>
+  props.gap === undefined
+    ? '0px'
+    : typeof props.gap === 'string'
+      ? props.gap
+      : `${props.gap}px`
+)
 const direction = computed(() => props.direction)
 
 provide(viewContextKey, { direction, gap })
