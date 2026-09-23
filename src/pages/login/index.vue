@@ -72,7 +72,7 @@ import {
 import { useI18n } from 'vue-i18n'
 import { message } from 'antdv-next'
 import { useRoute } from 'vue-router'
-import { useAuth } from '@/composables'
+import { useAuth } from '@/hooks'
 import { getSafeRedirect, useGo } from '@/router'
 import { isApiError } from '@/utils'
 

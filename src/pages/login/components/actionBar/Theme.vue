@@ -19,7 +19,7 @@
 
 <script setup lang="ts">
 import { ThemeMode } from '@/constants'
-import { useTheme } from '@/composables'
+import { useTheme } from '@/theme'
 
 const { themeMode, changeThemeWithAnimation } = useTheme()
 
