@@ -28,7 +28,7 @@ const emit = defineEmits<{
 
 <template>
   <header
-    class="relative overflow-hidden rounded-8 border-1 border-color-2 border-solid bg-container px-18 py-16 shadow-[var(--w-shadow-elevated)]"
+    class="relative overflow-hidden rounded-8 border-1 border-color-2 border-solid bg-container px-18 py-16"
   >
     <div
       v-if="loading"

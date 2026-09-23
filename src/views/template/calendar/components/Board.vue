@@ -97,7 +97,7 @@ onUnmounted(() => {
         </div>
       </div>
 
-      <div class="relative min-h-0 flex-1">
+      <div class="relative min-h-0 flex-1 overflow-y-auto">
         <DayFlowCalendar :calendar="calendar" />
         <div
           v-if="hasActiveFilters && visibleEventCount === 0"
@@ -123,8 +123,6 @@ onUnmounted(() => {
 
 <style scoped lang="less">
 .calendar {
-  box-shadow: var(--w-shadow-elevated);
-
   --df-calendar-height: calc(var(--calendar-content-height) - 62px);
   --df-color-background: rgb(var(--w-bg-container));
   --df-color-border: rgb(var(--w-border-color-2));

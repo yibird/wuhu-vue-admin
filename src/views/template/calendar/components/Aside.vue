@@ -43,7 +43,7 @@ function handleSelectEventDate(date: Date, eventId: string) {
 
 <template>
   <aside
-    class="min-h-0 overflow-hidden rounded-8 border-1 border-color-2 border-solid bg-container shadow-[var(--w-shadow-elevated)] max-[1100px]:order--1"
+    class="h-full overflow-y-auto rounded-8 border-1 border-color-2 border-solid bg-container max-[1100px]:order--1"
   >
     <div
       v-if="loading"
@@ -53,7 +53,10 @@ function handleSelectEventDate(date: Date, eventId: string) {
     >
       <a-skeleton active :paragraph="{ rows: 12 }" />
     </div>
-    <Scrollbar v-else content-class="flex flex-col gap-16 p-14">
+    <div
+      v-else
+      class="flex flex-col gap-16 p-14 w-full h-full overflow-x-hidden overflow-y-auto"
+    >
       <CalendarFilterPanel
         :active-filter-count="activeFilterCount"
         :calendar-ids="calendarIds"
@@ -85,6 +88,6 @@ function handleSelectEventDate(date: Date, eventId: string) {
         :calendar-types="calendarTypes"
         :get-calendar-count="getCalendarCount"
       />
-    </Scrollbar>
+    </div>
   </aside>
 </template>
