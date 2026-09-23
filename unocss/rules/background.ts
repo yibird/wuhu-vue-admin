@@ -55,13 +55,11 @@ const tokenKeysPattern = Object.keys(tokens)
   .map(escapeRegExp)
   .join('|')
 
-export const bgRule: Rule[] = [
-  [
-    new RegExp(`^bg-(${tokenKeysPattern})$`),
-    ([, key]) => {
-      if (!key) return undefined
-      const color = tokens[key]
-      return color ? { 'background-color': color } : undefined
-    },
-  ],
+export const bgRule: Rule = [
+  new RegExp(`^bg-(${tokenKeysPattern})$`),
+  ([, key]) => {
+    if (!key) return undefined
+    const color = tokens[key]
+    return color ? { 'background-color': color } : undefined
+  },
 ]

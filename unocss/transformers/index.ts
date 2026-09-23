@@ -1,4 +1,4 @@
-import { variantGroup } from './variantGroup'
+import { variantGroup } from './variant-group'
 import { directives } from './directives'
 
 export const transformers = [variantGroup, directives]

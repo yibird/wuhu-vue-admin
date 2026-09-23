@@ -1,5 +1,4 @@
 /// <reference types="vite/client" />
-/// <reference types="unplugin-fonts/client" />
 interface ViteTypeOptions {}
 
 interface ImportMetaEnv {

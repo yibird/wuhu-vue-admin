@@ -49,12 +49,10 @@ const textSizes = {
 
 const textSizeKeysPattern = Object.keys(textSizes).join('|')
 
-export const textRule: Rule[] = [
-  [
-    new RegExp(`^text-(${textSizeKeysPattern})$`),
-    ([, key]) => {
-      const styles = textSizes[key as keyof typeof textSizes]
-      return styles
-    },
-  ],
+export const textSizeRule: Rule = [
+  new RegExp(`^text-(${textSizeKeysPattern})$`),
+  ([, key]) => {
+    const styles = textSizes[key as keyof typeof textSizes]
+    return styles
+  },
 ]

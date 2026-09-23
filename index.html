@@ -8,7 +8,6 @@
     <script>
       ;(() => {
         const root = document.documentElement
-
         try {
           const state = JSON.parse(localStorage.getItem('app') || '{}')
           const config = state?.app
@@ -34,6 +33,10 @@
               window.matchMedia('(prefers-color-scheme: dark)').matches)
           root.dataset.theme = isDark ? 'dark' : 'light'
           root.style.colorScheme = isDark ? 'dark' : 'light'
+
+          if (typeof config?.fontFamily === 'string') {
+            root.dataset.font = config.fontFamily
+          }
         } catch {}
       })()
     </script>
@@ -45,7 +48,6 @@
         --app-loading-gradient-strong: 14%;
         --app-loading-gradient-soft: 7%;
       }
-
       :root[data-theme='dark'] {
         --app-loading-page-rgb: 0 0 0;
         --app-loading-text-rgb: 255 255 255;
@@ -84,7 +86,8 @@
             transparent 42%
           ),
           rgb(var(--app-loading-page-rgb));
-        font-family:
+        font-family: var(
+          --w-font-family,
           system-ui,
           -apple-system,
           BlinkMacSystemFont,
@@ -93,7 +96,8 @@
           'Hiragino Sans GB',
           'Microsoft YaHei',
           Arial,
-          sans-serif;
+          sans-serif
+        );
         opacity: 1;
         visibility: visible;
         pointer-events: none;

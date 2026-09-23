@@ -1,19 +1,17 @@
-import { textRule } from './text'
+import { textSizeRule } from './text-size'
 import { colorRule } from './color'
-import { contentVisibilityRule } from './contentVisibility'
 import { bgRule } from './background'
-import { borderRule } from './border'
-import { borderColorRule } from './borderColor'
-import { motionRule } from './motion'
-import { shadowRule } from './shadow'
+import { borderColorRule } from './border-color'
+import { motionRules } from './motion'
+import { shadowRules } from './shadow'
+import { contentVisibilityRule } from './content-visibility'
 
 export const rules = [
-  ...textRule,
-  ...colorRule,
-  ...bgRule,
+  ...motionRules,
+  ...shadowRules,
+  bgRule,
+  textSizeRule,
+  colorRule,
+  borderColorRule,
   contentVisibilityRule,
-  borderRule,
-  ...borderColorRule,
-  ...motionRule,
-  ...shadowRule,
 ]

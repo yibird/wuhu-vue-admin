@@ -1,7 +1,9 @@
+import type { LocationQueryRaw } from 'vue-router'
 import type {
   MenuMode,
   ThemeMode,
   Locale,
+  FontFamily,
   SiderTheme,
   HeaderWidget,
   TabsTheme,
@@ -24,7 +26,7 @@ interface MenuBase {
    */
   title: string
   /**
-   * @desc 菜单类型,0目录、1菜单项、2子页面、3权限按钮
+   * @desc 菜单类型,1菜单、2子页面、3权限按钮
    * @default
    */
   type: MenuType
@@ -127,24 +129,79 @@ export interface MenuAction extends MenuBase {
 
 export type IMenu = MenuDirectory | MenuRoute | MenuAction
 
-export type ITab = Omit<IMenu, 'children' | 'id' | 'path' | 'type'> & {
-  id: string
+/**
+ * 打开标签页的参数
+ */
+export interface TabOption {
   /**
-   * @desc 标签页名称
-   * @default
-   */
-  name: string
-  /**
-   * @desc 标签页路径
+   * @desc 标签页对应的路由 path
    * @default
    */
   path: string
   /**
-   * @desc 是否为首页
-   * @default false
+   * @desc 标签页标题,不填时取 path 对应菜单的 title
+   * @default
    */
-  home?: boolean
-  type: 1 | 2
+  title?: string
+  /**
+   * @desc 标签页图标,不填时取 path 对应菜单的 icon
+   * @default
+   */
+  icon?: string | null
+  /**
+   * @desc 路由 query,同一 path 下 query 不同会各自占用一个标签页
+   * @default
+   */
+  query?: LocationQueryRaw
+}
+
+export interface ITab {
+  /**
+   * 唯一标识
+   */
+  key: string
+  /**
+   * 路由路径
+   */
+  path: string
+  /**
+   * 标题
+   */
+  title: string
+  /**
+   * 关联的菜单id
+   */
+  menuId?: string
+  /**
+   * 菜单层级
+   */
+  level?: string
+  /**
+   * 所属根菜单id,用于分栏侧边栏定位菜单树
+   */
+  rootId?: string
+  /**
+   * icon
+   */
+  icon?: string | null
+  /**
+   * 路由查询参数
+   */
+  query?: LocationQueryRaw
+  /**
+   * 是否固定
+   */
+  pin?: boolean
+
+  /**
+   * 是否缓存
+   */
+  keepAlive?: boolean
+
+  /**
+   * KeepAlive 对应的组件名称
+   */
+  componentName?: string
 }
 
 export interface SiderConfig {
@@ -224,7 +281,7 @@ export interface HeaderConfig {
   widgets: HeaderWidget[]
 }
 
-export interface TabConfig {
+export interface TabsConfig {
   /**
    * @desc 是否显示标签页
    * @default true
@@ -236,20 +293,10 @@ export interface TabConfig {
    */
   showIcon: boolean
   /**
-   * @desc 是否启用标签页拖拽
-   * @default true
-   */
-  enableDrag: boolean
-  /**
-   * @desc 是否启用标签页持久化
-   * @default true
-   */
-  enablePersist: boolean
-  /**
    * @desc 标签页主题
    * @default TabsTheme.Card
    */
-  theme?: TabsTheme
+  theme: TabsTheme
 }
 
 export interface FooterConfig {
@@ -356,6 +403,11 @@ export interface AppConfig {
    */
   locale: Locale
   /**
+   * @desc 字体
+   * @default FontFamily.Outfit
+   */
+  fontFamily: FontFamily
+  /**
    * @desc 菜单模式
    */
   menuMode: MenuMode
@@ -420,7 +472,7 @@ export interface ShortcutKey {
 export interface ProjectConfig {
   sider: SiderConfig
   header: HeaderConfig
-  tab: TabConfig
+  tabs: TabsConfig
   footer: FooterConfig
   animation: AnimationConfig
   lockscreen: LockscreenConfig

@@ -1,13 +1,6 @@
 import type { Rule } from 'unocss'
 
 const tokens: Record<string, string> = {
-  // semantic colors
-  primary: 'rgb(var(--w-color-primary))',
-  success: 'rgb(var(--w-color-success))',
-  warning: 'rgb(var(--w-color-warning))',
-  error: 'rgb(var(--w-color-error))',
-  info: 'rgb(var(--w-color-info))',
-
   // text colors
   main: 'rgb(var(--w-text-main))',
   regular: 'rgb(var(--w-text-regular))',
@@ -27,12 +20,10 @@ const tokenKeysPattern = Object.keys(tokens)
   .map(escapeRegExp)
   .join('|')
 
-export const colorRule: Rule[] = [
-  [
-    new RegExp(`^text-(${tokenKeysPattern})$`),
-    ([, key]) => {
-      const color = tokens[key]
-      return color ? { color } : undefined
-    },
-  ],
+export const colorRule: Rule = [
+  new RegExp(`^text-(${tokenKeysPattern})$`),
+  ([, key]) => {
+    const color = tokens[key]
+    return color ? { color } : undefined
+  },
 ]

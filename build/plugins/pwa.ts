@@ -3,6 +3,8 @@ import { VitePWA } from 'vite-plugin-pwa'
 export function pwaPlugin() {
   return VitePWA({
     registerType: 'autoUpdate',
+    // 超限的大 chunk（如 jit-viewer）只告警不中断构建，运行时按需请求
+    showMaximumFileSizeToCacheInBytesWarning: true,
     manifest: {
       name: 'Wuhu Vue Admin',
       short_name: 'Wuhu Admin',
@@ -11,16 +13,16 @@ export function pwaPlugin() {
       display: 'standalone',
       icons: [
         {
-          src: '/pwa-192x192.png',
-          sizes: '192x192',
-          type: 'image/png',
-        },
-        {
-          src: '/pwa-512x512.png',
-          sizes: '512x512',
-          type: 'image/png',
+          src: '/logo.svg',
+          sizes: 'any',
+          type: 'image/svg+xml',
+          purpose: 'any',
         },
       ],
+    },
+    workbox: {
+      maximumFileSizeToCacheInBytes: 4 * 1024 * 1024,
+      globIgnores: ['**/*.map'],
     },
   })
 }

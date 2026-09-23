@@ -11,7 +11,9 @@ export function createCss(): CSSOptions {
         safari: 16,
       },
       cssModules: {
-        pattern: '[name]_[local]_[hash:base64:5]',
+        // lightningcss 只支持 [name] / [local] / [hash] 三种占位符,
+        // postcss-modules 风格的 [hash:base64:5] 会被判为非法并让整个 transform 抛错
+        pattern: '[name]_[local]_[hash]',
       },
     },
   }

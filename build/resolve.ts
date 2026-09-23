@@ -25,5 +25,6 @@ export function createResolve() {
         ),
       },
     ],
+    extensions: ['.js', '.jsx', '.ts', '.tsx'],
   }
 }

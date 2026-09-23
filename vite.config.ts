@@ -12,7 +12,6 @@ import {
 export default defineConfig(async ({ command, mode }: ConfigEnv) => {
   const envDir = resolve(process.cwd(), 'env')
   const env = loadEnv(mode, envDir, '')
-  const build = command === 'build' ? createBuild() : undefined
   const plugins = await createPlugin({ command })
 
   return {
@@ -21,7 +20,7 @@ export default defineConfig(async ({ command, mode }: ConfigEnv) => {
     server: createServer(env),
     plugins,
     optimizeDeps: createOptimizeDeps(),
-    build,
+    build: createBuild(command),
     devtools: { enabled: false },
     experimental: {
       // bundledDev: true,

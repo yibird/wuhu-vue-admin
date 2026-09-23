@@ -22,7 +22,7 @@ const durationPattern = motionDurationKeys.join('|')
 const easePattern = motionEaseKeys.join('|')
 const scalePattern = motionScaleKeys.join('|')
 
-export const motionRule: Rule[] = [
+export const motionRules: Rule[] = [
   [
     new RegExp(`^duration-motion-(${durationPattern})$`),
     ([, key]) => ({
