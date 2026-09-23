@@ -22,10 +22,8 @@
 </template>
 
 <script setup lang="ts">
-import type { ErrorBoundaryErrorPayload } from '../../../components/error-boundary'
-import { ClientError } from '../../../components/exception'
-import { Icon } from '../../../components/icon'
-import { isNetworkDisconnectedError } from './NetworkDisconnectedError'
+import { ClientError, type ErrorBoundaryErrorPayload } from '@/components'
+import { isNetworkDisconnectedError } from '@/errors'
 
 const props = withDefaults(
   defineProps<{

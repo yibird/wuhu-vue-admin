@@ -3,11 +3,9 @@ import type { ITab } from '#/config'
 
 export type EmitEventType = (typeof EmitEvent)[keyof typeof EmitEvent]
 
-export interface TabControlProps {}
-
 export type TabControlEmit = (e: 'click') => void
 
-export interface TabHomeProps extends TabControlProps {
+export interface TabHomeProps {
   active?: boolean
 }
 
@@ -21,14 +19,26 @@ export type TabActionKey =
 export type TabActionEmits = (e: TabActionKey) => void
 
 export interface TabListProps {
+  /**
+   * @desc tab列表
+   * @default []
+   */
   items?: ITab[]
-  current: number
+  /**
+   * @desc 激活tab的key
+   * @default undefined
+   */
+  activeKey?: string
+  /**
+   * @desc 是否显示icon
+   * @default true
+   */
   showIcon?: boolean
 }
 
 export interface TabItemEmits {
-  (e: typeof EmitEvent.CHANGE, menu: ITab, index: number): void
-  (e: typeof EmitEvent.CLOSE, menu: ITab, index: number): void
+  (e: typeof EmitEvent.CHANGE, tab: ITab, index: number): void
+  (e: typeof EmitEvent.CLOSE, tab: ITab, index: number): void
   (e: typeof EmitEvent.REFRESH): void
   (e: typeof EmitEvent.CLOSE_CURRENT): void
   (e: typeof EmitEvent.CLOSE_LEFT): void
@@ -36,7 +46,7 @@ export interface TabItemEmits {
   (e: typeof EmitEvent.CLOSE_OTHER): void
   (e: typeof EmitEvent.CLOSE_ALL): void
   (e: typeof EmitEvent.COLLECT, index: number): void
-  (e: typeof EmitEvent.TOGGLE_PIN, index: number, fixed: boolean): void
+  (e: typeof EmitEvent.TOGGLE_PIN, tab: ITab, fixed: boolean): void
 }
 
 export interface TabListEmits extends TabItemEmits {

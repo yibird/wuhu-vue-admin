@@ -2,69 +2,40 @@
   <a-layout-content
     class="relative grid w-full min-h-full flex-1 overflow-hidden"
   >
-    <div v-if="renderRouteView" class="relative h-full overflow-x-hidden">
+    <div class="relative h-full overflow-x-hidden">
       <ErrorBoundary
         ref="errorBoundaryRef"
         :fallback="ContentError"
         stop-propagation
-        @error="handleClientError"
       >
-        <NetworkGuard :online="online">
-          <IframeView v-if="isIframe" :src="iframeSrc" />
-          <RouterView v-else v-slot="{ Component, route }">
-            <Transition :name="pageAnimation" :mode="pageAnimationMode">
-              <KeepAlive :include="include" :max="max">
-                <Suspense>
-                  <component :is="Component" :key="route.path" />
-                  <template #fallback>
+        <IframeView v-if="isIframe" :src="iframeSrc" />
+        <RouterView v-else v-slot="{ Component, route }">
+          <Transition :name="pageAnimation" :mode="pageAnimationMode">
+            <KeepAlive :include="include" :exclude="exclude" :max="max">
+              <Suspense v-if="!refreshing" :timeout="0">
+                <component :is="Component" :key="route.fullPath" />
+                <template #fallback>
+                  <!-- 固定为内容区可视高度并脱离文档流,避免被新页面的高度撑开而偏离垂直居中 -->
+                  <div class="absolute inset-x-0 top-0" :style="loadingStyle">
                     <Loading :type="loadingAnimation" />
-                  </template>
-                </Suspense>
-              </KeepAlive>
-            </Transition>
-          </RouterView>
-        </NetworkGuard>
+                  </div>
+                </template>
+              </Suspense>
+            </KeepAlive>
+          </Transition>
+        </RouterView>
       </ErrorBoundary>
     </div>
   </a-layout-content>
 </template>
 
 <script lang="ts" setup>
-import {
-  ErrorBoundary,
-  Loading,
-  type ErrorBoundaryErrorPayload,
-  type ErrorBoundaryInstance,
-} from '@/components'
-import { useOnline } from '@vueuse/core'
-import { useIframe, useKeepAlive, useTransition } from './composables'
-import {
-  ContentError,
-  IframeView,
-  isNetworkDisconnectedError,
-  NetworkGuard,
-} from './components'
+import { ErrorBoundary, Loading } from '@/components'
+import { useIframe, useKeepAlive, useTransition } from './hooks'
+import { ContentError, IframeView } from './components'
 
-const emit = defineEmits<{
-  clientError: [payload: ErrorBoundaryErrorPayload]
-}>()
-
-const { renderRouteView, include, max } = useKeepAlive()
-const { pageAnimation, pageAnimationMode, loadingAnimation } = useTransition()
+const { include, exclude, max, refreshing } = useKeepAlive()
+const { pageAnimation, pageAnimationMode, loadingAnimation, loadingStyle } =
+  useTransition()
 const { isIframe, iframeSrc } = useIframe()
-const online = useOnline()
-const errorBoundaryRef =
-  useTemplateRef<ErrorBoundaryInstance>('errorBoundaryRef')
-const networkErrorActive = shallowRef(false)
-
-function handleClientError(payload: ErrorBoundaryErrorPayload) {
-  networkErrorActive.value = isNetworkDisconnectedError(payload.error)
-  emit('clientError', payload)
-}
-
-watch(online, (isOnline) => {
-  if (!isOnline || !networkErrorActive.value) return
-  networkErrorActive.value = false
-  errorBoundaryRef.value?.resetError()
-})
 </script>

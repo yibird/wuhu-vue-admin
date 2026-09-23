@@ -9,11 +9,16 @@
       <Icon name="i-lucide:book-marked" :size="20" />
     </button>
   </a-tooltip>
-  <NoteBookModal v-model:show="show" />
+  <NoteBookModal v-if="loaded" v-model:show="show" />
 </template>
 <script lang="ts" setup>
-const NoteBookModal = defineAsyncComponent(
-  () => import('@/layouts/config/noteBookModal/index.vue')
-)
+import { NoteBookModal } from '@/layouts/config'
+
 const show = shallowRef(false)
+const loaded = shallowRef(false)
+
+// 首次打开后再挂载，避免 async chunk 在布局初始化时就被加载
+watch(show, (value) => {
+  if (value) loaded.value = true
+})
 </script>

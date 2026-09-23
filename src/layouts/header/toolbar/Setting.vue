@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { usePreferences } from '@/layouts/preferences/composables'
+import { usePreferences } from '@/layouts/preferences/hooks'
 
 const { openPreferences } = usePreferences()
 </script>

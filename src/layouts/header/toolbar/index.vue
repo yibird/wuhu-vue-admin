@@ -2,16 +2,16 @@
   <div
     class="w-layout-toolbar ml-auto h-full min-w-0 shrink-0 flex items-center justify-end gap-2 overflow-hidden sm:gap-4"
   >
-    <Search v-if="enableSearch" />
-    <Task v-if="enableTaskCenter" />
-    <Download v-if="enableDownloadCenter" />
-    <NoteBook v-if="enableNoteBook" />
-    <Translate v-if="enableTranslate" />
-    <LockScreen v-if="enableLockScreen" />
-    <FullScreen v-if="enableFullScreen" />
-    <Theme v-if="enableTheme" />
-    <Notice v-if="enableNotice" />
-    <Chat v-if="enableAI" />
+    <Search v-if="showSearch" />
+    <Task v-if="showTaskCenter" />
+    <Download v-if="showDownloadCenter" />
+    <NoteBook v-if="showNoteBook" />
+    <Translate v-if="showTranslate" />
+    <LockScreen v-if="showLockScreen" />
+    <FullScreen v-if="showFullScreen" />
+    <Theme v-if="showTheme" />
+    <Notice v-if="showNotice" />
+    <Chat v-if="showAI" />
     <Setting />
     <div class="shrink-0">
       <UserProfile />
@@ -19,7 +19,7 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { useWidget } from '../composables'
+import { useWidget } from '../hooks'
 
 import Search from './Search.vue'
 import Download from './Download.vue'
@@ -35,16 +35,16 @@ import Chat from './Chat.vue'
 import UserProfile from './UserProfile.vue'
 
 const {
-  enableSearch,
-  enableTaskCenter,
-  enableDownloadCenter,
-  enableNoteBook,
-  enableTheme,
-  enableTranslate,
-  enableFullScreen,
-  enableNotice,
-  enableLockScreen,
-  enableAI,
+  showSearch,
+  showTaskCenter,
+  showDownloadCenter,
+  showNoteBook,
+  showTheme,
+  showTranslate,
+  showFullScreen,
+  showNotice,
+  showLockScreen,
+  showAI,
 } = useWidget()
 </script>
 

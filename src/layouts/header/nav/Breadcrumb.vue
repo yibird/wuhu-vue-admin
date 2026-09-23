@@ -1,8 +1,5 @@
 <template>
-  <div
-    v-if="showBreadcrumb"
-    class="mx-10 hidden min-w-0 flex-1 overflow-hidden md:block"
-  >
+  <div v-if="show" class="mx-10 hidden min-w-0 flex-1 overflow-hidden md:block">
     <a-breadcrumb class="w-header-breadcrumb">
       <a-breadcrumb-item v-for="(item, index) in items" :key="item.id">
         <Transition
@@ -15,13 +12,14 @@
         >
           <div :key="item.id">
             <a-dropdown
-              v-if="item.children && item.children.length > 0"
               :menu="{ items: dropdownMenus[index] }"
-              @menu-click="onSelect"
+              @menu-click="onMenuClick"
             >
-              <div class="max-w-140 flex items-center gap-4 truncate">
+              <div
+                class="max-w-140 flex items-center gap-4 truncate leading-none"
+              >
                 <Icon
-                  v-if="showBreadCrumbIcon && item.icon"
+                  v-if="showIcon && item.icon"
                   :name="item.icon"
                   :size="14"
                   class="shrink-0"
@@ -29,15 +27,6 @@
                 <span class="truncate">{{ item.title }}</span>
               </div>
             </a-dropdown>
-            <div v-else class="max-w-140 flex items-center gap-4 truncate">
-              <Icon
-                v-if="showBreadCrumbIcon && item.icon"
-                :name="item.icon"
-                :size="14"
-                class="shrink-0"
-              />
-              <span class="truncate">{{ item.title }}</span>
-            </div>
           </div>
         </Transition>
       </a-breadcrumb-item>
@@ -45,12 +34,11 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { useBreadcrumb } from '../composables'
+import { useBreadcrumb } from '../hooks'
 
-const { showBreadcrumb, showBreadCrumbIcon, items, dropdownMenus, openMenu } =
-  useBreadcrumb()
+const { show, showIcon, items, dropdownMenus, openMenu } = useBreadcrumb()
 
-const onSelect = ({ key }: { key: string | number }) => {
+const onMenuClick = ({ key }: { key: string }) => {
   openMenu(key)
 }
 </script>
@@ -62,6 +50,12 @@ const onSelect = ({ key }: { key: string | number }) => {
 
   :deep(ol) {
     flex-wrap: nowrap;
+    align-items: center;
+  }
+
+  :deep(.ant-breadcrumb-item) {
+    display: inline-flex;
+    align-items: center;
   }
 
   :deep(.ant-breadcrumb-link) {

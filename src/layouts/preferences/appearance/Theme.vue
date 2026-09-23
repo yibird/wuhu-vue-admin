@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useTheme } from '@/composables'
+import { useTheme } from '@/theme'
 import { themeColorOptions } from '@/config'
 import type { Color } from 'antdv-next'
 

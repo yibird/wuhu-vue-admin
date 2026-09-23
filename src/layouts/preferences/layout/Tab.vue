@@ -4,12 +4,6 @@
     <ConfigItem title="显示标签页">
       <a-switch v-model:checked="tab.show" />
     </ConfigItem>
-    <ConfigItem title="持久化标签页">
-      <a-switch :disabled="!tab.show" v-model:checked="tab.enablePersist" />
-    </ConfigItem>
-    <ConfigItem title="启动拖拽排序">
-      <a-switch :disabled="!tab.show" v-model:checked="tab.enableDrag" />
-    </ConfigItem>
     <ConfigItem title="显示标签栏图标">
       <a-switch :disabled="!tab.show" v-model:checked="tab.showIcon" />
     </ConfigItem>
@@ -28,7 +22,7 @@ import { useAppStore } from '@/store'
 import { ConfigItem } from '../components'
 import { TabsTheme } from '@/constants'
 
-const { tab } = useAppStore()
+const { tabs: tab } = useAppStore()
 
 const themeOptions = [
   {

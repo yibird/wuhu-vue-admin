@@ -24,7 +24,7 @@
 </template>
 
 <script lang="ts" setup>
-import { useGlobalSearch } from '@/layouts/config/composables'
+import { useGlobalSearch } from '@/layouts/config/hooks'
 const { openSearch } = useGlobalSearch()
 
 const onClick = () => {

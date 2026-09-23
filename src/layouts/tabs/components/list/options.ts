@@ -13,7 +13,7 @@ export const getOptions = (item: ITab) => {
       key: EmitEvent.CLOSE_CURRENT,
       label: '关闭当前标签',
       icon: renderIcon('i-lucide:x'),
-      disabled: item.fixed,
+      disabled: item.pin,
     },
     {
       key: EmitEvent.CLOSE_LEFT,
@@ -45,8 +45,8 @@ export const getOptions = (item: ITab) => {
     },
     {
       key: EmitEvent.TOGGLE_PIN,
-      label: item.fixed ? '取消固定' : '固定',
-      icon: renderIcon(item.fixed ? 'i-lucide:pin-off' : 'i-lucide:pin'),
+      label: item.pin ? '取消固定' : '固定',
+      icon: renderIcon(item.pin ? 'i-lucide:pin-off' : 'i-lucide:pin'),
     },
   ]
 }

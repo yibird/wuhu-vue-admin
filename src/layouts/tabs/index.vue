@@ -4,38 +4,38 @@
     :class="['layout-tabs', `layout-tabs-${theme ?? 'card'}`]"
   >
     <TabPrev @click="rollLeft" />
-    <TabHome :active="current === -1" @click="openHomeTab" />
+    <TabHome :active="!activeKey" @click="openHomeTab" />
     <div ref="tabsRef" class="layout-tabs-list">
       <TabList
         v-model:items="tabs"
-        :current="current"
+        :activeKey="activeKey"
         :showIcon="showIcon"
         @change="openTab"
         @close="closeTab"
         @drag-end="onDragEnd"
         @close-current="closeCurrentTab"
-        @close-left="closeLeftTab"
-        @close-right="closeRightTab"
-        @close-other="closeOtherTab"
-        @close-all="closeAllTab"
+        @close-left="closeLeftTabs"
+        @close-right="closeRightTabs"
+        @close-other="closeOtherTabs"
+        @close-all="closeAllTabs"
         @toggle-pin="togglePinTab"
       />
     </div>
     <TabNext @click="rollRight" />
-    <TabRefresh @click="refreshTab" />
+    <TabRefresh @click="refreshCurrentTab" />
     <TabAction
-      @refresh="refreshTab"
+      @refresh="refreshCurrentTab"
       @close-current="closeCurrentTab"
-      @close-left="closeLeftTab"
-      @close-right="closeRightTab"
-      @close-other="closeOtherTab"
-      @close-all="closeAllTab"
+      @close-left="closeLeftTabs"
+      @close-right="closeRightTabs"
+      @close-other="closeOtherTabs"
+      @close-all="closeAllTabs"
     />
   </div>
 </template>
 <script lang="ts" setup>
-import { useTabs } from '@/composables'
-import { useRoll } from './composables'
+import { useTabs } from '@/hooks'
+import { useConfig, useRoll } from './hooks'
 import {
   TabPrev,
   TabHome,
@@ -48,28 +48,28 @@ import './style'
 
 const {
   tabs,
-  current,
   currentTab,
-  showIcon,
-  theme,
+  activeKey,
 
   openHomeTab,
   openTab,
   closeTab,
   closeCurrentTab,
-  closeLeftTab,
-  closeRightTab,
-  closeOtherTab,
-  closeAllTab,
+  closeLeftTabs,
+  closeRightTabs,
+  closeOtherTabs,
+  closeAllTabs,
   sortTabs,
   togglePinTab,
-  refreshTab,
+  refreshCurrentTab,
 } = useTabs()
 
 const tabsRef = useTemplateRef<HTMLElement>('tabsRef')
-const { rollLeft, rollRight } = useRoll(tabsRef, () => currentTab.value?.name)
 
-const onDragEnd = (tab: (typeof tabs.value)[number]) => {
-  sortTabs(tab)
+const { showIcon, theme } = useConfig()
+const { rollLeft, rollRight } = useRoll(tabsRef, () => currentTab.value?.key)
+
+const onDragEnd = () => {
+  sortTabs()
 }
 </script>

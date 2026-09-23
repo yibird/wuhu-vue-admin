@@ -9,7 +9,7 @@
       data-testid="tab-item"
       :class="[
         'tab-item',
-        { 'tab-item-active': active, 'tab-item-fixed': item.fixed },
+        { 'tab-item-active': active, 'tab-item-fixed': item.pin },
       ]"
       :aria-selected="active"
       :index="index"
@@ -23,8 +23,8 @@
         <Icon v-if="item.icon" :name="item.icon" :size="16" />
       </span>
       <span class="tab-item__title">{{ item?.title }}</span>
-      <TabPin :fixed="item.fixed" @toggle="onTogglePin" />
-      <TabClose :fixed="item.fixed" @close="onClose" />
+      <TabPin :pin="item.pin" @toggle="onTogglePin" />
+      <TabClose :pin="item.pin" @close="onClose" />
     </div>
   </a-dropdown>
 </template>
@@ -51,10 +51,10 @@ const onClick = () => {
 }
 
 const onTogglePin = () => {
-  emits(EmitEvent.TOGGLE_PIN, index, !item.fixed)
+  emits(EmitEvent.TOGGLE_PIN, item, !item.pin)
 }
 const onClose = () => {
-  if (item.fixed) return
+  if (item.pin) return
   emits(EmitEvent.CLOSE, item, index)
 }
 
@@ -64,8 +64,7 @@ const onSelect = ({ key }: { key: string }) => {
       emits(EmitEvent.REFRESH)
       break
     case EmitEvent.CLOSE_CURRENT:
-      if (item.fixed) return
-
+      if (item.pin) return
       emits(EmitEvent.CLOSE_CURRENT)
       break
     case EmitEvent.CLOSE_LEFT:
@@ -84,7 +83,7 @@ const onSelect = ({ key }: { key: string }) => {
       emits(EmitEvent.COLLECT, index)
       break
     case EmitEvent.TOGGLE_PIN:
-      emits(EmitEvent.TOGGLE_PIN, index, !item.fixed)
+      emits(EmitEvent.TOGGLE_PIN, item, !item.pin)
       break
   }
 }

@@ -9,7 +9,7 @@
   </button>
 </template>
 <script lang="ts" setup>
-import { useLockScreen } from '@/layouts/config/composables'
+import { useLockScreen } from '@/layouts/config/hooks'
 
 const { lock } = useLockScreen()
 </script>

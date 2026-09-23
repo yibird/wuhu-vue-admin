@@ -14,7 +14,7 @@
   </a-dropdown>
 </template>
 <script lang="ts" setup>
-import { useAuth } from '@/composables'
+import { useAuth } from '@/hooks'
 import { useGo } from '@/router'
 import { renderIcon } from '@/utils'
 

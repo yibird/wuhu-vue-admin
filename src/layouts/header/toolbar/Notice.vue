@@ -13,12 +13,17 @@
       </button>
     </span>
     <template #content>
-      <NoticeCenter />
+      <Suspense timeout="0">
+        <NoticeCenter />
+        <template #fallback>
+          <div class="w-320 px-10 py-14">
+            <a-skeleton active :paragraph="{ rows: 4 }" />
+          </div>
+        </template>
+      </Suspense>
     </template>
   </a-popover>
 </template>
 <script lang="ts" setup>
-const NoticeCenter = defineAsyncComponent(
-  () => import('@/layouts/config/noticeCenter/index.vue')
-)
+import { NoticeCenter } from '@/layouts/config'
 </script>

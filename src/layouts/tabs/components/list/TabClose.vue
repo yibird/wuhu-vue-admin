@@ -1,6 +1,6 @@
 <template>
   <button
-    v-if="!props.fixed"
+    v-if="!props.pin"
     class="tab-item__close"
     type="button"
     @click.stop.prevent="onClose"
@@ -9,7 +9,7 @@
   </button>
 </template>
 <script setup lang="ts">
-const props = defineProps<{ fixed?: boolean }>()
+const props = defineProps<{ pin?: boolean }>()
 const emits = defineEmits(['close'])
 
 const onClose = () => {

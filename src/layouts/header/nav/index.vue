@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="showNav"
+    v-if="show"
     class="relative h-50 pr-10 flex items-center justify-between overflow-hidden"
   >
     <Collapsed />
@@ -18,7 +18,7 @@ import Menu from './Menu.vue'
 
 const { app } = useAppStore()
 
-const showNav = computed(() => {
+const show = computed(() => {
   const modes: MenuModeValue[] = [MenuMode.Vertical, MenuMode.Split]
   return modes.includes(app.value.menuMode)
 })

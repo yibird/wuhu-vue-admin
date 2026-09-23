@@ -12,9 +12,8 @@ import { computed, h, ref, watch } from 'vue'
 import { useAppStore, usePermissionStore } from '@/store'
 import { MenuMode } from '@/constants'
 import { renderIcon, renderMenus } from '@/utils'
-import { useTabs } from '@/composables'
-import { useMenu } from '@/layouts/menu'
-
+import { useTabs } from '@/hooks'
+import { useMenu } from '@/layouts/hooks'
 import type { MenuProps } from 'antdv-next'
 
 const { app } = useAppStore()
@@ -28,39 +27,43 @@ const options = computed(() => {
     app.value.menuMode === MenuMode.Horizontal
       ? menus.value
       : menus.value.map((item) => ({ ...item, children: undefined }))
-  return renderMenus(items, (item) => ({
-    key: String(item.id),
-    label: h(
-      'span',
-      {
-        class: 'inline-block align-middle',
-      },
-      item.title
-    ),
-    title: item.title,
-    disabled: item.disabled,
-    icon: renderIcon(item.icon, { size: 20 }),
-  }))
+  return renderMenus(
+    items,
+    (item) => ({
+      key: item.id,
+      label: h(
+        'span',
+        {
+          class: 'inline-block align-middle',
+        },
+        item.title
+      ),
+      title: item.title,
+      disabled: item.disabled,
+      icon: renderIcon(item.icon, { size: 20 }),
+    }),
+    // 子页面(type 2)仅用于路由跳转,不在菜单中展示
+    (item) => item.type !== 2
+  )
 })
 
 const onClick: MenuProps['onClick'] = ({ key }) => {
-  const menuKey = String(key)
   if (app.value.menuMode === MenuMode.Horizontal) {
-    openTab(menuKey)
+    openTab(key)
     return
   }
 
   if (app.value.menuMode === MenuMode.Mix) {
-    setPreviewRootMenuId(menuKey)
+    setPreviewRootMenuId(key)
   }
 }
 
 watch(
-  [() => currentTab.value, () => app.value.menuMode],
+  [() => currentTab, () => app.value.menuMode],
   ([val, mode]) => {
     if (!val) return
     if (mode === MenuMode.Horizontal) {
-      selectedKeys.value = [String(val.id ?? val.name)]
+      selectedKeys.value = val.value?.menuId ? [val.value.menuId] : []
     }
 
     if (mode === MenuMode.Mix) {

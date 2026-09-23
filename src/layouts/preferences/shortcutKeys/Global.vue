@@ -25,7 +25,7 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { useShortcuts } from '../composables'
+import { useShortcuts } from '../hooks'
 import { ConfigItem } from '../components'
 
 const { enabled, search, logout, lockScreen } = useShortcuts()

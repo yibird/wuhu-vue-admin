@@ -3,13 +3,17 @@
 </template>
 <script lang="ts" setup>
 import { MenuMode } from '@/constants'
-import VerticalSider from './VerticalSider.vue'
-import { useCollapse, useSider } from './composables'
+import { VerticalSider } from './components'
+import { useCollapse, useSider } from './hooks'
 
 const components = {
   [MenuMode.Vertical]: VerticalSider,
-  [MenuMode.Mix]: defineAsyncComponent(() => import('./MixSider.vue')),
-  [MenuMode.Split]: defineAsyncComponent(() => import('./SplitSider.vue')),
+  [MenuMode.Mix]: defineAsyncComponent(
+    () => import('./components/MixSider.vue')
+  ),
+  [MenuMode.Split]: defineAsyncComponent(
+    () => import('./components/SplitSider.vue')
+  ),
 }
 
 const { activeComponent } = useSider(components)

@@ -1,7 +1,7 @@
 .layout-tabs-block {
   height: var(--w-tabs-height);
 
-  .mixin-tab-top-line() {
+  .tab-line() {
     &::before {
       position: absolute;
       top: 0;
@@ -35,8 +35,7 @@
     }
 
     &-home {
-      .mixin-tab-top-line();
-
+      .tab-line();
       border-right: 1px solid var(--w-tabs-control-border-color);
     }
   }
@@ -65,10 +64,13 @@
     border-right: var(--w-tabs-item-divider-width) solid
       var(--w-tabs-item-border-color);
 
-    .mixin-tab-top-line();
+    .tab-line();
 
     &:hover {
       background-color: var(--w-tabs-item-hover-bg-color);
+    }
+    &:active {
+      background-color: var(--w-tabs-item-hover-active-color);
     }
 
     &-active {

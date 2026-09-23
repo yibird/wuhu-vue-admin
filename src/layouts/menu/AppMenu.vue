@@ -1,7 +1,6 @@
 <template>
   <a-menu
-    :key="menuKey"
-    v-model:selected-keys="innerSelectedKeys"
+    :selected-keys="selectedKeys"
     :open-keys="menuOpenKeys"
     :inline-collapsed="inlineCollapsed"
     :items="items"
@@ -12,7 +11,7 @@
   />
 </template>
 <script lang="ts" setup>
-import { useTabs } from '@/composables'
+import { useTabs } from '@/hooks'
 import { renderIcon, renderMenus } from '@/utils'
 import type { AppMenuProps } from './types'
 import type { MenuProps } from 'antdv-next'
@@ -26,20 +25,17 @@ const props = withDefaults(defineProps<AppMenuProps>(), {
   mode: 'inline',
   expandedKeys: () => [],
 })
-const innerSelectedKeys = ref<string[]>(
-  props.selectedKey ? [props.selectedKey] : []
-)
-const innerOpenKeys = ref<string[]>(props.expandedKeys)
-const menuKey = ref(0)
+
+/**
+ * 用户手动展开/收起的子菜单,路由变化时恢复为路由推导
+ */
+const openKeysOverride = ref<string[]>()
 
 const isInlineCollapsed = computed(
   () => props.mode === 'inline' && props.collapsed
 )
 const inlineCollapsed = computed(() =>
   props.mode === 'inline' ? props.collapsed : undefined
-)
-const menuOpenKeys = computed(() =>
-  isInlineCollapsed.value ? undefined : innerOpenKeys.value
 )
 const theme = computed(() => props.theme)
 
@@ -48,7 +44,7 @@ const items = computed(() => {
     props.items,
     (item) => {
       return {
-        key: String(item.id),
+        key: item.id,
         label: item.title,
         title: item.title,
         disabled: item.disabled,
@@ -65,7 +61,7 @@ const visibleMenuKeys = computed(() => {
   const collectVisibleKeys = (menuItems: IMenu[]) => {
     for (const item of menuItems) {
       if ([0, 1].includes(item.type)) {
-        keys.add(String(item.id))
+        keys.add(item.id)
       }
       if (item.children?.length) {
         collectVisibleKeys(item.children)
@@ -80,7 +76,7 @@ const visibleMenuKeys = computed(() => {
 const activeMenuKey = computed(() => {
   const current = currentTab.value
   const routeKeys = [
-    current?.id === undefined ? undefined : String(current.id),
+    current?.menuId,
     ...(current?.level?.split('-').reverse() ?? []),
   ].filter((key): key is string => Boolean(key))
   return (
@@ -91,13 +87,31 @@ const activeMenuKey = computed(() => {
   )
 })
 
-const onOpenChange: MenuProps['onOpenChange'] = (openKeys) => {
+const selectedKeys = computed(() =>
+  activeMenuKey.value ? [activeMenuKey.value] : []
+)
+
+const routeOpenKeys = computed(() => {
+  const level = currentTab.value?.level
+  if (!level) return []
+  return level
+    .split('-')
+    .slice(0, -1)
+    .filter((key) => visibleMenuKeys.value.has(key))
+})
+
+const openKeys = computed(() => openKeysOverride.value ?? routeOpenKeys.value)
+const menuOpenKeys = computed(() =>
+  isInlineCollapsed.value ? undefined : openKeys.value
+)
+
+const onOpenChange: MenuProps['onOpenChange'] = (keys) => {
   if (isInlineCollapsed.value) return
-  innerOpenKeys.value = openKeys.map(String)
+  openKeysOverride.value = keys
 }
 
 const onClick: MenuProps['onClick'] = ({ key }) => {
-  openTab(String(key))
+  openTab(key)
   closeCollapsedPopup()
 }
 
@@ -112,32 +126,16 @@ const closeCollapsedPopup = async () => {
 }
 
 watch(
-  () => props.selectedKey,
-  (val) => {
-    if (!currentTab.value) {
-      innerSelectedKeys.value = val ? [val] : []
-    }
+  () => currentTab.value?.level,
+  () => {
+    openKeysOverride.value = undefined
   }
 )
 
 watch(
   () => props.expandedKeys,
   (val) => {
-    innerOpenKeys.value = val
+    openKeysOverride.value = val?.length ? [...val] : undefined
   }
-)
-
-watch(
-  [() => currentTab.value?.id, () => currentTab.value?.level, activeMenuKey],
-  ([, level, selectedKey]) => {
-    innerOpenKeys.value = level
-      ? level
-          .split('-')
-          .slice(0, -1)
-          .filter((key) => visibleMenuKeys.value.has(key))
-      : []
-    innerSelectedKeys.value = selectedKey ? [selectedKey] : []
-  },
-  { immediate: true }
 )
 </script>

@@ -1,54 +1,14 @@
-<script lang="ts" setup>
-import LayoutSider from './sider/index.vue'
-import LayoutHeader from './header/index.vue'
-import LayoutTabs from './tabs/index.vue'
-import LayoutContent from './content/index.vue'
-import LayoutFooter from './footer/index.vue'
-import FloatingBar from './preferences/components/FloatingBar.vue'
-import { useGlobalSearch, useLockScreen } from './config/composables'
-import { useGlobalShortcuts, usePreferences } from './preferences/composables'
-import { useTabNav } from './tabs/composables'
-import { useAppStore } from '@/store'
-
-const { header, tab } = useAppStore()
-const { searchMounted, searchVisible } = useGlobalSearch()
-const { isLocked } = useLockScreen()
-const { preferencesOpen, closePreferences } = usePreferences()
-useTabNav()
-useGlobalShortcuts()
-
-const Preferences = defineAsyncComponent(
-  () => import('./preferences/index.vue')
-)
-const SearchModal = defineAsyncComponent(
-  () => import('./config/searchModal/index.vue')
-)
-const LockScreenModal = defineAsyncComponent(
-  () => import('./config/lockScreen/index.vue')
-)
-
-const fixedHeader = computed(() => header.value.fixed)
-const contentMinHeight = computed(() => {
-  if (!fixedHeader.value) return '100%'
-  return tab.value.show ? 'calc(100% - 90px)' : 'calc(100% - 50px)'
-})
-</script>
-
 <template>
   <a-layout class="h-full">
     <LayoutSider />
     <a-layout content-class="h-full">
-      <Scrollbar
-        class="h-full"
-        content-class="min-h-full flex flex-col"
-        :options="{ x: 'hidden', y: 'scroll' }"
-      >
+      <Scrollbar class="h-full" content-class="min-h-full flex flex-col">
         <div :class="fixedHeader ? 'sticky top-0 z-1000' : ''">
           <LayoutHeader />
-          <LayoutTabs v-if="tab.show" />
+          <LayoutTabs v-if="showTabs" />
         </div>
-        <LayoutContent :style="{ minHeight: contentMinHeight }" />
-        <layoutFooter />
+        <LayoutContent :style="contentStyle" />
+        <LayoutFooter />
       </Scrollbar>
     </a-layout>
   </a-layout>
@@ -58,6 +18,28 @@ const contentMinHeight = computed(() => {
     v-model:open="preferencesOpen"
     @close="closePreferences"
   />
-  <SearchModal v-if="searchMounted" v-model:open="searchVisible" />
+  <SearchModal v-if="searchOpen" v-model:open="searchOpen" />
   <LockScreenModal v-if="isLocked" v-model:open="isLocked" />
 </template>
+
+<script lang="ts" setup>
+import LayoutSider from './sider/index.vue'
+import LayoutHeader from './header/index.vue'
+import LayoutTabs from './tabs/index.vue'
+import LayoutContent from './content/index.vue'
+import LayoutFooter from './footer/index.vue'
+import { Preferences, FloatingBar } from './preferences'
+import { SearchModal, LockScreenModal } from './config'
+import { Scrollbar } from '@/components'
+import { useLayout } from './hooks'
+
+const {
+  fixedHeader,
+  showTabs,
+  contentStyle,
+  searchOpen,
+  preferencesOpen,
+  isLocked,
+  closePreferences,
+} = useLayout()
+</script>
