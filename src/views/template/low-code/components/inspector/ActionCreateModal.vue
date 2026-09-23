@@ -38,7 +38,7 @@
 import { computed, ref, watch } from 'vue'
 import { actionRegistry } from '../../core/runtime'
 import { createNodeId } from '../../core/schema'
-import { useDesignerContext } from '../../composables'
+import { useDesignerContext } from '../../hooks'
 import ActionValueControl from './ActionValueControl.vue'
 import type { ValueSchema } from '../../core/schema/types'
 

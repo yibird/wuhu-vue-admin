@@ -98,7 +98,7 @@
         <template #default="{ item: notice }">
           <div class="px-4 py-4">
             <article
-              class="flex gap-12 rounded-6 border-1 border-color-1 border-solid bg-container p-12 transition-[border-color,background-color,box-shadow] duration-motion-base hover:(border-color-primary bg-hover shadow-all-sm)"
+              class="flex gap-12 rounded-6 border-1 border-color-1 border-solid bg-container p-12 transition-[border-color,background-color,box-shadow] duration-motion-base hover:(border-primary bg-hover shadow-all-sm)"
             >
               <a-badge dot :count="notice.unread ? 1 : 0">
                 <a-avatar

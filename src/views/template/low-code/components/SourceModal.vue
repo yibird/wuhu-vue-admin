@@ -33,7 +33,7 @@
 import { message } from 'antdv-next'
 import { ref, watch } from 'vue'
 import { CodeEditor } from '@/components'
-import { useDesignerContext } from '../composables'
+import { useDesignerContext } from '../hooks'
 import type { ApplicationSchema } from '../core/schema/types'
 
 const props = defineProps<{ open: boolean }>()

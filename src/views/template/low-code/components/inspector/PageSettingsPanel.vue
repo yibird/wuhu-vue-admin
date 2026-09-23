@@ -137,7 +137,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { Icon } from '@/components'
-import { useDesignerContext } from '../../composables'
+import { useDesignerContext } from '../../hooks'
 
 const designer = useDesignerContext()
 const addPageOpen = ref(false)

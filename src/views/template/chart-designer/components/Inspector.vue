@@ -28,7 +28,7 @@ defineEmits<{
       </p>
     </header>
 
-    <Scrollbar class="min-h-0" content-class="p-12">
+    <div class="min-h-0 p-12 w-full h-full overflow-x-hidden overflow-y-auto">
       <WidgetConfig
         v-if="widget"
         :data-sources="dataSources"
@@ -45,6 +45,6 @@ defineEmits<{
       >
         选择画布上的控件后编辑图表类型、字段和布局。
       </div>
-    </Scrollbar>
+    </div>
   </section>
 </template>

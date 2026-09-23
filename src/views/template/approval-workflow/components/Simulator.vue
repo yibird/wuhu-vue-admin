@@ -31,7 +31,9 @@ const emit = defineEmits<{
       </p>
     </header>
 
-    <Scrollbar class="min-h-0" content-class="p-10">
+    <div
+      class="min-h-0 p-10 w-full h-full overflow-x-hidden overflow-y-auto"
+    >
       <div class="mb-12 grid gap-8 rounded-7 bg-fill/45 p-10">
         <div class="grid grid-cols-2 gap-8">
           <label class="block text-12px text-secondary">
@@ -146,6 +148,6 @@ const emit = defineEmits<{
           </span>
         </div>
       </div>
-    </Scrollbar>
+    </div>
   </section>
 </template>

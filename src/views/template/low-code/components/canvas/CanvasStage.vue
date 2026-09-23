@@ -30,27 +30,30 @@
           class="lc-canvas__stage"
           :style="view.stageStyle.value"
         >
-          <div
-            class="lc-device"
-            data-drop-container="__root__"
-            :style="deviceStyle"
-          >
-            <a-config-provider :theme="{ token: { fontSize: 15 } }">
-              <RuntimeProvider :runtime="designer.runtime">
-                <DesignNode
-                  v-for="node in designer.activePage.value.components"
-                  :key="node.id"
-                  :node="node"
-                />
-              </RuntimeProvider>
-            </a-config-provider>
+          <DeviceFrame :kind="deviceShellKind" :landscape="isLandscape">
             <div
-              v-if="!designer.activePage.value.components.length"
-              class="lc-device__empty"
+              class="lc-device"
+              :class="{ 'is-shelled': !!deviceShellKind }"
+              data-drop-container="__root__"
+              :style="deviceStyle"
             >
-              从左侧「组件」面板拖入组件开始设计
+              <a-config-provider :theme="{ token: { fontSize: 15 } }">
+                <RuntimeProvider :runtime="designer.runtime">
+                  <DesignNode
+                    v-for="node in designer.activePage.value.components"
+                    :key="node.id"
+                    :node="node"
+                  />
+                </RuntimeProvider>
+              </a-config-provider>
+              <div
+                v-if="!designer.activePage.value.components.length"
+                class="lc-device__empty"
+              >
+                从左侧「组件」面板拖入组件开始设计
+              </div>
             </div>
-          </div>
+          </DeviceFrame>
 
           <div
             v-for="guide in interaction.guides.value"
@@ -96,23 +99,6 @@
           />
         </div>
       </div>
-
-      <!-- 标尺浮层：只隐藏标尺本身，不影响画布内容与位置 -->
-      <CanvasRuler
-        v-if="view.showRulers.value"
-        class="lc-canvas__ruler-x"
-        orientation="horizontal"
-        :view="view"
-        :length="viewportSize.width.value"
-      />
-      <CanvasRuler
-        v-if="view.showRulers.value"
-        class="lc-canvas__ruler-y"
-        orientation="vertical"
-        :view="view"
-        :length="viewportSize.height.value"
-      />
-      <div v-if="view.showRulers.value" class="lc-canvas__corner" />
     </div>
 
     <NodeContextMenu
@@ -138,7 +124,7 @@ import {
 import type { CSSProperties } from 'vue'
 import { RuntimeProvider } from '../runtime'
 import DesignNode from './DesignNode.vue'
-import CanvasRuler from './CanvasRuler.vue'
+import DeviceFrame from './DeviceFrame.vue'
 import CanvasToolbar from './CanvasToolbar.vue'
 import NodeContextMenu from './NodeContextMenu.vue'
 import { findNodeElementAt } from '../../utils/canvasGeometry'
@@ -146,7 +132,7 @@ import {
   useCanvasInteraction,
   useCanvasView,
   useDesignerContext,
-} from '../../composables'
+} from '../../hooks'
 import type { DropTarget, GuideLine } from '../../types'
 
 const props = defineProps<{
@@ -187,6 +173,28 @@ const menu = reactive<{
 }>({ open: false, x: 0, y: 0, nodeId: undefined })
 
 const deviceSize = computed(() => designer.deviceSize.value)
+
+/** 自定义尺寸下按短边判定机型：手机 ≤480，平板 ≤834（横竖屏切换后仍保留外壳） */
+const PHONE_MAX_SHORT_SIDE = 480
+const TABLET_MAX_SHORT_SIDE = 834
+
+/** 平板/移动端使用机型外壳包裹画布，PC 保持原样；自定义尺寸按短边判定机型 */
+const deviceShellKind = computed<'phone' | 'tablet' | undefined>(() => {
+  const device = designer.previewDevice.value
+  if (device === 'mobile') return 'phone'
+  if (device === 'tablet') return 'tablet'
+  if (device === 'custom') {
+    const { width, height } = deviceSize.value
+    const shortSide = Math.min(width, height)
+    if (shortSide <= PHONE_MAX_SHORT_SIDE) return 'phone'
+    if (shortSide <= TABLET_MAX_SHORT_SIDE) return 'tablet'
+  }
+  return undefined
+})
+
+const isLandscape = computed(
+  () => deviceSize.value.width > deviceSize.value.height
+)
 
 const deviceStyle = computed<CSSProperties>(() => ({
   width: `${deviceSize.value.width}px`,
@@ -338,37 +346,6 @@ onBeforeUnmount(() => {
   }
 }
 
-/* 标尺以浮层形式覆盖在画布上：显示/隐藏都不会改变画布尺寸与位置 */
-.lc-canvas__ruler-x {
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 2;
-  pointer-events: none;
-  box-shadow: inset 0 -1px 0 rgb(var(--w-border-color-2));
-}
-
-.lc-canvas__ruler-y {
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 2;
-  pointer-events: none;
-  box-shadow: inset -1px 0 0 rgb(var(--w-border-color-2));
-}
-
-.lc-canvas__corner {
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 3;
-  width: 20px;
-  height: 20px;
-  pointer-events: none;
-  background: rgb(var(--w-bg-fill));
-  box-shadow: inset -1px -1px 0 rgb(var(--w-border-color-2));
-}
-
 .lc-canvas__stage {
   position: absolute;
   top: 0;
@@ -382,6 +359,12 @@ onBeforeUnmount(() => {
   background: #fff;
   border-radius: 4px;
   box-shadow: 0 18px 50px rgb(15 23 42 / 12%);
+}
+
+/* 机型外壳模式下屏幕由外壳承载圆角、描边与投影 */
+.lc-device.is-shelled {
+  border-radius: 0;
+  box-shadow: none;
 }
 
 .lc-device__empty {

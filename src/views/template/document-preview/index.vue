@@ -9,7 +9,7 @@
 </template>
 
 <script setup lang="ts">
-import { useDeferred } from '@/composables'
+import { useDeferred } from '@/hooks'
 import type { ViewerInstance } from 'jit-viewer'
 
 const viewerRef = useTemplateRef<HTMLElement>('viewerRef')

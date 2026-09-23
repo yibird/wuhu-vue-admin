@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import VChart from 'vue-echarts'
-import { useEChartsTheme } from '@/composables'
+import { useEChartsTheme } from '@/theme'
 import { useECharts } from '@/plugins/echarts'
 import {
   aggregateChartRows,

@@ -65,7 +65,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { parseValueSchema } from '../../core/runtime'
-import { useDesignerContext } from '../../composables'
+import { useDesignerContext } from '../../hooks'
 import type { ActionParamField } from '../../core/runtime'
 import type { ValueSchema } from '../../core/schema/types'
 

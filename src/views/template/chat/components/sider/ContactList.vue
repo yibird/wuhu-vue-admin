@@ -195,7 +195,7 @@ import {
   useContactGroups,
   type ContactGroupMode,
   type ContactRow,
-} from '../../composables'
+} from '../../hooks'
 import type { MenuProps } from 'antdv-next'
 import type { Contact, FriendGroup } from '../types'
 import { statusText } from '../../utils'

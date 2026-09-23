@@ -75,8 +75,8 @@
 import { message } from 'antdv-next'
 import { computed, ref, watch } from 'vue'
 import { Icon } from '@/components'
-import { useDesignerContext } from '../composables'
-import type { PublishedVersion } from '../composables'
+import { useDesignerContext } from '../hooks'
+import type { PublishedVersion } from '../hooks'
 
 const props = defineProps<{ open: boolean }>()
 const emit = defineEmits<{ close: [] }>()

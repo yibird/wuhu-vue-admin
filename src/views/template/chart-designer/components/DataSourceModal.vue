@@ -32,7 +32,7 @@ const activeSource = computed(() =>
             REST / SQL / JSON / 样例数据
           </p>
         </header>
-        <Scrollbar class="min-h-0" content-class="p-10">
+        <div class="min-h-0 p-10 w-full h-full overflow-x-hidden overflow-y-auto">
           <a-button
             v-for="source in dataSources"
             :key="source.id"
@@ -67,13 +67,13 @@ const activeSource = computed(() =>
               </p>
             </span>
           </a-button>
-        </Scrollbar>
+        </div>
       </section>
 
       <section
         class="min-h-0 grid grid-rows-[minmax(0,1fr)_auto] overflow-hidden rounded-8 border-1 border-color-2 border-solid"
       >
-        <Scrollbar class="min-h-0" content-class="p-14">
+        <div class="min-h-0 p-14 w-full h-full overflow-x-hidden overflow-y-auto">
           <div v-if="activeSource" class="grid gap-12">
             <div>
               <h3 class="m-0 text-15px font-700 text-primary">
@@ -135,7 +135,7 @@ const activeSource = computed(() =>
               </div>
             </div>
           </div>
-        </Scrollbar>
+        </div>
 
         <footer class="border-t border-color-2 p-12">
           <div class="flex items-center justify-between gap-8">

@@ -18,7 +18,7 @@ import {
   cloneWidget,
   useChartDesigner,
   useChartSchemaWorkspace,
-} from './composables'
+} from './hooks'
 import type { ChartDesignerSchema, ChartPaletteItem } from './types'
 
 const {

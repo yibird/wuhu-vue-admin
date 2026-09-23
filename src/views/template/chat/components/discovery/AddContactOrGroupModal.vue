@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Icon } from '@/components/icon'
 import { defaultDirectorySearchHistory } from '../../data'
-import { useSearchHistory } from '../../composables'
+import { useSearchHistory } from '../../hooks'
 import type {
   Contact,
   Conversation,

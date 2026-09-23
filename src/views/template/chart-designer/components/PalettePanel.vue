@@ -41,7 +41,7 @@ const currentPalette = computed(() =>
       </div>
     </header>
 
-    <Scrollbar class="min-h-0" content-class="p-10">
+    <div class="min-h-0 p-10 w-full h-full overflow-x-hidden overflow-y-auto">
       <a-button
         v-for="item in currentPalette"
         :key="`${item.kind}-${item.type}`"
@@ -71,7 +71,7 @@ const currentPalette = computed(() =>
           <Icon name="i-lucide:plus" :size="15" class="text-tertiary" />
         </span>
       </a-button>
-    </Scrollbar>
+    </div>
   </section>
 </template>
 

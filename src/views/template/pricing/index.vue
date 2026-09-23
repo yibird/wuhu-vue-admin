@@ -64,7 +64,9 @@ function toggleFaq(index: number) {
 
 <template>
   <WView :padding="0">
-    <Scrollbar class="h-full bg-page" content-class="min-h-full">
+    <div
+      class="h-full bg-page min-h-full w-full overflow-x-hidden overflow-y-auto"
+    >
       <main
         class="mx-auto min-h-full w-full overflow-hidden p-18 text-main max-sm:p-8"
       >
@@ -260,6 +262,6 @@ function toggleFaq(index: number) {
           @toggle="toggleFaq"
         />
       </main>
-    </Scrollbar>
+    </div>
   </WView>
 </template>

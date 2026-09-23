@@ -1,5 +1,6 @@
 <template>
   <div
+    ref="rootRef"
     class="lc-design-node"
     :class="{
       'is-selected': selected,
@@ -7,6 +8,7 @@
       'is-locked': node.locked,
       'is-condition-hidden': binding.conditionHidden.value,
       'is-container': binding.acceptsChildren.value,
+      'is-floating-inside': floatingInside,
     }"
     :data-node-id="node.id"
     :data-drop-container="binding.acceptsChildren.value ? node.id : undefined"
@@ -27,6 +29,7 @@
           :key="child.id"
           :node="child"
           :parent-layout="binding.layout.value"
+          :parent-direction="binding.direction.value"
         />
       </template>
     </component>
@@ -39,7 +42,11 @@
     </div>
 
     <template v-if="selected">
-      <NodeActionBar v-if="primary" :node-id="node.id" />
+      <NodeActionBar
+        v-if="primary"
+        :node-id="node.id"
+        :inside="floatingInside"
+      />
       <NodeResizeHandles v-if="primary && !node.locked" />
       <div class="lc-design-node__badge">
         <Icon
@@ -58,10 +65,18 @@
 </template>
 
 <script setup lang="ts">
-import { computed, toRef } from 'vue'
+import {
+  computed,
+  nextTick,
+  onBeforeUnmount,
+  ref,
+  shallowRef,
+  toRef,
+  watch,
+} from 'vue'
 import { Icon } from '@/components'
-import { useDesignerContext } from '../../composables/useDesignerContext'
-import { useNodeBinding } from '../../composables/useNodeBinding'
+import { useDesignerContext } from '../../hooks/useDesignerContext'
+import { useNodeBinding } from '../../hooks/useNodeBinding'
 import NodeActionBar from './NodeActionBar.vue'
 import NodeResizeHandles from './NodeResizeHandles.vue'
 import type { ComponentSchema, LayoutMode } from '../../core/schema/types'
@@ -70,9 +85,11 @@ const props = withDefaults(
   defineProps<{
     node: ComponentSchema
     parentLayout?: LayoutMode
+    parentDirection?: 'row' | 'column'
   }>(),
   {
     parentLayout: 'block',
+    parentDirection: undefined,
   }
 )
 
@@ -80,7 +97,8 @@ const designer = useDesignerContext()
 const binding = useNodeBinding(
   props.node,
   toRef(props, 'parentLayout'),
-  'design'
+  'design',
+  toRef(props, 'parentDirection')
 )
 
 const selected = computed(() =>
@@ -98,6 +116,85 @@ const label = computed(
 const visibleChildren = computed(() =>
   (props.node.children ?? []).filter((child) => !child.hidden)
 )
+
+const rootRef = shallowRef<HTMLElement>()
+/**
+ * 选中工具条与标签默认浮在节点上方，节点贴近画布顶部时会被画布工具栏遮挡，
+ * 此时改为贴到节点内部显示
+ */
+const floatingInside = ref(false)
+/** 节点上方需要预留的高度（操作条高度 + 间距） */
+const FLOATING_RESERVED_HEIGHT = 44
+
+let measureFrame = 0
+let stageObserver: MutationObserver | undefined
+let resizeObserver: ResizeObserver | undefined
+
+function measureFloating() {
+  measureFrame = 0
+  const el = rootRef.value
+  if (!el || !selected.value) return
+  const viewport = el.closest<HTMLElement>('.lc-canvas__viewport')
+  if (!viewport) return
+  const offsetTop =
+    el.getBoundingClientRect().top - viewport.getBoundingClientRect().top
+  floatingInside.value = offsetTop < FLOATING_RESERVED_HEIGHT
+}
+
+function scheduleFloatingMeasure() {
+  if (measureFrame) return
+  measureFrame = requestAnimationFrame(measureFloating)
+}
+
+function startFloatingObserve() {
+  const el = rootRef.value
+  const stage = el?.closest<HTMLElement>('.lc-canvas__stage')
+  // 画布平移/缩放会直接改写 stage 的行内 transform
+  if (stage && !stageObserver) {
+    stageObserver = new MutationObserver(scheduleFloatingMeasure)
+    stageObserver.observe(stage, {
+      attributes: true,
+      attributeFilter: ['style'],
+    })
+  }
+  if (el && !resizeObserver) {
+    resizeObserver = new ResizeObserver(scheduleFloatingMeasure)
+    resizeObserver.observe(el)
+  }
+}
+
+function stopFloatingObserve() {
+  stageObserver?.disconnect()
+  stageObserver = undefined
+  resizeObserver?.disconnect()
+  resizeObserver = undefined
+  if (measureFrame) cancelAnimationFrame(measureFrame)
+  measureFrame = 0
+}
+
+watch(selected, (value) => {
+  if (!value) {
+    floatingInside.value = false
+    stopFloatingObserve()
+    return
+  }
+  nextTick(() => {
+    startFloatingObserve()
+    scheduleFloatingMeasure()
+  })
+})
+
+// 节点位置受兄弟节点与自身样式影响，历史、设备尺寸变化后重新测量
+watch(
+  () => [
+    designer.historyVersion.value,
+    designer.deviceSize.value.width,
+    designer.previewDevice.value,
+  ],
+  scheduleFloatingMeasure
+)
+
+onBeforeUnmount(stopFloatingObserve)
 
 function onEnter() {
   designer.hoveredId.value = props.node.id
@@ -192,6 +289,13 @@ function onLeave(event: PointerEvent) {
   background: rgb(var(--w-color-primary));
   border-radius: 4px 0 6px;
   transform: translateY(-100%);
+}
+
+/* 节点贴近画布顶部时，标签贴到节点内部，避免被画布工具栏遮挡 */
+.lc-design-node.is-floating-inside .lc-design-node__badge {
+  top: 2px;
+  left: 2px;
+  transform: none;
 }
 
 .lc-design-node__lock {

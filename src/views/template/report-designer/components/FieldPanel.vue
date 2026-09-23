@@ -37,9 +37,7 @@ const emit = defineEmits<{
 
 const fieldKeys = ref<string[]>([])
 const fieldKeyDrafts = ref<Record<string, string>>({})
-const fieldScrollRef = ref<{
-  scrollTo: (options: ScrollToOptions) => void
-} | null>(null)
+const fieldScrollRef = ref<HTMLElement | null>(null)
 const shouldScrollToAddedField = shallowRef(false)
 const sampleRow = computed(() => props.sampleRows[0])
 
@@ -175,7 +173,10 @@ function handleDragEnd(event: DragEndEvent) {
       </a-button>
     </div>
 
-    <Scrollbar ref="fieldScrollRef" class="field-panel__scroll">
+    <div
+      ref="fieldScrollRef"
+      class="field-panel__scroll w-full h-full overflow-x-hidden overflow-y-auto"
+    >
       <DragDropProvider @drag-end="handleDragEnd">
         <div class="field-panel__list">
           <DraggableItem
@@ -313,7 +314,7 @@ function handleDragEnd(event: DragEndEvent) {
           </DraggableItem>
         </div>
       </DragDropProvider>
-    </Scrollbar>
+    </div>
   </section>
 </template>
 
@@ -358,7 +359,6 @@ function handleDragEnd(event: DragEndEvent) {
 .field-panel__scroll {
   height: 100%;
   min-height: 0;
-  overflow: hidden;
 }
 
 .field-panel__list {

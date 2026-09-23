@@ -2,6 +2,7 @@
   <WView class="absolute overflow-hidden bg-page">
     <div class="h-full min-h-0 flex flex-col">
       <DesignerHeader
+        @open-ai="aiOpen = true"
         @open-data="dataOpen = true"
         @open-materials="materialsOpen = true"
         @open-source="sourceOpen = true"
@@ -41,6 +42,7 @@
       </div>
     </div>
 
+    <AiGenerateDrawer :open="aiOpen" @close="aiOpen = false" />
     <DataDrawer :open="dataOpen" @close="dataOpen = false" />
     <MaterialCenterDrawer
       :open="materialsOpen"
@@ -57,6 +59,7 @@
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import { WView } from '@/components'
 import {
+  AiGenerateDrawer,
   CanvasStage,
   DataDrawer,
   DesignerHeader,
@@ -68,11 +71,7 @@ import {
   SourceModal,
   VersionModal,
 } from './components'
-import {
-  provideDesigner,
-  useDesigner,
-  useDesignerShortcuts,
-} from './composables'
+import { provideDesigner, useDesigner, useDesignerShortcuts } from './hooks'
 import { setupLowCodePlatform } from './core/setup'
 
 setupLowCodePlatform()
@@ -81,6 +80,7 @@ const designer = useDesigner()
 provideDesigner(designer)
 
 const fullscreen = ref(false)
+const aiOpen = ref(false)
 const dataOpen = ref(false)
 const materialsOpen = ref(false)
 const sourceOpen = ref(false)
@@ -90,6 +90,7 @@ const publishOpen = ref(false)
 
 const overlayOpen = computed(
   () =>
+    aiOpen.value ||
     dataOpen.value ||
     materialsOpen.value ||
     sourceOpen.value ||

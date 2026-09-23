@@ -161,7 +161,7 @@
 import { computed, ref } from 'vue'
 import { Icon } from '@/components'
 import { validateExpression } from '../../core/expression'
-import { useDesignerContext } from '../../composables'
+import { useDesignerContext } from '../../hooks'
 import JsonFieldEditor from './JsonFieldEditor.vue'
 import OptionListEditor from './OptionListEditor.vue'
 import type { ComponentSchema, PropField } from '../../core/schema/types'

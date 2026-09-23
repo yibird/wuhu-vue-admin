@@ -10,11 +10,13 @@
           选择画布组件后编辑其属性、事件与样式
         </div>
       </div>
-      <Scrollbar class="min-h-0 flex-1">
+      <div
+        class="min-h-0 flex-1 w-full h-full overflow-x-hidden overflow-y-auto"
+      >
         <div class="p-14">
           <PageSettingsPanel />
         </div>
-      </Scrollbar>
+      </div>
     </template>
 
     <!-- 多选 -->
@@ -40,11 +42,13 @@
           <Icon name="i-lucide:trash-2" :size="12" class="mr-4" /> 删除
         </a-button>
       </div>
-      <Scrollbar class="min-h-0 flex-1">
+      <div
+        class="min-h-0 flex-1 w-full h-full overflow-x-hidden overflow-y-auto"
+      >
         <div class="p-14">
           <StylePanel :nodes="nodes" />
         </div>
-      </Scrollbar>
+      </div>
     </template>
 
     <!-- 单选 -->
@@ -76,7 +80,9 @@
         </div>
       </div>
 
-      <Scrollbar class="min-h-0 flex-1">
+      <div
+        class="min-h-0 flex-1 w-full h-full overflow-x-hidden overflow-y-auto"
+      >
         <div class="p-14">
           <template v-if="activeTab === 'props'">
             <div
@@ -190,17 +196,17 @@
 
           <StylePanel v-else :nodes="nodes" />
         </div>
-      </Scrollbar>
+      </div>
     </template>
   </div>
 </template>
 
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import { Icon, Scrollbar } from '@/components'
+import { Icon } from '@/components'
 import { validateExpression } from '../../core/expression'
 import { componentRegistry } from '../../core/registry'
-import { useDesignerContext } from '../../composables'
+import { useDesignerContext } from '../../hooks'
 import EventsPanel from './EventsPanel.vue'
 import FieldControl from './FieldControl.vue'
 import PageSettingsPanel from './PageSettingsPanel.vue'

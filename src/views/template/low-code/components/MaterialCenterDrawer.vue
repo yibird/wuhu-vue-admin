@@ -29,7 +29,7 @@
         </button>
       </div>
 
-      <Scrollbar class="min-h-0">
+      <div class="min-h-0 w-full h-full overflow-x-hidden overflow-y-auto">
         <div v-if="activeTab === 'list'" class="grid gap-8 p-14">
           <div class="text-xs text-secondary">
             物料中心负责发布 / 版本 / 下架 / 分类 / Bundle 地址与 Component
@@ -174,7 +174,7 @@
             <a-button type="primary" @click="register"> 注册并加载 </a-button>
           </div>
         </div>
-      </Scrollbar>
+      </div>
     </div>
   </a-drawer>
 </template>
@@ -182,10 +182,10 @@
 <script setup lang="ts">
 import { message } from 'antdv-next'
 import { computed, reactive, ref } from 'vue'
-import { Icon, Scrollbar } from '@/components'
+import { Icon } from '@/components'
 import { saveMaterials } from '../core/persistence'
 import { componentRegistry } from '../core/registry'
-import { useDesignerContext } from '../composables'
+import { useDesignerContext } from '../hooks'
 import type {
   EventField,
   MaterialSchema,

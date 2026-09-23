@@ -31,16 +31,6 @@
           <Icon name="i-lucide:maximize" :size="14" />
         </button>
       </a-tooltip>
-      <a-tooltip :title="view.showRulers.value ? '隐藏标尺' : '显示标尺'">
-        <button
-          class="lc-toolbar-btn"
-          :class="{ 'is-active': view.showRulers.value }"
-          type="button"
-          @click="view.showRulers.value = !view.showRulers.value"
-        >
-          <Icon name="i-lucide:ruler" :size="14" />
-        </button>
-      </a-tooltip>
       <a-tooltip :title="view.showGrid.value ? '隐藏网格' : '显示网格'">
         <button
           class="lc-toolbar-btn"
@@ -123,9 +113,9 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { Icon } from '@/components'
-import { useDesignerContext } from '../../composables'
+import { useDesignerContext } from '../../hooks'
 import { DEVICE_PRESETS } from '../../types'
-import type { CanvasViewApi } from '../../composables'
+import type { CanvasViewApi } from '../../hooks'
 
 defineProps<{ view: CanvasViewApi; fullscreen: boolean }>()
 const emit = defineEmits<{ 'toggle-fullscreen': [] }>()

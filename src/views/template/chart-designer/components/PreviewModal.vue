@@ -28,7 +28,9 @@ function getSource(sourceId: string) {
       class="h-[74vh] min-h-0 overflow-hidden rounded-8"
       :style="{ backgroundColor: screenConfig.canvasBackground }"
     >
-      <Scrollbar class="min-h-0" content-class="min-h-full p-16">
+      <div
+        class="min-h-0 min-h-full p-16 w-full h-full overflow-x-hidden overflow-y-auto"
+      >
         <section
           class="mx-auto min-w-860 rounded-8 border-1 border-white/12 border-solid bg-[rgb(4_13_28)] p-18 shadow-[0_24px_72px_rgb(0_0_0_/_28%)]"
           :style="{
@@ -71,7 +73,7 @@ function getSource(sourceId: string) {
             </article>
           </div>
         </section>
-      </Scrollbar>
+      </div>
     </div>
   </a-modal>
 </template>

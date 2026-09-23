@@ -6,7 +6,7 @@ import {
   type Ref,
   type ShallowRef,
 } from 'vue'
-import { useRangeSelection } from '@/composables'
+import { useRangeSelection } from '@/hooks'
 
 export interface ApprovalCanvasInteractionActions {
   duplicateSelected: () => void

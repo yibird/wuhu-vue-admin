@@ -74,7 +74,7 @@ import { computed } from 'vue'
 import { Icon } from '@/components'
 import { formatRgbColor, hexToRgb } from '@/utils'
 import { SchemaRenderer } from './runtime'
-import { useDesignerContext } from '../composables'
+import { useDesignerContext } from '../hooks'
 import { DEVICE_PRESETS } from '../types'
 
 defineProps<{ open: boolean }>()

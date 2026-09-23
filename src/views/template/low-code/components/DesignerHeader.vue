@@ -60,6 +60,11 @@
 
       <span class="mx-4 h-16px w-1px bg-border-color-2" />
 
+      <a-tooltip title="AI 生成页面（自然语言描述即可生成 Schema）">
+        <button class="lc-header-btn" type="button" @click="emit('open-ai')">
+          <Icon name="i-lucide:sparkles" :size="15" />
+        </button>
+      </a-tooltip>
       <a-tooltip title="变量 / 数据源 / 查询 / 动作 / 工作流 / 权限">
         <button class="lc-header-btn" type="button" @click="emit('open-data')">
           <Icon name="i-lucide:database" :size="15" />
@@ -124,9 +129,10 @@
 import { message } from 'antdv-next'
 import { computed } from 'vue'
 import { Icon } from '@/components'
-import { useDesignerContext } from '../composables'
+import { useDesignerContext } from '../hooks'
 
 const emit = defineEmits<{
+  'open-ai': []
   'open-data': []
   'open-materials': []
   'open-source': []

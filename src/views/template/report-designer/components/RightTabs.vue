@@ -86,7 +86,9 @@ const activeTab = shallowRef('experience')
       size="small"
     >
       <a-tab-pane key="experience" tab="模板与视图">
-        <Scrollbar class="h-full min-h-0" content-class="min-h-full p-12px">
+        <div
+          class="h-full min-h-0 min-h-full p-12px w-full overflow-x-hidden overflow-y-auto"
+        >
           <ExperiencePanel
             v-model:view-mode="viewMode"
             :fields="fields"
@@ -100,11 +102,13 @@ const activeTab = shallowRef('experience')
             @save-template="emit('saveTemplate', $event)"
             @update-settings="emit('updateSettings', $event)"
           />
-        </Scrollbar>
+        </div>
       </a-tab-pane>
 
       <a-tab-pane key="transform" tab="数据加工">
-        <Scrollbar class="h-full min-h-0" content-class="min-h-full p-12px">
+        <div
+          class="h-full min-h-0 min-h-full p-12px w-full overflow-x-hidden overflow-y-auto"
+        >
           <TransformPanel
             :fields="fields"
             :filters="filters"
@@ -124,18 +128,20 @@ const activeTab = shallowRef('experience')
             @update-filter="handleUpdateFilter"
             @update-sort="handleUpdateSort"
           />
-        </Scrollbar>
+        </div>
       </a-tab-pane>
 
       <a-tab-pane key="capability" tab="生产能力">
-        <Scrollbar class="h-full min-h-0" content-class="min-h-full p-12px">
+        <div
+          class="h-full min-h-0 min-h-full p-12px w-full overflow-x-hidden overflow-y-auto"
+        >
           <CapabilityPanel
             :field-count="fields.length"
             :groups="capabilityGroups"
             :row-count="rowCount"
             :schema-version="schema.version"
           />
-        </Scrollbar>
+        </div>
       </a-tab-pane>
     </a-tabs>
   </aside>

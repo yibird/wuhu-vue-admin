@@ -40,7 +40,7 @@ const CardRenderer = defineComponent({
         {
           ...attrs,
           title: props.title || undefined,
-          bordered: props.bordered,
+          variant: props.bordered ? 'outlined' : 'borderless',
           hoverable: props.hoverable,
           size: props.size,
         },

@@ -17,8 +17,8 @@
       />
     </div>
 
-    <Scrollbar
-      class="min-h-0 flex-1"
+    <div
+      class="min-h-0 flex-1 w-full h-full overflow-x-hidden overflow-y-auto"
       :class="{ 'settings-panel__scroll--modal': !showHeader }"
     >
       <div class="p-14">
@@ -69,7 +69,7 @@
           </div>
         </section>
       </div>
-    </Scrollbar>
+    </div>
   </div>
 </template>
 

@@ -22,7 +22,7 @@
       <button
         v-if="imageRemainingCount > 0"
         type="button"
-        class="button size-64 flex-col gap-4 rounded-8 border-1 border-dashed border-color-2 bg-fill-quaternary text-secondary transition-colors hover:(border-color-primary bg-primary/8 text-primary)"
+        class="button size-64 flex-col gap-4 rounded-8 border-1 border-dashed border-color-2 bg-fill-quaternary text-secondary transition-colors hover:(border-primary bg-primary/8 text-primary)"
         title="继续添加图片"
         aria-label="继续添加图片"
         @click="triggerFileInput('image')"
@@ -139,8 +139,8 @@
                 class="button min-h-118 w-full flex-col gap-10 rounded-10 border-1 border-dashed px-12 py-14 text-center transition-colors"
                 :class="[
                   isImageDragging
-                    ? 'border-color-primary bg-primary/10 text-primary'
-                    : 'border-color-2 bg-fill-quaternary hover:(border-color-primary bg-primary/8 text-primary)',
+                    ? 'border-primary bg-primary/10 text-primary'
+                    : 'border-color-2 bg-fill-quaternary hover:(border-primary bg-primary/8 text-primary)',
                 ]"
                 @dragover.prevent
                 @dragenter.prevent="isImageDragging = true"
@@ -164,7 +164,7 @@
                   v-for="action in attachmentActions"
                   :key="action.key"
                   type="button"
-                  class="button min-h-62 justify-start gap-10 rounded-8 border-1 border-solid border-color-1 bg-container px-10 py-9 text-left transition-colors hover:(border-color-primary bg-hover)"
+                  class="button min-h-62 justify-start gap-10 rounded-8 border-1 border-solid border-color-1 bg-container px-10 py-9 text-left transition-colors hover:(border-primary bg-hover)"
                   @click="handleAttachmentAction(action.key)"
                 >
                   <span
@@ -222,7 +222,7 @@
           v-model="inputText"
           aria-label="输入消息"
           autocomplete="off"
-          class="box-border block max-h-100 min-h-38 w-full resize-none overflow-y-auto rounded-12 border-1 border-solid border-color-2 bg-container px-12 py-8 text-sm text-main leading-20px outline-none transition-[border-color,box-shadow] placeholder:text-placeholder focus:(border-color-primary shadow-[0_0_0_2px_rgb(var(--w-color-primary)/10%)]) disabled:(cursor-not-allowed bg-fill-quaternary text-disabled)"
+          class="box-border block max-h-100 min-h-38 w-full resize-none overflow-y-auto rounded-12 border-1 border-solid border-color-2 bg-container px-12 py-8 text-sm text-main leading-20px outline-none transition-[border-color,box-shadow] placeholder:text-placeholder focus:(border-primary shadow-[0_0_0_2px_rgb(var(--w-color-primary)/10%)]) disabled:(cursor-not-allowed bg-fill-quaternary text-disabled)"
           :placeholder="placeholder"
           :disabled="disabled"
           name="chat-message"
@@ -268,7 +268,7 @@
                   v-for="ext in extensions"
                   :key="ext.icon"
                   type="button"
-                  class="button min-h-66 justify-start gap-10 rounded-8 border-1 border-solid border-color-1 bg-container px-10 py-9 text-left transition-colors hover:(border-color-primary bg-hover)"
+                  class="button min-h-66 justify-start gap-10 rounded-8 border-1 border-solid border-color-1 bg-container px-10 py-9 text-left transition-colors hover:(border-primary bg-hover)"
                   @click="handleExtensionClick(ext)"
                 >
                   <span
@@ -331,7 +331,7 @@
 <script setup lang="ts">
 import { useTextareaAutosize } from '@vueuse/core'
 import EmojiPicker from './EmojiPicker.vue'
-import { useImageAttachments, useMessageRecording } from './composables'
+import { useImageAttachments, useMessageRecording } from './hooks'
 import type { ChatSendPayload, Message, MessageEditorEmits } from '../../types'
 import type { EditorProps } from './types'
 

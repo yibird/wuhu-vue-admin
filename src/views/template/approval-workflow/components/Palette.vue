@@ -38,10 +38,9 @@ const paletteTabOptions = [
         />
       </div>
 
-      <Scrollbar
+      <div
         v-if="activePaletteTab === 'components'"
-        class="min-h-0"
-        content-class="p-12"
+        class="min-h-0 p-12 w-full h-full overflow-x-hidden overflow-y-auto"
       >
         <div class="grid gap-10">
           <a-button
@@ -67,9 +66,12 @@ const paletteTabOptions = [
             <Icon name="i-lucide:plus" :size="15" class="text-tertiary" />
           </a-button>
         </div>
-      </Scrollbar>
+      </div>
 
-      <Scrollbar v-else class="min-h-0" content-class="p-12">
+      <div
+        v-else
+        class="min-h-0 p-12 w-full h-full overflow-x-hidden overflow-y-auto"
+      >
         <div class="grid gap-8">
           <a-button
             v-for="template in templates"
@@ -94,7 +96,7 @@ const paletteTabOptions = [
             </p>
           </a-button>
         </div>
-      </Scrollbar>
+      </div>
     </div>
   </aside>
 </template>

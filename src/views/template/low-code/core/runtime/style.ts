@@ -35,11 +35,50 @@ export function mergeStyle(
   device: DeviceKind
 ): StyleSchema {
   if (!style) return {}
-  const breakpoint: Breakpoint | undefined =
-    device === 'tablet' ? 'tablet' : device === 'mobile' ? 'mobile' : undefined
+  const breakpoint = getBreakpoint(device)
   if (!breakpoint) return style
   const override = style.responsive?.[breakpoint]
   return override ? { ...style, ...override } : style
+}
+
+/** 设备对应的断点，PC/自定义返回 undefined */
+function getBreakpoint(device: DeviceKind): Breakpoint | undefined {
+  if (device === 'tablet') return 'tablet'
+  if (device === 'mobile') return 'mobile'
+  return undefined
+}
+
+/**
+ * 窄屏容器的自适应兜底
+ *
+ * 断点内没有显式配置时收敛默认布局，避免容器按 PC 配置渲染导致子元素溢出：
+ * 栅格列数随屏幕收敛、横向弹性容器允许换行。
+ */
+function applyResponsiveDefaults(
+  style: StyleSchema,
+  device: DeviceKind
+): StyleSchema {
+  const breakpoint = getBreakpoint(device)
+  if (!breakpoint) return style
+
+  const override = style.responsive?.[breakpoint] ?? {}
+  const layout = style.layout ?? 'block'
+  const next: StyleSchema = { ...style }
+
+  if (layout === 'grid' && override.columns === undefined) {
+    const maxColumns = breakpoint === 'mobile' ? 1 : 2
+    next.columns = Math.max(1, Math.min(next.columns ?? 2, maxColumns))
+  }
+
+  if (
+    layout === 'flex' &&
+    (next.direction ?? 'column') === 'row' &&
+    override.wrap === undefined
+  ) {
+    next.wrap = true
+  }
+
+  return next
 }
 
 export function getLayout(style: StyleSchema | undefined): LayoutMode {
@@ -52,19 +91,46 @@ export function getLayout(style: StyleSchema | undefined): LayoutMode {
  */
 export function resolveNodeStyle(
   node: ComponentSchema,
-  options: { device: DeviceKind; parentLayout?: LayoutMode }
+  options: {
+    device: DeviceKind
+    parentLayout?: LayoutMode
+    /** 父容器为弹性布局时的排列方向 */
+    parentDirection?: 'row' | 'column'
+    /** 是否为容器组件（可容纳子节点），容器默认铺满父容器 */
+    isContainer?: boolean
+  }
 ): CSSProperties {
-  const style = mergeStyle(node.style, options.device)
+  const style = applyResponsiveDefaults(
+    mergeStyle(node.style, options.device),
+    options.device
+  )
   const css: CSSProperties = {}
   const layout = getLayout(style)
 
   // 尺寸
-  if (style.width !== undefined) css.width = px(style.width)
+  if (style.width !== undefined) {
+    css.width = px(style.width)
+  } else if (options.isContainer) {
+    // 容器未设置宽度时默认铺满父容器，保证切换设备尺寸后仍与容器等宽：
+    // 横向弹性布局中改用 flex 伸展，避免挤压同一行的兄弟节点
+    if (options.parentLayout === 'flex' && options.parentDirection === 'row') {
+      css.flex = '1 1 0'
+      css.minWidth = css.minWidth ?? 0
+    } else {
+      css.width = '100%'
+    }
+  }
   if (style.height !== undefined) css.height = px(style.height)
   if (style.minWidth !== undefined) css.minWidth = px(style.minWidth)
   if (style.maxWidth !== undefined) css.maxWidth = px(style.maxWidth)
   if (style.minHeight !== undefined) css.minHeight = px(style.minHeight)
   if (style.maxHeight !== undefined) css.maxHeight = px(style.maxHeight)
+
+  // 尺寸相对容器收敛：未显式设置最大宽度时不允许超出父容器，
+  // 避免固定像素宽度/固有宽度在切换设备尺寸后依旧按原尺寸溢出
+  if (style.maxWidth === undefined) {
+    css.maxWidth = '100%'
+  }
 
   // 间距
   if (style.padding !== undefined) css.padding = px(style.padding)

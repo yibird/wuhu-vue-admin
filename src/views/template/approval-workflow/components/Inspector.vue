@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { APPROVAL_WORKFLOW_SELECTORS } from '../constants'
-import { useApprovalInspectorActions } from '../composables'
+import { useApprovalInspectorActions } from '../hooks'
 import FieldPermissions from './FieldPermissions.vue'
 import type {
   ApprovalAssigneeMode,
@@ -103,7 +103,10 @@ const {
       </p>
     </header>
 
-    <Scrollbar v-if="node" class="min-h-0" content-class="p-12">
+    <div
+      v-if="node"
+      class="min-h-0 p-12 w-full h-full overflow-x-hidden overflow-y-auto"
+    >
       <div class="grid gap-10">
         <label class="block text-12px text-secondary">
           节点名称
@@ -251,7 +254,7 @@ const {
         :options="fieldPermissionOptions"
         @update="updateFieldPermissionFromSelect"
       />
-    </Scrollbar>
+    </div>
 
     <div v-else class="p-18 text-center text-13px text-secondary">
       请选择画布节点后编辑审批规则。

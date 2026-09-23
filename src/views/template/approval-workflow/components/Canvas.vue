@@ -1,13 +1,12 @@
 <script setup lang="ts">
 import { APPROVAL_WORKFLOW_SELECTORS } from '../constants'
-import { useApprovalCanvasInteraction } from '../composables'
+import { useApprovalCanvasInteraction } from '../hooks'
 import NodeCard from './NodeCard.vue'
 import type {
   ApprovalNode,
   ApprovalNodeType,
   ApprovalWorkflowSettings,
 } from '../types'
-import type { ScrollbarInstance } from '@/components'
 
 const props = defineProps<{
   nodes: readonly ApprovalNode[]
@@ -26,7 +25,7 @@ const emit = defineEmits<{
 }>()
 
 const canvasRef = useTemplateRef<HTMLElement>('canvas')
-const canvasScrollbarRef = useTemplateRef<ScrollbarInstance>('canvasScrollbar')
+const canvasScrollbarRef = useTemplateRef<HTMLElement>('canvasScrollbar')
 const selectedIdsRef = computed(() => props.selectedIds)
 const {
   canvasContentStyle,
@@ -45,7 +44,7 @@ const {
     removeSelected: () => emit('removeSelected'),
     selectMany: (ids) => emit('selectMany', ids),
   },
-  () => canvasScrollbarRef.value?.getScrollElement() ?? null
+  () => canvasScrollbarRef.value
 )
 
 const activeSelectedIds = computed(() => {
@@ -140,10 +139,9 @@ const activeSelectedCount = computed(() => activeSelectedIds.value.length)
       tabindex="0"
       @wheel="handleWheel"
     >
-      <Scrollbar
+      <div
         ref="canvasScrollbar"
-        class="h-full"
-        content-class="approval-canvas-scroll relative min-h-full p-20"
+        class="approval-canvas-scroll relative h-full w-full min-h-full overflow-x-hidden overflow-y-auto p-20"
       >
         <div
           class="mx-auto min-w-max pb-40 transition-transform [transform-origin:top_center] [transition-duration:var(--w-motion-duration-base)] [transition-timing-function:var(--w-motion-ease-standard)]"
@@ -173,7 +171,7 @@ const activeSelectedCount = computed(() => activeSelectedIds.value.length)
             已框选 {{ marqueeSelectedIds.length }} 个
           </span>
         </div>
-      </Scrollbar>
+      </div>
     </div>
   </section>
 </template>

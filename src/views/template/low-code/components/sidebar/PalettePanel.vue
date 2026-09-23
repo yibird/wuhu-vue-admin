@@ -8,7 +8,9 @@
       </a-input>
     </div>
 
-    <Scrollbar class="min-h-0 flex-1" :options="{ overflow: { x: 'hidden' } }">
+    <div
+      class="min-h-0 flex-1 w-full h-full overflow-x-hidden overflow-y-auto"
+    >
       <div class="min-w-0 grid gap-4 p-12">
         <section
           v-for="group in filteredGroups"
@@ -68,14 +70,14 @@
           description="未找到组件"
         />
       </div>
-    </Scrollbar>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { Empty } from 'antdv-next'
 import { computed, ref } from 'vue'
-import { Icon, Scrollbar } from '@/components'
+import { Icon } from '@/components'
 import { MATERIAL_CATEGORY_ORDER } from '../../core/materials'
 import { componentRegistry, registryVersion } from '../../core/registry'
 import type { RegisteredComponent } from '../../core/registry'
@@ -83,7 +85,7 @@ import {
   endPaletteDrag,
   startPaletteDrag,
   useDesignerContext,
-} from '../../composables'
+} from '../../hooks'
 
 const designer = useDesignerContext()
 const keyword = ref('')

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { ChartSchemaHistoryEntry } from '../composables'
+import type { ChartSchemaHistoryEntry } from '../hooks'
 
 defineProps<{
   history: readonly ChartSchemaHistoryEntry[]
@@ -15,7 +15,9 @@ defineEmits<{
 <template>
   <a-modal v-model:open="open" :footer="null" title="历史版本" width="680px">
     <div class="h-[56vh] min-h-0 overflow-hidden">
-      <Scrollbar class="min-h-0" content-class="grid gap-10">
+      <div
+        class="min-h-0 grid gap-10 w-full h-full overflow-x-hidden overflow-y-auto"
+      >
         <a-button
           v-for="entry in history"
           :key="entry.id"
@@ -38,7 +40,7 @@ defineEmits<{
         >
           还没有历史版本。
         </div>
-      </Scrollbar>
+      </div>
     </div>
   </a-modal>
 </template>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { CHART_DESIGNER_SELECTORS } from '../constants'
-import { useChartCanvasDrag, useChartCanvasSelection } from '../composables'
+import { useChartCanvasDrag, useChartCanvasSelection } from '../hooks'
 import type {
   ChartDataSource,
   ChartDesignerStats,
@@ -132,9 +132,8 @@ function handleWidgetClick(id: string) {
       @update-screen="emit('updateScreen', $event)"
     />
 
-    <Scrollbar
-      class="min-h-0"
-      content-class="min-h-full p-16"
+    <div
+      class="min-h-0 min-h-full p-16 w-full h-full overflow-x-hidden overflow-y-auto"
       :style="canvasViewportStyle"
     >
       <div
@@ -213,7 +212,7 @@ function handleWidgetClick(id: string) {
           </div>
         </div>
       </div>
-    </Scrollbar>
+    </div>
   </section>
 </template>
 

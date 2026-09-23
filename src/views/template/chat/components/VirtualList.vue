@@ -2,7 +2,6 @@
 import { useVirtualizer } from '@tanstack/vue-virtual'
 import type { ComponentPublicInstance, CSSProperties } from 'vue'
 import type { VirtualItem } from '@tanstack/vue-virtual'
-import type { ScrollbarInstance, ScrollbarProps } from '@/components/scrollbar'
 
 const props = withDefaults(
   defineProps<{
@@ -29,14 +28,11 @@ defineSlots<{
   empty(): unknown
 }>()
 
-const scrollbar = useTemplateRef<ScrollbarInstance>('scrollbar')
-const scrollbarOptions = {
-  overflow: { x: 'hidden', y: 'scroll' },
-} satisfies ScrollbarProps['options']
+const scrollbar = useTemplateRef<HTMLElement>('scrollbar')
 
 const virtualizerOptions = computed(() => ({
   count: props.items.length,
-  getScrollElement: () => scrollbar.value?.getScrollElement() ?? null,
+  getScrollElement: () => scrollbar.value ?? null,
   estimateSize: (index: number) =>
     typeof props.estimateSize === 'function'
       ? props.estimateSize(props.items[index] as T, index)
@@ -80,17 +76,14 @@ function measureElement(element: Element | ComponentPublicInstance | null) {
 defineExpose<{
   getScrollElement: () => HTMLElement | null
 }>({
-  getScrollElement: () => scrollbar.value?.getScrollElement() ?? null,
+  getScrollElement: () => scrollbar.value ?? null,
 })
 </script>
 
 <template>
-  <Scrollbar
+  <div
     ref="scrollbar"
-    :defer="false"
-    :options="scrollbarOptions"
-    class="min-h-0 overflow-hidden"
-    content-class="min-h-full py-10"
+    class="min-h-0 w-full h-full py-10 overflow-x-hidden overflow-y-auto"
     @scroll="emit('scroll', $event)"
   >
     <div
@@ -115,5 +108,5 @@ defineExpose<{
     <div v-else class="h-full min-h-full">
       <slot name="empty" />
     </div>
-  </Scrollbar>
+  </div>
 </template>

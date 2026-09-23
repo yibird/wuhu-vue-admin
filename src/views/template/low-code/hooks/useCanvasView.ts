@@ -5,7 +5,6 @@ export interface CanvasViewApi {
   zoom: Ref<number>
   panX: Ref<number>
   panY: Ref<number>
-  showRulers: Ref<boolean>
   showGrid: Ref<boolean>
   panning: Ref<boolean>
   zoomIn: () => void
@@ -43,7 +42,6 @@ export function useCanvasView(options: CanvasViewOptions): CanvasViewApi {
   const zoom = ref(1)
   const panX = ref(EDGE_MARGIN)
   const panY = ref(EDGE_MARGIN)
-  const showRulers = ref(true)
   const showGrid = ref(false)
   const panning = ref(false)
 
@@ -205,7 +203,6 @@ export function useCanvasView(options: CanvasViewOptions): CanvasViewApi {
     zoom,
     panX,
     panY,
-    showRulers,
     showGrid,
     panning,
     zoomIn,

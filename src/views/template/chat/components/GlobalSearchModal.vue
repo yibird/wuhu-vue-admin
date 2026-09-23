@@ -4,7 +4,7 @@ import {
   useChatGlobalSearch,
   useSearchHistory,
   type MessageSearchResult,
-} from '../composables'
+} from '../hooks'
 import { statusText } from '../utils'
 import type {
   Contact,

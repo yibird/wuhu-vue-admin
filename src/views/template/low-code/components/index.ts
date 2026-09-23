@@ -1,3 +1,4 @@
+export { default as AiGenerateDrawer } from './AiGenerateDrawer.vue'
 export { default as DataDrawer } from './DataDrawer.vue'
 export { default as DesignerHeader } from './DesignerHeader.vue'
 export { default as MaterialCenterDrawer } from './MaterialCenterDrawer.vue'

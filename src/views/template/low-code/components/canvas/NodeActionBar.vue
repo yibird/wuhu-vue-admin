@@ -1,5 +1,9 @@
 <template>
-  <div class="lc-node-actions" data-canvas-ui>
+  <div
+    class="lc-node-actions"
+    :class="{ 'is-inside': props.inside }"
+    data-canvas-ui
+  >
     <a-tooltip title="复制" placement="top">
       <button
         class="lc-node-actions__btn"
@@ -54,9 +58,16 @@
 import { computed } from 'vue'
 import { Icon } from '@/components'
 import { ROOT_ID } from '../../core/schema'
-import { useDesignerContext } from '../../composables'
+import { useDesignerContext } from '../../hooks'
 
-const props = defineProps<{ nodeId: string }>()
+const props = withDefaults(
+  defineProps<{
+    nodeId: string
+    /** 节点上方空间不足时贴到节点内部，避免被画布工具栏遮挡 */
+    inside?: boolean
+  }>(),
+  { inside: false }
+)
 const designer = useDesignerContext()
 
 const parentId = computed(() =>
@@ -130,6 +141,12 @@ function onMoreClick({ key }: { key: string | number }) {
     var(--w-shadow-elevated),
     0 2px 6px rgb(15 23 42 / 12%);
   transform: translateY(-100%);
+
+  &.is-inside {
+    top: 2px;
+    right: 2px;
+    transform: none;
+  }
 }
 
 .lc-node-actions__btn {

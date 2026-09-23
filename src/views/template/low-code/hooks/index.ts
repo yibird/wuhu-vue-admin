@@ -12,6 +12,8 @@ export type {
   DesignerApi,
   PublishedVersion,
 } from './useDesigner'
+export { useDesignerAi } from './useDesignerAi'
+export type { LowCodeAiMessage } from './useDesignerAi'
 export { provideDesigner, useDesignerContext } from './useDesignerContext'
 export { useDesignerShortcuts } from './useDesignerShortcuts'
 export { useNodeBinding } from './useNodeBinding'

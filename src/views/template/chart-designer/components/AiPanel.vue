@@ -54,7 +54,7 @@ const emit = defineEmits<{
       </div>
     </header>
 
-    <Scrollbar class="min-h-0" content-class="p-10">
+    <div class="min-h-0 p-10 w-full h-full overflow-x-hidden overflow-y-auto">
       <div
         v-for="message in messages"
         :key="message.id"
@@ -75,7 +75,7 @@ const emit = defineEmits<{
           }}</span>
         </div>
       </div>
-    </Scrollbar>
+    </div>
 
     <footer class="border-t border-color-2 p-10">
       <textarea

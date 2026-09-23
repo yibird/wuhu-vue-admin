@@ -92,6 +92,10 @@ export interface DesignerApi {
   clearSelection: () => void
   isSelected: (id: string) => boolean
   // node crud
+  /**
+   * 按物料类型创建一个游离节点（未挂载到页面），用于程序化生成 Schema
+   */
+  createNode: (type: string) => ComponentSchema | undefined
   addNode: (
     type: string,
     options?: AddNodeOptions
@@ -907,6 +911,7 @@ export function useDesigner(): DesignerApi {
     toggleSelect,
     clearSelection,
     isSelected,
+    createNode,
     addNode,
     removeNodes,
     removeSelected,

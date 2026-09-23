@@ -22,7 +22,9 @@
       </a-tooltip>
     </div>
 
-    <Scrollbar class="min-h-0 flex-1" :options="{ overflow: { x: 'hidden' } }">
+    <div
+      class="min-h-0 flex-1 w-full h-full overflow-x-hidden overflow-y-auto"
+    >
       <div class="min-w-0 p-8">
         <a-tree
           v-if="treeData.length"
@@ -87,7 +89,7 @@
           画布还没有组件，从「组件」面板拖入或点击添加
         </div>
       </div>
-    </Scrollbar>
+    </div>
 
     <NodeContextMenu
       :open="menu.open"
@@ -101,10 +103,10 @@
 
 <script setup lang="ts">
 import { computed, reactive, ref, watch } from 'vue'
-import { Icon, Scrollbar } from '@/components'
+import { Icon } from '@/components'
 import { componentRegistry } from '../../core/registry'
 import { ROOT_ID } from '../../core/schema'
-import { useDesignerContext } from '../../composables'
+import { useDesignerContext } from '../../hooks'
 import NodeContextMenu from '../canvas/NodeContextMenu.vue'
 import type { ComponentSchema } from '../../core/schema/types'
 

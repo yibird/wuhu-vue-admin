@@ -23,7 +23,7 @@
         </button>
       </div>
 
-      <Scrollbar class="min-h-0">
+      <div class="min-h-0 w-full h-full overflow-x-hidden overflow-y-auto">
         <div class="grid gap-10 p-14">
           <!-- 变量 -->
           <template v-if="activeTab === 'variables'">
@@ -357,17 +357,17 @@
             />
           </template>
         </div>
-      </Scrollbar>
+      </div>
     </div>
   </a-drawer>
 </template>
 
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import { Icon, Scrollbar } from '@/components'
+import { Icon } from '@/components'
 import { actionRegistry } from '../core/runtime'
 import { createNodeId } from '../core/schema'
-import { useDesignerContext } from '../composables'
+import { useDesignerContext } from '../hooks'
 import ActionValueControl from './inspector/ActionValueControl.vue'
 import JsonFieldEditor from './inspector/JsonFieldEditor.vue'
 import type { ValueSchema } from '../core/schema/types'

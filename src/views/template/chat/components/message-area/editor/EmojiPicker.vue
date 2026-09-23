@@ -29,7 +29,7 @@
     </div>
 
     <!-- Emoji grid -->
-    <Scrollbar class="max-h-200">
+    <div class="max-h-200 w-full h-full overflow-x-hidden overflow-y-auto">
       <!-- Recently used -->
       <div v-if="activeTab === 'recent' && recentEmojis.length > 0">
         <div class="mb-10">
@@ -144,7 +144,7 @@
       >
         未找到表情
       </div>
-    </Scrollbar>
+    </div>
   </div>
 </template>
 

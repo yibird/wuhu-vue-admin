@@ -22,7 +22,7 @@
       <div class="grid grid-cols-2 gap-8">
         <button
           type="button"
-          class="group min-w-0 flex items-center gap-8 rounded-6 border-1 border-color-1 border-solid bg-container p-8 text-left transition-[border-color,background-color,box-shadow,transform] duration-motion-base hover:(translate-y--1 border-color-primary bg-hover shadow-all-sm) focus-visible:(outline-none border-primary shadow-[0_0_0_2px_rgb(var(--w-color-primary)/24%)]) motion-reduce:(transform-none transition-none)"
+          class="group min-w-0 flex items-center gap-8 rounded-6 border-1 border-color-1 border-solid bg-container p-8 text-left transition-[border-color,background-color,box-shadow,transform] duration-motion-base hover:(translate-y--1 border-primary bg-hover shadow-all-sm) focus-visible:(outline-none border-primary shadow-[0_0_0_2px_rgb(var(--w-color-primary)/24%)]) motion-reduce:(transform-none transition-none)"
           aria-label="打开好友通知"
           @click="openNotification('friend')"
         >
@@ -47,7 +47,7 @@
         </button>
         <button
           type="button"
-          class="group min-w-0 flex items-center gap-8 rounded-6 border-1 border-color-1 border-solid bg-container p-8 text-left transition-[border-color,background-color,box-shadow,transform] duration-motion-base hover:(translate-y--1 border-color-primary bg-hover shadow-all-sm) focus-visible:(outline-none border-primary shadow-[0_0_0_2px_rgb(var(--w-color-primary)/24%)]) motion-reduce:(transform-none transition-none)"
+          class="group min-w-0 flex items-center gap-8 rounded-6 border-1 border-color-1 border-solid bg-container p-8 text-left transition-[border-color,background-color,box-shadow,transform] duration-motion-base hover:(translate-y--1 border-primary bg-hover shadow-all-sm) focus-visible:(outline-none border-primary shadow-[0_0_0_2px_rgb(var(--w-color-primary)/24%)]) motion-reduce:(transform-none transition-none)"
           aria-label="打开群聊通知"
           @click="openNotification('group')"
         >

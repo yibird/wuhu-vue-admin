@@ -641,6 +641,10 @@ export function useCanvasInteraction(options: CanvasInteractionOptions) {
     if (!state || !prev) return
     const node = index().get(state.id)
     if (node) {
+      // 非自由布局下把像素宽度换算为相对父容器的百分比，
+      // 否则切换设备尺寸后固定像素宽度不会跟随容器收缩
+      const relativeWidth = toRelativeWidth(node, state.width)
+      if (relativeWidth) node.style = { ...node.style, width: relativeWidth }
       const next = {
         width: node.style?.width,
         height: node.style?.height,
@@ -676,8 +680,41 @@ export function useCanvasInteraction(options: CanvasInteractionOptions) {
     candidates = []
   }
 
-  /** ---------------- 对齐辅助 ---------------- */
+  /**
+   * 把像素宽度换算为相对父容器的百分比
+   *
+   * 自由布局下节点是绝对定位的，尺寸由用户自由摆放，保持像素值；
+   * 其余布局下的像素宽度在设备尺寸变化后不会跟随容器，因此记录为百分比。
+   *
+   * @param node 被调整尺寸的节点
+   * @param width 调整后的像素宽度
+   * @returns 百分比宽度，无法换算时返回 undefined
+   */
+  function toRelativeWidth(node: ComponentSchema, width: number) {
+    const parent = index().getParent(node.id)
+    if (!parent) return undefined
+    const parentLayout = getLayout(
+      mergeStyle(parent.style, designer.previewDevice.value)
+    )
+    if (parentLayout === 'free') return undefined
 
+    const parentEl = document.querySelector<HTMLElement>(
+      `[data-node-id="${parent.id}"]`
+    )
+    if (!parentEl) return undefined
+    const computed = window.getComputedStyle(parentEl)
+    const contentWidth =
+      parentEl.clientWidth -
+      Number.parseFloat(computed.paddingLeft || '0') -
+      Number.parseFloat(computed.paddingRight || '0')
+    if (contentWidth <= 0) return undefined
+
+    const percent = Math.round((width / contentWidth) * 1000) / 10
+    if (percent <= 0 || percent > 200) return undefined
+    return `${percent}%`
+  }
+
+  /** ---------------- 对齐辅助 ---------------- */
   function alignRect(
     rect: Rect,
     targets: CandidateTarget[],

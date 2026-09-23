@@ -17,7 +17,8 @@ function handlerKey(name: string) {
 export function useNodeBinding(
   node: ComponentSchema,
   parentLayout: Ref<LayoutMode>,
-  mode: 'runtime' | 'design' = 'runtime'
+  mode: 'runtime' | 'design' = 'runtime',
+  parentDirection: Ref<'row' | 'column' | undefined> = ref(undefined)
 ) {
   const runtime = inject(RUNTIME_KEY)
   if (!runtime) {
@@ -70,11 +71,22 @@ export function useNodeBinding(
     resolveNodeStyle(node, {
       device: runtime.device.value,
       parentLayout: parentLayout.value,
+      parentDirection: parentDirection.value,
+      isContainer: !!definition.value?.acceptsChildren,
     })
   )
 
-  const layout = computed(() =>
-    getLayout(mergeStyle(node.style, runtime.device.value))
+  const mergedStyle = computed(() =>
+    mergeStyle(node.style, runtime.device.value)
+  )
+
+  const layout = computed(() => getLayout(mergedStyle.value))
+
+  /** 当前节点作为父容器时的排列方向，供子节点决定是否铺满剩余空间 */
+  const direction = computed(() =>
+    layout.value === 'flex'
+      ? (mergedStyle.value.direction ?? 'column')
+      : undefined
   )
 
   const acceptsChildren = computed(() => !!definition.value?.acceptsChildren)
@@ -106,6 +118,7 @@ export function useNodeBinding(
     listeners,
     style,
     layout,
+    direction,
     acceptsChildren,
     slotName,
     visible,

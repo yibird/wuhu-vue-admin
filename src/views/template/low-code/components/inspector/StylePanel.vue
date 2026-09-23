@@ -307,7 +307,7 @@
 
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import { useDesignerContext } from '../../composables'
+import { useDesignerContext } from '../../hooks'
 import type { ComponentSchema, StyleSchema } from '../../core/schema/types'
 
 type StyleScope = 'base' | 'tablet' | 'mobile'
