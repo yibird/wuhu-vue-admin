@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import { useMediaQuery } from '@vueuse/core'
 import { LazyContainer } from '@/components'
-import { usePageEnter } from '@/composables'
 import AnalysisBlockSkeleton from './components/AnalysisBlockSkeleton.vue'
 import Overview from './components/overview/index.vue'
 import { cards } from './config'
@@ -23,10 +22,6 @@ const HotItems = defineAsyncComponent(() => import('./components/HotItems.vue'))
 const isMobileViewport = useMediaQuery('(max-width: 767px)')
 const isWideViewport = useMediaQuery('(min-width: 1536px)')
 
-const pageRef = useTemplateRef<HTMLElement>('pageRef')
-
-usePageEnter(pageRef)
-
 const trendMinHeight = computed(() => (isMobileViewport.value ? 539 : 483))
 const chartMinHeight = computed(() => (isMobileViewport.value ? 361 : 481))
 const funnelMinHeight = computed(() => (isWideViewport.value ? 593 : 1078))
@@ -35,7 +30,7 @@ const rankingMinHeight = 619
 
 <template>
   <WView :full="false" class="overflow-hidden bg-page">
-    <div ref="pageRef" class="dash-canvas flex flex-col gap-12">
+    <div class="dash-canvas flex flex-col gap-12">
       <Overview :items="cards" />
       <LazyContainer :min-height="trendMinHeight" root-margin="0px 0px 128px">
         <template #placeholder>

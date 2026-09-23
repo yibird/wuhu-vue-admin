@@ -35,9 +35,8 @@ function dueMeta(task: Task) {
 </script>
 
 <template>
-  <Scrollbar
-    class="h-176 min-h-0 rounded-4 bg-container"
-    content-class="min-w-900 p-12"
+  <div
+    class="h-176 min-h-0 rounded-4 bg-container min-w-900 p-12 w-full h-full overflow-x-hidden overflow-y-auto"
   >
     <div class="flex flex-col gap-8">
       <div
@@ -118,5 +117,5 @@ function dueMeta(task: Task) {
       </div>
       <a-empty v-if="items.length === 0" class="py-24" />
     </div>
-  </Scrollbar>
+  </div>
 </template>

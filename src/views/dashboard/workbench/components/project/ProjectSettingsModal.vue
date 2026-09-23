@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { message, Modal } from 'antdv-next'
-import { getProjectLogoOption, projectLogoOptions } from '../data'
+import { getProjectLogoOption, projectLogoOptions } from './data'
 import type { FormInstance, ModalProps } from 'antdv-next'
 import type {
   Project,
@@ -351,10 +351,10 @@ function handleCancel() {
               v-for="item in projectLogoOptions"
               :key="item.icon"
               type="button"
-              class="group relative min-w-0 flex flex-col items-center gap-7 rounded-8 border-1 border-solid bg-container p-8 cursor-pointer transition-[border-color,background-color,box-shadow,transform] duration-motion-base hover:(-translate-y-1 border-color-primary/60 bg-hover shadow-all-sm)"
+              class="group relative min-w-0 flex flex-col items-center gap-7 rounded-8 border-1 border-solid bg-container p-8 cursor-pointer transition-[border-color,background-color,box-shadow,transform] duration-motion-base hover:(-translate-y-1 border-primary/60 bg-hover shadow-all-sm)"
               :class="
                 form.logo.icon === item.icon
-                  ? 'border-color-primary bg-primary/5 shadow-all-sm'
+                  ? 'border-primary bg-primary/5 shadow-all-sm'
                   : 'border-color-2'
               "
               :aria-label="`选择${item.label}标识`"

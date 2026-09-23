@@ -6,10 +6,7 @@
       </a-tag>
       <span class="text-secondary">{{ items.length }}个任务</span>
     </div>
-    <Scrollbar
-      class="min-w-0 flex-1 overflow-hidden"
-      :options="taskGroupScrollbarOptions"
-    >
+    <div class="min-w-0 flex-1 w-full h-full overflow-x-hidden overflow-y-auto">
       <div ref="groupRef" class="relative min-h-200 p-10">
         <div class="flex flex-col gap-10">
           <DraggableItem
@@ -37,7 +34,7 @@
           <a-empty />
         </div>
       </div>
-    </Scrollbar>
+    </div>
   </div>
 </template>
 
@@ -45,16 +42,12 @@
 import { useDroppable } from '@dnd-kit/vue'
 import { DraggableItem } from '@/components/draggable'
 import Item from './Item.vue'
-import type { ScrollbarProps } from '@/components/scrollbar'
-import type { CardTaskGroupProps, TaskActionEmits } from '../types'
+import type { CardTaskGroupProps, TaskActionEmits } from '../types.ts'
 
 const props = defineProps<CardTaskGroupProps>()
 const emit = defineEmits<TaskActionEmits>()
 const groupRef = useTemplateRef<HTMLElement>('groupRef')
 const groupId = computed(() => `task-group:${props.status}`)
-const taskGroupScrollbarOptions = {
-  overflow: { x: 'hidden', y: 'scroll' },
-} satisfies ScrollbarProps['options']
 
 useDroppable({
   accept: 'task-card',

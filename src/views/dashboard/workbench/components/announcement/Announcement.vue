@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { useRouter } from 'vue-router'
-import { WCard } from '@/components'
+import { SlidingHighlight, WCard } from '@/components'
 import AnnouncementSkeleton from './AnnouncementSkeleton.vue'
 import type { WorkbenchAnnouncement } from './types'
 
@@ -136,12 +136,17 @@ async function openNoticeCenter() {
         </a-button>
       </template>
 
-      <div v-if="announcements.length" class="flex flex-col gap-5">
+      <SlidingHighlight
+        v-if="announcements.length"
+        :inset="4"
+        pill-class-name="rounded-6 bg-hover"
+        class="flex flex-col gap-5"
+      >
         <button
           v-for="item in announcements"
           :key="item.id"
           type="button"
-          class="group w-full min-w-0 flex gap-10 rounded-6 border-0 bg-transparent px-8 py-10 text-left outline-none transition-[background-color,box-shadow,transform] duration-motion-base hover:(-translate-y-1 bg-hover shadow-all-sm) focus-visible:(bg-hover shadow-[0_0_0_2px_rgb(var(--w-color-primary)/18%)]) active:translate-y-0"
+          class="group w-full min-w-0 flex gap-10 rounded-6 border-0 bg-transparent px-8 py-10 text-left outline-none transition-[background-color,box-shadow] duration-motion-base focus-visible:(bg-hover shadow-[0_0_0_2px_rgb(var(--w-color-primary)/18%)])"
           :class="{ 'bg-primary/3': !isRead(item.id) }"
           :aria-label="`查看公告：${item.title}`"
           @click="openDetail(item)"
@@ -188,7 +193,7 @@ async function openNoticeCenter() {
             class="self-center shrink-0 text-placeholder opacity-0 transition-[opacity,transform,color] duration-motion-base group-hover:(translate-x-1 text-primary opacity-100)"
           />
         </button>
-      </div>
+      </SlidingHighlight>
 
       <a-empty
         v-else

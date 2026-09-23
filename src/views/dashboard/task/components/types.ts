@@ -90,3 +90,28 @@ export type TaskActionEmits = {
   edit: [task: Task]
   delete: [task: Task]
 }
+
+/**
+ * 卡片拖拽结束后的落点信息
+ *
+ * 只上报「拖到哪个分组、插到哪张卡片之前」,由页面在完整任务列表上落库,
+ * 避免在筛选后的可见列表上增删导致未显示的任务丢失。
+ */
+export interface TaskMovePayload {
+  /**
+   * @desc 被拖拽任务的 id
+   */
+  id: number
+  /**
+   * @desc 拖拽后所属分组的状态值
+   */
+  status: TaskStatusValue
+  /**
+   * @desc 目标分组内需要排在其后的任务 id,为空表示追加到分组末尾
+   */
+  beforeId: number | null
+}
+
+export type CardTaskEmits = TaskActionEmits & {
+  move: [payload: TaskMovePayload]
+}

@@ -1,11 +1,11 @@
 <script lang="ts" setup>
-import { useEChartsTheme } from '@/composables'
-import { useDashboardECharts } from '@/plugins/echartsDashboard'
+import { useEChartsTheme } from '@/theme'
+import { useECharts } from '@/plugins/echarts'
 import Card from './Card.vue'
 import VChart from 'vue-echarts'
 import type { EChartsCoreOption } from 'echarts/core'
 
-useDashboardECharts()
+useECharts()
 
 const { baseChartOption, eChartsThemeName, getEChartsColor } = useEChartsTheme()
 

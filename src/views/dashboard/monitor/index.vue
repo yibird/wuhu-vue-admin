@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { useClipboard, useIntervalFn } from '@vueuse/core'
 import { message } from 'antdv-next'
-import { useLoading } from '@/composables'
+import { useLoading } from '@/hooks'
 import {
   AlertCenter,
   MonitorHeader,
@@ -153,7 +153,7 @@ function installApp(item: AppType) {
 
 <template>
   <WView :full="true" :padding="0">
-    <Scrollbar>
+    <div class="w-full h-full overflow-x-hidden overflow-y-auto">
       <div class="dash-canvas min-h-full bg-page p-10 sm:p-12">
         <MonitorHeader
           :auto-refresh="autoRefresh"
@@ -221,7 +221,7 @@ function installApp(item: AppType) {
           </aside>
         </div>
       </div>
-    </Scrollbar>
+    </div>
 
     <a-modal
       :open="!!appDetail"

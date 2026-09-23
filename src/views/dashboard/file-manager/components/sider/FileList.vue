@@ -81,9 +81,8 @@ const visibleItems = computed(() => {
         <a-switch v-model:checked="onlyUsed" />
       </a-tooltip>
     </div>
-    <Scrollbar
-      class="file-list__scroll min-h-0 flex-1 overflow-hidden"
-      content-class="flex flex-col gap-2 px-8 pb-10 max-[1199px]:(min-w-max flex-row gap-6 px-10 pb-10)"
+    <div
+      class="file-list__scroll min-h-0 flex-1 flex flex-col gap-2 px-8 pb-10 max-[1199px]:(min-w-max flex-row gap-6 px-10 pb-10) w-full h-full overflow-x-hidden overflow-y-auto"
     >
       <MotionConfig reduced-motion="user">
         <LayoutGroup id="file-manager-categories">
@@ -137,6 +136,6 @@ const visibleItems = computed(() => {
           </Motion>
         </LayoutGroup>
       </MotionConfig>
-    </Scrollbar>
+    </div>
   </div>
 </template>

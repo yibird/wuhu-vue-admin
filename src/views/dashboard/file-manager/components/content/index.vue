@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { Icon } from '@/components/icon'
-import { useFileContentActions } from '../../composables'
+import { useFileContentActions } from '../../hooks'
 import Breadcrumb from './Breadcrumb.vue'
 import DetailModal from './DetailModal.vue'
 import PreviewModal from './PreviewModal.vue'

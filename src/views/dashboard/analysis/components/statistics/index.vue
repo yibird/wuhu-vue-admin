@@ -1,7 +1,10 @@
 <script lang="ts" setup>
-import { WCard } from '@/components'
+import { DateRangePicker, WCard } from '@/components'
 import SalesRevenue from './SalesRevenue.vue'
 import VisitCount from './VisitCount.vue'
+import { rangeOptions, resolveRange } from './data'
+import type { Dayjs } from 'dayjs'
+import type { DateRange, RangeKey } from './data'
 
 const items = [
   {
@@ -16,49 +19,30 @@ const items = [
   },
 ]
 
-const options = [
-  {
-    title: '今天',
-    value: 'currentDay',
-  },
-  {
-    title: '昨天',
-    value: 'yesterday',
-  },
-  {
-    title: '本周',
-    value: 'week',
-  },
-  {
-    title: '本月',
-    value: 'month',
-  },
-  {
-    title: '本季度',
-    value: 'quarter',
-  },
-  {
-    title: '本年',
-    value: 'year',
-  },
-]
+const activeRange = shallowRef<RangeKey | undefined>('week')
+const dateRange = shallowRef<DateRange | null>(resolveRange('week'))
 
-const activeRange = shallowRef('week')
-const chartRefreshing = shallowRef(false)
-let feedbackTimer: ReturnType<typeof setTimeout> | undefined
-
-function triggerChartFeedback() {
-  chartRefreshing.value = true
-  if (feedbackTimer) clearTimeout(feedbackTimer)
-  feedbackTimer = setTimeout(() => {
-    chartRefreshing.value = false
-    feedbackTimer = undefined
-  }, 480)
+function onRangeChange() {
+  if (!activeRange.value) return
+  dateRange.value = resolveRange(activeRange.value)
 }
 
-onBeforeUnmount(() => {
-  if (feedbackTimer) clearTimeout(feedbackTimer)
-})
+function onDateChange(dates: Array<Dayjs> | null) {
+  const start = dates?.[0]
+  const end = dates?.[1]
+
+  // 清空时回退到当前快捷选项
+  if (!start || !end) {
+    const fallbackKey = activeRange.value ?? 'week'
+    activeRange.value = fallbackKey
+    dateRange.value = resolveRange(fallbackKey)
+    return
+  }
+
+  // 手动选择范围时取消快捷选中
+  activeRange.value = undefined
+  dateRange.value = [start, end]
+}
 </script>
 
 <template>
@@ -83,21 +67,21 @@ onBeforeUnmount(() => {
           v-model:value="activeRange"
           name="analysis-range"
           class="analysis-range-group"
-          @change="triggerChartFeedback"
+          @change="onRangeChange"
         >
           <a-radio-button
-            v-for="item in options"
+            v-for="item in rangeOptions"
             :key="item.value"
             :value="item.value"
           >
             {{ item.title }}
           </a-radio-button>
         </a-radio-group>
-        <a-date-picker
-          type="daterange"
+        <DateRangePicker
+          v-model:value="dateRange"
           allow-clear
-          class="w-220 max-sm:w-full"
-          @change="triggerChartFeedback"
+          class="w-240 max-sm:w-full"
+          @change="onDateChange"
         />
       </div>
     </div>
@@ -115,15 +99,8 @@ onBeforeUnmount(() => {
         :name="item.name"
         :tab="item.title"
       >
-        <div
-          class="h-360 rounded-8 bg-transparent p-12 shadow-[inset_0_0_0_1px_transparent] transition-[background-color,box-shadow] duration-motion-slower ease-motion-enter motion-reduce:transition-none max-md:h-300"
-          :class="
-            chartRefreshing
-              ? 'bg-primary/12 shadow-[inset_0_0_0_1px_rgb(var(--w-color-primary)_/_24%)]'
-              : ''
-          "
-        >
-          <component :is="item.component" />
+        <div class="h-360 rounded-8 bg-transparent p-12 max-md:h-300">
+          <component :is="item.component" :range="dateRange" />
         </div>
       </a-tab-pane>
     </a-tabs>

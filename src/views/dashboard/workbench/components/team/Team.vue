@@ -13,12 +13,12 @@
         <a-button type="link" size="small">组织视图</a-button>
       </template>
 
-      <div class="p-20 flex flex-col gap-10">
-        <div
-          v-for="item in items"
-          :key="item.id"
-          class="group rounded-8 p-10 transition-[background-color,box-shadow,transform] duration-motion-base hover:(-translate-y-1 bg-hover shadow-all-sm)"
-        >
+      <SlidingHighlight
+        :inset="4"
+        pill-class-name="rounded-8 bg-hover"
+        class="p-20 flex flex-col gap-10"
+      >
+        <div v-for="item in items" :key="item.id" class="group rounded-8 p-10">
           <div class="flex items-start gap-10">
             <a-avatar
               :src="item.icon"
@@ -51,13 +51,13 @@
             </div>
           </div>
         </div>
-      </div>
+      </SlidingHighlight>
     </WCard>
   </section>
 </template>
 
 <script lang="ts" setup>
-import { WCard } from '@/components'
+import { SlidingHighlight, WCard } from '@/components'
 import TeamSkeleton from './TeamSkeleton.vue'
 import type { TeamItem } from './types'
 

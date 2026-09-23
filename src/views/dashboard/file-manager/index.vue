@@ -1,11 +1,6 @@
 <script lang="ts" setup>
-import { usePageEnter } from '@/composables'
 import { Sider, Content } from './components'
-import { useFileExplorer, useFileOperations } from './composables'
-
-const pageRef = useTemplateRef<HTMLElement>('pageRef')
-
-usePageEnter(pageRef)
+import { useFileExplorer, useFileOperations } from './hooks'
 
 const explorer = useFileExplorer()
 const operations = useFileOperations(explorer)
@@ -57,7 +52,6 @@ const {
 <template>
   <WView full :padding="false" class="bg-page">
     <div
-      ref="pageRef"
       class="h-full bg-page min-h-full grid gap-10 p-10 grid-cols-[minmax(220px,280px)_minmax(0,1fr)] max-[1199px]:grid-cols-1 max-[1199px]:grid-rows-[auto_minmax(0,1fr)] max-[575px]:(gap-8 p-8)"
     >
       <aside

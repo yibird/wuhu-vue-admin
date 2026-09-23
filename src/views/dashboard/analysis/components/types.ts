@@ -1,3 +1,12 @@
+import type { Dayjs } from 'dayjs'
+
+export interface StatisticsChartProps {
+  /**
+   * @desc 统计时间范围
+   */
+  range?: [Dayjs, Dayjs] | null
+}
+
 export interface Card {
   id: number
   title: string

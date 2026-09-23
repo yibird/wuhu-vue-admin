@@ -24,7 +24,7 @@
         <article
           v-for="item in projectItems"
           :key="item.id"
-          class="group min-w-0 rounded-8 border-1 border-color-2 border-solid bg-container p-14 transition-[border-color,background-color,box-shadow,transform] duration-motion-base hover:(-translate-y-1 border-color-primary bg-primary/5 shadow-all-sm)"
+          class="group min-w-0 rounded-8 border-1 border-color-2 border-solid bg-container p-14 transition-[border-color,background-color,box-shadow,transform] duration-motion-base hover:(-translate-y-1 border-primary bg-primary/5 shadow-all-sm)"
         >
           <div class="min-w-0 flex items-start justify-between gap-12">
             <div class="min-w-0 flex items-center gap-10">
@@ -119,7 +119,7 @@
 
 <script lang="ts" setup>
 import { WCard } from '@/components'
-import { getProjectLogoOption } from '../data'
+import { getProjectLogoOption } from './data'
 import ProjectSkeleton from './ProjectSkeleton.vue'
 import type { Project } from './types'
 

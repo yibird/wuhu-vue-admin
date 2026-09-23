@@ -73,7 +73,7 @@
           <button
             v-for="item in dueDateQuickOptions"
             :key="item.value"
-            class="h-24 rounded-4 border-1 border-color-2 border-solid bg-container px-8 text-xs text-secondary transition-colors hover:(border-color-primary text-primary)"
+            class="h-24 rounded-4 border-1 border-color-2 border-solid bg-container px-8 text-xs text-secondary transition-colors hover:(border-primary text-primary)"
             type="button"
             @click="setDueDate(item.value)"
           >

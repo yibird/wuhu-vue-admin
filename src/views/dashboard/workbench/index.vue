@@ -1,6 +1,6 @@
 <template>
   <WView :full="false" :padding="false" class="bg-page">
-    <Scrollbar content-class="min-h-full">
+    <div class="min-h-full w-full h-full overflow-x-hidden overflow-y-auto">
       <div
         class="dash-canvas min-h-full w-full p-12 flex flex-col gap-12 overflow-x-hidden lg:p-16"
       >
@@ -39,9 +39,9 @@
             >
               <button
                 type="button"
-                class="size-34 flex-center rounded-6 border-1 border-color-2 border-solid bg-container text-regular cursor-pointer transition-[border-color,background-color,box-shadow,transform,color] duration-motion-base hover:(border-color-primary bg-primary-tint shadow-all -translate-y-1) active:translate-y-0"
+                class="size-34 flex-center rounded-6 border-1 border-color-2 border-solid bg-container text-regular cursor-pointer transition-[border-color,background-color,box-shadow,transform,color] duration-motion-base hover:(border-primary bg-primary-tint shadow-all -translate-y-1) active:translate-y-0"
                 :class="{
-                  'border-color-primary bg-primary-tint text-primary shadow-all':
+                  'border-primary bg-primary-tint text-primary shadow-all':
                     dragEnabled,
                 }"
                 :aria-label="dragEnabled ? '退出布局' : '开启布局'"
@@ -107,7 +107,7 @@
           </a-row>
         </div>
       </div>
-    </Scrollbar>
+    </div>
 
     <ProjectSettingsModal
       v-model:open="projectSettingsOpen"
@@ -120,7 +120,7 @@
 
 <script lang="ts" setup>
 import { createSwapy, type Swapy } from 'swapy'
-import { useLoading } from '@/composables'
+import { useLoading } from '@/hooks'
 import {
   Overview,
   Project,
@@ -130,13 +130,16 @@ import {
   Team,
   DataAnalysis,
 } from './components'
-import ProjectSettingsModal from './components/ProjectSettingsModal.vue'
-import { initialProjects, workbenchMembers } from './data'
+import {
+  initialProjects,
+  ProjectSettingsModal,
+  workbenchMembers,
+} from './components/project'
 import type {
-  Project as WorkbenchProject,
   ProjectSettingsMode,
   ProjectSettingsPayload,
-} from './components/types'
+  WorkbenchProject,
+} from './components/project'
 
 const swapy = shallowRef<Swapy>()
 const container = useTemplateRef<HTMLDivElement>('container')

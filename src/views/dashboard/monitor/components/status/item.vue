@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { NumberTicker } from '@/components/number-ticker'
-import { getCssRgbVar, getCssRgbVarAlpha, useEChartsTheme } from '@/composables'
+import { getCssRgbVar, getCssRgbVarAlpha, useEChartsTheme } from '@/theme'
 import { useECharts } from '@/plugins/echarts'
 import VChart from 'vue-echarts'
 import type { MonitorTone, StatusItemProps } from '../types'

@@ -18,12 +18,12 @@
       </div>
 
       <div
-        class="grid grid-cols-2 border-color-2 border-t-1 border-t-solid sm:grid-cols-4 lg:grid-cols-2 lg:border-l-1 lg:border-l-solid lg:border-t-0"
+        class="grid grid-cols-2 border-t-1 border-t-solid border-t-[rgb(var(--w-border-color-2))] sm:grid-cols-4 lg:grid-cols-2 lg:border-l-1 lg:border-l-solid lg:border-l-[rgb(var(--w-border-color-2))] lg:border-t-0"
       >
         <div
           v-for="item in 4"
           :key="item"
-          class="min-w-0 border-color-2 border-r-1 border-b-1 border-r-solid border-b-solid p-14"
+          class="min-w-0 border-r-1 border-b-1 border-r-solid border-b-solid border-r-[rgb(var(--w-border-color-2))] border-b-[rgb(var(--w-border-color-2))] p-14"
         >
           <div class="flex items-center justify-between gap-10">
             <a-skeleton-input active size="small" class="!w-72" />

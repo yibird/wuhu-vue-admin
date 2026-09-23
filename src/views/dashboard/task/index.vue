@@ -1,8 +1,7 @@
 <template>
   <WView>
-    <Scrollbar
-      class="h-full overflow-hidden"
-      content-class="full min-h-0 min-w-0 flex flex-col gap-10"
+    <div
+      class="min-h-0 min-w-0 flex flex-col gap-10 w-full h-full overflow-x-hidden overflow-y-auto"
     >
       <TaskToolbar
         v-model:keyword="keyword"
@@ -23,11 +22,13 @@
           :is="component"
           v-model:items="visibleTasks"
           :loading="isLoading"
+          v-bind="viewProps"
           @delete="confirmDeleteTask"
           @edit="openEditModal"
+          @move="moveTask"
         />
       </div>
-    </Scrollbar>
+    </div>
 
     <a-modal
       v-model:open="modalOpen"
@@ -46,7 +47,7 @@
 <script lang="ts" setup>
 import { message, Modal } from 'antdv-next'
 import dayjs from 'dayjs'
-import { useLoading } from '@/composables'
+import { useLoading } from '@/hooks'
 import Form from './components/Form.vue'
 import TaskToolbar from './components/TaskToolbar.vue'
 import CardTask from './components/card/index.vue'
@@ -64,6 +65,7 @@ import type {
   Task,
   TaskFilterStatus,
   TaskFormState,
+  TaskMovePayload,
   TaskStatusValue,
   TaskViewOption,
   TaskViewType,
@@ -181,6 +183,11 @@ const component = computed(() => {
   )
 })
 
+// 卡片视图需要按状态筛选分组,表格与甘特图不接受该属性
+const viewProps = computed(() =>
+  type.value === 'card' ? { status: statusFilter.value } : {}
+)
+
 function getDefaultStartDate() {
   return dayjs().format(taskDateTimeFormat)
 }
@@ -275,6 +282,42 @@ async function handleSubmit() {
   }
 
   modalOpen.value = false
+}
+
+/**
+ * 卡片拖拽落库
+ *
+ * 始终在完整任务列表上移动,保证被筛选条件隐藏的任务不会因为一次拖拽而丢失。
+ *
+ * @param payload 拖拽落点
+ */
+function moveTask(payload: TaskMovePayload) {
+  const task = tasks.value.find((item) => item.id === payload.id)
+  if (!task) return
+
+  const nextTasks = tasks.value.filter((item) => item.id !== payload.id)
+  const movedTask: Task =
+    task.status === payload.status ? task : { ...task, status: payload.status }
+  const anchorIndex =
+    payload.beforeId === null
+      ? -1
+      : nextTasks.findIndex((item) => item.id === payload.beforeId)
+
+  if (anchorIndex !== -1) {
+    nextTasks.splice(anchorIndex, 0, movedTask)
+  } else {
+    // 追加到目标分组末尾
+    const lastGroupTask = nextTasks
+      .filter((item) => item.status === payload.status)
+      .at(-1)
+    nextTasks.splice(
+      lastGroupTask ? nextTasks.indexOf(lastGroupTask) + 1 : nextTasks.length,
+      0,
+      movedTask
+    )
+  }
+
+  tasks.value = nextTasks
 }
 
 function confirmDeleteTask(task: Task) {

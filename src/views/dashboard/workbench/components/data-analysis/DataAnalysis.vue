@@ -59,7 +59,7 @@
         </div>
 
         <div
-          class="mt-16 rounded-8 border-1 border-color-2 border-solid bg-container p-12 transition-[border-color,box-shadow,transform] duration-motion-base hover:(-translate-y-1 border-color-primary shadow-all-sm)"
+          class="mt-16 rounded-8 border-1 border-color-2 border-solid bg-container p-12 transition-[border-color,box-shadow,transform] duration-motion-base hover:(-translate-y-1 border-primary shadow-all-sm)"
         >
           <div class="flex items-center gap-8">
             <span

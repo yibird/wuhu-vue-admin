@@ -1,13 +1,12 @@
 import { computed, nextTick, shallowRef, type Ref } from 'vue'
-import { useRangeSelection } from '@/composables'
+import { useRangeSelection } from '@/hooks'
 import type { FileSelectionKey, FileViewMode, IFile } from '../components/types'
-import type { ScrollbarInstance } from '@/components/scrollbar'
 
 interface UseFileSelectionOptions {
   items: Ref<IFile[]>
   selectedKeys: Ref<FileSelectionKey[]>
   viewMode: Ref<FileViewMode>
-  containerRef: Ref<ScrollbarInstance | null | undefined>
+  containerRef: Ref<HTMLElement | null | undefined>
 }
 
 const fileItemSelector = '[data-file-manager-item-id]'
@@ -29,20 +28,17 @@ export function useFileSelection({
   const selectedKeySet = computed(() => new Set(selectedKeys.value))
 
   function focusContainer() {
-    const element =
-      containerRef.value?.getElement() ?? containerRef.value?.getScrollElement()
+    const element = containerRef.value
     if (!element) return
     if (element.tabIndex < 0) element.tabIndex = 0
     element.focus({ preventScroll: true })
   }
 
   function getContentElement() {
-    return containerRef.value?.getContentElement() ?? null
+    return containerRef.value ?? null
   }
 
-  const rangeContainer = computed(
-    () => containerRef.value?.getScrollElement() ?? null
-  )
+  const rangeContainer = computed(() => containerRef.value ?? null)
   const itemVersion = computed(() =>
     items.value.map((item) => item.id).join('|')
   )

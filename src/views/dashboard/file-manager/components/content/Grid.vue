@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { Motion } from 'motion-v'
+import { motions } from '@/components/animated'
 import { Icon } from '@/components/icon'
 import { FILE_NODE_TYPE } from '../types'
 import {
@@ -9,7 +10,7 @@ import {
   getFileExtension,
   getFileNameWithoutExtension,
 } from '../utils'
-import { useFileSelection } from '../../composables'
+import { useFileSelection } from '../../hooks'
 import textIcon from '@/assets/svg/text.svg'
 import videoIcon from '@/assets/svg/video.svg'
 import mp3Icon from '@/assets/svg/mp3.svg'
@@ -24,7 +25,6 @@ import unknownIcon from '@/assets/svg/unknown.svg'
 import folderIcon from '@/assets/svg/folder.svg'
 import type { MenuProps } from 'antdv-next'
 import type { FileSelectionKey, FileViewMode, IFile } from '../types'
-import type { ScrollbarInstance } from '@/components/scrollbar'
 
 const selectedKeys = defineModel<FileSelectionKey[]>('selectedKeys', {
   required: true,
@@ -49,17 +49,11 @@ const emit = defineEmits<{
   toggleFavorite: [file: IFile]
 }>()
 
-const itemTransition = {
-  type: 'spring' as const,
-  stiffness: 430,
-  damping: 32,
-  mass: 0.65,
-}
 const gridItemHover = { y: -3, scale: 1.01 }
 const listItemHover = { x: 2 }
 const itemPress = { scale: 0.985 }
 
-const gridRef = ref<ScrollbarInstance | null>(null)
+const gridRef = ref<HTMLElement | null>(null)
 const {
   dragSelection,
   dragSelectionStyle,
@@ -356,12 +350,12 @@ function handleAction(file: IFile, { key }: { key: string }) {
 </script>
 
 <template>
-  <Scrollbar
+  <div
     ref="gridRef"
-    class="file-grid min-h-0"
-    :content-class="
+    class="file-grid min-h-0 w-full h-full overflow-x-hidden overflow-y-auto"
+    :class="
       viewMode === 'grid'
-        ? 'relative grid select-none grid-cols-[repeat(auto-fill,minmax(148px,1fr))] gap-10 py-10 px-2 max-[575px]:grid-cols-[repeat(auto-fill,minmax(118px,1fr))] max-[575px]:gap-8'
+        ? 'relative grid content-start auto-rows-max select-none grid-cols-[repeat(auto-fill,minmax(148px,1fr))] gap-10 py-10 px-2 max-[575px]:grid-cols-[repeat(auto-fill,minmax(118px,1fr))] max-[575px]:gap-8'
         : 'relative flex select-none flex-col gap-8 py-10'
     "
     tabindex="0"
@@ -389,18 +383,16 @@ function handleAction(file: IFile, { key }: { key: string }) {
         <Motion
           as="div"
           layout="position"
+          v-bind="motions.reorder"
           role="button"
           tabindex="-1"
-          :initial="{ opacity: 0, y: 6 }"
-          :animate="{ opacity: 1, y: 0 }"
           :while-hover="gridItemHover"
           :while-press="itemPress"
-          :transition="itemTransition"
           :data-file-manager-item-id="item.id"
           :class="[
-            'file-grid__card group relative min-w-0 cursor-pointer rounded-6 border-1 border-solid bg-container-secondary p-10 text-left outline-none transition-[background-color,border-color,box-shadow] duration-motion-base hover:(border-color-primary bg-selected shadow-all-sm) focus-visible:border-primary',
+            'file-grid__card group relative min-w-0 cursor-pointer rounded-6 border-1 border-solid bg-container-secondary p-10 text-left outline-none transition-[background-color,border-color,box-shadow] duration-motion-base hover:(border-primary bg-selected shadow-all-sm) focus-visible:border-primary',
             isSelected(item)
-              ? 'border-color-primary bg-selected text-primary'
+              ? 'border-primary bg-selected text-primary'
               : 'border-color-1 text-main',
           ]"
           @click="handleGridItemClick(item, $event)"
@@ -471,16 +463,16 @@ function handleAction(file: IFile, { key }: { key: string }) {
         <Motion
           as="div"
           layout="position"
+          v-bind="motions.reorder"
           :initial="{ opacity: 0, x: -4 }"
           :animate="{ opacity: 1, x: 0 }"
           :while-hover="listItemHover"
           :while-press="itemPress"
-          :transition="itemTransition"
           :data-file-manager-item-id="item.id"
           :class="[
-            'group min-w-0 flex cursor-pointer items-center gap-12 rounded-6 border-1 border-solid bg-container-secondary px-12 py-10 transition-colors hover:(border-color-primary bg-selected) max-[575px]:(items-start gap-10)',
+            'group min-w-0 flex cursor-pointer items-center gap-12 rounded-6 border-1 border-solid bg-container-secondary px-12 py-10 transition-colors hover:(border-primary bg-selected) max-[575px]:(items-start gap-10)',
             isSelected(item)
-              ? 'border-color-primary bg-selected'
+              ? 'border-primary bg-selected'
               : 'border-color-1',
           ]"
           @click="handleItemClick(item, $event)"
@@ -545,5 +537,5 @@ function handleAction(file: IFile, { key }: { key: string }) {
         </Motion>
       </a-dropdown>
     </template>
-  </Scrollbar>
+  </div>
 </template>

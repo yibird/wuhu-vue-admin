@@ -13,11 +13,15 @@
         <a-button type="link" size="small">更多</a-button>
       </template>
 
-      <div class="p-20 flex flex-col">
+      <SlidingHighlight
+        :inset="4"
+        pill-class-name="rounded-4 bg-hover"
+        class="p-20 flex flex-col"
+      >
         <div
           v-for="item in items"
           :key="item.id"
-          class="content-auto-86 group flex gap-20 px-8 py-12 rounded-4 transition-colors duration-motion-base hover:(bg-hover)"
+          class="content-auto-86 group flex gap-20 px-8 py-12 rounded-4"
         >
           <span
             class="size-34 grid place-items-center rounded-full bg-fill-tertiary text-secondary transition-[background-color,color] duration-motion-base group-hover:(bg-primary-tint text-primary)"
@@ -39,13 +43,13 @@
             </div>
           </div>
         </div>
-      </div>
+      </SlidingHighlight>
     </WCard>
   </section>
 </template>
 
 <script lang="ts" setup>
-import { WCard } from '@/components'
+import { SlidingHighlight, WCard } from '@/components'
 import DynamicSkeleton from './DynamicSkeleton.vue'
 import type { Dynamic } from './types'
 

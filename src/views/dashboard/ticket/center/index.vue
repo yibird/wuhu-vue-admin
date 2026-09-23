@@ -1,13 +1,7 @@
 <script setup lang="ts">
 import { message } from 'antdv-next'
-import { AnimatePresence, LayoutGroup, Motion, MotionConfig } from 'motion-v'
-import { useLoading } from '@/composables'
-import {
-  cardListMotionAnimate,
-  cardListMotionExit,
-  cardListMotionInitial,
-  cardListMotionTransition,
-} from '@/styles'
+import { AnimatedGroup } from '@/components'
+import { useLoading } from '@/hooks'
 import {
   TicketCreateDrawer,
   TicketDetailDrawer,
@@ -15,7 +9,7 @@ import {
   TicketSummary,
   TicketCard,
 } from './components'
-import { useTickets } from './composables'
+import { useTickets } from './hooks'
 import { getTicketStatusMeta } from './data'
 import type { TicketDraft, TicketRecord, TicketStatus } from './types'
 
@@ -103,34 +97,22 @@ function handleReply(ticket: TicketRecord, content: string) {
           </a-button>
         </a-empty>
 
-        <MotionConfig v-else reduced-motion="user">
-          <LayoutGroup id="ticket-center-card-list">
-            <AnimatePresence
-              as="div"
-              mode="popLayout"
-              :initial="false"
-              class="grid grid-cols-1 gap-12 sm:grid-cols-2 xl:grid-cols-4 2xl:grid-cols-6"
-            >
-              <Motion
-                v-for="ticket in paginatedTickets"
-                :key="ticket.id"
-                as="div"
-                layout="position"
-                :initial="cardListMotionInitial"
-                :animate="cardListMotionAnimate"
-                :exit="cardListMotionExit"
-                :transition="cardListMotionTransition"
-                class="min-w-0"
-              >
-                <TicketCard
-                  class="h-full"
-                  :ticket="ticket"
-                  @open="openTicket"
-                />
-              </Motion>
-            </AnimatePresence>
-          </LayoutGroup>
-        </MotionConfig>
+        <AnimatedGroup
+          v-else
+          id="ticket-center-card-list"
+          reduced-motion="user"
+          :items="paginatedTickets"
+          :get-key="(item: TicketRecord) => item.id"
+          as="div"
+          class="grid grid-cols-1 gap-12 sm:grid-cols-2 xl:grid-cols-4 2xl:grid-cols-6"
+          motion-as="div"
+          layout="position"
+          motion-class="min-w-0"
+        >
+          <template #default="{ item }">
+            <TicketCard class="h-full" :ticket="item" @open="openTicket" />
+          </template>
+        </AnimatedGroup>
       </main>
 
       <footer

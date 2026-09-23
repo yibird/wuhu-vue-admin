@@ -22,7 +22,7 @@
           v-for="item in items"
           :key="item.id"
           type="button"
-          class="group min-w-0 rounded-8 border-1 border-color-2 border-solid bg-container p-12 text-left outline-none transition-[border-color,background-color,box-shadow,transform] duration-motion-base hover:(-translate-y-1 border-color-primary bg-primary/5 shadow-all-sm) focus-visible:(border-color-primary shadow-[0_0_0_2px_rgb(var(--w-color-primary)/12%)]) active:translate-y-0"
+          class="group min-w-0 rounded-8 border-1 border-color-2 border-solid bg-container p-12 text-left outline-none transition-[border-color,background-color,box-shadow,transform] duration-motion-base hover:(-translate-y-1 border-primary bg-primary/5 shadow-all-sm) focus-visible:(border-primary shadow-[0_0_0_2px_rgb(var(--w-color-primary)/12%)]) active:translate-y-0"
           @click="handleActionClick(item)"
         >
           <span
@@ -41,7 +41,7 @@
 
         <button
           type="button"
-          class="group min-w-0 rounded-8 border-1 border-color-2 border-dashed bg-container p-12 text-left outline-none transition-[border-color,background-color,box-shadow,transform] duration-motion-base hover:(-translate-y-1 border-color-primary bg-hover shadow-all-sm) focus-visible:(border-color-primary shadow-[0_0_0_2px_rgb(var(--w-color-primary)/12%)]) active:translate-y-0"
+          class="group min-w-0 rounded-8 border-1 border-color-2 border-dashed bg-container p-12 text-left outline-none transition-[border-color,background-color,box-shadow,transform] duration-motion-base hover:(-translate-y-1 border-primary bg-hover shadow-all-sm) focus-visible:(border-primary shadow-[0_0_0_2px_rgb(var(--w-color-primary)/12%)]) active:translate-y-0"
           @click="managerOpen = true"
         >
           <span
@@ -70,7 +70,7 @@
 <script lang="ts" setup>
 import { useRouter } from 'vue-router'
 import { WCard } from '@/components'
-import { defaultWorkbenchActionIds, workbenchActions } from '../data'
+import { defaultWorkbenchActionIds, workbenchActions } from './data'
 import ActionSkeleton from './ActionSkeleton.vue'
 import QuickActionManagerModal from './QuickActionManagerModal.vue'
 import type { WorkbenchAction } from './types'
