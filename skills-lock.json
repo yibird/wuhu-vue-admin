@@ -11,7 +11,7 @@
       "source": "anthropics/skills",
       "sourceType": "github",
       "skillPath": "skills/frontend-design/SKILL.md",
-      "computedHash": "93f53fd1c0352d3d7ec17b8f73d7351bf76f4821e55d123c9d2abc2c53ba48e4"
+      "computedHash": "106acf230014cbb43ca34e6410371321b56ca742f9ee0442e8ec05bf02eb0384"
     },
     "motion": {
       "source": "onmax/nuxt-skills",
@@ -23,13 +23,7 @@
       "source": "addyosmani/agent-skills",
       "sourceType": "github",
       "skillPath": "skills/performance-optimization/SKILL.md",
-      "computedHash": "3881a49f910607b36f4fb1f9f17b4ef703293c6073986bcfa9f7839d44680aba"
-    },
-    "pnpm": {
-      "source": "antfu/skills",
-      "sourceType": "github",
-      "skillPath": "skills/pnpm/SKILL.md",
-      "computedHash": "20bca721bb934e39c8ff2dc3df2cd1712f9efb5419afe2cb847267f6fe0eacbc"
+      "computedHash": "f0a8e3bdb9b7d199434c2a5dd7cbb7d3cf69d802029cde1ef5daa07bffa27efc"
     },
     "unocss": {
       "source": "antfu/skills",
@@ -60,12 +54,6 @@
       "sourceType": "github",
       "skillPath": "skills/vue-router-best-practices/SKILL.md",
       "computedHash": "405d377ebeef773b240f31902dfb204095d4bcc945e8a4c2f4b560062c032fbb"
-    },
-    "vue-testing-best-practices": {
-      "source": "antfu/skills",
-      "sourceType": "github",
-      "skillPath": "skills/vue-testing-best-practices/SKILL.md",
-      "computedHash": "c568e4abe743cd36a0eb15730f72de54b8d84c9bfbaa4395bc448428b9c71c12"
     },
     "vueuse-functions": {
       "source": "antfu/skills",
