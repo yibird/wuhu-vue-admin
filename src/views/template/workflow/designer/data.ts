@@ -45,7 +45,6 @@ export const workflowPalette: WorkflowPaletteItem[] = workflowNodeDefinitions
     description: definition.description,
     icon: definition.icon,
     accent: definition.accent,
-    gradient: definition.gradient,
   }))
 
 const timestamp = '2026-08-27T08:00:00.000Z'
@@ -301,7 +300,6 @@ export function getNodeBaseConfig(kind: WorkflowNodeKind) {
     description: definition.description,
     icon: definition.icon,
     accent: definition.accent,
-    gradient: definition.gradient,
     config: cloneDeep(definition.defaults),
     inputs: toPorts(definition.inputs),
     outputs: toPorts(definition.outputs),
@@ -343,7 +341,6 @@ export function createWorkflowNodeData(
     description: node.description ?? definition.description,
     icon: definition.icon,
     accent: definition.accent,
-    gradient: definition.gradient,
     status: 'idle',
     breakpoint: false,
     model: typeof model === 'string' ? model : undefined,
@@ -368,6 +365,82 @@ export function createWorkflowEdge(edge: WorkflowSchemaEdge): WorkflowEdge {
     markerEnd: MarkerType.ArrowClosed,
     data: { kind: edge.kind, priority: edge.priority },
   }
+}
+
+/**
+ * 按拓扑层级重排节点坐标:层级决定横坐标,同层按当前纵坐标顺序排列
+ *
+ * @param nodes - 画布节点
+ * @param edges - 画布连线
+ * @returns 带有新坐标的节点数组,节点少于两个时原样返回
+ */
+export function layoutWorkflowNodes(
+  nodes: WorkflowNode[],
+  edges: WorkflowEdge[]
+): WorkflowNode[] {
+  if (nodes.length < 2) return nodes
+
+  const nodeIds = new Set(nodes.map((node) => node.id))
+  const incomingCount = new Map(nodes.map((node) => [node.id, 0]))
+  const targetsBySource = new Map<string, string[]>()
+
+  edges.forEach((edge) => {
+    if (!nodeIds.has(edge.source) || !nodeIds.has(edge.target)) return
+    incomingCount.set(edge.target, (incomingCount.get(edge.target) ?? 0) + 1)
+    targetsBySource.set(edge.source, [
+      ...(targetsBySource.get(edge.source) ?? []),
+      edge.target,
+    ])
+  })
+
+  const queue = nodes
+    .filter((node) => incomingCount.get(node.id) === 0)
+    .map((node) => node.id)
+  const levelById = new Map(queue.map((id) => [id, 0]))
+
+  while (queue.length) {
+    const sourceId = queue.shift()
+    if (!sourceId) continue
+    const sourceLevel = levelById.get(sourceId) ?? 0
+
+    ;(targetsBySource.get(sourceId) ?? []).forEach((targetId) => {
+      levelById.set(
+        targetId,
+        Math.max(levelById.get(targetId) ?? 0, sourceLevel + 1)
+      )
+      const nextIncoming = (incomingCount.get(targetId) ?? 1) - 1
+      incomingCount.set(targetId, nextIncoming)
+      if (nextIncoming === 0) queue.push(targetId)
+    })
+  }
+
+  const maxLevel = Math.max(...levelById.values(), 0)
+  nodes.forEach((node) => {
+    if (!levelById.has(node.id)) levelById.set(node.id, maxLevel + 1)
+  })
+
+  const nodesByLevel = new Map<number, WorkflowNode[]>()
+  nodes.forEach((node) => {
+    const level = levelById.get(node.id) ?? 0
+    nodesByLevel.set(level, [...(nodesByLevel.get(level) ?? []), node])
+  })
+
+  const positions = new Map<string, XYPosition>()
+  nodesByLevel.forEach((levelNodes, level) => {
+    levelNodes
+      .sort((a, b) => a.position.y - b.position.y)
+      .forEach((node, index) => {
+        positions.set(node.id, {
+          x: 80 + level * 360,
+          y: 80 + index * 250,
+        })
+      })
+  })
+
+  return nodes.map((node) => ({
+    ...node,
+    position: positions.get(node.id) ?? node.position,
+  }))
 }
 
 export function schemaToFlow(schema: WorkflowJsonSchema) {

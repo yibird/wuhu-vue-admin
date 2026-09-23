@@ -136,8 +136,6 @@ export interface WorkflowNodeDefinition {
   description: string
   icon: string
   accent: string
-  /** 节点主视觉渐变色（起始色 → 结束色） */
-  gradient: [string, string]
   inputs: WorkflowNodePortSchema[]
   outputs: WorkflowNodePortSchema[]
   config: WorkflowNodeConfigFieldSchema[]

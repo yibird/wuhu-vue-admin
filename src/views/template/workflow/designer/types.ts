@@ -1,6 +1,7 @@
 import type { Edge, Node, XYPosition } from '@vue-flow/core'
 import type {
   JsonValue,
+  WorkflowJsonSchema,
   WorkflowNodeConfigFieldSchema,
   WorkflowNodeKind,
   WorkflowValidationIssue,
@@ -9,6 +10,7 @@ import type {
 
 export type {
   JsonValue,
+  WorkflowEdgeKind,
   WorkflowJsonSchema,
   WorkflowNodeConfigFieldSchema,
   WorkflowNodeKind,
@@ -58,7 +60,6 @@ export interface WorkflowNodeData {
   description: string
   icon: string
   accent: string
-  gradient: [string, string]
   status: WorkflowNodeStatus
   breakpoint?: boolean
   model?: string
@@ -78,7 +79,6 @@ export interface WorkflowPaletteItem {
   description: string
   icon: string
   accent: string
-  gradient: [string, string]
 }
 
 export type WorkflowNode = Node<
@@ -163,4 +163,63 @@ export interface WorkflowBindingOption {
 export interface WorkflowDebugState {
   breakpoints: Set<string>
   validationIssues: WorkflowValidationIssue[]
+}
+
+export type WorkflowAiRole = 'assistant' | 'user'
+
+export interface WorkflowAiMessage {
+  id: string
+  role: WorkflowAiRole
+  content: string
+  createdAt: string
+}
+
+export interface WorkflowAiSuggestion {
+  id: string
+  title: string
+  prompt: string
+  icon: string
+}
+
+export interface WorkflowAiPlanNode {
+  id: string
+  kind: WorkflowNodeKind
+  name: string
+  icon: string
+  accent: string
+  /**
+   * @desc 该节点所属的分支输出端口,例如 true / rejected
+   */
+  branch?: string
+}
+
+export interface WorkflowAiPlanEdge {
+  id: string
+  from: string
+  to: string
+  label: string
+}
+
+export interface WorkflowAiPlan {
+  id: string
+  /**
+   * @desc 命中的模板标识,便于回显与埋点
+   */
+  templateId: string
+  title: string
+  summary: string
+  /**
+   * @desc 生成依据的要点,例如命中的模板与补充节点
+   */
+  highlights: string[]
+  /**
+   * @desc 可直接应用到画布的完整 DSL,已按分层算法写好坐标
+   */
+  schema: WorkflowJsonSchema
+  nodes: WorkflowAiPlanNode[]
+  edges: WorkflowAiPlanEdge[]
+  /**
+   * @desc 非阻断的校验提示,应用前展示给用户
+   */
+  warnings: WorkflowValidationIssue[]
 }

@@ -80,9 +80,8 @@ function emitConfig(
         </a-button>
       </div>
 
-      <Scrollbar
-        class="min-h-0 flex-1"
-        content-class="flex min-h-full flex-col gap-14 p-14"
+      <div
+        class="min-h-0 flex-1 flex min-h-full flex-col gap-14 p-14 w-full h-full overflow-x-hidden overflow-y-auto"
       >
         <a-form
           layout="vertical"
@@ -223,7 +222,7 @@ function emitConfig(
           <Icon name="i-lucide:trash-2" :size="16" />
           删除节点
         </a-button>
-      </Scrollbar>
+      </div>
     </div>
 
     <div v-else class="h-full"></div>

@@ -3,7 +3,7 @@ import type {
   WorkflowEnvironmentFilter,
   WorkflowMonitorRange,
   WorkflowRunStatusFilter,
-} from '../composables'
+} from '../hooks'
 
 const props = defineProps<{
   alertCount: number

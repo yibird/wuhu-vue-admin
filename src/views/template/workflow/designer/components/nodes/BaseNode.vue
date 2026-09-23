@@ -21,29 +21,27 @@ const kindLabel = computed(
   () => getWorkflowNodeDefinition(props.data.kind)?.title ?? props.data.kind
 )
 
-const gradient = computed<[string, string]>(
-  () => props.data.gradient ?? [props.data.accent, props.data.accent]
-)
+const accent = computed(() => props.data.accent)
 
 const rootStyle = computed<CSSProperties>(() => {
-  const [from, to] = gradient.value
+  const accentColor = accent.value
   const active = props.selected || props.data.status === 'running'
 
   return {
-    borderColor: props.selected ? from : undefined,
-    backgroundImage: `radial-gradient(circle at 0% 0%, color-mix(in srgb, ${from} var(--w-workflow-node-accent-opacity), transparent), transparent var(--w-workflow-node-accent-stop)), linear-gradient(135deg, color-mix(in srgb, ${from} 7%, transparent), transparent 46%, color-mix(in srgb, ${to} 9%, transparent))`,
+    borderColor: props.selected ? accentColor : undefined,
+    backgroundImage: `radial-gradient(circle at 0% 0%, color-mix(in srgb, ${accentColor} var(--w-workflow-node-accent-opacity), transparent), transparent var(--w-workflow-node-accent-stop)), linear-gradient(135deg, color-mix(in srgb, ${accentColor} 9%, transparent), color-mix(in srgb, ${accentColor} 3%, transparent) 52%, transparent)`,
     boxShadow: active
-      ? `0 0 0 var(--w-workflow-node-active-ring-size) color-mix(in srgb, ${from} var(--w-workflow-node-accent-ring-opacity), transparent), var(--w-shadow-node-active)`
+      ? `0 0 0 var(--w-workflow-node-active-ring-size) color-mix(in srgb, ${accentColor} var(--w-workflow-node-accent-ring-opacity), transparent), var(--w-shadow-node-active)`
       : undefined,
   }
 })
 
 const iconStyle = computed<CSSProperties>(() => {
-  const [from, to] = gradient.value
+  const accentColor = accent.value
 
   return {
-    backgroundImage: `linear-gradient(135deg, ${from}, ${to})`,
-    boxShadow: `0 6px 16px color-mix(in srgb, ${from} 32%, transparent)`,
+    backgroundImage: `linear-gradient(135deg, color-mix(in srgb, ${accentColor} 78%, #fff), ${accentColor})`,
+    boxShadow: `0 6px 16px color-mix(in srgb, ${accentColor} 32%, transparent)`,
   }
 })
 

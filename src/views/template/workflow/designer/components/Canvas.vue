@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Background } from '@vue-flow/background'
 import { MiniMap } from '@vue-flow/minimap'
-import { useTheme } from '@/composables'
+import { useTheme } from '@/theme'
 import { ThemeMode } from '@/constants'
 import {
   areWorkflowDataSchemasCompatible,
@@ -33,7 +33,6 @@ import type {
   WorkflowCanvasTab,
   WorkflowEdge,
   WorkflowNode,
-  WorkflowPaletteItem,
   WorkflowRunLog,
   WorkflowTestCase,
   WorkflowValidationIssue,
@@ -48,6 +47,7 @@ const { fitView, zoomIn, zoomOut, zoomTo, viewport } =
   useVueFlow(WORKFLOW_FLOW_ID)
 
 const props = defineProps<{
+  aiPanelOpen: boolean
   canRedo: boolean
   canRemoveSelected: boolean
   canUndo: boolean
@@ -56,7 +56,6 @@ const props = defineProps<{
   isPaused: boolean
   isRunning: boolean
   nodesLocked: boolean
-  palette: WorkflowPaletteItem[]
   runLogs: WorkflowRunLog[]
   selectedTestCaseId: string
   sourcePanelOpen: boolean
@@ -65,7 +64,6 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits<{
-  'add-node': [item: WorkflowPaletteItem]
   'arrange-nodes': []
   'cancel-run': []
   connect: [connection: Connection]
@@ -84,6 +82,7 @@ const emit = defineEmits<{
   run: []
   'share-workflow': []
   'select-test-case': [id: string]
+  'toggle-ai': []
   'toggle-nodes-locked': []
   'toggle-source': []
   'resume-run': []
@@ -197,17 +196,17 @@ const isValidConnection: ValidConnectionFunc = (connection) => {
   >
     <CanvasHeader
       v-model:active-tab="activeTab"
+      :ai-panel-open="aiPanelOpen"
       :is-paused="isPaused"
       :is-running="isRunning"
-      :palette="palette"
       :source-panel-open="sourcePanelOpen"
-      @add-node="$emit('add-node', $event)"
       @copy-schema="$emit('copy-schema')"
       @download-schema="$emit('download-schema')"
       @publish="$emit('publish')"
       @resume-run="$emit('resume-run')"
       @run="$emit('run')"
       @share-workflow="$emit('share-workflow')"
+      @toggle-ai="$emit('toggle-ai')"
       @toggle-source="$emit('toggle-source')"
     />
 
@@ -289,10 +288,9 @@ const isValidConnection: ValidConnectionFunc = (connection) => {
       </template>
     </VueFlow>
 
-    <Scrollbar
+    <div
       v-else-if="activeTab === 'test'"
-      class="min-h-0 bg-page"
-      content-class="p-14"
+      class="min-h-0 bg-page p-14 w-full h-full overflow-x-hidden overflow-y-auto"
     >
       <div class="grid gap-12 xl:grid-cols-[minmax(0,1fr)_320px]">
         <section
@@ -360,10 +358,10 @@ const isValidConnection: ValidConnectionFunc = (connection) => {
               v-for="item in testCases"
               :key="item.id"
               type="text"
-              class="!h-auto !w-full !flex-col !items-start !justify-start !whitespace-normal !rounded-8 !border-1 !border-solid !bg-container !p-12 !text-left transition hover:(!border-color-primary !bg-hover)"
+              class="!h-auto !w-full !flex-col !items-start !justify-start !whitespace-normal !rounded-8 !border-1 !border-solid !bg-container !p-12 !text-left transition hover:(!border-primary !bg-hover)"
               :class="
                 item.id === selectedTestCaseId
-                  ? '!border-color-primary'
+                  ? '!border-primary'
                   : '!border-color-2'
               "
               @click="$emit('select-test-case', item.id)"
@@ -438,9 +436,12 @@ const isValidConnection: ValidConnectionFunc = (connection) => {
           </div>
         </aside>
       </div>
-    </Scrollbar>
+    </div>
 
-    <Scrollbar v-else class="min-h-0 bg-page" content-class="p-14">
+    <div
+      v-else
+      class="min-h-0 bg-page p-14 w-full h-full overflow-x-hidden overflow-y-auto"
+    >
       <section
         class="min-h-full rounded-10 border-1 border-color-2 border-solid bg-main"
       >
@@ -480,6 +481,6 @@ const isValidConnection: ValidConnectionFunc = (connection) => {
           </div>
         </div>
       </section>
-    </Scrollbar>
+    </div>
   </main>
 </template>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useLoading } from '@/composables'
+import { useLoading } from '@/hooks'
 import { workflowLatencyRanks, workflowThroughput } from '../shared/data'
 import {
   ExecutionDetailDrawer,
@@ -8,7 +8,7 @@ import {
   WorkflowMonitorHeader,
   WorkflowOverview,
 } from './components'
-import { useWorkflowMonitor } from './composables'
+import { useWorkflowMonitor } from './hooks'
 
 const { isLoading } = useLoading({ delay: 260 })
 const {
@@ -39,7 +39,7 @@ const {
 
 <template>
   <WView :full="true" :padding="0">
-    <Scrollbar class="h-full bg-page">
+    <div class="h-full bg-page w-full overflow-x-hidden overflow-y-auto">
       <WorkflowMonitorHeader
         v-model:auto-refresh="autoRefresh"
         v-model:environment="environmentFilter"
@@ -77,7 +77,7 @@ const {
           @terminate="terminateInstance"
         />
       </main>
-    </Scrollbar>
+    </div>
 
     <ExecutionDetailDrawer
       v-model:open="detailOpen"

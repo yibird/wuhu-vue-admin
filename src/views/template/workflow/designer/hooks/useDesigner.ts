@@ -13,6 +13,12 @@ import {
 } from '@vue-flow/core'
 import { message } from 'antdv-next'
 import { useWorkflowHistory } from './useWorkflowHistory'
+import {
+  createWorkflowAiMessage,
+  generateWorkflowPlan,
+  initialWorkflowAiMessages,
+  workflowAiSuggestions,
+} from './ai'
 import { WORKFLOW_FLOW_ID } from '../constants'
 import {
   areWorkflowDataSchemasCompatible,
@@ -28,12 +34,15 @@ import {
   flowToSchema,
   formatWorkflowSchema,
   initialWorkflowSchema,
+  layoutWorkflowNodes,
   parseWorkflowSchema,
   schemaToFlow,
   workflowPalette,
   workflowPaletteGroupLabels,
 } from '../data'
 import type {
+  WorkflowAiMessage,
+  WorkflowAiPlan,
   WorkflowContextActionKey,
   WorkflowContextMenuAction,
   WorkflowContextMenuState,
@@ -179,8 +188,16 @@ export function useWorkflowDesigner(options: UseWorkflowDesignerOptions = {}) {
   })
   const breakpoints = shallowRef(new Set<string>())
   const runtime = createWorkflowRuntime()
+  const aiPanelOpen = shallowRef(false)
+  const aiPrompt = shallowRef('')
+  const aiBusy = shallowRef(false)
+  const aiPlan = shallowRef<WorkflowAiPlan | null>(null)
+  const aiMessages = shallowRef<WorkflowAiMessage[]>([
+    ...initialWorkflowAiMessages,
+  ])
   let runGeneration = 0
   let editBurstTimer: number | null = null
+  let aiTimer: number | undefined
 
   const {
     canRedo,
@@ -590,68 +607,8 @@ export function useWorkflowDesigner(options: UseWorkflowDesignerOptions = {}) {
   function arrangeNodes() {
     if (nodes.value.length < 2) return
 
-    const nodeIds = new Set(nodes.value.map((node) => node.id))
-    const incomingCount = new Map(nodes.value.map((node) => [node.id, 0]))
-    const targetsBySource = new Map<string, string[]>()
-
-    edges.value.forEach((edge) => {
-      if (!nodeIds.has(edge.source) || !nodeIds.has(edge.target)) return
-      incomingCount.set(edge.target, (incomingCount.get(edge.target) ?? 0) + 1)
-      targetsBySource.set(edge.source, [
-        ...(targetsBySource.get(edge.source) ?? []),
-        edge.target,
-      ])
-    })
-
-    const queue = nodes.value
-      .filter((node) => incomingCount.get(node.id) === 0)
-      .map((node) => node.id)
-    const levelById = new Map(queue.map((id) => [id, 0]))
-
-    while (queue.length) {
-      const sourceId = queue.shift()
-      if (!sourceId) continue
-      const sourceLevel = levelById.get(sourceId) ?? 0
-
-      ;(targetsBySource.get(sourceId) ?? []).forEach((targetId) => {
-        levelById.set(
-          targetId,
-          Math.max(levelById.get(targetId) ?? 0, sourceLevel + 1)
-        )
-        const nextIncoming = (incomingCount.get(targetId) ?? 1) - 1
-        incomingCount.set(targetId, nextIncoming)
-        if (nextIncoming === 0) queue.push(targetId)
-      })
-    }
-
-    const maxLevel = Math.max(...levelById.values(), 0)
-    nodes.value.forEach((node) => {
-      if (!levelById.has(node.id)) levelById.set(node.id, maxLevel + 1)
-    })
-
-    const nodesByLevel = new Map<number, WorkflowNode[]>()
-    nodes.value.forEach((node) => {
-      const level = levelById.get(node.id) ?? 0
-      nodesByLevel.set(level, [...(nodesByLevel.get(level) ?? []), node])
-    })
-
-    const positions = new Map<string, XYPosition>()
-    nodesByLevel.forEach((levelNodes, level) => {
-      levelNodes
-        .sort((a, b) => a.position.y - b.position.y)
-        .forEach((node, index) => {
-          positions.set(node.id, {
-            x: 80 + level * 360,
-            y: 80 + index * 250,
-          })
-        })
-    })
-
     recordHistory()
-    nodes.value = nodes.value.map((node) => ({
-      ...node,
-      position: positions.get(node.id) ?? node.position,
-    }))
+    nodes.value = layoutWorkflowNodes(nodes.value, edges.value)
     syncSchemaFromFlow()
     nextTick(() => fitView())
   }
@@ -910,6 +867,85 @@ export function useWorkflowDesigner(options: UseWorkflowDesignerOptions = {}) {
 
   function closeSourcePanel() {
     sourcePanelOpen.value = false
+  }
+
+  function sleepWithAiCleanup(ms: number) {
+    return new Promise((resolve) => {
+      if (aiTimer) window.clearTimeout(aiTimer)
+      aiTimer = window.setTimeout(resolve, ms)
+    })
+  }
+
+  function toggleAiPanel() {
+    aiPanelOpen.value = !aiPanelOpen.value
+  }
+
+  function closeAiPanel() {
+    aiPanelOpen.value = false
+  }
+
+  function applyAiSuggestion(prompt: string) {
+    aiPrompt.value = prompt
+  }
+
+  function discardAiPlan() {
+    aiPlan.value = null
+  }
+
+  async function generateWorkflowFromPrompt(prompt = aiPrompt.value) {
+    const trimmed = prompt.trim()
+    if (!trimmed || aiBusy.value) return
+
+    aiBusy.value = true
+    aiPlan.value = null
+    aiMessages.value = [
+      ...aiMessages.value,
+      createWorkflowAiMessage('user', trimmed),
+    ]
+
+    try {
+      await sleepWithAiCleanup(460)
+      const plan = generateWorkflowPlan({
+        prompt: trimmed,
+        baseSchema: getCurrentSchema(),
+      })
+      aiPlan.value = plan
+      aiMessages.value = [
+        ...aiMessages.value,
+        createWorkflowAiMessage(
+          'assistant',
+          `已生成「${plan.title}」：${plan.summary}共 ${plan.nodes.length} 个节点、${plan.edges.length} 条连线，确认后点「应用到画布」。`
+        ),
+      ]
+      aiPrompt.value = ''
+    } catch (error) {
+      aiMessages.value = [
+        ...aiMessages.value,
+        createWorkflowAiMessage(
+          'assistant',
+          error instanceof Error ? error.message : '生成失败，请调整描述后重试。'
+        ),
+      ]
+    } finally {
+      aiBusy.value = false
+    }
+  }
+
+  function applyAiPlan() {
+    const plan = aiPlan.value
+    if (!plan) return
+
+    recordHistory()
+    syncFlowFromSchema(plan.schema)
+    selectedNodeId.value = plan.schema.nodes.some(
+      (node) => node.id === selectedNodeId.value
+    )
+      ? selectedNodeId.value
+      : (plan.schema.nodes[0]?.id ?? '')
+    closeContextMenu()
+    aiPlan.value = null
+    nextTick(() => fitView())
+    message.success(`已应用「${plan.title}」`)
   }
 
   function clearSelectedNode() {
@@ -1313,6 +1349,9 @@ export function useWorkflowDesigner(options: UseWorkflowDesignerOptions = {}) {
   onBeforeUnmount(() => {
     if (editBurstTimer) window.clearTimeout(editBurstTimer)
   })
+  onBeforeUnmount(() => {
+    if (aiTimer) window.clearTimeout(aiTimer)
+  })
 
   return {
     contextActions,
@@ -1340,17 +1379,28 @@ export function useWorkflowDesigner(options: UseWorkflowDesignerOptions = {}) {
     sourcePanelOpen,
     testCases: workflowTestCases,
     workflowSchema,
+    aiBusy,
+    aiMessages,
+    aiPanelOpen,
+    aiPlan,
+    aiPrompt,
+    aiSuggestions: workflowAiSuggestions,
     addNode,
     arrangeNodes,
+    applyAiPlan,
+    applyAiSuggestion,
     applySourceCode,
     clearSelectedNode,
+    closeAiPanel,
     closeContextMenu,
     closeSourcePanel,
     copyWorkflowSchema,
+    discardAiPlan,
     downloadWorkflowSchema,
     duplicateNode,
     exportSchema,
     formatSourceCode,
+    generateWorkflowFromPrompt,
     handleConnect,
     handleContextAction,
     handleNodeClick,
@@ -1368,6 +1418,7 @@ export function useWorkflowDesigner(options: UseWorkflowDesignerOptions = {}) {
     publishWorkflow,
     shareWorkflow,
     selectTestCase,
+    toggleAiPanel,
     toggleNodesLocked,
     toggleBreakpoint,
     toggleSourcePanel,

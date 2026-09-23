@@ -19,6 +19,11 @@ const statusMeta = computed(
 )
 const actionItems = computed(() => [
   {
+    key: 'edit',
+    label: '编辑流程',
+    icon: renderIcon('i-lucide:pencil'),
+  },
+  {
     key: 'duplicate',
     label: '创建副本',
     icon: renderIcon('i-lucide:copy-plus'),
@@ -32,10 +37,21 @@ const actionItems = computed(() => [
         : 'i-lucide:circle-pause'
     ),
   },
+  { type: 'divider' },
+  {
+    key: 'delete',
+    label: '删除流程',
+    danger: true,
+    icon: renderIcon('i-lucide:trash-2'),
+  },
 ])
 
 function handleAction(info: { key: string | number }) {
   const key = String(info.key)
+  if (key === 'edit') {
+    emit('open', props.workflow)
+    return
+  }
   if (key === 'delete' || key === 'duplicate' || key === 'toggle') {
     emit('action', key, props.workflow)
   }
@@ -78,31 +94,17 @@ function handleAction(info: { key: string | number }) {
             </div>
           </div>
 
-          <div class="flex flex-none items-center gap-2">
-            <a-tooltip title="删除流程">
-              <a-button
-                type="text"
-                danger
-                aria-label="删除流程"
-                @click.stop="emit('action', 'delete', workflow)"
-              >
-                <template #icon>
-                  <Icon name="i-lucide:trash-2" />
-                </template>
-              </a-button>
-            </a-tooltip>
-            <a-dropdown
-              :trigger="['click']"
-              :menu="{ items: actionItems }"
-              @menu-click="handleAction"
-            >
-              <a-button type="text" aria-label="更多流程操作" @click.stop>
-                <template #icon>
-                  <Icon name="i-lucide:more-horizontal" />
-                </template>
-              </a-button>
-            </a-dropdown>
-          </div>
+          <a-dropdown
+            :trigger="['click']"
+            :menu="{ items: actionItems }"
+            @menu-click="handleAction"
+          >
+            <a-button type="text" aria-label="更多流程操作" @click.stop>
+              <template #icon>
+                <Icon name="i-lucide:more-horizontal" />
+              </template>
+            </a-button>
+          </a-dropdown>
         </div>
 
         <p
@@ -125,16 +127,6 @@ function handleAction(info: { key: string | number }) {
           更新于 {{ workflow.updatedAt }}
         </div>
       </div>
-      <a-button
-        type="link"
-        class="flex-none"
-        @click.stop="emit('open', workflow)"
-      >
-        进入设计器
-        <template #icon>
-          <Icon name="i-lucide:arrow-up-right" />
-        </template>
-      </a-button>
     </div>
   </Motion>
 </template>

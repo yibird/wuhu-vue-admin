@@ -1,13 +1,13 @@
 <script lang="ts" setup>
 import { useRoute } from 'vue-router'
 import {
+  AiPanel as WorkflowAiPanel,
   Canvas as WorkflowCanvas,
   ContextMenu as WorkflowContextMenu,
   Inspector as WorkflowInspector,
   SourcePanel as WorkflowSourcePanel,
 } from './components'
-import { workflowPalette } from './data'
-import { useWorkflowDesigner } from './composables'
+import { useWorkflowDesigner } from './hooks'
 import { findWorkflowDefinition } from '../shared/data'
 
 const route = useRoute()
@@ -43,15 +43,25 @@ const {
   sourcePanelOpen,
   testCases,
   workflowSchema,
-  addNode,
+  aiBusy,
+  aiMessages,
+  aiPanelOpen,
+  aiPlan,
+  aiPrompt,
+  aiSuggestions,
   arrangeNodes,
+  applyAiPlan,
+  applyAiSuggestion,
   applySourceCode,
   clearSelectedNode,
+  closeAiPanel,
   closeContextMenu,
   closeSourcePanel,
   copyWorkflowSchema,
+  discardAiPlan,
   downloadWorkflowSchema,
   formatSourceCode,
+  generateWorkflowFromPrompt,
   handleConnect,
   handleContextAction,
   handleNodeClick,
@@ -67,6 +77,7 @@ const {
   runWorkflow,
   shareWorkflow,
   selectTestCase,
+  toggleAiPanel,
   toggleNodesLocked,
   toggleSourcePanel,
   updateSelectedConfig,
@@ -84,6 +95,7 @@ const {
       <WorkflowCanvas
         v-model:nodes="nodes"
         v-model:edges="edges"
+        :ai-panel-open="aiPanelOpen"
         :can-redo="canRedo"
         :can-remove-selected="canRemoveSelected"
         :can-undo="canUndo"
@@ -91,14 +103,12 @@ const {
         :is-paused="isPaused"
         :is-running="isRunning"
         :nodes-locked="nodesLocked"
-        :palette="workflowPalette"
         :run-logs="runLogs"
         :source-panel-open="sourcePanelOpen"
         :title="workflowSchema.title"
         :validation-issues="validationIssues"
         :selected-test-case-id="selectedTestCaseId"
         :test-cases="testCases"
-        @add-node="addNode"
         @arrange-nodes="arrangeNodes"
         @connect="handleConnect"
         @cancel-run="cancelWorkflow"
@@ -119,6 +129,7 @@ const {
         @publish="publishWorkflow"
         @share-workflow="shareWorkflow"
         @toggle-nodes-locked="toggleNodesLocked"
+        @toggle-ai="toggleAiPanel"
         @toggle-source="toggleSourcePanel"
         @undo="undoWorkflow"
       />
@@ -135,6 +146,23 @@ const {
         @format="formatSourceCode"
         @source-change="handleSourceCodeChange"
       />
+
+      <Transition name="slide-left">
+        <WorkflowAiPanel
+          v-if="aiPanelOpen"
+          v-model:prompt="aiPrompt"
+          class="absolute bottom-12 left-12 top-60 z-20 w-400 max-w-[calc(100%-24px)]"
+          :busy="aiBusy"
+          :messages="aiMessages"
+          :plan="aiPlan"
+          :suggestions="aiSuggestions"
+          @apply="applyAiPlan"
+          @apply-suggestion="applyAiSuggestion"
+          @close="closeAiPanel"
+          @discard="discardAiPlan"
+          @generate="generateWorkflowFromPrompt()"
+        />
+      </Transition>
 
       <Transition name="slide-right">
         <WorkflowInspector

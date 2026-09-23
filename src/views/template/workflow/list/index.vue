@@ -1,17 +1,14 @@
 <script setup lang="ts">
 import message from 'antdv-next/dist/message/index'
 import Modal from 'antdv-next/dist/modal/index'
-import { useRouter } from 'vue-router'
-import { useLoading, usePageEnter } from '@/composables'
+import { useLoading, useTabs } from '@/hooks'
 import { WorkflowCard, WorkflowToolbar } from './components'
-import { useWorkflowList } from './composables'
+import { useWorkflowList } from './hooks'
 import type { WorkflowDefinition } from '../shared/types'
 
-const router = useRouter()
-const pageRef = useTemplateRef<HTMLElement>('pageRef')
+const { openRouteTab } = useTabs()
 const { isLoading } = useLoading({ delay: 280 })
 
-usePageEnter(pageRef)
 const {
   currentPage,
   draftCount,
@@ -31,8 +28,10 @@ const {
 } = useWorkflowList()
 
 function openDesigner(workflow?: WorkflowDefinition) {
-  router.push({
+  openRouteTab({
     path: '/template/workflow/designer',
+    title: workflow?.name ?? '新建流程',
+    icon: workflow?.icon ?? 'i-lucide:workflow',
     query: workflow ? { workflowId: workflow.id } : { mode: 'create' },
   })
 }
@@ -79,10 +78,7 @@ function handleCardAction(
 
 <template>
   <WView :full="true" :padding="0">
-    <div
-      ref="pageRef"
-      class="h-full min-h-0 flex flex-col overflow-hidden bg-page"
-    >
+    <div class="h-full min-h-0 flex flex-col overflow-hidden bg-page">
       <WorkflowToolbar
         class="page-enter page-enter--1 flex-none"
         v-model:keyword="keyword"

@@ -54,7 +54,6 @@ interface DefinitionOptions {
   description: string
   icon: string
   accent: string
-  gradient?: [string, string]
   inputs?: WorkflowNodePortSchema[]
   outputs?: WorkflowNodePortSchema[]
   config?: WorkflowNodeConfigFieldSchema[]
@@ -65,46 +64,6 @@ interface DefinitionOptions {
   palette?: boolean
 }
 
-/** 各节点的品牌渐变（起始色 → 结束色） */
-const nodeGradients: Record<WorkflowNodeKind, [string, string]> = {
-  start: ['#2563eb', '#06b6d4'],
-  end: ['#16a34a', '#84cc16'],
-  variable: ['#64748b', '#94a3b8'],
-  'set-variable': ['#475569', '#0ea5e9'],
-  llm: ['#4f46e5', '#c026d3'],
-  agent: ['#7c3aed', '#2563eb'],
-  tool: ['#0ea5e9', '#8b5cf6'],
-  'question-classifier': ['#8b5cf6', '#ec4899'],
-  'parameter-extractor': ['#6366f1', '#14b8a6'],
-  embedding: ['#6366f1', '#06b6d4'],
-  rerank: ['#8b5cf6', '#f43f5e'],
-  http: ['#0284c7', '#22d3ee'],
-  database: ['#0f766e', '#14b8a6'],
-  code: ['#059669', '#84cc16'],
-  file: ['#0f766e', '#0ea5e9'],
-  'document-extractor': ['#0d9488', '#6366f1'],
-  'template-transform': ['#0891b2', '#8b5cf6'],
-  'variable-aggregator': ['#0ea5e9', '#22c55e'],
-  'list-operator': ['#14b8a6', '#eab308'],
-  knowledge: ['#0891b2', '#6366f1'],
-  'if-else': ['#d97706', '#facc15'],
-  switch: ['#ca8a04', '#f97316'],
-  condition: ['#d97706', '#ef4444'],
-  loop: ['#9333ea', '#6366f1'],
-  iterator: ['#9333ea', '#0ea5e9'],
-  parallel: ['#ea580c', '#f59e0b'],
-  subflow: ['#0d9488', '#2563eb'],
-  'workflow-input': ['#0d9488', '#22c55e'],
-  'workflow-output': ['#0d9488', '#14b8a6'],
-  approval: ['#e11d48', '#f97316'],
-  'human-input': ['#db2777', '#8b5cf6'],
-  delay: ['#ca8a04', '#64748b'],
-  plugin: ['#dc2626', '#f97316'],
-  webhook: ['#2563eb', '#8b5cf6'],
-  message: ['#db2777', '#0ea5e9'],
-  answer: ['#06b6d4', '#4f46e5'],
-}
-
 function defineNode(options: DefinitionOptions): WorkflowNodeDefinition {
   return {
     version: WORKFLOW_DSL_VERSION,
@@ -112,7 +71,6 @@ function defineNode(options: DefinitionOptions): WorkflowNodeDefinition {
     outputs: [],
     config: [],
     defaults: {},
-    gradient: nodeGradients[options.kind],
     executable: true,
     sideEffect: false,
     supportsRetry: true,

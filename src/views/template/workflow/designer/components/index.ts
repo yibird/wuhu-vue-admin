@@ -1,3 +1,4 @@
+export { default as AiPanel } from './AiPanel.vue'
 export { default as Canvas } from './Canvas.vue'
 export { default as CanvasHeader } from './CanvasHeader.vue'
 export { default as CanvasToolbar } from './CanvasToolbar.vue'
