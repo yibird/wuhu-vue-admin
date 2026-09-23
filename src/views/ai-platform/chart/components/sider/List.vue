@@ -1,5 +1,5 @@
 <template>
-  <Scrollbar class="min-h-0 flex-1 overflow-hidden">
+  <div class="min-h-0 flex-1 w-full h-full overflow-x-hidden overflow-y-auto">
     <Transition name="fade" mode="out-in">
       <div
         v-if="!collapsed && items.length === 0"
@@ -126,7 +126,7 @@
         </div>
       </TransitionGroup>
     </Transition>
-  </Scrollbar>
+  </div>
 </template>
 
 <script setup lang="ts">

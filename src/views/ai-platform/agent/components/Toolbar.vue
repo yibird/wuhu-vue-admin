@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { AgentPageConfig, AgentSort } from '../types'
-import type { AgentStatusFilter } from '../composables'
+import type { AgentStatusFilter } from '../hooks'
 
 const props = defineProps<{
   config: AgentPageConfig

@@ -1,17 +1,11 @@
 <script setup lang="ts">
 import { message, Modal } from 'antdv-next'
-import { AnimatePresence, LayoutGroup, Motion, MotionConfig } from 'motion-v'
-import { useLoading, usePageEnter } from '@/composables'
-import {
-  cardListMotionAnimate,
-  cardListMotionExit,
-  cardListMotionInitial,
-  cardListMotionTransition,
-} from '@/styles'
+import { AnimatedGroup } from '@/components'
+import { useLoading } from '@/hooks'
 import ModelCard from './ModelCard.vue'
 import ModelConfigDrawer from './ModelConfigDrawer.vue'
 import Toolbar from './Toolbar.vue'
-import { useModelList } from '../composables'
+import { useModelList } from '../hooks'
 import type {
   ModelAction,
   ModelCreateInput,
@@ -27,9 +21,7 @@ const props = defineProps<{
 const { isLoading } = useLoading({ delay: 220 })
 const createDrawerOpen = shallowRef(false)
 const editingItem = shallowRef<ModelItem>()
-const pageRef = useTemplateRef<HTMLElement>('pageRef')
 
-usePageEnter(pageRef)
 const {
   configuredCount,
   currentPage,
@@ -120,10 +112,7 @@ function handleCardAction(action: ModelAction, item: ModelItem) {
 
 <template>
   <WView :full="true" :padding="0">
-    <div
-      ref="pageRef"
-      class="h-full min-h-0 flex flex-col overflow-hidden bg-page"
-    >
+    <div class="h-full min-h-0 flex flex-col overflow-hidden bg-page">
       <Toolbar
         class="page-enter page-enter--1"
         v-model:keyword="keyword"
@@ -163,35 +152,27 @@ function handleCardAction(action: ModelAction, item: ModelItem) {
           <a-button @click="resetFilters">清除筛选</a-button>
         </a-empty>
 
-        <MotionConfig v-else reduced-motion="user">
-          <LayoutGroup id="model-card-list">
-            <AnimatePresence
-              as="div"
-              mode="popLayout"
-              :initial="false"
-              class="grid grid-cols-1 gap-12 md:grid-cols-3 2xl:grid-cols-4"
-            >
-              <Motion
-                v-for="item in paginatedItems"
-                :key="item.id"
-                as="div"
-                layout="position"
-                :initial="cardListMotionInitial"
-                :animate="cardListMotionAnimate"
-                :exit="cardListMotionExit"
-                :transition="cardListMotionTransition"
-                class="min-w-0"
-              >
-                <ModelCard
-                  class="h-full"
-                  :item="item"
-                  :status-labels="props.config.statusLabels"
-                  @action="handleCardAction"
-                />
-              </Motion>
-            </AnimatePresence>
-          </LayoutGroup>
-        </MotionConfig>
+        <AnimatedGroup
+          v-else
+          id="model-card-list"
+          reduced-motion="user"
+          :items="paginatedItems"
+          :get-key="(item: ModelItem) => item.id"
+          as="div"
+          class="grid grid-cols-1 gap-12 md:grid-cols-3 2xl:grid-cols-4"
+          motion-as="div"
+          layout="position"
+          motion-class="min-w-0"
+        >
+          <template #default="{ item }">
+            <ModelCard
+              class="h-full"
+              :item="item"
+              :status-labels="props.config.statusLabels"
+              @action="handleCardAction"
+            />
+          </template>
+        </AnimatedGroup>
       </main>
 
       <footer

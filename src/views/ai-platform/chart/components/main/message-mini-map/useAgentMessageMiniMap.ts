@@ -7,12 +7,11 @@ import {
   type MaybeRefOrGetter,
 } from 'vue'
 import type { AgentMessage } from '../../types'
-import type { ScrollbarInstance } from '@/components/scrollbar'
 import type { MessageMiniMapItem } from './types'
 
 interface UseAgentMessageMiniMapOptions {
   messages: MaybeRefOrGetter<AgentMessage[]>
-  scrollbar: MaybeRefOrGetter<ScrollbarInstance | null>
+  container: MaybeRefOrGetter<HTMLElement | null>
 }
 
 const PREVIEW_MAX_LENGTH = 56
@@ -24,21 +23,20 @@ export function useAgentMessageMiniMap(options: UseAgentMessageMiniMapOptions) {
   let highlightTimer: number | undefined
 
   function syncItems() {
-    const scrollbar = toValue(options.scrollbar)
-    const contentElement = scrollbar?.getContentElement()
-    container.value = scrollbar?.getScrollElement() ?? null
+    const element = toValue(options.container)
+    container.value = element
 
-    if (!contentElement) {
+    if (!element) {
       items.value = []
       return
     }
 
     const elements = new Map<string, HTMLElement>()
-    for (const element of contentElement.querySelectorAll<HTMLElement>(
+    for (const child of element.querySelectorAll<HTMLElement>(
       '[data-agent-message-id]'
     )) {
-      const id = element.dataset.agentMessageId
-      if (id) elements.set(id, element)
+      const id = child.dataset.agentMessageId
+      if (id) elements.set(id, child)
     }
 
     items.value = toValue(options.messages).map((message) => ({

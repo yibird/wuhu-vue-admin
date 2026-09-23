@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { providerOptions } from '../data'
 import type { ModelPageConfig, ModelProvider } from '../types'
-import type { ModelProviderFilter, ModelStatusFilter } from '../composables'
+import type { ModelProviderFilter, ModelStatusFilter } from '../hooks'
 import type { ModelSort } from '../types'
 
 const props = defineProps<{

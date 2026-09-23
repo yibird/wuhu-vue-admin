@@ -171,10 +171,9 @@
     </header>
 
     <div class="agent-message-panel relative min-h-0 min-w-0">
-      <Scrollbar
+      <div
         ref="messagePanelRef"
-        class="min-h-0 min-w-0"
-        content-class="box-border mx-auto min-h-full min-w-0 w-full max-w-1680 px-40 pb-28 pt-38 max-2xl:max-w-1480 max-xl:max-w-none max-xl:px-28 max-md:px-16 max-md:pb-24 max-md:pt-24"
+        class="box-border mx-auto min-h-0 min-w-0 w-full h-full max-w-1680 overflow-x-hidden overflow-y-auto px-40 pb-28 pt-38 max-2xl:max-w-1480 max-xl:max-w-none max-xl:px-28 max-md:px-16 max-md:pb-24 max-md:pt-24"
       >
         <div
           v-if="messages.length === 0"
@@ -257,7 +256,7 @@
             </button>
           </div>
         </div>
-      </Scrollbar>
+      </div>
 
       <Transition name="fade-slide-right">
         <MessageMiniMap
@@ -299,7 +298,7 @@
             v-for="suggestion in suggestions"
             :key="suggestion.id"
             type="button"
-            class="shrink-0 inline-flex items-center gap-6 rounded-full border-1 border-color-2 border-solid bg-main px-10 py-6 text-xs text-regular cursor-pointer transition-colors hover:(border-color-primary bg-hover text-main)"
+            class="shrink-0 inline-flex items-center gap-6 rounded-full border-1 border-color-2 border-solid bg-main px-10 py-6 text-xs text-regular cursor-pointer transition-colors hover:(border-primary bg-hover text-main)"
             @click="useSuggestion(suggestion.prompt)"
           >
             <Icon :name="suggestion.icon" :size="14" />
@@ -384,7 +383,6 @@ import MessageItem from './MessageItem.vue'
 import MessageMiniMap from './message-mini-map/MessageMiniMap.vue'
 import { useAgentMessageMiniMap } from './message-mini-map/useAgentMessageMiniMap'
 import Send from './Send.vue'
-import type { ScrollbarInstance } from '@/components'
 import type {
   AgentGenerationConfig,
   AgentMessage,
@@ -409,14 +407,14 @@ const editingMessageId = shallowRef('')
 const editingContent = shallowRef('')
 const editModalOpen = shallowRef(false)
 const editorRef = useTemplateRef<{ focus: () => void }>('editorRef')
-const messagePanelRef = useTemplateRef<ScrollbarInstance>('messagePanelRef')
+const messagePanelRef = useTemplateRef<HTMLElement>('messagePanelRef')
 const {
   container: miniMapContainer,
   items: miniMapItems,
   handleSelect: handleMiniMapSelect,
 } = useAgentMessageMiniMap({
   messages: () => props.messages,
-  scrollbar: messagePanelRef,
+  container: messagePanelRef,
 })
 let scrollFrame = 0
 
@@ -478,7 +476,7 @@ watch(
     nextTick(() => {
       window.cancelAnimationFrame(scrollFrame)
       scrollFrame = window.requestAnimationFrame(() => {
-        const target = messagePanelRef.value?.getScrollElement()
+        const target = messagePanelRef.value
         if (!target) return
         target.scrollTo({
           top: target.scrollHeight,
