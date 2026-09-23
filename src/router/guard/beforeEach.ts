@@ -1,6 +1,6 @@
 import { authStore, permissionStore } from '@/store'
 import { menus } from '@/config'
-import { usePermission } from '@/composables/usePermission'
+import { usePermission } from '@/hooks/usePermission'
 import { getToken } from '@/utils'
 import { getSafeRedirect } from '../utils'
 

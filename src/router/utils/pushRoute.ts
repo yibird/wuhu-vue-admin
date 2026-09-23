@@ -34,12 +34,7 @@ export function pushRoute(
     routeQueue = new Map()
     pendingRoutePushes.set(router, routeQueue)
   }
-
   const key = resolved.fullPath
-
-  /**
-   * 已存在相同导航请求，直接复用
-   */
   const pending = routeQueue.get(key)
 
   if (pending) return pending

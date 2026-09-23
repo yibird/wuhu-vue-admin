@@ -11,9 +11,7 @@ export function useRegisterRoutes(router: Router) {
     for (const menu of treeToList(menus)) {
       if (!isMenu(menu)) continue
       const route = menuToRoute(menu)
-      if (!route || typeof route.name !== 'string') {
-        continue
-      }
+      if (!route) continue
       router.addRoute('index', route)
     }
     isRegistered.value = true

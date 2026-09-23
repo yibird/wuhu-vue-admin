@@ -4,17 +4,23 @@ import type { RouteLocationNormalized } from 'vue-router'
  * Router Plugin Hooks
  */
 export interface RouterPluginHooks {
-  /** Called before route change starts */
+  /**
+   * 路由变化开始前调用
+   */
   onBeforeEach?: (
     to: RouteLocationNormalized,
     from: RouteLocationNormalized
   ) => Promise<boolean | undefined> | boolean | undefined | void
-  /** Called when route is resolved */
+  /**
+   * 路由变化开始前调用
+   */
   onBeforeResolve?: (
     to: RouteLocationNormalized,
     from: RouteLocationNormalized
   ) => Promise<boolean | undefined> | boolean | undefined | void
-  /** Called after route is finished */
+  /**
+   * 路由变化完成后调用
+   */
   onAfterEach?: (
     to: RouteLocationNormalized,
     from: RouteLocationNormalized
@@ -25,11 +31,17 @@ export interface RouterPluginHooks {
  * Router Plugin Interface
  */
 export interface RouterPlugin {
-  /** Plugin name */
+  /**
+   * 插件名称
+   */
   name: string
-  /** Plugin hooks */
+  /**
+   * 插件钩子函数
+   */
   hooks: RouterPluginHooks
-  /** Optional cleanup called when router is disposed */
+  /**
+   * 插件销毁时调用的清理函数
+   */
   onDispose?: () => void
 }
 
@@ -37,6 +49,8 @@ export interface RouterPlugin {
  * Router Plugin Options
  */
 export interface RouterPluginOptions {
-  /** Plugins to register */
+  /**
+   * 插件列表
+   */
   plugins?: RouterPlugin[]
 }

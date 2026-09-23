@@ -2,26 +2,36 @@ import type { RouteRecordRaw } from 'vue-router'
 
 export interface IRouteMeta {
   /**
-   * @desc 菜单id
+   * 菜单id
    */
   id?: string
   /**
-   * @desc 标题
+   * 标题
    */
   title?: string
   /**
-   * @desc 组件名称
+   * 组件名称
    */
   componentName?: string
-  /** Whether the route can be visited without an authenticated session. */
+  /**
+   * 是否公开路由
+   */
   public?: boolean
-  /** Permission keys accepted by this route. */
+  /**
+   * 权限标识
+   */
   permission?: string
-  /** Whether the rendered route component should be cached. */
+  /**
+   * 是否缓存
+   */
   keepAlive?: boolean
-  /** Whether the route is intentionally hidden from navigation. */
+  /**
+   * 是否隐藏在菜单中
+   */
   hideInMenu?: boolean
-  /** Whether the route points to an external resource. */
+  /**
+   * 是否外部链接
+   */
   isExternal?: boolean
 }
 

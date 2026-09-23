@@ -1,15 +1,10 @@
 import { progressBarPlugin } from './progressBar'
-import { routeTabPlugin } from './routeTab'
 import { titlePlugin } from './title'
 
 import type { Router } from 'vue-router'
 import type { RouterPlugin } from './types'
 
-export const plugins: RouterPlugin[] = [
-  progressBarPlugin,
-  titlePlugin,
-  routeTabPlugin,
-]
+export const plugins: RouterPlugin[] = [progressBarPlugin, titlePlugin]
 
 export function setupRouterPlugins(
   router: Router,

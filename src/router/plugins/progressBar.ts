@@ -1,7 +1,6 @@
 import topbar, { type TopbarConfigOptions } from 'topbar'
+import { watch, type WatchStopHandle } from 'vue'
 import { useAppStore } from '@/store'
-import type { RouterPlugin } from './types'
-import type { WatchStopHandle } from 'vue'
 
 const defaultOptions: TopbarConfigOptions = {
   barThickness: 2,
@@ -13,20 +12,16 @@ const defaultOptions: TopbarConfigOptions = {
   shadowBlur: 0,
 }
 
-export function createProgressBarPlugin(
-  options: TopbarConfigOptions = {}
-): RouterPlugin {
+export function createProgressBarPlugin(options: TopbarConfigOptions = {}) {
   const mergedOptions = {
     ...defaultOptions,
     ...options,
   }
 
-  let stopThemeColorWatcher: WatchStopHandle | undefined
-
+  let watcher: WatchStopHandle | undefined
   const createBarColors = (themeColor?: string) => {
     const color = themeColor?.trim()
     if (!color) return mergedOptions.barColors
-
     return {
       '0.2': `rgba(${color}, .75)`,
       '0.6': `rgba(${color}, .85)`,
@@ -34,22 +29,17 @@ export function createProgressBarPlugin(
     }
   }
 
-  const applyTopbarConfig = (themeColor?: string) => {
+  const setConfig = (themeColor?: string) => {
     topbar.config({
       ...mergedOptions,
       barColors: createBarColors(themeColor),
     })
   }
 
-  const ensureThemeColorWatcher = () => {
-    if (stopThemeColorWatcher) return
-
+  const watchThemeColor = () => {
+    if (watcher) return
     const { app } = useAppStore()
-    stopThemeColorWatcher = watch(
-      () => app.value.themeColor,
-      applyTopbarConfig,
-      { immediate: true }
-    )
+    watcher = watch(() => app.value.themeColor, setConfig, { immediate: true })
   }
 
   return {
@@ -57,9 +47,8 @@ export function createProgressBarPlugin(
     hooks: {
       onBeforeEach() {
         const { animation } = useAppStore()
-        const enableProgressBar = animation.value.enableProgressBar
-        if (!enableProgressBar) return
-        ensureThemeColorWatcher()
+        if (!animation.value.enableProgressBar) return
+        watchThemeColor()
         topbar.show()
       },
       onAfterEach() {
@@ -67,8 +56,8 @@ export function createProgressBarPlugin(
       },
     },
     onDispose() {
-      stopThemeColorWatcher?.()
-      stopThemeColorWatcher = undefined
+      watcher?.()
+      watcher = undefined
     },
   }
 }

@@ -1,5 +1,4 @@
 import { defineComponent, h } from 'vue'
-import { isUrl } from '@/utils'
 import { normalizePath } from './path'
 
 import type { Component } from 'vue'
@@ -20,14 +19,11 @@ const routeModules = import.meta.glob<RouteModule>(
 
 const VIEW_BASE = '/src/views'
 const VIEW_FILE_SUFFIXES = [
-  '/entry/index.vue',
-  '/entry/index.tsx',
   '/index/index.vue',
   '/index/index.tsx',
   '/index.vue',
   '/index.tsx',
 ] as const
-const ROUTE_MENU_TYPES = [1, 2]
 
 /**
  * 从视图文件路径提取路由路径
@@ -35,7 +31,7 @@ const ROUTE_MENU_TYPES = [1, 2]
  * @param filePath - 视图文件路径（如 /src/views/user/list/index.vue）
  * @returns 路由路径（如 /user/list），如果不匹配返回 undefined
  */
-function toRoutePathFromViewFile(filePath: string) {
+function toRoutePath(filePath: string) {
   const normalized = filePath.replaceAll('\\', '/')
   for (const suffix of VIEW_FILE_SUFFIXES) {
     if (!normalized.endsWith(suffix)) continue
@@ -53,7 +49,7 @@ function toRoutePathFromViewFile(filePath: string) {
 function createRouteModuleCache() {
   const cache = new Map<string, RouteLoader<RouteModule>>()
   for (const [filePath, loader] of Object.entries(routeModules)) {
-    const routePath = toRoutePathFromViewFile(filePath)
+    const routePath = toRoutePath(filePath)
     if (!routePath) continue
     if (cache.has(routePath)) {
       console.warn(`[router] Duplicate route component: ${routePath}`)
@@ -65,6 +61,19 @@ function createRouteModuleCache() {
 }
 
 const moduleCache = createRouteModuleCache()
+
+/**
+ * 根据路由 path 获取组件名,组件名用于 KeepAlive 缓存控制
+ * @param path 路由 path
+ * @returns 组件名
+ */
+export function getComponentName(path: string) {
+  return path
+    .split(/[/-]/)
+    .filter(Boolean)
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join('')
+}
 
 /**
  * 创建带名称的路由组件
@@ -84,32 +93,6 @@ const createRouteComponent = (
       return () => h(AsyncComponent, attrs, slots)
     },
   })
-}
-
-/**
- * 判断是否为路由菜单（非外链）
- *
- * @param menu - 菜单项
- * @returns true 表示是路由菜单，false 表示是外链或无效菜单
- */
-export function isMenu(menu: IMenu): menu is RequiredKeys<IMenu, 'path'> {
-  return (
-    ROUTE_MENU_TYPES.includes(menu.type) && !!menu.path && !isUrl(menu.path)
-  )
-}
-
-/**
- * 根据菜单path获取组件名
- *
- * @param path 菜单path
- * @returns 组件名
- */
-export function getComponentName(path: string) {
-  return path
-    .split(/[/-]/)
-    .filter(Boolean)
-    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
-    .join('')
 }
 
 /**
@@ -149,12 +132,12 @@ export const menuToRoute = (
     return null
   }
   // 3.获取组件名,组件名用于Keepalive缓存控制
-  const componentName = getComponentName(menu.path)
+  const componentName = getComponentName(routePath)
   // 4. 根据loader和组件名创建route 组件
   const component = createRouteComponent(loader, componentName)
 
   return {
-    path: menu.path,
+    path: routePath,
     name: componentName,
     component,
     meta: getRouteMeta(menu),

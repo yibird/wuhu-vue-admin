@@ -7,12 +7,26 @@ import type { IRouteMeta } from '../types'
  * Title Plugin Options
  */
 export interface TitlePluginOptions {
-  /** Default title to show when route has no title */
+  /**
+   * 默认标题
+   */
   defaultTitle?: string
-  /** Title suffix appended to all titles */
+  /**
+   * 标题后缀
+   */
   titleSuffix?: string
-  /** Separator between title and suffix */
+  /**
+   * 标题分隔符
+   */
   separator?: string
+}
+
+/**
+ * 从路由元数据中获取页面标题
+ */
+function getPageTitle(to: RouteLocationNormalized): string | undefined {
+  const meta = to.meta as IRouteMeta
+  return meta?.title
 }
 
 /**
@@ -25,35 +39,22 @@ export function createTitlePlugin(
   const { defaultTitle = '', titleSuffix = '', separator = ' - ' } = options
 
   /**
-   * Get page title from route
-   */
-  function getPageTitle(to: RouteLocationNormalized): string | undefined {
-    const meta = to.meta as IRouteMeta
-    return meta?.title
-  }
-
-  /**
    * Build full title string
    */
-  function buildTitle(pageTitle?: string): string {
+  function getTitle(pageTitle?: string): string {
     const parts: string[] = []
-
     if (pageTitle) {
       parts.push(pageTitle)
     }
-
     if (defaultTitle) {
       parts.push(defaultTitle)
     }
-
     let title = parts.join(separator)
-
     if (titleSuffix && title) {
       title += separator + titleSuffix
     } else if (titleSuffix) {
       title = titleSuffix
     }
-
     return title || defaultTitle
   }
 
@@ -62,7 +63,7 @@ export function createTitlePlugin(
     hooks: {
       onBeforeEach(to) {
         const pageTitle = getPageTitle(to)
-        const title = buildTitle(pageTitle)
+        const title = getTitle(pageTitle)
         if (title) {
           useTitle(title)
         }

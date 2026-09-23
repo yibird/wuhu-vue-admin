@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { setupTabGuards } from '@/config/tab-guards'
 import { routes } from './routes'
-import { useRegisterRoutes } from './composable'
+import { useRegisterRoutes } from './composable/useRegisterRoutes'
 import { plugins, setupRouterPlugins } from './plugins'
 import { setupGlobalRouteGuard } from './guard'
 import type { App } from 'vue'
@@ -15,10 +16,11 @@ export async function setupRouter(app: App) {
   if (!isRegistered.value) {
     await registerRoutes()
   }
+  setupTabGuards()
   setupGlobalRouteGuard(router)
-  const pluginRegistration = setupRouterPlugins(router, plugins)
+  const routerPlugins = setupRouterPlugins(router, plugins)
   app.use(router)
   return () => {
-    pluginRegistration.dispose()
+    routerPlugins.dispose()
   }
 }

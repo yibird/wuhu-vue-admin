@@ -3,13 +3,12 @@ export { useGo } from './composable'
 export { plugins, setupRouterPlugins } from './plugins'
 export { router, setupRouter } from './setup'
 export {
-  isMenu,
   getComponentName,
   getSafeRedirect,
+  isMenu,
   menuToRoute,
   normalizePath,
   toChildRoutePath,
-  toPascalCase,
 } from './utils'
 export type {
   RouterPlugin,
