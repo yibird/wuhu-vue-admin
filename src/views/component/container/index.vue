@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { usePreferredReducedMotion, useScroll, useToggle } from '@vueuse/core'
-import { Icon, LazyContainer, ResizeContainer, Scrollbar } from '@/components'
+import { Icon, LazyContainer, ResizeContainer } from '@/components'
 import type { ContainerSize } from '@/components/container'
 
 const lazyViewportRef = useTemplateRef<HTMLElement>('lazyViewportRef')
@@ -35,7 +35,7 @@ const onResize = (size: ContainerSize) => {
 
 <template>
   <WView :full="true" :padding="false" class="bg-page">
-    <Scrollbar class="h-full" content-class="min-h-full p-16 md:p-20">
+    <div class="h-full min-h-full w-full p-16 md:p-20 overflow-x-hidden overflow-y-auto">
       <section
         class="mx-auto max-w-1280 rounded-8 border-1 border-color-1 border-solid bg-container p-16 shadow-all-sm md:p-20"
       >
@@ -210,6 +210,6 @@ const onResize = (size: ContainerSize) => {
           </article>
         </div>
       </section>
-    </Scrollbar>
+    </div>
   </WView>
 </template>

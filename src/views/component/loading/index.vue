@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { Loading } from '@/components/loading'
 import { Icon } from '@/components/icon'
-import { Scrollbar } from '@/components/scrollbar'
 import { LoadingAnimation } from '@/constants'
 import type { LoadingAnimation as LoadingAnimationValue } from '@/config'
 
@@ -34,7 +33,7 @@ onBeforeUnmount(() => {
 
 <template>
   <WView :full="true" :padding="false" class="bg-page">
-    <Scrollbar class="h-full" content-class="min-h-full p-16 md:p-20">
+    <div class="h-full min-h-full w-full p-16 md:p-20 overflow-x-hidden overflow-y-auto">
       <section
         class="mx-auto max-w-1280 rounded-8 border-1 border-color-1 border-solid bg-container p-16 shadow-all-sm md:p-20"
       >
@@ -79,7 +78,7 @@ onBeforeUnmount(() => {
           </div>
         </div>
       </section>
-    </Scrollbar>
+    </div>
     <Loading
       v-if="fullScreenVisible"
       :type="loadingType"

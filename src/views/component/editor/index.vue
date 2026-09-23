@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { shallowRef } from 'vue'
 import { Editor } from '@/components/editor'
-import { Scrollbar } from '@/components/scrollbar'
 
 const editorContent = shallowRef(`
   <h2>组件库设计规范</h2>
@@ -12,7 +11,7 @@ const editorContent = shallowRef(`
 
 <template>
   <WView :full="true" :padding="false" class="bg-page">
-    <Scrollbar class="h-full" content-class="min-h-full p-16 md:p-20">
+    <div class="h-full min-h-full w-full p-16 md:p-20 overflow-x-hidden overflow-y-auto">
       <section
         class="mx-auto max-w-1280 rounded-8 border-1 border-color-1 border-solid bg-container p-16 shadow-all-sm md:p-20"
       >
@@ -35,6 +34,6 @@ const editorContent = shallowRef(`
           placeholder="输入组件文档..."
         />
       </section>
-    </Scrollbar>
+    </div>
   </WView>
 </template>

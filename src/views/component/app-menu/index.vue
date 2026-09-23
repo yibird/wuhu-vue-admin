@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { AppMenu } from '@/layouts/menu'
-import { Scrollbar } from '@/components/scrollbar'
 import { menus } from '@/config'
 
 const collapsed = shallowRef(false)
@@ -9,7 +8,7 @@ const dashboardMenus = computed(() => (menus[0] ? [menus[0]] : []))
 
 <template>
   <WView :full="true" :padding="false" class="bg-page">
-    <Scrollbar class="h-full" content-class="min-h-full p-16 md:p-20">
+    <div class="h-full min-h-full w-full p-16 md:p-20 overflow-x-hidden overflow-y-auto">
       <section
         class="mx-auto max-w-1280 rounded-8 border-1 border-color-1 border-solid bg-container p-16 shadow-all-sm md:p-20"
       >
@@ -34,17 +33,17 @@ const dashboardMenus = computed(() => (menus[0] ? [menus[0]] : []))
             class="h-420 overflow-hidden rounded-6 border-1 border-color-2 border-solid bg-container"
             :class="collapsed ? 'w-72' : 'w-240 max-w-full'"
           >
-            <Scrollbar>
+            <div class="w-full h-full overflow-x-hidden overflow-y-auto">
               <AppMenu
                 :items="dashboardMenus"
                 :collapsed="collapsed"
                 selected-key="11"
                 theme="light"
               />
-            </Scrollbar>
+            </div>
           </div>
         </div>
       </section>
-    </Scrollbar>
+    </div>
   </WView>
 </template>

@@ -2,7 +2,6 @@
 import {
   ErrorBoundary,
   Icon,
-  Scrollbar,
   type ErrorBoundaryErrorPayload,
 } from '@/components'
 import DemoFault from './DemoFault.vue'
@@ -21,7 +20,7 @@ function resetBoundaryDemo() {
 
 <template>
   <WView :full="true" :padding="false" class="bg-page">
-    <Scrollbar class="h-full" content-class="min-h-full p-16 md:p-20">
+    <div class="h-full min-h-full w-full p-16 md:p-20 overflow-x-hidden overflow-y-auto">
       <section
         class="mx-auto max-w-1280 rounded-8 border-1 border-color-1 border-solid bg-container p-16 shadow-all-sm md:p-20"
       >
@@ -31,7 +30,8 @@ function resetBoundaryDemo() {
           <div class="min-w-0">
             <h1 class="m-0 text-xl text-main font-600">ErrorBoundary</h1>
             <p class="mb-0 mt-6 text-sm leading-22 text-secondary">
-              捕获 Vue 子树异常并提供详情、上报与恢复入口。
+              捕获 Vue 子树异常并提供详情、上报与恢复入口；内置网络状态监听，
+              离线时展示网络断开提示，网络恢复后自动重置。
             </p>
           </div>
           <a-tag color="blue">src/components/error-boundary</a-tag>
@@ -61,6 +61,6 @@ function resetBoundaryDemo() {
           </div>
         </div>
       </section>
-    </Scrollbar>
+    </div>
   </WView>
 </template>

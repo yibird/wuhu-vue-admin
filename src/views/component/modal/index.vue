@@ -2,7 +2,6 @@
 import { message } from 'antdv-next'
 import { Icon } from '@/components/icon'
 import { Modal } from '@/components/modal'
-import { Scrollbar } from '@/components/scrollbar'
 import type { ModalInstance, ModalPosition } from '@/components/modal'
 
 const basicOpen = shallowRef(false)
@@ -33,7 +32,7 @@ function toggleControlledFullscreen() {
 
 <template>
   <WView :full="true" :padding="false" class="bg-page">
-    <Scrollbar class="h-full" content-class="min-h-full p-16 md:p-20">
+    <div class="h-full min-h-full w-full p-16 md:p-20 overflow-x-hidden overflow-y-auto">
       <section
         class="mx-auto max-w-1280 rounded-8 border-1 border-color-1 border-solid bg-container p-16 shadow-all-sm md:p-20"
       >
@@ -186,6 +185,6 @@ function toggleControlledFullscreen() {
           </article>
         </div>
       </section>
-    </Scrollbar>
+    </div>
   </WView>
 </template>

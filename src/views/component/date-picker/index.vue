@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import dayjs from 'dayjs'
 import { DatePicker, DateRangePicker } from '@/components/date-picker'
-import { Scrollbar } from '@/components/scrollbar'
 import type { Dayjs } from 'dayjs'
 
 const selectedDate = shallowRef<Dayjs>(dayjs())
@@ -13,7 +12,7 @@ const selectedRange = shallowRef<[Dayjs, Dayjs]>([
 
 <template>
   <WView :full="true" :padding="false" class="bg-page">
-    <Scrollbar class="h-full" content-class="min-h-full p-16 md:p-20">
+    <div class="h-full min-h-full w-full p-16 md:p-20 overflow-x-hidden overflow-y-auto">
       <section
         class="mx-auto max-w-1280 rounded-8 border-1 border-color-1 border-solid bg-container p-16 shadow-all-sm md:p-20"
       >
@@ -52,6 +51,6 @@ const selectedRange = shallowRef<[Dayjs, Dayjs]>([
           </div>
         </div>
       </section>
-    </Scrollbar>
+    </div>
   </WView>
 </template>
