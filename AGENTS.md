@@ -2,14 +2,14 @@
 
 本文件用于约束在本仓库内工作的 AI Agent、协作者和自动化脚本。
 
-核心目标：
+核心目标:
 
 1. 优先理解并延续现有代码，而不是创造新的架构。
 2. 优先简单、直接、可维护的实现，而不是过度抽象。
 3. 优先复用已有能力，而不是重复造轮子。
 4. 优先保持模块边界和入口清晰，而不是让 import 到处扩散。
 5. 优先最小化 diff，而不是顺手重构整个模块。
-6. 命名必须简单、准确、符合语义，不追求“看起来高级”。
+6. 命名必须简单、准确、符合语义，不追求“看起来高级”,文件名采用kebab-case风格,组件名采用PascalCase风格,变量/函数采用camelCase风格。
 7. 性能优化必须有明确收益，禁止为了理论性能增加复杂度。
 8. 优先使用项目依赖库提供的工具方法(例如es-toolkit提供的深拷贝、限流、防抖)。
 
@@ -40,10 +40,10 @@
 src/
 ├── apis/          # API 请求
 ├── components/    # 通用组件
-├── composables/   # 通用的组合式逻辑
+├── hooks/         # 通用的组合式逻辑
 ├── config/        # 全局配置
 ├── directives/    # Vue 指令
-├── features/    # 业务通用组件
+├── features/      # 业务通用组件
 ├── layouts/       # 页面布局
 ├── locales/       # 国际化
 ├── pages/         # 特殊页面，例如登录页
@@ -53,13 +53,7 @@ src/
 ├── styles/        # 全局样式模块
 ├── utils/         # 通用工具函数
 └── views/         # 业务页面
-
-build/
-├── plugins/
-├── resolve/
-├── optimizeDeps/
-├── server/
-└── ...
+build/             # 构建配置目录
 ```
 
 ## Vue 与 TypeScript 规范
@@ -73,9 +67,16 @@ build/
 - 副作用使用 `watch`，异步 watch 需要清理过期请求或定时器。
 - 不使用 `v-html` 渲染用户输入；确需 HTML 时必须先明确可信来源或做清洗。
 - `v-for` 必须有稳定 key，避免 `v-if` 和 `v-for` 放在同一个元素上。
-- 当组件复杂时请合理拆分组件，当组件逻辑复杂时请合理拆分composable Api, composable Api一般放在组件所在目录的同层级的composables目录,在该命令使用index.ts入口文件导入以简化 import。
+- 当组件复杂时请合理拆分组件，当组件逻辑复杂时请合理拆分composable Api, composable Api一般放在组件所在目录的同层级的hooks目录,在该命令使用index.ts入口文件导入以简化 import。
 - 图标优先使用Icon 组件,使用 lucide icon class,不要手写 SVG。
 - 由于安装了 `unplugin-auto-import`,编写组件时可以无需导入 vue api。
+
+## 注释规范
+
+- 类型定义及接口成员的说明统一使用多行 JSDoc（`/** ... */`），不要使用单行 `//` 或单行 JSDoc。
+- `@desc` 只用于属性：props / slots / emits / 类字段 / 接口与类型的成员，有默认值时补充 `@default`。
+- 方法与类型声明（函数、类、interface、type 本身）只用普通描述行，不使用 `@desc`。
+- `@desc` 使用简洁准确的中文描述字段用途与约束。
 
 ## 样式规范
 
@@ -86,7 +87,7 @@ build/
 
 ## 项目功能规范
 
-- 新增业务页面:先建 `views/<module>/<feature>/index.vue`，复杂功能再拆 `components`、`composables`、`types.ts`、`data.ts`、`util.ts`,`components`和`composables`要有index.ts入口文件以简化导入。例如 /sys/user -> views/user/index/index.vue, /sys/user/detail -> views/user/detail/index.vue。
+- 新增业务页面:先建 `views/<module>/<feature>/index.vue`，复杂功能再拆 `components`、`hooks`、`types.ts`、`data.ts`、`util.ts`,`components`和`hooks`要有index.ts入口文件以简化导入。例如 /sys/user -> views/user/index/index.vue, /sys/user/detail -> views/user/detail/index.vue。
 - 优先复用src/components 中的组件,当组件满足不了需求时再创建组件。
 
 ## Components 规范

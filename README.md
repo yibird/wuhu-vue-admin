@@ -281,7 +281,7 @@ flowchart LR
 src/
 |-- apis/          Backend API adapters and request types
 |-- components/    Cross-feature reusable components
-|-- composables/   Cross-feature composables
+|-- hooks/         Cross-feature composables
 |-- config/        Menu and application configuration
 |-- constants/     Shared constants
 |-- directives/    Global Vue directives

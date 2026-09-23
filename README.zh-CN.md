@@ -281,7 +281,7 @@ flowchart LR
 src/
 |-- apis/          后端 API 适配器和请求类型
 |-- components/    跨功能复用组件
-|-- composables/   跨功能组合式逻辑
+|-- hooks/         跨功能组合式逻辑
 |-- config/        菜单和应用配置
 |-- constants/     共享常量
 |-- directives/    全局 Vue 指令
