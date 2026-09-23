@@ -22,7 +22,7 @@ import {
   RadarComponent,
   VisualMapComponent,
 } from 'echarts/components'
-import { provideEChartsOptions, registerEChartsCore } from './echartsCore'
+import { provideEChartsOptions, registerEChartsCore } from './core'
 
 let registered = false
 

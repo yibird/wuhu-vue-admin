@@ -1,6 +1,6 @@
 import { createSharedComposable } from '@vueuse/core'
 import { ThemeMode } from '@/constants'
-import { useTheme } from './useTheme'
+import { useTheme } from './use-theme'
 
 export type EChartsPaletteKey =
   | 'primaryText'
@@ -34,6 +34,7 @@ export interface BaseEChartsOption {
   textStyle: {
     color: string
     fontFamily: string
+    fontWeight: number
   }
   tooltip: BaseEChartsTooltipOption
 }
@@ -124,7 +125,7 @@ export function getCssRgbVarAlpha(
 }
 
 export const useEChartsTheme = createSharedComposable(() => {
-  const { themeMode, themeColor } = useTheme()
+  const { themeMode, themeColor, fontStack, fontWeight } = useTheme()
   const eChartsThemeName = computed<EChartsThemeName>(() =>
     themeMode.value === ThemeMode.Dark ? ThemeMode.Dark : ThemeMode.Light
   )
@@ -167,8 +168,8 @@ export const useEChartsTheme = createSharedComposable(() => {
     darkMode: eChartsThemeName.value === ThemeMode.Dark,
     textStyle: {
       color: getEChartsColor('secondaryText'),
-      fontFamily:
-        '"Inter Variable", "Inter Variable Fallback", -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", Arial, sans-serif',
+      fontFamily: fontStack.value,
+      fontWeight: fontWeight.value,
     },
     tooltip: {
       backgroundColor: getEChartsColor('tooltipBg'),

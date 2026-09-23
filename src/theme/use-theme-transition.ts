@@ -22,7 +22,7 @@ function resolveThemeMode(mode: ThemeModeValue): ResolvedThemeMode {
   return mode === ThemeMode.Auto ? getSystemTheme() : mode
 }
 
-function applyRootTheme(mode: ResolvedThemeMode) {
+function setRootTheme(mode: ResolvedThemeMode) {
   const root = document.documentElement
   root.dataset.theme = mode
   root.style.colorScheme = mode
@@ -80,11 +80,9 @@ export function useThemeTransition(options: {
   changeThemeMode: (mode: ThemeModeValue) => void
 }) {
   let transitioning = false
-  async function changeThemeWithAnimation(event: Event, mode: ThemeModeValue) {
-    if (transitioning || options.appThemeMode() === mode) {
-      return
-    }
 
+  async function changeThemeWithAnimation(event: Event, mode: ThemeModeValue) {
+    if (transitioning || options.appThemeMode() === mode) return
     const targetMode = resolveThemeMode(mode)
     const canAnimate = typeof document.startViewTransition === 'function'
 
@@ -107,7 +105,7 @@ export function useThemeTransition(options: {
       cancelThemeAnimations(root)
       root.classList.add(THEME_TRANSITION_CLASS)
       transition = document.startViewTransition(async () => {
-        applyRootTheme(targetMode)
+        setRootTheme(targetMode)
         options.changeThemeMode(mode)
         await nextTick()
       })
