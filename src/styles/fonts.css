@@ -1,0 +1,44 @@
+@font-face {
+  font-family: 'Inter Variable Fallback';
+  src: local('Arial');
+  size-adjust: 107.119%;
+  ascent-override: 90.4365%;
+  descent-override: 22.518%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: 'Outfit Fallback';
+  src: local('Arial');
+  size-adjust: 99.82%;
+  ascent-override: 100.18%;
+  descent-override: 26.05%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: 'DM Sans Fallback';
+  src: local('Arial');
+  size-adjust: 104.53%;
+  ascent-override: 94.9%;
+  descent-override: 29.66%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: 'Space Grotesk Fallback';
+  src: local('Arial');
+  size-adjust: 109.69%;
+  ascent-override: 89.71%;
+  descent-override: 26.62%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: 'Roboto Mono Fallback';
+  src: local('Arial');
+  size-adjust: 134.61%;
+  ascent-override: 77.84%;
+  descent-override: 20.13%;
+  line-gap-override: 0%;
+}

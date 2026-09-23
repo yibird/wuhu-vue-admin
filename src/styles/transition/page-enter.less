@@ -5,8 +5,7 @@
 .page-enter {
   animation: w-page-enter var(--w-motion-duration-slower)
     var(--w-motion-ease-emphasized)
-    var(--w-page-enter-delay, var(--w-motion-delay-none)) both;
-  will-change: transform, opacity;
+    var(--w-page-enter-delay, var(--w-motion-delay-none)) backwards;
 }
 
 // ========================================
@@ -64,6 +63,5 @@
 @media (prefers-reduced-motion: reduce) {
   .page-enter {
     animation: none;
-    will-change: auto;
   }
 }

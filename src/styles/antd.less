@@ -38,3 +38,18 @@
     align-items: center;
   }
 }
+
+// Dropdown：保证菜单项与子菜单的图标和文字垂直居中对齐
+.ant-dropdown,
+.ant-dropdown-menu-submenu {
+  .ant-dropdown-menu-item,
+  .ant-dropdown-menu-submenu-title {
+    align-items: center;
+  }
+
+  .ant-dropdown-menu-item-icon,
+  .ant-dropdown-menu-title-content {
+    display: inline-flex;
+    align-items: center;
+  }
+}
