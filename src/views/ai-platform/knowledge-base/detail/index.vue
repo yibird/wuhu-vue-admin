@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { useRoute, useRouter } from 'vue-router'
 import { knowledgeBaseResources } from '../data'
-import SectionPanel from './components/SectionPanel.vue'
-import Sidebar from './components/Sidebar.vue'
+import SectionPanel from './components/section-panel.vue'
+import Sidebar from './components/sidebar.vue'
 import { knowledgeNavItems, knowledgeSectionMap } from './data'
 import type { KnowledgeDetailSectionKey } from './types'
 

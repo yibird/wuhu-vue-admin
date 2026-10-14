@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import List from './components/List.vue'
+import List from './components/list.vue'
 import { agentPageConfig, agentResources } from './data'
 </script>
 

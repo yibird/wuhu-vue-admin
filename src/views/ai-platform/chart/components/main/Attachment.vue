@@ -18,6 +18,7 @@
 </template>
 
 <script setup lang="ts">
+defineOptions({ name: 'Attachment' })
 withDefaults(
   defineProps<{
     disabled?: boolean

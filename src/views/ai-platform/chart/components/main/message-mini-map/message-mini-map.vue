@@ -7,6 +7,8 @@ import type {
   MessageMiniMapProps,
 } from './types'
 
+defineOptions({ name: 'MessageMiniMap' })
+
 const props = defineProps<MessageMiniMapProps>()
 const emit = defineEmits<MessageMiniMapEmits>()
 

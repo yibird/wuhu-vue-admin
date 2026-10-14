@@ -235,6 +235,7 @@
           >
             <MessageItem
               :item="item"
+              @ask="emit('ask', $event)"
               @copy-code="emit('copy-code', $event)"
               @copy="emit('copy-message', $event)"
               @delete="emit('delete-message', $event)"
@@ -374,15 +375,15 @@
 </template>
 
 <script setup lang="ts">
-import Editor from './Editor.vue'
-import Model from './Model.vue'
-import Tool from './Tool.vue'
-import Issue from './Issue.vue'
-import Attachment from './Attachment.vue'
-import MessageItem from './MessageItem.vue'
-import MessageMiniMap from './message-mini-map/MessageMiniMap.vue'
+import Editor from './editor.vue'
+import Model from './model.vue'
+import Tool from './tool.vue'
+import Issue from './issue.vue'
+import Attachment from './attachment.vue'
+import MessageItem from './message-item.vue'
+import MessageMiniMap from './message-mini-map/message-mini-map.vue'
 import { useAgentMessageMiniMap } from './message-mini-map/useAgentMessageMiniMap'
-import Send from './Send.vue'
+import Send from './send.vue'
 import type {
   AgentGenerationConfig,
   AgentMessage,

@@ -2,6 +2,8 @@
 import type { KnowledgeBasePageConfig, KnowledgeBaseSort } from '../../types'
 import type { KnowledgeBaseStatusFilter } from '../hooks'
 
+defineOptions({ name: 'Toolbar' })
+
 const props = defineProps<{
   config: KnowledgeBasePageConfig
   draftCount: number

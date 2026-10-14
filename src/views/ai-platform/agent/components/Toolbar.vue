@@ -2,6 +2,8 @@
 import type { AgentPageConfig, AgentSort } from '../types'
 import type { AgentStatusFilter } from '../hooks'
 
+defineOptions({ name: 'Toolbar' })
+
 const props = defineProps<{
   config: AgentPageConfig
   draftCount: number

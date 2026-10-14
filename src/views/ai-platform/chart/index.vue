@@ -69,6 +69,7 @@ const {
           :presets="presets"
           :tools="tools"
           @add-attachments="handleAddAttachments"
+          @ask="handleSend"
           @clear-messages="handleClearMessages"
           @continue-generation="handleContinueGeneration"
           @copy-code="handleCopyCode"

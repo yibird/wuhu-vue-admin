@@ -1,5 +1,7 @@
 <template>
-  <div class="max-h-full flex flex-col overflow-hidden rounded-4 bg-container">
+  <div
+    class="task-group max-h-full flex flex-col overflow-hidden rounded-4 bg-container"
+  >
     <div class="flex justify-between items-center p-10">
       <a-tag variant="solid" :color="color" class="cursor-pointer">
         {{ text }}
@@ -23,13 +25,17 @@
             <Item
               :item="item"
               @delete="emit('delete', $event)"
+              @duplicate="emit('duplicate', $event)"
               @edit="emit('edit', $event)"
+              @mark-done="emit('markDone', $event)"
             />
           </DraggableItem>
+          <!-- 拖到分组空白处(末尾、空分组)时显示的合成占位盒子,默认隐藏 -->
+          <div aria-hidden="true" class="task-group-drop-placeholder" />
         </div>
         <div
           v-if="items.length === 0"
-          class="h-180 flex justify-center items-center"
+          class="task-group-empty h-180 flex justify-center items-center"
         >
           <a-empty />
         </div>
@@ -41,11 +47,13 @@
 <script lang="ts" setup>
 import { useDroppable } from '@dnd-kit/vue'
 import { DraggableItem } from '@/components/draggable'
-import Item from './Item.vue'
-import type { CardTaskGroupProps, TaskActionEmits } from '../types.ts'
+import Item from './item.vue'
+import type { CardTaskActionEmits, CardTaskGroupProps } from '../types.ts'
+
+defineOptions({ name: 'Group' })
 
 const props = defineProps<CardTaskGroupProps>()
-const emit = defineEmits<TaskActionEmits>()
+const emit = defineEmits<CardTaskActionEmits>()
 const groupRef = useTemplateRef<HTMLElement>('groupRef')
 const groupId = computed(() => `task-group:${props.status}`)
 
@@ -82,5 +90,48 @@ useDroppable({
 .task-card-item[data-w-draggable-drop-target='true'] :deep(.task-card-panel) {
   border-color: rgb(var(--w-color-primary));
   box-shadow: 0 16px 36px rgb(15 23 42 / 18%);
+}
+
+/*
+ * 落位占位卡片:悬停在卡片上时,dnd-kit 会把被拖卡片连同占位克隆
+ * 移到乐观位置,这里把占位克隆显示成内容为空的虚线高亮框,标出落点;
+ * 写在最后以覆盖拖拽态样式。
+ */
+
+/* dnd-kit 默认隐藏列表里的占位克隆,标记落位后恢复可见 */
+.task-card-item[data-w-draggable-over='true'][data-dnd-placeholder='hidden'] {
+  visibility: visible;
+}
+
+.task-card-item[data-w-draggable-over='true'] :deep(.task-card-panel) {
+  background-color: rgb(var(--w-color-primary) / 8%);
+  border-color: rgb(var(--w-color-primary));
+  border-style: dashed;
+  box-shadow: 0 0 0 6px rgb(var(--w-color-primary) / 12%);
+}
+
+/* 占位克隆内容清空:隐藏内容保留高度,只留虚线高亮框 */
+.task-card-item[data-w-draggable-over='true'] :deep(.task-card-panel > *) {
+  visibility: hidden;
+}
+
+/*
+ * 拖到分组空白处(分组末尾、空分组)时显示的合成占位盒子:
+ * 内容为空、虚线边框高亮,高度与被拖拽卡片保持一致。
+ */
+.task-group-drop-placeholder {
+  display: none;
+}
+
+.task-group [data-w-draggable-group-over='true'] .task-group-drop-placeholder {
+  display: block;
+  height: var(--task-drop-placeholder-height, 96px);
+  background-color: rgb(var(--w-color-primary) / 8%);
+  border: 1px dashed rgb(var(--w-color-primary));
+  border-radius: 6px;
+}
+
+.task-group [data-w-draggable-group-over='true'] .task-group-empty {
+  display: none;
 }
 </style>

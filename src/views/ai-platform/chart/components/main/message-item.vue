@@ -38,6 +38,7 @@
         <div
           v-for="(segment, index) in contentSegments"
           :key="`${segment.type}-${index}`"
+          :class="segment.type === 'view' ? 'px-14 py-10' : ''"
         >
           <p
             v-if="segment.type === 'text'"
@@ -49,6 +50,12 @@
           >
             {{ segment.content }}
           </p>
+          <GeneratedView
+            v-else-if="segment.type === 'view'"
+            :raw="segment.content"
+            :pending="segment.pending"
+            @ask="emit('ask', $event)"
+          />
           <div v-else class="border-0 border-t-1 border-color-2 border-solid">
             <div
               class="flex items-center justify-between gap-8 bg-container-secondary px-12 py-7 text-12px text-secondary"
@@ -129,19 +136,21 @@
 </template>
 
 <script setup lang="ts">
+import { defineAsyncComponent } from 'vue'
+import { parseMessageContent } from '../../json-render/parse-stream'
 import type { AgentMessage, AgentMessageFeedback } from '../types'
 
-interface MessageSegment {
-  type: 'code' | 'text'
-  content: string
-  lang?: string
-}
+defineOptions({ name: 'MessageItem' })
+
+/** 生成式 UI 依赖 catalog 与 zod,按需加载避免进入首屏包 */
+const GeneratedView = defineAsyncComponent(() => import('./generated-view.vue'))
 
 const props = defineProps<{
   item: AgentMessage
 }>()
 
 const emit = defineEmits<{
+  (e: 'ask', prompt: string): void
   (e: 'copy', message: AgentMessage): void
   (e: 'copy-code', code: string): void
   (e: 'delete', message: AgentMessage): void
@@ -231,30 +240,6 @@ const actions = computed<MessageAction[]>(() => {
     },
   ]
 })
-
-function parseMessageContent(content: string): MessageSegment[] {
-  const segments: MessageSegment[] = []
-  const codeBlockPattern = /```(\w+)?\n([\s\S]*?)```/g
-  let lastIndex = 0
-  let match: RegExpExecArray | null
-
-  while ((match = codeBlockPattern.exec(content))) {
-    const [raw, lang = '', code = ''] = match
-    const text = content.slice(lastIndex, match.index)
-    if (text.trim()) {
-      segments.push({ type: 'text', content: text.trim() })
-    }
-    segments.push({ type: 'code', lang, content: code.trimEnd() })
-    lastIndex = match.index + raw.length
-  }
-
-  const restText = content.slice(lastIndex)
-  if (restText.trim()) {
-    segments.push({ type: 'text', content: restText.trim() })
-  }
-
-  return segments.length ? segments : [{ type: 'text', content }]
-}
 
 function handleAction(action: MessageActionKey) {
   if (action === 'like' || action === 'dislike') {

@@ -3,9 +3,9 @@ import { useRouter } from 'vue-router'
 import { message, Modal } from 'antdv-next'
 import { AnimatedGroup } from '@/components'
 import { useLoading } from '@/hooks'
-import Card from './Card.vue'
-import CreateModal from './CreateModal.vue'
-import Toolbar from './Toolbar.vue'
+import Card from './card.vue'
+import CreateModal from './create-modal.vue'
+import Toolbar from './toolbar.vue'
 import { useKnowledgeBaseList } from '../hooks'
 import type {
   KnowledgeBaseAction,
@@ -13,6 +13,8 @@ import type {
   KnowledgeBaseItem,
   KnowledgeBasePageConfig,
 } from '../../types'
+
+defineOptions({ name: 'List' })
 
 const props = defineProps<{
   config: KnowledgeBasePageConfig

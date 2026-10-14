@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { renderIcon } from '@/utils'
-import { getKnowledgeBaseIconForeground } from '../../iconPalette'
+import { getKnowledgeBaseIconForeground } from '../../icon-palette'
 import type { KnowledgeBaseAction, KnowledgeBaseItem } from '../../types'
+
+defineOptions({ name: 'Card' })
 
 const props = defineProps<{
   item: KnowledgeBaseItem

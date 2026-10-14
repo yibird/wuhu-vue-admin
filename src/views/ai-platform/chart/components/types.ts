@@ -106,6 +106,7 @@ export interface MainProps {
 
 export interface MainEmits {
   (e: 'add-attachments', files: File[]): void
+  (e: 'ask', prompt: string): void
   (e: 'clear-messages'): void
   (e: 'continue-generation'): void
   (e: 'copy-code', code: string): void

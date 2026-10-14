@@ -1,6 +1,8 @@
-import { computed, onBeforeUnmount, reactive, shallowRef } from 'vue'
+import { computed, reactive, shallowRef } from 'vue'
 import { useClipboard } from '@vueuse/core'
 import { message, Modal } from 'antdv-next'
+import { allowMockFallback, resolveLlmConfig } from '@/apis'
+import { isApiError } from '@/utils'
 import {
   createInitialChats,
   createInitialMessagesByChatId,
@@ -14,6 +16,8 @@ import {
   formatFileSize,
   formatMessageTime,
 } from '../utils'
+import { useAgentStream } from './useAgentStream'
+import type { ChatCompletionMessage, ChatCompletionRequest } from '@/apis'
 import type {
   AgentAttachment,
   AgentGenerationConfig,
@@ -48,12 +52,31 @@ export function useAgent() {
     createInitialMessagesByChatId()
   )
 
-  // --- Timer management ---
-  const pendingReplyTimers = new Map<string, number>()
+  // --- Streaming ---
+  const {
+    run: runStream,
+    stop: stopStream,
+    isStreaming,
+  } = useAgentStream({
+    onFlush: (chunks) => {
+      const next = { ...messagesByChatId.value }
+      let changed = false
 
-  onBeforeUnmount(() => {
-    pendingReplyTimers.forEach((timer) => window.clearTimeout(timer))
-    pendingReplyTimers.clear()
+      for (const chunk of chunks) {
+        const list = next[chunk.chatId]
+        if (!list) continue
+
+        const index = list.findIndex((item) => item.id === chunk.messageId)
+        if (index === -1) continue
+
+        const updated = [...list]
+        updated[index] = { ...updated[index], content: chunk.content }
+        next[chunk.chatId] = updated
+        changed = true
+      }
+
+      if (changed) messagesByChatId.value = next
+    },
   })
 
   // --- Clipboard ---
@@ -139,13 +162,16 @@ export function useAgent() {
     ].join('\n')
   }
 
-  function scheduleAgentReply(
+  async function startAgentReply(
     chatId: string,
-    prompt: string,
-    options: { regenerated?: boolean; replaceId?: string } = {}
+    options: {
+      prompt: string
+      regenerated?: boolean
+      replaceId?: string
+      injectUserMessage?: boolean
+    }
   ) {
-    const existingTimer = pendingReplyTimers.get(chatId)
-    if (existingTimer) window.clearTimeout(existingTimer)
+    stopStream(chatId)
 
     const thinkingMessage = createMessage(
       'assistant',
@@ -165,29 +191,63 @@ export function useAgent() {
       appendMessage(chatId, thinkingMessage)
     }
 
-    const targetMessageId = options.replaceId ?? thinkingMessage.id
-    const timer = window.setTimeout(
-      () => {
-        replaceMessage(chatId, {
-          ...thinkingMessage,
-          id: targetMessageId,
-          content: buildAgentReply(prompt, options),
-          createTime: formatMessageTime(),
-          status: 'done',
-        })
-        pendingReplyTimers.delete(chatId)
-        setChatStatus(chatId, 'ready')
-      },
-      options.regenerated ? 1200 : 1800
+    const messageId = options.replaceId ?? thinkingMessage.id
+    const history: ChatCompletionMessage[] = (
+      messagesByChatId.value[chatId] ?? []
     )
+      .filter((item) => item.id !== messageId)
+      .map((item) => ({ role: item.role, content: item.content }))
 
-    pendingReplyTimers.set(chatId, timer)
+    if (options.injectUserMessage) {
+      history.push({ role: 'user', content: options.prompt })
+    }
+
+    // 视图能力说明依赖 catalog,按需加载以免把 zod 打进首屏
+    const { SYSTEM_PROMPT } = await import('../json-render/system-prompt')
+    const request: ChatCompletionRequest = {
+      model: activeModel.value?.id ?? resolveLlmConfig().model,
+      messages: [{ role: 'system', content: SYSTEM_PROMPT }, ...history],
+      stream: true,
+      temperature: generationConfig.temperature,
+      top_p: generationConfig.topP,
+      max_tokens: generationConfig.maxTokens,
+    }
+
+    const result = await runStream({
+      target: { chatId, messageId },
+      request,
+    })
+    const failureText = isApiError(result.error)
+      ? result.error.message
+      : '请稍后重试'
+
+    let content = result.content
+    if (result.aborted) {
+      if (!content.trim()) {
+        content = '已停止生成。你可以调整提示词后重新发送，或点击重新生成。'
+      }
+    } else if (result.error) {
+      if (allowMockFallback() && !content.trim()) {
+        content = buildAgentReply(options.prompt, options)
+      } else if (!content.trim()) {
+        content = `生成失败：${failureText}`
+      } else {
+        content += `\n\n> 生成中断：${failureText}`
+      }
+    }
+
+    replaceMessage(chatId, {
+      ...thinkingMessage,
+      id: messageId,
+      content,
+      createTime: formatMessageTime(),
+      status: 'done',
+    })
+    setChatStatus(chatId, result.aborted ? 'paused' : 'ready')
   }
 
   function deleteChat(id: string) {
-    const timer = pendingReplyTimers.get(id)
-    if (timer) window.clearTimeout(timer)
-    pendingReplyTimers.delete(id)
+    stopStream(id)
 
     const nextChats = chats.value.filter((item) => item.id !== id)
     chats.value = nextChats
@@ -392,9 +452,7 @@ export function useAgent() {
       cancelText: '取消',
       onOk: () => {
         if (messageItem.status === 'thinking') {
-          const timer = pendingReplyTimers.get(chatId)
-          if (timer) window.clearTimeout(timer)
-          pendingReplyTimers.delete(chatId)
+          stopStream(chatId)
           setChatStatus(chatId, 'paused')
         }
 
@@ -455,7 +513,7 @@ export function useAgent() {
     )
 
     draftAttachments.value = []
-    scheduleAgentReply(chat.id, content)
+    void startAgentReply(chat.id, { prompt: content })
   }
 
   function handleRegenerate(messageItem: AgentMessage) {
@@ -472,7 +530,8 @@ export function useAgent() {
       previousUserMessage?.content ?? chat.description ?? chat.title
 
     setChatStatus(chat.id, 'running')
-    scheduleAgentReply(chat.id, prompt, {
+    void startAgentReply(chat.id, {
+      prompt,
       regenerated: true,
       replaceId: messageItem.id,
     })
@@ -483,30 +542,18 @@ export function useAgent() {
     if (!chat) return
 
     setChatStatus(chat.id, 'running')
-    scheduleAgentReply(chat.id, '请继续上一个回答，补充更具体的执行细节。')
+    void startAgentReply(chat.id, {
+      prompt: '请继续上一个回答，补充更具体的执行细节。',
+      injectUserMessage: true,
+    })
   }
 
   function handleStop() {
     const chatId = activeChatId.value
-    const timer = pendingReplyTimers.get(chatId)
-    if (!timer) return
+    if (!isStreaming(chatId)) return
 
-    window.clearTimeout(timer)
-    pendingReplyTimers.delete(chatId)
-    setChatStatus(chatId, 'paused')
-
-    const msgs = messagesByChatId.value[chatId] ?? []
-    const thinkingMessage = [...msgs]
-      .reverse()
-      .find((item) => item.status === 'thinking')
-    if (!thinkingMessage) return
-
-    replaceMessage(chatId, {
-      ...thinkingMessage,
-      content: '已停止生成。你可以调整提示词后重新发送，或点击重新生成。',
-      createTime: formatMessageTime(),
-      status: 'done',
-    })
+    // 收尾与状态落盘统一由 startAgentReply 处理
+    stopStream(chatId)
   }
 
   return {

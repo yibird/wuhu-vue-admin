@@ -134,6 +134,8 @@ import type { MenuProps } from 'antdv-next'
 import { renderIcon } from '@/utils'
 import type { AgentStatus, ChatItem, ListEmits, ListProps } from '../types'
 
+defineOptions({ name: 'List' })
+
 withDefaults(defineProps<ListProps>(), {
   items: () => [],
   activeId: '',

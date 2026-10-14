@@ -59,6 +59,8 @@
 <script setup lang="ts">
 import type { AgentTool } from '../types'
 
+defineOptions({ name: 'Tool' })
+
 const props = withDefaults(
   defineProps<{
     tools?: AgentTool[]

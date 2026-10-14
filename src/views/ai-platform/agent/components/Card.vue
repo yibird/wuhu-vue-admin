@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { renderIcon } from '@/utils'
-import { getAgentIconForeground } from '../iconPalette'
+import { getAgentIconForeground } from '../icon-palette'
 import type { AgentAction, AgentItem } from '../types'
+
+defineOptions({ name: 'Card' })
 
 const props = defineProps<{
   item: AgentItem

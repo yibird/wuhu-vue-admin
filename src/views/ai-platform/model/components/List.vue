@@ -2,9 +2,9 @@
 import { message, Modal } from 'antdv-next'
 import { AnimatedGroup } from '@/components'
 import { useLoading } from '@/hooks'
-import ModelCard from './ModelCard.vue'
-import ModelConfigDrawer from './ModelConfigDrawer.vue'
-import Toolbar from './Toolbar.vue'
+import ModelCard from './model-card.vue'
+import ModelConfigDrawer from './model-config-drawer.vue'
+import Toolbar from './toolbar.vue'
 import { useModelList } from '../hooks'
 import type {
   ModelAction,
@@ -12,6 +12,8 @@ import type {
   ModelItem,
   ModelPageConfig,
 } from '../types'
+
+defineOptions({ name: 'List' })
 
 const props = defineProps<{
   config: ModelPageConfig

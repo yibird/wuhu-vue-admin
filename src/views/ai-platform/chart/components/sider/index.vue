@@ -90,8 +90,8 @@
 
 <script setup lang="ts">
 import { useMediaQuery } from '@vueuse/core'
-import Header from './Header.vue'
-import List from './List.vue'
+import Header from './header.vue'
+import List from './list.vue'
 import type { SiderEmits, SiderProps } from '../types'
 
 const props = withDefaults(defineProps<SiderProps>(), {

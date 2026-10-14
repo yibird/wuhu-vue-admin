@@ -1,37 +1,40 @@
 <script setup lang="ts">
+import type { FormInstance } from 'antdv-next'
+import { computed, nextTick, reactive, shallowRef, watch } from 'vue'
 import { IconSelector } from '@/components/icon-picker'
 import {
-  agentIconBackgroundOptions,
-  defaultAgentIconBackground,
-  getAgentIconForeground,
-} from '../iconPalette'
-import type { FormInstance } from 'antdv-next'
-import type { AgentCreateInput } from '../types'
+  defaultKnowledgeBaseIconBackground,
+  getKnowledgeBaseIconForeground,
+  knowledgeBaseIconBackgroundOptions,
+} from '../../icon-palette'
+import type { KnowledgeBaseCreateInput } from '../../types'
+
+defineOptions({ name: 'CreateModal' })
 
 const open = defineModel<boolean>('open', { required: true })
 
 const emit = defineEmits<{
-  create: [input: AgentCreateInput]
+  create: [input: KnowledgeBaseCreateInput]
 }>()
 
-const colorOptions = agentIconBackgroundOptions
+const colorOptions = knowledgeBaseIconBackgroundOptions
 const colorPresets = [
   { label: '常用颜色', colors: colorOptions, defaultOpen: true },
 ]
 const formRef = shallowRef<FormInstance>()
 const submitting = shallowRef(false)
-const form = reactive<AgentCreateInput>(createDefaultForm())
+const form = reactive<KnowledgeBaseCreateInput>(createDefaultForm())
 const previewIconStyle = computed(() => ({
   backgroundColor: form.iconBackground,
-  color: getAgentIconForeground(form.iconBackground),
+  color: getKnowledgeBaseIconForeground(form.iconBackground),
 }))
 const rules = {
   name: [
-    { required: true, whitespace: true, message: '请输入 Agent 名称' },
+    { required: true, whitespace: true, message: '请输入知识库名称' },
     { min: 2, max: 40, message: '名称长度为 2-40 个字符' },
   ],
   description: [
-    { required: true, whitespace: true, message: '请输入 Agent 描述' },
+    { required: true, whitespace: true, message: '请输入知识库描述' },
     { max: 160, message: '描述不能超过 160 个字符' },
   ],
   icon: [{ required: true, message: '请选择图标' }],
@@ -45,13 +48,13 @@ watch(open, async (value) => {
   formRef.value?.clearValidate()
 })
 
-function createDefaultForm(): AgentCreateInput {
+function createDefaultForm(): KnowledgeBaseCreateInput {
   return {
     name: '',
     description: '',
     tags: [],
-    icon: 'i-lucide:bot',
-    iconBackground: defaultAgentIconBackground,
+    icon: 'i-lucide:book-open',
+    iconBackground: defaultKnowledgeBaseIconBackground,
   }
 }
 
@@ -82,7 +85,7 @@ function isValidationError(error: unknown) {
     v-model:open="open"
     destroy-on-hidden
     :size="620"
-    title="新建 Agent"
+    title="新建知识库"
   >
     <div
       class="mb-16 flex min-w-0 items-center gap-12 rounded-8 border-1 border-color-2 border-solid bg-page p-12"
@@ -95,22 +98,22 @@ function isValidationError(error: unknown) {
       </span>
       <div class="min-w-0 flex-1">
         <div class="truncate text-md text-main font-700">
-          {{ form.name.trim() || '未命名 Agent' }}
+          {{ form.name.trim() || '未命名知识库' }}
         </div>
         <div class="mt-3 line-clamp-1 text-xs text-secondary">
-          {{ form.description.trim() || 'Agent 描述' }}
+          {{ form.description.trim() || '知识库描述' }}
         </div>
       </div>
-      <a-tag :bordered="false" color="blue">草稿</a-tag>
+      <a-tag :bordered="false" color="blue">待完善</a-tag>
     </div>
 
     <a-form ref="formRef" :model="form" :rules="rules" layout="vertical">
-      <a-form-item label="Agent 名称" name="name">
+      <a-form-item label="知识库名称" name="name">
         <a-input
           v-model:value="form.name"
           allow-clear
           :maxlength="40"
-          placeholder="例如：销售洞察 Agent"
+          placeholder="例如：产品能力手册"
           show-count
         />
       </a-form-item>
@@ -120,7 +123,7 @@ function isValidationError(error: unknown) {
           v-model:value="form.description"
           :auto-size="{ minRows: 3, maxRows: 5 }"
           :maxlength="160"
-          placeholder="说明 Agent 的职责和适用场景"
+          placeholder="说明知识库包含的内容和适用范围"
           show-count
         />
       </a-form-item>
@@ -130,7 +133,7 @@ function isValidationError(error: unknown) {
           <IconSelector
             v-model:value="form.icon"
             :allow-clear="false"
-            data-testid="agent-icon-selector"
+            data-testid="knowledge-base-icon-selector"
             empty-text="没有匹配的图标"
             placeholder="选择图标"
             search-placeholder="搜索图标"
@@ -178,7 +181,7 @@ function isValidationError(error: unknown) {
       <div class="flex justify-end gap-8">
         <a-button @click="open = false">取消</a-button>
         <a-button :loading="submitting" type="primary" @click="handleSubmit">
-          创建 Agent
+          创建知识库
         </a-button>
       </div>
     </template>

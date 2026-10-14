@@ -83,6 +83,8 @@
 <script setup lang="ts">
 import type { AgentModel } from '../types'
 
+defineOptions({ name: 'Model' })
+
 const props = withDefaults(
   defineProps<{
     model?: AgentModel
