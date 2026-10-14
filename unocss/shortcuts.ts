@@ -24,7 +24,7 @@ const gridLayout = {
   'grid-equal-cols': 'grid grid-cols-[repeat(auto-fit,minmax(0,1fr))]',
 }
 
-const positonLayout = {
+const positionLayout = {
   'absolute-center':
     'absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2',
   'absolute-x-center': 'absolute left-1/2 transform -translate-x-1/2',
@@ -56,7 +56,7 @@ export const shortcuts = {
   ...size,
   ...flexLayout,
   ...gridLayout,
-  ...positonLayout,
+  ...positionLayout,
   ...element,
   ...motion,
 }

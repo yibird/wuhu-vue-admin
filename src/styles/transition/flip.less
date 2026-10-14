@@ -28,7 +28,6 @@
       transition:
         transform var(--w-motion-duration-base) var(--w-motion-ease-standard),
         opacity var(--w-motion-duration-base) var(--w-motion-ease-standard);
-      will-change: transform, opacity;
     }
   }
 
@@ -57,7 +56,6 @@
       transition:
         transform var(--w-motion-duration-slow) var(--w-motion-ease-standard),
         opacity var(--w-motion-duration-slow) var(--w-motion-ease-standard);
-      will-change: transform, opacity;
     }
   }
 }
@@ -73,7 +71,6 @@
       &-enter-active,
       &-leave-active {
         transition: none;
-        will-change: auto;
       }
     }
   }

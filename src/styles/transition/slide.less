@@ -2,11 +2,12 @@
 // Slide Transition
 // ========================================
 
+// 页面级过渡不加 will-change:整页提层会带来大图层与额外光栅化开销,
+// 浏览器对 transform / opacity 过渡本身也会自动合成
 .slide-base-transition() {
   transition:
     transform var(--w-motion-duration-moderate) var(--w-motion-ease-enter),
     opacity var(--w-motion-duration-moderate) var(--w-motion-ease-standard);
-  will-change: transform, opacity;
 }
 
 .slide {
@@ -142,7 +143,6 @@
     &-down-enter-active,
     &-down-leave-active {
       transition: none;
-      will-change: auto;
     }
   }
 }

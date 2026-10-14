@@ -11,7 +11,7 @@ const textSizes = {
   },
   base: {
     'font-size': '16px',
-    'line-height': '18px',
+    'line-height': '24px',
   },
   md: {
     'font-size': '18px',

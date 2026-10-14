@@ -2,11 +2,12 @@
 // Fade Transition
 // ========================================
 
+// 页面级过渡不加 will-change:整页提层会带来大图层与额外光栅化开销,
+// 浏览器对 transform / opacity 过渡本身也会自动合成
 .fade {
   &-enter-active,
   &-leave-active {
     transition: opacity var(--w-motion-duration-slow) var(--w-motion-ease-enter);
-    will-change: opacity;
   }
 
   &-enter-from,
@@ -30,7 +31,6 @@
     transition:
       transform var(--w-motion-duration-slow) var(--w-motion-ease-standard),
       opacity var(--w-motion-duration-slow) var(--w-motion-ease-standard);
-    will-change: transform, opacity;
   }
 
   &-enter-from,
@@ -81,7 +81,6 @@
     &-enter-active,
     &-leave-active {
       transition: none;
-      will-change: auto;
     }
   }
 
@@ -89,7 +88,6 @@
     &-enter-active,
     &-leave-active {
       transition: none;
-      will-change: auto;
     }
   }
 
