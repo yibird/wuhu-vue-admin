@@ -9,9 +9,9 @@
 </template>
 
 <script setup lang="ts">
-import Layout from './Layout.vue'
-import Theme from './Theme.vue'
-import Translate from './Translate.vue'
+import Layout from './layout.vue'
+import Theme from './theme.vue'
+import Translate from './translate.vue'
 import type { Placement } from '../types'
 
 const emit = defineEmits<{

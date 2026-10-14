@@ -1,3 +1,7 @@
+<script setup lang="ts">
+defineOptions({ name: 'ClearIcon' })
+</script>
+
 <template>
   <span class="login-clear-icon" role="img" aria-label="Clear input">
     &times;

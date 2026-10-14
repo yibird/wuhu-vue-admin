@@ -136,7 +136,9 @@ import googleIcon from '@/assets/svg/google.svg'
 import type { FormInstance } from 'antdv-next'
 import type { ComponentPublicInstance } from 'vue'
 import type { LoginEmits, LoginFormProps } from './types'
-import ClearIcon from './ClearIcon.vue'
+import ClearIcon from './clear-icon.vue'
+
+defineOptions({ name: 'AccountLogin' })
 
 const emits = defineEmits<LoginEmits>()
 const props = withDefaults(defineProps<LoginFormProps>(), { loading: false })

@@ -70,10 +70,12 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { validateCode, validateMobile } from '@/utils'
-import ClearIcon from './ClearIcon.vue'
+import ClearIcon from './clear-icon.vue'
 import type { FormInstance } from 'antdv-next'
 import type { ComponentPublicInstance } from 'vue'
 import type { LoginEmits, LoginFormProps } from './types'
+
+defineOptions({ name: 'MobileLogin' })
 
 const emits = defineEmits<LoginEmits>()
 const props = withDefaults(defineProps<LoginFormProps>(), { loading: false })

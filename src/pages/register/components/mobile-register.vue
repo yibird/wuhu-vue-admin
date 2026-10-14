@@ -3,6 +3,8 @@ import { useI18n } from 'vue-i18n'
 import { validateCode, validateMobile } from '@/utils'
 import type { RegisterEmits, RegisterFormProps } from './types'
 
+defineOptions({ name: 'MobileRegister' })
+
 const emits = defineEmits<RegisterEmits>()
 const props = withDefaults(defineProps<RegisterFormProps>(), { loading: false })
 const { t } = useI18n()

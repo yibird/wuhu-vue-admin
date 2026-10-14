@@ -10,8 +10,10 @@
 import { ConfigProvider } from 'antdv-next'
 import { useTheme } from '@/theme'
 import { useLocale } from '@/locales'
-import { AppWatermark } from '@/components'
+import { AppWatermark } from '@/components/app-watermark'
 import type { VNodeChild } from 'vue'
+
+defineOptions({ name: 'App' })
 
 const { themeConfig } = useTheme()
 const { locale } = useLocale()

@@ -6,7 +6,7 @@ import { globalDirectives } from '@/directives'
 import { plugins, hideAppLoading } from '@/plugins'
 import { i18n } from '@/locales'
 
-import App from './App.vue'
+import App from './app.vue'
 import './styles'
 
 ;(async function bootstrap() {

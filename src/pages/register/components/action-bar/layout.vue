@@ -17,6 +17,8 @@
 import { useI18n } from 'vue-i18n'
 import type { Placement } from '../types'
 
+defineOptions({ name: 'Layout' })
+
 const { t } = useI18n()
 const options = computed<Array<{ key: Placement; label: string }>>(() => [
   { key: 'left', label: t('common.auth.alignLeft') },
