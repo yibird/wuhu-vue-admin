@@ -23,9 +23,9 @@ import {
 import '@vue-flow/core/dist/style.css'
 import '@vue-flow/core/dist/theme-default.css'
 import '@vue-flow/minimap/dist/style.css'
-import CanvasHeader from './CanvasHeader.vue'
-import CanvasToolbar from './CanvasToolbar.vue'
-import CustomEdge from './CustomEdge.vue'
+import CanvasHeader from './canvas-header.vue'
+import CanvasToolbar from './canvas-toolbar.vue'
+import CustomEdge from './custom-edge.vue'
 import { workflowNodeTypes } from './nodes'
 import { WORKFLOW_FLOW_ID } from '../constants'
 import { Icon } from '@/components'
@@ -37,6 +37,8 @@ import type {
   WorkflowTestCase,
   WorkflowValidationIssue,
 } from '../types'
+
+defineOptions({ name: 'WorkflowDesignerCanvas' })
 
 const nodes = defineModel<WorkflowNode[]>('nodes', { required: true })
 const edges = defineModel<WorkflowEdge[]>('edges', { required: true })

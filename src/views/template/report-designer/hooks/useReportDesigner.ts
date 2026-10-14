@@ -21,7 +21,7 @@ import {
   persistTemplates,
   readDataSources,
   readTemplates,
-} from '../repositories/reportDesignerRepository'
+} from '../repositories/report-designer-repository'
 import {
   parseReportSchema,
   REPORT_SCHEMA_VERSION,

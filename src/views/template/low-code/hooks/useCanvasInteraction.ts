@@ -11,8 +11,8 @@ import {
   findNodeElementAt,
   pointToStage,
   toStageRect,
-} from '../utils/canvasGeometry'
-import type { Rect } from '../utils/canvasGeometry'
+} from '../utils/canvas-geometry'
+import type { Rect } from '../utils/canvas-geometry'
 import {
   endPaletteDrag,
   paletteDragType,

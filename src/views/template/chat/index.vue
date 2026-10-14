@@ -128,13 +128,13 @@
 
 <script setup lang="ts">
 import { Nav, Sider, MessageArea } from './components'
-import CallFloatingWindow from './components/call/FloatingWindow.vue'
-import AddContactOrGroupModal from './components/discovery/AddContactOrGroupModal.vue'
-import CreateGroupModal from './components/discovery/CreateGroupModal.vue'
-import GlobalSearchModal from './components/GlobalSearchModal.vue'
-import GroupDrawer from './components/group/Drawer.vue'
-import SettingsModal from './components/settings/Modal.vue'
-import UserDetailModal from './components/user/DetailModal.vue'
+import CallFloatingWindow from './components/call/floating-window.vue'
+import AddContactOrGroupModal from './components/discovery/add-contact-or-group-modal.vue'
+import CreateGroupModal from './components/discovery/create-group-modal.vue'
+import GlobalSearchModal from './components/global-search-modal.vue'
+import GroupDrawer from './components/group/drawer.vue'
+import SettingsModal from './components/settings/modal.vue'
+import UserDetailModal from './components/user/detail-modal.vue'
 import { useChat, useChatPanels } from './hooks'
 
 const {

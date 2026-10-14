@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { Motion } from 'motion-v'
 
+defineOptions({ name: 'Overview' })
+
 const props = defineProps<{
   failureCount: number
   loading: boolean

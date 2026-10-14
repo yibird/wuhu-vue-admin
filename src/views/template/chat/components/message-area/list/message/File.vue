@@ -20,6 +20,7 @@
 </template>
 
 <script setup lang="ts">
+defineOptions({ name: 'File' })
 interface Props {
   content: string
   fileSize?: string

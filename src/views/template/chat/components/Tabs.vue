@@ -28,6 +28,8 @@
 <script lang="ts" setup>
 import type { TabItem, TabsEmits, TabsProps } from './types'
 
+defineOptions({ name: 'Tabs' })
+
 const activeKey = defineModel('activeKey')
 const props = withDefaults(defineProps<TabsProps>(), {
   items: () => [],

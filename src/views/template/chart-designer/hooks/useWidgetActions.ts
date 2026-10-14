@@ -5,8 +5,8 @@ import {
   duplicateWidgetsByIds,
   removeWidgetById,
   removeWidgetsByIds,
-} from './widgetCollection'
-import { getSourceWidgetDefaults, reorderByIds } from './widgetFactory'
+} from './widget-collection'
+import { getSourceWidgetDefaults, reorderByIds } from './widget-factory'
 
 interface UseChartWidgetActionsOptions {
   dataSources: Ref<ChartDataSource[]>

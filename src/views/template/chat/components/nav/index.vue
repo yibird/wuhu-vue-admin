@@ -72,8 +72,8 @@
 
 <script setup lang="ts">
 import { LayoutGroup, Motion } from 'motion-v'
-import Header from './Header.vue'
-import Setting from './Setting.vue'
+import Header from './header.vue'
+import Setting from './setting.vue'
 import type { NavType, NavItem, NavigationEmits } from '../types'
 
 const emit = defineEmits<NavigationEmits>()

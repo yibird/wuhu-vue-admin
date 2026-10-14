@@ -86,8 +86,8 @@
 </template>
 
 <script setup lang="ts">
-import MessageItem from './MessageItem.vue'
-import VirtualList from '../../VirtualList.vue'
+import MessageItem from './message-item.vue'
+import VirtualList from '../../virtual-list.vue'
 import type { Message, MessageListEmits } from '../../types'
 
 interface Props {

@@ -7,6 +7,8 @@ import type {
   WorkflowThroughputPoint,
 } from '../../shared/types'
 
+defineOptions({ name: 'Insights' })
+
 const props = defineProps<{
   alerts: WorkflowAlert[]
   latencyRanks: WorkflowLatencyRank[]

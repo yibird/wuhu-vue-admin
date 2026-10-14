@@ -1,6 +1,6 @@
 import { defaultWidgets } from '../data'
 import type { ChartAiMessage, ChartType, ChartWidget } from '../types'
-import { createGrowthWidgets, createOpsWidgets } from './aiTemplates'
+import { createGrowthWidgets, createOpsWidgets } from './ai-templates'
 import { createDesignerId, getNowLabel } from './ids'
 import { cloneWidget } from './schema'
 

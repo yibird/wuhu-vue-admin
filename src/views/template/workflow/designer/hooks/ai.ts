@@ -6,11 +6,11 @@ import {
   validateWorkflowSchema as validateDomainWorkflowSchema,
 } from '../../domain'
 import { layoutWorkflowNodes, schemaToFlow } from '../data'
-import { workflowAiHints, workflowAiTemplates } from './aiTemplates'
+import { workflowAiHints, workflowAiTemplates } from './ai-templates'
 import type {
   WorkflowAiTemplateEdge,
   WorkflowAiTemplateNode,
-} from './aiTemplates'
+} from './ai-templates'
 import type { WorkflowDataSchema } from '../../domain'
 import type {
   WorkflowAiMessage,

@@ -5,6 +5,7 @@
 </template>
 
 <script setup lang="ts">
+defineOptions({ name: 'Emoji' })
 interface Props {
   content: string
 }

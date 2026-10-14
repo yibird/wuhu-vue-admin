@@ -16,13 +16,13 @@ import {
   inferChartTypesFromPrompt,
 } from './ai'
 import { getNowLabel } from './ids'
-import { createJsonSourceFromDraft } from './importJsonSource'
+import { createJsonSourceFromDraft } from './import-json-source'
 import { cloneDataSource, cloneWidget } from './schema'
 import { useChartDataSourceActions } from './useDataSourceActions'
 import { useChartSelectionActions } from './useSelectionActions'
 import { useChartSchemaActions } from './useSchemaActions'
 import { useChartWidgetActions } from './useWidgetActions'
-import { clampIndex, createWidgetFromPalette } from './widgetFactory'
+import { clampIndex, createWidgetFromPalette } from './widget-factory'
 import type {
   ChartAiMessage,
   ChartPaletteItem,

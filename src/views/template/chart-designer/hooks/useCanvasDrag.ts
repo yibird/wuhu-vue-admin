@@ -5,12 +5,12 @@ import {
   getInsertIndex,
   readCanvasBounds,
   readWidgetRects,
-} from './canvasDragGeometry'
+} from './canvas-drag-geometry'
 import type {
   DragState,
   PendingPressState,
   WidgetDragRect,
-} from './canvasDragTypes'
+} from './canvas-drag-types'
 import {
   clamp,
   clearTextSelection,
@@ -20,7 +20,7 @@ import {
   isPaletteDrag,
   moveId,
   setDocumentDraggingState,
-} from './canvasDragUtils'
+} from './canvas-drag-utils'
 
 interface UseChartCanvasDragOptions {
   widgets: Readonly<Ref<readonly ChartWidget[]>>

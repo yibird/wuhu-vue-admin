@@ -330,7 +330,7 @@
 
 <script setup lang="ts">
 import { useTextareaAutosize } from '@vueuse/core'
-import EmojiPicker from './EmojiPicker.vue'
+import EmojiPicker from './emoji-picker.vue'
 import { useImageAttachments, useMessageRecording } from './hooks'
 import type { ChatSendPayload, Message, MessageEditorEmits } from '../../types'
 import type { EditorProps } from './types'

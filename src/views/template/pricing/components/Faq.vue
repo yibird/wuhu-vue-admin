@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import type { PricingFaq } from '../types'
 
+defineOptions({ name: 'Faq' })
+
 interface Props {
   faqs: PricingFaq[]
   openIndex: number

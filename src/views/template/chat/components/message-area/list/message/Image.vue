@@ -17,6 +17,7 @@
 </template>
 
 <script setup lang="ts">
+defineOptions({ name: 'MessageImage' })
 interface Props {
   content: string
 }

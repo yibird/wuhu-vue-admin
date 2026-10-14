@@ -15,7 +15,7 @@
 </template>
 
 <script setup lang="ts">
-import MessageItem from '../MessageItem.vue'
+import MessageItem from '../message-item.vue'
 import type { Message, MessageItemEmits } from '../../../types'
 
 defineProps<{

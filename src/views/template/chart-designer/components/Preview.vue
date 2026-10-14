@@ -7,9 +7,11 @@ import {
   createWidgetChartOption,
   formatChartValue,
   toFiniteNumber,
-} from '../chartOptions'
+} from '../chart-options'
 import type { ChartDataSource, ChartWidget } from '../types'
 import type { ChartPreviewMode } from '../types'
+
+defineOptions({ name: 'Preview' })
 
 useECharts()
 

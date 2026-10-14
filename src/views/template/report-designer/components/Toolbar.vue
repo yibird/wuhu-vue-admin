@@ -6,6 +6,8 @@ import type {
   RequirementPhase,
 } from '../types'
 
+defineOptions({ name: 'Toolbar' })
+
 const props = defineProps<{
   exportOptions: ExportOption[]
   exportStatus: string

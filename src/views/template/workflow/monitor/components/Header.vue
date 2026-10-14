@@ -5,6 +5,8 @@ import type {
   WorkflowRunStatusFilter,
 } from '../hooks'
 
+defineOptions({ name: 'WorkflowMonitorHeader' })
+
 const props = defineProps<{
   alertCount: number
   lastRefreshAt: string

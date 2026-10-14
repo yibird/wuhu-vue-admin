@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { CHART_DESIGNER_SELECTORS } from '../constants'
-import WidgetConfig from './controls/WidgetConfig.vue'
+import WidgetConfig from './controls/widget-config.vue'
 import type { ChartDataSource, ChartField, ChartWidget } from '../types'
+
+defineOptions({ name: 'Inspector' })
 
 defineProps<{
   dataSources: readonly ChartDataSource[]

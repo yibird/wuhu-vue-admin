@@ -61,9 +61,9 @@
 </template>
 
 <script lang="ts" setup>
-import ConversationList from './ConversationList.vue'
-import ContactList from './ContactList.vue'
-import ContactCenter from './ContactCenter.vue'
+import ConversationList from './conversation-list.vue'
+import ContactList from './contact-list.vue'
+import ContactCenter from './contact-center.vue'
 import type {
   Contact,
   ContactNotification,

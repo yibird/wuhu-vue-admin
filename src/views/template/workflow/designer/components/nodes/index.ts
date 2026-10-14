@@ -1,5 +1,5 @@
 import { workflowNodeDefinitions } from '../../../domain'
-import BaseNode from './BaseNode.vue'
+import BaseNode from './base-node.vue'
 import type { Component } from 'vue'
 
 /**
@@ -14,4 +14,4 @@ export const workflowNodeTypes = Object.fromEntries(
   ])
 ) as Record<string, Component>
 
-export { default as BaseNode } from './BaseNode.vue'
+export { default as BaseNode } from './base-node.vue'

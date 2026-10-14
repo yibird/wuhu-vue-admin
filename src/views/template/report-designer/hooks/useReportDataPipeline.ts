@@ -1,14 +1,14 @@
 import { onScopeDispose, shallowRef, watch } from 'vue'
-import { processReportData } from '../model/reportDataPipeline'
+import { processReportData } from '../model/report-data-pipeline'
 import type {
   ReportDataPipelineInput,
   ReportSummaryAggregate,
-} from '../model/reportDataPipeline'
+} from '../model/report-data-pipeline'
 import type { ReportField, ReportFilter, ReportRow, ReportSort } from '../types'
 import type {
   ReportDataWorkerRequest,
   ReportDataWorkerResponse,
-} from '../workers/reportData.worker'
+} from '../workers/report-data.worker'
 import type { ShallowRef } from 'vue'
 
 interface UseReportDataPipelineOptions {
@@ -61,7 +61,7 @@ export function useReportDataPipeline({
 
     try {
       worker = new Worker(
-        new URL('../workers/reportData.worker.ts', import.meta.url),
+        new URL('../workers/report-data.worker.ts', import.meta.url),
         { type: 'module' }
       )
       worker.onmessage = (event: MessageEvent<ReportDataWorkerResponse>) => {

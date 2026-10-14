@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import type { CompareFeature, PlanKey } from '../types'
 
+defineOptions({ name: 'Compare' })
+
 interface Props {
   features: CompareFeature[]
   activePlanKey: PlanKey
