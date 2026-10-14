@@ -57,5 +57,12 @@ export type {
   UpdateUserReq,
   UserResp,
 } from './sys'
+export {
+  allowMockFallback,
+  resolveLlmConfig,
+  streamChatCompletion,
+  streamChatCompletionApi,
+} from './ai'
+export type { ChatCompletionMessage, ChatCompletionRequest } from './ai'
 export { getAuthSessionApi, loginApi } from './auth'
 export type { AuthSession, AuthUser, LoginRequest, LoginResponse } from './auth'

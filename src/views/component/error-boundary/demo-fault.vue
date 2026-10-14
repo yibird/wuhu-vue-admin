@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { Icon } from '@/components'
 
+defineOptions({ name: 'DemoFault' })
+
 const props = defineProps<{
   active: boolean
 }>()
