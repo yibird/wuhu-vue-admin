@@ -9,6 +9,8 @@ export const AUTH_WHITE_LIST: string[] = [
   '/v1/auth/register',
   '/v1/auth/captcha',
   '/v1/auth/hello',
+  // 网关密钥独立于应用 token,由 api 层显式写入 Authorization,避免被通用钩子覆盖
+  '/v1/ai',
 ]
 
 export const TOKEN_KEY = 'token'

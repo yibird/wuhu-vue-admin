@@ -25,6 +25,8 @@
 
 <script lang="ts" setup>
 import { useGlobalSearch } from '@/layouts/config/hooks'
+
+defineOptions({ name: 'ToolbarSearch' })
 const { openSearch } = useGlobalSearch()
 
 const onClick = () => {

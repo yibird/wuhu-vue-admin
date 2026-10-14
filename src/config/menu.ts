@@ -4,7 +4,7 @@ export const menus: IMenu[] = [
   {
     id: '1',
     title: 'Dashboard',
-    type: 0,
+    type: 1,
     path: '/',
     rootId: '0',
     parentId: '0',
@@ -17,7 +17,7 @@ export const menus: IMenu[] = [
         id: '11',
         title: '分析页',
         path: '/dashboard/analysis',
-        type: 1,
+        type: 2,
         rootId: '1',
         parentId: '1',
         level: '1-11',
@@ -29,7 +29,7 @@ export const menus: IMenu[] = [
         id: '12',
         title: '工作台',
         path: '/dashboard/workbench',
-        type: 1,
+        type: 2,
         rootId: '1',
         parentId: '1',
         level: '1-12',
@@ -40,7 +40,7 @@ export const menus: IMenu[] = [
         id: '13',
         title: '监控页',
         path: '/dashboard/monitor',
-        type: 1,
+        type: 2,
         rootId: '1',
         parentId: '1',
         level: '1-13',
@@ -51,7 +51,7 @@ export const menus: IMenu[] = [
         id: '14',
         title: '我的任务',
         path: '/dashboard/task',
-        type: 1,
+        type: 2,
         rootId: '1',
         parentId: '1',
         level: '1-14',
@@ -61,7 +61,7 @@ export const menus: IMenu[] = [
         id: '15',
         title: '文件管理',
         path: '/dashboard/file-manager',
-        type: 1,
+        type: 2,
         rootId: '1',
         parentId: '1',
         level: '1-15',
@@ -70,7 +70,7 @@ export const menus: IMenu[] = [
       {
         id: '16',
         title: '工单',
-        type: 0,
+        type: 1,
         rootId: '1',
         parentId: '1',
         level: '1-16',
@@ -80,7 +80,7 @@ export const menus: IMenu[] = [
             id: '161',
             title: '工单中心',
             path: '/dashboard/ticket/center',
-            type: 1,
+            type: 2,
             rootId: '1',
             parentId: '16',
             level: '1-16-161',
@@ -90,7 +90,7 @@ export const menus: IMenu[] = [
             id: '162',
             title: '工单处理',
             path: '/dashboard/ticket/management',
-            type: 1,
+            type: 2,
             rootId: '1',
             parentId: '16',
             level: '1-16-162',
@@ -103,7 +103,7 @@ export const menus: IMenu[] = [
   {
     id: '3',
     title: '组件',
-    type: 0,
+    type: 1,
     rootId: '0',
     parentId: '0',
     level: '3',
@@ -112,7 +112,7 @@ export const menus: IMenu[] = [
       {
         id: '31',
         title: '基础能力',
-        type: 0,
+        type: 1,
         rootId: '3',
         parentId: '3',
         level: '3-31',
@@ -121,7 +121,7 @@ export const menus: IMenu[] = [
           {
             id: '311',
             title: 'Icon',
-            type: 1,
+            type: 2,
             rootId: '3',
             parentId: '31',
             level: '3-31-311',
@@ -131,7 +131,7 @@ export const menus: IMenu[] = [
           {
             id: '312',
             title: 'Loading',
-            type: 1,
+            type: 2,
             rootId: '3',
             parentId: '31',
             level: '3-31-312',
@@ -141,7 +141,7 @@ export const menus: IMenu[] = [
           {
             id: '313',
             title: 'NumberTicker',
-            type: 1,
+            type: 2,
             rootId: '3',
             parentId: '31',
             level: '3-31-313',
@@ -151,7 +151,7 @@ export const menus: IMenu[] = [
           {
             id: '314',
             title: 'WView',
-            type: 1,
+            type: 2,
             rootId: '3',
             parentId: '31',
             level: '3-31-314',
@@ -159,9 +159,19 @@ export const menus: IMenu[] = [
             path: '/component/view',
           },
           {
+            id: '315',
+            title: 'Copy',
+            type: 2,
+            rootId: '3',
+            parentId: '31',
+            level: '3-31-315',
+            icon: 'i-lucide:copy',
+            path: '/component/copy',
+          },
+          {
             id: '316',
             title: 'Container',
-            type: 1,
+            type: 2,
             rootId: '3',
             parentId: '31',
             level: '3-31-316',
@@ -173,7 +183,7 @@ export const menus: IMenu[] = [
       {
         id: '32',
         title: '输入与选择',
-        type: 0,
+        type: 1,
         rootId: '3',
         parentId: '3',
         level: '3-32',
@@ -182,7 +192,7 @@ export const menus: IMenu[] = [
           {
             id: '321',
             title: 'IconSelector',
-            type: 1,
+            type: 2,
             rootId: '3',
             parentId: '32',
             level: '3-32-321',
@@ -192,7 +202,7 @@ export const menus: IMenu[] = [
           {
             id: '322',
             title: 'IconPicker',
-            type: 1,
+            type: 2,
             rootId: '3',
             parentId: '32',
             level: '3-32-322',
@@ -202,7 +212,7 @@ export const menus: IMenu[] = [
           {
             id: '323',
             title: 'DatePicker',
-            type: 1,
+            type: 2,
             rootId: '3',
             parentId: '32',
             level: '3-32-323',
@@ -214,7 +224,7 @@ export const menus: IMenu[] = [
       {
         id: '33',
         title: '数据展示',
-        type: 0,
+        type: 1,
         rootId: '3',
         parentId: '3',
         level: '3-33',
@@ -223,7 +233,7 @@ export const menus: IMenu[] = [
           {
             id: '331',
             title: 'CodeEditor',
-            type: 1,
+            type: 2,
             rootId: '3',
             parentId: '33',
             level: '3-33-331',
@@ -233,7 +243,7 @@ export const menus: IMenu[] = [
           {
             id: '332',
             title: 'JsonView',
-            type: 1,
+            type: 2,
             rootId: '3',
             parentId: '33',
             level: '3-33-332',
@@ -243,7 +253,7 @@ export const menus: IMenu[] = [
           {
             id: '333',
             title: 'Exception',
-            type: 1,
+            type: 2,
             rootId: '3',
             parentId: '33',
             level: '3-33-333',
@@ -253,7 +263,7 @@ export const menus: IMenu[] = [
           {
             id: '334',
             title: 'FilePreview',
-            type: 1,
+            type: 2,
             rootId: '3',
             parentId: '33',
             level: '3-33-334',
@@ -265,7 +275,7 @@ export const menus: IMenu[] = [
       {
         id: '34',
         title: '交互组件',
-        type: 0,
+        type: 1,
         rootId: '3',
         parentId: '3',
         level: '3-34',
@@ -274,7 +284,7 @@ export const menus: IMenu[] = [
           {
             id: '341',
             title: 'SlidingHighlight',
-            type: 1,
+            type: 2,
             rootId: '3',
             parentId: '34',
             level: '3-34-341',
@@ -284,7 +294,7 @@ export const menus: IMenu[] = [
           {
             id: '342',
             title: 'Draggable',
-            type: 1,
+            type: 2,
             rootId: '3',
             parentId: '34',
             level: '3-34-342',
@@ -294,7 +304,7 @@ export const menus: IMenu[] = [
           {
             id: '343',
             title: 'Modal',
-            type: 1,
+            type: 2,
             rootId: '3',
             parentId: '34',
             level: '3-34-343',
@@ -306,7 +316,7 @@ export const menus: IMenu[] = [
       {
         id: '35',
         title: '重型组件',
-        type: 0,
+        type: 1,
         rootId: '3',
         parentId: '3',
         level: '3-35',
@@ -315,7 +325,7 @@ export const menus: IMenu[] = [
           {
             id: '351',
             title: 'Editor',
-            type: 1,
+            type: 2,
             rootId: '3',
             parentId: '35',
             level: '3-35-351',
@@ -326,7 +336,7 @@ export const menus: IMenu[] = [
           {
             id: '352',
             title: 'Cropper',
-            type: 1,
+            type: 2,
             rootId: '3',
             parentId: '35',
             level: '3-35-352',
@@ -337,7 +347,7 @@ export const menus: IMenu[] = [
           {
             id: '353',
             title: 'Gantt',
-            type: 1,
+            type: 2,
             rootId: '3',
             parentId: '35',
             level: '3-35-353',
@@ -348,7 +358,7 @@ export const menus: IMenu[] = [
           {
             id: '354',
             title: 'ErrorBoundary',
-            type: 1,
+            type: 2,
             rootId: '3',
             parentId: '35',
             level: '3-35-354',
@@ -363,7 +373,7 @@ export const menus: IMenu[] = [
   {
     id: '7',
     title: '系统',
-    type: 0,
+    type: 1,
     rootId: '0',
     parentId: '0',
     level: '7',
@@ -372,7 +382,7 @@ export const menus: IMenu[] = [
       {
         id: '71',
         title: '用户管理',
-        type: 1,
+        type: 2,
         rootId: '7',
         parentId: '7',
         level: '7-71',
@@ -382,7 +392,7 @@ export const menus: IMenu[] = [
       {
         id: '72',
         title: '个人中心',
-        type: 2,
+        type: 3,
         rootId: '7',
         parentId: '7',
         level: '7-72',
@@ -392,7 +402,7 @@ export const menus: IMenu[] = [
       {
         id: '73',
         title: '角色管理',
-        type: 1,
+        type: 2,
         rootId: '7',
         parentId: '7',
         level: '7-73',
@@ -402,7 +412,7 @@ export const menus: IMenu[] = [
       {
         id: '74',
         title: '部门管理',
-        type: 1,
+        type: 2,
         rootId: '7',
         parentId: '7',
         level: '7-74',
@@ -412,7 +422,7 @@ export const menus: IMenu[] = [
       {
         id: '741',
         title: '岗位管理',
-        type: 1,
+        type: 2,
         rootId: '7',
         parentId: '7',
         level: '7-741',
@@ -422,7 +432,7 @@ export const menus: IMenu[] = [
       {
         id: '75',
         title: '菜单管理',
-        type: 1,
+        type: 2,
         rootId: '7',
         parentId: '7',
         level: '7-75',
@@ -432,7 +442,7 @@ export const menus: IMenu[] = [
       {
         id: '76',
         title: '通知公告',
-        type: 1,
+        type: 2,
         rootId: '7',
         parentId: '7',
         level: '7-76',
@@ -442,7 +452,7 @@ export const menus: IMenu[] = [
       {
         id: '77',
         title: '文件管理',
-        type: 1,
+        type: 2,
         rootId: '7',
         parentId: '7',
         level: '7-77',
@@ -452,7 +462,7 @@ export const menus: IMenu[] = [
       {
         id: '78',
         title: '字典管理',
-        type: 1,
+        type: 2,
         rootId: '7',
         parentId: '7',
         level: '7-78',
@@ -462,7 +472,7 @@ export const menus: IMenu[] = [
       {
         id: '79',
         title: '系统配置',
-        type: 1,
+        type: 2,
         rootId: '7',
         parentId: '7',
         level: '7-79',
@@ -472,7 +482,7 @@ export const menus: IMenu[] = [
       {
         id: '710',
         title: '系统监控',
-        type: 1,
+        type: 2,
         rootId: '7',
         parentId: '7',
         level: '7-710',
@@ -482,7 +492,7 @@ export const menus: IMenu[] = [
       {
         id: '71118',
         title: '系统日志',
-        type: 0,
+        type: 1,
         rootId: '7',
         parentId: '7',
         level: '7-71118',
@@ -492,7 +502,7 @@ export const menus: IMenu[] = [
           {
             id: '711181',
             title: '登录日志',
-            type: 1,
+            type: 2,
             rootId: '7',
             parentId: '71118',
             level: '7-71118-711181',
@@ -502,7 +512,7 @@ export const menus: IMenu[] = [
           {
             id: '711182',
             title: '操作日志',
-            type: 1,
+            type: 2,
             rootId: '7',
             parentId: '71118',
             level: '7-71118-711182',
@@ -512,7 +522,7 @@ export const menus: IMenu[] = [
           {
             id: '711183',
             title: '客户端日志',
-            type: 1,
+            type: 2,
             rootId: '7',
             parentId: '71118',
             level: '7-71118-711183',
@@ -522,7 +532,7 @@ export const menus: IMenu[] = [
           {
             id: '711184',
             title: '验证码日志',
-            type: 1,
+            type: 2,
             rootId: '7',
             parentId: '71118',
             level: '7-71118-711184',
@@ -536,7 +546,7 @@ export const menus: IMenu[] = [
   {
     id: '8',
     title: '模板中心',
-    type: 0,
+    type: 1,
     rootId: '0',
     parentId: '0',
     level: '8',
@@ -545,7 +555,7 @@ export const menus: IMenu[] = [
       {
         id: '81',
         title: 'Chat',
-        type: 1,
+        type: 2,
         rootId: '8',
         parentId: '8',
         level: '8-81',
@@ -555,7 +565,7 @@ export const menus: IMenu[] = [
       {
         id: '83',
         title: '日历',
-        type: 1,
+        type: 2,
         rootId: '8',
         parentId: '8',
         level: '8-83',
@@ -565,7 +575,7 @@ export const menus: IMenu[] = [
       {
         id: '86',
         title: '文档预览',
-        type: 1,
+        type: 2,
         rootId: '8',
         parentId: '8',
         level: '8-86',
@@ -576,7 +586,7 @@ export const menus: IMenu[] = [
       {
         id: '812',
         title: '文章列表',
-        type: 1,
+        type: 2,
         rootId: '8',
         parentId: '8',
         level: '8-812',
@@ -586,7 +596,7 @@ export const menus: IMenu[] = [
           {
             id: '8121',
             title: '文章编辑',
-            type: 2,
+            type: 3,
             rootId: '8',
             parentId: '812',
             level: '8-812-8121',
@@ -599,7 +609,7 @@ export const menus: IMenu[] = [
       {
         id: '87',
         title: '定价',
-        type: 1,
+        type: 2,
         rootId: '8',
         parentId: '8',
         level: '8-87',
@@ -609,7 +619,7 @@ export const menus: IMenu[] = [
       {
         id: '88',
         title: '低代码设计器',
-        type: 1,
+        type: 2,
         rootId: '8',
         parentId: '8',
         level: '8-88',
@@ -620,7 +630,7 @@ export const menus: IMenu[] = [
       {
         id: '89',
         title: '报表设计器',
-        type: 1,
+        type: 2,
         rootId: '8',
         parentId: '8',
         level: '8-89',
@@ -631,7 +641,7 @@ export const menus: IMenu[] = [
       {
         id: '810',
         title: '图表设计器',
-        type: 1,
+        type: 2,
         rootId: '8',
         parentId: '8',
         level: '8-810',
@@ -642,7 +652,7 @@ export const menus: IMenu[] = [
       {
         id: '811',
         title: '审批流设计器',
-        type: 1,
+        type: 2,
         rootId: '8',
         parentId: '8',
         level: '8-811',
@@ -655,7 +665,7 @@ export const menus: IMenu[] = [
   {
     id: '82',
     title: '工作流',
-    type: 0,
+    type: 1,
     rootId: '0',
     parentId: '0',
     level: '82',
@@ -664,7 +674,7 @@ export const menus: IMenu[] = [
       {
         id: '821',
         title: '流程列表',
-        type: 1,
+        type: 2,
         rootId: '82',
         parentId: '82',
         level: '82-821',
@@ -674,7 +684,7 @@ export const menus: IMenu[] = [
           {
             id: '823',
             title: '流程设计器',
-            type: 2,
+            type: 3,
             rootId: '82',
             parentId: '821',
             level: '82-821-823',
@@ -687,7 +697,7 @@ export const menus: IMenu[] = [
       {
         id: '822',
         title: '流程监控',
-        type: 1,
+        type: 2,
         rootId: '82',
         parentId: '82',
         level: '82-822',
@@ -699,7 +709,7 @@ export const menus: IMenu[] = [
   {
     id: '10',
     title: 'Ai开发',
-    type: 0,
+    type: 1,
     rootId: '0',
     parentId: '0',
     level: '10',
@@ -708,7 +718,7 @@ export const menus: IMenu[] = [
       {
         id: '100',
         title: '模型列表',
-        type: 1,
+        type: 2,
         rootId: '10',
         parentId: '10',
         level: '10-100',
@@ -718,7 +728,7 @@ export const menus: IMenu[] = [
       {
         id: '101',
         title: 'Agent',
-        type: 1,
+        type: 2,
         rootId: '10',
         parentId: '10',
         level: '10-101',
@@ -728,7 +738,7 @@ export const menus: IMenu[] = [
           {
             id: '1011',
             title: '编辑Agent',
-            type: 2,
+            type: 3,
             rootId: '10',
             parentId: '101',
             level: '10-101-1011',
@@ -741,7 +751,7 @@ export const menus: IMenu[] = [
       {
         id: '102',
         title: 'Chat',
-        type: 1,
+        type: 2,
         rootId: '10',
         parentId: '10',
         level: '10-102',
@@ -751,7 +761,7 @@ export const menus: IMenu[] = [
       {
         id: '103',
         title: '知识库',
-        type: 1,
+        type: 2,
         rootId: '10',
         parentId: '10',
         level: '10-103',
@@ -761,7 +771,7 @@ export const menus: IMenu[] = [
           {
             id: '1031',
             title: '知识库详情',
-            type: 2,
+            type: 3,
             rootId: '10',
             parentId: '103',
             level: '10-103-1031',
@@ -776,7 +786,7 @@ export const menus: IMenu[] = [
   {
     id: '9',
     title: '外部链接',
-    type: 0,
+    type: 1,
     rootId: '0',
     parentId: '0',
     level: '9',
@@ -785,7 +795,7 @@ export const menus: IMenu[] = [
       {
         id: '91',
         title: 'Trae AI',
-        type: 1,
+        type: 2,
         rootId: '9',
         parentId: '9',
         level: '9-91',
@@ -796,7 +806,7 @@ export const menus: IMenu[] = [
       {
         id: '92',
         title: 'Ant Design Vue',
-        type: 1,
+        type: 2,
         rootId: '9',
         parentId: '9',
         level: '9-92',
@@ -807,7 +817,7 @@ export const menus: IMenu[] = [
       {
         id: '93',
         title: 'Ant Design Vue Next',
-        type: 1,
+        type: 2,
         rootId: '9',
         parentId: '9',
         level: '9-93',

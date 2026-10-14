@@ -12,6 +12,21 @@ export function useLayout() {
   const fixedHeader = computed(() => header.value.fixed)
   const showTabs = computed(() => tabs.value.show)
 
+  /**
+   * 搜索面板首次打开后再挂载
+   *
+   * 用 v-if 跟随 searchOpen 会在关闭时立刻卸载组件,离开动画不会播放;
+   * 首次打开后保持挂载,既能保留懒加载,又可以让关闭动画完整播放。
+   */
+  const searchMounted = shallowRef(false)
+  watch(
+    searchOpen,
+    (open) => {
+      if (open) searchMounted.value = true
+    },
+    { immediate: true }
+  )
+
   useGlobalShortcuts()
 
   const contentStyle = computed(() => {
@@ -30,6 +45,7 @@ export function useLayout() {
     contentStyle,
     preferencesOpen,
     searchOpen,
+    searchMounted,
     isLocked,
     closePreferences,
   }

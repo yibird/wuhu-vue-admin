@@ -107,7 +107,7 @@ function getRouteMeta(menu: IMenu) {
     title: menu.title,
     keepAlive: menu.keepAlive ?? true,
     permission: menu.permission,
-    hideInMenu: menu.type === 2,
+    hideInMenu: menu.type === 3,
     isExternal: menu.isExternal ?? false,
   }
 }

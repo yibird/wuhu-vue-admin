@@ -48,7 +48,7 @@ export function useSearch(options: UseSearchOptions) {
 
   const searchableMenus = computed(() =>
     flatMenus.value.filter(
-      (item) => [1, 2].includes(item.type) && item.path && !item.disabled
+      (item) => [2, 3].includes(item.type) && item.path && !item.disabled
     )
   )
 
@@ -138,6 +138,7 @@ export function useSearch(options: UseSearchOptions) {
     }
 
     if (event.key === 'Enter') {
+      if (event.isComposing) return
       event.preventDefault()
       const result = results.value[activeIndex.value]
       if (result) onSelect(result.item)

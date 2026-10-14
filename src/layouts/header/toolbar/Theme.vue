@@ -21,6 +21,8 @@
 import { useTheme } from '@/theme'
 import { ThemeMode } from '@/constants'
 
+defineOptions({ name: 'Theme' })
+
 const { themeMode, changeThemeWithAnimation } = useTheme()
 
 const changeThemeMode = (e: Event) => {

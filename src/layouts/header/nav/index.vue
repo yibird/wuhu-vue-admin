@@ -12,9 +12,9 @@
 import { useAppStore } from '@/store'
 import { MenuMode } from '@/constants'
 import type { MenuMode as MenuModeValue } from '@/config'
-import Collapsed from './Collapsed.vue'
-import Breadcrumb from './Breadcrumb.vue'
-import Menu from './Menu.vue'
+import Collapsed from './collapsed.vue'
+import Breadcrumb from './breadcrumb.vue'
+import Menu from './menu.vue'
 
 const { app } = useAppStore()
 

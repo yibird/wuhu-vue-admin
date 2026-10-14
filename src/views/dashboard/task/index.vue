@@ -24,7 +24,9 @@
           :loading="isLoading"
           v-bind="viewProps"
           @delete="confirmDeleteTask"
+          @duplicate="duplicateTask"
           @edit="openEditModal"
+          @mark-done="markTaskDone"
           @move="moveTask"
         />
       </div>
@@ -48,12 +50,14 @@
 import { message, Modal } from 'antdv-next'
 import dayjs from 'dayjs'
 import { useLoading } from '@/hooks'
-import Form from './components/Form.vue'
-import TaskToolbar from './components/TaskToolbar.vue'
+import Form from './components/form.vue'
+import TaskToolbar from './components/task-toolbar.vue'
 import CardTask from './components/card/index.vue'
 import GanttTask from './components/gantt/index.vue'
 import TableTask from './components/table/index.vue'
-import { tasks as initialTasks } from './dataSource'
+import { tasks as initialTasks } from './data-source'
+// 排期平移与甘特图共用同一实现,避免两处日期口径漂移
+import { shiftTaskDate } from './components/gantt/utils'
 import {
   getTaskAssigneeMeta,
   getTaskPriorityMeta,
@@ -318,6 +322,44 @@ function moveTask(payload: TaskMovePayload) {
   }
 
   tasks.value = nextTasks
+}
+
+/**
+ * 复制任务
+ *
+ * 在完整任务列表上插入副本,并把排期整体后移一天,避免与源任务重叠。
+ *
+ * @param task 源任务
+ */
+function duplicateTask(task: Task) {
+  const duplicated: Task = {
+    ...task,
+    id: createTaskId(),
+    title: `${task.title} 副本`,
+    dueDate: shiftTaskDate(task.dueDate, 1),
+    createTime: dayjs().format('YYYY-MM-DD HH:mm:ss'),
+  }
+
+  if (task.startDate) {
+    duplicated.startDate = shiftTaskDate(task.startDate, 1)
+  }
+
+  tasks.value = [duplicated, ...tasks.value]
+  message.success('任务已复制')
+}
+
+/**
+ * 标记任务完成
+ *
+ * @param task 目标任务
+ */
+function markTaskDone(task: Task) {
+  if (task.status === 2) return
+
+  tasks.value = tasks.value.map((item) =>
+    item.id === task.id ? { ...item, progress: 100, status: 2 } : item
+  )
+  message.success('任务已标记完成')
 }
 
 function confirmDeleteTask(task: Task) {

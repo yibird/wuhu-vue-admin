@@ -21,18 +21,18 @@
 <script lang="ts" setup>
 import { useWidget } from '../hooks'
 
-import Search from './Search.vue'
-import Download from './Download.vue'
-import Task from './Task.vue'
-import NoteBook from './NoteBook.vue'
-import Translate from './Translate.vue'
-import LockScreen from './LockScreen.vue'
-import FullScreen from './FullScreen.vue'
-import Theme from './Theme.vue'
-import Setting from './Setting.vue'
-import Notice from './Notice.vue'
-import Chat from './Chat.vue'
-import UserProfile from './UserProfile.vue'
+import Search from './search.vue'
+import Download from './download.vue'
+import Task from './task.vue'
+import NoteBook from './note-book.vue'
+import Translate from './translate.vue'
+import LockScreen from './lock-screen.vue'
+import FullScreen from './full-screen.vue'
+import Theme from './theme.vue'
+import Setting from './setting.vue'
+import Notice from './notice.vue'
+import Chat from './chat.vue'
+import UserProfile from './user-profile.vue'
 
 const {
   showSearch,

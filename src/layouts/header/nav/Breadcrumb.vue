@@ -36,6 +36,8 @@
 <script lang="ts" setup>
 import { useBreadcrumb } from '../hooks'
 
+defineOptions({ name: 'Breadcrumb' })
+
 const { show, showIcon, items, dropdownMenus, openMenu } = useBreadcrumb()
 
 const onMenuClick = ({ key }: { key: string }) => {

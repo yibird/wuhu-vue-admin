@@ -23,6 +23,8 @@
 import { DownloadCenter } from '@/layouts/config'
 import type { WatchStopHandle } from 'vue'
 
+defineOptions({ name: 'Download' })
+
 const show = ref(false)
 const loaded = ref(false)
 const totalDownloadCount = shallowRef(0)

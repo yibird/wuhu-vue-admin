@@ -1,6 +1,8 @@
 <script lang="ts" setup>
 import { usePreferences } from '@/layouts/preferences/hooks'
 
+defineOptions({ name: 'Setting' })
+
 const { openPreferences } = usePreferences()
 </script>
 

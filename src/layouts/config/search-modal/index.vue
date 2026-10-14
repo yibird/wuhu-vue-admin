@@ -65,7 +65,7 @@ const previouslyFocusedElement = shallowRef<HTMLElement | null>(null)
 const { flatMenus } = usePermissionStore()
 const { openTab } = useTabs()
 const searchableMenus = computed(() =>
-  flatMenus.value.filter((item) => [1, 2].includes(item.type) && item.path)
+  flatMenus.value.filter((item) => [2, 3].includes(item.type) && item.path)
 )
 
 const close = () => {

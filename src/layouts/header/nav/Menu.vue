@@ -16,6 +16,8 @@ import { useTabs } from '@/hooks'
 import { useMenu } from '@/layouts/hooks'
 import type { MenuProps } from 'antdv-next'
 
+defineOptions({ name: 'HeaderNavMenu' })
+
 const { app } = useAppStore()
 const { menus } = usePermissionStore()
 const { openTab, currentTab } = useTabs()
@@ -42,8 +44,8 @@ const options = computed(() => {
       disabled: item.disabled,
       icon: renderIcon(item.icon, { size: 20 }),
     }),
-    // 子页面(type 2)仅用于路由跳转,不在菜单中展示
-    (item) => item.type !== 2
+    // 子页面(type 3)仅用于路由跳转,不在菜单中展示
+    (item) => item.type !== 3
   )
 })
 

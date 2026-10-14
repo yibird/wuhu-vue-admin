@@ -16,6 +16,8 @@
 import { useLocale } from '@/locales'
 import { localeOptions, type Locale } from '@/config'
 
+defineOptions({ name: 'Translate' })
+
 const { appLocale, changeLocale } = useLocale()
 
 const menuItems = computed(() =>

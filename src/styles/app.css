@@ -64,3 +64,38 @@ html.w-color-weakness-mode.w-grey-mode {
   scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
   scrollbar-width: thin;
 }
+
+/**
+ * 滚动条悬浮显示:滑块默认透明,指针悬浮容器时才显示,移出即隐藏;轨道始终透明。
+ *
+ * 同时保留滚动条槽位(scrollbar-gutter: stable):滚动条出现/消失或滑块显隐时,
+ * 容器内容宽度都不会跳动,代价是不过溢出的滚动容器也少 6px。
+ * 刻意不响应 :focus-within:菜单项(tabIndex=-1)与输入框点击后会保留焦点,
+ * 会让滑块在指针移出后一直挂着,与「悬浮才显示」的预期不符。
+ *
+ * 与上面的全局规则同文件、选择器优先级更高,用于稳定覆盖全局滑块颜色。
+ */
+.scroll-hover {
+  scrollbar-gutter: stable;
+  scrollbar-color: transparent transparent;
+}
+
+.scroll-hover::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+.scroll-hover::-webkit-scrollbar-thumb {
+  background-color: transparent;
+}
+
+.scroll-hover:hover {
+  scrollbar-color: var(--scrollbar-thumb) transparent;
+}
+
+.scroll-hover:hover::-webkit-scrollbar-thumb {
+  background-color: var(--scrollbar-thumb);
+}
+
+.scroll-hover:hover::-webkit-scrollbar-thumb:hover {
+  background-color: var(--scrollbar-thumb-hover);
+}

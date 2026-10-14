@@ -31,6 +31,7 @@
 </template>
 
 <script setup lang="ts">
+defineOptions({ name: 'GlobalSearchInput' })
 const value = defineModel<string>({ default: '' })
 const inputRef = ref<HTMLInputElement | null>(null)
 const showClear = computed(() => value.value?.trim().length > 0)

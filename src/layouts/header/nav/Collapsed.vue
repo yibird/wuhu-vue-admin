@@ -14,5 +14,7 @@
 
 <script lang="ts" setup>
 import { useAppStore } from '@/store'
+
+defineOptions({ name: 'Collapsed' })
 const { toggleCollapsed } = useAppStore()
 </script>

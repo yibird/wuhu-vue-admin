@@ -12,7 +12,7 @@ import type {
   PageAnimationMode,
 } from '@/config'
 
-export type MenuType = 0 | 1 | 2 | 3
+export type MenuType = 1 | 2 | 3 | 4
 
 interface MenuBase {
   /**
@@ -26,7 +26,7 @@ interface MenuBase {
    */
   title: string
   /**
-   * @desc 菜单类型,1菜单、2子页面、3权限按钮
+   * @desc 菜单类型,1目录、2菜单、3子菜单、4权限按钮
    * @default
    */
   type: MenuType
@@ -110,19 +110,19 @@ interface MenuBase {
 }
 
 export interface MenuDirectory extends MenuBase {
-  type: 0
+  type: 1
   path?: string
   children?: IMenu[]
 }
 
 export interface MenuRoute extends MenuBase {
-  type: 1 | 2
+  type: 2 | 3
   path: string
   children?: IMenu[]
 }
 
 export interface MenuAction extends MenuBase {
-  type: 3
+  type: 4
   path?: never
   children?: never
 }
@@ -294,7 +294,7 @@ export interface TabsConfig {
   showIcon: boolean
   /**
    * @desc 标签页主题
-   * @default TabsTheme.Card
+   * @default TabsTheme.Block
    */
   theme: TabsTheme
 }

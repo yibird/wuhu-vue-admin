@@ -12,7 +12,7 @@
     <Scrollbar
       ref="scrollbarRef"
       aria-label="菜单搜索结果"
-      class="flex-1 overflow-hidden"
+      class="flex-1"
       content-class="px-10 py-8"
       role="listbox"
     >
@@ -98,12 +98,11 @@
 
 <script setup lang="ts">
 import { onKeyStroke } from '@vueuse/core'
+import { Scrollbar, type ScrollbarInstance } from '@/components/scrollbar'
 import {
-  Scrollbar,
   SlidingHighlight,
-  type ScrollbarInstance,
   type SlidingHighlightInstance,
-} from '@/components'
+} from '@/components/sliding-highlight'
 import {
   getSearchMatch,
   getSearchTextSegments,
@@ -112,6 +111,8 @@ import {
 } from '@/utils'
 import type { ListEmits, ListProps } from './types'
 import type { IMenu } from '#/config'
+
+defineOptions({ name: 'List' })
 
 const { items = [], searchValue = '' } = defineProps<ListProps>()
 const emits = defineEmits<ListEmits>()

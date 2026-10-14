@@ -17,13 +17,14 @@ import type { AppMenuProps } from './types'
 import type { MenuProps } from 'antdv-next'
 import type { IMenu } from '#/config'
 
+defineOptions({ name: 'AppMenu' })
+
 const { currentTab, openTab } = useTabs()
 
 const props = withDefaults(defineProps<AppMenuProps>(), {
   items: () => [],
   collapsed: false,
   mode: 'inline',
-  expandedKeys: () => [],
 })
 
 /**
@@ -51,7 +52,8 @@ const items = computed(() => {
         icon: renderIcon(item.icon, { size: 22 }),
       }
     },
-    (item) => [0, 1].includes(item.type)
+    // 目录(type 1)与菜单(type 2)参与侧边栏渲染,子页面(type 3)与权限按钮(type 4)不展示
+    (item) => [1, 2].includes(item.type)
   )
 })
 
@@ -60,7 +62,7 @@ const visibleMenuKeys = computed(() => {
 
   const collectVisibleKeys = (menuItems: IMenu[]) => {
     for (const item of menuItems) {
-      if ([0, 1].includes(item.type)) {
+      if ([1, 2].includes(item.type)) {
         keys.add(item.id)
       }
       if (item.children?.length) {
@@ -135,7 +137,8 @@ watch(
 watch(
   () => props.expandedKeys,
   (val) => {
-    openKeysOverride.value = val?.length ? [...val] : undefined
-  }
+    openKeysOverride.value = val ? [...val] : undefined
+  },
+  { immediate: true }
 )
 </script>

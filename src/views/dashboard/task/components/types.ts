@@ -78,6 +78,23 @@ export interface TaskDueMeta {
   tone: TaskDueTone
 }
 
+/**
+ * 卡片拖拽解析出的落点
+ *
+ * dnd-kit 的 `operation.target` 指向拖拽体自身,落点需要从 sortable 的实时分组与下标计算,
+ * 计算口径与 dnd-kit 的排序预览保持一致。
+ */
+export interface TaskDropTarget {
+  /**
+   * @desc 落点所属分组的状态值
+   */
+  status: TaskStatusValue
+  /**
+   * @desc 落点分组内需要排在其后的任务 id,为空表示追加到分组末尾
+   */
+  beforeId: number | null
+}
+
 export interface CardTaskGroupProps extends CardTaskStatus {
   items: Task[]
 }
@@ -92,26 +109,29 @@ export type TaskActionEmits = {
 }
 
 /**
+ * 卡片任务操作
+ *
+ * 在通用操作之上补充卡片「更多操作」菜单里的动作;
+ * 复制与标记完成会改动完整任务列表,由页面统一落库。
+ */
+export type CardTaskActionEmits = TaskActionEmits & {
+  duplicate: [task: Task]
+  markDone: [task: Task]
+}
+
+/**
  * 卡片拖拽结束后的落点信息
  *
  * 只上报「拖到哪个分组、插到哪张卡片之前」,由页面在完整任务列表上落库,
  * 避免在筛选后的可见列表上增删导致未显示的任务丢失。
  */
-export interface TaskMovePayload {
+export interface TaskMovePayload extends TaskDropTarget {
   /**
    * @desc 被拖拽任务的 id
    */
   id: number
-  /**
-   * @desc 拖拽后所属分组的状态值
-   */
-  status: TaskStatusValue
-  /**
-   * @desc 目标分组内需要排在其后的任务 id,为空表示追加到分组末尾
-   */
-  beforeId: number | null
 }
 
-export type CardTaskEmits = TaskActionEmits & {
+export type CardTaskEmits = CardTaskActionEmits & {
   move: [payload: TaskMovePayload]
 }

@@ -18,6 +18,8 @@ import { useAuth } from '@/hooks'
 import { useGo } from '@/router'
 import { renderIcon } from '@/utils'
 
+defineOptions({ name: 'UserProfile' })
+
 const options = [
   {
     key: 'userProfile',

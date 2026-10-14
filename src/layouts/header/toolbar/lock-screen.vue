@@ -11,5 +11,7 @@
 <script lang="ts" setup>
 import { useLockScreen } from '@/layouts/config/hooks'
 
+defineOptions({ name: 'LockScreen' })
+
 const { lock } = useLockScreen()
 </script>

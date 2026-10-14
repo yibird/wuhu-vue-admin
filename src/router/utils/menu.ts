@@ -7,7 +7,7 @@ import type { IMenu } from '#/config'
  * @returns true 表示是路由菜单,false 表示是外链或无效菜单
  */
 export function isMenu(menu: IMenu): menu is RequiredKeys<IMenu, 'path'> {
-  return [1, 2].includes(menu.type) && !!menu.path && !isUrl(menu.path)
+  return [2, 3].includes(menu.type) && !!menu.path && !isUrl(menu.path)
 }
 
 /**
@@ -19,7 +19,7 @@ export function isMenu(menu: IMenu): menu is RequiredKeys<IMenu, 'path'> {
 export function isMenuRoute(menu: IMenu): menu is IMenu & {
   path: string
 } {
-  return (menu.type === 1 || menu.type === 2) && !!menu.path
+  return (menu.type === 2 || menu.type === 3) && !!menu.path
 }
 
 /**
@@ -31,17 +31,17 @@ export function isMenuRoute(menu: IMenu): menu is IMenu & {
 export function isMenuPermission(menu: IMenu): menu is IMenu & {
   permission: string
 } {
-  return (menu.type === 2 || menu.type === 3) && !!menu.permission
+  return (menu.type === 3 || menu.type === 4) && !!menu.permission
 }
 
 /**
- * 判断菜单是否是子菜单
+ * 判断菜单是否是子页面
  *
  * @param menu 菜单
- * @returns 返回一个布尔值,表示是否是子菜单
+ * @returns 返回一个布尔值,表示是否是子页面
  */
 export function isSubMenu(menu: IMenu): menu is IMenu & {
   path: string
 } {
-  return menu.type === 2 && !!menu.path
+  return menu.type === 3 && !!menu.path
 }
