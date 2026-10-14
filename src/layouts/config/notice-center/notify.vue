@@ -22,7 +22,9 @@
   </Scrollbar>
 </template>
 <script lang="ts" setup>
-import { Scrollbar } from '@/components'
+import { Scrollbar } from '@/components/scrollbar'
+
+defineOptions({ name: 'Notify' })
 
 const items = [
   {

@@ -10,10 +10,10 @@
     data-testid="layout-sider"
     @update:collapsed="setCollapsed"
   >
-    <div class="py-10">
+    <div v-if="sider.showSearch" class="py-10">
       <Search :collapsed="sider.collapsed" />
     </div>
-    <Scrollbar class="flex-1 overflow-hidden" content-class="pb-2">
+    <Scrollbar class="flex-1" content-class="pb-2">
       <AppMenu
         :items="items"
         :collapsed="sider.collapsed"
@@ -23,27 +23,23 @@
   </a-layout-sider>
 </template>
 <script lang="ts" setup>
-import { permissionStore, useAppStore } from '@/store'
+import { useAppStore } from '@/store'
 import { AppMenu } from '@/layouts/menu'
 import { ThemeMode } from '@/constants'
 import { useTheme } from '@/theme'
-import { Scrollbar } from '@/components'
+import { Scrollbar } from '@/components/scrollbar'
 import { useMenu } from '@/layouts/hooks'
 import Search from './search/index.vue'
 
+defineOptions({ name: 'MixSider' })
+
 const { sider, setCollapsed } = useAppStore()
-const { activeRootMenuId } = useMenu()
+const { activeRootMenuChildren: items } = useMenu()
 const { themeMode } = useTheme()
 
 const siderTheme = computed(() =>
   themeMode.value === ThemeMode.Dark ? 'dark' : 'light'
 )
-
-const items = computed(() => {
-  const { menuCache } = permissionStore()
-  if (!activeRootMenuId.value) return []
-  return Reflect.get(menuCache.idMap, activeRootMenuId.value).children ?? []
-})
 </script>
 <style scoped>
 .layout-sider-mix {

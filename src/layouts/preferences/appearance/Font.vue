@@ -13,11 +13,11 @@
         :ref="(element) => setButtonRef(element, index)"
         type="button"
         role="radio"
-        :tabindex="fontFamily === item.value ? 0 : -1"
+        :tabindex="index === activeIndex ? 0 : -1"
         :aria-checked="fontFamily === item.value"
         :aria-label="`切换字体：${item.label}`"
         :class="[
-          'group relative min-w-0 h-80 flex-center flex-col cursor-pointer gap-4 rounded-8 border-1 border-solid bg-container px-8  outline-none transition-[background-color,border-color,box-shadow,transform] duration-motion-base ease-motion-enter hover:(-translate-y-1 border-primary bg-hover shadow-[0_7px_18px_rgb(var(--w-shadow-color-1))]) focus-visible:shadow-[0_0_0_2px_rgb(var(--w-color-primary)_/_24%)] active:translate-y-0 motion-reduce:(transform-none transition-none)',
+          'group relative min-w-0 h-80 flex-center flex-col cursor-pointer gap-4 rounded-8 border-1 border-solid bg-container px-8  outline-none transition-[background-color,border-color,box-shadow,transform] duration-motion-base ease-motion-enter hover:(-translate-y-1 border-primary bg-hover shadow-[0_7px_18px_var(--w-shadow-color-1)]) focus-visible:shadow-[0_0_0_2px_rgb(var(--w-color-primary)_/_24%)] active:translate-y-0 motion-reduce:(transform-none transition-none)',
           fontFamily === item.value
             ? 'border-primary bg-primary/10 shadow-[0_6px_16px_rgb(var(--w-color-primary)_/_13%)]'
             : 'border-color-1',
@@ -55,6 +55,8 @@
 import { useTheme } from '@/theme'
 import { fontFamilyOptions } from '@/config'
 import type { FontFamilyOption } from '@/config'
+
+defineOptions({ name: 'AppearanceFont' })
 
 const { fontFamily, changeFontFamily } = useTheme()
 

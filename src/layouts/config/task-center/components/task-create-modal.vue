@@ -2,6 +2,8 @@
 import { ownerOptions, taskTypeOptions } from '../constants'
 import type { TaskCenterFormState } from '../types'
 
+defineOptions({ name: 'TaskCreateModal' })
+
 const formState = defineModel<TaskCenterFormState>('formState', {
   required: true,
 })

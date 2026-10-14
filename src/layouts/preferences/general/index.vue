@@ -5,6 +5,6 @@
   </div>
 </template>
 <script lang="ts" setup>
-import General from './General.vue'
-import Animation from './Animation.vue'
+import General from './general.vue'
+import Animation from './animation.vue'
 </script>

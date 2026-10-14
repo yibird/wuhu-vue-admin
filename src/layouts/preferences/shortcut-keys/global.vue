@@ -28,5 +28,7 @@
 import { useShortcuts } from '../hooks'
 import { ConfigItem } from '../components'
 
+defineOptions({ name: 'Global' })
+
 const { enabled, search, logout, lockScreen } = useShortcuts()
 </script>

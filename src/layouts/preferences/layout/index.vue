@@ -10,11 +10,11 @@
   </div>
 </template>
 <script lang="ts" setup>
-import Sider from './Sider.vue'
-import Header from './Header.vue'
-import Breadcrumb from './Breadcrumb.vue'
-import Tabs from './Tab.vue'
-import Widget from './Widget.vue'
-import Footer from './Footer.vue'
-import Copyright from './Copyright.vue'
+import Sider from './sider.vue'
+import Header from './header.vue'
+import Breadcrumb from './breadcrumb.vue'
+import Tabs from './tab.vue'
+import Widget from './widget.vue'
+import Footer from './footer.vue'
+import Copyright from './copyright.vue'
 </script>

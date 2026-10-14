@@ -3,6 +3,8 @@ import { useTheme } from '@/theme'
 import { themeColorOptions } from '@/config'
 import type { Color } from 'antdv-next'
 
+defineOptions({ name: 'Theme' })
+
 const presets = [
   {
     label: '主题色',
@@ -64,7 +66,7 @@ function onComplete(value: Color) {
         :key="item.value"
         type="button"
         :class="[
-          'group min-w-0 flex cursor-pointer items-center justify-center gap-7 rounded-8 border-1 border-solid bg-container px-5 pb-8 pt-9 outline-none transition-[background-color,border-color,box-shadow,transform] duration-motion-base ease-motion-enter hover:(-translate-y-1 border-primary bg-hover shadow-[0_7px_18px_rgb(var(--w-shadow-color-1))]) focus-visible:shadow-[0_0_0_2px_rgb(var(--w-color-primary)_/_24%)] active:translate-y-0 motion-reduce:(transform-none transition-none)',
+          'group min-w-0 flex cursor-pointer items-center justify-center gap-7 rounded-8 border-1 border-solid bg-container px-5 pb-8 pt-9 outline-none transition-[background-color,border-color,box-shadow,transform] duration-motion-base ease-motion-enter hover:(-translate-y-1 border-primary bg-hover shadow-[0_7px_18px_var(--w-shadow-color-1)]) focus-visible:shadow-[0_0_0_2px_rgb(var(--w-color-primary)_/_24%)] active:translate-y-0 motion-reduce:(transform-none transition-none)',
           item.selected
             ? 'border-primary bg-primary/10 shadow-[0_6px_16px_rgb(var(--w-color-primary)_/_13%)]'
             : 'border-color-1',

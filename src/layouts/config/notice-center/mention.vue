@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import { Scrollbar } from '@/components'
+import { Scrollbar } from '@/components/scrollbar'
+
+defineOptions({ name: 'Mention' })
 
 const items = [
   {

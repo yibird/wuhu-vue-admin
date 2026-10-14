@@ -2,6 +2,8 @@
 import { useLogo } from '../hooks'
 import type { LogoProps } from './types'
 
+defineOptions({ name: 'Logo' })
+
 const { collapsed = false } = defineProps<LogoProps>()
 const { showLogo, logo, name } = useLogo()
 </script>

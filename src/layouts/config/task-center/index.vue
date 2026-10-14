@@ -6,7 +6,7 @@ import TaskCenterList from './components/task-center-list.vue'
 import TaskCenterStats from './components/task-center-stats.vue'
 import TaskCreateModal from './components/task-create-modal.vue'
 import { useTaskCenter } from './hooks'
-import { Scrollbar } from '@/components'
+import { Scrollbar } from '@/components/scrollbar'
 
 const show = defineModel('show', { default: false })
 const isNarrowScreen = useMediaQuery('(max-width: 768px)')

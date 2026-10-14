@@ -50,5 +50,7 @@
 import { useAppStore } from '@/store'
 import { ConfigItem } from '../components'
 
+defineOptions({ name: 'Copyright' })
+
 const { footer, copyright } = useAppStore()
 </script>

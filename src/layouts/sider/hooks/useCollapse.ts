@@ -17,7 +17,8 @@ export function useCollapse() {
     setCollapsed(nextCollapsed)
   }
 
-  watch(isSmallScreen, (screen) => changeCollapsed(screen))
+  if (isSmallScreen.value) changeCollapsed(true)
+  watch(isSmallScreen, (screen) => changeCollapsed(screen), { immediate: true })
 
   return {
     isSmallScreen,

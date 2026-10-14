@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useMediaQuery } from '@vueuse/core'
 import { Icon } from '@/components/icon'
-import { Scrollbar } from '@/components'
+import { Scrollbar } from '@/components/scrollbar'
 import {
   categoryMeta,
   categoryOptions,

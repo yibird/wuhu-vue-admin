@@ -1,1 +1,1 @@
-export { default as ConfigItem } from './ConfigItem.vue'
+export { default as ConfigItem } from './config-item.vue'

@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { usePreferences } from './hooks'
 
+defineOptions({ name: 'FloatingBar' })
+
 const { preferencesOpen, openPreferences } = usePreferences()
 </script>
 

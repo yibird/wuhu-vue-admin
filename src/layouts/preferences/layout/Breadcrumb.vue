@@ -22,5 +22,7 @@
 import { ConfigItem } from '../components'
 import { useAppStore } from '@/store'
 
+defineOptions({ name: 'Breadcrumb' })
+
 const { sider, header } = useAppStore()
 </script>

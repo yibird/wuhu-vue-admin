@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import dayjs from 'dayjs'
 import { useMediaQuery } from '@vueuse/core'
-import { Scrollbar, type ScrollbarInstance } from '@/components'
+import { Scrollbar, type ScrollbarInstance } from '@/components/scrollbar'
 
 type AiRole = 'assistant' | 'user'
 

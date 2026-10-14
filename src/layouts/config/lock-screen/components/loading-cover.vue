@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { Loading } from '@/components'
+import { Loading } from '@/components/loading'
 
 defineOptions({
   name: 'LockScreenLoadingCover',

@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { taskStatusMeta, taskTypeMeta } from '../constants'
-import { Scrollbar } from '@/components'
+import { Scrollbar } from '@/components/scrollbar'
 import type { TaskCenterItem } from '../types'
+
+defineOptions({ name: 'TaskCenterDetail' })
 
 const props = defineProps<{
   task: TaskCenterItem | null

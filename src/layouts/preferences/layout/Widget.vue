@@ -70,6 +70,8 @@ import { useWidget } from '@/layouts/header/hooks'
 import { HeaderWidget } from '@/constants'
 import { ConfigItem } from '../components'
 
+defineOptions({ name: 'Widget' })
+
 const {
   showSearch,
   showTaskCenter,

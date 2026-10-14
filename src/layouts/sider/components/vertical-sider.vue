@@ -10,18 +10,19 @@
     <div class="h-full flex flex-col">
       <Logo :collapsed="sider.collapsed" />
       <Search
+        v-if="sider.showSearch"
         :value="rawSearchValue"
         :collapsed="sider.collapsed"
         @update:value="onSearchInput"
       />
-      <Scrollbar class="flex-1 overflow-hidden">
+      <div class="flex-1 overflow-y-auto scroll-hover">
         <AppMenu
           :items="items"
           :collapsed="sider.collapsed"
           :theme="siderTheme"
-          class="border-none"
+          class="border-none!"
         />
-      </Scrollbar>
+      </div>
     </div>
   </a-layout-sider>
 </template>
@@ -31,10 +32,11 @@ import { useAppStore, usePermissionStore } from '@/store'
 import { ThemeMode } from '@/constants'
 import { useTheme } from '@/theme'
 import { AppMenu } from '@/layouts/menu'
-import { Scrollbar } from '@/components'
-import Logo from './Logo.vue'
+import Logo from './logo.vue'
 import Search from './search/index.vue'
-import { matchesMenuTree } from './search/util.ts'
+import { matchesMenuTree } from './search/util'
+
+defineOptions({ name: 'VerticalSider' })
 
 const { sider, setCollapsed } = useAppStore()
 const { menus } = usePermissionStore()

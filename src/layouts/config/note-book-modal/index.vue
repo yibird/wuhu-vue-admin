@@ -2,7 +2,7 @@
 import { useMediaQuery } from '@vueuse/core'
 import { message } from 'antdv-next'
 import { Icon } from '@/components/icon'
-import { Scrollbar } from '@/components'
+import { Scrollbar } from '@/components/scrollbar'
 import { useNotebook } from './hooks'
 import type { NoteItem } from './types'
 

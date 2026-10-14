@@ -146,7 +146,7 @@ onKeyStroke(
     <Transition name="fade-zoom" appear>
       <div
         v-if="open"
-        class="fixed inset-0 z-[2000] transform-gpu [background:rgba(var(--w-bg-page),0.68)] text-main backdrop-blur-10 will-change-[transform,opacity] motion-reduce:will-change-auto"
+        class="fixed inset-0 z-[2000] transform-gpu [background:rgb(var(--w-bg-page)_/_68%)] text-main backdrop-blur-10 will-change-[transform,opacity] motion-reduce:will-change-auto"
       >
         <div
           role="dialog"

@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import type { SearchPanelEmits, SearchPanelProps } from '../types'
+
+defineOptions({ name: 'SearchPanel' })
 defineProps<SearchPanelProps>()
 const emits = defineEmits<SearchPanelEmits>()
 </script>

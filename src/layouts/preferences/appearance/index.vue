@@ -8,9 +8,9 @@
   </div>
 </template>
 <script lang="ts" setup>
-import ThemeMode from './ThemeMode.vue'
-import MenuMode from './MenuMode.vue'
-import Theme from './Theme.vue'
-import Font from './Font.vue'
-import Other from './Other.vue'
+import ThemeMode from './theme-mode.vue'
+import MenuMode from './menu-mode.vue'
+import Theme from './theme.vue'
+import Font from './font.vue'
+import Other from './other.vue'
 </script>

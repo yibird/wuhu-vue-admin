@@ -4,5 +4,5 @@
   </div>
 </template>
 <script lang="ts" setup>
-import Global from './Global.vue'
+import Global from './global.vue'
 </script>

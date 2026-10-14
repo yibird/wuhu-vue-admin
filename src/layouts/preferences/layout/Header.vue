@@ -12,5 +12,7 @@
 <script lang="ts" setup>
 import { useAppStore } from '@/store'
 import { ConfigItem } from '../components'
+
+defineOptions({ name: 'PreferencesHeader' })
 const { header } = useAppStore()
 </script>

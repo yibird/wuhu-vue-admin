@@ -10,6 +10,8 @@ import type {
   TaskCenterTypeFilter,
 } from '../types'
 
+defineOptions({ name: 'TaskCenterFilters' })
+
 const keyword = defineModel<string>('keyword', { required: true })
 const status = defineModel<TaskCenterStatusFilter>('status', { required: true })
 const taskType = defineModel<TaskCenterTypeFilter>('type', { required: true })

@@ -1,6 +1,6 @@
 import { message, Modal } from 'antdv-next'
 import { appStore } from '@/store'
-import { createAppConfigFile, parseAppConfig } from './configSchema'
+import { createAppConfigFile, parseAppConfig } from './config-schema'
 
 export function useConfig() {
   const store = appStore()

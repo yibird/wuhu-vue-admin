@@ -12,10 +12,7 @@
         collapsed
         class="border-b-1 border-solid border-b-[rgb(var(--w-border-color-2))]"
       />
-      <Scrollbar
-        class="flex-1 overflow-hidden"
-        content-class="flex flex-col gap-10 py-10"
-      >
+      <Scrollbar class="flex-1" content-class="flex flex-col gap-10 py-10">
         <div
           v-for="item in menus"
           :key="item.id"
@@ -52,12 +49,17 @@
       @update:collapsed="setCollapsed"
     >
       <div
+        v-if="sider.showSearch"
         class="h-50 flex items-center justify-center border-b-1 border-solid border-b-[rgb(var(--w-sider-border-color))]"
       >
         <Search />
       </div>
-      <Scrollbar class="flex-1 overflow-hidden" content-class="pb-2">
-        <AppMenu :items="childMenus" :theme="siderTheme" class="border-none" />
+      <Scrollbar class="flex-1" content-class="pb-2">
+        <AppMenu
+          :items="activeRootMenuChildren"
+          :theme="siderTheme"
+          class="border-none"
+        />
       </Scrollbar>
     </a-layout-sider>
   </div>
@@ -69,25 +71,25 @@ import { useTabs } from '@/hooks'
 import { AppMenu } from '@/layouts/menu'
 import { ThemeMode } from '@/constants'
 import { useTheme } from '@/theme'
-import { Scrollbar } from '@/components'
-import Logo from './Logo.vue'
+import { Scrollbar } from '@/components/scrollbar'
+import { useMenu } from '@/layouts/hooks'
+import Logo from './logo.vue'
 import Search from './search/index.vue'
 
 import type { IMenu } from '#/config'
 
+defineOptions({ name: 'SplitSider' })
+
 const { sider, setCollapsed } = useAppStore()
 const { menus } = usePermissionStore()
 const { openTab, currentTab } = useTabs()
+const { activeRootMenuChildren } = useMenu()
 const { themeMode } = useTheme()
 
 const rootId = computed(() => currentTab.value?.rootId)
 const siderTheme = computed(() =>
   themeMode.value === ThemeMode.Dark ? 'dark' : 'light'
 )
-
-const childMenus = computed(() => {
-  return menus.value.find((item) => item.id === rootId.value)?.children ?? []
-})
 
 const onClickMenu = (item: IMenu) => {
   if (sider.value.collapsed) {

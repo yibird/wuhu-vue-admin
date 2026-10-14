@@ -39,6 +39,8 @@ import {
 } from '@/config'
 import { ConfigItem } from '../components'
 
+defineOptions({ name: 'Animation' })
+
 const { animation } = useAppStore()
 const {
   enableProgressBar,

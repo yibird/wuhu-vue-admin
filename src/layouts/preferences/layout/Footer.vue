@@ -14,5 +14,7 @@
 import { useAppStore } from '@/store'
 import { ConfigItem } from '../components'
 
+defineOptions({ name: 'PreferencesFooter' })
+
 const { footer } = useAppStore()
 </script>

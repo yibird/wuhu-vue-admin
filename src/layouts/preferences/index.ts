@@ -1,9 +1,9 @@
 export const Preferences = defineAsyncComponent(
-  () => import('./Preferences.vue')
+  () => import('./preferences.vue')
 )
 
 export const FloatingBar = defineAsyncComponent(
-  () => import('./FloatingBar.vue')
+  () => import('./floating-bar.vue')
 )
 
 export {

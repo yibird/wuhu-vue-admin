@@ -91,11 +91,13 @@
 </template>
 
 <script setup lang="ts">
-import { Loading } from '@/components'
+import { Loading } from '@/components/loading'
 import { useAppStore } from '@/store'
 import { useConfig } from './hooks/index.ts'
 import type { Component } from 'vue'
 import type { SettingEmit } from './types.ts'
+
+defineOptions({ name: 'Preferences' })
 
 const open = defineModel<boolean>('open', { default: false })
 const emits = defineEmits<SettingEmit>()
@@ -136,7 +138,7 @@ const sections = [
     label: '快捷键',
     value: 'shortcutKeys',
     iconName: 'i-lucide:command',
-    component: () => import('./shortcutKeys/index.vue'),
+    component: () => import('./shortcut-keys/index.vue'),
   },
   {
     label: '通用',
@@ -157,12 +159,15 @@ const actions = [
     label: '复制配置',
     icon: 'i-lucide:copy',
     action: copyConfig,
+    type: 'default',
+    danger: false,
   },
   {
     label: '导入配置',
     icon: 'i-lucide:upload',
     action: onUploadConfig,
     type: 'primary',
+    danger: false,
   },
   {
     label: '重置',
@@ -171,7 +176,7 @@ const actions = [
     type: 'primary',
     danger: true,
   },
-]
+] as const
 
 const activeSectionMeta = computed(() => {
   return (

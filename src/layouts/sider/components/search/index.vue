@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { useElementBounding, useWindowSize, onClickOutside } from '@vueuse/core'
 import { useSearch } from '../../hooks/index.ts'
-import SearchPanel from './SearchPanel.vue'
+import SearchPanel from './search-panel.vue'
 import type { SearchEmits, SearchProps } from '../types.ts'
 
 const value = defineModel<string>('value', { default: '' })
@@ -58,7 +58,7 @@ const panelStyle = computed(() => {
     left: `${panelLeft}px`,
     top: `${panelTop}px`,
     width: `${panelWidth}px`,
-    maxHeight: `${Math.max(240, viewportHeight.value - panelTop - 12)}px`,
+    maxHeight: `${Math.max(0, viewportHeight.value - panelTop - 12)}px`,
   }
 })
 
@@ -70,7 +70,7 @@ onClickOutside(panelRef, closePanel, { ignore: [triggerRef] })
     <div
       ref="triggerRef"
       :class="[
-        'h-34 w-full flex items-center justify-center overflow-hidden rounded-5 border-1 border-solid bg-container px-10 text-main outline-none transition-[background-color,border-color,box-shadow,transform] duration-motion-base ease-motion-enter hover:border-color-3 focus-within:border-primary focus-within:shadow-[0_0_0_2px_rgb(var(--w-color-primary)_/_12%)] active:scale-[0.99] motion-reduce:(transform-none transition-none)',
+        'group h-34 w-full flex items-center justify-center overflow-hidden rounded-5 border-1 border-solid bg-container px-10 text-main outline-none transition-[background-color,border-color,box-shadow,transform] duration-motion-base ease-motion-enter hover:border-color-3 focus-within:border-primary focus-within:shadow-[0_0_0_2px_rgb(var(--w-color-primary)_/_12%)] active:scale-[0.99] motion-reduce:(transform-none transition-none)',
         isCollapsed ? 'cursor-pointer' : '',
         panelOpen ? 'border-primary bg-primary-tint' : 'border-color-2',
       ]"
@@ -78,7 +78,7 @@ onClickOutside(panelRef, closePanel, { ignore: [triggerRef] })
       :aria-expanded="panelOpen"
       aria-controls="layout-sider-search-panel"
       aria-haspopup="dialog"
-      @click="openPanel"
+      @click="panelOpen ? closePanel() : openPanel()"
     >
       <Icon
         name="i-lucide:search"
