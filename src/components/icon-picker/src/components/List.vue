@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { useVirtualizer } from '@tanstack/vue-virtual'
-import Preview from './Preview.vue'
+import Preview from './preview.vue'
 import type { CSSProperties } from 'vue'
 import type { VirtualItem } from '@tanstack/vue-virtual'
 import type { IconSelectorOption } from '../types'
+
+defineOptions({ name: 'List' })
 
 const ROW_HEIGHT = 72
 
@@ -135,10 +137,8 @@ function handleViewportScroll() {
           v-for="(option, columnIndex) in getRowItems(virtualRow.index)"
           :key="option.value"
           type="button"
-          class="w-icon-selector-option group relative box-border h-64 min-w-0 flex cursor-pointer flex-col items-center justify-center gap-5 rounded-6 border-1 border-color-1 border-solid bg-container px-5 text-main transition-colors hover:(border-primary bg-hover) focus-visible:(border-primary outline-none ring-2 ring-primary/15) disabled:(cursor-not-allowed bg-disabled text-disabled)"
+          class="w-icon-selector-option group relative box-border h-64 min-w-0 flex cursor-pointer flex-col items-center justify-center gap-5 rounded-6 border-1 border-color-1 border-solid bg-container px-5 text-main transition-[border-color,background-color,color,box-shadow] hover:(border-primary bg-hover) focus-visible:(border-primary outline-none ring-2 ring-primary/15) disabled:(cursor-not-allowed bg-disabled text-disabled)"
           :class="{
-            'border-primary bg-selected text-primary':
-              option.value === selectedValue,
             'w-icon-selector-option--motion': motion,
           }"
           :disabled="option.disabled"
@@ -161,8 +161,13 @@ function handleViewportScroll() {
             :size="iconSize + 4"
             class="w-icon-selector-option__preview pointer-events-none shrink-0"
           />
+          <!--
+            按需挂载:每个图标都包一层 a-tooltip 时,一屏(含 overscan)会挂载近百个
+            Trigger/Popup 实例,虚拟列表每次滚动/切分类都要重建一批。
+            这里只保留当前悬浮项的那一个,实例数恒为 1。
+          -->
           <a-tooltip
-            v-if="showNameTooltip"
+            v-if="showNameTooltip && overflowTooltipValue === option.value"
             :open="overflowTooltipValue === option.value"
             :title="`${option.label} (${option.value})`"
             placement="bottom"
@@ -210,6 +215,14 @@ function handleViewportScroll() {
   }
 
   &-option {
+    /* 选中态:主题色边框 + 浅色底 + 主题色图标文字,外加一圈柔和高光 */
+    &[aria-selected='true'] {
+      color: rgb(var(--w-color-primary));
+      background-color: rgb(var(--w-bg-selected));
+      border-color: rgb(var(--w-color-primary));
+      box-shadow: 0 0 0 3px rgb(var(--w-color-primary) / 12%);
+    }
+
     &--motion {
       transition:
         color var(--w-motion-duration-base) var(--w-motion-ease-standard),

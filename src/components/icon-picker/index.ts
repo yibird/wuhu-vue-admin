@@ -1,8 +1,8 @@
 export type { IconPickerProps, IconSelectorProps } from './src/types'
 
 export const IconPicker = defineAsyncComponent(
-  () => import('./src/IconPicker.vue')
+  () => import('./src/icon-picker.vue')
 )
 export const IconSelector = defineAsyncComponent(
-  () => import('./src/IconSelector.vue')
+  () => import('./src/icon-selector.vue')
 )

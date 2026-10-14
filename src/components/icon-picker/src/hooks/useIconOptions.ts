@@ -67,7 +67,7 @@ export function useIconOptions(
 
   const filteredOptions = computed(() => {
     const keyword = searchValue.value.trim().toLowerCase()
-    const limit = props.maxVisible ?? 160
+    const limit = props.maxVisible ?? 0
     const options = keyword
       ? normalizedOptions.value.filter((option) =>
           matchesKeyword(option, keyword)

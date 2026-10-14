@@ -2,6 +2,8 @@
 import { ALL_ICON_CATEGORY, FREQUENT_ICON_CATEGORY } from '../data'
 import type { IconCategoryItem } from '../types'
 
+defineOptions({ name: 'IconCategoryNav' })
+
 interface IconCategoryGroup {
   key: 'categories' | 'quick'
   label: string

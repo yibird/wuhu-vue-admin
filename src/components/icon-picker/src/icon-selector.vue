@@ -11,7 +11,7 @@ import type {
 
 type IconSelectorBaseProps = Omit<IconSelectorProps, 'open'>
 
-defineOptions({ inheritAttrs: false })
+defineOptions({ name: 'IconSelector', inheritAttrs: false })
 
 const props = withDefaults(defineProps<IconSelectorBaseProps>(), {
   allowClear: true,
