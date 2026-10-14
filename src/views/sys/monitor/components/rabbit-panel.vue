@@ -69,13 +69,15 @@
 </template>
 
 <script setup lang="ts">
-import SectionPanel from './SectionPanel.vue'
-import SummaryMetric from './SummaryMetric.vue'
+import SectionPanel from './section-panel.vue'
+import SummaryMetric from './summary-metric.vue'
 import type {
   RabbitSnapshot,
   SummaryMetricItem,
   SystemMonitorActions,
 } from './types'
+
+defineOptions({ name: 'RabbitPanel' })
 
 const props = defineProps<{
   rabbitmq: RabbitSnapshot

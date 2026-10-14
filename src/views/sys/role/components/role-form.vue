@@ -7,6 +7,8 @@ import {
   type CreateRoleReq,
 } from '@/apis'
 
+defineOptions({ name: 'RoleForm' })
+
 interface Props {
   id?: string
 }

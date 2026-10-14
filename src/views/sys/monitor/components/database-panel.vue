@@ -17,9 +17,11 @@
 </template>
 
 <script setup lang="ts">
-import SectionPanel from './SectionPanel.vue'
-import SummaryMetric from './SummaryMetric.vue'
+import SectionPanel from './section-panel.vue'
+import SummaryMetric from './summary-metric.vue'
 import type { DatabaseSnapshot, SummaryMetricItem } from './types'
+
+defineOptions({ name: 'DatabasePanel' })
 
 const props = defineProps<{
   database: DatabaseSnapshot

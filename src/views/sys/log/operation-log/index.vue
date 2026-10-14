@@ -34,7 +34,7 @@ import { FormPlus } from '@/components/form-plus'
 import type { FormPlusModel, FormPlusProps } from '@/components/form-plus'
 import { TablePlus, useTable } from '@/components/table-plus'
 import type { TablePlusColumn } from '@/components/table-plus'
-import Detail from './components/Detail.vue'
+import Detail from './components/detail.vue'
 
 const tableRef = ref()
 const detailRef = ref()

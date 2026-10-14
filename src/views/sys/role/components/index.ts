@@ -1,1 +1,1 @@
-export { default as RoleForm } from './RoleForm.vue'
+export { default as RoleForm } from './role-form.vue'

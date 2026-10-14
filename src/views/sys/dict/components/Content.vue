@@ -12,8 +12,10 @@ import {
   useTable,
   type TablePlusColumn,
 } from '@/components/table-plus'
-import DictItemForm from './DictItemForm.vue'
+import DictItemForm from './dict-item-form.vue'
 import type { DictItemContentProps } from './types'
+
+defineOptions({ name: 'Content' })
 
 const props = defineProps<DictItemContentProps>()
 

@@ -22,10 +22,12 @@
 </template>
 
 <script setup lang="ts">
-import MetricCard from './MetricCard.vue'
-import ResourceTrendChart from './ResourceTrendChart.vue'
-import SectionPanel from './SectionPanel.vue'
+import MetricCard from './metric-card.vue'
+import ResourceTrendChart from './resource-trend-chart.vue'
+import SectionPanel from './section-panel.vue'
 import type { ResourceMetric, SystemMonitorSnapshot } from './types'
+
+defineOptions({ name: 'ServerPanel' })
 
 const props = defineProps<{
   resources: ResourceMetric[]

@@ -42,6 +42,8 @@
 <script setup lang="ts">
 import type { ResourceMetric } from './types'
 
+defineOptions({ name: 'MetricCard' })
+
 const props = defineProps<{
   metric: ResourceMetric
 }>()

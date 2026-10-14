@@ -80,14 +80,16 @@
 </template>
 
 <script setup lang="ts">
-import ProcessLoadChart from './ProcessLoadChart.vue'
-import SectionPanel from './SectionPanel.vue'
-import SummaryMetric from './SummaryMetric.vue'
+import ProcessLoadChart from './process-load-chart.vue'
+import SectionPanel from './section-panel.vue'
+import SummaryMetric from './summary-metric.vue'
 import type {
   ProcessMetric,
   SummaryMetricItem,
   SystemMonitorActions,
 } from './types'
+
+defineOptions({ name: 'ProcessPanel' })
 
 const props = defineProps<{
   processes: ProcessMetric[]

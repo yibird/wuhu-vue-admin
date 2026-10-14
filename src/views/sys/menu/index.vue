@@ -39,7 +39,7 @@ import { getMenuPageListApi, type MenuResp } from '@/apis'
 import { FormPlus } from '@/components/form-plus'
 import { Icon } from '@/components/icon'
 import { TablePlus, useTable } from '@/components/table-plus'
-import FormModal from './components/FormModal.vue'
+import FormModal from './components/form-modal.vue'
 
 import type { FormPlusModel, FormPlusProps } from '@/components/form-plus'
 import type { TablePlusColumn } from '@/components/table-plus'

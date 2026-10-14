@@ -7,6 +7,8 @@ import {
   type CreateDictReq,
 } from '@/apis'
 
+defineOptions({ name: 'DictForm' })
+
 interface Props {
   id?: string
 }

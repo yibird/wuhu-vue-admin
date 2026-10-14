@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { useSystemConfig } from '../hooks'
-import ConfigPanel from './ConfigPanel.vue'
+import ConfigPanel from './config-panel.vue'
+
+defineOptions({ name: 'Mail' })
 
 interface MailConfigForm {
   provider: string

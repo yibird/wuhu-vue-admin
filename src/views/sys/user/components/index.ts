@@ -1,1 +1,1 @@
-export { default as UserForm } from './UserForm.vue'
+export { default as UserForm } from './user-form.vue'

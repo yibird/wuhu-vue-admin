@@ -7,6 +7,8 @@ import {
   type CreateDictItemReq,
 } from '@/apis'
 
+defineOptions({ name: 'DictItemForm' })
+
 interface Props {
   id?: string
   dictId: string

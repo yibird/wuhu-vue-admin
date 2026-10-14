@@ -2,7 +2,9 @@
 import { computed } from 'vue'
 import { Motion, MotionConfig } from 'motion-v'
 import type { SiderEmits, SiderProps } from './types'
-import Dropdown from './Dropdown.vue'
+import Dropdown from './dropdown.vue'
+
+defineOptions({ name: 'Sider' })
 
 const props = withDefaults(defineProps<SiderProps>(), {
   loading: false,

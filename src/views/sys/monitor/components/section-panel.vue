@@ -32,6 +32,7 @@
 </template>
 
 <script setup lang="ts">
+defineOptions({ name: 'SectionPanel' })
 withDefaults(
   defineProps<{
     title: string

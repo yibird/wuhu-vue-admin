@@ -1,8 +1,8 @@
-export { default as Sider } from './Sider.vue'
-export { default as Header } from './Header.vue'
-export { default as Content } from './Content.vue'
-export { default as DictForm } from './DictForm.vue'
-export { default as DictItemForm } from './DictItemForm.vue'
+export { default as Sider } from './sider.vue'
+export { default as Header } from './header.vue'
+export { default as Content } from './content.vue'
+export { default as DictForm } from './dict-form.vue'
+export { default as DictItemForm } from './dict-item-form.vue'
 export type {
   DictHeaderProps,
   DictItem,

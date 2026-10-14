@@ -12,6 +12,8 @@
 <script setup lang="ts">
 import type { MonitorTone, SummaryMetricItem } from './types'
 
+defineOptions({ name: 'SummaryMetric' })
+
 const props = defineProps<SummaryMetricItem>()
 
 const valueClassMap: Record<MonitorTone, string> = {

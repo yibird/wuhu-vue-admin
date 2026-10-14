@@ -1,1 +1,1 @@
-export { default as DeptForm } from './DeptForm.vue'
+export { default as DeptForm } from './dept-form.vue'

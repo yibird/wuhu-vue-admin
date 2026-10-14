@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import type { DictHeaderProps } from './types'
 
+defineOptions({ name: 'DictHeader' })
+
 defineProps<DictHeaderProps>()
 const keyword = defineModel<string>('keyword', { default: '' })
 const status = defineModel<boolean | undefined>('status', {

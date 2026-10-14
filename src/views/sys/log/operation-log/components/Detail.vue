@@ -91,6 +91,8 @@
 </template>
 <script lang="ts" setup>
 import { JsonView } from '@/components/json-view'
+
+defineOptions({ name: 'Detail' })
 const show = defineModel('show', {
   default: false,
   type: Boolean,

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+defineOptions({ name: 'ConfigPanel' })
 defineProps<{
   title: string
   description: string

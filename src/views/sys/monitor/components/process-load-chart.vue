@@ -27,6 +27,8 @@ import { getCssRgbVar, getCssRgbVarAlpha, useEChartsTheme } from '@/theme'
 import { useECharts } from '@/plugins/echarts'
 import type { ProcessMetric } from './types'
 
+defineOptions({ name: 'ProcessLoadChart' })
+
 useECharts()
 
 const props = defineProps<{

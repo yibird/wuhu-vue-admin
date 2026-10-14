@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import type { DropdownEmits, DropdownProps } from './types'
 
+defineOptions({ name: 'Dropdown' })
+
 const props = defineProps<DropdownProps>()
 const emit = defineEmits<DropdownEmits>()
 
