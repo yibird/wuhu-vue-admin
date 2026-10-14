@@ -21,9 +21,9 @@ export function useLocale() {
     return locales[appLocale.value] ?? locales[Locale.ZH_CN]
   })
 
-  const changeLocale = (locale: LocaleValue) => {
-    app.value.locale = locale
-    i18nLocale.value = locale
+  const changeLocale = (newLocale: LocaleValue) => {
+    app.value.locale = newLocale
+    i18nLocale.value = newLocale
   }
 
   onMounted(() => {

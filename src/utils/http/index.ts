@@ -54,5 +54,5 @@ export async function parseApiResponse<T>(
 
 export type { ApiRequestOptions, ApiResponseType } from './dedupe'
 export { ApiError, isApiError } from '@/errors'
-export { onSessionExpired } from './sessionEvents'
+export { onSessionExpired } from './session-events'
 export { getToken, setToken, removeToken } from './util'

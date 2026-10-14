@@ -2,8 +2,8 @@ import { permission } from './permission'
 import { copy } from './copy'
 import { debounce } from './debounce'
 import { throttle } from './throttle'
-import { clickOutside } from './clickOutside'
-import { ellipsisTooltip } from './ellipsisTooltip'
+import { clickOutside } from './click-outside'
+import { ellipsisTooltip } from './ellipsis-tooltip'
 
 import type { App, Directive } from 'vue'
 

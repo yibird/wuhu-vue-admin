@@ -1,4 +1,4 @@
-export { beforeRequest } from './beforeRequest'
-export { beforeError } from './beforeError'
-export { beforeRetry } from './beforeRetry'
-export { afterResponse } from './afterResponse'
+export { beforeRequest } from './before-request'
+export { beforeError } from './before-error'
+export { beforeRetry } from './before-retry'
+export { afterResponse } from './after-response'

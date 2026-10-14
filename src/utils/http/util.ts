@@ -1,6 +1,6 @@
 import { RequestMethod } from '@/constants'
 import { AUTH_WHITE_LIST, TOKEN_KEY } from './constant'
-import { resetSessionExpiredNotification } from './sessionEvents'
+import { resetSessionExpiredNotification } from './session-events'
 
 /**
  * 去掉 API 基础前缀，使白名单匹配不依赖部署前缀（/api 等）
