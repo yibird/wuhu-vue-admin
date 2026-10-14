@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import LoadingBeat from './components/Beat.vue'
+import LoadingBeat from './components/beat.vue'
 import type { LoadingProps } from './types'
 
 const props = withDefaults(defineProps<LoadingProps>(), {
@@ -9,10 +9,10 @@ const props = withDefaults(defineProps<LoadingProps>(), {
 
 const loadingComponents = {
   beat: LoadingBeat,
-  spinner: defineAsyncComponent(() => import('./components/Spinner.vue')),
-  pulse: defineAsyncComponent(() => import('./components/Pulse.vue')),
-  bars: defineAsyncComponent(() => import('./components/Bars.vue')),
-  ring: defineAsyncComponent(() => import('./components/Ring.vue')),
+  spinner: defineAsyncComponent(() => import('./components/spinner.vue')),
+  pulse: defineAsyncComponent(() => import('./components/pulse.vue')),
+  bars: defineAsyncComponent(() => import('./components/bars.vue')),
+  ring: defineAsyncComponent(() => import('./components/ring.vue')),
 } as const
 
 const loadingType = computed(() => props.type || 'beat')

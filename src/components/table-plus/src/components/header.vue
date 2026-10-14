@@ -12,5 +12,7 @@
 <script lang="ts" setup>
 import Toolbar from './toolbar/index.vue'
 import type { TablePlusSlots } from '../types'
+
+defineOptions({ name: 'TablePlusHeader' })
 const slots = defineSlots<Pick<TablePlusSlots, 'headerLeft' | 'headerRight'>>()
 </script>

@@ -111,13 +111,15 @@
 
 <script lang="ts" setup>
 import { message } from 'antdv-next'
-import Cropper from './Cropper.vue'
+import Cropper from './cropper.vue'
 import type { CropperOptions } from 'cropperjs'
 import type {
   CropperInstance,
   CropperPickerEmits,
   CropperPickerProps,
 } from './types'
+
+defineOptions({ name: 'CropperPicker' })
 
 const props = withDefaults(defineProps<CropperPickerProps>(), {
   title: '裁剪图片',

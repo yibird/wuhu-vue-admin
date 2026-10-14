@@ -1,3 +1,7 @@
+<script setup lang="ts">
+defineOptions({ name: 'Pulse' })
+</script>
+
 <template>
   <div class="w-loading-pulse">
     <span></span>

@@ -12,6 +12,8 @@
 <script lang="ts" setup>
 import type { TablePlusContextMenuInstance } from '../types'
 
+defineOptions({ name: 'ContextMenu' })
+
 const showDropdown = ref(false)
 const x = ref(0)
 const y = ref(0)

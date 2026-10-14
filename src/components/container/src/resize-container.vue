@@ -1,3 +1,9 @@
+<template>
+  <component :is="props.tag" ref="containerRef" class="w-resize-container">
+    <slot :width="width" :height="height" />
+  </component>
+</template>
+
 <script setup lang="ts">
 import { useElementSize } from '@vueuse/core'
 
@@ -46,9 +52,3 @@ watch(
   }
 )
 </script>
-
-<template>
-  <component :is="props.tag" ref="containerRef" class="w-resize-container">
-    <slot :width="width" :height="height" />
-  </component>
-</template>

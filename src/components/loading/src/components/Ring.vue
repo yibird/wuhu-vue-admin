@@ -1,3 +1,7 @@
+<script setup lang="ts">
+defineOptions({ name: 'Ring' })
+</script>
+
 <template>
   <div class="w-loading-ring">
     <span></span>

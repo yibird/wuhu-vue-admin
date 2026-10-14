@@ -1,3 +1,7 @@
+<script setup lang="ts">
+defineOptions({ name: 'Bars' })
+</script>
+
 <template>
   <div class="w-loading-bars">
     <span v-for="item in 5" :key="item"></span>

@@ -47,11 +47,13 @@
 <script lang="ts" setup generic="T extends Record<string, any>">
 import { SelectionArea, type SelectionEvent } from '@viselect/vue'
 import { useRowProps, useSize } from '../hooks'
-import ContextMenu from './ContextMenu.vue'
+import ContextMenu from './context-menu.vue'
 import { useTablePlusInject } from '../context'
 
 import type { TablePlusColumn, TablePlusContextMenuInstance } from '../types'
 import { proxyRefs } from 'vue'
+
+defineOptions({ name: 'Content' })
 
 const context = useTablePlusInject<T>()
 const {

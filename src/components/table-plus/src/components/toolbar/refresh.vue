@@ -11,6 +11,8 @@
 <script lang="ts" setup>
 import { useTablePlusInject } from '../../context'
 
+defineOptions({ name: 'Refresh' })
+
 const { emits } = useTablePlusInject()
 const onClick = () => {
   emits('refresh')

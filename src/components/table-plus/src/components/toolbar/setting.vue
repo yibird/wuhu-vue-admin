@@ -28,6 +28,8 @@
 <script lang="ts" setup>
 import { useTablePlusInject } from '../../context'
 
+defineOptions({ name: 'Setting' })
+
 const sizeOptions = [
   {
     label: '紧凑',

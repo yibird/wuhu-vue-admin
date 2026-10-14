@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { useTabs } from '@/hooks'
-import Exception from './Exception.vue'
+import Exception from './exception.vue'
 import clientErrorImage from '@/assets/svg/500.svg'
 import type { ClientErrorProps } from './types.ts'
+
+defineOptions({ name: 'ClientError' })
 
 const props = withDefaults(defineProps<ClientErrorProps>(), {
   showDetails: false,

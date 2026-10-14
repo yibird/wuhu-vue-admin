@@ -14,6 +14,8 @@
 import Cropper from 'cropperjs'
 import type { CropperEmits, CropperInstance, CropperProps } from './types'
 
+defineOptions({ name: 'Cropper' })
+
 const props = withDefaults(defineProps<CropperProps>(), {
   alt: 'image',
   options: () => ({}),

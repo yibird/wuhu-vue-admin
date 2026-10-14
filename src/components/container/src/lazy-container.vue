@@ -1,3 +1,22 @@
+<template>
+  <component
+    :is="props.tag"
+    ref="containerRef"
+    class="w-lazy-container"
+    :style="{
+      minHeight:
+        typeof props.minHeight === 'string'
+          ? props.minHeight
+          : `${props.minHeight}px`,
+    }"
+    :aria-busy="shouldRender ? undefined : 'true'"
+    :data-loaded="loaded || undefined"
+  >
+    <slot v-if="shouldRender" :visible="visible" :loaded="loaded" />
+    <slot v-else name="placeholder" :visible="visible" :loaded="loaded" />
+  </component>
+</template>
+
 <script setup lang="ts">
 import { useIntersectionObserver } from '@vueuse/core'
 import type {
@@ -10,7 +29,6 @@ defineOptions({ name: 'LazyContainer' })
 
 const props = withDefaults(defineProps<LazyContainerProps>(), {
   eager: false,
-  minHeight: 1,
   once: true,
   rootMargin: '200px 0px',
   tag: 'div',
@@ -40,9 +58,7 @@ const setVisible = (nextVisible: boolean) => {
   loaded.value = true
   emits('load')
 
-  if (props.once) {
-    stop()
-  }
+  if (props.once) stop()
 }
 
 const { isSupported, stop } = useIntersectionObserver(
@@ -63,17 +79,3 @@ onMounted(() => {
   }
 })
 </script>
-
-<template>
-  <component
-    :is="props.tag"
-    ref="containerRef"
-    class="w-lazy-container"
-    :style="{ minHeight: props.minHeight }"
-    :aria-busy="shouldRender ? undefined : 'true'"
-    :data-loaded="loaded || undefined"
-  >
-    <slot v-if="shouldRender" :visible="visible" :loaded="loaded" />
-    <slot v-else name="placeholder" :visible="visible" :loaded="loaded" />
-  </component>
-</template>

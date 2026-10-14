@@ -30,6 +30,8 @@
 import { useTabs } from '@/hooks'
 import type { ExceptionProps, ExceptionSlots } from './types'
 
+defineOptions({ name: 'Exception' })
+
 const props = withDefaults(defineProps<ExceptionProps>(), {
   buttonText: '返回首页',
   description: '',

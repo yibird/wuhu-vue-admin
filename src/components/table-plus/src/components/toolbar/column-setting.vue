@@ -71,6 +71,8 @@ import { cloneDeep } from 'es-toolkit'
 import { useTablePlusInject } from '../../context'
 import type { TablePlusColumn } from '../../types'
 
+defineOptions({ name: 'columnSetting' })
+
 const { columns, selectionCol, indexCol } = useTablePlusInject()
 
 const columnsClone = ref(cloneDeep(columns.value))

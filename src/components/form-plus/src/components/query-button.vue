@@ -21,6 +21,7 @@
   </div>
 </template>
 <script lang="ts" setup>
+defineOptions({ name: 'QueryButton' })
 export interface QueryButtonProps {
   searchText?: string
   resetText?: string

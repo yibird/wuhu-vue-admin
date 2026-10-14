@@ -12,5 +12,5 @@
 import Setting from './setting.vue'
 import Refresh from './refresh.vue'
 import Fullscreen from './fullscreen.vue'
-import ColumnSetting from './columnSetting.vue'
+import ColumnSetting from './column-setting.vue'
 </script>

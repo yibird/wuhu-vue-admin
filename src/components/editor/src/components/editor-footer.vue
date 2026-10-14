@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import type { EditorLocale } from '../types'
 
+defineOptions({ name: 'EditorFooter' })
+
 defineProps<{
   readonly characterCount: number
   readonly wordCount: number

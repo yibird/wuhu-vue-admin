@@ -2,7 +2,7 @@
 import { arrayMove } from '@dnd-kit/helpers'
 import { DragDropProvider } from '@dnd-kit/vue'
 import { isSortable } from '@dnd-kit/vue/sortable'
-import DraggableItem from './DraggableItem'
+import DraggableItem from './draggable-item'
 import type {
   DraggableEmits,
   DraggableItemData,
@@ -12,7 +12,7 @@ import type {
 } from './types'
 import type { DragEndEvent, DragStartEvent } from '@dnd-kit/vue'
 
-defineOptions({ inheritAttrs: false })
+defineOptions({ name: 'Draggable', inheritAttrs: false })
 
 const props = withDefaults(defineProps<DraggableProps<T>>(), {
   tag: 'div',

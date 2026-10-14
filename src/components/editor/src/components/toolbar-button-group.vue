@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import type { EditorToolbarItem } from '../types'
 
+defineOptions({ name: 'ToolbarButtonGroup' })
+
 defineProps<{
   readonly items: readonly EditorToolbarItem[]
   readonly disabled?: boolean

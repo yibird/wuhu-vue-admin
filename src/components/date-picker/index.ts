@@ -1,4 +1,4 @@
-import DatePicker from './src/DatePicker'
-import DateRangePicker from './src/DateRangePicker'
+import DatePicker from './src/date-picker'
+import DateRangePicker from './src/date-range-picker'
 
 export { DatePicker, DateRangePicker }

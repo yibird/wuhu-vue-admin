@@ -45,8 +45,7 @@ const props = withDefaults(defineProps<SlidingHighlightProps>(), {
 
 defineSlots<SlidingHighlightSlots>()
 
-const PILL_SELECTOR =
-  '[data-sliding-highlight-pill], .w-sliding-highlight__pill'
+const PILL_SELECTOR = '[data-sliding-highlight-pill]'
 const SPRING = {
   type: 'spring',
   stiffness: 360,
@@ -147,6 +146,9 @@ const findItem = (target: EventTarget | null) => {
 
 /**
  * 同步测量，保证高亮块首次渲染时就位于目标位置
+ *
+ * 高亮块绝对定位在根元素内并随内容一起滚动，
+ * 因此需要把根元素自身的滚动偏移加回内容坐标。
  */
 const measure = () => {
   const element = hoveredElement.value
@@ -156,10 +158,13 @@ const measure = () => {
   const inset = props.inset
   const itemRect = element.getBoundingClientRect()
   const rootRect = root.getBoundingClientRect()
+  // 绝对定位包含块是 padding box,clientLeft/clientTop 即根元素边框宽度,需从 border box 原点修正
+  const offsetX = itemRect.left - (rootRect.left + root.clientLeft)
+  const offsetY = itemRect.top - (rootRect.top + root.clientTop)
 
   rect.value = {
-    x: itemRect.left - rootRect.left - inset,
-    y: itemRect.top - rootRect.top,
+    x: offsetX - inset + root.scrollLeft,
+    y: offsetY + root.scrollTop,
     width: itemRect.width + inset * 2,
     height: itemRect.height,
   }

@@ -1,1 +1,1 @@
-export { withInstall, type InstallComponent } from './withInstall'
+export { withInstall, type InstallComponent } from './with-install'

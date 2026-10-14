@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { Editor as TiptapEditorCore, EditorContent } from '@tiptap/vue-3'
 import { useDeferred } from '@/hooks'
-import EditorFooter from './components/EditorFooter.vue'
-import EditorToolbar from './components/EditorToolbar.vue'
+import EditorFooter from './components/editor-footer.vue'
+import EditorToolbar from './components/editor-toolbar.vue'
 import { createEditorExtensions } from './extensions'
 import {
   blockOptions as defaultBlockOptions,
@@ -13,11 +13,7 @@ import {
   textColorOptions as defaultTextColorOptions,
 } from './constants'
 import { sizeValue } from './utils'
-import {
-  useEditorCommands,
-  useEditorState,
-  useEditorToolbar,
-} from './hooks'
+import { useEditorCommands, useEditorState, useEditorToolbar } from './hooks'
 import type { Editor as TiptapEditor } from '@tiptap/vue-3'
 import type { CSSProperties } from 'vue'
 import type {

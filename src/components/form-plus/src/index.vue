@@ -61,7 +61,7 @@ import type {
   FormPlusValue,
 } from './types'
 import { COMPONENT_MAPPING } from './options'
-import QueryButton from './components/QueryButton.vue'
+import QueryButton from './components/query-button.vue'
 
 interface ResettableForm {
   resetFields: () => void

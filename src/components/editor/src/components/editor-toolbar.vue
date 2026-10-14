@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import ToolbarButtonGroup from './ToolbarButtonGroup.vue'
+import ToolbarButtonGroup from './toolbar-button-group.vue'
 import type { MenuProps } from 'antdv-next'
 import type {
   EditorColorOption,
@@ -7,6 +7,8 @@ import type {
   EditorSelectOption,
   EditorToolbarItem,
 } from '../types'
+
+defineOptions({ name: 'EditorToolbar' })
 
 defineProps<{
   readonly disabled?: boolean
