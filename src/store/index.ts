@@ -4,11 +4,12 @@ import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 export const pinia = createPinia()
 pinia.use(piniaPluginPersistedstate)
 
-export { appStore, useAppStore } from './app'
+export { appStore, DEFAULT_APP_NAME, useAppStore } from './app'
 export type { AppState } from './app/types'
 
 export { tabsStore, useTabsStore } from './tabs'
 export { registerTabGuard } from './tabs/guard'
+export { toRouteTabKey } from './tabs/util'
 export type { TabNavOption, TabTarget } from './tabs/types'
 export type {
   TabGuard,

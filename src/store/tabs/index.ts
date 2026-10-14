@@ -21,7 +21,6 @@ const initialState = (): TabsState => ({
 export const tabsStore = defineStore('tabs', {
   state: initialState,
   persist: {
-    // 仅持久化已打开的 Tab 列表,选中项由当前路由推导,excludes 为刷新期间的临时状态不参与持久化
     pick: ['tabs'],
   },
   getters: {
@@ -30,9 +29,11 @@ export const tabsStore = defineStore('tabs', {
      * @returns 首页Tab
      */
     homeTab() {
-      const { flatMenus } = permissionStore()
-      if (flatMenus.length === 0) return
-      const menu = flatMenus.find((menu) => [1, 2].includes(menu.type))
+      const { flatRoutes } = permissionStore()
+      if (flatRoutes.length === 0) return
+      const homeMenu = flatRoutes.find((item) => item.home)
+      if (homeMenu) return menuToTab(homeMenu)
+      const menu = flatRoutes[0]
       if (!menu) return
       return menuToTab(menu)
     },
@@ -126,7 +127,6 @@ export const tabsStore = defineStore('tabs', {
       const menu = exists
         ? undefined
         : (Reflect.get(menuCache.pathMap, option.path) as IMenu | undefined)
-      // 已存在时同步标题,支持同一页面按业务数据刷新 Tab 名称
       if (exists) {
         exists.title = option.title ?? exists.title
       }

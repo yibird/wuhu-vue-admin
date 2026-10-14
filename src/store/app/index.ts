@@ -14,6 +14,11 @@ import {
 import logo from '@/assets/svg/logo.svg'
 import type { AppState } from './types'
 
+/**
+ * 应用名默认值,应用名为空时的文案兜底也复用该值
+ */
+export const DEFAULT_APP_NAME = 'Wuhu-admin'
+
 const createInitialState = (): AppState => {
   return {
     sider: {
@@ -61,7 +66,7 @@ const createInitialState = (): AppState => {
     },
     lockscreen: {},
     app: {
-      name: 'Wuhu-admin',
+      name: DEFAULT_APP_NAME,
       logo,
       themeMode: ThemeMode.Light,
       themeColor: '22, 119, 255',

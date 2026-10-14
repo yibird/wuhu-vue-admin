@@ -18,6 +18,13 @@ export const permissionStore = defineStore('permission', {
       return treeToList(this.menus)
     },
     /**
+     * 获取菜单路由
+     * @returns
+     */
+    flatRoutes(): IMenu[] {
+      return this.flatMenus.filter((item) => isMenuRoute(item))
+    },
+    /**
      * 权限列表
      */
     permissions(): string[] {
