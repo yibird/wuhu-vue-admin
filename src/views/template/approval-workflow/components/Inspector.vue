@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { APPROVAL_WORKFLOW_SELECTORS } from '../constants'
 import { useApprovalInspectorActions } from '../hooks'
-import FieldPermissions from './FieldPermissions.vue'
+import FieldPermissions from './field-permissions.vue'
 import type {
   ApprovalAssigneeMode,
   ApprovalBranch,
@@ -11,6 +11,8 @@ import type {
   ApprovalUserRef,
   FieldPermissionMode,
 } from '../types'
+
+defineOptions({ name: 'Inspector' })
 
 const props = defineProps<{
   node?: ApprovalNode

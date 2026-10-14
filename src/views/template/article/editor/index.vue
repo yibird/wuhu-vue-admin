@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { useRoute, useRouter } from 'vue-router'
-import DocumentSidebar from './components/DocumentSidebar.vue'
-import Header from './components/Header.vue'
-import Content from './components/Content.vue'
-import DocumentInfoPanel from './components/DocumentInfoPanel.vue'
-import DocumentPreview from './components/DocumentPreview.vue'
+import DocumentSidebar from './components/document-sidebar.vue'
+import Header from './components/header.vue'
+import Content from './components/content.vue'
+import DocumentInfoPanel from './components/document-info-panel.vue'
+import DocumentPreview from './components/document-preview.vue'
 import { useEditor } from './hooks'
 
 const route = useRoute()

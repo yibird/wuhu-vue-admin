@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import type { SummaryCard } from '../types'
 
+defineOptions({ name: 'CalendarSummary' })
+
 const { items, loading = false } = defineProps<{
   items: SummaryCard[]
   loading?: boolean

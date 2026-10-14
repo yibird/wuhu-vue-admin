@@ -1,6 +1,6 @@
 import type { ChartPaletteItem, ChartType } from '../types'
-import { advancedChartControls } from './advancedControls'
-import { basicChartControls } from './basicControls'
+import { advancedChartControls } from './advanced-controls'
+import { basicChartControls } from './basic-controls'
 import { toPaletteItem } from './types'
 
 const chartTypeValues = [

@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import { APPROVAL_WORKFLOW_SELECTORS } from '../constants'
 import { useApprovalCanvasInteraction } from '../hooks'
-import NodeCard from './NodeCard.vue'
+import NodeCard from './node-card.vue'
 import type {
   ApprovalNode,
   ApprovalNodeType,
   ApprovalWorkflowSettings,
 } from '../types'
+
+defineOptions({ name: 'ApprovalWorkflowCanvas' })
 
 const props = defineProps<{
   nodes: readonly ApprovalNode[]

@@ -71,11 +71,11 @@
 <script setup lang="ts">
 import { message, Modal } from 'antdv-next'
 import { useLoading } from '@/hooks'
-import CalendarAside from './components/Aside.vue'
-import CalendarBoard from './components/Board.vue'
-import CalendarEventForm from './components/EventForm.vue'
-import CalendarSummary from './components/Summary.vue'
-import CalendarToolbar from './components/Toolbar.vue'
+import CalendarAside from './components/aside.vue'
+import CalendarBoard from './components/board.vue'
+import CalendarEventForm from './components/event-form.vue'
+import CalendarSummary from './components/summary.vue'
+import CalendarToolbar from './components/toolbar.vue'
 import { useCalendarEvents } from './hooks'
 import {
   eventPriorityOptions,

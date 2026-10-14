@@ -7,10 +7,12 @@ import type {
   ChartScreenConfig,
   ChartWidget,
 } from '../types'
-import CanvasHeader from './CanvasHeader.vue'
-import CanvasWidget from './CanvasWidget.vue'
-import SelectionActionBar from './SelectionActionBar.vue'
-import ScreenTitleBar from './ScreenTitleBar.vue'
+import CanvasHeader from './canvas-header.vue'
+import CanvasWidget from './canvas-widget.vue'
+import SelectionActionBar from './selection-action-bar.vue'
+import ScreenTitleBar from './screen-title-bar.vue'
+
+defineOptions({ name: 'ChartDesignerCanvas' })
 
 const props = defineProps<{
   activeSourceId: string

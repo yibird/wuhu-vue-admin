@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import CalendarCategoryStats from './CategoryStats.vue'
-import CalendarEventDetailPanel from './EventDetailPanel.vue'
-import CalendarFilterPanel from './FilterPanel.vue'
-import CalendarUpcomingList from './UpcomingList.vue'
+import CalendarCategoryStats from './category-stats.vue'
+import CalendarEventDetailPanel from './event-detail-panel.vue'
+import CalendarFilterPanel from './filter-panel.vue'
+import CalendarUpcomingList from './upcoming-list.vue'
 
 import type { CalendarType } from '@dayflow/core'
 import type {
@@ -11,6 +11,8 @@ import type {
   CalendarMetaOption,
   UpcomingEvent,
 } from '../types'
+
+defineOptions({ name: 'CalendarAside' })
 
 const { loading = false } = defineProps<{
   activeFilterCount: number

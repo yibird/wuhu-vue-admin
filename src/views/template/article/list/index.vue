@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import ArticleList from './components/ArticleList.vue'
+import ArticleList from './components/article-list.vue'
 </script>
 
 <template>

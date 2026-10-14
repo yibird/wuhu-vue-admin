@@ -20,21 +20,21 @@ import {
   createSummaryCards,
   createUpcomingEvents,
   filterCalendarEvents,
-} from './eventDerived'
+} from './event-derived'
 import {
   assignFormState,
   createDefaultFormState,
   createEventFromForm,
   createEventId,
   createFormStateFromEvent,
-} from './eventForm'
-import { createSeedEvents } from './eventSeed'
+} from './event-form'
+import { createSeedEvents } from './event-seed'
 import {
   countFormatter,
   fullDateFormatter,
   getEventStartDate,
   monthFormatter,
-} from './eventTime'
+} from './event-time'
 
 export function useCalendarEvents() {
   const initialEvents = createSeedEvents()

@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { Editor } from '@/components/editor'
-import DocumentPreview from './DocumentPreview.vue'
+import DocumentPreview from './document-preview.vue'
 import { deviceOptions } from '../data'
 import type { DeviceMode, EditorContentExpose, EditorMode } from '../types'
 import type { EditorExpose } from '@/components/editor'
+
+defineOptions({ name: 'Content' })
 
 const props = defineProps<{
   activeMode: EditorMode

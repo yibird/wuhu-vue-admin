@@ -13,7 +13,7 @@ import type {
   ApprovalWorkflowSchema,
   ApprovalWorkflowSettings,
 } from '../types'
-import { cloneSchema, collectNodes } from '../utils/nodeTree'
+import { cloneSchema, collectNodes } from '../utils/node-tree'
 import { parseApprovalWorkflowSchema } from '../utils/schema'
 import { createSimulationSteps } from '../utils/simulation'
 import { validateApprovalWorkflow } from '../utils/validation'

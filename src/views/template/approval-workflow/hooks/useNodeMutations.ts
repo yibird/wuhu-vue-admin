@@ -14,7 +14,7 @@ import {
   insertNodeAfter,
   removeNodeTree,
   updateNodeTree,
-} from '../utils/nodeTree'
+} from '../utils/node-tree'
 
 interface UseApprovalNodeMutationsOptions {
   schema: ShallowRef<ApprovalWorkflowSchema>
