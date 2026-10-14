@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { viewContextKey } from './context'
+import { toCssSize, viewContextKey } from './context'
 import type { CSSProperties } from 'vue'
 import type { WViewProps } from './types'
 
@@ -13,11 +13,7 @@ const props = withDefaults(defineProps<WViewProps>(), {
 })
 
 const gap = computed(() =>
-  props.gap === undefined
-    ? '0px'
-    : typeof props.gap === 'string'
-      ? props.gap
-      : `${props.gap}px`
+  props.gap === undefined ? '0px' : toCssSize(props.gap)
 )
 const direction = computed(() => props.direction)
 
@@ -28,7 +24,7 @@ const style = computed(() => {
   if (typeof props.padding === 'boolean' && props.padding) {
     viewStyle.padding = '10px'
   } else if (typeof props.padding === 'number') {
-    viewStyle.padding = `${props.padding}px`
+    viewStyle.padding = toCssSize(props.padding)
   } else if (typeof props.padding === 'string') {
     viewStyle.padding = props.padding
   }

@@ -1,3 +1,7 @@
-export { default as AnimatedGroup } from './src/AnimatedGroup.vue'
+export { default as AnimatedGroup } from './src/animated-group.vue'
 export { motions } from './src/motion'
-export type { AnimatedGroupProps, MotionType } from './src/types'
+export type {
+  AnimatedGroupProps,
+  AnimatedGroupSlots,
+  MotionType,
+} from './src/types'

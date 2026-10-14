@@ -10,7 +10,6 @@
     :inherit="true"
     :rotate="-18"
     :width="168"
-    :z-index="watermarkZIndex"
     :style="watermarkLayerStyle"
   >
     <div class="full" />
@@ -18,22 +17,24 @@
 </template>
 
 <script setup lang="ts">
-import { useAppStore } from '@/store'
+import { DEFAULT_APP_NAME, useAppStore } from '@/store'
 import { Watermark } from 'antdv-next'
 
 const { app } = useAppStore()
 
 const watermarkGap: [number, number] = [140, 96]
+/**
+ * Watermark 内部会写入 position: relative 与 overflow: hidden,
+ * 必须以更高优先级的内联样式覆盖,层级则统一交给 class 上的 --w-watermark-z-index 令牌
+ */
 const watermarkLayerStyle = {
-  inset: '0',
   overflow: 'visible',
   position: 'fixed',
 } as const
-const watermarkZIndex = 1100
 
 const showWatermark = computed(() => app.value.showWatermark)
 const watermarkContent = computed(() => {
-  return app.value.name.trim().toLowerCase() || 'wuhu-admin'
+  return app.value.name.trim().toLowerCase() || DEFAULT_APP_NAME.toLowerCase()
 })
 
 const watermarkFont = computed(() => ({

@@ -1,7 +1,8 @@
 <template>
   <MotionConfig :reduced-motion="reducedMotion">
-    <LayoutGroup v-if="props.items.length > 0" :id="props.id">
+    <LayoutGroup :id="props.id">
       <AnimatePresence
+        v-bind="$attrs"
         :as="props.as"
         :mode="props.mode"
         :initial="props.initial"
@@ -30,7 +31,9 @@ import {
   useMotionConfig,
 } from 'motion-v'
 import { motions } from './motion'
-import type { AnimatedGroupProps } from './types'
+import type { AnimatedGroupProps, AnimatedGroupSlots } from './types'
+
+defineOptions({ name: 'AnimatedGroup', inheritAttrs: false })
 
 const props = withDefaults(defineProps<AnimatedGroupProps<T>>(), {
   as: 'div',
@@ -40,6 +43,8 @@ const props = withDefaults(defineProps<AnimatedGroupProps<T>>(), {
   motionType: 'smooth',
   motionAs: 'div',
 })
+
+defineSlots<AnimatedGroupSlots<T>>()
 
 const parentConfig = useMotionConfig()
 
@@ -51,14 +56,5 @@ const reducedMotion = computed(
   () => props.reducedMotion ?? parentConfig.value.reducedMotion
 )
 
-const getMotionBind = computed(() => {
-  const motion = motions[props.motionType]
-  if (motion) return motion
-  return {
-    initial: props.motionInitial,
-    animate: props.motionAnimate,
-    exit: props.motionExit,
-    transition: props.motionTransition,
-  }
-})
+const getMotionBind = computed(() => motions[props.motionType])
 </script>

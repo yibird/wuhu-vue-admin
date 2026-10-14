@@ -1,8 +1,8 @@
 import View from './src/index.vue'
-import WViewHeader from './src/ViewHeader.vue'
-import WViewContent from './src/ViewContent.vue'
-import WViewFooter from './src/ViewFooter.vue'
-import WViewSider from './src/ViewSider.vue'
+import WViewHeader from './src/view-header.vue'
+import WViewContent from './src/view-content.vue'
+import WViewFooter from './src/view-footer.vue'
+import WViewSider from './src/view-sider.vue'
 export type {
   WViewProps,
   WViewSiderProps,
