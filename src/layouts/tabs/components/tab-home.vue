@@ -7,8 +7,10 @@
   </button>
 </template>
 <script lang="ts" setup>
-import type { TabHomeProps, TabControlEmit } from './types'
+import type { TabHomeProps, TabControlEmits } from './types'
+
+defineOptions({ name: 'TabHome' })
 
 const { active = false } = defineProps<TabHomeProps>()
-const emits = defineEmits<TabControlEmit>()
+const emits = defineEmits<TabControlEmits>()
 </script>

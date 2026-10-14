@@ -11,16 +11,25 @@ export function useKeepAlive() {
     const value = Number(app.value.pageCacheMax)
     return Number.isFinite(value) ? Math.min(20, Math.max(1, value)) : 10
   })
-  const include = computed(() => {
-    if (!app.value.pageCache) return []
+  /**
+   * 参与 KeepAlive 缓存的组件名集合
+   *
+   * 以字符串作为依赖,只有集合真正变化时才产出新数组;
+   * 否则 Tab 每次切换都会让 KeepAlive 重新执行一轮 pruneCache
+   */
+  const includeKey = computed(() => {
+    if (!app.value.pageCache) return ''
 
     const componentNames = new Set<string>()
     for (const tab of allTabs.value) {
       if (!tab?.keepAlive || !tab.path || isUrl(tab.path)) continue
       componentNames.add(getComponentName(tab.path))
     }
-    return [...componentNames]
+    return [...componentNames].join(',')
   })
+  const include = computed(() =>
+    includeKey.value ? includeKey.value.split(',') : []
+  )
   /**
    * 刷新期间临时排除的页面,被排除的页面不会写入 KeepAlive 缓存
    */

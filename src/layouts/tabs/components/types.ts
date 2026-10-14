@@ -3,7 +3,7 @@ import type { ITab } from '#/config'
 
 export type EmitEventType = (typeof EmitEvent)[keyof typeof EmitEvent]
 
-export type TabControlEmit = (e: 'click') => void
+export type TabControlEmits = (e: 'click') => void
 
 export interface TabHomeProps {
   active?: boolean
@@ -46,7 +46,7 @@ export interface TabItemEmits {
   (e: typeof EmitEvent.CLOSE_OTHER): void
   (e: typeof EmitEvent.CLOSE_ALL): void
   (e: typeof EmitEvent.COLLECT, index: number): void
-  (e: typeof EmitEvent.TOGGLE_PIN, tab: ITab, fixed: boolean): void
+  (e: typeof EmitEvent.TOGGLE_PIN, tab: ITab, pin: boolean): void
 }
 
 export interface TabListEmits extends TabItemEmits {

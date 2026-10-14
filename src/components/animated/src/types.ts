@@ -1,6 +1,17 @@
-import type { MotionProps, Options } from 'motion-v'
+import type { VNodeChild } from 'vue'
+import type { MotionProps } from 'motion-v'
 
 export type MotionType = 'smooth' | 'reorder'
+
+/**
+ * AnimatedGroup 插槽
+ */
+export interface AnimatedGroupSlots<T> {
+  /**
+   * @desc 列表项渲染插槽,参数为当前列表项元素
+   */
+  default?: (props: { item: T }) => VNodeChild
+}
 
 export interface AnimatedGroupProps<T> {
   items: T[]
@@ -20,13 +31,13 @@ export interface AnimatedGroupProps<T> {
    */
   reducedMotion?: 'user' | 'never' | 'always'
 
+  /**
+   * @desc 动画预设
+   * @default 'smooth'
+   */
   motionType?: MotionType
   motionAs?: MotionProps['as']
   layout?: boolean | 'position' | 'size'
-  motionInitial?: Options['initial']
-  motionAnimate?: Options['animate']
-  motionExit?: Options['exit']
-  motionTransition?: Options['transition']
   motionClass?: string
   getKey: (item: T) => string | number
 }

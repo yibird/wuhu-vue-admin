@@ -4,5 +4,9 @@
   </button>
 </template>
 <script lang="ts" setup>
-const emits = defineEmits(['click'])
+import type { TabControlEmits } from './types'
+
+defineOptions({ name: 'TabPrev' })
+
+const emits = defineEmits<TabControlEmits>()
 </script>

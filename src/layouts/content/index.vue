@@ -10,19 +10,19 @@
       >
         <IframeView v-if="isIframe" :src="iframeSrc" />
         <RouterView v-else v-slot="{ Component, route }">
-          <Transition :name="pageAnimation" :mode="pageAnimationMode">
-            <KeepAlive :include="include" :exclude="exclude" :max="max">
-              <Suspense v-if="!refreshing" :timeout="0">
+          <Suspense v-if="!refreshing" :timeout="0">
+            <Transition :name="pageAnimation" :mode="pageAnimationMode">
+              <KeepAlive :include="include" :exclude="exclude" :max="max">
                 <component :is="Component" :key="route.fullPath" />
-                <template #fallback>
-                  <!-- 固定为内容区可视高度并脱离文档流,避免被新页面的高度撑开而偏离垂直居中 -->
-                  <div class="absolute inset-x-0 top-0" :style="loadingStyle">
-                    <Loading :type="loadingAnimation" />
-                  </div>
-                </template>
-              </Suspense>
-            </KeepAlive>
-          </Transition>
+              </KeepAlive>
+            </Transition>
+            <template #fallback>
+              <!-- 固定为内容区可视高度并脱离文档流,避免被新页面的高度撑开而偏离垂直居中 -->
+              <div class="absolute inset-x-0 top-0" :style="loadingStyle">
+                <Loading :type="loadingAnimation" />
+              </div>
+            </template>
+          </Suspense>
         </RouterView>
       </ErrorBoundary>
     </div>
@@ -30,7 +30,8 @@
 </template>
 
 <script lang="ts" setup>
-import { ErrorBoundary, Loading } from '@/components'
+import { ErrorBoundary } from '@/components/error-boundary'
+import { Loading } from '@/components/loading'
 import { useIframe, useKeepAlive, useTransition } from './hooks'
 import { ContentError, IframeView } from './components'
 

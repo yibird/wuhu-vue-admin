@@ -1,113 +1,41 @@
 <template>
-  <OverlayScrollbarsComponent
-    ref="scrollbarRef"
-    class="w-scrollbar"
-    :defer="props.defer ?? true"
-    :element="props.element"
-    :options="scrollbarOptions"
-    :events="scrollbarEvents"
-  >
-    <div ref="contentRef" :class="props.contentClass">
+  <div ref="scrollElement" class="w-scrollbar scroll-hover">
+    <div ref="contentElement" :class="props.contentClass">
       <slot />
     </div>
-  </OverlayScrollbarsComponent>
+  </div>
 </template>
 
 <script lang="ts" setup>
-import { OverlayScrollbarsComponent } from 'overlayscrollbars-vue'
-import type { EventListeners } from 'overlayscrollbars'
-import type { OverlayScrollbarsComponentRef } from 'overlayscrollbars-vue'
-import type { ScrollbarEmits, ScrollbarInstance, ScrollbarProps } from './types'
-import 'overlayscrollbars/overlayscrollbars.css'
+import type { ScrollbarInstance, ScrollbarProps } from './types'
 
 const props = withDefaults(defineProps<ScrollbarProps>(), {
   contentClass: '',
 })
-const emit = defineEmits<ScrollbarEmits>()
 defineOptions({
   name: 'Scrollbar',
 })
 
-const scrollbarRef = ref<OverlayScrollbarsComponentRef | null>(null)
-const contentRef = useTemplateRef<HTMLElement>('contentRef')
-
-const defaultScrollbarOptions = {
-  update: {
-    debounce: {
-      mutation: [80, 200],
-      resize: [80, 200],
-      event: [80, 200],
-      env: [120, 300],
-    },
-    flowDirectionStyles: () => ({}),
-  },
-  scrollbars: {
-    autoHide: 'leave',
-    autoHideDelay: 120,
-  },
-} satisfies ScrollbarProps['options']
-
-const scrollbarOptions = computed<
-  Exclude<ScrollbarProps['options'], false | null> | undefined
->(() => {
-  if (props.options === false || props.options === null) return undefined
-
-  const options = props.options ?? {}
-
-  return {
-    ...defaultScrollbarOptions,
-    ...options,
-    update: {
-      ...defaultScrollbarOptions.update,
-      ...options.update,
-    },
-    scrollbars: {
-      ...defaultScrollbarOptions.scrollbars,
-      ...options.scrollbars,
-    },
-  } satisfies ScrollbarProps['options']
-})
-
-const scrollbarEvents = computed<EventListeners>(() => {
-  const events = props.events || {}
-  const userScroll = events.scroll
-  const userScrollListeners = Array.isArray(userScroll)
-    ? userScroll
-    : userScroll
-      ? [userScroll]
-      : []
-
-  return {
-    ...events,
-    scroll: [
-      ...userScrollListeners,
-      (_instance, event) => {
-        emit('scroll', event)
-      },
-    ],
-  }
-})
-
-const getScrollElement = () => {
-  return (
-    scrollbarRef.value?.osInstance()?.elements().scrollOffsetElement ??
-    scrollbarRef.value?.getElement() ??
-    null
-  )
-}
+const scrollElement = useTemplateRef<HTMLElement>('scrollElement')
+const contentElement = useTemplateRef<HTMLElement>('contentElement')
 
 defineExpose<ScrollbarInstance>({
-  osInstance: () => scrollbarRef.value?.osInstance() ?? null,
-  getElement: () => scrollbarRef.value?.getElement() ?? null,
-  getContentElement: () => contentRef.value,
-  getScrollElement,
-  scrollTo: (options: ScrollToOptions) => getScrollElement()?.scrollTo(options),
+  getScrollElement: () => scrollElement.value,
+  getContentElement: () => contentElement.value,
+  scrollTo: (options: ScrollToOptions) =>
+    scrollElement.value?.scrollTo(options),
 })
 </script>
 
 <style lang="less" scoped>
+/**
+ * 原生滚动容器:滚动条尺寸、滑块颜色、悬浮显隐与槽位保留统一由
+ * src/styles/app.css 的全局规则与 .scroll-hover 提供,
+ * 这里只维持「滚动容器 + 内容元素」两层结构,content-class 依然作用于内容层
+ */
 .w-scrollbar {
   width: 100%;
   height: 100%;
+  overflow: auto;
 }
 </style>

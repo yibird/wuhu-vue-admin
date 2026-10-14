@@ -94,7 +94,8 @@ function scrollToActiveTab(
 export function useRoll(target: Target, activeKey: ActiveKey) {
   let scheduledFrameId: number | undefined
   const preferredMotion = usePreferredReducedMotion()
-  const scrollBehavior = () =>
+  /** 仅用户点击箭头翻页时使用平滑滚动 */
+  const userScrollBehavior = () =>
     preferredMotion.value === 'reduce' ? 'auto' : 'smooth'
 
   const cancelScheduledRoll = () => {
@@ -103,12 +104,16 @@ export function useRoll(target: Target, activeKey: ActiveKey) {
     scheduledFrameId = undefined
   }
 
+  /**
+   * 程序化定位使用 auto 滚动:平滑滚动会逐帧改动 scrollLeft,
+   * 而视口与内容尺寸变化都会触发定位,动画途中重算会互相打断并持续触发布局。
+   */
   const schedule = () => {
     cancelScheduledRoll()
 
     const roll = () => {
       scheduledFrameId = undefined
-      scrollToActiveTab(target, activeKey, scrollBehavior())
+      scrollToActiveTab(target, activeKey, 'auto')
     }
 
     if (typeof requestAnimationFrame === 'undefined') {
@@ -134,7 +139,7 @@ export function useRoll(target: Target, activeKey: ActiveKey) {
 
     targetEl.scrollTo({
       left: nextLeft,
-      behavior: scrollBehavior(),
+      behavior: userScrollBehavior(),
     })
   }
 
@@ -143,13 +148,31 @@ export function useRoll(target: Target, activeKey: ActiveKey) {
     flush: 'post',
   })
 
-  useResizeObserver(() => {
-    const targetEl = toValue(target)
-    if (!targetEl) return []
+  /**
+   * 上一次观测到的宽度,用于忽略尺寸没变化的重复回调:
+   * 观察器建立时会为每个目标各触发一次,且 Tab 增删会同时命中观察器与上面的 watch
+   */
+  const observedWidths = new WeakMap<Element, number>()
 
-    const wrapper = targetEl.querySelector<HTMLElement>(WRAPPER_SELECTOR)
-    return wrapper ? [targetEl, wrapper] : [targetEl]
-  }, schedule)
+  useResizeObserver(
+    () => {
+      const targetEl = toValue(target)
+      if (!targetEl) return []
+
+      const wrapper = targetEl.querySelector<HTMLElement>(WRAPPER_SELECTOR)
+      return wrapper ? [targetEl, wrapper] : [targetEl]
+    },
+    (entries) => {
+      let widthChanged = false
+      for (const entry of entries) {
+        const width = entry.contentRect.width
+        if (observedWidths.get(entry.target) === width) continue
+        observedWidths.set(entry.target, width)
+        widthChanged = true
+      }
+      if (widthChanged) schedule()
+    }
+  )
 
   onScopeDispose(cancelScheduledRoll)
 

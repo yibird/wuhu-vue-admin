@@ -18,17 +18,17 @@
             :active="item.key === activeKey"
             :item="item"
             :showIcon="showIcon"
-            @change="(tab: ITab, idx: number) => emit('change', tab, idx)"
-            @close="(tab: ITab, idx: number) => emit('close', tab, idx)"
-            @refresh="emit('refresh')"
-            @close-current="emit('closeCurrent')"
-            @close-left="emit('closeLeft')"
-            @close-right="emit('closeRight')"
-            @close-other="emit('closeOther')"
-            @close-all="emit('closeAll')"
-            @collect="(idx: number) => emit('collect', idx)"
+            @change="(tab: ITab, idx: number) => emits('change', tab, idx)"
+            @close="(tab: ITab, idx: number) => emits('close', tab, idx)"
+            @refresh="emits('refresh')"
+            @close-current="emits('closeCurrent')"
+            @close-left="emits('closeLeft')"
+            @close-right="emits('closeRight')"
+            @close-other="emits('closeOther')"
+            @close-all="emits('closeAll')"
+            @collect="(idx: number) => emits('collect', idx)"
             @toggle-pin="
-              (tab: ITab, fixed: boolean) => emit('togglePin', tab, fixed)
+              (tab: ITab, pin: boolean) => emits('togglePin', tab, pin)
             "
           />
         </DraggableItem>
@@ -40,8 +40,8 @@
 import { DragDropProvider } from '@dnd-kit/vue'
 import { arrayMove } from '@dnd-kit/helpers'
 import { isSortable } from '@dnd-kit/vue/sortable'
-import { DraggableItem } from '@/components'
-import TabItem from './TabItem.vue'
+import { DraggableItem } from '@/components/draggable'
+import TabItem from './tab-item.vue'
 
 import type { TabListProps } from '../types'
 import type { DragEndEvent } from '@dnd-kit/vue'
@@ -49,7 +49,7 @@ import type { ITab } from '#/config'
 
 const { activeKey, showIcon } = defineProps<TabListProps>()
 
-const emit = defineEmits<{
+const emits = defineEmits<{
   change: [tab: ITab, index: number]
   close: [tab: ITab, index: number]
   refresh: []
@@ -74,6 +74,6 @@ function handleDragEnd(e: DragEndEvent) {
   items.value = nextItems
   const sourceId = e.operation.source?.id
   const tab = nextItems.find((item) => item.key === sourceId)
-  if (tab) emit('dragEnd', tab)
+  if (tab) emits('dragEnd', tab)
 }
 </script>

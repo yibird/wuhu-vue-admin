@@ -1,2 +1,2 @@
-export { default as ContentError } from './ContentError.vue'
-export { default as IframeView } from './IframeView.vue'
+export { default as ContentError } from './content-error.vue'
+export { default as IframeView } from './iframe-view.vue'

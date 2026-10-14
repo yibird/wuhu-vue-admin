@@ -1,6 +1,8 @@
 <script lang="ts" setup>
 import { useAppStore } from '@/store'
-import { Loading } from '@/components'
+import { Loading } from '@/components/loading'
+
+defineOptions({ name: 'IframeView' })
 
 const props = withDefaults(
   defineProps<{
