@@ -1,8 +1,10 @@
 <script lang="ts" setup>
 import { WCard } from '@/components'
 import { NumberTicker } from '@/components/number-ticker'
-import ItemExtra from './ItemExtra.vue'
+import ItemExtra from './item-extra.vue'
 import type { CardItemProps, CardItemEmits } from '../types.ts'
+
+defineOptions({ name: 'Item' })
 
 const { item, index } = defineProps<CardItemProps>()
 const emits = defineEmits<CardItemEmits>()

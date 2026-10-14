@@ -1,36 +1,6 @@
-<script lang="ts" setup>
-import { useMediaQuery } from '@vueuse/core'
-import { LazyContainer } from '@/components'
-import AnalysisBlockSkeleton from './components/AnalysisBlockSkeleton.vue'
-import Overview from './components/overview/index.vue'
-import { cards } from './config'
-
-const Statistics = defineAsyncComponent(
-  () => import('./components/statistics/index.vue')
-)
-const VisitStatistics = defineAsyncComponent(
-  () => import('./components/VisitStatistics.vue')
-)
-const ConversionFunnel = defineAsyncComponent(
-  () => import('./components/ConversionFunnel.vue')
-)
-const HotSearch = defineAsyncComponent(
-  () => import('./components/HotSearch.vue')
-)
-const HotItems = defineAsyncComponent(() => import('./components/HotItems.vue'))
-
-const isMobileViewport = useMediaQuery('(max-width: 767px)')
-const isWideViewport = useMediaQuery('(min-width: 1536px)')
-
-const trendMinHeight = computed(() => (isMobileViewport.value ? 539 : 483))
-const chartMinHeight = computed(() => (isMobileViewport.value ? 361 : 481))
-const funnelMinHeight = computed(() => (isWideViewport.value ? 593 : 1078))
-const rankingMinHeight = 619
-</script>
-
 <template>
-  <WView :full="false" class="overflow-hidden bg-page">
-    <div class="dash-canvas flex flex-col gap-12">
+  <WView :full="false" class="overflow-hidden">
+    <div class="page-view flex flex-col gap-12">
       <Overview :items="cards" />
       <LazyContainer :min-height="trendMinHeight" root-margin="0px 0px 128px">
         <template #placeholder>
@@ -139,8 +109,40 @@ const rankingMinHeight = 619
   </WView>
 </template>
 
+<script lang="ts" setup>
+import { useMediaQuery } from '@vueuse/core'
+import { LazyContainer } from '@/components'
+import AnalysisBlockSkeleton from './components/analysis-block-skeleton.vue'
+import Overview from './components/overview/index.vue'
+import { cards } from './config'
+
+const Statistics = defineAsyncComponent(
+  () => import('./components/statistics/index.vue')
+)
+const VisitStatistics = defineAsyncComponent(
+  () => import('./components/visit-statistics.vue')
+)
+const ConversionFunnel = defineAsyncComponent(
+  () => import('./components/conversion-funnel.vue')
+)
+const HotSearch = defineAsyncComponent(
+  () => import('./components/hot-search.vue')
+)
+const HotItems = defineAsyncComponent(
+  () => import('./components/hot-items.vue')
+)
+
+const isMobileViewport = useMediaQuery('(max-width: 767px)')
+const isWideViewport = useMediaQuery('(min-width: 1536px)')
+
+const trendMinHeight = computed(() => (isMobileViewport.value ? 539 : 483))
+const chartMinHeight = computed(() => (isMobileViewport.value ? 361 : 481))
+const funnelMinHeight = computed(() => (isWideViewport.value ? 593 : 1078))
+const rankingMinHeight = 619
+</script>
+
 <style lang="less" scoped>
-.dash-canvas {
+.page-view {
   background-image:
     radial-gradient(
       1100px 520px at -10% -8%,

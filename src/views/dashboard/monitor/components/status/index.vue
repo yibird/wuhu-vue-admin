@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import Item from './item.vue'
-import Card from '../Card.vue'
+import Card from '../card.vue'
 import type { StatusProps } from '../types'
 
 const { items = [], loading = false } = defineProps<StatusProps>()

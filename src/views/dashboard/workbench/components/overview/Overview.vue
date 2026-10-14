@@ -78,8 +78,10 @@
 
 <script lang="ts" setup>
 import { NumberTicker } from '@/components/number-ticker'
-import OverviewSkeleton from './OverviewSkeleton.vue'
+import OverviewSkeleton from './overview-skeleton.vue'
 import type { OverviewMetric } from './types'
+
+defineOptions({ name: 'Overview' })
 
 const { loading = false } = defineProps<{
   loading?: boolean

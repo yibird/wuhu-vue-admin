@@ -7,6 +7,8 @@ import {
 import type { Task } from '../types'
 import { statusBarClass, taskProgress } from './utils'
 
+defineOptions({ name: 'List' })
+
 interface Props {
   readonly items: Task[]
   readonly selectedTaskId: number | null

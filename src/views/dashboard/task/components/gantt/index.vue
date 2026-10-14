@@ -10,9 +10,9 @@ import {
 import type { FrappeGanttOptions } from 'frappe-gantt'
 import { sortTasksByStatus, taskDateTimeFormat } from '../../constants'
 import type { Task, TaskActionEmits } from '../types'
-import ContextMenu from './ContextMenu.vue'
-import List from './List.vue'
-import GanttSkeleton from './Skeleton.vue'
+import ContextMenu from './context-menu.vue'
+import List from './list.vue'
+import GanttSkeleton from './skeleton.vue'
 import { useTaskGanttContextMenu } from './useTaskGanttContextMenu'
 import {
   createTaskId,

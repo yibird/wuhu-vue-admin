@@ -6,9 +6,9 @@ import {
   ticketStatusOptions,
 } from '../center/data'
 import type { TicketPriority } from '../center/types'
-import TicketConversation from './components/TicketConversation.vue'
-import TicketProperties from './components/TicketProperties.vue'
-import TicketQueue from './components/TicketQueue.vue'
+import TicketConversation from './components/ticket-conversation.vue'
+import TicketProperties from './components/ticket-properties.vue'
+import TicketQueue from './components/ticket-queue.vue'
 import { supportTeamOptions } from './data'
 import { useTicketManagement } from './hooks'
 import type {

@@ -91,6 +91,18 @@ export interface RecommendAppEmits {
   install: [item: AppType]
 }
 
+export interface AppDetailModalProps {
+  /**
+   * @desc 当前查看的应用,为空时不渲染内容
+   * @default null
+   */
+  app?: AppType | null
+}
+
+export interface AppDetailModalEmits {
+  install: [item: AppType]
+}
+
 export interface AlertItem {
   id: string
   title: string

@@ -1,3 +1,3 @@
-export { default as Action } from './Action.vue'
-export { default as QuickActionManagerModal } from './QuickActionManagerModal.vue'
+export { default as Action } from './action.vue'
+export { default as QuickActionManagerModal } from './quick-action-manager-modal.vue'
 export type { WorkbenchAction } from './types'

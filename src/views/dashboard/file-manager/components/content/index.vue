@@ -1,11 +1,11 @@
 <script lang="ts" setup>
 import { Icon } from '@/components/icon'
 import { useFileContentActions } from '../../hooks'
-import Breadcrumb from './Breadcrumb.vue'
-import DetailModal from './DetailModal.vue'
-import PreviewModal from './PreviewModal.vue'
-import Tree from './Tree.vue'
-import Grid from './Grid.vue'
+import Breadcrumb from './breadcrumb.vue'
+import DetailModal from './detail-modal.vue'
+import PreviewModal from './preview-modal.vue'
+import Tree from './tree.vue'
+import Grid from './grid.vue'
 import {
   type FileBreadcrumbItem,
   type FileCategory,

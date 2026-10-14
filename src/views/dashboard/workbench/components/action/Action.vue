@@ -71,9 +71,11 @@
 import { useRouter } from 'vue-router'
 import { WCard } from '@/components'
 import { defaultWorkbenchActionIds, workbenchActions } from './data'
-import ActionSkeleton from './ActionSkeleton.vue'
-import QuickActionManagerModal from './QuickActionManagerModal.vue'
+import ActionSkeleton from './action-skeleton.vue'
+import QuickActionManagerModal from './quick-action-manager-modal.vue'
 import type { WorkbenchAction } from './types'
+
+defineOptions({ name: 'Action' })
 
 const { loading = false } = defineProps<{
   loading?: boolean

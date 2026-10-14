@@ -1,6 +1,6 @@
 <template>
   <div
-    class="rounded-6 border-1 border-solid border-color-1 bg-container transition-[box-shadow] hover:shadow-all-md"
+    class="task-card-panel rounded-6 border-1 border-solid border-color-1 bg-container transition-[border-color,box-shadow] hover:shadow-all-md"
   >
     <div class="p-10 pb-6">
       <div class="flex items-start justify-between gap-8">
@@ -75,26 +75,73 @@
         删除
       </span>
       <a-divider vertical />
-      <span
-        class="flex-1 inline-flex items-center justify-center text-xs text-muted cursor-pointer"
-      >
-        <Icon name="i-lucide:ellipsis" :size="15" />
-      </span>
+      <!-- 外层 div 负责三等分与居中,避免依赖 Dropdown 内部对触发元素 class 的处理 -->
+      <div class="flex-1 flex items-center justify-center">
+        <a-dropdown
+          :trigger="['click']"
+          :menu="{ items: menuItems }"
+          @menu-click="handleMenuClick"
+        >
+          <button
+            type="button"
+            aria-label="更多操作"
+            class="inline-flex items-center justify-center border-0 bg-transparent p-0 text-xs text-muted cursor-pointer transition-colors hover:text-primary"
+          >
+            <Icon name="i-lucide:ellipsis" :size="15" />
+          </button>
+        </a-dropdown>
+      </div>
     </div>
   </div>
 </template>
 <script lang="ts" setup>
+import { renderIcon } from '@/utils'
 import {
   getTaskAssigneeMeta,
   getTaskDueMeta,
   getTaskPriorityMeta,
 } from '../../constants'
-import type { CardTaskItemProps, TaskActionEmits } from '../types'
+import type { MenuProps } from 'antdv-next'
+import type { CardTaskActionEmits, CardTaskItemProps } from '../types'
+
+defineOptions({ name: 'Item' })
 const { item } = defineProps<CardTaskItemProps>()
-const emit = defineEmits<TaskActionEmits>()
+const emit = defineEmits<CardTaskActionEmits>()
 
 const priorityMeta = computed(() => getTaskPriorityMeta(item.priority))
 const assigneeMeta = computed(() => getTaskAssigneeMeta(item.assignee))
 const dueMeta = computed(() => getTaskDueMeta(item.dueDate, item.status))
 const assigneeInitial = computed(() => assigneeMeta.value.label.slice(0, 1))
+
+type CardMenuItemKey = 'duplicate' | 'markDone'
+
+/** 卡片底部已内联「修改 / 删除」,更多操作只补充其余动作 */
+const menuItems = computed(
+  () =>
+    [
+      {
+        key: 'duplicate',
+        label: '复制任务',
+        icon: renderIcon('i-lucide:copy-plus', { size: 15 }),
+      },
+      {
+        key: 'markDone',
+        label: '标记完成',
+        icon: renderIcon('i-lucide:circle-check', { size: 15 }),
+        disabled: item.status === 2,
+      },
+    ] satisfies NonNullable<MenuProps['items']>
+)
+
+const menuActions: Record<CardMenuItemKey, () => void> = {
+  duplicate: () => emit('duplicate', item),
+  markDone: () => emit('markDone', item),
+}
+
+const isCardMenuItemKey = (value: unknown): value is CardMenuItemKey =>
+  value === 'duplicate' || value === 'markDone'
+
+const handleMenuClick: MenuProps['onClick'] = ({ key }) => {
+  if (isCardMenuItemKey(key)) menuActions[key]()
+}
 </script>

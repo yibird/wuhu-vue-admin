@@ -1,5 +1,5 @@
-export { default as Project } from './Project.vue'
-export { default as ProjectSettingsModal } from './ProjectSettingsModal.vue'
+export { default as Project } from './project.vue'
+export { default as ProjectSettingsModal } from './project-settings-modal.vue'
 export {
   getProjectLogoByTone,
   getProjectLogoOption,

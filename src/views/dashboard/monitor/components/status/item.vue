@@ -6,6 +6,8 @@ import VChart from 'vue-echarts'
 import type { MonitorTone, StatusItemProps } from '../types'
 import type { EChartsCoreOption } from 'echarts/core'
 
+defineOptions({ name: 'Item' })
+
 useECharts()
 
 const { eChartsThemeName } = useEChartsTheme()

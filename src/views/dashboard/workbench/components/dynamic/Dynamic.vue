@@ -50,8 +50,10 @@
 
 <script lang="ts" setup>
 import { SlidingHighlight, WCard } from '@/components'
-import DynamicSkeleton from './DynamicSkeleton.vue'
+import DynamicSkeleton from './dynamic-skeleton.vue'
 import type { Dynamic } from './types'
+
+defineOptions({ name: 'Dynamic' })
 
 const { loading = false } = defineProps<{
   loading?: boolean

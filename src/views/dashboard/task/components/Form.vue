@@ -203,6 +203,8 @@ import {
   taskStatusSelectOptions,
 } from '../constants'
 
+defineOptions({ name: 'TaskForm' })
+
 const model = defineModel<TaskFormState>({ required: true })
 const formRef = shallowRef<FormInstance>()
 

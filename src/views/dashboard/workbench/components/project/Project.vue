@@ -120,8 +120,10 @@
 <script lang="ts" setup>
 import { WCard } from '@/components'
 import { getProjectLogoOption } from './data'
-import ProjectSkeleton from './ProjectSkeleton.vue'
+import ProjectSkeleton from './project-skeleton.vue'
 import type { Project } from './types'
+
+defineOptions({ name: 'Project' })
 
 const props = defineProps<{
   projects: Project[]

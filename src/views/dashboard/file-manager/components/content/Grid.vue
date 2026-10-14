@@ -26,6 +26,8 @@ import folderIcon from '@/assets/svg/folder.svg'
 import type { MenuProps } from 'antdv-next'
 import type { FileSelectionKey, FileViewMode, IFile } from '../types'
 
+defineOptions({ name: 'Grid' })
+
 const selectedKeys = defineModel<FileSelectionKey[]>('selectedKeys', {
   required: true,
 })
@@ -471,9 +473,7 @@ function handleAction(file: IFile, { key }: { key: string }) {
           :data-file-manager-item-id="item.id"
           :class="[
             'group min-w-0 flex cursor-pointer items-center gap-12 rounded-6 border-1 border-solid bg-container-secondary px-12 py-10 transition-colors hover:(border-primary bg-selected) max-[575px]:(items-start gap-10)',
-            isSelected(item)
-              ? 'border-primary bg-selected'
-              : 'border-color-1',
+            isSelected(item) ? 'border-primary bg-selected' : 'border-color-1',
           ]"
           @click="handleItemClick(item, $event)"
           @dblclick="handleDoubleClick(item)"

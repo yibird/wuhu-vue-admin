@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { DateRangePicker, WCard } from '@/components'
-import SalesRevenue from './SalesRevenue.vue'
-import VisitCount from './VisitCount.vue'
+import SalesRevenue from './sales-revenue.vue'
+import VisitCount from './visit-count.vue'
 import { rangeOptions, resolveRange } from './data'
 import type { Dayjs } from 'dayjs'
 import type { DateRange, RangeKey } from './data'

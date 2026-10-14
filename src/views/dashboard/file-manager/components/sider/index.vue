@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { FileCategory, FileCategoryStats } from '../types'
-import Capacity from './Capacity.vue'
-import FileList from './FileList.vue'
+import Capacity from './capacity.vue'
+import FileList from './file-list.vue'
 
 defineProps<{
   activeCategory: FileCategory

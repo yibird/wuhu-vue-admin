@@ -109,7 +109,7 @@
 
 <script lang="ts" setup>
 import type { TableColumnsType } from 'antdv-next'
-import TableSkeleton from './Skeleton.vue'
+import TableSkeleton from './skeleton.vue'
 import {
   getTaskAssigneeMeta,
   getTaskDueMeta,

@@ -1,2 +1,2 @@
-export { default as Team } from './Team.vue'
+export { default as Team } from './team.vue'
 export type { TeamItem } from './types'

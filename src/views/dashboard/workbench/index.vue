@@ -2,7 +2,7 @@
   <WView :full="false" :padding="false" class="bg-page">
     <div class="min-h-full w-full h-full overflow-x-hidden overflow-y-auto">
       <div
-        class="dash-canvas min-h-full w-full p-12 flex flex-col gap-12 overflow-x-hidden lg:p-16"
+        class="page-view min-h-full w-full p-12 flex flex-col gap-12 overflow-x-hidden lg:p-16"
       >
         <section
           class="page-enter page-enter--1 flex flex-wrap gap-12 justify-between"
@@ -266,7 +266,7 @@ watch(isLoading, async (value) => {
 </script>
 
 <style lang="less" scoped>
-.dash-canvas {
+.page-view {
   background-image:
     radial-gradient(
       1100px 520px at -10% -8%,

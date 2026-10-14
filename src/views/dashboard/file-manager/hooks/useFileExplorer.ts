@@ -1,6 +1,6 @@
 import dayjs from 'dayjs'
 import { computed, shallowRef } from 'vue'
-import { initialFiles } from '../dataSource'
+import { initialFiles } from '../data-source'
 import {
   FILE_NODE_TYPE,
   ROOT_PARENT_ID,

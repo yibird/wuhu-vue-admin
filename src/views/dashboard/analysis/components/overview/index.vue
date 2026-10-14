@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import Item from './Item.vue'
+import Item from './item.vue'
 import type { CardListProps } from '../types'
 const { items = [] } = defineProps<CardListProps>()
 </script>

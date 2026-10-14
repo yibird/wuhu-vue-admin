@@ -1,8 +1,10 @@
 <script lang="ts" setup>
 import { useRouter } from 'vue-router'
 import { SlidingHighlight, WCard } from '@/components'
-import AnnouncementSkeleton from './AnnouncementSkeleton.vue'
+import AnnouncementSkeleton from './announcement-skeleton.vue'
 import type { WorkbenchAnnouncement } from './types'
+
+defineOptions({ name: 'Announcement' })
 
 const { loading = false } = defineProps<{
   loading?: boolean

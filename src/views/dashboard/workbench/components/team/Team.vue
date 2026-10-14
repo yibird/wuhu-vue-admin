@@ -58,8 +58,10 @@
 
 <script lang="ts" setup>
 import { SlidingHighlight, WCard } from '@/components'
-import TeamSkeleton from './TeamSkeleton.vue'
+import TeamSkeleton from './team-skeleton.vue'
 import type { TeamItem } from './types'
+
+defineOptions({ name: 'Team' })
 
 const { loading = false } = defineProps<{
   loading?: boolean

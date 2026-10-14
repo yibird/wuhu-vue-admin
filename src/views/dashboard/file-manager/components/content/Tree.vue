@@ -26,6 +26,8 @@ import unknownIcon from '@/assets/svg/unknown.svg'
 import folderIcon from '@/assets/svg/folder.svg'
 import type { MenuProps } from 'antdv-next'
 
+defineOptions({ name: 'Tree' })
+
 interface FileTreeNode {
   children: FileTreeNode[]
   file: IFile

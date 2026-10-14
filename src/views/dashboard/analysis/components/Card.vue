@@ -2,6 +2,8 @@
 import type { CSSProperties } from 'vue'
 import { WCard } from '@/components'
 
+defineOptions({ name: 'Card' })
+
 withDefaults(
   defineProps<{
     title: string
