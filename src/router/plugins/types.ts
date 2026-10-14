@@ -12,7 +12,7 @@ export interface RouterPluginHooks {
     from: RouteLocationNormalized
   ) => Promise<boolean | undefined> | boolean | undefined | void
   /**
-   * 路由变化开始前调用
+   * 路由解析完成时调用
    */
   onBeforeResolve?: (
     to: RouteLocationNormalized,

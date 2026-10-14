@@ -1,5 +1,5 @@
-import { setupGlobalBeforeEachRouteGuard } from './beforeEach'
-import { setupSessionExpiredRouteGuard } from './sessionExpired'
+import { setupGlobalBeforeEachRouteGuard } from './before-each'
+import { setupSessionExpiredRouteGuard } from './session-expired'
 import type { Router } from 'vue-router'
 
 export function setupGlobalRouteGuard(router: Router) {

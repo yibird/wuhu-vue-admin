@@ -1,4 +1,4 @@
-import { progressBarPlugin } from './progressBar'
+import { progressBarPlugin } from './progress-bar'
 import { titlePlugin } from './title'
 
 import type { Router } from 'vue-router'
