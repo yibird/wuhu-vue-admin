@@ -17,5 +17,5 @@ export default defineConfig({
     'oxc',
   ],
   overrides: [],
-  ignorePatterns: ['node_modules', 'dist', 'build'],
+  ignorePatterns: ['node_modules', 'dist'],
 })

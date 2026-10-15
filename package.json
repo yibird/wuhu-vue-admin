@@ -156,14 +156,14 @@
   },
   "lint-staged": {
     "*.{js,ts,mjs,mts,tsx}": [
-      "oxlint --fix --no-error-on-unmatched-pattern",
+      "oxlint --fix",
       "oxfmt --no-error-on-unmatched-pattern"
     ],
     "*.{cjs,json,jsonc}": [
       "oxfmt --no-error-on-unmatched-pattern"
     ],
     "*.vue": [
-      "oxlint --fix --no-error-on-unmatched-pattern",
+      "oxlint --fix",
       "stylelint --fix --allow-empty-input",
       "oxfmt --no-error-on-unmatched-pattern"
     ],
