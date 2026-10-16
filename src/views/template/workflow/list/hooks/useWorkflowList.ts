@@ -79,7 +79,7 @@ export function useWorkflowList() {
   function duplicateWorkflow(id: string) {
     const source = workflows.value.find((item) => item.id === id)
     if (!source) return
-    const now = '2026-08-04 10:30'
+    const now = formatDateTime(new Date())
     workflows.value = [
       {
         ...source,
@@ -104,6 +104,7 @@ export function useWorkflowList() {
       return {
         ...item,
         status: item.status === 'disabled' ? 'published' : 'disabled',
+        updatedAt: formatDateTime(new Date()),
       }
     })
   }
@@ -125,4 +126,15 @@ export function useWorkflowList() {
     removeWorkflow,
     toggleWorkflow,
   }
+}
+
+function formatDateTime(date: Date) {
+  const pad = (value: number) => String(value).padStart(2, '0')
+  const datePart = [
+    date.getFullYear(),
+    pad(date.getMonth() + 1),
+    pad(date.getDate()),
+  ].join('-')
+  const timePart = [pad(date.getHours()), pad(date.getMinutes())].join(':')
+  return datePart + ' ' + timePart
 }

@@ -4,8 +4,6 @@ import type { CSSProperties } from 'vue'
 import { getWorkflowNodeDefinition } from '../../../domain'
 import type { WorkflowNodeData, WorkflowNodeStatus } from '../../types'
 
-defineOptions({ name: 'BaseNode' })
-
 const props = defineProps<NodeProps<WorkflowNodeData>>()
 
 const statusText: Record<WorkflowNodeStatus, string> = {
@@ -126,7 +124,7 @@ function formatConfigValue(value: unknown) {
       </span>
       <span
         v-if="data.breakpoint"
-        class="absolute -right-5 -top-5 size-12 rounded-full border-2 border-solid border-main bg-error"
+        class="absolute -right-5 -top-5 size-12 rounded-full border-2 border-solid border-color-main bg-error"
         title="已设置断点"
       />
     </div>

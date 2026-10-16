@@ -2,8 +2,6 @@
 import BaseNode from './base-node.vue'
 import type { ApprovalNodeViewProps } from './types'
 
-defineOptions({ name: 'ScriptNode' })
-
 const props = defineProps<ApprovalNodeViewProps>()
 
 const detailItems = computed(() => [

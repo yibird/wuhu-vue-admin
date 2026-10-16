@@ -98,6 +98,7 @@ export type WorkflowContextTargetType = 'edge' | 'node' | 'pane'
 
 export type WorkflowContextActionKey =
   | 'add-after'
+  | 'add-condition'
   | 'add-node'
   | 'copy'
   | 'delete'
@@ -106,7 +107,7 @@ export type WorkflowContextActionKey =
   | 'run-from'
   | 'test-node'
   | 'toggle-breakpoint'
-  | `add-${WorkflowNodeKind}`
+  | `add-kind-${WorkflowNodeKind}`
   | `add-group-${WorkflowPaletteGroup}`
 
 export interface WorkflowContextMenuState {

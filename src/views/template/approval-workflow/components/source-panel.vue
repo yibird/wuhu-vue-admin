@@ -2,8 +2,6 @@
 import { CodeEditor } from '@/components/code-editor'
 import { APPROVAL_WORKFLOW_SELECTORS } from '../constants'
 
-defineOptions({ name: 'SourcePanel' })
-
 defineProps<{
   error: string
   open: boolean

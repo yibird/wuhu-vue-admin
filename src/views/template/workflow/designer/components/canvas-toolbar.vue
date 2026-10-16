@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { Icon } from '@/components'
 
-defineOptions({ name: 'CanvasToolbar' })
-
 type CanvasInteractionMode = 'pan' | 'select'
 
 const interactionMode = defineModel<CanvasInteractionMode>('interactionMode', {

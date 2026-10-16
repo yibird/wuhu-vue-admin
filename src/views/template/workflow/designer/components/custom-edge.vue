@@ -7,7 +7,7 @@ import {
   type EdgeProps,
 } from '@vue-flow/core'
 
-defineOptions({ name: 'CustomEdge', inheritAttrs: false })
+defineOptions({ inheritAttrs: false })
 
 const props = defineProps<EdgeProps>()
 

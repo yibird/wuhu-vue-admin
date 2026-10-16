@@ -6,8 +6,6 @@ import type {
   ApprovalValidationIssue,
 } from '../types'
 
-defineOptions({ name: 'Simulator' })
-
 const input = defineModel<ApprovalSimulationInput>('input', { required: true })
 
 defineProps<{

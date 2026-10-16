@@ -4,8 +4,6 @@ import { useApprovalNodeContextMenu } from '../hooks'
 import { resolveApprovalNodeComponent } from './nodes'
 import type { ApprovalBranch, ApprovalNode, ApprovalNodeType } from '../types'
 
-defineOptions({ name: 'NodeCard' })
-
 const props = defineProps<{
   node: ApprovalNode
   selectedIds: readonly string[]

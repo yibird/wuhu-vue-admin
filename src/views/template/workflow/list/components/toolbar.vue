@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import type { WorkflowListSort, WorkflowListStatusFilter } from '../hooks'
 
-defineOptions({ name: 'Toolbar' })
-
 const props = defineProps<{
   draftCount: number
   ownerOptions: Array<{ label: string; value: string }>

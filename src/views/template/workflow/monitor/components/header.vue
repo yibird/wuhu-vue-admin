@@ -1,11 +1,8 @@
 <script setup lang="ts">
 import type {
   WorkflowEnvironmentFilter,
-  WorkflowMonitorRange,
   WorkflowRunStatusFilter,
 } from '../hooks'
-
-defineOptions({ name: 'WorkflowMonitorHeader' })
 
 const props = defineProps<{
   alertCount: number
@@ -23,17 +20,11 @@ const environment = defineModel<WorkflowEnvironmentFilter>('environment', {
   required: true,
 })
 const keyword = defineModel<string>('keyword', { required: true })
-const range = defineModel<WorkflowMonitorRange>('range', { required: true })
 const status = defineModel<WorkflowRunStatusFilter>('status', {
   required: true,
 })
 const workflow = defineModel<string>('workflow', { required: true })
 
-const rangeOptions = [
-  { label: '最近 1 小时', value: '1h' },
-  { label: '最近 24 小时', value: '24h' },
-  { label: '最近 7 天', value: '7d' },
-]
 const statusOptions = [
   { label: '全部状态', value: 'all' },
   { label: '运行中', value: 'running' },
@@ -115,11 +106,6 @@ const environmentOptions = [
         v-model:value="environment"
         class="w-118 max-sm:flex-1"
         :options="environmentOptions"
-      />
-      <a-select
-        v-model:value="range"
-        class="ml-auto w-138 max-sm:ml-0 max-sm:flex-1"
-        :options="rangeOptions"
       />
     </div>
   </header>

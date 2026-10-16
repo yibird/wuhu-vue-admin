@@ -8,8 +8,6 @@ import type {
   ApprovalWorkflowSettings,
 } from '../types'
 
-defineOptions({ name: 'ApprovalWorkflowCanvas' })
-
 const props = defineProps<{
   nodes: readonly ApprovalNode[]
   selectedIds: readonly string[]
@@ -143,7 +141,7 @@ const activeSelectedCount = computed(() => activeSelectedIds.value.length)
     >
       <div
         ref="canvasScrollbar"
-        class="approval-canvas-scroll relative h-full w-full min-h-full overflow-x-hidden overflow-y-auto p-20"
+        class="approval-canvas-scroll relative h-full w-full min-h-full overflow-x-auto overflow-y-auto p-20"
       >
         <div
           class="mx-auto min-w-max pb-40 transition-transform [transform-origin:top_center] [transition-duration:var(--w-motion-duration-base)] [transition-timing-function:var(--w-motion-ease-standard)]"

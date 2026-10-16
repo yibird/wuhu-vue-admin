@@ -19,6 +19,14 @@ import { createSimulationSteps } from '../utils/simulation'
 import { validateApprovalWorkflow } from '../utils/validation'
 import { useApprovalNodeMutations } from './useNodeMutations'
 
+interface ReplaceSchemaOptions {
+  /**
+   * @desc 替换 schema 后是否回写源码编辑器内容
+   * @default true
+   */
+  syncSource?: boolean
+}
+
 export function useApprovalWorkflowDesigner() {
   const schema = shallowRef(cloneSchema(initialApprovalSchema))
   const selectedNodeId = shallowRef('manager-approval')
@@ -44,11 +52,6 @@ export function useApprovalWorkflowDesigner() {
     const nodes = flatNodes.value
     return {
       nodeCount: nodes.length,
-      approverCount: nodes.filter((node) => node.type === 'approver').length,
-      branchCount: nodes.reduce(
-        (total, node) => total + (node.branches?.length ?? 0),
-        0
-      ),
       issueCount: validationIssues.value.filter(
         (issue) => issue.level === 'error'
       ).length,
@@ -75,11 +78,14 @@ export function useApprovalWorkflowDesigner() {
     syncSource,
   })
 
-  function replaceSchema(nextSchema: ApprovalWorkflowSchema) {
+  function replaceSchema(
+    nextSchema: ApprovalWorkflowSchema,
+    { syncSource: shouldSyncSource = true }: ReplaceSchemaOptions = {}
+  ) {
     schema.value = cloneSchema(nextSchema)
     selectedNodeId.value =
       collectNodes(schema.value.nodes)[1]?.id ?? schema.value.nodes[0]?.id ?? ''
-    syncSource()
+    if (shouldSyncSource) syncSource()
   }
 
   function selectNode(id: string) {
@@ -135,10 +141,7 @@ export function useApprovalWorkflowDesigner() {
       }
 
       await new Promise((resolve) => window.setTimeout(resolve, 280))
-      updateSettings({
-        state: 'published',
-        version: schema.value.settings.version,
-      })
+      updateSettings({ state: 'published' })
       message.success('审批流已发布')
       return true
     } finally {
@@ -157,14 +160,22 @@ export function useApprovalWorkflowDesigner() {
       sourceError.value = result.error ?? 'Schema 解析失败'
       return
     }
-    replaceSchema(result.schema)
+    replaceSchema(result.schema, { syncSource: false })
     sourceError.value = ''
   }
 
   async function copySchema() {
     syncSource()
-    await navigator.clipboard?.writeText(sourceCode.value)
-    message.success('审批流 Schema 已复制')
+    if (!navigator.clipboard?.writeText) {
+      message.error('当前环境不支持剪贴板，请手动复制 Schema')
+      return
+    }
+    try {
+      await navigator.clipboard.writeText(sourceCode.value)
+      message.success('审批流 Schema 已复制')
+    } catch {
+      message.error('复制失败，请手动复制 Schema')
+    }
   }
 
   function downloadSchema() {

@@ -29,34 +29,6 @@ function isContextMenuKey(key: string): key is ContextMenuKey {
   return contextMenuKeys.has(key)
 }
 
-function getTransformScale(element: HTMLElement) {
-  const transform = getComputedStyle(element).transform
-  if (!transform || transform === 'none') return 1
-
-  const matrix = new DOMMatrixReadOnly(transform)
-  return matrix.a || 1
-}
-
-function getContextMenuPoint(event: MouseEvent) {
-  const target = event.currentTarget
-  if (!(target instanceof HTMLElement)) {
-    return { x: event.clientX, y: event.clientY }
-  }
-
-  const transformedContent = target.closest<HTMLElement>(
-    '.approval-canvas-content'
-  )
-  if (!transformedContent) return { x: event.clientX, y: event.clientY }
-
-  const rect = transformedContent.getBoundingClientRect()
-  const scale = getTransformScale(transformedContent)
-
-  return {
-    x: (event.clientX - rect.left) / scale,
-    y: (event.clientY - rect.top) / scale,
-  }
-}
-
 export function useApprovalNodeContextMenu(
   getNode: () => ApprovalNode,
   actions: ApprovalNodeContextMenuActions
@@ -112,9 +84,8 @@ export function useApprovalNodeContextMenu(
     event.stopPropagation()
     actions.select(node.id)
     contextMenuOpen.value = false
-    const point = getContextMenuPoint(event)
-    contextMenuX.value = point.x
-    contextMenuY.value = point.y
+    contextMenuX.value = event.clientX
+    contextMenuY.value = event.clientY
     nextTick(() => {
       contextMenuOpen.value = true
     })

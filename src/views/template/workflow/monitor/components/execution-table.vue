@@ -3,8 +3,6 @@ import { workflowRunStatusMeta } from '../../shared/meta'
 import type { WorkflowRunInstance, WorkflowRunStatus } from '../../shared/types'
 import type { TableProps } from 'antdv-next'
 
-defineOptions({ name: 'ExecutionTable' })
-
 defineProps<{
   instances: WorkflowRunInstance[]
   loading: boolean

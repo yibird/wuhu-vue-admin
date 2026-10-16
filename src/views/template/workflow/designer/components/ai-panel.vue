@@ -7,8 +7,6 @@ import type {
   WorkflowAiSuggestion,
 } from '../types'
 
-defineOptions({ name: 'AiPanel' })
-
 const props = defineProps<{
   /**
    * @desc 是否正在生成

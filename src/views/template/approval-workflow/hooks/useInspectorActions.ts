@@ -13,7 +13,6 @@ import type {
 } from '../types'
 
 export interface ApprovalInspectorActionEmit {
-  addBranch: (nodeId: string) => void
   updateBranch: (
     nodeId: string,
     branchId: string,

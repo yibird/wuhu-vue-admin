@@ -6,8 +6,6 @@ import type {
   WorkflowNodeData,
 } from '../types'
 
-defineOptions({ name: 'Inspector' })
-
 const props = defineProps<{
   selectedNodeData?: WorkflowNodeData
   selectedNodeId: string

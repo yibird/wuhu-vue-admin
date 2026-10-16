@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import type { ApprovalNode } from '../../types'
 
-defineOptions({ name: 'BaseNode' })
-
 const props = withDefaults(
   defineProps<{
     node: ApprovalNode

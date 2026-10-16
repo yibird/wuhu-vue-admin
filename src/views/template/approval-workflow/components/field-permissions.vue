@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import type { ApprovalFieldPermission, FieldPermissionMode } from '../types'
 
-defineOptions({ name: 'FieldPermissions' })
-
 defineProps<{
   fields: readonly ApprovalFieldPermission[]
   options: readonly { label: string; value: FieldPermissionMode }[]

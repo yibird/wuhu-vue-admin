@@ -7,8 +7,6 @@ import {
 } from '../../shared/meta'
 import type { WorkflowRunInstance } from '../../shared/types'
 
-defineOptions({ name: 'ExecutionDetailDrawer' })
-
 const props = defineProps<{
   instance?: WorkflowRunInstance
 }>()

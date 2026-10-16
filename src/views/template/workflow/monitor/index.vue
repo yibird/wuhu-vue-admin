@@ -25,7 +25,6 @@ const {
   selectedInstance,
   statusFilter,
   successRate,
-  timeRange,
   unresolvedAlerts,
   workflowFilter,
   workflowOptions,
@@ -44,7 +43,6 @@ const {
         v-model:auto-refresh="autoRefresh"
         v-model:environment="environmentFilter"
         v-model:keyword="keyword"
-        v-model:range="timeRange"
         v-model:status="statusFilter"
         v-model:workflow="workflowFilter"
         :alert-count="unresolvedAlerts.length"

@@ -2,8 +2,6 @@
 import BaseNode from './base-node.vue'
 import type { ApprovalNodeViewProps } from './types'
 
-defineOptions({ name: 'StartNode' })
-
 const props = defineProps<ApprovalNodeViewProps>()
 
 const summaryItems = computed(() => [

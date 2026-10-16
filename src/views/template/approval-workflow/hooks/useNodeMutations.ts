@@ -71,7 +71,12 @@ export function useApprovalNodeMutations({
   }
 
   function addNodeFromPalette(item: ApprovalPaletteItem) {
-    addNodeAfter(selectedNodeId.value || schema.value.nodes[0].id, item.type)
+    const anchorId =
+      schema.value.nodes.find((node) => node.id === selectedNodeId.value)?.id ??
+      schema.value.nodes[0]?.id
+    if (!anchorId) return
+
+    addNodeAfter(anchorId, item.type)
   }
 
   function duplicateNode(id: string) {

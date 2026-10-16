@@ -12,13 +12,35 @@ import {
   initialWorkflowAlerts,
   initialWorkflowInstances,
 } from '../../shared/data'
-import type { WorkflowRunInstance, WorkflowRunStatus } from '../../shared/types'
+import type {
+  WorkflowRunInstance,
+  WorkflowRunStatus,
+  WorkflowStepStatus,
+} from '../../shared/types'
 
 export type WorkflowRunStatusFilter = WorkflowRunStatus | 'all'
 export type WorkflowEnvironmentFilter =
   | WorkflowRunInstance['environment']
   | 'all'
-export type WorkflowMonitorRange = '1h' | '24h' | '7d'
+
+function resolveStepStatus(
+  index: number,
+  activeStepIndex: number
+): WorkflowStepStatus {
+  if (index < activeStepIndex) return 'success'
+  return index === activeStepIndex ? 'running' : 'pending'
+}
+
+function resolveStepDuration(
+  duration: string | undefined,
+  index: number,
+  activeStepIndex: number
+) {
+  if (index < activeStepIndex) {
+    return duration === '-' || duration === '执行中' ? '320ms' : duration
+  }
+  return index === activeStepIndex ? '执行中' : '-'
+}
 
 function formatRefreshTime() {
   return new Intl.DateTimeFormat('zh-CN', {
@@ -40,7 +62,6 @@ export function useWorkflowMonitor() {
   const statusFilter = shallowRef<WorkflowRunStatusFilter>('all')
   const workflowFilter = shallowRef('all')
   const environmentFilter = shallowRef<WorkflowEnvironmentFilter>('all')
-  const timeRange = shallowRef<WorkflowMonitorRange>('1h')
   const autoRefresh = shallowRef(true)
   const refreshing = shallowRef(false)
   const lastRefreshAt = shallowRef(formatRefreshTime())
@@ -121,20 +142,12 @@ export function useWorkflowMonitor() {
           duration: `${(Number.parseFloat(item.duration) + 0.8).toFixed(1)}s`,
           steps: item.steps.map((step, index) => ({
             ...step,
-            status:
-              index < activeStepIndex
-                ? 'success'
-                : index === activeStepIndex
-                  ? 'running'
-                  : 'pending',
-            duration:
-              index < activeStepIndex
-                ? step.duration === '-' || step.duration === '执行中'
-                  ? '320ms'
-                  : step.duration
-                : index === activeStepIndex
-                  ? '执行中'
-                  : '-',
+            status: resolveStepStatus(index, activeStepIndex),
+            duration: resolveStepDuration(
+              step.duration,
+              index,
+              activeStepIndex
+            ),
           })),
         }
       }
@@ -260,7 +273,6 @@ export function useWorkflowMonitor() {
     selectedInstance,
     statusFilter,
     successRate,
-    timeRange,
     unresolvedAlerts,
     workflowFilter,
     workflowOptions,

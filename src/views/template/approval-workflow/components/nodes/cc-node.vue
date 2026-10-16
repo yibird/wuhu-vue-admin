@@ -3,8 +3,6 @@ import BaseNode from './base-node.vue'
 import { formatUsers } from './node-formatters'
 import type { ApprovalNodeViewProps } from './types'
 
-defineOptions({ name: 'CcNode' })
-
 const props = defineProps<ApprovalNodeViewProps>()
 
 const ccUserLabel = computed(() => formatUsers(props.node.config.ccUsers))

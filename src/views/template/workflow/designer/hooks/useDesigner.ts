@@ -60,6 +60,8 @@ import type {
 } from '../types'
 
 const NODE_SPACING_Y = 92
+const NODE_WIDTH = 292
+const NODE_HEIGHT = 260
 
 const PALETTE_GROUP_ORDER: WorkflowPaletteGroup[] = [
   'basic',
@@ -160,7 +162,6 @@ export function useWorkflowDesigner(options: UseWorkflowDesignerOptions = {}) {
     flowToScreenCoordinate,
     getSelectedNodes,
     getViewport,
-    removeSelectedNodes,
     screenToFlowCoordinate,
     vueFlowRef,
   } = useVueFlow(WORKFLOW_FLOW_ID)
@@ -332,7 +333,7 @@ export function useWorkflowDesigner(options: UseWorkflowDesignerOptions = {}) {
                 label: workflowPaletteGroupLabels[group],
                 icon: PALETTE_GROUP_ICONS[group],
                 children: items.map((item) => ({
-                  key: `add-${item.kind}` as WorkflowContextActionKey,
+                  key: `add-kind-${item.kind}` as WorkflowContextActionKey,
                   label: item.title,
                   icon: item.icon,
                 })),
@@ -344,10 +345,21 @@ export function useWorkflowDesigner(options: UseWorkflowDesignerOptions = {}) {
     ]
   })
 
+  /**
+   * 断点状态以 breakpoints Set 为准；节点重建时按 Set 回填 data.breakpoint，
+   * 避免 syncFlowFromSchema 后画布断点标记丢失。
+   */
+  function applyBreakpoints(flowNodes: WorkflowNode[]) {
+    return flowNodes.map((node) => ({
+      ...node,
+      data: { ...node.data, breakpoint: breakpoints.value.has(node.id) },
+    }))
+  }
+
   function syncFlowFromSchema(schema: WorkflowJsonSchema) {
     const flow = schemaToFlow(schema)
     workflowSchema.value = cloneSchema(schema)
-    nodes.value = flow.nodes
+    nodes.value = applyBreakpoints(flow.nodes)
     edges.value = flow.edges
     sourceCode.value = formatWorkflowSchema(schema)
     schemaError.value = ''
@@ -379,7 +391,7 @@ export function useWorkflowDesigner(options: UseWorkflowDesignerOptions = {}) {
       if (shouldRecordHistory) recordHistory()
       workflowSchema.value = cloneSchema(parsed)
       sourceCode.value = value
-      nodes.value = flow.nodes
+      nodes.value = applyBreakpoints(flow.nodes)
       edges.value = flow.edges
       selectedNodeId.value = parsed.nodes.some(
         (item) => item.id === selectedNodeId.value
@@ -783,8 +795,8 @@ export function useWorkflowDesigner(options: UseWorkflowDesignerOptions = {}) {
     const { zoom } = getViewport()
     const sourceScreenPosition = flowToScreenCoordinate(source.position)
     const position = getNodePositionAtScreenPoint(
-      sourceScreenPosition.x + 80 * zoom + (292 * zoom) / 2,
-      sourceScreenPosition.y + 80 * zoom + (260 * zoom) / 2
+      sourceScreenPosition.x + 80 * zoom + (NODE_WIDTH * zoom) / 2,
+      sourceScreenPosition.y + 80 * zoom + (NODE_HEIGHT * zoom) / 2
     )
 
     recordHistory()
@@ -812,8 +824,8 @@ export function useWorkflowDesigner(options: UseWorkflowDesignerOptions = {}) {
 
     const { zoom } = getViewport()
     const sourceScreenPosition = flowToScreenCoordinate(source.position)
-    const nodeWidth = 292 * zoom
-    const nodeHeight = 260 * zoom
+    const nodeWidth = NODE_WIDTH * zoom
+    const nodeHeight = NODE_HEIGHT * zoom
 
     const nextNodeId = addNode(item, {
       ...getNodePositionAtScreenPoint(
@@ -923,7 +935,9 @@ export function useWorkflowDesigner(options: UseWorkflowDesignerOptions = {}) {
         ...aiMessages.value,
         createWorkflowAiMessage(
           'assistant',
-          error instanceof Error ? error.message : '生成失败，请调整描述后重试。'
+          error instanceof Error
+            ? error.message
+            : '生成失败，请调整描述后重试。'
         ),
       ]
     } finally {
@@ -950,7 +964,6 @@ export function useWorkflowDesigner(options: UseWorkflowDesignerOptions = {}) {
 
   function clearSelectedNode() {
     selectedNodeId.value = ''
-    removeSelectedNodes(getSelectedNodes.value)
     closeContextMenu()
   }
 
@@ -1051,8 +1064,8 @@ export function useWorkflowDesigner(options: UseWorkflowDesignerOptions = {}) {
       return
     }
 
-    const kind = action.startsWith('add-')
-      ? (action.slice(4) as WorkflowNodeKind)
+    const kind = action.startsWith('add-kind-')
+      ? (action.slice('add-kind-'.length) as WorkflowNodeKind)
       : undefined
     const item = kind ? getPaletteItem(kind) : undefined
     if (item) {
@@ -1254,8 +1267,8 @@ export function useWorkflowDesigner(options: UseWorkflowDesignerOptions = {}) {
   function getNodePositionAtScreenPoint(x: number, y: number): XYPosition {
     const canvas = vueFlowRef.value?.getBoundingClientRect()
     const zoom = Math.max(getViewport().zoom, 0.01)
-    const nodeWidth = 292
-    const nodeHeight = 260
+    const nodeWidth = NODE_WIDTH
+    const nodeHeight = NODE_HEIGHT
     const nodeScreenWidth = nodeWidth * zoom
     const nodeScreenHeight = nodeHeight * zoom
     const canvasLeft = canvas?.left ?? 0
@@ -1311,9 +1324,13 @@ export function useWorkflowDesigner(options: UseWorkflowDesignerOptions = {}) {
       return
     }
 
-    copy(text).then(() => {
-      message.success(successText)
-    })
+    copy(text)
+      .then(() => {
+        message.success(successText)
+      })
+      .catch(() => {
+        message.error('复制失败')
+      })
   }
 
   function handleKeydown(event: KeyboardEvent) {

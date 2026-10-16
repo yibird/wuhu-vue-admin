@@ -2,8 +2,6 @@
 import { APPROVAL_WORKFLOW_SELECTORS } from '../constants'
 import type { ApprovalWorkflowSettings } from '../types'
 
-defineOptions({ name: 'ApprovalWorkflowHeader' })
-
 defineProps<{
   issueCount: number
   nodeCount: number

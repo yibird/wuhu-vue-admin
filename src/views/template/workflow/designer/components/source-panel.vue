@@ -2,8 +2,6 @@
 import { CodeEditor } from '@/components/code-editor'
 import type { WorkflowSourceStatus } from '../types'
 
-defineOptions({ name: 'SourcePanel' })
-
 const props = defineProps<{
   error?: string
   open: boolean

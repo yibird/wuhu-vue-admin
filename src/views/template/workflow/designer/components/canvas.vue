@@ -38,8 +38,6 @@ import type {
   WorkflowValidationIssue,
 } from '../types'
 
-defineOptions({ name: 'WorkflowDesignerCanvas' })
-
 const nodes = defineModel<WorkflowNode[]>('nodes', { required: true })
 const edges = defineModel<WorkflowEdge[]>('edges', { required: true })
 const { themeMode } = useTheme()

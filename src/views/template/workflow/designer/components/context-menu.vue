@@ -8,8 +8,6 @@ import type {
   WorkflowContextMenuState,
 } from '../types'
 
-defineOptions({ name: 'ContextMenu' })
-
 interface ContextMenuItem {
   key: string
   label: string

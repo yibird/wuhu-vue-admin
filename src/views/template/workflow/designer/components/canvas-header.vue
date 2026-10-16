@@ -4,8 +4,6 @@ import type { MenuProps } from 'antdv-next'
 import { Icon } from '@/components'
 import type { WorkflowCanvasTab } from '../types'
 
-defineOptions({ name: 'CanvasHeader' })
-
 const activeTab = defineModel<WorkflowCanvasTab>('activeTab', {
   required: true,
 })

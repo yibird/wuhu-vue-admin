@@ -12,8 +12,6 @@ import type {
   FieldPermissionMode,
 } from '../types'
 
-defineOptions({ name: 'Inspector' })
-
 const props = defineProps<{
   node?: ApprovalNode
   users: readonly ApprovalUserRef[]
@@ -85,7 +83,6 @@ const {
   updateTimeoutHours,
   updateTimeoutRemindEveryHours,
 } = useApprovalInspectorActions(() => props.node, toRef(props, 'users'), {
-  addBranch: (nodeId) => emit('addBranch', nodeId),
   updateBranch: (nodeId, branchId, patch) =>
     emit('updateBranch', nodeId, branchId, patch),
   updateConfig: (id, patch) => emit('updateConfig', id, patch),

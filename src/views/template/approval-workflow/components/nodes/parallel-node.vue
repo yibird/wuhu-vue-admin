@@ -3,8 +3,6 @@ import BaseNode from './base-node.vue'
 import { getBranchCount, multiModeText } from './node-formatters'
 import type { ApprovalNodeViewProps } from './types'
 
-defineOptions({ name: 'ParallelNode' })
-
 const props = defineProps<ApprovalNodeViewProps>()
 
 const summaryItems = computed(() => [

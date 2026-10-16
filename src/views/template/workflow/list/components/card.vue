@@ -5,8 +5,6 @@ import { renderIcon } from '@/utils'
 import { workflowDefinitionStatusMeta } from '../../shared/meta'
 import type { WorkflowDefinition } from '../../shared/types'
 
-defineOptions({ name: 'Card' })
-
 const props = defineProps<{
   workflow: WorkflowDefinition
 }>()

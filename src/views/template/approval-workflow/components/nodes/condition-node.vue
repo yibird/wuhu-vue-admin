@@ -3,8 +3,6 @@ import BaseNode from './base-node.vue'
 import { getBranchCount, getBranchRuleCount } from './node-formatters'
 import type { ApprovalNodeViewProps } from './types'
 
-defineOptions({ name: 'ConditionNode' })
-
 const props = defineProps<ApprovalNodeViewProps>()
 
 const summaryItems = computed(() => [

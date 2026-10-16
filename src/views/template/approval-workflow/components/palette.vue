@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import type { ApprovalPaletteItem, ApprovalTemplateItem } from '../types'
 
-defineOptions({ name: 'Palette' })
-
 defineProps<{
   palette: readonly ApprovalPaletteItem[]
   templates: readonly ApprovalTemplateItem[]

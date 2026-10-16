@@ -8,8 +8,6 @@ import {
 } from './node-formatters'
 import type { ApprovalNodeViewProps } from './types'
 
-defineOptions({ name: 'HandlerNode' })
-
 const props = defineProps<ApprovalNodeViewProps>()
 
 const summaryItems = computed(() => [
