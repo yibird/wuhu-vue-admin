@@ -1,4 +1,4 @@
-import { reactive, ref, shallowRef } from 'vue'
+import { reactive, shallowRef } from 'vue'
 import type { Ref } from 'vue'
 import { collectIds, ROOT_ID } from '../core/schema'
 import { componentRegistry } from '../core/registry'
@@ -6,6 +6,7 @@ import { getLayout, mergeStyle } from '../core/runtime/style'
 import {
   buildDropTarget,
   computeEqualSpacing,
+  computeInsertIndex,
   directChildElements,
   findDropContainerAt,
   findNodeElementAt,
@@ -68,8 +69,6 @@ export function useCanvasInteraction(options: CanvasInteractionOptions) {
   let candidates: CandidateTarget[] = []
   let resizePrev: Record<string, unknown> | null = null
   let resizeStartRect: Rect | null = null
-
-  const cursor = ref<'default' | 'grab' | 'grabbing' | 'move'>('default')
 
   function index() {
     return designer.activeIndex.value
@@ -172,7 +171,7 @@ export function useCanvasInteraction(options: CanvasInteractionOptions) {
       }
     }
 
-    const position = computePosition(
+    const position = computeInsertIndex(
       containerEl,
       clientX,
       clientY,
@@ -194,39 +193,6 @@ export function useCanvasInteraction(options: CanvasInteractionOptions) {
     })
   }
 
-  function computePosition(
-    containerEl: HTMLElement,
-    clientX: number,
-    clientY: number,
-    layout: LayoutMode,
-    direction: 'row' | 'column',
-    exclude: Set<string>
-  ) {
-    if (layout === 'free') {
-      return directChildElements(containerEl, exclude).length
-    }
-    const children = directChildElements(containerEl, exclude)
-    if (layout === 'grid') {
-      for (let i = 0; i < children.length; i += 1) {
-        const rect = children[i].getBoundingClientRect()
-        if (clientY < rect.top + rect.height / 2) return i
-        if (clientY <= rect.bottom && clientX < rect.left + rect.width / 2) {
-          return i
-        }
-      }
-      return children.length
-    }
-    const isRow = layout === 'flex' && direction === 'row'
-    for (let i = 0; i < children.length; i += 1) {
-      const rect = children[i].getBoundingClientRect()
-      const before = isRow
-        ? clientX < rect.left + rect.width / 2
-        : clientY < rect.top + rect.height / 2
-      if (before) return i
-    }
-    return children.length
-  }
-
   /** ---------------- 指针手势 ---------------- */
 
   function onViewportPointerDown(event: PointerEvent) {
@@ -241,7 +207,6 @@ export function useCanvasInteraction(options: CanvasInteractionOptions) {
       event.preventDefault()
       view.startPan(event)
       gesture = 'pan'
-      cursor.value = 'grabbing'
       attachWindowListeners()
       return
     }
@@ -286,8 +251,6 @@ export function useCanvasInteraction(options: CanvasInteractionOptions) {
       ids: [...designer.selectedIds.value],
       startX: event.clientX,
       startY: event.clientY,
-      pointerX: event.clientX,
-      pointerY: event.clientY,
       active: false,
       target: null,
       free: null,
@@ -297,12 +260,10 @@ export function useCanvasInteraction(options: CanvasInteractionOptions) {
     attachWindowListeners()
   }
 
-  function activateDrag(event: PointerEvent) {
+  function activateDrag() {
     const state = dragState.value
     if (!state) return
     state.active = true
-    state.pointerX = event.clientX
-    state.pointerY = event.clientY
 
     if (state.ids.length === 1) {
       const node = index().get(state.ids[0])
@@ -330,7 +291,6 @@ export function useCanvasInteraction(options: CanvasInteractionOptions) {
         }
       }
     }
-    cursor.value = 'move'
   }
 
   function onDragMove(event: PointerEvent) {
@@ -342,10 +302,8 @@ export function useCanvasInteraction(options: CanvasInteractionOptions) {
         event.clientY - state.startY
       )
       if (distance < 4) return
-      activateDrag(event)
+      activateDrag()
     }
-    state.pointerX = event.clientX
-    state.pointerY = event.clientY
 
     // 自由布局：实时移动并显示对齐辅助线
     if (freeStart && resizeStartRect && state.ids.length === 1) {
@@ -550,13 +508,9 @@ export function useCanvasInteraction(options: CanvasInteractionOptions) {
       startY: event.clientY,
       active: true,
       width: rect.width,
-      height: rect.height,
-      left: rect.x,
-      top: rect.y,
     }
     candidates = collectCandidates(index().getParentId(id))
     gesture = 'resize'
-    cursor.value = 'move'
     attachWindowListeners()
   }
 
@@ -618,7 +572,7 @@ export function useCanvasInteraction(options: CanvasInteractionOptions) {
     left = Math.round(left)
     top = Math.round(top)
 
-    resizeState.value = { ...state, width, height, left, top }
+    resizeState.value = { ...state, width }
     guides.value = nextGuides
 
     const node = index().get(state.id)
@@ -858,18 +812,15 @@ export function useCanvasInteraction(options: CanvasInteractionOptions) {
     switch (gesture) {
       case 'pan':
         view.endPan()
-        cursor.value = 'default'
         break
       case 'marquee':
         endMarquee(event)
         break
       case 'drag':
         endDrag()
-        cursor.value = 'default'
         break
       case 'resize':
         endResize()
-        cursor.value = 'default'
         break
       default:
         break
@@ -905,7 +856,6 @@ export function useCanvasInteraction(options: CanvasInteractionOptions) {
     resizeState,
     guides,
     marquee,
-    cursor,
     onViewportPointerDown,
     onResizePointerDown,
     onViewportDragOver,

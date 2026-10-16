@@ -12,8 +12,6 @@ import CanvasWidget from './canvas-widget.vue'
 import SelectionActionBar from './selection-action-bar.vue'
 import ScreenTitleBar from './screen-title-bar.vue'
 
-defineOptions({ name: 'ChartDesignerCanvas' })
-
 const props = defineProps<{
   activeSourceId: string
   dataSources: readonly ChartDataSource[]
@@ -135,7 +133,7 @@ function handleWidgetClick(id: string) {
     />
 
     <div
-      class="min-h-0 min-h-full p-16 w-full h-full overflow-x-hidden overflow-y-auto"
+      class="min-h-0 p-16 w-full h-full overflow-auto"
       :style="canvasViewportStyle"
     >
       <div
@@ -219,6 +217,11 @@ function handleWidgetClick(id: string) {
 </template>
 
 <style scoped>
+:global(body.chart-designer--dragging) {
+  cursor: grabbing;
+  user-select: none;
+}
+
 .chart-screen {
   background:
     linear-gradient(90deg, rgb(255 255 255 / 5%) 1px, transparent 1px),

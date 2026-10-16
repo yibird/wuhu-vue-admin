@@ -2,8 +2,8 @@
   <a-drawer
     :open="open"
     title="数据与逻辑"
-    :width="680"
-    :body-style="{ padding: 0 }"
+    :size="680"
+    :styles="{ body: { padding: 0 } }"
     @close="emit('close')"
   >
     <div class="grid h-full grid-rows-[auto_minmax(0,1fr)]">
@@ -371,8 +371,6 @@ import { useDesignerContext } from '../hooks'
 import ActionValueControl from './inspector/action-value-control.vue'
 import JsonFieldEditor from './inspector/json-field-editor.vue'
 import type { ValueSchema } from '../core/schema/types'
-
-defineOptions({ name: 'DataDrawer' })
 
 type DataTab =
   | 'variables'

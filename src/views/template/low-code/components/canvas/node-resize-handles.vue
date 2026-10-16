@@ -10,7 +10,6 @@
 </template>
 
 <script setup lang="ts">
-defineOptions({ name: 'NodeResizeHandles' })
 const handles = ['nw', 'n', 'ne', 'e', 'se', 's', 'sw', 'w'] as const
 </script>
 

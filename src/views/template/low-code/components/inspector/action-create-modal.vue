@@ -3,7 +3,7 @@
     :open="open"
     title="新建动作"
     :width="560"
-    :destroy-on-close="true"
+    :destroy-on-hidden="true"
     @ok="submit"
     @cancel="emit('close')"
   >
@@ -41,8 +41,6 @@ import { createNodeId } from '../../core/schema'
 import { useDesignerContext } from '../../hooks'
 import ActionValueControl from './action-value-control.vue'
 import type { ValueSchema } from '../../core/schema/types'
-
-defineOptions({ name: 'ActionCreateModal' })
 
 const props = defineProps<{ open: boolean }>()
 const emit = defineEmits<{

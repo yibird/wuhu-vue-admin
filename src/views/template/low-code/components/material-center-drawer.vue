@@ -2,8 +2,8 @@
   <a-drawer
     :open="open"
     title="物料中心"
-    :width="720"
-    :body-style="{ padding: 0 }"
+    :size="720"
+    :styles="{ body: { padding: 0 } }"
     @close="emit('close')"
   >
     <div class="grid h-full grid-rows-[auto_minmax(0,1fr)]">
@@ -41,7 +41,7 @@
             class="lc-material-card"
           >
             <span
-              class="size-34 inline-flex shrink-0 items-center justify-center rounded-8 icon-primary-soft"
+              class="size-34 inline-flex shrink-0 items-center justify-center rounded-8 primary-tinted"
             >
               <Icon :name="item.definition.icon ?? 'i-lucide:box'" :size="17" />
             </span>
@@ -191,8 +191,6 @@ import type {
   MaterialSchema,
   PropField,
 } from '../core/schema/types'
-
-defineOptions({ name: 'MaterialCenterDrawer' })
 
 defineProps<{ open: boolean }>()
 const emit = defineEmits<{ close: [] }>()

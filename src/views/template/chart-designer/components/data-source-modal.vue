@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import type { ChartDataSource } from '../types'
 
-defineOptions({ name: 'DataSourceModal' })
-
 const props = defineProps<{
   activeSourceId: string
   dataSources: readonly ChartDataSource[]

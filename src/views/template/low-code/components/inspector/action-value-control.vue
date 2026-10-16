@@ -69,8 +69,6 @@ import { useDesignerContext } from '../../hooks'
 import type { ActionParamField } from '../../core/runtime'
 import type { ValueSchema } from '../../core/schema/types'
 
-defineOptions({ name: 'ActionValueControl' })
-
 const props = defineProps<{
   value: unknown
   field: ActionParamField

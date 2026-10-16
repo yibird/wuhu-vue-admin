@@ -60,8 +60,6 @@ import { Icon } from '@/components'
 import { ROOT_ID } from '../../core/schema'
 import { useDesignerContext } from '../../hooks'
 
-defineOptions({ name: 'NodeActionBar' })
-
 const props = withDefaults(
   defineProps<{
     nodeId: string

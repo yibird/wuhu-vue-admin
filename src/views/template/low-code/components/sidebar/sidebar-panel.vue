@@ -26,8 +26,6 @@ import { Icon } from '@/components'
 import OutlineTree from './outline-tree.vue'
 import PalettePanel from './palette-panel.vue'
 
-defineOptions({ name: 'SidebarPanel' })
-
 type SidebarTab = 'palette' | 'outline'
 
 const tabs: { key: SidebarTab; label: string; icon: string }[] = [

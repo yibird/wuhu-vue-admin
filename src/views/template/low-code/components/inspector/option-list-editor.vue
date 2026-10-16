@@ -18,7 +18,7 @@
         @change="onUpdate(index, valueKey, $event)"
       />
       <button
-        class="span-button size-24 inline-flex shrink-0 items-center justify-center text-muted hover:text-primary"
+        class="reset-button size-24 inline-flex shrink-0 items-center justify-center text-muted hover:text-primary"
         type="button"
         title="上移"
         :disabled="index === 0"
@@ -27,7 +27,7 @@
         <Icon name="i-lucide:arrow-up" :size="12" />
       </button>
       <button
-        class="span-button size-24 inline-flex shrink-0 items-center justify-center text-muted hover:text-error"
+        class="reset-button size-24 inline-flex shrink-0 items-center justify-center text-muted hover:text-error"
         type="button"
         title="删除"
         @click="remove(index)"
@@ -45,8 +45,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { Icon } from '@/components'
-
-defineOptions({ name: 'OptionListEditor' })
 
 const props = withDefaults(
   defineProps<{

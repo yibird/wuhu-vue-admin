@@ -4,7 +4,7 @@
     title="发布应用"
     :width="560"
     :footer="null"
-    :destroy-on-close="true"
+    :destroy-on-hidden="true"
     @cancel="emit('close')"
   >
     <div class="grid gap-16">
@@ -77,8 +77,6 @@ import { computed, ref, watch } from 'vue'
 import { Icon } from '@/components'
 import { useDesignerContext } from '../hooks'
 import type { PublishedVersion } from '../hooks'
-
-defineOptions({ name: 'PublishModal' })
 
 const props = defineProps<{ open: boolean }>()
 const emit = defineEmits<{ close: [] }>()

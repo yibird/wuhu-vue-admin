@@ -310,8 +310,6 @@ import { computed, ref } from 'vue'
 import { useDesignerContext } from '../../hooks'
 import type { ComponentSchema, StyleSchema } from '../../core/schema/types'
 
-defineOptions({ name: 'StylePanel' })
-
 type StyleScope = 'base' | 'tablet' | 'mobile'
 
 const props = defineProps<{ nodes: ComponentSchema[] }>()

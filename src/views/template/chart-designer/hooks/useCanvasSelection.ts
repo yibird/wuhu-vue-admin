@@ -27,6 +27,14 @@ function getWidgetId(element: HTMLElement) {
   return element.dataset.chartWidgetId ?? ''
 }
 
+function hasOpenOverlay() {
+  if (typeof document === 'undefined') return false
+
+  return !!document.querySelector(
+    '.ant-modal-wrap:not([style*="display: none"]), .ant-drawer-open'
+  )
+}
+
 export function useChartCanvasSelection(
   options: UseChartCanvasSelectionOptions
 ) {
@@ -79,6 +87,9 @@ export function useChartCanvasSelection(
 
   function handleKeydown(event: KeyboardEvent) {
     if (isEditableTarget(event.target) || selectedCount.value === 0) return
+
+    // 弹窗/抽屉等浮层打开时不劫持全局按键，避免误删选中组件或抢占原生复制
+    if (hasOpenOverlay()) return
 
     if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'c') {
       event.preventDefault()

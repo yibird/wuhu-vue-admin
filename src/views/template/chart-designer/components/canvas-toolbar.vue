@@ -6,8 +6,6 @@ import type {
   ChartScreenTheme,
 } from '../types'
 
-defineOptions({ name: 'CanvasToolbar' })
-
 const props = defineProps<{
   activeSourceId: string
   dataSources: readonly ChartDataSource[]

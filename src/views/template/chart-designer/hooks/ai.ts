@@ -1,3 +1,4 @@
+import { getChartControlDefinition } from '../catalog'
 import { defaultWidgets } from '../data'
 import type { ChartAiMessage, ChartType, ChartWidget } from '../types'
 import { createGrowthWidgets, createOpsWidgets } from './ai-templates'
@@ -6,23 +7,8 @@ import { cloneWidget } from './schema'
 
 type AiScenario = 'growth' | 'ops' | 'sales'
 
-const chartTypeLabels: Record<ChartType, string> = {
-  area: '趋势面积图',
-  bar: '排行柱状图',
-  boxplot: '箱线图',
-  candlestick: 'K线图',
-  funnel: '转化漏斗',
-  gauge: '仪表盘',
-  graph: '关系图',
-  heatmap: '热力图',
-  line: '折线趋势',
-  pictorialBar: '象形柱图',
-  pie: '占比环图',
-  radar: '雷达对比',
-  sankey: '桑基图',
-  scatter: '散点分布',
-  sunburst: '旭日图',
-  treemap: '矩形树图',
+function getChartTypeLabel(type: ChartType) {
+  return getChartControlDefinition(type)?.title ?? type
 }
 
 const chartTypeMatchers: Array<{
@@ -105,14 +91,17 @@ export function createGeneratedWidgets(
   scenario: AiScenario,
   requestedTypes: readonly ChartType[]
 ): ChartWidget[] {
-  const widgets =
-    scenario === 'ops'
-      ? createOpsWidgets()
-      : scenario === 'growth'
-        ? createGrowthWidgets()
-        : defaultWidgets.map(cloneWidget)
+  return applyRequestedChartTypes(
+    createScenarioWidgets(scenario),
+    requestedTypes
+  )
+}
 
-  return applyRequestedChartTypes(widgets, requestedTypes)
+function createScenarioWidgets(scenario: AiScenario): ChartWidget[] {
+  if (scenario === 'ops') return createOpsWidgets()
+  if (scenario === 'growth') return createGrowthWidgets()
+
+  return defaultWidgets.map(cloneWidget)
 }
 
 function applyRequestedChartTypes(
@@ -134,8 +123,8 @@ function applyRequestedChartTypes(
     return {
       ...widget,
       chartType: requestedType,
-      title: chartTypeLabels[requestedType],
-      insight: `AI 已按提示切换为${chartTypeLabels[requestedType]}，保留当前数据源和字段映射。`,
+      title: getChartTypeLabel(requestedType),
+      insight: `AI 已按提示切换为${getChartTypeLabel(requestedType)}，保留当前数据源和字段映射。`,
     }
   })
 }

@@ -131,8 +131,6 @@ import { computed } from 'vue'
 import { Icon } from '@/components'
 import { useDesignerContext } from '../hooks'
 
-defineOptions({ name: 'DesignerHeader' })
-
 const emit = defineEmits<{
   'open-ai': []
   'open-data': []

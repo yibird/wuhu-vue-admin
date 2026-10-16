@@ -15,8 +15,6 @@ import RuntimeProvider from './runtime-provider.vue'
 import type { RuntimeApi } from '../../core/runtime'
 import type { ComponentSchema } from '../../core/schema/types'
 
-defineOptions({ name: 'SchemaRenderer' })
-
 defineProps<{
   runtime: RuntimeApi
   components: ComponentSchema[]

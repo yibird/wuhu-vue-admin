@@ -99,7 +99,7 @@
           "
         >
           <button
-            class="span-button min-w-0 flex-1 truncate text-left"
+            class="reset-button min-w-0 flex-1 truncate text-left"
             type="button"
             @click="designer.setActivePage(page.id)"
           >
@@ -108,7 +108,7 @@
           </button>
           <button
             v-if="designer.schema.pages.length > 1"
-            class="span-button shrink-0 text-muted hover:text-error"
+            class="reset-button shrink-0 text-muted hover:text-error"
             type="button"
             title="删除页面"
             @click="designer.removePage(page.id)"
@@ -138,8 +138,6 @@
 import { computed, ref } from 'vue'
 import { Icon } from '@/components'
 import { useDesignerContext } from '../../hooks'
-
-defineOptions({ name: 'PageSettingsPanel' })
 
 const designer = useDesignerContext()
 const addPageOpen = ref(false)

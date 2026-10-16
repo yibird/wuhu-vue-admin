@@ -117,8 +117,6 @@ import { useDesignerContext } from '../../hooks'
 import { DEVICE_PRESETS } from '../../types'
 import type { CanvasViewApi } from '../../hooks'
 
-defineOptions({ name: 'CanvasToolbar' })
-
 defineProps<{ view: CanvasViewApi; fullscreen: boolean }>()
 const emit = defineEmits<{ 'toggle-fullscreen': [] }>()
 

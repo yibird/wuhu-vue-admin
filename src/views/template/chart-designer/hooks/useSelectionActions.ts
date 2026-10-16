@@ -17,8 +17,11 @@ export function useChartSelectionActions(
     const availableIds = new Set(
       options.widgets.value.map((widget) => widget.id)
     )
-    options.selectedWidgetIds.value = ids.filter((id, index) => {
-      return availableIds.has(id) && ids.indexOf(id) === index
+    const seen = new Set<string>()
+    options.selectedWidgetIds.value = ids.filter((id) => {
+      if (!availableIds.has(id) || seen.has(id)) return false
+      seen.add(id)
+      return true
     })
   }
 

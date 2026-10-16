@@ -42,16 +42,23 @@ export function useChartDesigner() {
   const jsonDraft = shallowRef('[{"date":"06-12","name":"示例","value":128}]')
   const aiMessages = shallowRef<ChartAiMessage[]>([...initialAiMessages])
   let aiTimer: number | undefined
+  let disposeSleep: (() => void) | undefined
   let disposed = false
 
   const sleepWithCleanup = (ms: number) =>
     new Promise<void>((resolve) => {
-      aiTimer = window.setTimeout(resolve, ms)
+      disposeSleep = resolve
+      aiTimer = window.setTimeout(() => {
+        disposeSleep = undefined
+        resolve()
+      }, ms)
     })
 
   onBeforeUnmount(() => {
     disposed = true
     if (aiTimer) window.clearTimeout(aiTimer)
+    disposeSleep?.()
+    disposeSleep = undefined
   })
 
   const activeSource = computed(

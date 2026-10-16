@@ -6,7 +6,7 @@
       <span class="text-xs text-muted">共 {{ nodeCount }} 个节点</span>
       <a-tooltip title="展开/收起全部">
         <button
-          class="span-button size-22 inline-flex items-center justify-center text-secondary hover:text-primary"
+          class="reset-button size-22 inline-flex items-center justify-center text-secondary hover:text-primary"
           type="button"
           @click="toggleExpandAll"
         >
@@ -63,7 +63,7 @@
               />
               <span class="lc-outline-title__actions" @click.stop>
                 <button
-                  class="span-button size-18 inline-flex items-center justify-center"
+                  class="reset-button size-18 inline-flex items-center justify-center"
                   type="button"
                   title="复制"
                   @click="designer.duplicateNodes([String(key)])"
@@ -71,7 +71,7 @@
                   <Icon name="i-lucide:copy" :size="11" />
                 </button>
                 <button
-                  class="span-button size-18 inline-flex items-center justify-center"
+                  class="reset-button size-18 inline-flex items-center justify-center"
                   type="button"
                   title="删除"
                   @click="designer.removeNodes([String(key)])"
@@ -107,8 +107,6 @@ import { ROOT_ID } from '../../core/schema'
 import { useDesignerContext } from '../../hooks'
 import NodeContextMenu from '../canvas/node-context-menu.vue'
 import type { ComponentSchema } from '../../core/schema/types'
-
-defineOptions({ name: 'OutlineTree' })
 
 interface TreeItem {
   key: string

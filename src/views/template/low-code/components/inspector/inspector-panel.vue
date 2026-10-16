@@ -58,7 +58,7 @@
       >
         <div class="flex-y-center gap-10">
           <span
-            class="size-30 inline-flex shrink-0 items-center justify-center rounded-7 icon-primary-soft"
+            class="size-30 inline-flex shrink-0 items-center justify-center rounded-7 primary-tinted"
           >
             <Icon :name="definition?.icon ?? 'i-lucide:box'" :size="16" />
           </span>
@@ -165,7 +165,7 @@
                     <div class="flex-between-center">
                       <span class="text-xs text-main">{{ key }}</span>
                       <button
-                        class="span-button text-muted hover:text-error"
+                        class="reset-button text-muted hover:text-error"
                         type="button"
                         @click="designer.setBinding(node.id, key, undefined)"
                       >
@@ -212,8 +212,6 @@ import FieldControl from './field-control.vue'
 import PageSettingsPanel from './page-settings-panel.vue'
 import StylePanel from './style-panel.vue'
 import type { ComponentSchema, PropField } from '../../core/schema/types'
-
-defineOptions({ name: 'InspectorPanel' })
 
 type InspectorTab = 'props' | 'data' | 'events' | 'style'
 

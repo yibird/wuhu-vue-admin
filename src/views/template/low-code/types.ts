@@ -74,8 +74,6 @@ export interface DragState {
   startX: number
   startY: number
   active: boolean
-  pointerX: number
-  pointerY: number
   target: DropTarget | null
   free: { left: number; top: number } | null
   /** 自由布局拖拽时的节点尺寸（stage 坐标） */
@@ -96,10 +94,8 @@ export interface ResizeState {
   startX: number
   startY: number
   active: boolean
+  /** 当前像素宽度（stage 坐标），结束时用于换算相对宽度 */
   width: number
-  height: number
-  left: number
-  top: number
 }
 
 export interface ContextMenuState {

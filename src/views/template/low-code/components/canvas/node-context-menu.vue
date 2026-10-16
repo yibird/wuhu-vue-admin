@@ -110,8 +110,6 @@ import { Icon } from '@/components'
 import { componentRegistry } from '../../core/registry'
 import { useDesignerContext } from '../../hooks'
 
-defineOptions({ name: 'NodeContextMenu' })
-
 const props = defineProps<{
   open: boolean
   x: number

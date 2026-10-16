@@ -301,6 +301,10 @@ export function createRuntime(options: RuntimeOptions): RuntimeApi {
   const intervalTimers: number[] = []
 
   async function refreshAutoQueries() {
+    // 重新注册前先清掉上一轮定时器,否则每次刷新都会叠加一份轮询
+    intervalTimers.forEach((timer) => window.clearInterval(timer))
+    intervalTimers.length = 0
+
     const tasks = schema.queries
       .filter((query) => query.trigger === 'pageLoad')
       .map((query) => runQuery(query.id))

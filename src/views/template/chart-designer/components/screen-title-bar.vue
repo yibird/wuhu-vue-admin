@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import type { ChartDesignerStats, ChartScreenConfig } from '../types'
 
-defineOptions({ name: 'ScreenTitleBar' })
-
 defineProps<{
   screenConfig: ChartScreenConfig
   stats: ChartDesignerStats

@@ -7,8 +7,6 @@ import { provide } from 'vue'
 import { RUNTIME_KEY } from '../../core/runtime/keys'
 import type { RuntimeApi } from '../../core/runtime'
 
-defineOptions({ name: 'RuntimeProvider' })
-
 const props = defineProps<{
   runtime: RuntimeApi
 }>()

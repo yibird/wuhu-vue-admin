@@ -40,7 +40,6 @@
 </template>
 
 <script setup lang="ts">
-defineOptions({ name: 'DeviceFrame' })
 /**
  * 机型外壳装饰
  *

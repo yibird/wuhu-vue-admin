@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import type { ChartSchemaHistoryEntry } from '../hooks'
 
-defineOptions({ name: 'HistoryModal' })
-
 defineProps<{
   history: readonly ChartSchemaHistoryEntry[]
 }>()

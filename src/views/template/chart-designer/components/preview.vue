@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import VChart from 'vue-echarts'
 import { useEChartsTheme } from '@/theme'
-import { useECharts } from '@/plugins/echarts'
 import {
   aggregateChartRows,
   createWidgetChartOption,
@@ -10,10 +9,6 @@ import {
 } from '../chart-options'
 import type { ChartDataSource, ChartWidget } from '../types'
 import type { ChartPreviewMode } from '../types'
-
-defineOptions({ name: 'Preview' })
-
-useECharts()
 
 const props = defineProps<{
   previewMode: ChartPreviewMode

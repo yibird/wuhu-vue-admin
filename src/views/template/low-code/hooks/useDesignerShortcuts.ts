@@ -122,6 +122,7 @@ export function useDesignerShortcuts(options: DesignerShortcutsOptions) {
         return
       case 'Delete':
       case 'Backspace':
+        if (!designer.selectedIds.value.length) return
         event.preventDefault()
         designer.removeSelected()
         return
@@ -130,18 +131,22 @@ export function useDesignerShortcuts(options: DesignerShortcutsOptions) {
         designer.hoveredId.value = undefined
         return
       case 'ArrowUp':
+        if (!designer.selectedIds.value.length) return
         event.preventDefault()
         moveSelected('up', event.shiftKey)
         return
       case 'ArrowDown':
+        if (!designer.selectedIds.value.length) return
         event.preventDefault()
         moveSelected('down', event.shiftKey)
         return
       case 'ArrowLeft':
+        if (!designer.selectedIds.value.length) return
         event.preventDefault()
         moveSelected('left', event.shiftKey)
         return
       case 'ArrowRight':
+        if (!designer.selectedIds.value.length) return
         event.preventDefault()
         moveSelected('right', event.shiftKey)
         return

@@ -6,8 +6,6 @@ import type {
 } from '../types'
 import CanvasToolbar from './canvas-toolbar.vue'
 
-defineOptions({ name: 'CanvasHeader' })
-
 defineProps<{
   activeSourceId: string
   dataSources: readonly ChartDataSource[]

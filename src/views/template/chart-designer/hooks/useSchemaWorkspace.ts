@@ -1,4 +1,5 @@
 import { computed, onBeforeUnmount, shallowRef, watch } from 'vue'
+import { message } from 'antdv-next'
 import type { ChartDesignerSchema } from '../types'
 
 export interface ChartSchemaHistoryEntry {
@@ -59,12 +60,28 @@ export function useChartSchemaWorkspace(
   }
 
   function formatSchemaDraft() {
-    const schema = parseSchemaText(schemaDraft.value)
-    schemaDraft.value = JSON.stringify(schema, null, 2)
+    try {
+      const schema = parseSchemaText(schemaDraft.value)
+      schemaDraft.value = JSON.stringify(schema, null, 2)
+      schemaError.value = ''
+    } catch (error) {
+      schemaError.value =
+        error instanceof Error ? error.message : 'Schema 格式化失败'
+    }
   }
 
   async function copyShareUrl() {
-    await navigator.clipboard?.writeText(shareUrl.value)
+    if (!navigator.clipboard?.writeText) {
+      message.error('当前环境不支持剪贴板，请手动复制链接')
+      return
+    }
+
+    try {
+      await navigator.clipboard.writeText(shareUrl.value)
+      message.success('分享链接已复制')
+    } catch {
+      message.error('复制失败，请手动复制链接')
+    }
   }
 
   watch(schemaDraft, (value) => {

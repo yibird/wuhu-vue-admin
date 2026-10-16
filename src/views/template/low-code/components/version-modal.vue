@@ -4,7 +4,7 @@
     title="版本管理"
     :width="760"
     :footer="null"
-    :destroy-on-close="true"
+    :destroy-on-hidden="true"
     @cancel="emit('close')"
   >
     <div class="grid gap-18">
@@ -110,8 +110,6 @@ import { computed, onBeforeUnmount, watch } from 'vue'
 import { Icon } from '@/components'
 import { useDesignerContext } from '../hooks'
 import type { PublishedVersion } from '../hooks'
-
-defineOptions({ name: 'VersionModal' })
 
 const props = defineProps<{ open: boolean }>()
 const emit = defineEmits<{ close: [] }>()

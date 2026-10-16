@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import type { ChartAiMessage, ChartAiSuggestion } from '../types'
 
-defineOptions({ name: 'AiPanel' })
-
 defineProps<{
   busy: boolean
   canUpdateSelected: boolean

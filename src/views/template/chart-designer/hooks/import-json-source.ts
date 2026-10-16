@@ -44,6 +44,7 @@ function isChartDataRecord(value: unknown): value is ChartDataRecord {
   return (
     typeof value === 'object' &&
     value !== null &&
+    Object.keys(value).length > 0 &&
     Object.values(value).every(isChartDataValue)
   )
 }

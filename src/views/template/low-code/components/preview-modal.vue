@@ -77,8 +77,6 @@ import { SchemaRenderer } from './runtime'
 import { useDesignerContext } from '../hooks'
 import { DEVICE_PRESETS } from '../types'
 
-defineOptions({ name: 'PreviewModal' })
-
 defineProps<{ open: boolean }>()
 const emit = defineEmits<{ close: [] }>()
 

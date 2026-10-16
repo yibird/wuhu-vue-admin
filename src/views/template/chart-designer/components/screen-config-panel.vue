@@ -5,8 +5,6 @@ import type {
   ChartScreenTheme,
 } from '../types'
 
-defineOptions({ name: 'ScreenConfigPanel' })
-
 const props = defineProps<{
   screenConfig: ChartScreenConfig
 }>()

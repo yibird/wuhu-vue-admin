@@ -724,9 +724,12 @@ export function useDesigner(): DesignerApi {
     mutator: (value: ApplicationSchema[K]) => void,
     mergeKey?: string
   ) {
-    const before = structuredCloneSafe(toRaw(schema[key]))
-    mutator(schema[key])
-    const after = structuredCloneSafe(toRaw(schema[key]))
+    // 保留分区原引用：撤销时恢复同一对象图，避免更早入栈的节点命令
+    // 作用在已脱离 Schema 的旧数组/旧节点上，导致撤销静默失效。
+    const before = toRaw(schema[key]) as ApplicationSchema[K]
+    const next = structuredCloneSafe(before) as ApplicationSchema[K]
+    mutator(next)
+    ;(schema as unknown as Record<string, unknown>)[key as string] = next
     history.push(
       {
         label,
@@ -736,8 +739,7 @@ export function useDesigner(): DesignerApi {
           bumpStructure()
         },
         redo: () => {
-          ;(schema as unknown as Record<string, unknown>)[key as string] =
-            structuredCloneSafe(after)
+          ;(schema as unknown as Record<string, unknown>)[key as string] = next
           bumpStructure()
         },
       },
@@ -864,6 +866,9 @@ export function useDesigner(): DesignerApi {
     const before = structuredCloneSafe(toRaw(schema)) as ApplicationSchema
     const after = structuredCloneSafe(snapshot)
     applySnapshot(after)
+    // applySnapshot 会整体替换 pages/app 等分区，旧历史命令已指向脱离
+    // Schema 的对象图，先清空避免撤销作用在旧数据上。
+    history.clear()
     history.push({
       label: '恢复版本',
       undo: () => applySnapshot(before),

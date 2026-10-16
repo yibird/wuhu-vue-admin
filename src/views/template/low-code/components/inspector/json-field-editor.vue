@@ -15,8 +15,6 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
 
-defineOptions({ name: 'JsonFieldEditor' })
-
 const props = withDefaults(
   defineProps<{
     modelValue: unknown

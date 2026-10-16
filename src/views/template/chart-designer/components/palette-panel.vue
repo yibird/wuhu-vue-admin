@@ -2,8 +2,6 @@
 import { CHART_DESIGNER_SELECTORS } from '../constants'
 import type { ChartPaletteItem } from '../types'
 
-defineOptions({ name: 'PalettePanel' })
-
 const props = defineProps<{
   favorites: readonly ChartPaletteItem[]
   palette: readonly ChartPaletteItem[]

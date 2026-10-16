@@ -2,8 +2,6 @@
 import type { ChartDataSource, ChartScreenConfig, ChartWidget } from '../types'
 import WidgetPreview from './controls/widget-preview.vue'
 
-defineOptions({ name: 'CanvasWidget' })
-
 const props = defineProps<{
   index: number
   isDragging: boolean

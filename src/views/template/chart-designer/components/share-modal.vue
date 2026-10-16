@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ShareModal' })
 defineProps<{
   url: string
 }>()

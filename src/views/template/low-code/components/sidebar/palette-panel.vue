@@ -85,8 +85,6 @@ import {
   useDesignerContext,
 } from '../../hooks'
 
-defineOptions({ name: 'PalettePanel' })
-
 const designer = useDesignerContext()
 const keyword = ref('')
 const collapsed = ref(new Set<string>())

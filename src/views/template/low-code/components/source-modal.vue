@@ -4,7 +4,7 @@
     title="应用源码（Schema）"
     :width="860"
     :footer="null"
-    :destroy-on-close="true"
+    :destroy-on-hidden="true"
     @cancel="emit('close')"
   >
     <div class="grid gap-10">
@@ -35,8 +35,6 @@ import { ref, watch } from 'vue'
 import { CodeEditor } from '@/components'
 import { useDesignerContext } from '../hooks'
 import type { ApplicationSchema } from '../core/schema/types'
-
-defineOptions({ name: 'SourceModal' })
 
 const props = defineProps<{ open: boolean }>()
 const emit = defineEmits<{ close: [] }>()

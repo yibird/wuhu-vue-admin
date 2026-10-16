@@ -36,7 +36,7 @@
             </span>
             <div class="flex-y-center gap-2">
               <button
-                class="span-button size-22 inline-flex items-center justify-center text-muted hover:text-primary"
+                class="reset-button size-22 inline-flex items-center justify-center text-muted hover:text-primary"
                 type="button"
                 :disabled="index === 0"
                 @click="moveAction(event.name, index, -1)"
@@ -44,7 +44,7 @@
                 <Icon name="i-lucide:arrow-up" :size="12" />
               </button>
               <button
-                class="span-button size-22 inline-flex items-center justify-center text-muted hover:text-primary"
+                class="reset-button size-22 inline-flex items-center justify-center text-muted hover:text-primary"
                 type="button"
                 :disabled="index === actionsOf(event.name).length - 1"
                 @click="moveAction(event.name, index, 1)"
@@ -52,7 +52,7 @@
                 <Icon name="i-lucide:arrow-down" :size="12" />
               </button>
               <button
-                class="span-button size-22 inline-flex items-center justify-center text-muted hover:text-error"
+                class="reset-button size-22 inline-flex items-center justify-center text-muted hover:text-error"
                 type="button"
                 @click="removeAction(event.name, index)"
               >
@@ -109,8 +109,6 @@ import { useDesignerContext } from '../../hooks'
 import ActionCreateModal from './action-create-modal.vue'
 import ActionValueControl from './action-value-control.vue'
 import type { ComponentSchema, ValueSchema } from '../../core/schema/types'
-
-defineOptions({ name: 'EventsPanel' })
 
 const props = defineProps<{ node: ComponentSchema }>()
 const designer = useDesignerContext()

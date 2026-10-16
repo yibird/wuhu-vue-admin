@@ -167,8 +167,6 @@ import { message } from 'antdv-next'
 import { Icon } from '@/components'
 import { useDesignerAi, useDesignerContext } from '../hooks'
 
-defineOptions({ name: 'AiGenerateDrawer' })
-
 defineProps<{ open: boolean }>()
 const emit = defineEmits<{ close: [] }>()
 

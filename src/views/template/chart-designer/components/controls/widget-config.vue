@@ -3,8 +3,6 @@ import { CHART_DESIGNER_SELECTORS } from '../../constants'
 import { chartControlDefinitions, isChartType } from './registry'
 import type { ChartDataSource, ChartField, ChartWidget } from '../../types'
 
-defineOptions({ name: 'WidgetConfig' })
-
 const props = defineProps<{
   dataSources: readonly ChartDataSource[]
   fields: readonly ChartField[]

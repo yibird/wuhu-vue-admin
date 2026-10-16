@@ -6,8 +6,6 @@ import type {
 } from '../../types'
 import Preview from '../preview.vue'
 
-defineOptions({ name: 'WidgetPreview' })
-
 defineProps<{
   source?: ChartDataSource
   screenConfig: ChartScreenConfig

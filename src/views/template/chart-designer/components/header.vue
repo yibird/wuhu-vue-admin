@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import type { ChartDesignerStats } from '../types'
 
-defineOptions({ name: 'ChartDesignerHeader' })
-
 defineProps<{
   stats: ChartDesignerStats
 }>()

@@ -35,13 +35,21 @@ export function createSchema(
 }
 
 export function inferFields(records: readonly ChartDataRecord[]) {
-  const sample = records[0] ?? {}
+  const keys = Array.from(
+    new Set(records.flatMap((record) => Object.keys(record)))
+  )
 
-  return Object.keys(sample).map<ChartField>((key) => ({
-    key,
-    label: key,
-    type: inferFieldType(sample[key]),
-  }))
+  return keys.map<ChartField>((key) => {
+    const sample = records.find(
+      (record) => record[key] !== null && record[key] !== undefined
+    )
+
+    return {
+      key,
+      label: key,
+      type: inferFieldType(sample?.[key]),
+    }
+  })
 }
 
 function inferFieldType(value: unknown): ChartFieldType {

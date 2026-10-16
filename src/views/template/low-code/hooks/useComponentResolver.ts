@@ -1,8 +1,16 @@
 import { defineAsyncComponent, defineComponent, h } from 'vue'
 import type { Component } from 'vue'
-import { componentRegistry } from '../core/registry'
+import { componentRegistry, registryVersion } from '../core/registry'
 
 const asyncCache = new Map<string, Component>()
+let cacheVersion = -1
+
+/** 注册/下架物料后清理解析缓存，避免命中旧版本异步组件 */
+function syncComponentCache() {
+  if (cacheVersion === registryVersion.value) return
+  invalidateComponentCache()
+  cacheVersion = registryVersion.value
+}
 
 const MaterialError = defineComponent({
   name: 'LcMaterialError',
@@ -42,6 +50,7 @@ const MaterialLoading = defineComponent({
  * 内置组件同步返回；远程物料通过 BundleLoader 懒加载并缓存。
  */
 export function resolveComponentByType(type: string): Component | undefined {
+  syncComponentCache()
   const item = componentRegistry.get(type)
   if (!item) return undefined
   if (item.component) return item.component

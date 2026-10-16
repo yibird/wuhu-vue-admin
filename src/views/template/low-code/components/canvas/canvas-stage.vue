@@ -135,8 +135,6 @@ import {
 } from '../../hooks'
 import type { DropTarget, GuideLine } from '../../types'
 
-defineOptions({ name: 'CanvasStage' })
-
 const props = defineProps<{
   spacePressed: boolean
   fullscreen: boolean

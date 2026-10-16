@@ -29,7 +29,16 @@ export function useChartSchemaActions(options: UseChartSchemaActionsOptions) {
   }
 
   async function copySchema() {
-    await navigator.clipboard?.writeText(getSchemaText())
+    try {
+      await navigator.clipboard?.writeText(getSchemaText())
+    } catch {
+      options.aiMessages.value = [
+        ...options.aiMessages.value,
+        createAiMessage('assistant', '复制失败，请检查浏览器剪贴板权限。'),
+      ]
+      return
+    }
+
     options.aiMessages.value = [
       ...options.aiMessages.value,
       createAiMessage(
@@ -47,8 +56,10 @@ export function useChartSchemaActions(options: UseChartSchemaActionsOptions) {
     const link = document.createElement('a')
     link.href = url
     link.download = 'chart-designer-schema.json'
+    document.body.appendChild(link)
     link.click()
-    URL.revokeObjectURL(url)
+    link.remove()
+    window.setTimeout(() => URL.revokeObjectURL(url), 0)
   }
 
   return { copySchema, exportSchema, getSchemaText }

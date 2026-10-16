@@ -9,7 +9,7 @@
       </span>
       <button
         v-if="bindable"
-        class="span-button inline-flex items-center justify-center rounded-4 px-4 py-1 text-xs transition"
+        class="reset-button inline-flex items-center justify-center rounded-4 px-4 py-1 text-xs transition"
         :class="
           isBound
             ? 'text-primary bg-primary/8'
@@ -165,8 +165,6 @@ import { useDesignerContext } from '../../hooks'
 import JsonFieldEditor from './json-field-editor.vue'
 import OptionListEditor from './option-list-editor.vue'
 import type { ComponentSchema, PropField } from '../../core/schema/types'
-
-defineOptions({ name: 'FieldControl' })
 
 const props = defineProps<{
   node: ComponentSchema
