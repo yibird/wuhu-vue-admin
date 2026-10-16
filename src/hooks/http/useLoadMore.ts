@@ -88,7 +88,7 @@ export interface UseLoadMoreReturn<T, Q extends PageQuery> {
   /**
    * @desc 当前页码
    */
-  pageNum: ShallowRef<number>
+  current: ShallowRef<number>
   /**
    * @desc 每页条数
    */
@@ -151,7 +151,7 @@ export function useLoadMore<T, Q extends PageQuery = PageQuery>(
   } = options
   const select = options.select ?? selectPageData
 
-  const pageNum = shallowRef(normalizePageValue(defaultPageNum, 1))
+  const current = shallowRef(normalizePageValue(defaultPageNum, 1))
   const pageSize = shallowRef(normalizePageValue(defaultPageSize, 10))
   const filters = shallowRef<Partial<Q>>(
     defaultParams === undefined ? {} : { ...defaultParams }
@@ -175,7 +175,7 @@ export function useLoadMore<T, Q extends PageQuery = PageQuery>(
   )
 
   function buildQuery(
-    nextPageNum = pageNum.value,
+    nextPageNum = current.value,
     nextPageSize = pageSize.value
   ): Q {
     return buildPageQuery<Q>(filters.value, nextPageNum, nextPageSize)
@@ -188,8 +188,8 @@ export function useLoadMore<T, Q extends PageQuery = PageQuery>(
       if (!response) return
       const items = response.list ?? []
       const committedPageNum = normalizePageValue(
-        response.pageNum ?? pageNum.value,
-        pageNum.value
+        response.current ?? current.value,
+        current.value
       )
       hasLoaded.value = true
 
@@ -240,18 +240,18 @@ export function useLoadMore<T, Q extends PageQuery = PageQuery>(
   async function loadPage(
     targetPageNum: number
   ): Promise<PageResult<T> | undefined> {
-    pageNum.value = targetPageNum
+    current.value = targetPageNum
     loadingMore.value = targetPageNum > 1
     try {
       const response = await request.runAsync(buildQuery(targetPageNum))
-      if (pageNum.value === targetPageNum && !loadedPages.has(targetPageNum)) {
+      if (current.value === targetPageNum && !loadedPages.has(targetPageNum)) {
         // 结果未被提交(取消或被更新的请求取代)
-        pageNum.value = Math.max(1, targetPageNum - 1)
+        current.value = Math.max(1, targetPageNum - 1)
       }
       return response
     } catch (cause) {
-      if (pageNum.value === targetPageNum) {
-        pageNum.value = Math.max(1, targetPageNum - 1)
+      if (current.value === targetPageNum) {
+        current.value = Math.max(1, targetPageNum - 1)
       }
       throw toError(cause)
     } finally {
@@ -262,7 +262,7 @@ export function useLoadMore<T, Q extends PageQuery = PageQuery>(
   async function loadMoreAsync(): Promise<PageResult<T> | undefined> {
     if (noMore.value || request.loading.value) return request.data.value
     // 尚未加载过任何一页时,首次加载第 1 页
-    const targetPageNum = hasLoaded.value ? pageNum.value + 1 : 1
+    const targetPageNum = hasLoaded.value ? current.value + 1 : 1
     return loadPage(targetPageNum)
   }
 
@@ -303,7 +303,7 @@ export function useLoadMore<T, Q extends PageQuery = PageQuery>(
     noMore,
     error: request.error,
     params: request.params,
-    pageNum,
+    current,
     pageSize,
     total,
     totalPage,

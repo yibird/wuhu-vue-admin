@@ -4,7 +4,8 @@ type SearchValue = string | number | null | undefined
 
 const chineseTextPattern = /[\u3400-\u9fff]/
 const pinyinKeywordPattern = /^[a-z\s]+$/
-const PINYIN_SCORE_OFFSET = 1000
+/** 拼音匹配的排序基准分,保证拼音命中排在直接文本命中之后 */
+export const PINYIN_SCORE_OFFSET = 1000
 
 export type SearchMatchSource = 'text' | 'pinyin'
 
@@ -22,6 +23,20 @@ export interface SearchTextSegment {
 
 export function normalizeSearchKeyword(inputValue: string) {
   return inputValue.trim().toLowerCase()
+}
+
+/**
+ * 计算拼音匹配的排序分
+ * @param start 匹配起始下标
+ * @param end 匹配结束下标(含)
+ * @param offset 排序基准分,用于区分不同匹配层级
+ */
+export function getPinyinMatchScore(
+  start: number,
+  end: number,
+  offset: number
+) {
+  return offset + start * 10 + end - start
 }
 
 /** Finds the first direct or pinyin match in a text value. */
@@ -54,7 +69,7 @@ export function getSearchMatch(
   return {
     start,
     end,
-    score: PINYIN_SCORE_OFFSET + start * 10 + end - start,
+    score: getPinyinMatchScore(start, end, PINYIN_SCORE_OFFSET),
     source: 'pinyin',
   }
 }

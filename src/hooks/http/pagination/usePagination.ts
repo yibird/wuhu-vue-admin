@@ -50,7 +50,7 @@ export interface PaginationState {
   /**
    * @desc 当前页码
    */
-  pageNum: Ref<number>
+  current: Ref<number>
   /**
    * @desc 每页条数
    */
@@ -66,7 +66,7 @@ export interface PaginationState {
   /**
    * @desc 切换页码并重新请求
    */
-  changePageNum: (pageNum: number) => void
+  changePageNum: (current: number) => void
   /**
    * @desc 切换每页条数(自动回到第 1 页)并重新请求
    */
@@ -74,7 +74,7 @@ export interface PaginationState {
   /**
    * @desc 同时切换页码与每页条数并重新请求
    */
-  changePage: (pageNum: number, pageSize?: number) => void
+  changePage: (current: number, pageSize?: number) => void
 }
 
 /**
@@ -157,7 +157,7 @@ export function usePagination<T, Q extends PageQuery = PageQuery>(
   } = options
   const select = options.select ?? selectPageData
 
-  const pageNum = shallowRef(normalizePageValue(defaultPageNum, 1))
+  const current = shallowRef(normalizePageValue(defaultPageNum, 1))
   const pageSize = shallowRef(normalizePageValue(defaultPageSize, 10))
   const filters = shallowRef<Partial<Q>>(
     defaultParams === undefined ? {} : { ...defaultParams }
@@ -173,7 +173,7 @@ export function usePagination<T, Q extends PageQuery = PageQuery>(
   )
 
   function buildQuery(
-    nextPageNum = pageNum.value,
+    nextPageNum = current.value,
     nextPageSize = pageSize.value
   ): Q {
     return buildPageQuery<Q>(filters.value, nextPageNum, nextPageSize)
@@ -189,13 +189,13 @@ export function usePagination<T, Q extends PageQuery = PageQuery>(
 
   function runAsync(params?: Partial<Q>): Promise<PageResult<T>> {
     if (params !== undefined) {
-      const { pageNum: nextPageNum, pageSize: nextPageSize, ...rest } = params
+      const { current: nextPageNum, pageSize: nextPageSize, ...rest } = params
       // 新的查询条件:整体替换业务参数,页码回到第 1 页(显式传入分页字段时以传入值为准)
       filters.value = rest as Partial<Q>
       if (nextPageSize !== undefined) {
         pageSize.value = normalizePageValue(nextPageSize, pageSize.value)
       }
-      pageNum.value =
+      current.value =
         nextPageNum !== undefined ? normalizePageValue(nextPageNum, 1) : 1
     }
     return request.runAsync(buildQuery())
@@ -206,13 +206,13 @@ export function usePagination<T, Q extends PageQuery = PageQuery>(
   }
 
   function changePageNum(nextPageNum: number): void {
-    pageNum.value = normalizePageValue(nextPageNum, 1)
+    current.value = normalizePageValue(nextPageNum, 1)
     refresh()
   }
 
   function changePageSize(nextPageSize: number): void {
     pageSize.value = normalizePageValue(nextPageSize, pageSize.value)
-    pageNum.value = 1
+    current.value = 1
     refresh()
   }
 
@@ -220,7 +220,7 @@ export function usePagination<T, Q extends PageQuery = PageQuery>(
     if (nextPageSize !== undefined) {
       pageSize.value = normalizePageValue(nextPageSize, pageSize.value)
     }
-    pageNum.value = normalizePageValue(nextPageNum, 1)
+    current.value = normalizePageValue(nextPageNum, 1)
     refresh()
   }
 
@@ -241,7 +241,7 @@ export function usePagination<T, Q extends PageQuery = PageQuery>(
     error: request.error,
     params: request.params,
     pagination: {
-      pageNum,
+      current,
       pageSize,
       total,
       totalPage,

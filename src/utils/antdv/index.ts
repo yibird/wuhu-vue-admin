@@ -80,7 +80,7 @@ export function menusToOptions(menus: IMenu[] = []) {
       disabled: item.disabled,
       icon: renderIcon(item.icon),
     }),
-    // 子页面(type 3)不参与选项渲染
-    (item) => item.type !== 3
+    // 目录(type 1)与菜单(type 2)参与选项渲染,子页面(type 3)与权限按钮(type 4)不展示
+    (item) => [1, 2].includes(item.type)
   )
 }

@@ -10,6 +10,7 @@ export {
 export type { DictLoader, DictOption } from './useDict'
 export { useTabs } from './useTabs'
 export { useTabGuard } from './useTabGuard'
+export { useSearchHistory } from './useSearchHistory'
 export { useAuth } from './useAuth'
 export { useDeferred } from './useDeferred'
 export { useLoading } from './useLoading'

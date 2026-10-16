@@ -7,7 +7,7 @@ export interface PageQuery {
   /**
    * @desc 当前页码,从 1 开始
    */
-  pageNum?: number
+  current?: number
   /**
    * @desc 每页条数
    */
@@ -43,16 +43,16 @@ export function selectPageData<T>(response: PageResponse<T>): PageResult<T> {
 /**
  * 合并业务查询参数与分页字段
  * @param filters 业务查询参数
- * @param pageNum 页码
+ * @param current 页码
  * @param pageSize 每页条数
  * @returns 查询对象
  */
 export function buildPageQuery<Q extends PageQuery>(
   filters: Partial<Q>,
-  pageNum: number,
+  current: number,
   pageSize: number
 ): Q {
-  return { ...filters, pageNum, pageSize } as Q
+  return { ...filters, current, pageSize } as Q
 }
 
 /**

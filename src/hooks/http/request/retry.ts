@@ -64,19 +64,30 @@ export function getRetryDelay(
  */
 export function createRetrier(options: RetrierOptions): Retrier {
   let generation = 0
-  let timer: TimerId | undefined
+  /**
+   * 每个等待各自持有定时器
+   *
+   * 并发执行的请求会同时处于重试等待中,共用一个定时器句柄会让后来的等待清掉前一个,
+   * 前一个 promise 既不会 resolve 也不会 reject(只能等 cancel),请求就永远挂住。
+   */
+  const timers = new Set<TimerId>()
   const pendingRejects = new Set<(error: unknown) => void>()
 
   function wait(ms: number): Promise<void> {
     return new Promise<void>((resolve, reject) => {
-      const rejectOnCancel = (error: unknown) => reject(error)
+      const rejectOnCancel = (error: unknown) => {
+        clearTimer(timer)
+        timers.delete(timer)
+        reject(error)
+      }
       pendingRejects.add(rejectOnCancel)
-      clearTimer(timer)
-      timer = setTimeout(() => {
+
+      const timer: TimerId = setTimeout(() => {
+        timers.delete(timer)
         pendingRejects.delete(rejectOnCancel)
-        timer = undefined
         resolve()
       }, ms)
+      timers.add(timer)
     })
   }
 
@@ -101,10 +112,11 @@ export function createRetrier(options: RetrierOptions): Retrier {
 
   function cancel(): void {
     generation += 1
-    clearTimer(timer)
-    timer = undefined
-    for (const reject of pendingRejects) reject(new CanceledError())
+    // 先快照再回调:回调内部会从集合里移除自己
+    const pending = [...pendingRejects]
     pendingRejects.clear()
+    for (const reject of pending) reject(new CanceledError())
+    timers.clear()
   }
 
   return { run, cancel }

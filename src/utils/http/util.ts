@@ -6,10 +6,16 @@ import { resetSessionExpiredNotification } from './session-events'
  * 去掉 API 基础前缀，使白名单匹配不依赖部署前缀（/api 等）
  */
 function normalizeApiPath(pathname: string) {
-  const base = import.meta.env.VITE_API_BASE_URL || '/api'
-  if (!base || !pathname.startsWith(base)) return pathname
+  const base = import.meta.env.VITE_API_BASE_URL
+  if (!base) return pathname
 
-  return pathname.slice(base.length) || '/'
+  // 兼容绝对地址与尾斜杠,按路径段边界比较,避免前缀部分匹配
+  const basePath = (
+    base.startsWith('http') ? new URL(base).pathname : base
+  ).replace(/\/+$/, '')
+  if (!basePath || !pathname.startsWith(`${basePath}/`)) return pathname
+
+  return pathname.slice(basePath.length)
 }
 
 export function isWhiteListed(url: string) {

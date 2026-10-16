@@ -1,5 +1,12 @@
 import ky, { type Input } from 'ky'
-import { beforeRequest, beforeError, beforeRetry, afterResponse } from './hooks'
+import { AppError } from '@/errors'
+import {
+  beforeRequest,
+  beforeError,
+  beforeRetry,
+  afterResponse,
+  getParsedBodyCache,
+} from './hooks'
 import {
   buildRequestDedupKey,
   dedupeRequest,
@@ -48,8 +55,20 @@ export async function parseApiResponse<T>(
   if ([204, 205].includes(response.status) || contentLength === '0') {
     return undefined as T
   }
+
+  // 业务码校验已经解析过一次,命中缓存时不再重复解析
+  const cached = getParsedBodyCache(response)
+  if (cached !== undefined) return cached as T
+
   const text = await response.text()
-  return (text ? JSON.parse(text) : undefined) as T
+  if (!text) return undefined as T
+
+  try {
+    return JSON.parse(text) as T
+  } catch {
+    // 网关/代理返回的 HTML 错误页也会走到这里,给出可读错误而不是裸的 SyntaxError
+    throw new AppError('响应数据解析失败,请检查接口返回格式')
+  }
 }
 
 export type { ApiRequestOptions, ApiResponseType } from './dedupe'

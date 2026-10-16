@@ -109,7 +109,7 @@ async function defaultLoader(type: string): Promise<DictOption[]> {
 
   const dictPage = await getDictPageListApi({
     type,
-    pageNum: 1,
+    current: 1,
     pageSize: DICT_PAGE_SIZE,
   })
   const dict = dictPage.data.list.find((item) => item.type === type)
@@ -118,7 +118,7 @@ async function defaultLoader(type: string): Promise<DictOption[]> {
   const itemPage = await getDictItemPageListApi({
     dictId: dict.id,
     status: true,
-    pageNum: 1,
+    current: 1,
     pageSize: DICT_ITEM_PAGE_SIZE,
   })
   return itemPage.data.list.map((item) => ({
