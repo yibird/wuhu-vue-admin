@@ -1,6 +1,2 @@
-# 统一行尾：仓库内与工作区一律使用 LF
-#
-# Windows 上 core.autocrlf=true 会把工作区检出成 CRLF、提交时再转回 LF，
-# 于是 oxfmt/fmt:check 认为文件「行尾被改写」而报错，git status 也长期不干净。
-# text=auto 交给 git 识别二进制文件（图片、字体等不受影响）。
+# 默认统一为 LF
 * text=auto eol=lf
