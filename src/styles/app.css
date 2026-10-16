@@ -8,7 +8,7 @@ body,
   margin: 0;
   overflow: hidden;
   font-family: var(--w-font-family, system-ui, sans-serif);
-  font-weight: var(--w-font-weight, 500);
+  font-weight: var(--w-font-weight,);
   font-synthesis: none;
   color: rgb(var(--w-text-main));
   letter-spacing: var(--w-letter-spacing, 0);

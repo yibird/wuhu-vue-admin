@@ -61,6 +61,9 @@
   /* 信息颜色 */
   --w-text-info: var(--w-color-info);
 
+  /* 字体粗细 */
+  --w-font-weight: 600;
+
   /* ===================================== 背景颜色 */
 
   --w-bg-page: 245 247 250;
@@ -165,6 +168,9 @@
   /* 最强 */
   --w-fill-quaternary: 248 250 252;
 
+  /* 兼容旧名:与 --w-fill-quaternary 同值,随暗色覆盖自动适配 */
+  --w-bg-fill-quaternary: var(--w-fill-quaternary);
+
   /* ===================================== 语义色背景 */
 
   /* Primary / 主题色：solid 用于主按钮，subtle 用于 Tag / Alert / 选中底色 */
@@ -181,6 +187,12 @@
     rgb(var(--w-bg-primary)) 24%,
     rgb(var(--w-bg-container))
   );
+
+  /* Success / Warning / Error / Info 基础底色:与对应 --w-color-* 同源,随暗色覆盖自动适配 */
+  --w-bg-success: var(--w-color-success);
+  --w-bg-warning: var(--w-color-warning);
+  --w-bg-error: var(--w-color-error);
+  --w-bg-info: var(--w-color-info);
 
   /* Success 悬浮色 */
   --w-bg-success-hover: 115 209 61;
@@ -285,6 +297,9 @@
 
   /* 默认阴影颜色 */
   --w-shadow-color: var(--w-shadow-color-2);
+
+  /* 小阴影(按钮等轻量悬浮反馈) */
+  --w-shadow-sm: 0 1px 2px rgb(15 23 42 / 12%);
 
   /* 阴影悬浮色 */
   --w-shadow-elevated: 0 12px 32px rgb(15 23 42 / 10%);
@@ -525,6 +540,7 @@
   --w-shadow-color-2: rgb(var(--w-shadow-color-rgb) / 40%);
   --w-shadow-color-3: rgb(var(--w-shadow-color-rgb) / 60%);
   --w-shadow-color-4: rgb(var(--w-shadow-color-rgb) / 80%);
+  --w-shadow-sm: 0 1px 2px rgb(0 0 0 / 45%);
   --w-shadow-elevated: 0 12px 32px rgb(0 0 0 / 80%);
   --w-shadow-sider:
     12px 0 28px -10px rgb(0 0 0 / 85%), 1px 0 0 rgb(148 163 184 / 18%);

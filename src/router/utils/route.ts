@@ -78,6 +78,9 @@ export function getComponentName(path: string) {
 /**
  * 创建带名称的路由组件
  *
+ * 路由组件保持 suspensible(默认),加载态交由内容区的 Suspense 承接,
+ * 这样 loading 只覆盖内容区,不会盖住整个应用。
+ *
  * @param loader - 组件加载器
  * @param name - 组件名称
  * @returns 带名称的 Vue 组件
@@ -86,7 +89,7 @@ const createRouteComponent = (
   loader: RouteLoader<RouteModule>,
   name: string
 ) => {
-  const AsyncComponent = defineAsyncComponent(loader)
+  const AsyncComponent = defineAsyncComponent({ loader })
   return defineComponent({
     name,
     setup(_, { attrs, slots }) {

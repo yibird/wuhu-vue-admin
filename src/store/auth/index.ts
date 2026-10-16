@@ -4,10 +4,10 @@ import { menus } from '@/config'
 import { clearDictCache } from '@/hooks/useDict'
 import { getToken, removeToken, setToken } from '@/utils'
 import { permissionStore } from '../permission'
+import { tabsStore } from '../tabs'
 
 import type { LoginRequest } from '@/apis'
 import type { AuthState } from './types'
-import { tabsStore } from '../tabs'
 
 const createInitialState = (): AuthState => ({
   accessToken: getToken(),
@@ -35,6 +35,7 @@ export const authStore = defineStore('auth', {
         this.user = session.user
         setToken(session.accessToken)
         permissionStore().setMenus(menus)
+        permissionStore().setSessionPermissions(session.permissions)
       } finally {
         this.loginLoading = false
       }
@@ -51,9 +52,15 @@ export const authStore = defineStore('auth', {
       try {
         const response = await getAuthSessionApi()
         const session = response.data
-        if (!session?.user) return false
+        if (!session?.user) {
+          // 会话无效时必须清掉 token:否则守卫看到 token 会把 /login 再送回原路由,
+          // 与「无 user 就跳登录」来回弹跳并反复请求会话接口。
+          this.logout()
+          return false
+        }
         this.user = session.user
         permissionStore().setMenus(menus)
+        permissionStore().setSessionPermissions(session.permissions)
         return true
       } catch {
         this.logout()

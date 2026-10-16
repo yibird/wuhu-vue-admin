@@ -1,60 +1,14 @@
+import type { ITab } from '#/config'
 import type { LocationQueryRaw } from 'vue-router'
 
-export interface ITab {
-  /**
-   * 唯一标识
-   */
-  key: string
-  /**
-   * 路由路径
-   */
-  path: string
-  /**
-   * 标题
-   */
-  title: string
-  /**
-   * 关联的菜单id
-   */
-  menuId?: string
-  /**
-   * 菜单层级
-   */
-  level?: string
-  /**
-   * 所属根菜单id,用于分栏侧边栏定位菜单树
-   */
-  rootId?: string
-  /**
-   * icon
-   */
-  icon?: string | null
-  /**
-   * 路由查询参数
-   */
-  query?: LocationQueryRaw
-  /**
-   * 是否固定
-   */
-  pin?: boolean
-
-  /**
-   * 是否缓存
-   */
-  keepAlive?: boolean
-
-  /**
-   * KeepAlive 对应的组件名称
-   */
-  componentName?: string
-}
+export type { ITab }
 
 /**
  * Tab 操作目标
  *
  * - string：Tab key
  * - number：Tab 下标
- * - IMenu：菜单项，通过菜单 id 定位对应 Tab
+ * - ITab：Tab项，通过 Tab key 定位对应 Tab
  */
 export type TabTarget = string | number | ITab
 

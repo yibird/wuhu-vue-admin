@@ -12,8 +12,8 @@ export function menuToTab(menu: IMenu): ITab {
     level: menu.level,
     rootId: menu.rootId,
     icon: menu.icon,
-    pin: menu.fixed,
-    keepAlive: menu.keepAlive,
+    pin: menu.fixed ?? false,
+    keepAlive: menu.keepAlive ?? true,
     query: menu.query as LocationQueryRaw,
     componentName: getComponentName(menu.path!),
   }

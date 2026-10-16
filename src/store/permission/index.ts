@@ -1,13 +1,16 @@
 import { markRaw } from 'vue'
 import { defineStore, storeToRefs } from 'pinia'
 import { treeToList } from '@zhouchengfeng/okay'
-import { isMenuPermission, isMenuRoute } from '@/router/utils'
+import { uniq } from 'es-toolkit'
+import { isMenu, isMenuPermission } from '@/router/utils'
 import type { IMenu } from '#/config'
+import type { PermissionState } from './types'
 
 export const permissionStore = defineStore('permission', {
-  state: () => {
+  state: (): PermissionState => {
     return {
-      menus: [] as IMenu[],
+      menus: [],
+      sessionPermissions: [],
     }
   },
   getters: {
@@ -22,15 +25,16 @@ export const permissionStore = defineStore('permission', {
      * @returns
      */
     flatRoutes(): IMenu[] {
-      return this.flatMenus.filter((item) => isMenuRoute(item))
+      return this.flatMenus.filter((item) => isMenu(item))
     },
     /**
-     * 权限列表
+     * 权限列表,由后端下发的权限码与菜单声明的权限合并而成
      */
     permissions(): string[] {
-      return this.flatMenus
+      const menuPermissions = this.flatMenus
         .filter((item) => isMenuPermission(item))
         .map((item) => item.permission)
+      return uniq([...this.sessionPermissions, ...menuPermissions])
     },
     /**
      * 菜单缓存,提供根据id和path查找菜单的映射
@@ -41,7 +45,7 @@ export const permissionStore = defineStore('permission', {
       const pathMap: Record<string, IMenu> = {}
       for (const menu of this.flatMenus) {
         Reflect.set(idMap, menu.id, menu)
-        if (isMenuRoute(menu)) {
+        if (isMenu(menu)) {
           Reflect.set(pathMap, menu.path, menu)
         }
       }
@@ -52,11 +56,13 @@ export const permissionStore = defineStore('permission', {
     setMenus(menus: IMenu[]) {
       this.menus = markRaw(menus)
     },
+    setSessionPermissions(permissions: string[]) {
+      this.sessionPermissions = permissions
+    },
     clear() {
       this.$reset()
     },
   },
-  persist: true,
 })
 
 export const usePermissionStore = () => {

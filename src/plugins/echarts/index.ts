@@ -1,1 +1,1 @@
-export { useECharts } from './useECharts'
+export { registerECharts } from './register'

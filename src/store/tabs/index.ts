@@ -150,7 +150,7 @@ export const tabsStore = defineStore('tabs', {
     /**
      * 根据target选中 Tab,target为undefined时则选中homeTab
      * @param target Tab 操作目标
-     * - undefined: 选中中首页
+     * - undefined: 选中首页
      * - string：Tab key
      * - number：Tab 下标
      * - ITab：Tab项，通过Tab key 定位对应 Tab
@@ -314,8 +314,8 @@ export const tabsStore = defineStore('tabs', {
      */
     togglePinTab(target: TabTarget, pin?: boolean) {
       const index = getTabIndex(this.tabs, target)
-      if (index === -1) return
       const tab = this.tabs[index]
+      if (!tab) return
       const nextPin = pin ?? !tab.pin
       if (tab.pin === nextPin) return
       tab.pin = nextPin

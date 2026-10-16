@@ -23,14 +23,15 @@ import {
   VisualMapComponent,
 } from 'echarts/components'
 import { provideEChartsOptions, registerEChartsCore } from './core'
+import type { App } from 'vue'
 
-let registered = false
-
-export function useECharts() {
-  provideEChartsOptions()
-
-  if (registered) return
-
+/**
+ * 注册图表所需的 ECharts 模块与全局默认选项
+ *
+ * @param app 应用实例，用于注入 vue-echarts 的默认选项
+ */
+export function registerECharts(app: App) {
+  provideEChartsOptions(app)
   registerEChartsCore()
 
   use([
@@ -54,5 +55,4 @@ export function useECharts() {
     TreemapChart,
     VisualMapComponent,
   ])
-  registered = true
 }
