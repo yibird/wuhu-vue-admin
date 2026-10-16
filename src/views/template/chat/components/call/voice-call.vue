@@ -1,10 +1,8 @@
 <script setup lang="ts">
 import { Icon } from '@/components/icon'
 import WindowShell from './window-shell.vue'
-import { useCallSession } from './useCallSession'
+import { useCallSession } from './hooks'
 import type { CallWindowEmits, CallWindowProps } from './types'
-
-defineOptions({ name: 'VoiceCall' })
 
 const props = defineProps<CallWindowProps>()
 const emit = defineEmits<CallWindowEmits>()

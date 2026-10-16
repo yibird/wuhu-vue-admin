@@ -31,23 +31,27 @@ export function useMessageRecording(options: UseMessageRecordingOptions) {
     options.onTyping?.()
   }
 
-  function stopRecording() {
-    clearRecordingTimer()
-    if (!isRecording.value) return
-
+  /**
+   * 统一重置录音状态，返回停表前累计的秒数；未在录音时返回 0。
+   * 停止、取消和卸载三处共用，避免状态字段漏改。
+   */
+  function resetRecordingState() {
+    const wasRecording = isRecording.value
     const duration = recordingDuration.value
+    clearRecordingTimer()
     isRecording.value = false
     recordingDuration.value = 0
-    options.onStopTyping?.()
+    if (wasRecording) options.onStopTyping?.()
+    return wasRecording ? duration : 0
+  }
+
+  function stopRecording() {
+    const duration = resetRecordingState()
     if (duration > 0) options.onSend(duration)
   }
 
   function cancelRecording() {
-    clearRecordingTimer()
-    if (!isRecording.value) return
-    isRecording.value = false
-    recordingDuration.value = 0
-    options.onStopTyping?.()
+    resetRecordingState()
   }
 
   function toggleRecording() {
@@ -55,13 +59,7 @@ export function useMessageRecording(options: UseMessageRecordingOptions) {
     else startRecording()
   }
 
-  onScopeDispose(() => {
-    const wasRecording = isRecording.value
-    clearRecordingTimer()
-    isRecording.value = false
-    recordingDuration.value = 0
-    if (wasRecording) options.onStopTyping?.()
-  })
+  onScopeDispose(resetRecordingState)
 
   return {
     isRecording,

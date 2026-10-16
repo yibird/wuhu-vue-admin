@@ -8,6 +8,9 @@ import type {
   Message,
 } from './components/types'
 
+/** 当前登录用户「我」的头像，供消息发送等场景复用，避免多处硬编码 */
+export const currentUserAvatar = 'https://i.pravatar.cc/100?img=10'
+
 export function createFriendGroups(): FriendGroup[] {
   return [
     {
@@ -164,7 +167,7 @@ export function createGroupMembers(
   const currentUser: GroupMember = {
     id: 'me',
     name: '我',
-    avatar: 'https://i.pravatar.cc/100?img=10',
+    avatar: currentUserAvatar,
     status: 'online',
     title: '产品经理',
     department: '产品中心',
@@ -519,7 +522,7 @@ export function createInitialMessagesByConversation(): Record<
         senderInfo: {
           id: 'me',
           name: '我',
-          avatar: 'https://i.pravatar.cc/100?img=10',
+          avatar: currentUserAvatar,
           status: 'online',
           title: '产品经理',
           department: '产品中心',
@@ -562,7 +565,7 @@ export function createInitialMessagesByConversation(): Record<
         senderInfo: {
           id: 'me',
           name: '我',
-          avatar: 'https://i.pravatar.cc/100?img=10',
+          avatar: currentUserAvatar,
           status: 'online',
           title: '产品经理',
           department: '产品中心',

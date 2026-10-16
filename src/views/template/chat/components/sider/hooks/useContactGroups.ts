@@ -1,6 +1,7 @@
 import { computed, shallowRef, toValue } from 'vue'
 import type { MaybeRefOrGetter } from 'vue'
-import type { Contact, FriendGroup } from '../components/types'
+import { commonSurnameInitials } from '../data'
+import type { Contact, FriendGroup } from '../../types'
 
 export type ContactGroupMode = 'alphabet' | 'friendGroup'
 
@@ -31,49 +32,6 @@ interface UseContactGroupsOptions {
   keyword: MaybeRefOrGetter<string>
   activeStatus: MaybeRefOrGetter<string>
   statusFilterEnabled: MaybeRefOrGetter<boolean>
-}
-
-const commonSurnameInitials: Record<string, string> = {
-  张: 'Z',
-  李: 'L',
-  王: 'W',
-  赵: 'Z',
-  陈: 'C',
-  刘: 'L',
-  杨: 'Y',
-  黄: 'H',
-  周: 'Z',
-  吴: 'W',
-  徐: 'X',
-  孙: 'S',
-  胡: 'H',
-  朱: 'Z',
-  高: 'G',
-  林: 'L',
-  何: 'H',
-  郭: 'G',
-  马: 'M',
-  罗: 'L',
-  梁: 'L',
-  宋: 'S',
-  郑: 'Z',
-  谢: 'X',
-  韩: 'H',
-  唐: 'T',
-  冯: 'F',
-  于: 'Y',
-  董: 'D',
-  萧: 'X',
-  程: 'C',
-  曹: 'C',
-  袁: 'Y',
-  邓: 'D',
-  许: 'X',
-  傅: 'F',
-  沈: 'S',
-  曾: 'Z',
-  彭: 'P',
-  吕: 'L',
 }
 
 /**

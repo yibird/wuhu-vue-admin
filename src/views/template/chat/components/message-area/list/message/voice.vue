@@ -23,7 +23,6 @@
 </template>
 
 <script setup lang="ts">
-defineOptions({ name: 'Voice' })
 interface Props {
   content: string
   isPlaying?: boolean

@@ -1,6 +1,6 @@
 <template>
   <aside
-    class="chat-sidebar relative h-full shrink-0 border-r-1 border-r-solid border-color-1 bg-container"
+    class="relative min-w-240 max-w-450 h-full shrink-0 border-r-1 border-r-solid border-color-1 bg-container max-lg:min-w-260 max-lg:min-w-260"
     :class="{ 'is-resizing': resizing }"
   >
     <Transition name="fade-slide-swap" mode="out-in">
@@ -51,7 +51,7 @@
     </Transition>
     <button
       type="button"
-      class="chat-sidebar-resize-handle"
+      class="chat-sidebar-resize-handle max-lg:hidden"
       :class="{ 'is-active': resizing }"
       aria-label="调整侧边栏宽度"
       title="拖拽调整侧边栏宽度"
@@ -125,11 +125,6 @@ function handleContactChat(contact: Contact) {
 </script>
 
 <style scoped>
-.chat-sidebar {
-  min-width: 260px;
-  max-width: 440px;
-}
-
 .chat-sidebar-resize-handle {
   position: absolute;
   top: 0;
@@ -145,13 +140,12 @@ function handleContactChat(contact: Contact) {
 
 .chat-sidebar-resize-handle::before {
   position: absolute;
-  top: 12px;
+  top: 0;
   right: 3px;
-  bottom: 12px;
   width: 2px;
+  height: 100%;
   content: '';
   background: transparent;
-  border-radius: 999px;
   transition:
     background-color var(--w-motion-duration-base) var(--w-motion-ease-standard),
     box-shadow var(--w-motion-duration-base) var(--w-motion-ease-standard);
@@ -168,16 +162,5 @@ function handleContactChat(contact: Contact) {
 :global(body.chat-sidebar-resizing *) {
   cursor: col-resize !important;
   user-select: none !important;
-}
-
-@media (width <= 900px) {
-  .chat-sidebar {
-    width: 260px !important;
-    min-width: 260px;
-  }
-
-  .chat-sidebar-resize-handle {
-    display: none;
-  }
 }
 </style>

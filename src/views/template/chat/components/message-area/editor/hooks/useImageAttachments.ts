@@ -1,17 +1,24 @@
 import { computed, onScopeDispose, shallowRef } from 'vue'
 
+/** 单次可添加的图片数量上限 */
+export const MAX_IMAGE_COUNT = 9
+
+/** 单张图片的体积上限，单位字节 */
+export const MAX_IMAGE_SIZE = 10 * 1024 * 1024
+
 interface UseImageAttachmentsOptions {
   maxCount?: number
   maxSize?: number
+  onExceed?: (exceedCount: number) => void
   onOversize?: () => void
+  onError?: () => void
 }
 
 /** 管理待发送图片和 FileReader，组件卸载时会中止未完成的文件读取。 */
 export function useImageAttachments(options: UseImageAttachmentsOptions = {}) {
-  const maxCount = options.maxCount ?? 9
-  const maxSize = options.maxSize ?? 10 * 1024 * 1024
+  const maxCount = options.maxCount ?? MAX_IMAGE_COUNT
+  const maxSize = options.maxSize ?? MAX_IMAGE_SIZE
   const imageList = shallowRef<string[]>([])
-  const isImageDragging = shallowRef(false)
   const pendingCount = shallowRef(0)
   const readers = new Set<FileReader>()
   let disposed = false
@@ -24,13 +31,14 @@ export function useImageAttachments(options: UseImageAttachmentsOptions = {}) {
     const imageFiles = files.filter((file) => file.type.startsWith('image/'))
     if (imageFiles.some((file) => file.size > maxSize)) options.onOversize?.()
 
+    const validImageFiles = imageFiles.filter((file) => file.size <= maxSize)
     const availableCount = imageRemainingCount.value
+    if (validImageFiles.length > availableCount) {
+      options.onExceed?.(validImageFiles.length - availableCount)
+    }
     if (!availableCount) return
 
-    imageFiles
-      .filter((file) => file.size <= maxSize)
-      .slice(0, availableCount)
-      .forEach((file) => readImage(file))
+    validImageFiles.slice(0, availableCount).forEach((file) => readImage(file))
   }
 
   function readImage(file: File) {
@@ -50,9 +58,14 @@ export function useImageAttachments(options: UseImageAttachmentsOptions = {}) {
       },
       { once: true }
     )
-    reader.addEventListener('error', () => removeReader(reader), {
-      once: true,
-    })
+    reader.addEventListener(
+      'error',
+      () => {
+        removeReader(reader)
+        if (!disposed) options.onError?.()
+      },
+      { once: true }
+    )
     reader.addEventListener('abort', () => removeReader(reader), {
       once: true,
     })
@@ -84,7 +97,6 @@ export function useImageAttachments(options: UseImageAttachmentsOptions = {}) {
   return {
     imageList,
     imageRemainingCount,
-    isImageDragging,
     addImages,
     clearImages,
     removeImage,

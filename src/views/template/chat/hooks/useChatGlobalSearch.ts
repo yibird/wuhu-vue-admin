@@ -1,6 +1,7 @@
 import { refDebounced } from '@vueuse/core'
 import { computed, toValue } from 'vue'
 import type { MaybeRefOrGetter, Ref } from 'vue'
+import { getMessageSummary } from '../model/message'
 import type {
   Contact,
   Conversation,
@@ -217,22 +218,8 @@ function containsKeyword(
 }
 
 function createMessagePreview(message: Message) {
-  const content = getMessageContentLabel(message)
-  const normalized = content.replace(/\s+/g, ' ').trim()
+  const normalized = getMessageSummary(message).replace(/\s+/g, ' ').trim()
   return normalized.length > 88 ? `${normalized.slice(0, 88)}...` : normalized
-}
-
-function getMessageContentLabel(message: Message) {
-  switch (message.type) {
-    case 'image':
-      return '[图片]'
-    case 'voice':
-      return '[语音消息]'
-    case 'file':
-      return `[文件] ${message.content.split('/').at(-1) ?? message.content}`
-    default:
-      return message.content
-  }
 }
 
 function contactMeta(contact: Contact) {

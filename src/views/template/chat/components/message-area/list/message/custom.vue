@@ -5,7 +5,6 @@
 </template>
 
 <script setup lang="ts">
-defineOptions({ name: 'Custom' })
 interface Props {
   content: string
 }

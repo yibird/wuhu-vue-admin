@@ -151,8 +151,6 @@
 <script setup lang="ts">
 import type { EmojiPickerEmits } from '../../types'
 
-defineOptions({ name: 'EmojiPicker' })
-
 const emit = defineEmits<EmojiPickerEmits>()
 
 const searchValue = ref('')

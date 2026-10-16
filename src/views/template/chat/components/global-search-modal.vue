@@ -14,8 +14,6 @@ import type {
   Message,
 } from './types'
 
-defineOptions({ name: 'GlobalSearchModal' })
-
 const props = withDefaults(
   defineProps<{
     contacts?: Contact[]

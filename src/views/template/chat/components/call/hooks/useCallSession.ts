@@ -7,10 +7,10 @@ import {
   type ComponentPublicInstance,
   type Ref,
 } from 'vue'
-import type { CallStatus } from './types'
-import { useChatAudio } from '../../hooks'
+import { useChatAudio } from '../../../hooks'
+import type { CallStatus } from '../types'
 
-interface UseCallSessionOptions {
+export interface UseCallSessionOptions {
   open: Ref<boolean>
   video: boolean
 }

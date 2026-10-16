@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Icon } from '@/components/icon'
-import VirtualList from '../virtual-list.vue'
+import { VirtualList } from '../common'
 import type {
   Conversation,
   GroupMember,
@@ -8,8 +8,6 @@ import type {
   GroupPanelTab,
   UserInfo,
 } from '../types'
-
-defineOptions({ name: 'Drawer' })
 
 const props = defineProps<{
   conversation?: Conversation

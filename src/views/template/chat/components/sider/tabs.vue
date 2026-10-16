@@ -26,9 +26,7 @@
   </div>
 </template>
 <script lang="ts" setup>
-import type { TabItem, TabsEmits, TabsProps } from './types'
-
-defineOptions({ name: 'Tabs' })
+import type { TabItem, TabsEmits, TabsProps } from '../types'
 
 const activeKey = defineModel('activeKey')
 const props = withDefaults(defineProps<TabsProps>(), {

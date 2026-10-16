@@ -5,6 +5,4 @@
     <div class="text-lg font-600 text-main">消息</div>
   </div>
 </template>
-<script lang="ts" setup>
-defineOptions({ name: 'ChatNavHeader' })
-</script>
+<script lang="ts" setup></script>

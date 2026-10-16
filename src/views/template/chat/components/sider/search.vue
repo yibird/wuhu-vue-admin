@@ -59,8 +59,6 @@
 import { Icon } from '@/components'
 import type { MenuProps } from 'antdv-next'
 
-defineOptions({ name: 'ChatSearch' })
-
 withDefaults(
   defineProps<{
     placeholder?: string

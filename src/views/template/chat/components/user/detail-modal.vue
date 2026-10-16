@@ -3,8 +3,6 @@ import { Icon } from '@/components/icon'
 import { statusText } from '../../utils'
 import type { UserInfo } from '../types'
 
-defineOptions({ name: 'DetailModal' })
-
 interface DetailItem {
   label: string
   value?: string

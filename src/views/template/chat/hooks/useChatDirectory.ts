@@ -6,6 +6,7 @@ import {
   createGroupMembers,
   createInitialContacts,
 } from '../data'
+import { createGroupAvatar } from '../utils'
 import type {
   Contact,
   Conversation,
@@ -56,7 +57,7 @@ export function useChatDirectory(options: UseChatDirectoryOptions) {
       id,
       type: 'group',
       title: payload.name,
-      avatar: `https://api.dicebear.com/9.x/initials/svg?seed=${encodeURIComponent(payload.name)}`,
+      avatar: createGroupAvatar(payload.name),
       lastMessage: `${payload.memberIds.length + 1} 位成员已加入群聊`,
       lastMessageTime: '刚刚',
       unreadCount: 0,

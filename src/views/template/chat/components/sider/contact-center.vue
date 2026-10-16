@@ -36,7 +36,7 @@
               好友通知
             </span>
             <span class="mt-2 block truncate text-xs text-secondary">
-              {{ friendNotifications.length }} 条通知
+              {{ getPendingCount('friend') }} 条待处理
             </span>
           </span>
           <a-badge
@@ -61,7 +61,7 @@
               群聊通知
             </span>
             <span class="mt-2 block truncate text-xs text-secondary">
-              {{ groupNotifications.length }} 条通知
+              {{ getPendingCount('group') }} 条待处理
             </span>
           </span>
           <a-badge
@@ -141,7 +141,7 @@ import { Icon } from '@/components/icon'
 import ContactList from './contact-list.vue'
 import ContactNotificationsModal from './contact-notifications-modal.vue'
 import GroupList from './group-list.vue'
-import Search from '../search.vue'
+import Search from './search.vue'
 import type {
   Contact,
   ContactNotification,
@@ -149,8 +149,6 @@ import type {
   Conversation,
   FriendGroup,
 } from '../types'
-
-defineOptions({ name: 'ContactCenter' })
 
 type ContactSegment = 'friend' | 'group'
 
@@ -189,15 +187,16 @@ const segmentOptions = [
   { value: 'group', label: '群聊' },
 ]
 
-const friendNotifications = computed(() =>
-  props.notifications.filter((item) => item.category === 'friend')
-)
-const groupNotifications = computed(() =>
-  props.notifications.filter((item) => item.category === 'group')
-)
 const unreadNotificationCount = computed(
   () => props.notifications.filter((item) => item.unread).length
 )
+
+/** 入口卡片只统计待处理的通知,与弹窗默认列表的口径一致。 */
+function getPendingCount(category: ContactNotificationCategory) {
+  return props.notifications.filter(
+    (item) => item.category === category && item.status === 'pending'
+  ).length
+}
 
 function getUnreadCount(category: ContactNotificationCategory) {
   return props.notifications.filter(

@@ -11,8 +11,6 @@ import type {
   GroupCategory,
 } from '../types'
 
-defineOptions({ name: 'AddContactOrGroupModal' })
-
 type SearchTab = 'all' | 'user' | 'group'
 
 const props = withDefaults(

@@ -91,11 +91,9 @@
 </template>
 
 <script setup lang="ts">
-import Search from '../search.vue'
-import VirtualList from '../virtual-list.vue'
+import Search from './search.vue'
+import { VirtualList } from '../common'
 import type { Conversation } from '../types'
-
-defineOptions({ name: 'GroupList' })
 
 interface Props {
   groups?: Conversation[]

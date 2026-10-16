@@ -21,8 +21,6 @@
 <script lang="ts" setup>
 import { Motion } from 'motion-v'
 
-defineOptions({ name: 'Setting' })
-
 const emit = defineEmits<{
   openSettings: []
 }>()

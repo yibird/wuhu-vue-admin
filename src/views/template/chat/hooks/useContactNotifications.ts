@@ -1,4 +1,5 @@
 import { computed, shallowRef } from 'vue'
+import { message } from 'antdv-next'
 import { createInitialContactNotifications } from '../data'
 import type {
   ContactNotification,
@@ -39,6 +40,13 @@ export function useContactNotifications(
   }
 
   function resolve(notification: ContactNotification, accepted: boolean) {
+    const target = notification.target
+    // 缺少目标时无法真正加入联系人/群聊，保持未处理状态，避免出现“已处理”的假象
+    if (accepted && !target) {
+      message.warning('该通知缺少目标信息，暂时无法处理')
+      return
+    }
+
     notifications.value = notifications.value.map((item) =>
       item.id === notification.id
         ? {
@@ -53,12 +61,12 @@ export function useContactNotifications(
       options.onIgnored?.()
       return
     }
-    if (notification.target?.type === 'user') {
-      options.onAcceptUser(notification.target)
+    if (target?.type === 'user') {
+      options.onAcceptUser(target)
       return
     }
-    if (notification.target?.type === 'group') {
-      options.onAcceptGroup(notification.target)
+    if (target?.type === 'group') {
+      options.onAcceptGroup(target)
     }
   }
 

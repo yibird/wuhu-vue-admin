@@ -3,8 +3,6 @@ import { useVirtualizer } from '@tanstack/vue-virtual'
 import type { ComponentPublicInstance, CSSProperties } from 'vue'
 import type { VirtualItem } from '@tanstack/vue-virtual'
 
-defineOptions({ name: 'VirtualList' })
-
 const props = withDefaults(
   defineProps<{
     items: readonly T[]
@@ -77,8 +75,11 @@ function measureElement(element: Element | ComponentPublicInstance | null) {
 
 defineExpose<{
   getScrollElement: () => HTMLElement | null
+  scrollToIndex: (index: number) => void
 }>({
   getScrollElement: () => scrollbar.value ?? null,
+  scrollToIndex: (index: number) =>
+    virtualizer.value.scrollToIndex(index, { align: 'start' }),
 })
 </script>
 

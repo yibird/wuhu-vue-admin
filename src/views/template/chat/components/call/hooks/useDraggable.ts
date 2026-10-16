@@ -18,7 +18,7 @@ import {
 } from '@dnd-kit/vue'
 import { Feedback } from '@dnd-kit/dom'
 
-interface UseDraggableCallWindowOptions {
+export interface UseDraggableCallWindowOptions {
   disabled?: () => boolean
   fallbackHeight?: () => number
   fallbackWidth?: () => number

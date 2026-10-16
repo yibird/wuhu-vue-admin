@@ -32,10 +32,8 @@
 
 <script setup lang="ts">
 import { Icon } from '@/components/icon'
-import SettingPanel from '../sider/setting-panel.vue'
+import SettingPanel from './setting-panel.vue'
 import type { ChatSettings } from '../types'
-
-defineOptions({ name: 'Modal' })
 
 const open = defineModel<boolean>('open', { default: false })
 const settings = defineModel<ChatSettings>('settings', { required: true })

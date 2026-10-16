@@ -169,16 +169,14 @@
 <script setup lang="ts">
 import { Icon } from '@/components/icon'
 import { Modal } from '@/components/modal'
-import VirtualList from '../virtual-list.vue'
+import { VirtualList } from '../common'
 import type {
   ContactNotification,
   ContactNotificationCategory,
   ContactNotificationStatus,
 } from '../types'
 
-defineOptions({ name: 'ContactNotificationsModal' })
-
-type NotificationStatusFilter = 'all' | 'pending' | 'processed'
+type NotificationStatusFilter = 'all' | 'pending' | 'processed' | 'ignored'
 
 const props = withDefaults(
   defineProps<{
@@ -200,7 +198,7 @@ const category = defineModel<ContactNotificationCategory>('category', {
 })
 const fullscreen = shallowRef(false)
 const keyword = shallowRef('')
-const statusFilter = shallowRef<NotificationStatusFilter>('all')
+const statusFilter = shallowRef<NotificationStatusFilter>('pending')
 const categoryOptions = [
   { value: 'friend', label: '好友通知' },
   { value: 'group', label: '群聊通知' },
@@ -209,18 +207,24 @@ const statusOptions = [
   { value: 'all', label: '全部' },
   { value: 'pending', label: '待处理' },
   { value: 'processed', label: '已处理' },
+  { value: 'ignored', label: '已忽略' },
 ]
+const statusMap: Record<NotificationStatusFilter, ContactNotificationStatus[]> =
+  {
+    all: ['pending', 'accepted', 'rejected'],
+    pending: ['pending'],
+    processed: ['accepted'],
+    ignored: ['rejected'],
+  }
 
 const categoryNotifications = computed(() =>
   props.notifications.filter((item) => item.category === category.value)
 )
 const filteredNotifications = computed(() => {
-  let list = categoryNotifications.value
-  if (statusFilter.value === 'pending') {
-    list = list.filter((item) => item.status === 'pending')
-  } else if (statusFilter.value === 'processed') {
-    list = list.filter((item) => item.status !== 'pending')
-  }
+  const statuses = statusMap[statusFilter.value]
+  let list = categoryNotifications.value.filter((item) =>
+    statuses.includes(item.status)
+  )
 
   const normalizedKeyword = keyword.value.trim().toLowerCase()
   if (!normalizedKeyword) return list
@@ -243,7 +247,9 @@ const totalUnreadCount = computed(
 )
 
 function getCategoryCount(value: string | number) {
-  return props.notifications.filter((item) => item.category === value).length
+  return props.notifications.filter(
+    (item) => item.category === value && item.status === 'pending'
+  ).length
 }
 
 function getStatusText(status: ContactNotificationStatus) {

@@ -162,13 +162,11 @@
 
 <script setup lang="ts">
 import { Icon } from '@/components/icon'
-import Search from '../search.vue'
-import Tabs from '../tabs.vue'
-import VirtualList from '../virtual-list.vue'
+import Search from './search.vue'
+import Tabs from './tabs.vue'
+import { VirtualList } from '../common'
 import type { MenuProps } from 'antdv-next'
 import type { Conversation, ConversationListEmits } from '../types'
-
-defineOptions({ name: 'ConversationList' })
 
 interface Props {
   conversations?: Conversation[]

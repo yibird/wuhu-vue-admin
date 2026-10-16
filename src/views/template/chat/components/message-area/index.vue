@@ -125,6 +125,7 @@
               :favorite-message-ids="favoriteMessageIds"
               :messages="messages"
               :typing="typing"
+              :unread-count="unreadCount"
               :compact="settings.compactMode"
               @retry="handleRetry"
               @recall="handleRecall"
@@ -138,6 +139,7 @@
               @download="(message) => emit('downloadMessage', message)"
               @show-user="(user) => emit('showUser', user)"
               @scroll-to-bottom="handleScrollToBottom"
+              @unread-clear="emit('unreadClear')"
             />
           </div>
         </Transition>
@@ -179,6 +181,7 @@ interface Props {
   favoriteMessageIds?: string[]
   messages?: Message[]
   typing?: boolean
+  unreadCount?: number
   settings?: ChatSettings
 }
 
@@ -186,6 +189,7 @@ const props = withDefaults(defineProps<Props>(), {
   messages: () => [],
   favoriteMessageIds: () => [],
   typing: false,
+  unreadCount: 0,
   settings: () => ({
     enterToSend: true,
     desktopNotify: true,
@@ -215,6 +219,7 @@ const emit = defineEmits<{
   toggleMute: [conversation: Conversation]
   clearMessages: [conversation: Conversation]
   openGroupPanel: [tab: GroupPanelTab]
+  unreadClear: []
 }>()
 
 const messageListRef = ref<InstanceType<typeof MessageList>>()

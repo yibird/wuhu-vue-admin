@@ -5,8 +5,6 @@ import VideoCall from './video-call.vue'
 import './style.less'
 import type { Conversation } from '../types'
 
-defineOptions({ name: 'FloatingWindow' })
-
 type CallType = 'voice' | 'video'
 
 defineProps<{

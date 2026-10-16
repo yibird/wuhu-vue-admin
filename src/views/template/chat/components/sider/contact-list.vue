@@ -188,19 +188,17 @@
 
 <script setup lang="ts">
 import { Icon } from '@/components/icon'
-import VirtualList from '../virtual-list.vue'
-import Search from '../search.vue'
-import Tabs from '../tabs.vue'
+import { VirtualList } from '../common'
+import Search from './search.vue'
+import Tabs from './tabs.vue'
 import {
   useContactGroups,
   type ContactGroupMode,
   type ContactRow,
-} from '../../hooks'
+} from './hooks'
 import type { MenuProps } from 'antdv-next'
 import type { Contact, FriendGroup } from '../types'
 import { statusText } from '../../utils'
-
-defineOptions({ name: 'ContactList' })
 
 interface Props {
   contacts?: Contact[]

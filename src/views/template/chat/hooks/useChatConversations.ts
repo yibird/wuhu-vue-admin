@@ -13,11 +13,21 @@ export function useChatConversations() {
   ])
   const activeConversationId = shallowRef('1')
   const typingConversations = ref(new Set<string>())
+  /**
+   * 进入会话时快照的未读数
+   *
+   * 会话自身的 unreadCount 在进入时清零(侧边栏徽标随之消失),
+   * 这里保留一份,供消息区展示未读条并定位第一条未读。
+   */
+  const pendingUnreadCounts = shallowRef<Record<string, number>>({})
 
   const activeConversation = computed(() =>
     conversations.value.find(
       (conversation) => conversation.id === activeConversationId.value
     )
+  )
+  const activeUnreadCount = computed(
+    () => pendingUnreadCounts.value[activeConversationId.value] ?? 0
   )
   const groups = computed(() =>
     conversations.value.filter((conversation) => conversation.type === 'group')
@@ -32,6 +42,14 @@ export function useChatConversations() {
     )
   })
 
+  function rememberUnread(conversation: Conversation) {
+    if (conversation.unreadCount <= 0) return
+    pendingUnreadCounts.value = {
+      ...pendingUnreadCounts.value,
+      [conversation.id]: conversation.unreadCount,
+    }
+  }
+
   function selectConversation(conversation: Conversation) {
     const existing = conversations.value.find(
       (item) => item.id === conversation.id
@@ -40,9 +58,18 @@ export function useChatConversations() {
     if (!existing) conversations.value.unshift(current)
 
     activeConversationId.value = current.id
+    rememberUnread(current)
     current.unreadCount = 0
     current.mentioned = false
     return current
+  }
+
+  /** 未读条被消费后清除快照,再次进入该会话不再提示。 */
+  function markConversationRead(conversationId: string) {
+    if (pendingUnreadCounts.value[conversationId] === undefined) return
+    const next = { ...pendingUnreadCounts.value }
+    delete next[conversationId]
+    pendingUnreadCounts.value = next
   }
 
   function ensurePrivateConversation(contact: Contact) {
@@ -104,6 +131,7 @@ export function useChatConversations() {
       (item) => item.id !== conversationId
     )
     typingConversations.value.delete(conversationId)
+    markConversationRead(conversationId)
 
     if (activeConversationId.value === conversationId) {
       activeConversationId.value = findNextConversationId(conversationId)
@@ -118,15 +146,23 @@ export function useChatConversations() {
     return conversations.value.find((item) => item.id !== excludedId)?.id ?? ''
   }
 
+  // 默认打开的会话与手动点击进入保持一致:清零徽标并快照未读数
+  const initialConversation = conversations.value.find(
+    (item) => item.id === activeConversationId.value
+  )
+  if (initialConversation) selectConversation(initialConversation)
+
   return {
     activeConversation,
     activeConversationId,
+    activeUnreadCount,
     conversations,
     groups,
     isCurrentConversationTyping,
     totalUnreadCount,
     typingConversations,
     ensurePrivateConversation,
+    markConversationRead,
     markConversationUnread,
     removeConversation,
     selectConversation,

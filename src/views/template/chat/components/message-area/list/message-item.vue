@@ -199,6 +199,7 @@
 </template>
 
 <script setup lang="ts">
+import type { MenuProps } from 'antdv-next'
 import { Icon } from '@/components/icon'
 import TextContent from './message/text.vue'
 import ImageContent from './message/image.vue'
@@ -206,10 +207,7 @@ import EmojiContent from './message/emoji.vue'
 import VoiceContent from './message/voice.vue'
 import FileContent from './message/file.vue'
 import CustomContent from './message/custom.vue'
-import type { MenuProps } from 'antdv-next'
 import type { Message, MessageItemEmits } from '../../types'
-
-defineOptions({ name: 'MessageItem' })
 
 interface Props {
   favorite?: boolean

@@ -37,6 +37,7 @@
         :favorite-message-ids="favoriteMessageIds"
         :messages="activeMessages"
         :typing="isCurrentConversationTyping"
+        :unread-count="activeUnreadCount"
         :settings="chatSettings"
         @send="handleMessageSend"
         @typing="handleTyping"
@@ -55,6 +56,7 @@
         @toggle-mute="toggleConversationMuted"
         @clear-messages="handleMessagesClear"
         @open-group-panel="openGroupPanel"
+        @unread-clear="markConversationRead(activeConversationId)"
       />
     </div>
 
@@ -127,20 +129,25 @@
 </template>
 
 <script setup lang="ts">
-import { Nav, Sider, MessageArea } from './components'
-import CallFloatingWindow from './components/call/floating-window.vue'
-import AddContactOrGroupModal from './components/discovery/add-contact-or-group-modal.vue'
-import CreateGroupModal from './components/discovery/create-group-modal.vue'
-import GlobalSearchModal from './components/global-search-modal.vue'
-import GroupDrawer from './components/group/drawer.vue'
-import SettingsModal from './components/settings/modal.vue'
-import UserDetailModal from './components/user/detail-modal.vue'
+import {
+  AddContactOrGroupModal,
+  CallFloatingWindow,
+  CreateGroupModal,
+  GlobalSearchModal,
+  GroupDrawer,
+  MessageArea,
+  Nav,
+  SettingsModal,
+  Sider,
+  UserDetailModal,
+} from './components'
 import { useChat, useChatPanels } from './hooks'
 
 const {
   activeKey,
   activeConversationId,
   activeConversation,
+  activeUnreadCount,
   isSidebarResizing,
   sidebarStyle,
   imagePreviewOpen,
@@ -179,6 +186,7 @@ const {
   handleCall,
   toggleConversationPinned,
   toggleConversationMuted,
+  markConversationRead,
   markConversationUnread,
   toggleConversationArchived,
   handleConversationDelete,

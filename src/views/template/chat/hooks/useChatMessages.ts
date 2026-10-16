@@ -1,5 +1,6 @@
 import { computed, shallowRef, type Ref } from 'vue'
 import { Modal, message } from 'antdv-next'
+import { currentUserAvatar } from '../data'
 import { getMessageSummary } from '../model/message'
 import { useChatSimulation } from './useChatSimulation'
 import type {
@@ -79,7 +80,7 @@ export function useChatMessages(options: UseChatMessagesOptions) {
 
     const conversationId = conversation.id
     const message: Message = {
-      id: `${Date.now()}`,
+      id: `msg-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
       conversationId,
       type: payload.type,
       content: payload.content,
@@ -87,7 +88,7 @@ export function useChatMessages(options: UseChatMessagesOptions) {
       senderInfo: {
         id: 'me',
         name: '我',
-        avatar: 'https://i.pravatar.cc/100?img=10',
+        avatar: currentUserAvatar,
       },
       timestamp: new Date().toLocaleTimeString('zh-CN', {
         hour: '2-digit',
@@ -245,6 +246,7 @@ export function useChatMessages(options: UseChatMessagesOptions) {
       okType: 'danger',
       cancelText: '取消',
       onOk: () => {
+        cancelConversation(conversation.id)
         const messages =
           options.messagesByConversation.value[conversation.id] ?? []
         messages.forEach((message) => cancelMessage(message.id))

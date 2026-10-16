@@ -1,10 +1,8 @@
 <script setup lang="ts">
 import { computed, shallowRef, useTemplateRef, watch } from 'vue'
 import { Icon } from '@/components/icon'
-import { useDraggableCallWindow } from './useDraggable'
+import { useDraggableCallWindow } from './hooks'
 import type { CallStatus } from './types'
-
-defineOptions({ name: 'WindowShell' })
 
 const props = defineProps<{
   fallbackHeight?: number

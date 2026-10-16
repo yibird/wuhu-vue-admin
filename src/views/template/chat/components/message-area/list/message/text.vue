@@ -5,7 +5,6 @@
 </template>
 
 <script setup lang="ts">
-defineOptions({ name: 'MessageText' })
 interface Props {
   content: string
 }

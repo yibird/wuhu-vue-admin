@@ -81,8 +81,6 @@ import type {
   SettingPanelProps,
 } from '../types'
 
-defineOptions({ name: 'SettingPanel' })
-
 const props = withDefaults(defineProps<SettingPanelProps>(), {
   showHeader: true,
 })
@@ -112,7 +110,7 @@ const binarySettings: BinarySetting[] = [
     key: 'enterToSend',
     label: 'Enter 发送',
     icon: 'i-lucide:corner-down-left',
-    iconClass: 'icon-primary-soft',
+    iconClass: 'primary-tinted',
   },
   {
     key: 'desktopNotify',
@@ -124,7 +122,7 @@ const binarySettings: BinarySetting[] = [
     key: 'messageSound',
     label: '消息提示音',
     icon: 'i-lucide:volume-2',
-    iconClass: 'icon-primary-soft',
+    iconClass: 'primary-tinted',
   },
   {
     key: 'readReceipt',

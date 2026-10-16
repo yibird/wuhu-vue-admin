@@ -1,0 +1,6 @@
+export { default as AttachmentPanel } from './attachment-panel.vue'
+export { default as ComposeTip } from './compose-tip.vue'
+export { default as EditorToolbar } from './editor-toolbar.vue'
+export { default as ExtensionPanel } from './extension-panel.vue'
+export { default as ImageAttachmentList } from './image-attachment-list.vue'
+export { default as RecordingBar } from './recording-bar.vue'

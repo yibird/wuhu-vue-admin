@@ -1,5 +1,5 @@
 <template>
-  <div class="relative h-full">
+  <div class="relative px-10 h-full">
     <div v-if="loading" class="flex items-center justify-center py-20">
       <a-spin size="small" />
       <span class="ml-10 text-regular">加载中…</span>
@@ -71,6 +71,20 @@
 
       <transition name="fade">
         <button
+          v-if="showUnreadBar"
+          type="button"
+          class="button absolute right-16 top-10 z-10 flex items-center gap-4 rounded-full border-1 border-color-1 border-solid bg-container py-4 pl-8 pr-11 text-xs text-primary shadow-all-md transition-colors hover:bg-hover"
+          title="定位到第一条未读消息"
+          aria-label="定位到第一条未读消息"
+          @click="scrollToFirstUnread"
+        >
+          <Icon name="i-lucide:arrow-down" :size="13" />
+          {{ unreadCount }} 条未读消息
+        </button>
+      </transition>
+
+      <transition name="fade">
+        <button
           v-if="showScrollButton"
           type="button"
           class="button fixed bottom-180 right-100 z-10 size-34 rounded-full border-1 border-color-1 border-solid bg-container text-secondary shadow-all-md transition-colors hover:(bg-hover text-primary)"
@@ -87,7 +101,7 @@
 
 <script setup lang="ts">
 import MessageItem from './message-item.vue'
-import VirtualList from '../../virtual-list.vue'
+import { VirtualList } from '../../common'
 import type { Message, MessageListEmits } from '../../types'
 
 interface Props {
@@ -96,6 +110,7 @@ interface Props {
   typing?: boolean
   compact?: boolean
   favoriteMessageIds?: string[]
+  unreadCount?: number
 }
 
 type MessageListItem =
@@ -104,6 +119,7 @@ type MessageListItem =
 
 interface VirtualListExpose {
   getScrollElement: () => HTMLElement | null
+  scrollToIndex: (index: number) => void
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -112,6 +128,7 @@ const props = withDefaults(defineProps<Props>(), {
   typing: false,
   compact: false,
   favoriteMessageIds: () => [],
+  unreadCount: 0,
 })
 
 const emit = defineEmits<MessageListEmits>()
@@ -121,6 +138,26 @@ const showScrollButton = ref(false)
 const isAtBottom = ref(true)
 const isAutoScrolling = ref(false)
 let scrollResetTimer: number | undefined
+/**
+ * 进入会话时的第一条未读消息 id
+ *
+ * 用 id 而不是下标固定:会话打开后新增的消息会让「最后 N 条」的区间漂移
+ */
+const firstUnreadId = shallowRef('')
+/** 未读条是否已被消费,点击后隐藏 */
+const unreadDismissed = shallowRef(false)
+
+if (props.unreadCount > 0 && props.messages.length > 0) {
+  const index = Math.max(0, props.messages.length - props.unreadCount)
+  firstUnreadId.value = props.messages[index]?.id ?? ''
+}
+
+const showUnreadBar = computed(
+  () =>
+    props.unreadCount > 0 &&
+    Boolean(firstUnreadId.value) &&
+    !unreadDismissed.value
+)
 const favoriteIdSet = computed(() => new Set(props.favoriteMessageIds))
 const renderedItems = computed<MessageListItem[]>(() => {
   const items: MessageListItem[] = props.messages.map((message) => ({
@@ -163,6 +200,17 @@ function scrollToBottom() {
       isAutoScrolling.value = false
     }, 100)
   }
+}
+
+function scrollToFirstUnread() {
+  const index = renderedItems.value.findIndex(
+    (item) => item.type === 'message' && item.message.id === firstUnreadId.value
+  )
+  if (index < 0) return
+
+  unreadDismissed.value = true
+  virtualListRef.value?.scrollToIndex(index)
+  emit('unreadClear')
 }
 
 function scrollToNewMessage() {

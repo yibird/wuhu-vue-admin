@@ -2,8 +2,6 @@
 import { Icon } from '@/components/icon'
 import type { Contact, CreateGroupPayload, GroupCategory } from '../types'
 
-defineOptions({ name: 'CreateGroupModal' })
-
 interface CreateGroupForm {
   name: string
   category?: GroupCategory

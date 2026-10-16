@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import WindowShell from './window-shell.vue'
-import { useCallSession } from './useCallSession'
+import { useCallSession } from './hooks'
 import type { CallWindowEmits, CallWindowProps } from './types'
-
-defineOptions({ name: 'VideoCall' })
 
 const props = defineProps<CallWindowProps>()
 const emit = defineEmits<CallWindowEmits>()
