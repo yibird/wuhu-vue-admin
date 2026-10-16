@@ -1,14 +1,12 @@
 <script setup lang="ts">
 import { omit } from 'es-toolkit'
-import type { WCardProps, WCardSlots } from './types'
+import type { CardProps, CardSlots } from './types'
 
-defineOptions({ name: 'WCard' })
-
-const props = withDefaults(defineProps<WCardProps>(), {
+const props = withDefaults(defineProps<CardProps>(), {
   gradient: true,
 })
 
-const slots = defineSlots<WCardSlots>()
+const slots = defineSlots<CardSlots>()
 
 /**
  * bordered 已废弃，统一映射成 variant 后再透传，
@@ -25,7 +23,7 @@ const cardProps = computed(() => {
 })
 
 const forwardedSlotNames = computed(
-  () => Object.keys(slots) as (keyof WCardSlots)[]
+  () => Object.keys(slots) as (keyof CardSlots)[]
 )
 </script>
 

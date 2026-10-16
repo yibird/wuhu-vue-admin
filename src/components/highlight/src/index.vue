@@ -10,8 +10,6 @@ import type {
   HighlightSlots,
 } from './types'
 
-defineOptions({ name: 'Highlight' })
-
 const props = withDefaults(defineProps<HighlightProps>(), {
   caseSensitive: false,
   highlightTag: 'mark',

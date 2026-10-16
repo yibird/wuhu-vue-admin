@@ -7,8 +7,9 @@ export {
 } from './animated'
 
 export { Icon, type IconProps } from './icon'
-export { WCard, type WCardProps, type WCardSlots } from './card'
+export { Card, type CardProps, type CardSlots } from './card'
 export { Copy, type CopySlots } from './copy'
+export { GradientText, type GradientTextProps } from './gradient-text'
 
 export {
   LazyContainer,
@@ -77,12 +78,8 @@ export {
   type IconSelectorProps,
 } from './icon-picker'
 
-export type {
-  JsonView,
-  JsonPrimitive,
-  JsonValue,
-  JsonViewProps,
-} from './json-view'
+export { JsonView } from './json-view'
+export type { JsonPrimitive, JsonValue, JsonViewProps } from './json-view'
 
 export { CodeEditor, type CodeEditorProps } from './code-editor'
 
@@ -171,30 +168,25 @@ export {
 
 export {
   FormPlus,
-  type ComponentType,
-  type FormContextState,
+  useForm,
+  registerFormComponent,
+  unregisterFormComponent,
+  hasFormComponent,
+  isValidationError,
+  type FormPlusActions,
+  type FormPlusCollapse,
+  type FormPlusComponentName,
+  type FormPlusComponentPropsMap,
   type FormPlusContext,
-  type FormPlusControlProps,
+  type FormPlusFieldSlotProps,
+  type FormPlusGrid,
   type FormPlusInstance,
-  type FormPlusItem,
   type FormPlusModel,
+  type FormPlusOption,
   type FormPlusProps,
+  type FormPlusSchema,
+  type FormPlusSchemaBase,
   type FormPlusValue,
 } from './form-plus'
-
-export {
-  TablePlus,
-  useRowProps,
-  useRowSelection,
-  useSize,
-  useTable,
-  type TableContextState,
-  type TablePlusColumn,
-  type TablePlusContext,
-  type TablePlusContextMenuInstance,
-  type TablePlusProps,
-  type UseRowSelectionOptions,
-  type UseTableOptions,
-} from './table-plus'
 
 export { globalComponents } from './setup'

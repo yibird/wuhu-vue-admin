@@ -13,8 +13,6 @@ import type {
   ResizeContainerSlots,
 } from './types.ts'
 
-defineOptions({ name: 'ResizeContainer' })
-
 const props = withDefaults(defineProps<ResizeContainerProps>(), {
   box: 'content-box',
   initialHeight: 0,

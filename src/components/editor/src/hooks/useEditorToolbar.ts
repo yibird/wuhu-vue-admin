@@ -17,8 +17,8 @@ export function useEditorToolbar(
       title: () => locale().bold,
       active: () => editor.value?.isActive('bold') ?? false,
       action: () =>
-        commands.runCommand((editor) =>
-          editor.chain().focus().toggleBold().run()
+        commands.runCommand((currentEditor) =>
+          currentEditor.chain().focus().toggleBold().run()
         ),
     },
     {
@@ -27,8 +27,8 @@ export function useEditorToolbar(
       title: () => locale().italic,
       active: () => editor.value?.isActive('italic') ?? false,
       action: () =>
-        commands.runCommand((editor) =>
-          editor.chain().focus().toggleItalic().run()
+        commands.runCommand((currentEditor) =>
+          currentEditor.chain().focus().toggleItalic().run()
         ),
     },
     {
@@ -37,8 +37,8 @@ export function useEditorToolbar(
       title: () => locale().underline,
       active: () => editor.value?.isActive('underline') ?? false,
       action: () =>
-        commands.runCommand((editor) =>
-          editor.chain().focus().toggleUnderline().run()
+        commands.runCommand((currentEditor) =>
+          currentEditor.chain().focus().toggleUnderline().run()
         ),
     },
     {
@@ -47,8 +47,8 @@ export function useEditorToolbar(
       title: () => locale().strike,
       active: () => editor.value?.isActive('strike') ?? false,
       action: () =>
-        commands.runCommand((editor) =>
-          editor.chain().focus().toggleStrike().run()
+        commands.runCommand((currentEditor) =>
+          currentEditor.chain().focus().toggleStrike().run()
         ),
     },
     {
@@ -57,8 +57,8 @@ export function useEditorToolbar(
       title: () => locale().code,
       active: () => editor.value?.isActive('code') ?? false,
       action: () =>
-        commands.runCommand((editor) =>
-          editor.chain().focus().toggleCode().run()
+        commands.runCommand((currentEditor) =>
+          currentEditor.chain().focus().toggleCode().run()
         ),
     },
     {
@@ -67,8 +67,8 @@ export function useEditorToolbar(
       title: () => locale().subscript,
       active: () => editor.value?.isActive('subscript') ?? false,
       action: () =>
-        commands.runCommand((editor) =>
-          editor.chain().focus().toggleSubscript().run()
+        commands.runCommand((currentEditor) =>
+          currentEditor.chain().focus().toggleSubscript().run()
         ),
     },
     {
@@ -77,8 +77,8 @@ export function useEditorToolbar(
       title: () => locale().superscript,
       active: () => editor.value?.isActive('superscript') ?? false,
       action: () =>
-        commands.runCommand((editor) =>
-          editor.chain().focus().toggleSuperscript().run()
+        commands.runCommand((currentEditor) =>
+          currentEditor.chain().focus().toggleSuperscript().run()
         ),
     },
   ]
@@ -90,8 +90,8 @@ export function useEditorToolbar(
       title: () => locale().bulletList,
       active: () => editor.value?.isActive('bulletList') ?? false,
       action: () =>
-        commands.runCommand((editor) =>
-          editor.chain().focus().toggleBulletList().run()
+        commands.runCommand((currentEditor) =>
+          currentEditor.chain().focus().toggleBulletList().run()
         ),
     },
     {
@@ -100,8 +100,8 @@ export function useEditorToolbar(
       title: () => locale().orderedList,
       active: () => editor.value?.isActive('orderedList') ?? false,
       action: () =>
-        commands.runCommand((editor) =>
-          editor.chain().focus().toggleOrderedList().run()
+        commands.runCommand((currentEditor) =>
+          currentEditor.chain().focus().toggleOrderedList().run()
         ),
     },
     {
@@ -110,8 +110,8 @@ export function useEditorToolbar(
       title: () => locale().taskList,
       active: () => editor.value?.isActive('taskList') ?? false,
       action: () =>
-        commands.runCommand((editor) =>
-          editor.chain().focus().toggleTaskList().run()
+        commands.runCommand((currentEditor) =>
+          currentEditor.chain().focus().toggleTaskList().run()
         ),
     },
     {
@@ -120,8 +120,8 @@ export function useEditorToolbar(
       title: () => locale().blockquote,
       active: () => editor.value?.isActive('blockquote') ?? false,
       action: () =>
-        commands.runCommand((editor) =>
-          editor.chain().focus().toggleBlockquote().run()
+        commands.runCommand((currentEditor) =>
+          currentEditor.chain().focus().toggleBlockquote().run()
         ),
     },
     {
@@ -130,8 +130,8 @@ export function useEditorToolbar(
       title: () => locale().codeBlock,
       active: () => editor.value?.isActive('codeBlock') ?? false,
       action: () =>
-        commands.runCommand((editor) =>
-          editor.chain().focus().toggleCodeBlock().run()
+        commands.runCommand((currentEditor) =>
+          currentEditor.chain().focus().toggleCodeBlock().run()
         ),
     },
     {
@@ -139,8 +139,8 @@ export function useEditorToolbar(
       icon: 'i-lucide:minus',
       title: () => locale().horizontalRule,
       action: () =>
-        commands.runCommand((editor) =>
-          editor.chain().focus().setHorizontalRule().run()
+        commands.runCommand((currentEditor) =>
+          currentEditor.chain().focus().setHorizontalRule().run()
         ),
     },
   ]
@@ -152,8 +152,8 @@ export function useEditorToolbar(
       title: () => locale().alignLeft,
       active: () => editor.value?.isActive({ textAlign: 'left' }) ?? false,
       action: () =>
-        commands.runCommand((editor) =>
-          editor.chain().focus().setTextAlign('left').run()
+        commands.runCommand((currentEditor) =>
+          currentEditor.chain().focus().setTextAlign('left').run()
         ),
     },
     {
@@ -162,8 +162,8 @@ export function useEditorToolbar(
       title: () => locale().alignCenter,
       active: () => editor.value?.isActive({ textAlign: 'center' }) ?? false,
       action: () =>
-        commands.runCommand((editor) =>
-          editor.chain().focus().setTextAlign('center').run()
+        commands.runCommand((currentEditor) =>
+          currentEditor.chain().focus().setTextAlign('center').run()
         ),
     },
     {
@@ -172,8 +172,8 @@ export function useEditorToolbar(
       title: () => locale().alignRight,
       active: () => editor.value?.isActive({ textAlign: 'right' }) ?? false,
       action: () =>
-        commands.runCommand((editor) =>
-          editor.chain().focus().setTextAlign('right').run()
+        commands.runCommand((currentEditor) =>
+          currentEditor.chain().focus().setTextAlign('right').run()
         ),
     },
     {
@@ -182,8 +182,8 @@ export function useEditorToolbar(
       title: () => locale().alignJustify,
       active: () => editor.value?.isActive({ textAlign: 'justify' }) ?? false,
       action: () =>
-        commands.runCommand((editor) =>
-          editor.chain().focus().setTextAlign('justify').run()
+        commands.runCommand((currentEditor) =>
+          currentEditor.chain().focus().setTextAlign('justify').run()
         ),
     },
   ]
@@ -216,7 +216,7 @@ export function useEditorToolbar(
     ],
     onClick: ({ key }) => {
       if (key === 'url') {
-        commands.insertImageFromUrl()
+        commands.openImageDialog()
         return
       }
       commands.openImageUpload()

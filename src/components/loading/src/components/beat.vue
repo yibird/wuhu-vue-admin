@@ -1,6 +1,4 @@
-<script setup lang="ts">
-defineOptions({ name: 'Beat' })
-</script>
+<script setup lang="ts"></script>
 
 <template>
   <div class="w-loading-beat"></div>

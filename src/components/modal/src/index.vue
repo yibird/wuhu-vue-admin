@@ -279,6 +279,11 @@ watch(
     if (previousOpen && !open) {
       stopDragging()
     }
+    // 兜底:关闭动画的 afterOpenChange 可能未触发(动画被打断/内容提前卸载),重新打开时先复位
+    if (previousOpen === false && open) {
+      resetPosition()
+      setFullscreen(false)
+    }
   }
 )
 

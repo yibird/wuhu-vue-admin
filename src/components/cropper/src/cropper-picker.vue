@@ -119,8 +119,6 @@ import type {
   CropperPickerProps,
 } from './types'
 
-defineOptions({ name: 'CropperPicker' })
-
 const props = withDefaults(defineProps<CropperPickerProps>(), {
   title: '裁剪图片',
   width: '600px',

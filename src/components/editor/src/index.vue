@@ -3,7 +3,9 @@ import { Editor as TiptapEditorCore, EditorContent } from '@tiptap/vue-3'
 import { useDeferred } from '@/hooks'
 import EditorFooter from './components/editor-footer.vue'
 import EditorToolbar from './components/editor-toolbar.vue'
+import EditorUrlDialog from './components/editor-url-dialog.vue'
 import { createEditorExtensions } from './extensions'
+import { sanitizeEditorHtml } from './sanitize'
 import {
   blockOptions as defaultBlockOptions,
   defaultEditorLocale,
@@ -124,8 +126,16 @@ watch(
 
 watch(model, (value) => {
   const currentEditor = editor.value
-  if (!currentEditor || value === currentEditor.getHTML()) return
-  currentEditor.commands.setContent(value, { emitUpdate: false })
+  if (!currentEditor) return
+
+  // 编辑器自身回写的值已经是当前内容,先比对再清洗:
+  // 否则每次输入都要跑一遍 DOMPurify 与 getHTML 序列化,还可能因序列化差异重置光标
+  if (value === currentEditor.getHTML()) return
+
+  // 回填的 HTML 可能来自接口,先清洗再交给编辑器
+  const nextValue = sanitizeEditorHtml(value)
+  if (nextValue === currentEditor.getHTML()) return
+  currentEditor.commands.setContent(nextValue, { emitUpdate: false })
   refreshEditorState()
 })
 
@@ -155,6 +165,13 @@ const commands = useEditorCommands({
   onImageUploadSuccess: (url, file) => emit('imageUploadSuccess', url, file),
   locale: () => locale.value,
 })
+const {
+  linkDialogOpen,
+  linkInitialValue,
+  applyLink,
+  imageDialogOpen,
+  applyImageUrl,
+} = commands
 const toolbar = useEditorToolbar(editor, commands, () => locale.value)
 const { inlineItems, blockItems, alignItems, imageMenu, tableMenu } = toolbar
 
@@ -205,7 +222,7 @@ defineExpose<EditorExpose>({
       @set-font-size="commands.setFontSize"
       @set-text-color="commands.setTextColor"
       @set-highlight-color="commands.setHighlightColor"
-      @set-link="commands.setLink"
+      @open-link="commands.openLinkDialog"
       @clear-formatting="commands.clearFormatting"
       @undo="commands.undo"
       @redo="commands.redo"
@@ -230,6 +247,20 @@ defineExpose<EditorExpose>({
       accept="image/*"
       class="!hidden"
       @change="commands.handleImageSelect"
+    />
+
+    <EditorUrlDialog
+      v-model:open="linkDialogOpen"
+      :initial-value="linkInitialValue"
+      :placeholder="locale.linkPrompt"
+      :title="locale.link"
+      @apply="applyLink"
+    />
+    <EditorUrlDialog
+      v-model:open="imageDialogOpen"
+      :placeholder="locale.imagePrompt"
+      :title="locale.image"
+      @apply="applyImageUrl"
     />
   </div>
 </template>

@@ -1,0 +1,35 @@
+@import 'overlayscrollbars/overlayscrollbars.css';
+
+.w-scrollbar {
+  width: 100%;
+  height: 100%;
+}
+
+/**
+ * 滚动条主题
+ *
+ * OverlayScrollbars 的滑块尺寸与颜色（--os-size / --os-handle-bg 等）默认由主题类
+ * （os-theme-dark / os-theme-light）提供，自定义 theme 名不会自带任何样式。
+ * 这里直接挂在组件宿主类下，避免样式与 options.scrollbars.theme 的取值耦合；
+ * 取值对齐设计 token（--scrollbar-* 定义见 src/styles/token.css），随主题自动切换。
+ */
+.w-scrollbar .os-scrollbar {
+  --os-size: var(--scrollbar-size, 6px);
+
+  /* 垂直方向不留内边距：条宽只有 6px，再留 2px 会把滑块压成 2px 发丝 */
+  --os-padding-perpendicular: 0px;
+  --os-padding-axis: 2px;
+  --os-track-bg: var(--scrollbar-track, transparent);
+  --os-track-bg-hover: var(--scrollbar-track, transparent);
+  --os-track-bg-active: var(--scrollbar-track, transparent);
+  --os-track-border-radius: 999px;
+  --os-handle-bg: var(--scrollbar-thumb);
+  --os-handle-bg-hover: var(--scrollbar-thumb-hover);
+  --os-handle-bg-active: var(--scrollbar-thumb-hover);
+  --os-handle-border-radius: 999px;
+  --os-handle-min-size: 32px;
+  --os-handle-perpendicular-size: 100%;
+  --os-handle-perpendicular-size-hover: 100%;
+  --os-handle-perpendicular-size-active: 100%;
+  --os-handle-interactive-area-offset: 4px;
+}

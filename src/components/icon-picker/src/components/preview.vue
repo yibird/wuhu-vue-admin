@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import lucideIconSet from '@iconify-json/lucide/icons.json'
 
-defineOptions({ name: 'Preview' })
-
 interface IconifyIconData {
   body: string
 }

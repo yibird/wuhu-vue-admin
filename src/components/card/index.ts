@@ -1,2 +1,2 @@
-export { default as WCard } from './src/index.vue'
-export type { WCardProps, WCardSlots } from './src/types'
+export { default as Card } from './src/index.vue'
+export type { CardProps, CardSlots } from './src/types'

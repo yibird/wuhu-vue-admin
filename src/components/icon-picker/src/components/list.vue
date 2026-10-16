@@ -5,8 +5,6 @@ import type { CSSProperties } from 'vue'
 import type { VirtualItem } from '@tanstack/vue-virtual'
 import type { IconSelectorOption } from '../types'
 
-defineOptions({ name: 'List' })
-
 const ROW_HEIGHT = 72
 
 const props = withDefaults(

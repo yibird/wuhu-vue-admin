@@ -1,6 +1,4 @@
-<script setup lang="ts">
-defineOptions({ name: 'Bars' })
-</script>
+<script setup lang="ts"></script>
 
 <template>
   <div class="w-loading-bars">

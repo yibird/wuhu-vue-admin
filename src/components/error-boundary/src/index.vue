@@ -162,8 +162,11 @@ export default defineComponent({
       /**
        * 出错时保留默认内容挂载并隐藏（style 会被 diff 移除，可正常恢复），
        * 避免卸载 KeepAlive 中已缓存的页面。
+       *
+       * 仅元素 vnode 能稳定通过 style 透传隐藏;组件 vnode 渲染 Fragment/多根或设置了
+       * inheritAttrs:false 时 style 会被丢弃(并打印告警),这类情况直接不保留内容。
        */
-      if (isVNode(content)) {
+      if (isVNode(content) && typeof content.type === 'string') {
         return [
           cloneVNode(content, { style: { display: 'none' } }),
           fallbackVNode,

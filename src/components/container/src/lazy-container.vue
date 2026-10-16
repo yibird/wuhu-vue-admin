@@ -25,8 +25,6 @@ import type {
   LazyContainerSlots,
 } from './types.ts'
 
-defineOptions({ name: 'LazyContainer' })
-
 const props = withDefaults(defineProps<LazyContainerProps>(), {
   eager: false,
   once: true,

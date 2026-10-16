@@ -435,9 +435,9 @@ export interface EditorToolbarEmits {
    */
   setHighlightColor: [value: string | number]
   /**
-   * @desc 设置链接时触发
+   * @desc 点击链接按钮时触发,由上层打开链接弹窗
    */
-  setLink: []
+  openLink: []
   /**
    * @desc 清除格式时触发
    */

@@ -18,7 +18,7 @@
         <div v-else>{{ props.description }}</div>
       </div>
       <div v-if="props.showBtn" class="mt-20">
-        <a-button type="primary" @click="openHomeTab">
+        <a-button type="primary" @click="handleButtonClick">
           {{ props.buttonText }}
         </a-button>
       </div>
@@ -29,8 +29,6 @@
 <script lang="ts" setup>
 import { useTabs } from '@/hooks'
 import type { ExceptionProps, ExceptionSlots } from './types'
-
-defineOptions({ name: 'Exception' })
 
 const props = withDefaults(defineProps<ExceptionProps>(), {
   buttonText: '返回首页',
@@ -46,4 +44,12 @@ const showDesc = computed(() => {
 })
 
 const { openHomeTab } = useTabs()
+
+function handleButtonClick() {
+  if (props.onClick) {
+    props.onClick()
+    return
+  }
+  openHomeTab()
+}
 </script>

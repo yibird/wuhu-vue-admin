@@ -31,6 +31,10 @@ export interface ExceptionProps {
    * @default true
    */
   showBtn?: boolean
+  /**
+   * @desc 按钮点击回调,不传时默认返回首页
+   */
+  onClick?: () => void
 }
 
 export interface ExceptionSlots {

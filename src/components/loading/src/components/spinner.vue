@@ -1,6 +1,4 @@
-<script setup lang="ts">
-defineOptions({ name: 'Spinner' })
-</script>
+<script setup lang="ts"></script>
 
 <template>
   <div class="w-loading-spinner">

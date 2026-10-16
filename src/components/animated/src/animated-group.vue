@@ -32,9 +32,6 @@ import {
 } from 'motion-v'
 import { motions } from './motion'
 import type { AnimatedGroupProps, AnimatedGroupSlots } from './types'
-
-defineOptions({ name: 'AnimatedGroup', inheritAttrs: false })
-
 const props = withDefaults(defineProps<AnimatedGroupProps<T>>(), {
   as: 'div',
   mode: 'popLayout',
@@ -48,10 +45,6 @@ defineSlots<AnimatedGroupSlots<T>>()
 
 const parentConfig = useMotionConfig()
 
-/**
- * MotionConfig 的 reducedMotion 自带默认值("never"),会覆盖外层配置,
- * 因此未显式传入 reducedMotion 时手动继承外层取值
- */
 const reducedMotion = computed(
   () => props.reducedMotion ?? parentConfig.value.reducedMotion
 )

@@ -1,4 +1,5 @@
-import { isEditorHeadingLevel } from '../utils'
+import { sanitizeEditorHtml } from '../sanitize'
+import { getStringAttribute, isEditorHeadingLevel } from '../utils'
 import type { EditorLocale } from '../types'
 import type { Editor as TiptapEditor } from '@tiptap/vue-3'
 import type { Ref, ShallowRef } from 'vue'
@@ -107,32 +108,59 @@ export function useEditorCommands(options: UseEditorCommandsOptions) {
     })
   }
 
-  function setLink() {
-    runCommand((currentEditor) => {
-      const href = currentEditor.getAttributes('link').href
-      const previousUrl = typeof href === 'string' ? href : undefined
-      const url = window.prompt(locale().linkPrompt, previousUrl ?? 'https://')
+  /**
+   * 链接弹窗
+   *
+   * 原先用 window.prompt 取地址:弹窗不可控、在部分嵌入环境会被浏览器拦截,
+   * 也无法回显当前选中文字上已有的链接。改为受控弹窗,清空输入即移除链接。
+   */
+  const linkDialogOpen = shallowRef(false)
+  const linkInitialValue = shallowRef('')
 
-      if (url === null) return
-      if (!url.trim()) {
+  function openLinkDialog() {
+    const href = getStringAttribute(
+      editor.value?.getAttributes('link') ?? {},
+      'href'
+    )
+    linkInitialValue.value = href
+    linkDialogOpen.value = true
+  }
+
+  function applyLink(url: string) {
+    linkDialogOpen.value = false
+    if (!editor.value) return
+
+    if (!url) {
+      runCommand((currentEditor) => {
         currentEditor.chain().focus().extendMarkRange('link').unsetLink().run()
-        return
-      }
+      })
+      return
+    }
 
+    runCommand((currentEditor) => {
       currentEditor
         .chain()
         .focus()
         .extendMarkRange('link')
-        .setLink({ href: url.trim() })
+        .setLink({ href: url })
         .run()
     })
   }
 
-  function insertImageFromUrl() {
+  /**
+   * 图片地址弹窗,同样替代原先的 window.prompt
+   */
+  const imageDialogOpen = shallowRef(false)
+
+  function openImageDialog() {
+    imageDialogOpen.value = true
+  }
+
+  function applyImageUrl(url: string) {
+    imageDialogOpen.value = false
+    if (!url) return
     runCommand((currentEditor) => {
-      const url = window.prompt(locale().imagePrompt, 'https://')
-      if (!url?.trim()) return
-      currentEditor.chain().focus().setImage({ src: url.trim() }).run()
+      currentEditor.chain().focus().setImage({ src: url }).run()
     })
   }
 
@@ -258,7 +286,7 @@ export function useEditorCommands(options: UseEditorCommandsOptions) {
     model.value = ''
     if (!editor.value) return
     runCommand((currentEditor) => {
-      currentEditor.commands.clearContent()
+      currentEditor.commands.clearContent(false)
     })
   }
 
@@ -272,20 +300,22 @@ export function useEditorCommands(options: UseEditorCommandsOptions) {
 
   function setHTML(value: string) {
     const currentEditor = editor.value
-    model.value = value
+    const nextValue = sanitizeEditorHtml(value)
+    model.value = nextValue
     if (!currentEditor) return
-    currentEditor.commands.setContent(value, { emitUpdate: false })
+    currentEditor.commands.setContent(nextValue, { emitUpdate: false })
     refreshEditorState()
   }
 
   function insertHTML(value: string) {
+    const nextValue = sanitizeEditorHtml(value)
     if (!editor.value) {
-      model.value = `${model.value}${value}`
+      model.value = `${model.value}${nextValue}`
       return
     }
 
     runCommand((currentEditor) => {
-      currentEditor.chain().focus().insertContent(value).run()
+      currentEditor.chain().focus().insertContent(nextValue).run()
     })
   }
 
@@ -296,8 +326,13 @@ export function useEditorCommands(options: UseEditorCommandsOptions) {
     setFontSize,
     setTextColor,
     setHighlightColor,
-    setLink,
-    insertImageFromUrl,
+    linkDialogOpen,
+    linkInitialValue,
+    openLinkDialog,
+    applyLink,
+    imageDialogOpen,
+    openImageDialog,
+    applyImageUrl,
     openImageUpload,
     handleImageSelect,
     handleTableAction,

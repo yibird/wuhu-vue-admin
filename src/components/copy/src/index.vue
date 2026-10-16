@@ -19,8 +19,6 @@ import { useClipboard } from '@vueuse/core'
 import { Icon } from '../../icon'
 import type { CopySlots } from './types'
 
-defineOptions({ name: 'Copy' })
-
 defineSlots<CopySlots>()
 
 const contentRef = useTemplateRef<HTMLElement>('contentRef')

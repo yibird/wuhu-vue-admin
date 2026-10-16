@@ -134,21 +134,57 @@
   border: 0;
 }
 
+/*
+ * 可缩放表格的必需样式
+ *
+ * Table 扩展开启了 resizable,依赖 table-layout: fixed 才能让列宽固定下来,
+ * 并依赖 .tableWrapper 横向滚动与 .column-resize-handle 提供拖拽手柄;
+ * 缺任意一项都会表现为「拖了没反应 / 手柄看不见」。
+ */
+:deep(.w-editor-content__body .tableWrapper) {
+  margin: 12px 0;
+  overflow-x: auto;
+}
+
 :deep(.w-editor-content__body table) {
   width: 100%;
-  margin: 12px 0;
+  margin: 0;
   overflow: hidden;
+  table-layout: fixed;
   border-collapse: collapse;
   border: 1px solid rgb(var(--w-border-color-2));
   border-radius: 6px;
 }
 
+:deep(.w-editor-content__body .column-resize-handle) {
+  position: absolute;
+  top: 0;
+  right: -2px;
+  bottom: -2px;
+  z-index: 1;
+  width: 4px;
+  pointer-events: none;
+  background: rgb(var(--w-color-primary));
+  opacity: 0.6;
+}
+
+:deep(.w-editor-content__body.resize-cursor) {
+  cursor: col-resize;
+}
+
 :deep(.w-editor-content__body th),
 :deep(.w-editor-content__body td) {
+  position: relative;
   min-width: 90px;
   padding: 9px 10px;
   vertical-align: top;
   border: 1px solid rgb(var(--w-border-color-2));
+}
+
+/* 选中图片等原子节点时的反馈(此前完全没有任何提示) */
+:deep(.w-editor-content__body .ProseMirror-selectednode) {
+  outline: 2px solid rgb(var(--w-color-primary));
+  outline-offset: 2px;
 }
 
 :deep(.w-editor-content__body th) {

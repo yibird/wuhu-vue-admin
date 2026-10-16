@@ -36,8 +36,6 @@ import type {
   SlidingHighlightSlots,
 } from './types'
 
-defineOptions({ name: 'SlidingHighlight' })
-
 const props = withDefaults(defineProps<SlidingHighlightProps>(), {
   as: 'div',
   inset: 20,

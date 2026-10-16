@@ -9,8 +9,6 @@ import type {
   IconSelectorOption,
 } from './types'
 
-defineOptions({ name: 'IconPicker' })
-
 type IconPickerBaseProps = Omit<IconPickerProps, 'open'>
 
 const props = withDefaults(defineProps<IconPickerBaseProps>(), {

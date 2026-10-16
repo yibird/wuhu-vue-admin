@@ -12,7 +12,7 @@ import type {
 } from './types'
 import type { DragEndEvent, DragStartEvent } from '@dnd-kit/vue'
 
-defineOptions({ name: 'Draggable', inheritAttrs: false })
+defineOptions({ inheritAttrs: false })
 
 const props = withDefaults(defineProps<DraggableProps<T>>(), {
   tag: 'div',

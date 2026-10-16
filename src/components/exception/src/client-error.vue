@@ -4,11 +4,13 @@ import Exception from './exception.vue'
 import clientErrorImage from '@/assets/svg/500.svg'
 import type { ClientErrorProps } from './types.ts'
 
-defineOptions({ name: 'ClientError' })
-
 const props = withDefaults(defineProps<ClientErrorProps>(), {
   showDetails: false,
 })
+
+const emit = defineEmits<{
+  reset: []
+}>()
 
 const { refreshCurrentTab } = useTabs()
 
@@ -25,6 +27,8 @@ const detailRows = computed(() => [
 ])
 
 const handleReset = () => {
+  // 先复位错误边界,再刷新当前页,避免刷新后仍停留在错误回退页
+  emit('reset')
   refreshCurrentTab()
 }
 </script>

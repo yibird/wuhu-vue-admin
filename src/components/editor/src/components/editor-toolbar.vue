@@ -8,8 +8,6 @@ import type {
   EditorToolbarItem,
 } from '../types'
 
-defineOptions({ name: 'EditorToolbar' })
-
 defineProps<{
   readonly disabled?: boolean
   readonly showSelectControls?: boolean
@@ -43,7 +41,7 @@ const emit = defineEmits<{
   setFontSize: [value: string | number]
   setTextColor: [value: string | number]
   setHighlightColor: [value: string | number]
-  setLink: []
+  openLink: []
   clearFormatting: []
   undo: []
   redo: []
@@ -83,7 +81,7 @@ function toOptionValue(value: unknown): string | number {
 
       <a-select
         :value="currentFontSize"
-        class="w-60!"
+        class="w-100!"
         :disabled="disabled"
         :options="fontSizeOptions"
         @change="emit('setFontSize', toOptionValue($event))"
@@ -155,7 +153,7 @@ function toOptionValue(value: unknown): string | number {
           :class="buttonClass(isLinkActive)"
           :disabled="disabled"
           :aria-label="locale.link"
-          @click="emit('setLink')"
+          @click="emit('openLink')"
         >
           <Icon name="i-lucide:link" :size="16" />
         </button>
