@@ -9,8 +9,6 @@ import ArticleToolbar from './article-toolbar.vue'
 import { useArticleList } from '../hooks'
 import type { ArticleAction, ArticleItem } from '../../types'
 
-defineOptions({ name: 'ArticleList' })
-
 const router = useRouter()
 const { isLoading } = useLoading({ delay: 220 })
 const {

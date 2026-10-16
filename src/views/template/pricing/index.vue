@@ -156,7 +156,7 @@ function toggleFaq(index: number) {
           </div>
 
           <aside
-            class="sticky top-12 self-start overflow-hidden rounded-16 border-1 border-color-2/60 border-solid bg-container/80 p-20 shadow-[0_20px_50px_rgb(15_23_42_/_10%)] backdrop-blur-xl max-[1180px]:(relative top-auto)"
+            class="sticky top-12 self-start overflow-hidden rounded-16 border-1 border-primary border-solid bg-container/80 p-20 shadow-[0_20px_50px_rgb(15_23_42_/_10%)] backdrop-blur-xl max-[1180px]:(relative top-auto)"
             aria-label="当前选择"
           >
             <div class="flex items-center justify-between gap-12">

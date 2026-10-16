@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { sanitizeHtml } from '../utils'
 
-defineOptions({ name: 'DocumentPreview' })
-
 const props = defineProps<{
   html: string
 }>()

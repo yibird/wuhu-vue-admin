@@ -42,6 +42,8 @@ async function loadViewerStyle() {
   return viewerStylePromise
 }
 
+let viewerDisposed = false
+
 const { cancel: cancelCreateViewer } = useDeferred(async () => {
   if (!viewerRef.value || viewerInstance.value) return
 
@@ -49,6 +51,9 @@ const { cancel: cancelCreateViewer } = useDeferred(async () => {
     import('jit-viewer'),
     loadViewerStyle(),
   ])
+
+  // 动态 import 期间组件可能已卸载,此时不能再创建实例
+  if (viewerDisposed || !viewerRef.value) return
 
   const viewer = createViewer({
     target: viewerRef.value,
@@ -61,9 +66,15 @@ const { cancel: cancelCreateViewer } = useDeferred(async () => {
 
   viewerInstance.value = viewer
   await viewer.mount()
+
+  if (viewerDisposed) {
+    viewer.destroy()
+    viewerInstance.value = undefined
+  }
 })
 
 onBeforeUnmount(() => {
+  viewerDisposed = true
   cancelCreateViewer()
   viewerInstance.value?.destroy()
   viewerInstance.value = undefined

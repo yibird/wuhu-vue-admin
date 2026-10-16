@@ -6,8 +6,6 @@ import type {
   OutlineItem,
 } from '../types'
 
-defineOptions({ name: 'DocumentInfoPanel' })
-
 const props = defineProps<{
   activeDocument: EditorDocument | undefined
   wordCount: number

@@ -2,8 +2,6 @@
 import type { MenuProps } from 'antdv-next'
 import type { EditorDocument } from '../types'
 
-defineOptions({ name: 'DocumentSidebar' })
-
 const props = defineProps<{
   documents: EditorDocument[]
   activeId: string

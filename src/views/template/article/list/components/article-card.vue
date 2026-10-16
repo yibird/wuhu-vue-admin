@@ -3,8 +3,6 @@ import { renderIcon } from '@/utils'
 import { getArticleIconForeground } from '../../icon-palette'
 import type { ArticleAction, ArticleItem } from '../../types'
 
-defineOptions({ name: 'ArticleCard' })
-
 const props = defineProps<{
   item: ArticleItem
 }>()
@@ -170,9 +168,7 @@ function formatNumber(value: number) {
           </a-tag>
         </div>
 
-        <div
-          class="mt-14 flex items-center gap-14 border-t-1 border-color-1 border-t-solid pt-10 text-xs text-secondary"
-        >
+        <div class="mt-20 flex items-center gap-14 text-xs text-secondary">
           <span class="flex items-center gap-4">
             <Icon name="i-lucide:eye" :size="14" class="text-secondary" />
             {{ formatNumber(props.item.views) }}

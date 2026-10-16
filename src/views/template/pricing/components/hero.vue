@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import type { BillingCycle, BillingOption } from '../types'
 
-defineOptions({ name: 'Hero' })
-
 interface Props {
   billingCycle: BillingCycle
   billingOptions: BillingOption[]

@@ -2,8 +2,6 @@
 import { useMediaQuery } from '@vueuse/core'
 import type { BillingCycle, PricingPlan } from '../types'
 
-defineOptions({ name: 'PlanCard' })
-
 interface Props {
   plan: PricingPlan
   billingCycle: BillingCycle

@@ -2,8 +2,6 @@
 import type { ArticleSort } from '../../types'
 import type { ArticleStatusFilter } from '../hooks'
 
-defineOptions({ name: 'ArticleToolbar' })
-
 const props = defineProps<{
   categories: string[]
   draftCount: number

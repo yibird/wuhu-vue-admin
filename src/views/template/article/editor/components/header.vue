@@ -2,8 +2,6 @@
 import type { EditorDocument, EditorMode } from '../types'
 import { modeOptions } from '../data'
 
-defineOptions({ name: 'ArticleEditorHeader' })
-
 const props = defineProps<{
   activeDocument: EditorDocument | undefined
   isRenaming: boolean
