@@ -7,6 +7,7 @@ import {
   type Event,
 } from '@dayflow/core'
 import { createDragPlugin } from '@dayflow/plugin-drag'
+import { message } from 'antdv-next'
 import { computed, reactive, shallowRef, watch } from 'vue'
 import { calendarTypes, eventStatusOptions, viewOptions } from '../data'
 import type {
@@ -39,7 +40,6 @@ import {
 export function useCalendarEvents() {
   const initialEvents = createSeedEvents()
   const sourceEvents = shallowRef<Event[]>(initialEvents)
-  const eventRevision = shallowRef(0)
   const selectedEventId = shallowRef<string | null>(null)
 
   const calendar = useCalendarApp({
@@ -84,10 +84,7 @@ export function useCalendarEvents() {
   const editingEventId = shallowRef<string | null>(null)
   const submitLoading = shallowRef(false)
 
-  const events = computed(() => {
-    eventRevision.value
-    return sourceEvents.value
-  })
+  const events = computed(() => sourceEvents.value)
 
   const visibleEvents = computed(() =>
     filterCalendarEvents(events.value, filters)
@@ -129,7 +126,6 @@ export function useCalendarEvents() {
 
   function replaceSourceEvents(updater: (events: Event[]) => Event[]) {
     sourceEvents.value = updater(sourceEvents.value)
-    eventRevision.value += 1
   }
 
   function upsertSourceEvent(event: Event) {
@@ -145,10 +141,18 @@ export function useCalendarEvents() {
     replaceSourceEvents((items) => items.filter((item) => item.id !== eventId))
   }
 
+  /**
+   * 把过滤后的投影同步给日历实例。
+   *
+   * @dayflow/core 3.7.4 的 useCalendarApp 未暴露 setEvents 之类的公开 setter，
+   * 只能用内部字段 `app.state.events` + `app.triggerRender()` 直接改写；
+   * 这里统一收口并做防御性判断，避免库调整内部结构后直接抛错。
+   */
   function syncCalendarProjection(projectedEvents: Event[]) {
-    // DayFlow 没有公开 setEvents API；这里集中同步过滤后的投影，避免空态下仍渲染隐藏事件。
-    calendar.app.state.events = [...projectedEvents]
-    calendar.app.triggerRender()
+    const app = calendar.app
+    if (!app?.state) return
+    app.state.events = [...projectedEvents]
+    app.triggerRender?.()
   }
 
   function changeCalendarView(value: string | number) {
@@ -237,6 +241,9 @@ export function useCalendarEvents() {
       selectedEventId.value = id
       eventModalOpen.value = false
       return editingEventId.value ? 'updated' : 'created'
+    } catch {
+      message.error('日程保存失败，请检查日期与时间后重试')
+      return null
     } finally {
       submitLoading.value = false
     }

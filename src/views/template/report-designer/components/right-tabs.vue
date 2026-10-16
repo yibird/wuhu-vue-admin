@@ -15,8 +15,6 @@ import type {
   ReportTemplateSnapshot,
 } from '../types'
 
-defineOptions({ name: 'RightTabs' })
-
 defineProps<{
   capabilityGroups: ReportCapabilityGroup[]
   fields: ReportField[]
@@ -89,7 +87,7 @@ const activeTab = shallowRef('experience')
     >
       <a-tab-pane key="experience" tab="模板与视图">
         <div
-          class="h-full min-h-0 min-h-full p-12px w-full overflow-x-hidden overflow-y-auto"
+          class="h-full min-h-0 p-12px w-full overflow-x-hidden overflow-y-auto"
         >
           <ExperiencePanel
             v-model:view-mode="viewMode"
@@ -109,7 +107,7 @@ const activeTab = shallowRef('experience')
 
       <a-tab-pane key="transform" tab="数据加工">
         <div
-          class="h-full min-h-0 min-h-full p-12px w-full overflow-x-hidden overflow-y-auto"
+          class="h-full min-h-0 p-12px w-full overflow-x-hidden overflow-y-auto"
         >
           <TransformPanel
             :fields="fields"
@@ -135,7 +133,7 @@ const activeTab = shallowRef('experience')
 
       <a-tab-pane key="capability" tab="生产能力">
         <div
-          class="h-full min-h-0 min-h-full p-12px w-full overflow-x-hidden overflow-y-auto"
+          class="h-full min-h-0 p-12px w-full overflow-x-hidden overflow-y-auto"
         >
           <CapabilityPanel
             :field-count="fields.length"

@@ -37,5 +37,8 @@ export function formatEventTime(event: Event): string {
 
   if (event.allDay) return `${start.format('M月D日')} 全天`
 
+  if (!start.isSame(end, 'day')) {
+    return `${start.format('M月D日 HH:mm')} - ${end.format('M月D日 HH:mm')}`
+  }
   return `${start.format('M月D日 HH:mm')} - ${end.format('HH:mm')}`
 }

@@ -7,8 +7,6 @@ import type {
   ReportTemplateSnapshot,
 } from '../types'
 
-defineOptions({ name: 'ExperiencePanel' })
-
 interface ReportVersionItem {
   id: string
   name: string

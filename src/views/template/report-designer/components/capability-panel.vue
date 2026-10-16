@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import type { CapabilityStatus, ReportCapabilityGroup } from '../types'
 
-defineOptions({ name: 'CapabilityPanel' })
-
 const props = defineProps<{
   fieldCount: number
   groups: ReportCapabilityGroup[]

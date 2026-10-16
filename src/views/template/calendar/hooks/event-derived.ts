@@ -20,7 +20,7 @@ export function filterCalendarEvents(
     const meta = readMeta(item)
     const calendarType = getCalendarType(item.calendarId)
     const matchCalendar =
-      item.calendarId === undefined ||
+      item.calendarId !== undefined &&
       filters.calendarIds.includes(item.calendarId)
     const matchStatus = filters.statuses.includes(meta.status)
     const matchKeyword =
@@ -36,7 +36,10 @@ export function filterCalendarEvents(
 }
 
 export function createUpcomingEvents(events: Event[]): UpcomingEvent[] {
+  const todayStart = dayjs().startOf('day')
+
   return events
+    .filter((item) => !dayjs(getEventStartDate(item)).isBefore(todayStart))
     .map((item) => {
       const startDate = getEventStartDate(item)
       const calendarType = getCalendarType(item.calendarId)
@@ -84,7 +87,7 @@ export function createSummaryCards(events: Event[]): SummaryCard[] {
   ).length
   const weekCount = events.filter((item) => {
     const date = dayjs(getEventStartDate(item))
-    return date.isAfter(weekRange.start) && date.isBefore(weekRange.end)
+    return !date.isBefore(weekRange.start) && !date.isAfter(weekRange.end)
   }).length
   const confirmedCount = events.filter(
     (item) => readMeta(item).status === 'confirmed'

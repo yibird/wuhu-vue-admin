@@ -46,6 +46,18 @@ import type {
 const currencyKeys = ['amount', 'price', 'cost', 'fee', 'revenue', 'sales']
 const percentKeys = ['rate', 'ratio', 'percent', 'margin']
 const dateKeys = ['date', 'time', 'created', 'updated']
+const REPORT_SCHEMA_ID = 'https://wuhu.dev/schemas/report-designer/v1.json'
+const REPORT_DOCUMENT_VERSION = '1.0.0'
+const printPaperSizes: ReportSettings['paperSize'][] = [
+  'A4',
+  'A5',
+  'Letter',
+  'label100x150',
+]
+const printOrientations: ReportSettings['orientation'][] = [
+  'portrait',
+  'landscape',
+]
 const exportThemeTokens: Record<
   ReportSettings['theme'],
   { headerBackground: string; headerColor: string }
@@ -206,9 +218,14 @@ function clampPrintMargin(value: number) {
 }
 
 function getPrintPageSize(settings: ReportSettings) {
-  const pageSize =
-    settings.paperSize === 'label100x150' ? '100mm 150mm' : settings.paperSize
-  return `${pageSize} ${settings.orientation}`
+  const paperSize = printPaperSizes.includes(settings.paperSize)
+    ? settings.paperSize
+    : 'A4'
+  const orientation = printOrientations.includes(settings.orientation)
+    ? settings.orientation
+    : 'portrait'
+  const size = paperSize === 'label100x150' ? '100mm 150mm' : paperSize
+  return `${size} ${orientation}`
 }
 
 function getPrintMargins(settings: ReportSettings) {
@@ -276,12 +293,10 @@ function parseKeyValueText(value: string): Record<string, string> {
       .map((line) => {
         const equalIndex = line.indexOf('=')
         const colonIndex = line.indexOf(':')
-        const separatorIndex =
-          equalIndex < 0
-            ? colonIndex
-            : colonIndex < 0
-              ? equalIndex
-              : Math.min(equalIndex, colonIndex)
+        let separatorIndex = -1
+        if (equalIndex < 0) separatorIndex = colonIndex
+        else if (colonIndex < 0) separatorIndex = equalIndex
+        else separatorIndex = Math.min(equalIndex, colonIndex)
         if (separatorIndex <= 0) return ['', '']
         return [
           line.slice(0, separatorIndex).trim(),
@@ -561,7 +576,7 @@ export function useReportDesigner() {
     const sourceId = activeSource?.id ?? defaultSourceId
 
     return {
-      $schema: 'https://wuhu.dev/schemas/report-designer/v1.json',
+      $schema: REPORT_SCHEMA_ID,
       schemaVersion: REPORT_SCHEMA_VERSION,
       activeSourceId: sourceId,
       dataSources: dataSources.value.map((source) => ({
@@ -634,7 +649,7 @@ export function useReportDesigner() {
       sorts: cloneSorts(sorts.value),
       templateType: settings.templateType,
       title: settings.title,
-      version: '1.0.0',
+      version: REPORT_DOCUMENT_VERSION,
     }
   })
 
@@ -1256,7 +1271,7 @@ export function useReportDesigner() {
   }
 
   function exportXls() {
-    const theme = exportThemeTokens[settings.theme]
+    const theme = exportThemeTokens[settings.theme] ?? exportThemeTokens.default
     const html = `
       <!doctype html>
       <html>
@@ -1285,15 +1300,10 @@ export function useReportDesigner() {
     )
   }
 
-  function printReport() {
-    const printWindow = window.open('', '_blank')
-    if (!printWindow) {
-      exportStatus.value = '浏览器拦截了打印窗口'
-      return
-    }
+  function buildPrintDocument() {
+    const theme = exportThemeTokens[settings.theme] ?? exportThemeTokens.default
 
-    const theme = exportThemeTokens[settings.theme]
-    printWindow.document.write(`
+    return `
       <!doctype html>
       <html>
         <head>
@@ -1320,10 +1330,31 @@ export function useReportDesigner() {
           ${createHtmlTable()}
         </body>
       </html>
-    `)
-    printWindow.document.close()
-    printWindow.focus()
-    printWindow.print()
+    `
+  }
+
+  function printReport() {
+    // 使用 Blob URL 渲染打印页，替代 document.write 拼接，规避 XSS 风险。
+    const url = URL.createObjectURL(
+      new Blob([buildPrintDocument()], { type: 'text/html;charset=utf-8' })
+    )
+    const printWindow = window.open(url, '_blank')
+    if (!printWindow) {
+      URL.revokeObjectURL(url)
+      exportStatus.value = '浏览器拦截了打印窗口'
+      return
+    }
+
+    let printed = false
+    const triggerPrint = () => {
+      if (printed) return
+      printed = true
+      printWindow.focus()
+      printWindow.print()
+      URL.revokeObjectURL(url)
+    }
+
+    printWindow.addEventListener('load', triggerPrint, { once: true })
   }
 
   function exportReport(format: ExportFormat) {

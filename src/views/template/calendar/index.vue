@@ -156,6 +156,7 @@ async function handleSubmitEvent() {
   }
 
   const action = await saveEventForm()
+  if (!action) return
   message.success(action === 'created' ? '日程已创建' : '日程已更新')
 }
 

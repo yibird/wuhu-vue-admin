@@ -5,8 +5,6 @@ import type {
   ReportFieldMappingItem,
 } from '../types'
 
-defineOptions({ name: 'FieldMappingEditor' })
-
 const props = defineProps<{
   field: ReportField
 }>()

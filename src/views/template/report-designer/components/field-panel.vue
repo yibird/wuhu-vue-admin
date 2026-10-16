@@ -14,8 +14,6 @@ import type {
   ReportRow,
 } from '../types'
 
-defineOptions({ name: 'FieldPanel' })
-
 const props = defineProps<{
   fields: ReportField[]
   formatCell: (value: unknown, field: ReportField, row?: ReportRow) => string

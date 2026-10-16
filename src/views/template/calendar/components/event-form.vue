@@ -8,8 +8,6 @@ import type {
   CalendarSelectOption,
 } from '../types'
 
-defineOptions({ name: 'EventForm' })
-
 const props = defineProps<{
   calendarOptions: CalendarSelectOption[]
   ownerOptions: CalendarSelectOption[]

@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { CodeEditor } from '@/components/code-editor'
 
-defineOptions({ name: 'SchemaModal' })
-
 defineProps<{
   error: string
   open: boolean

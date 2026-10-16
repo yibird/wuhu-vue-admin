@@ -1,5 +1,10 @@
 import type { CalendarType, Event } from '@dayflow/core'
-import { calendarTypes, eventStatusOptions } from '../data'
+import {
+  calendarTypes,
+  defaultEventLocation,
+  defaultEventOwner,
+  eventStatusOptions,
+} from '../data'
 import type {
   CalendarEventMeta,
   CalendarEventPriority,
@@ -10,8 +15,8 @@ export function createEventMeta(
   patch: Partial<CalendarEventMeta> = {}
 ): CalendarEventMeta {
   return {
-    owner: patch.owner ?? '产品组',
-    location: patch.location ?? '线上会议',
+    owner: patch.owner ?? defaultEventOwner,
+    location: patch.location ?? defaultEventLocation,
     priority: patch.priority ?? 'medium',
     status: patch.status ?? 'confirmed',
   }
@@ -27,9 +32,9 @@ function isEventPriority(value: unknown): value is CalendarEventPriority {
 
 export function readMeta(event: Event): CalendarEventMeta {
   const meta = event.meta ?? {}
-  const owner = typeof meta.owner === 'string' ? meta.owner : '产品组'
+  const owner = typeof meta.owner === 'string' ? meta.owner : defaultEventOwner
   const location =
-    typeof meta.location === 'string' ? meta.location : '线上会议'
+    typeof meta.location === 'string' ? meta.location : defaultEventLocation
   const priority = isEventPriority(meta.priority) ? meta.priority : 'medium'
   const status = isEventStatus(meta.status) ? meta.status : 'confirmed'
 

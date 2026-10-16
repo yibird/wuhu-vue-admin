@@ -133,6 +133,12 @@ export const ownerOptions: CalendarSelectOption[] = [
   { label: '研发组', value: '研发组' },
 ]
 
+/** 日程归属的默认值 */
+export const defaultEventOwner = ownerOptions[0].value
+
+/** 日程地点的默认值 */
+export const defaultEventLocation = '线上会议'
+
 export const quickTimeOptions: CalendarSelectOption[] = Array.from(
   { length: 27 },
   (_, index) => {
@@ -158,8 +164,8 @@ export const defaultEventFormState: CalendarEventFormState = {
   startTime: '09:00',
   endTime: '10:00',
   allDay: false,
-  owner: ownerOptions[0].value,
-  location: '线上会议',
+  owner: defaultEventOwner,
+  location: defaultEventLocation,
   priority: 'medium',
   status: 'confirmed',
 }

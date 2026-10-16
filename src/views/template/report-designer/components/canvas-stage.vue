@@ -5,8 +5,6 @@ import type {
   ReportDataSourceItem,
 } from '../types'
 
-defineOptions({ name: 'CanvasStage' })
-
 const defaultSourceId = 'sample-orders'
 
 const props = defineProps<{

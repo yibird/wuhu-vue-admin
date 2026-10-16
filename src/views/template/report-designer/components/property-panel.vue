@@ -7,8 +7,6 @@ import type {
   ReportTheme,
 } from '../types'
 
-defineOptions({ name: 'PropertyPanel' })
-
 defineProps<{
   exportOptions: ExportOption[]
   settings: ReportSettings

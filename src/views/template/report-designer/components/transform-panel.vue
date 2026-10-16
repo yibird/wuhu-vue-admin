@@ -9,8 +9,6 @@ import type {
   SortDirection,
 } from '../types'
 
-defineOptions({ name: 'TransformPanel' })
-
 const props = defineProps<{
   fields: ReportField[]
   filters: ReportFilter[]

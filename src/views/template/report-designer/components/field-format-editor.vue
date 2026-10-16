@@ -13,8 +13,6 @@ import type {
   ReportRow,
 } from '../types'
 
-defineOptions({ name: 'FieldFormatEditor' })
-
 const props = defineProps<{
   field: ReportField
   formatCell: (value: unknown, field: ReportField, row?: ReportRow) => string

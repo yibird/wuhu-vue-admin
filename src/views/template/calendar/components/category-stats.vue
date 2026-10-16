@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import type { CalendarType } from '@dayflow/core'
 
-defineOptions({ name: 'CategoryStats' })
-
 defineProps<{
   calendarTypes: CalendarType[]
   getCalendarCount: (calendarId: string) => number

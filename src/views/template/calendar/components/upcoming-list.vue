@@ -2,8 +2,6 @@
 import type { UpcomingEvent } from '../types'
 import { getPriorityClass, getStatusClass } from '../data'
 
-defineOptions({ name: 'UpcomingList' })
-
 defineProps<{
   hasActiveFilters: boolean
   upcomingEvents: UpcomingEvent[]

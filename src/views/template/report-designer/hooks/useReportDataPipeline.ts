@@ -71,8 +71,8 @@ export function useReportDataPipeline({
       worker.onerror = () => {
         worker?.terminate()
         worker = undefined
-        processingError.value = '后台数据计算失败，已切换主线程处理'
         runSynchronously(createInput())
+        processingError.value = '后台数据计算失败，已切换主线程处理'
       }
     } catch {
       worker = undefined

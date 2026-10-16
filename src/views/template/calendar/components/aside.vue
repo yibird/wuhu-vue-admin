@@ -12,8 +12,6 @@ import type {
   UpcomingEvent,
 } from '../types'
 
-defineOptions({ name: 'CalendarAside' })
-
 const { loading = false } = defineProps<{
   activeFilterCount: number
   calendarTypes: CalendarType[]

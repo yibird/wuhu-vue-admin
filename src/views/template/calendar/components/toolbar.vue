@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import type { CalendarSelectOption, CalendarView } from '../types'
 
-defineOptions({ name: 'Toolbar' })
-
 const {
   activeView,
   currentMonthLabel,

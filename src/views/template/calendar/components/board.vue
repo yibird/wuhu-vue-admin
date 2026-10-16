@@ -2,8 +2,6 @@
 import { DayFlowCalendar } from '@dayflow/vue'
 import type { UseCalendarAppReturn } from '@dayflow/core'
 
-defineOptions({ name: 'Board' })
-
 const {
   calendar,
   hasActiveFilters,

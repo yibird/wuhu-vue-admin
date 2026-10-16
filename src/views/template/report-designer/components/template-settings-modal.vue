@@ -9,8 +9,6 @@ import type {
   ReportTheme,
 } from '../types'
 
-defineOptions({ name: 'TemplateSettingsModal' })
-
 defineProps<{
   open: boolean
   settings: ReportSettings

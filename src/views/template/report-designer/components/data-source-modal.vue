@@ -7,8 +7,6 @@ import type {
   SqlDriver,
 } from '../types'
 
-defineOptions({ name: 'DataSourceModal' })
-
 type SourceModalMode = 'create' | 'edit'
 
 const props = defineProps<{

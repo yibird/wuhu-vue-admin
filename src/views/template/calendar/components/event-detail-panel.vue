@@ -2,8 +2,6 @@
 import type { CalendarEventDetail } from '../types'
 import { getPriorityClass, getStatusClass } from '../data'
 
-defineOptions({ name: 'EventDetailPanel' })
-
 defineProps<{
   selectedEvent: CalendarEventDetail | null
 }>()

@@ -2,8 +2,6 @@
 import type { CalendarType } from '@dayflow/core'
 import type { CalendarEventStatus, CalendarMetaOption } from '../types'
 
-defineOptions({ name: 'FilterPanel' })
-
 const props = defineProps<{
   activeFilterCount: number
   calendarIds: string[]

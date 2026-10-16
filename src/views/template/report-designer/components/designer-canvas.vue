@@ -6,8 +6,6 @@ import type {
   ReportSummary,
 } from '../types'
 
-defineOptions({ name: 'DesignerCanvas' })
-
 const props = withDefaults(
   defineProps<{
     fields: ReportField[]

@@ -7,8 +7,6 @@ import type {
   ReportDataSourceItem,
 } from '../types'
 
-defineOptions({ name: 'SourcePanel' })
-
 type SourceModalMode = 'create' | 'edit'
 
 const defaultSourceId = 'sample-orders'
