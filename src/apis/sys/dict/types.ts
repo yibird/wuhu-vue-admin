@@ -1,7 +1,7 @@
 import type { BaseResp } from '#/http'
 
 export interface DictQuery {
-  pageNum?: number
+  current?: number
   pageSize?: number
   name?: string
   type?: string
@@ -54,7 +54,7 @@ export interface DictItemResp extends BaseResp {
 }
 
 export interface DictItemQuery {
-  pageNum?: number
+  current?: number
   pageSize?: number
   dictId?: string
   label?: string

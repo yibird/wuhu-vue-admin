@@ -1,6 +1,5 @@
+import type { MenuType } from '#/config'
 import type { BaseResp } from '#/http'
-
-export type MenuType = 1 | 2 | 3
 
 export interface MenuResp extends BaseResp {
   /**
@@ -8,13 +7,23 @@ export interface MenuResp extends BaseResp {
    */
   name: string
   /**
-   * @desc 菜单类型(1目录,2菜单,3按钮)
+   * @desc 菜单类型(1目录、2菜单、3子菜单、4权限按钮)
    */
   type: MenuType
   /**
    * @desc 路由地址
    */
   path: string
+  /**
+   * @desc 是否为外部链接
+   * @default false
+   */
+  isExternal?: boolean
+  /**
+   * @desc 外部链接打开方式
+   * @default '_blank'
+   */
+  externalTarget?: '_blank' | '_self'
   /**
    * @desc 组件路径
    */
@@ -41,6 +50,8 @@ export interface CreateMenuReq {
   name: string
   type: MenuType
   path: string
+  isExternal?: boolean
+  externalTarget?: '_blank' | '_self'
   component: string
   perms: string
   icon: string

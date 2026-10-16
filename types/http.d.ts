@@ -6,7 +6,7 @@ export interface Result<T = unknown> {
 
 export interface PageResult<T = unknown> {
   list: T[]
-  pageNum: number
+  current: number
   pageSize: number
   total: number
   totalPage: number
@@ -15,7 +15,7 @@ export interface PageResult<T = unknown> {
 export type ApiResult<T = unknown> = Result<T>
 
 export interface BaseQuery {
-  pageNum?: number
+  current?: number
   pageSize?: number
 }
 

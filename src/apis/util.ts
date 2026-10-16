@@ -1,6 +1,5 @@
 import { apiRequest } from '@/utils'
 import { RequestMethod } from '@/constants'
-
 import type { PageResult, Result } from '#/http'
 
 function toSearchParams(data?: object) {
