@@ -13,8 +13,6 @@ import { useLocale } from '@/locales'
 import { AppWatermark } from '@/components/app-watermark'
 import type { VNodeChild } from 'vue'
 
-defineOptions({ name: 'App' })
-
 const { themeConfig } = useTheme()
 const { locale } = useLocale()
 
