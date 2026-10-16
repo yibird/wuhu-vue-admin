@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import Item from './item.vue'
-import type { CardListProps } from '../types'
+import type { CardListProps } from './types'
 const { items = [] } = defineProps<CardListProps>()
 </script>
 
@@ -10,7 +10,6 @@ const { items = [] } = defineProps<CardListProps>()
       v-for="(item, index) in items"
       :key="item.id"
       :item="item"
-      :index="index"
       :class="`page-enter--${index + 2}`"
     />
   </div>

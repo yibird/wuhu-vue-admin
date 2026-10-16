@@ -1,13 +1,8 @@
-<script setup lang="ts">
-defineOptions({ name: 'AnnouncementSkeleton' })
-</script>
+<script setup lang="ts"></script>
 
 <template>
-  <section data-swapy-slot="announcement" class="min-w-0" aria-busy="true">
-    <a-card
-      :styles="{ body: { padding: '12px' } }"
-      data-swapy-item="announcement"
-    >
+  <section class="min-w-0" aria-busy="true">
+    <a-card :styles="{ body: { padding: '12px' } }">
       <template #title>
         <a-skeleton-input active class="!w-128" />
       </template>

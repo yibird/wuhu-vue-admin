@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import type { TaskFilterStatus, TaskViewOption, TaskViewType } from './types'
 
-defineOptions({ name: 'TaskToolbar' })
-
 const props = defineProps<{
   loading?: boolean
   taskCount: number

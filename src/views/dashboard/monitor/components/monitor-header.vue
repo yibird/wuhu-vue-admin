@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-defineOptions({ name: 'MonitorHeader' })
 const props = defineProps<{
   criticalAlertCount: number
   lastRefreshAt: string

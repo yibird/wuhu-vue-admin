@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import {
+  UNASSIGNED,
   getTicketCategoryMeta,
   getTicketPriorityMeta,
   getTicketStatusMeta,
@@ -7,8 +8,6 @@ import {
 import type { TicketRecord } from '../../center/types'
 import { slaStatusMeta } from '../data'
 import type { TicketQueueKey, TicketQueueOption } from '../types'
-
-defineOptions({ name: 'TicketQueue' })
 
 const props = defineProps<{
   activeQueue: TicketQueueKey
@@ -98,7 +97,7 @@ function handleQueueChange(value: TicketQueueKey) {
         <div class="mt-7 flex items-center justify-between gap-8 text-xs">
           <span class="min-w-0 truncate text-secondary">
             {{
-              ticket.assignee === '待分配' ? '待分配处理人' : ticket.assignee
+              ticket.assignee === UNASSIGNED ? '待分配处理人' : ticket.assignee
             }}
           </span>
           <span

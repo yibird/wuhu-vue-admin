@@ -50,8 +50,6 @@ import { DraggableItem } from '@/components/draggable'
 import Item from './item.vue'
 import type { CardTaskActionEmits, CardTaskGroupProps } from '../types.ts'
 
-defineOptions({ name: 'Group' })
-
 const props = defineProps<CardTaskGroupProps>()
 const emit = defineEmits<CardTaskActionEmits>()
 const groupRef = useTemplateRef<HTMLElement>('groupRef')

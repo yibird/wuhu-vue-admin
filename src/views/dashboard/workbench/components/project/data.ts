@@ -1,9 +1,4 @@
-import type {
-  Project,
-  ProjectLogo,
-  ProjectLogoTone,
-  WorkbenchMember,
-} from './types'
+import type { Project, ProjectLogo, WorkbenchMember } from './types'
 
 export interface ProjectLogoOption extends ProjectLogo {
   label: string
@@ -68,6 +63,29 @@ export const workbenchMembers: WorkbenchMember[] = [
   },
 ]
 
+/** 项目状态标签与样式类的映射,供初始数据与工作台设置面板共用 */
+export const projectStatusPresentation: Record<string, string> = {
+  有风险: 'bg-error-tint text-error',
+  收尾中: 'bg-success-tint text-success',
+  重点推进: 'bg-warning-tint text-warning',
+  计划中: 'bg-info-tint text-info',
+  推进中: 'bg-primary-tint text-primary',
+  待联调: 'bg-warning-tint text-warning',
+  设计中: 'bg-info-tint text-info',
+}
+
+/**
+ * 由项目状态标签取对应样式类
+ *
+ * @param status 项目状态标签
+ * @returns 样式类,未知状态回退到「推进中」
+ */
+export function getProjectStatusClass(status: string) {
+  return (
+    projectStatusPresentation[status] ?? projectStatusPresentation['推进中']
+  )
+}
+
 export const initialProjects: Project[] = [
   {
     id: 1,
@@ -75,12 +93,12 @@ export const initialProjects: Project[] = [
     name: '企业运营中台',
     describe: '统一客户运营、触达任务和数据看板，减少跨系统切换成本。',
     master: '产品负责人：林舟',
-    createAt: '2026-05-08',
+    createdAt: '2026-05-08',
     dueAt: '06-18',
     progress: 78,
     status: '推进中',
-    statusClass: 'bg-primary-tint text-primary',
-    members: workbenchMembers,
+    statusClass: getProjectStatusClass('推进中'),
+    members: [...workbenchMembers],
   },
   {
     id: 2,
@@ -88,11 +106,11 @@ export const initialProjects: Project[] = [
     name: '移动端体验优化',
     describe: '梳理核心页面响应式布局、触控热区和弱网加载策略。',
     master: '体验负责人：沈一',
-    createAt: '2026-05-14',
+    createdAt: '2026-05-14',
     dueAt: '06-10',
     progress: 56,
     status: '待联调',
-    statusClass: 'bg-warning-tint text-warning',
+    statusClass: getProjectStatusClass('待联调'),
     members: workbenchMembers.slice(0, 3),
   },
   {
@@ -101,11 +119,11 @@ export const initialProjects: Project[] = [
     name: '工作流设计器',
     describe: '支持节点编排、参数配置、运行日志和模板复用。',
     master: '研发负责人：周辰',
-    createAt: '2026-05-20',
+    createdAt: '2026-05-20',
     dueAt: '06-24',
     progress: 42,
     status: '设计中',
-    statusClass: 'bg-info-tint text-info',
+    statusClass: getProjectStatusClass('设计中'),
     members: workbenchMembers.slice(1),
   },
   {
@@ -114,11 +132,11 @@ export const initialProjects: Project[] = [
     name: '权限与审计升级',
     describe: '补齐菜单权限、操作审计和异常访问追踪能力。',
     master: '安全负责人：许安',
-    createAt: '2026-05-22',
+    createdAt: '2026-05-22',
     dueAt: '06-30',
     progress: 31,
     status: '有风险',
-    statusClass: 'bg-error-tint text-error',
+    statusClass: getProjectStatusClass('有风险'),
     members: workbenchMembers.slice(0, 2),
   },
 ]
@@ -128,12 +146,5 @@ export function getProjectLogoOption(logo: ProjectLogo) {
     projectLogoOptions.find(
       (item) => item.icon === logo.icon && item.tone === logo.tone
     ) ?? projectLogoOptions[0]
-  )
-}
-
-export function getProjectLogoByTone(tone: ProjectLogoTone) {
-  return (
-    projectLogoOptions.find((item) => item.tone === tone) ??
-    projectLogoOptions[0]
   )
 }

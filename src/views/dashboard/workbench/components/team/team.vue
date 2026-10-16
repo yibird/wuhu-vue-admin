@@ -1,11 +1,7 @@
 <template>
   <TeamSkeleton v-if="loading" />
-  <section
-    v-else
-    data-swapy-slot="team"
-    class="page-enter page-enter--6 min-w-0"
-  >
-    <WCard :styles="{ body: { padding: 0 } }" data-swapy-item="team">
+  <section v-else class="page-enter page-enter--6 min-w-0">
+    <Card class="shadow-none!" :styles="{ body: { padding: 0 } }">
       <template #title>
         <span class="text-base text-main font-700">协作团队</span>
       </template>
@@ -21,7 +17,7 @@
         <div v-for="item in items" :key="item.id" class="group rounded-8 p-10">
           <div class="flex items-start gap-10">
             <a-avatar
-              :src="item.icon"
+              :src="item.avatar"
               :size="38"
               class="shrink-0 transition-transform duration-motion-base group-hover:scale-105"
             />
@@ -52,16 +48,14 @@
           </div>
         </div>
       </SlidingHighlight>
-    </WCard>
+    </Card>
   </section>
 </template>
 
 <script lang="ts" setup>
-import { SlidingHighlight, WCard } from '@/components'
+import { SlidingHighlight, Card } from '@/components'
 import TeamSkeleton from './team-skeleton.vue'
 import type { TeamItem } from './types'
-
-defineOptions({ name: 'Team' })
 
 const { loading = false } = defineProps<{
   loading?: boolean
@@ -70,33 +64,33 @@ const { loading = false } = defineProps<{
 const items: TeamItem[] = [
   {
     id: 1,
-    icon: 'https://gw.alipayobjects.com/zos/rmsportal/kZzEzemZyKLKFsojXItE.png',
+    avatar:
+      'https://gw.alipayobjects.com/zos/rmsportal/kZzEzemZyKLKFsojXItE.png',
     name: '产品体验组',
     desc: '需求分析、交互评审、验收标准',
     members: 8,
     online: 6,
     progress: 82,
-    status: '稳定',
   },
   {
     id: 2,
-    icon: 'https://gw.alipayobjects.com/zos/rmsportal/siCrBXXhmvTQGWPNLBow.png',
+    avatar:
+      'https://gw.alipayobjects.com/zos/rmsportal/siCrBXXhmvTQGWPNLBow.png',
     name: '前端工程组',
     desc: '页面开发、组件沉淀、性能治理',
     members: 10,
     online: 8,
     progress: 76,
-    status: '推进中',
   },
   {
     id: 3,
-    icon: 'https://gw.alipayobjects.com/zos/rmsportal/dURIMkkrRFpPgTuzkwnB.png',
+    avatar:
+      'https://gw.alipayobjects.com/zos/rmsportal/dURIMkkrRFpPgTuzkwnB.png',
     name: '平台架构组',
     desc: '权限、审计、接口稳定性',
     members: 7,
     online: 5,
     progress: 64,
-    status: '关注',
   },
 ]
 </script>

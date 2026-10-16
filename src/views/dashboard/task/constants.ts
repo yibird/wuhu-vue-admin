@@ -86,7 +86,7 @@ export const taskAssigneeList: TaskAssigneeMeta[] = [
     role: '产品负责人',
     department: '产品体验部',
     email: 'wuyanzu@example.com',
-    avatarClass: 'icon-primary-soft',
+    avatarClass: 'primary-tinted',
   },
   {
     label: '林更新',

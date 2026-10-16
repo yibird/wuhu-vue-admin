@@ -1,11 +1,7 @@
 <template>
   <DynamicSkeleton v-if="loading" />
-  <section
-    v-else
-    data-swapy-slot="dynamic"
-    class="page-enter page-enter--4 min-w-0"
-  >
-    <WCard :styles="{ body: { padding: 0 } }" data-swapy-item="dynamic">
+  <section v-else class="page-enter page-enter--4 min-w-0">
+    <Card class="shadow-none!" :styles="{ body: { padding: 0 } }">
       <template #title>
         <span class="text-base text-main font-700">团队动态</span>
       </template>
@@ -39,21 +35,19 @@
             </p>
             <div class="mt-7 flex items-center gap-6 text-xs text-muted">
               <Icon name="i-lucide:clock-3" :size="13" />
-              <span>{{ item.createAt }}</span>
+              <span>{{ item.createdAt }}</span>
             </div>
           </div>
         </div>
       </SlidingHighlight>
-    </WCard>
+    </Card>
   </section>
 </template>
 
 <script lang="ts" setup>
-import { SlidingHighlight, WCard } from '@/components'
+import { SlidingHighlight, Card } from '@/components'
 import DynamicSkeleton from './dynamic-skeleton.vue'
 import type { Dynamic } from './types'
-
-defineOptions({ name: 'Dynamic' })
 
 const { loading = false } = defineProps<{
   loading?: boolean
@@ -66,7 +60,7 @@ const items: Dynamic[] = [
     action: '更新了',
     target: '企业运营中台',
     describe: '补充客户分层策略和看板指标口径，等待研发评估。',
-    createAt: '10 分钟前',
+    createdAt: '10 分钟前',
     icon: 'i-lucide:file-pen-line',
   },
   {
@@ -75,7 +69,7 @@ const items: Dynamic[] = [
     action: '提交了',
     target: '移动端体验优化',
     describe: '已完成工作台、文件管理和图表页的移动端自测记录。',
-    createAt: '38 分钟前',
+    createdAt: '38 分钟前',
     icon: 'i-lucide:smartphone',
   },
   {
@@ -84,7 +78,7 @@ const items: Dynamic[] = [
     action: '创建了',
     target: '工作流节点模板',
     describe: '新增审批、条件分支、消息通知三个节点草案。',
-    createAt: '1 小时前',
+    createdAt: '1 小时前',
     icon: 'i-lucide:workflow',
   },
   {
@@ -93,7 +87,7 @@ const items: Dynamic[] = [
     action: '标记了',
     target: '权限审计风险',
     describe: '发现 2 个菜单路径缺少页面组件，需要本周内确认。',
-    createAt: '2 小时前',
+    createdAt: '2 小时前',
     icon: 'i-lucide:shield-alert',
   },
 ]

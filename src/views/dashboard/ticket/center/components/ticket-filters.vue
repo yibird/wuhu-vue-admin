@@ -6,8 +6,6 @@ import {
 } from '../data'
 import type { TicketCategory, TicketPriority, TicketStatus } from '../types'
 
-defineOptions({ name: 'TicketFilters' })
-
 defineProps<{
   hasFilters: boolean
   resultCount: number

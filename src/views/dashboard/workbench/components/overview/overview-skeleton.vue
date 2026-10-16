@@ -1,6 +1,4 @@
-<script setup lang="ts">
-defineOptions({ name: 'OverviewSkeleton' })
-</script>
+<script setup lang="ts"></script>
 
 <template>
   <section

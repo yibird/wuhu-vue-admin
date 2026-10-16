@@ -1,21 +1,16 @@
 <script lang="ts" setup>
 import { NumberTicker } from '@/components/number-ticker'
 import { getCssRgbVar, getCssRgbVarAlpha, useEChartsTheme } from '@/theme'
-import { useECharts } from '@/plugins/echarts'
 import VChart from 'vue-echarts'
 import type { MonitorTone, StatusItemProps } from '../types'
 import type { EChartsCoreOption } from 'echarts/core'
-
-defineOptions({ name: 'Item' })
-
-useECharts()
 
 const { eChartsThemeName } = useEChartsTheme()
 
 const props = defineProps<StatusItemProps>()
 
 const toneClassMap: Record<MonitorTone, string> = {
-  primary: 'icon-primary-soft',
+  primary: 'primary-tinted',
   success: 'bg-success-tint text-success',
   warning: 'bg-warning-tint text-warning',
   error: 'bg-error-tint text-error',

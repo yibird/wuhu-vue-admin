@@ -1,11 +1,7 @@
 <template>
   <ActionSkeleton v-if="loading" />
-  <section
-    v-else
-    data-swapy-slot="action"
-    class="page-enter page-enter--5 min-w-0"
-  >
-    <WCard :styles="{ body: { padding: 0 } }" data-swapy-item="action">
+  <section v-else class="page-enter page-enter--5 min-w-0">
+    <Card class="shadow-none!" :styles="{ body: { padding: 0 } }">
       <template #title>
         <span class="text-base text-main font-700">快捷操作</span>
       </template>
@@ -57,7 +53,7 @@
           </span>
         </button>
       </div>
-    </WCard>
+    </Card>
   </section>
 
   <QuickActionManagerModal
@@ -68,14 +64,12 @@
 </template>
 
 <script lang="ts" setup>
-import { useRouter } from 'vue-router'
-import { WCard } from '@/components'
+import { useTabs } from '@/hooks'
+import { Card } from '@/components'
 import { defaultWorkbenchActionIds, workbenchActions } from './data'
 import ActionSkeleton from './action-skeleton.vue'
-import QuickActionManagerModal from './quick-action-manager-modal.vue'
+import QuickActionManagerModal from './modal.vue'
 import type { WorkbenchAction } from './types'
-
-defineOptions({ name: 'Action' })
 
 const { loading = false } = defineProps<{
   loading?: boolean
@@ -85,7 +79,7 @@ const emit = defineEmits<{
   createProject: []
 }>()
 
-const router = useRouter()
+const { openTabByPath } = useTabs()
 const managerOpen = shallowRef(false)
 const selectedActionIds = shallowRef<WorkbenchAction['id'][]>([
   ...defaultWorkbenchActionIds,
@@ -103,7 +97,7 @@ async function handleActionClick(item: WorkbenchAction) {
   }
 
   if (item.path) {
-    await router.push(item.path)
+    await openTabByPath(item.path)
   }
 }
 </script>

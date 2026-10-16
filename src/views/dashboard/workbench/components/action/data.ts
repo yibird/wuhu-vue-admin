@@ -6,7 +6,7 @@ export const workbenchActions: WorkbenchAction[] = [
     icon: 'i-lucide:plus-circle',
     name: '新建项目',
     desc: '创建交付空间',
-    tone: 'icon-primary-soft',
+    tone: 'bg-primary-tint',
     text: 'text-primary',
     action: 'create-project',
   },
@@ -78,12 +78,15 @@ export const workbenchActions: WorkbenchAction[] = [
     icon: 'i-lucide:bell',
     name: '通知公告',
     desc: '查看最新通知',
-    tone: 'icon-primary-soft',
+    tone: 'bg-primary-tint',
     text: 'text-primary',
-    path: '/sys/notice',
+    path: '/sys/notice/list',
   },
 ]
 
+/** 默认在工作台固定的快捷入口数量 */
+const DEFAULT_ACTION_COUNT = 4
+
 export const defaultWorkbenchActionIds = workbenchActions
-  .slice(0, 4)
+  .slice(0, DEFAULT_ACTION_COUNT)
   .map((item) => item.id)

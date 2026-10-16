@@ -6,8 +6,6 @@ import type {
   ServiceStatus,
 } from './types'
 
-defineOptions({ name: 'ServiceHealth' })
-
 const { items = [], loading = false } = defineProps<ServiceHealthProps>()
 const emit = defineEmits<ServiceHealthEmits>()
 

@@ -104,7 +104,6 @@ import {
 import type { MenuProps } from 'antdv-next'
 import type { CardTaskActionEmits, CardTaskItemProps } from '../types'
 
-defineOptions({ name: 'Item' })
 const { item } = defineProps<CardTaskItemProps>()
 const emit = defineEmits<CardTaskActionEmits>()
 

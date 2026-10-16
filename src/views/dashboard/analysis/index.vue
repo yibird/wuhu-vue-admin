@@ -2,17 +2,26 @@
   <WView :full="false" class="overflow-hidden">
     <div class="page-view flex flex-col gap-12">
       <Overview :items="cards" />
-      <LazyContainer :min-height="trendMinHeight" root-margin="0px 0px 128px">
+      <LazyContainer root-margin="0px 0px 128px">
         <template #placeholder>
-          <AnalysisBlockSkeleton :min-height="trendMinHeight" variant="trend" />
+          <StatisticsSkeleton />
         </template>
         <Suspense>
           <Statistics />
           <template #fallback>
-            <AnalysisBlockSkeleton
-              :min-height="trendMinHeight"
-              variant="trend"
-            />
+            <StatisticsSkeleton />
+          </template>
+        </Suspense>
+      </LazyContainer>
+
+      <LazyContainer root-margin="0px 0px 96px">
+        <template #placeholder>
+          <GoalProgressSkeleton />
+        </template>
+        <Suspense>
+          <GoalProgress />
+          <template #fallback>
+            <GoalProgressSkeleton />
           </template>
         </Suspense>
       </LazyContainer>
@@ -21,85 +30,82 @@
         class="grid grid-cols-1 gap-12 xl:grid-cols-[minmax(0,1fr)_360px] 2xl:grid-cols-[minmax(0,1fr)_400px]"
       >
         <main class="min-w-0 flex flex-col gap-12">
-          <LazyContainer
-            :min-height="chartMinHeight"
-            root-margin="0px 0px 96px"
-          >
+          <LazyContainer root-margin="0px 0px 96px">
             <template #placeholder>
-              <AnalysisBlockSkeleton
-                :min-height="chartMinHeight"
-                variant="chart"
-              />
+              <VisitStatisticsSkeleton />
             </template>
             <Suspense>
               <VisitStatistics />
               <template #fallback>
-                <AnalysisBlockSkeleton
-                  :min-height="chartMinHeight"
-                  variant="chart"
-                />
+                <VisitStatisticsSkeleton />
               </template>
             </Suspense>
           </LazyContainer>
-          <LazyContainer
-            :min-height="funnelMinHeight"
-            root-margin="0px 0px 128px"
-          >
+          <LazyContainer root-margin="0px 0px 128px">
             <template #placeholder>
-              <AnalysisBlockSkeleton
-                :min-height="funnelMinHeight"
-                variant="funnel"
-              />
+              <ConversionFunnelSkeleton />
             </template>
             <Suspense>
               <ConversionFunnel />
               <template #fallback>
-                <AnalysisBlockSkeleton
-                  :min-height="funnelMinHeight"
-                  variant="funnel"
-                />
+                <ConversionFunnelSkeleton />
+              </template>
+            </Suspense>
+          </LazyContainer>
+          <LazyContainer root-margin="0px 0px 96px">
+            <template #placeholder>
+              <RiskAlertsSkeleton />
+            </template>
+            <Suspense>
+              <RiskAlerts />
+              <template #fallback>
+                <RiskAlertsSkeleton />
               </template>
             </Suspense>
           </LazyContainer>
         </main>
         <aside class="min-w-0 flex flex-col gap-12">
-          <LazyContainer
-            :min-height="isMobileViewport ? 381 : 481"
-            root-margin="0px 0px 96px"
-          >
+          <LazyContainer root-margin="0px 0px 96px">
             <template #placeholder>
-              <AnalysisBlockSkeleton
-                :min-height="isMobileViewport ? 381 : 481"
-                variant="pie"
-              />
+              <HotSearchSkeleton />
             </template>
             <Suspense>
               <HotSearch />
               <template #fallback>
-                <AnalysisBlockSkeleton
-                  :min-height="isMobileViewport ? 381 : 481"
-                  variant="pie"
-                />
+                <HotSearchSkeleton />
               </template>
             </Suspense>
           </LazyContainer>
-          <LazyContainer
-            :min-height="rankingMinHeight"
-            root-margin="0px 0px 128px"
-          >
+          <LazyContainer root-margin="0px 0px 128px">
             <template #placeholder>
-              <AnalysisBlockSkeleton
-                :min-height="rankingMinHeight"
-                variant="ranking"
-              />
+              <HotItemsSkeleton />
             </template>
             <Suspense>
               <HotItems />
               <template #fallback>
-                <AnalysisBlockSkeleton
-                  :min-height="rankingMinHeight"
-                  variant="ranking"
-                />
+                <HotItemsSkeleton />
+              </template>
+            </Suspense>
+          </LazyContainer>
+          <LazyContainer root-margin="0px 0px 96px">
+            <template #placeholder>
+              <TrafficSourceSkeleton />
+            </template>
+            <Suspense>
+              <TrafficSource />
+              <template #fallback>
+                <TrafficSourceSkeleton />
+              </template>
+            </Suspense>
+          </LazyContainer>
+          <LazyContainer root-margin="0px 0px 128px">
+            <template #placeholder>
+              <SalesRankingSkeleton />
+            </template>
+            <Suspense>
+              <SalesRanking />
+              <template #fallback>
+                <SalesRankingSkeleton />
               </template>
             </Suspense>
           </LazyContainer>
@@ -110,35 +116,29 @@
 </template>
 
 <script lang="ts" setup>
-import { useMediaQuery } from '@vueuse/core'
 import { LazyContainer } from '@/components'
-import AnalysisBlockSkeleton from './components/analysis-block-skeleton.vue'
 import Overview from './components/overview/index.vue'
+import {
+  Statistics,
+  StatisticsSkeleton,
+  GoalProgress,
+  GoalProgressSkeleton,
+  VisitStatistics,
+  VisitStatisticsSkeleton,
+  ConversionFunnel,
+  ConversionFunnelSkeleton,
+  RiskAlerts,
+  RiskAlertsSkeleton,
+  HotSearch,
+  HotSearchSkeleton,
+  HotItems,
+  HotItemsSkeleton,
+  TrafficSource,
+  TrafficSourceSkeleton,
+  SalesRanking,
+  SalesRankingSkeleton,
+} from './components'
 import { cards } from './config'
-
-const Statistics = defineAsyncComponent(
-  () => import('./components/statistics/index.vue')
-)
-const VisitStatistics = defineAsyncComponent(
-  () => import('./components/visit-statistics.vue')
-)
-const ConversionFunnel = defineAsyncComponent(
-  () => import('./components/conversion-funnel.vue')
-)
-const HotSearch = defineAsyncComponent(
-  () => import('./components/hot-search.vue')
-)
-const HotItems = defineAsyncComponent(
-  () => import('./components/hot-items.vue')
-)
-
-const isMobileViewport = useMediaQuery('(max-width: 767px)')
-const isWideViewport = useMediaQuery('(min-width: 1536px)')
-
-const trendMinHeight = computed(() => (isMobileViewport.value ? 539 : 483))
-const chartMinHeight = computed(() => (isMobileViewport.value ? 361 : 481))
-const funnelMinHeight = computed(() => (isWideViewport.value ? 593 : 1078))
-const rankingMinHeight = 619
 </script>
 
 <style lang="less" scoped>

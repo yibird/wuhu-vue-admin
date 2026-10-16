@@ -7,8 +7,6 @@ import {
 import type { IFile } from '../types'
 import { getFileCategoryByType, getFileExtension } from '../utils'
 
-defineOptions({ name: 'PreviewModal' })
-
 const file = defineModel<IFile | null>('file', {
   required: true,
 })

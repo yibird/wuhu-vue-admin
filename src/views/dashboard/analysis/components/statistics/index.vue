@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { DateRangePicker, WCard } from '@/components'
+import { DateRangePicker, Card } from '@/components'
 import SalesRevenue from './sales-revenue.vue'
 import VisitCount from './visit-count.vue'
 import { rangeOptions, resolveRange } from './data'
@@ -46,7 +46,7 @@ function onDateChange(dates: Array<Dayjs> | null) {
 </script>
 
 <template>
-  <WCard
+  <Card
     class="page-enter page-enter--3 overflow-hidden rounded-8 border-1 border-solid border-color-2 shadow-[var(--w-shadow-card)]"
     variant="borderless"
     :styles="{
@@ -66,7 +66,6 @@ function onDateChange(dates: Array<Dayjs> | null) {
         <a-radio-group
           v-model:value="activeRange"
           name="analysis-range"
-          class="analysis-range-group"
           @change="onRangeChange"
         >
           <a-radio-button
@@ -80,7 +79,8 @@ function onDateChange(dates: Array<Dayjs> | null) {
         <DateRangePicker
           v-model:value="dateRange"
           allow-clear
-          class="w-240 max-sm:w-full"
+          :presets="[]"
+          class="w-260! max-sm:w-full"
           @change="onDateChange"
         />
       </div>
@@ -104,46 +104,5 @@ function onDateChange(dates: Array<Dayjs> | null) {
         </div>
       </a-tab-pane>
     </a-tabs>
-  </WCard>
+  </Card>
 </template>
-
-<style lang="less" scoped>
-// 分段时间筛选：统一为现代 pill 分段控件
-:deep(.analysis-range-group) {
-  .ant-radio-button-wrapper {
-    height: 32px;
-    padding: 0 14px;
-    line-height: 30px;
-    color: rgb(var(--w-text-secondary));
-    background: transparent;
-    border: none;
-    border-radius: 8px;
-    transition:
-      color var(--w-motion-duration-base) var(--w-motion-ease-standard),
-      background-color var(--w-motion-duration-base)
-        var(--w-motion-ease-standard);
-
-    &:not(:first-child)::before {
-      display: none;
-    }
-
-    &:hover {
-      color: rgb(var(--w-color-primary));
-      background: rgb(var(--w-color-primary) / 6%);
-    }
-
-    &-checked,
-    &-checked:hover {
-      color: #fff;
-      background: rgb(var(--w-color-primary));
-      box-shadow: 0 4px 12px -4px rgb(var(--w-color-primary) / 55%);
-    }
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  :deep(.analysis-range-group .ant-radio-button-wrapper) {
-    transition: none;
-  }
-}
-</style>

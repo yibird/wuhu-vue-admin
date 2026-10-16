@@ -1,8 +1,8 @@
 export { default as Project } from './project.vue'
 export { default as ProjectSettingsModal } from './project-settings-modal.vue'
 export {
-  getProjectLogoByTone,
   getProjectLogoOption,
+  getProjectStatusClass,
   initialProjects,
   projectLogoOptions,
   workbenchMembers,

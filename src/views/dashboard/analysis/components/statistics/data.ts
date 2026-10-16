@@ -64,11 +64,11 @@ export function buildBuckets([start, end]: DateRange): RangeBucket[] {
   if (days <= 2) {
     for (
       let cursor = start.startOf('hour');
-      cursor.isBefore(end);
+      !cursor.isAfter(end);
       cursor = cursor.add(1, 'hour')
     ) {
       buckets.push({
-        label: cursor.format('HH:00'),
+        label: days > 1 ? cursor.format('MM-DD HH:00') : cursor.format('HH:00'),
         seed: cursor.format('YYYYMMDDHH'),
       })
     }
@@ -78,7 +78,7 @@ export function buildBuckets([start, end]: DateRange): RangeBucket[] {
   if (days <= 100) {
     for (
       let cursor = start.startOf('day');
-      cursor.isBefore(end);
+      !cursor.isAfter(end);
       cursor = cursor.add(1, 'day')
     ) {
       buckets.push({
@@ -91,7 +91,7 @@ export function buildBuckets([start, end]: DateRange): RangeBucket[] {
 
   for (
     let cursor = start.startOf('month');
-    cursor.isBefore(end);
+    !cursor.isAfter(end);
     cursor = cursor.add(1, 'month')
   ) {
     buckets.push({

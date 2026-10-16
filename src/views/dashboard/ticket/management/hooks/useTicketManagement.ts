@@ -1,7 +1,13 @@
 import dayjs from 'dayjs'
 import { computed, reactive, shallowRef, watch } from 'vue'
-import { getTicketPriorityMeta } from '../../center/data'
+import {
+  SLA_AT_RISK_HOURS,
+  UNASSIGNED,
+  getSlaHours,
+  getTicketPriorityMeta,
+} from '../../center/data'
 import { useTicketStore } from '../../center/store'
+import { matchesFilters, matchesKeyword } from '../../center/utils'
 import type {
   TicketPriority,
   TicketRecord,
@@ -25,7 +31,7 @@ const priorityRank: Record<TicketPriority, number> = {
 }
 
 function matchesQueue(ticket: TicketRecord, queue: TicketQueueKey) {
-  if (queue === 'unassigned') return ticket.assignee === '待分配'
+  if (queue === 'unassigned') return ticket.assignee === UNASSIGNED
   if (queue === 'mine') return ticket.assignee === CURRENT_AGENT
   if (queue === 'overdue') {
     return (
@@ -39,14 +45,12 @@ function matchesQueue(ticket: TicketRecord, queue: TicketQueueKey) {
   return true
 }
 
-function getSlaHours(priority: TicketPriority) {
-  return { urgent: 4, high: 8, medium: 24, low: 72 }[priority]
-}
-
 function getSlaStatus(dueAt: string): TicketSlaStatus {
   const due = dayjs(dueAt)
   if (dayjs().isAfter(due)) return 'breached'
-  return due.diff(dayjs(), 'hour', true) <= 4 ? 'at-risk' : 'on-track'
+  return due.diff(dayjs(), 'hour', true) <= SLA_AT_RISK_HOURS
+    ? 'at-risk'
+    : 'on-track'
 }
 
 export function useTicketManagement() {
@@ -87,32 +91,19 @@ export function useTicketManagement() {
 
     return tickets.value
       .filter((ticket) => {
-        const matchesKeyword =
-          !keyword ||
-          [
-            ticket.id,
-            ticket.subject,
-            ticket.reporter,
-            ticket.contact,
-            ticket.assignee,
-            ticket.team,
-          ].some((value) => value.toLocaleLowerCase().includes(keyword))
-        const matchesStatus =
-          filters.status === 'all' || ticket.status === filters.status
-        const matchesPriority =
-          filters.priority === 'all' || ticket.priority === filters.priority
-        const matchesCategory =
-          filters.category === 'all' || ticket.category === filters.category
-        const matchesTeam =
-          filters.team === 'all' || ticket.team === filters.team
+        const matchKeyword = matchesKeyword(ticket, keyword, [
+          'id',
+          'subject',
+          'reporter',
+          'contact',
+          'assignee',
+          'team',
+        ])
 
         return (
           matchesQueue(ticket, queue.value) &&
-          matchesKeyword &&
-          matchesStatus &&
-          matchesPriority &&
-          matchesCategory &&
-          matchesTeam
+          matchKeyword &&
+          matchesFilters(ticket, filters)
         )
       })
       .sort(
@@ -201,9 +192,9 @@ export function useTicketManagement() {
     if (!ticket) return
 
     const now = dayjs().format('YYYY-MM-DD HH:mm')
-    const team = ticket.team === '待分配' ? DEFAULT_TEAM : ticket.team
+    const team = ticket.team === UNASSIGNED ? DEFAULT_TEAM : ticket.team
     const assignee =
-      ticket.assignee === '待分配' ? CURRENT_AGENT : ticket.assignee
+      ticket.assignee === UNASSIGNED ? CURRENT_AGENT : ticket.assignee
     return updateTicket(
       ticket.id,
       {

@@ -2,8 +2,6 @@
 import { message } from 'antdv-next'
 import type { WorkbenchAction } from './types'
 
-defineOptions({ name: 'QuickActionManagerModal' })
-
 const MAX_ACTIONS = 8
 
 const props = defineProps<{
@@ -62,7 +60,7 @@ function toggleAction(id: WorkbenchAction['id']) {
     <template #title>
       <div class="flex items-center gap-10">
         <span
-          class="size-38 flex items-center justify-center rounded-8 icon-primary-soft"
+          class="size-38 flex items-center justify-center rounded-8 primary-tinted"
         >
           <Icon name="i-lucide:layout-grid" :size="18" />
         </span>
@@ -125,7 +123,6 @@ function toggleAction(id: WorkbenchAction['id']) {
 
             <a-button
               :type="isSelected(item.id) ? 'default' : 'primary'"
-              size="small"
               :aria-label="
                 (isSelected(item.id) ? '移除' : '添加') + item.name + '入口'
               "

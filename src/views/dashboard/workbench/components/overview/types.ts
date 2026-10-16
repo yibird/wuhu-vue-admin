@@ -3,5 +3,5 @@ export interface OverviewMetric {
   value: number
   desc: string
   icon: string
-  tone: string
+  iconClass: string
 }

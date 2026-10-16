@@ -1,16 +1,14 @@
 <script lang="ts" setup>
-import { useRouter } from 'vue-router'
-import { SlidingHighlight, WCard } from '@/components'
+import { SlidingHighlight, Card } from '@/components'
+import { useTabs } from '@/hooks'
 import AnnouncementSkeleton from './announcement-skeleton.vue'
 import type { WorkbenchAnnouncement } from './types'
-
-defineOptions({ name: 'Announcement' })
 
 const { loading = false } = defineProps<{
   loading?: boolean
 }>()
 
-const router = useRouter()
+const { openTabByPath } = useTabs()
 const detailOpen = shallowRef(false)
 const selectedAnnouncement = shallowRef<WorkbenchAnnouncement>()
 
@@ -101,21 +99,14 @@ function clearSelectedAnnouncement() {
 
 async function openNoticeCenter() {
   closeDetail()
-  await router.push('/sys/notice')
+  await openTabByPath('/sys/notice/list')
 }
 </script>
 
 <template>
   <AnnouncementSkeleton v-if="loading" />
-  <section
-    v-else
-    data-swapy-slot="announcement"
-    class="page-enter page-enter--6 min-w-0"
-  >
-    <WCard
-      data-swapy-item="announcement"
-      :styles="{ body: { padding: '12px' } }"
-    >
+  <section v-else class="page-enter page-enter--6 min-w-0">
+    <Card class="shadow-none!" :styles="{ body: { padding: '12px' } }">
       <template #title>
         <div class="min-w-0 flex items-center gap-8">
           <span class="text-base text-main font-700">通知公告</span>
@@ -211,7 +202,7 @@ async function openNoticeCenter() {
         查看全部公告
         <Icon name="i-lucide:arrow-right" :size="14" />
       </button>
-    </WCard>
+    </Card>
   </section>
 
   <a-modal

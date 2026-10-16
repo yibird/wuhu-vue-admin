@@ -69,12 +69,15 @@ export function useFileContentActions({
     viewMode.value === 'list' ? treeFiles.value : files.value
   )
   const currentVisibleCount = computed(() => visibleFiles.value.length)
-  const selectedVisibleFiles = computed(() => {
+  const selectedVisibleItems = computed(() => {
     const selectedKeySet = new Set(selectedKeys.value)
-    return visibleFiles.value.filter(
-      (item) => item.type === FILE_NODE_TYPE.FILE && selectedKeySet.has(item.id)
-    )
+    return visibleFiles.value.filter((item) => selectedKeySet.has(item.id))
   })
+  const selectedVisibleFiles = computed(() =>
+    selectedVisibleItems.value.filter(
+      (item) => item.type === FILE_NODE_TYPE.FILE
+    )
+  )
   const hasFileSelection = computed(() => selectedVisibleFiles.value.length > 0)
   const selectedCountText = computed(() =>
     hasSelection.value ? `已选 ${selectedKeys.value.length} 项` : '未选择文件'
@@ -97,7 +100,7 @@ export function useFileContentActions({
           {
             key: 'restore',
             label: '恢复选中',
-            disabled: !hasFileSelection.value,
+            disabled: !hasSelection.value,
             icon: renderMenuIcon('i-lucide:rotate-ccw'),
           },
         ]
@@ -132,7 +135,7 @@ export function useFileContentActions({
       key: 'delete',
       label: isRecycleBin.value ? '彻底删除选中' : '删除选中',
       danger: true,
-      disabled: !hasFileSelection.value,
+      disabled: !hasSelection.value,
       icon: renderMenuIcon('i-lucide:trash-2'),
     },
   ])
@@ -179,8 +182,8 @@ export function useFileContentActions({
   }
 
   function requestSelectedAccess(action: () => void) {
-    const lockedFile = selectedVisibleFiles.value
-      .map((file) => getAccessLockedFile(file))
+    const lockedFile = selectedVisibleItems.value
+      .map((item) => getAccessLockedFile(item))
       .find((file): file is IFile => Boolean(file))
 
     if (lockedFile) {

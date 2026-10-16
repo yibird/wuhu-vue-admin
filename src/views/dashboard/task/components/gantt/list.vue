@@ -7,8 +7,6 @@ import {
 import type { Task } from '../types'
 import { statusBarClass, taskProgress } from './utils'
 
-defineOptions({ name: 'List' })
-
 interface Props {
   readonly items: Task[]
   readonly selectedTaskId: number | null
@@ -38,9 +36,9 @@ function dueMeta(task: Task) {
 
 <template>
   <div
-    class="h-176 min-h-0 rounded-4 bg-container min-w-900 p-12 w-full h-full overflow-x-hidden overflow-y-auto"
+    class="h-176 min-h-0 rounded-4 bg-container p-12 w-full overflow-x-auto overflow-y-auto"
   >
-    <div class="flex flex-col gap-8">
+    <div class="min-w-900 flex flex-col gap-8">
       <div
         v-for="item in items"
         :key="item.id"

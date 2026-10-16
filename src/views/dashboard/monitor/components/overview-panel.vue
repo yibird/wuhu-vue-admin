@@ -3,12 +3,10 @@ import { NumberTicker } from '@/components/number-ticker'
 import Card from './card.vue'
 import type { MonitorTone, OverviewProps } from './types'
 
-defineOptions({ name: 'OverviewPanel' })
-
 const { items = [], loading = false } = defineProps<OverviewProps>()
 
 const toneClassMap: Record<MonitorTone, string> = {
-  primary: 'icon-primary-soft',
+  primary: 'primary-tinted',
   success: 'bg-success-tint text-success',
   warning: 'bg-warning-tint text-warning',
   error: 'bg-error-tint text-error',

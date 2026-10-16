@@ -5,6 +5,7 @@ import { useClipboard } from '@vueuse/core'
 import {
   FILE_NODE_TYPE,
   FILE_TYPE,
+  ROOT_PARENT_ID,
   type FileSelectionKey,
   type IFile,
 } from '../components/types'
@@ -137,7 +138,7 @@ export function useFileOperations(explorer: FileExplorer) {
   }
 
   function confirmBatchDelete() {
-    const fileKeys = explorer.selectedFiles.value.map((item) => item.id)
+    const fileKeys = [...explorer.selectedKeys.value]
     if (!fileKeys.length) return
     if (explorer.activeCategory.value === 'trash') {
       confirmBatchPermanentDelete()
@@ -193,7 +194,7 @@ export function useFileOperations(explorer: FileExplorer) {
   }
 
   function confirmBatchPermanentDelete() {
-    const fileKeys = explorer.selectedFiles.value.map((item) => item.id)
+    const fileKeys = [...explorer.selectedKeys.value]
     if (!fileKeys.length) return
 
     Modal.confirm({
@@ -228,8 +229,33 @@ export function useFileOperations(explorer: FileExplorer) {
     )
   }
 
-  function restoreFiles(keys: FileSelectionKey[]) {
+  /**
+   * 计算恢复时需要一并处理的节点
+   *
+   * 回收站视图平铺展示所有已删除节点,子项可能被单独恢复,
+   * 这里把仍在回收站中的祖先目录一并纳入,避免恢复后节点因父目录缺失而不可见。
+   *
+   * @param keys 待恢复的选中节点
+   * @returns 需要恢复的节点 id 集合
+   */
+  function collectRestoreKeys(keys: FileSelectionKey[]) {
     const keySet = new Set(explorer.getCascadeKeys(keys))
+
+    for (const key of keys) {
+      const file = explorer.getFileById(key)
+      if (!file || file.parentLevel === ROOT_PARENT_ID) continue
+
+      for (const id of file.parentLevel.split('-')) {
+        const parent = explorer.getFileById(id)
+        if (parent && explorer.isDeleted(parent)) keySet.add(id)
+      }
+    }
+
+    return [...keySet]
+  }
+
+  function restoreFiles(keys: FileSelectionKey[]) {
+    const keySet = new Set(collectRestoreKeys(keys))
     const now = dayjs().format('YYYY-MM-DD HH:mm:ss')
     const restoredFiles = explorer.files.value.filter(
       (item) => keySet.has(item.id) && explorer.isDeleted(item)
@@ -257,7 +283,7 @@ export function useFileOperations(explorer: FileExplorer) {
   }
 
   function restoreSelectedFiles() {
-    restoreFiles(explorer.selectedFiles.value.map((item) => item.id))
+    restoreFiles([...explorer.selectedKeys.value])
   }
 
   function toggleFavorite(file: IFile) {

@@ -1,29 +1,18 @@
 <script lang="ts" setup>
-import type { CardItemExtraEmits } from '../types'
+import type { StatPeriod } from './types'
 
-defineOptions({ name: 'ItemExtra' })
-
-const items = [
-  {
-    label: '年',
-    value: 'year',
-  },
-  {
-    label: '月',
-    value: 'month',
-  },
-  {
-    label: '日',
-    value: 'day',
-  },
+const items: Array<{ label: string; value: StatPeriod }> = [
+  { label: '年', value: 'year' },
+  { label: '月', value: 'month' },
+  { label: '日', value: 'day' },
 ]
 
-const emit = defineEmits<CardItemExtraEmits>()
-const value = shallowRef('year')
+/** 周期状态由卡片持有,这里只负责受控切换 */
+const period = defineModel<StatPeriod>('period', { required: true })
 
-function onChange(val: string) {
-  value.value = val
-  emit('change', val)
+function handleChange(value: string | number) {
+  const next = items.find((item) => item.value === value)
+  if (next) period.value = next.value
 }
 </script>
 
@@ -31,6 +20,6 @@ function onChange(val: string) {
   <div
     class="inline-flex shrink-0 rounded-999 bg-fill-secondary p-2 text-xs text-secondary"
   >
-    <a-segmented v-model:value="value" :options="items" @change="onChange" />
+    <a-segmented :options="items" :value="period" @change="handleChange" />
   </div>
 </template>

@@ -8,8 +8,6 @@ import type {
   ProjectSettingsPayload,
 } from './types'
 
-defineOptions({ name: 'ProjectSettingsModal' })
-
 const props = withDefaults(
   defineProps<{
     mode?: ProjectSettingsMode
@@ -271,7 +269,7 @@ function handleCancel() {
     <template #title>
       <div class="flex items-center gap-10">
         <span
-          class="size-38 flex items-center justify-center rounded-8 icon-primary-soft"
+          class="size-38 flex items-center justify-center rounded-8 primary-tinted"
         >
           <Icon name="i-lucide:folder-cog" :size="18" />
         </span>

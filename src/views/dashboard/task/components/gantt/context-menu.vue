@@ -4,8 +4,6 @@ import { taskProgress } from './utils'
 import type { Task } from '../types'
 import type { TaskGanttMenuPosition } from './utils'
 
-defineOptions({ name: 'ContextMenu' })
-
 interface Props {
   readonly open: boolean
   readonly task: Task | null

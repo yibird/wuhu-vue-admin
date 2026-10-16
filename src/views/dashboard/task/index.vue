@@ -27,7 +27,6 @@
           @duplicate="duplicateTask"
           @edit="openEditModal"
           @mark-done="markTaskDone"
-          @move="moveTask"
         />
       </div>
     </div>
@@ -187,9 +186,9 @@ const component = computed(() => {
   )
 })
 
-// 卡片视图需要按状态筛选分组,表格与甘特图不接受该属性
+// 卡片视图需要按状态筛选分组并接收拖拽落库事件,表格与甘特图不接受这些属性
 const viewProps = computed(() =>
-  type.value === 'card' ? { status: statusFilter.value } : {}
+  type.value === 'card' ? { status: statusFilter.value, onMove: moveTask } : {}
 )
 
 function getDefaultStartDate() {

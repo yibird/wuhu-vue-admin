@@ -1,16 +1,11 @@
 <script lang="ts" setup>
 import { NumberTicker } from '@/components/number-ticker'
 import { getCssRgbVar, getCssRgbVarAlpha, useEChartsTheme } from '@/theme'
-import { useECharts } from '@/plugins/echarts'
 import Card from './card.vue'
 import { metricLabels } from '../config'
 import VChart from 'vue-echarts'
 import type { MonitorMetric, SysMonitorProps } from './types'
 import type { EChartsCoreOption } from 'echarts/core'
-
-defineOptions({ name: 'SysMonitor' })
-
-useECharts()
 
 const { baseChartOption, eChartsThemeName, getEChartsColor } = useEChartsTheme()
 

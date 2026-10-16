@@ -1,14 +1,9 @@
 <script lang="ts" setup>
 import { getCssRgbVarAlpha, useEChartsTheme } from '@/theme'
-import { useECharts } from '@/plugins/echarts'
 import VChart from 'vue-echarts'
 import { bucketValue, buildBuckets } from './data'
-import type { StatisticsChartProps } from '../types'
+import type { StatisticsChartProps } from './types'
 import type { EChartsCoreOption } from 'echarts/core'
-
-defineOptions({ name: 'VisitCount' })
-
-useECharts()
 
 const props = defineProps<StatisticsChartProps>()
 

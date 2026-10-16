@@ -1,10 +1,8 @@
-<script setup lang="ts">
-defineOptions({ name: 'DynamicSkeleton' })
-</script>
+<script setup lang="ts"></script>
 
 <template>
-  <section data-swapy-slot="dynamic" class="min-w-0" aria-busy="true">
-    <a-card :styles="{ body: { padding: 0 } }" data-swapy-item="dynamic">
+  <section class="min-w-0" aria-busy="true">
+    <a-card :styles="{ body: { padding: 0 } }">
       <template #title>
         <a-skeleton-input active class="!w-88" />
       </template>

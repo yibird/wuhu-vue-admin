@@ -63,48 +63,88 @@
           class="workbench-overview page-enter page-enter--2"
         />
 
+        <!--
+          GridStack 的 item 必须是静态模板:库会接管 item 的顺序、class 与内联样式,
+          属性一旦变成响应式就会与 Vue 的 patch 互相打架。因此这里不使用 v-for,
+          且 gs-* 全部写成静态属性。item 内部的响应式更新(skeleton↔卡片)是安全的。
+        -->
         <div
-          ref="container"
-          class="workbench-grid min-w-0 [&_[data-swapy-highlighted]]:(bg-primary-tint)"
+          ref="gridRef"
+          class="grid-stack workbench-grid min-w-0"
           :class="{ 'workbench-grid--drag': dragEnabled }"
         >
-          <a-row
-            :gutter="[{ xs: 0, sm: 12, md: 12, lg: 12, xl: 12, xxl: 12 }, 12]"
+          <div
+            class="grid-stack-item"
+            gs-id="project"
+            gs-x="0"
+            gs-y="0"
+            gs-w="8"
           >
-            <a-col
-              :xs="24"
-              :sm="24"
-              :md="24"
-              :lg="16"
-              :xl="17"
-              :xxl="17"
-              class="min-w-0 flex flex-col gap-12"
-            >
+            <div class="grid-stack-item-content">
               <Project
                 :loading="isLoading"
                 :projects="projects"
                 @open-settings="openEditProjectSettings"
               />
+            </div>
+          </div>
+
+          <div
+            class="grid-stack-item"
+            gs-id="dynamic"
+            gs-x="0"
+            gs-y="1"
+            gs-w="8"
+          >
+            <div class="grid-stack-item-content">
               <Dynamic :loading="isLoading" />
+            </div>
+          </div>
+
+          <div
+            class="grid-stack-item"
+            gs-id="analysis"
+            gs-x="0"
+            gs-y="2"
+            gs-w="8"
+          >
+            <div class="grid-stack-item-content">
               <DataAnalysis :loading="isLoading" />
-            </a-col>
-            <a-col
-              :xs="24"
-              :sm="24"
-              :md="24"
-              :lg="8"
-              :xl="7"
-              :xxl="7"
-              class="min-w-0 flex flex-col gap-12"
-            >
+            </div>
+          </div>
+
+          <div
+            class="grid-stack-item"
+            gs-id="action"
+            gs-x="8"
+            gs-y="0"
+            gs-w="4"
+          >
+            <div class="grid-stack-item-content">
               <Action
                 :loading="isLoading"
                 @create-project="openCreateProjectSettings"
               />
+            </div>
+          </div>
+
+          <div
+            class="grid-stack-item"
+            gs-id="announcement"
+            gs-x="8"
+            gs-y="1"
+            gs-w="4"
+          >
+            <div class="grid-stack-item-content">
               <Announcement :loading="isLoading" />
+            </div>
+          </div>
+
+          <div class="grid-stack-item" gs-id="team" gs-x="8" gs-y="2" gs-w="4">
+            <div class="grid-stack-item-content">
               <Team :loading="isLoading" />
-            </a-col>
-          </a-row>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -119,7 +159,8 @@
 </template>
 
 <script lang="ts" setup>
-import { createSwapy, type Swapy } from 'swapy'
+import { GridStack } from 'gridstack'
+import 'gridstack/dist/gridstack.min.css'
 import { useLoading } from '@/hooks'
 import {
   Overview,
@@ -131,6 +172,7 @@ import {
   DataAnalysis,
 } from './components'
 import {
+  getProjectStatusClass,
   initialProjects,
   ProjectSettingsModal,
   workbenchMembers,
@@ -141,8 +183,10 @@ import type {
   WorkbenchProject,
 } from './components/project'
 
-const swapy = shallowRef<Swapy>()
-const container = useTemplateRef<HTMLDivElement>('container')
+const grid = shallowRef<GridStack | null>(null)
+const contentObserver = shallowRef<ResizeObserver | null>(null)
+let remeasureTimer = 0
+const gridRef = useTemplateRef<HTMLDivElement>('gridRef')
 const dragEnabled = shallowRef(false)
 const projectSettingsOpen = shallowRef(false)
 const projectSettingsMode = shallowRef<ProjectSettingsMode>('create')
@@ -156,20 +200,89 @@ const projects = shallowRef<WorkbenchProject[]>(
 )
 const { isLoading } = useLoading()
 
-const setupSwapy = () => {
-  if (swapy.value || !container.value || !dragEnabled.value) return
-
-  // Animate once on drop; hover swapping repeatedly animates these deep cards.
-  swapy.value = createSwapy(container.value, {
-    animation: 'dynamic',
-    enabled: true,
-    swapMode: 'drop',
-  })
+const syncDragState = () => {
+  grid.value?.enableMove(dragEnabled.value)
+  grid.value?.enableResize(dragEnabled.value)
 }
 
-const destroySwapy = () => {
-  swapy.value?.destroy()
-  swapy.value = undefined
+/**
+ * 初始化网格
+ *
+ * - sizeToContent 让卡片高度跟随内容,cellHeight 取 8px 是为了让行数换算足够细
+ * - gs-y 只表示列内初始顺序(0/1/2),真实高度交给 sizeToContent;
+ *   若省略 gs-y,GridStack 会走 autoPosition 分支并忽略 gs-x,列归属就不确定了
+ * - 默认 handle 是整块内容,GridStack 内置会取消 footer/button/input 等元素上的拖拽,
+ *   所以卡片内部的按钮照常可点,不需要额外的抓手
+ */
+const setupGrid = () => {
+  if (grid.value || !gridRef.value) return
+
+  const instance = GridStack.init(
+    {
+      column: 12,
+      cellHeight: 8,
+      sizeToContent: true,
+      // 相邻卡片间距 2 * 6 = 12px,对齐原来的 gutter 12 / gap-12
+      margin: 6,
+      // 992px 以下单列,对齐原来 a-col 的 md=24、lg=16-8 断点
+      columnOpts: {
+        breakpoints: [{ w: 992, c: 1 }],
+        breakpointForWindow: true,
+      },
+      draggable: {
+        handle: '.grid-stack-item-content',
+        cancel: 'button, a[href], input, textarea, select, option',
+      },
+    },
+    gridRef.value
+  )
+  grid.value = instance
+
+  syncDragState()
+  observeCardContents(instance)
+  remeasureCards()
+}
+
+/**
+ * 内容高度变化后重新测量
+ *
+ * sizeToContent 会把卡片内容的 overflow-y 设为 hidden,
+ * 骨架屏换成真实卡片后不复测就会被裁切。
+ */
+const remeasureCards = async () => {
+  await nextTick()
+
+  const instance = grid.value
+  if (!instance) return
+
+  instance.getGridItems().forEach((item) => instance.resizeToContent(item))
+}
+
+/**
+ * 卡片内容尺寸变化后重新测量
+ *
+ * 卡片内的列表用了 content-visibility:auto,离屏时按 contain-intrinsic-size
+ * 上报占位高度,进视口后才收敛到真实高度。若只在加载完成时测一次,
+ * GridStack 会拿偏大的占位高度定下格子高度,矮卡片下方就会留出一段空白。
+ */
+const observeCardContents = (instance: GridStack | null) => {
+  contentObserver.value?.disconnect()
+  contentObserver.value = null
+  if (!instance) return
+
+  const observer = new ResizeObserver(() => {
+    // 卡片内容会经历「占位高度 -> 真实高度」的连续变化,去抖后再测一次,
+    // 避免在同一批尺寸抖动里反复重排
+    window.clearTimeout(remeasureTimer)
+    remeasureTimer = window.setTimeout(() => void remeasureCards(), 150)
+  })
+  instance.getGridItems().forEach((item) => {
+    const card = item.querySelector(
+      '.grid-stack-item-content'
+    )?.firstElementChild
+    if (card) observer.observe(card)
+  })
+  contentObserver.value = observer
 }
 
 const toggleDrag = () => {
@@ -198,11 +311,11 @@ const handleProjectSettingsSave = (payload: ProjectSettingsPayload) => {
     name: payload.name.trim(),
     describe: payload.describe.trim(),
     master: `${masterRole}：${payload.master.trim()}`,
-    createAt: currentProject?.createAt ?? formatProjectDate(),
+    createdAt: currentProject?.createdAt ?? formatProjectDate(),
     dueAt: payload.dueAt,
     progress: payload.progress,
-    status: status.label,
-    statusClass: status.class,
+    status,
+    statusClass: getProjectStatusClass(status),
     members: currentProject?.members ?? workbenchMembers.slice(0, 3),
   }
 
@@ -216,18 +329,18 @@ const handleProjectSettingsSave = (payload: ProjectSettingsPayload) => {
 
 function getProjectPresentation(payload: ProjectSettingsPayload) {
   if (payload.riskWatch || payload.priority === 'urgent') {
-    return { label: '有风险', class: 'bg-error-tint text-error' }
+    return '有风险'
   }
   if (payload.progress >= 80) {
-    return { label: '收尾中', class: 'bg-success-tint text-success' }
+    return '收尾中'
   }
   if (payload.priority === 'high') {
-    return { label: '重点推进', class: 'bg-warning-tint text-warning' }
+    return '重点推进'
   }
   if (payload.priority === 'low') {
-    return { label: '计划中', class: 'bg-info-tint text-info' }
+    return '计划中'
   }
-  return { label: '推进中', class: 'bg-primary-tint text-primary' }
+  return '推进中'
 }
 
 function formatProjectDate(date = new Date()) {
@@ -235,33 +348,26 @@ function formatProjectDate(date = new Date()) {
 }
 
 onMounted(() => {
-  if (!isLoading.value) {
-    setupSwapy()
-  }
+  // 与加载态无关地先建网格:骨架屏也是网格 item,
+  // 这样首屏就是两列排布,不会先竖排再跳到两列
+  setupGrid()
 })
 
 onBeforeUnmount(() => {
-  destroySwapy()
+  window.clearTimeout(remeasureTimer)
+  contentObserver.value?.disconnect()
+  contentObserver.value = null
+  // DOM 归 Vue 管,销毁时不要把节点一起删掉
+  grid.value?.destroy(false)
+  grid.value = null
 })
 
-watch(dragEnabled, (value) => {
-  if (isLoading.value) {
-    return
-  }
-
-  if (value) {
-    setupSwapy()
-    return
-  }
-
-  destroySwapy()
+watch(dragEnabled, () => {
+  syncDragState()
 })
 
 watch(isLoading, async (value) => {
-  if (!value) {
-    await nextTick()
-    setupSwapy()
-  }
+  if (!value) await remeasureCards()
 })
 </script>
 
@@ -282,25 +388,23 @@ watch(isLoading, async (value) => {
 }
 
 .workbench-grid {
-  :deep([data-swapy-item]) {
-    transition:
-      box-shadow var(--w-motion-duration-base) var(--w-motion-ease-standard),
-      border-color var(--w-motion-duration-base) var(--w-motion-ease-standard),
-      background-color var(--w-motion-duration-base)
-        var(--w-motion-ease-standard);
-  }
-
   &--drag {
-    :deep([data-swapy-item]) {
+    /* 编辑态:整块内容可拖(GridStack 已内置取消按钮等元素上的拖拽) */
+    :deep(.grid-stack-item-content) {
       cursor: grab;
       outline: 1px dashed rgb(var(--w-color-primary) / 22%);
       outline-offset: 3px;
     }
 
-    :deep([data-swapy-slot]:has(> [data-swapy-dragging])) {
-      position: relative;
-      z-index: 1000;
+    :deep(.grid-stack-item.ui-draggable-dragging .grid-stack-item-content) {
+      cursor: grabbing;
     }
+  }
+
+  /* 拖拽落点占位 */
+  :deep(.grid-stack-placeholder > .placeholder-content) {
+    background-color: rgb(var(--w-color-primary) / 10%);
+    border-radius: 12px;
   }
 }
 </style>

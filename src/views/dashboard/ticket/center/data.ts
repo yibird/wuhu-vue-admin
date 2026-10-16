@@ -139,6 +139,35 @@ export function getTicketCategoryMeta(category: TicketCategory) {
   return ticketCategoryList.find((item) => item.value === category)!
 }
 
+/**
+ * 未分配处理人/所属组的占位值
+ */
+export const UNASSIGNED = '待分配'
+
+/**
+ * 工单中心侧当前提交人名称
+ */
+export const CURRENT_REQUESTER = '当前用户'
+
+/**
+ * 各优先级对应的 SLA 时长(小时)
+ */
+export const SLA_HOURS_BY_PRIORITY: Record<TicketPriority, number> = {
+  urgent: 4,
+  high: 8,
+  medium: 24,
+  low: 72,
+}
+
+/**
+ * 距离 SLA 截止时间不足该小时数时视为「即将超时」
+ */
+export const SLA_AT_RISK_HOURS = 4
+
+export function getSlaHours(priority: TicketPriority) {
+  return SLA_HOURS_BY_PRIORITY[priority]
+}
+
 const initialTickets: TicketRecord[] = [
   {
     id: 'TK-20260807-0168',

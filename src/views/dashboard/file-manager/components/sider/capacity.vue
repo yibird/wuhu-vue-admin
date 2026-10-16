@@ -2,8 +2,6 @@
 import { Icon } from '@/components/icon'
 import { formatFileSize } from '../utils'
 
-defineOptions({ name: 'Capacity' })
-
 const props = defineProps<{
   usedSize: number
   totalSize: number

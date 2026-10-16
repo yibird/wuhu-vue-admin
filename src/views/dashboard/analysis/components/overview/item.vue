@@ -1,20 +1,18 @@
 <script lang="ts" setup>
-import { WCard } from '@/components'
+import { Card } from '@/components'
 import { NumberTicker } from '@/components/number-ticker'
 import ItemExtra from './item-extra.vue'
-import type { CardItemProps, CardItemEmits } from '../types.ts'
+import type { CardItemProps, StatPeriod } from './types.ts'
 
-defineOptions({ name: 'Item' })
+const { item } = defineProps<CardItemProps>()
 
-const { item, index } = defineProps<CardItemProps>()
-const emits = defineEmits<CardItemEmits>()
-const onChange = (val: string) => {
-  emits('change', val, index)
-}
+/** 每张卡片独立选择周期 */
+const period = shallowRef<StatPeriod>('year')
+const periodValue = computed(() => item?.values[period.value] ?? 0)
 </script>
 
 <template>
-  <WCard
+  <Card
     v-if="item"
     variant="outlined"
     size="small"
@@ -27,7 +25,7 @@ const onChange = (val: string) => {
         <div class="truncate text-sm text-main font-700">{{ item.title }}</div>
         <div class="mt-4 text-xs text-secondary">{{ item.description }}</div>
       </div>
-      <ItemExtra @change="onChange" />
+      <ItemExtra v-model:period="period" />
     </div>
 
     <div class="mt-16 flex items-end justify-between gap-12">
@@ -35,7 +33,7 @@ const onChange = (val: string) => {
         <div
           class="tabular-nums text-3xl text-main font-800 leading-none tracking-tight"
         >
-          <NumberTicker :value="item.value ?? 0" />
+          <NumberTicker :value="periodValue" />
         </div>
         <div class="mt-10 flex items-center gap-6 text-xs text-secondary">
           <span>累计</span>
@@ -50,7 +48,7 @@ const onChange = (val: string) => {
         <img :src="item.icon" alt="" class="size-26" />
       </div>
     </div>
-  </WCard>
+  </Card>
 </template>
 
 <style lang="less" scoped>

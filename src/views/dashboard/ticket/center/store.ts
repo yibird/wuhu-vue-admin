@@ -1,13 +1,18 @@
 import dayjs from 'dayjs'
 import { defineStore, storeToRefs } from 'pinia'
 import { shallowRef } from 'vue'
-import { createInitialTickets } from './data'
+import {
+  CURRENT_REQUESTER,
+  SLA_AT_RISK_HOURS,
+  UNASSIGNED,
+  createInitialTickets,
+  getSlaHours,
+} from './data'
 import type {
   TicketActivity,
   TicketActivityType,
   TicketActivityVisibility,
   TicketDraft,
-  TicketPriority,
   TicketRecord,
   TicketSlaStatus,
   TicketUpdate,
@@ -22,15 +27,6 @@ interface ActivityInput {
   visibility?: TicketActivityVisibility
 }
 
-function getSlaHours(priority: TicketPriority) {
-  return {
-    urgent: 4,
-    high: 8,
-    medium: 24,
-    low: 72,
-  }[priority]
-}
-
 function calculateSlaStatus(ticket: TicketRecord): TicketSlaStatus {
   const dueAt = dayjs(ticket.slaDueAt)
   const completedAt = ticket.closedAt || ticket.resolvedAt
@@ -38,14 +34,13 @@ function calculateSlaStatus(ticket: TicketRecord): TicketSlaStatus {
     return dayjs(completedAt).isAfter(dueAt) ? 'breached' : 'on-track'
   }
   if (dayjs().isAfter(dueAt)) return 'breached'
-  if (dueAt.diff(dayjs(), 'hour', true) <= 4) return 'at-risk'
+  if (dueAt.diff(dayjs(), 'hour', true) <= SLA_AT_RISK_HOURS) return 'at-risk'
   return 'on-track'
 }
 
 function normalizeTicket(ticket: TicketRecord): TicketRecord {
-  const team =
-    ticket.team ??
-    (ticket.assignee === '待分配' ? '待分配' : ticket.assignee || '待分配')
+  const assignee = ticket.assignee || UNASSIGNED
+  const team = ticket.team ?? (assignee === UNASSIGNED ? UNASSIGNED : assignee)
   const slaDueAt =
     ticket.slaDueAt ??
     dayjs(ticket.createdAt)
@@ -53,7 +48,7 @@ function normalizeTicket(ticket: TicketRecord): TicketRecord {
       .format('YYYY-MM-DD HH:mm')
   const normalized = {
     ...ticket,
-    assignee: ticket.assignee || '待分配',
+    assignee,
     team,
     slaDueAt,
     slaStatus: ticket.slaStatus ?? 'on-track',
@@ -119,9 +114,9 @@ export const ticketStore = defineStore('dashboardTicket', () => {
       ...draft,
       id,
       status: 'pending',
-      reporter: '当前用户',
-      assignee: '待分配',
-      team: '待分配',
+      reporter: CURRENT_REQUESTER,
+      assignee: UNASSIGNED,
+      team: UNASSIGNED,
       createdAt: now,
       updatedAt: now,
       slaDueAt: dayjs()
@@ -134,7 +129,7 @@ export const ticketStore = defineStore('dashboardTicket', () => {
         {
           id: `${id}-created`,
           type: 'created',
-          actor: '当前用户',
+          actor: CURRENT_REQUESTER,
           content: '提交了工单',
           createdAt: now,
           visibility: 'public',

@@ -6,8 +6,6 @@ import {
   getFileExtension,
 } from '../utils'
 
-defineOptions({ name: 'DetailModal' })
-
 const file = defineModel<IFile | null>('file', {
   required: true,
 })

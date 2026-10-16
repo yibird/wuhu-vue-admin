@@ -8,8 +8,6 @@ import {
 import type { FormInstance } from 'antdv-next'
 import type { TicketDraft } from '../types'
 
-defineOptions({ name: 'TicketCreateDrawer' })
-
 const open = defineModel<boolean>('open', { required: true })
 
 const emit = defineEmits<{

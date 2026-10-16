@@ -1,6 +1,4 @@
-<script setup lang="ts">
-defineOptions({ name: 'Skeleton' })
-</script>
+<script setup lang="ts"></script>
 
 <template>
   <div class="h-full overflow-hidden rounded-4 bg-container" aria-busy="true">

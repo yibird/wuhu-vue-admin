@@ -61,6 +61,16 @@ export function useFileSelection({
     getKey: (element) => element.dataset.fileManagerItemId ?? '',
     multiple: true,
     observeScroll: true,
+    /**
+     * 不在 pointerdown 上 preventDefault
+     *
+     * 在 pointerdown 上 preventDefault 会连带吞掉兼容性的 mousedown,
+     * 而 antdv 的弹层(右键菜单、更多操作)依赖 document 上的 mousedown 来关闭,
+     * 结果就是点击空白处菜单不消失。
+     * 文字选中由容器与条目的 select-none 负责,原生图片拖拽由图片上的 draggable="false" 负责,
+     * 因此这里不需要 preventDefault。
+     */
+    preventDefault: false,
     selected: selectedRangeTargets,
     targets: rangeTargets,
     threshold: 4,
@@ -195,23 +205,25 @@ export function useFileSelection({
   }
 
   function getNextIndex(event: KeyboardEvent) {
-    const currentIndex =
-      getItemIndex(focusedKey.value) >= 0
-        ? getItemIndex(focusedKey.value)
-        : Math.max(0, getItemIndex(selectedKeys.value.at(-1)))
-    const fallbackIndex = currentIndex >= 0 ? currentIndex : 0
-    const columns = getGridColumnCount()
     const maxIndex = selectableItems.value.length - 1
+    if (maxIndex < 0) return -1
+
+    const focusedIndex = getItemIndex(focusedKey.value)
+    const lastSelectedIndex = getItemIndex(selectedKeys.value.at(-1))
+    // 保留 -1 语义:无焦点且无有效选中时,首次方向键直接落到首项
+    const hasCurrent = focusedIndex >= 0 || lastSelectedIndex >= 0
+    const currentIndex = focusedIndex >= 0 ? focusedIndex : lastSelectedIndex
+    const columns = getGridColumnCount()
 
     switch (event.key) {
       case 'ArrowLeft':
-        return Math.max(0, fallbackIndex - 1)
+        return hasCurrent ? Math.max(0, currentIndex - 1) : 0
       case 'ArrowRight':
-        return Math.min(maxIndex, fallbackIndex + 1)
+        return hasCurrent ? Math.min(maxIndex, currentIndex + 1) : 0
       case 'ArrowUp':
-        return Math.max(0, fallbackIndex - columns)
+        return hasCurrent ? Math.max(0, currentIndex - columns) : 0
       case 'ArrowDown':
-        return Math.min(maxIndex, fallbackIndex + columns)
+        return hasCurrent ? Math.min(maxIndex, currentIndex + columns) : 0
       case 'Home':
         return 0
       case 'End':

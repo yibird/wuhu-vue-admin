@@ -1,7 +1,8 @@
 import dayjs from 'dayjs'
 import { computed, reactive, shallowRef, watch } from 'vue'
-import { getTicketStatusMeta } from '../data'
+import { CURRENT_REQUESTER, getTicketStatusMeta } from '../data'
 import { useTicketStore } from '../store'
+import { matchesFilters, matchesKeyword } from '../utils'
 import type {
   TicketDraft,
   TicketFilters,
@@ -21,7 +22,7 @@ export function useTickets() {
   const detailDrawerOpen = shallowRef(false)
   const selectedTicketId = shallowRef('')
   const currentPage = shallowRef(1)
-  const pageSize = shallowRef(12)
+  const pageSize = shallowRef(8)
   const filters = reactive<TicketFilters>({
     keyword: '',
     status: 'all',
@@ -34,25 +35,15 @@ export function useTickets() {
 
     return tickets.value
       .filter((ticket) => {
-        const matchesKeyword =
-          !keyword ||
-          [
-            ticket.id,
-            ticket.subject,
-            ticket.description,
-            ticket.reporter,
-            ticket.assignee,
-          ].some((value) => value.toLocaleLowerCase().includes(keyword))
-        const matchesStatus =
-          filters.status === 'all' || ticket.status === filters.status
-        const matchesCategory =
-          filters.category === 'all' || ticket.category === filters.category
-        const matchesPriority =
-          filters.priority === 'all' || ticket.priority === filters.priority
+        const matchKeyword = matchesKeyword(ticket, keyword, [
+          'id',
+          'subject',
+          'description',
+          'reporter',
+          'assignee',
+        ])
 
-        return (
-          matchesKeyword && matchesStatus && matchesCategory && matchesPriority
-        )
+        return matchKeyword && matchesFilters(ticket, filters)
       })
       .sort((a, b) => b.updatedAt.localeCompare(a.updatedAt))
   })
@@ -131,26 +122,23 @@ export function useTickets() {
     const current = tickets.value.find((ticket) => ticket.id === id)
     if (!current || current.status === status) return
 
+    let closedAt = current.closedAt
+    let closingReason = current.closingReason
+    if (status === 'closed') {
+      closedAt = dayjs().format('YYYY-MM-DD HH:mm')
+      closingReason = '提交人确认问题已解决'
+    } else if (status === 'pending') {
+      // 重新回到待受理时清空关闭信息
+      closedAt = undefined
+      closingReason = undefined
+    }
+
     return updateTicket(
       id,
-      {
-        status,
-        closedAt:
-          status === 'closed'
-            ? dayjs().format('YYYY-MM-DD HH:mm')
-            : status === 'pending'
-              ? undefined
-              : current.closedAt,
-        closingReason:
-          status === 'closed'
-            ? '提交人确认问题已解决'
-            : status === 'pending'
-              ? undefined
-              : current.closingReason,
-      },
+      { status, closedAt, closingReason },
       {
         type: 'status',
-        actor: '当前用户',
+        actor: CURRENT_REQUESTER,
         content: `将工单状态更新为“${statusMeta.label}”`,
         visibility: 'public',
       }
@@ -165,7 +153,7 @@ export function useTickets() {
       id,
       {
         type: 'reply',
-        actor: '当前用户',
+        actor: CURRENT_REQUESTER,
         content: reply,
         visibility: 'public',
       },

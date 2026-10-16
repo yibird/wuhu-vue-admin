@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import type { CSSProperties } from 'vue'
-import { WCard } from '@/components'
-
-defineOptions({ name: 'Card' })
+import { Card } from '@/components'
 
 const props = withDefaults(
   defineProps<{
@@ -32,7 +30,7 @@ const cardStyles = computed<Record<string, CSSProperties>>(() => ({
 </script>
 
 <template>
-  <WCard
+  <Card
     class="overflow-hidden rounded-8 border-1 border-solid border-color-2 shadow-[var(--w-shadow-card)] transition-[border-color,box-shadow,transform] duration-motion-moderate ease-motion-enter hover:(-translate-y-2 shadow-[var(--w-shadow-elevated)]) motion-reduce:transition-none motion-reduce:hover:translate-y-0"
     variant="borderless"
     :body-class="bodyClass"
@@ -41,7 +39,7 @@ const cardStyles = computed<Record<string, CSSProperties>>(() => ({
     <template #title>
       <div class="relative z-1 min-w-0 flex items-center gap-10">
         <span
-          class="size-30 flex shrink-0 items-center justify-center rounded-8 icon-primary-soft"
+          class="size-30 flex shrink-0 items-center justify-center rounded-8 primary-tinted"
         >
           <Icon :name="icon" :size="16" />
         </span>
@@ -66,5 +64,5 @@ const cardStyles = computed<Record<string, CSSProperties>>(() => ({
     </template>
 
     <slot />
-  </WCard>
+  </Card>
 </template>

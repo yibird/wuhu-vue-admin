@@ -2,8 +2,6 @@
 import Card from './card.vue'
 import type { SysInfoEmits, SysInfoProps } from './types'
 
-defineOptions({ name: 'SysInfo' })
-
 const { items = [], loading = false } = defineProps<SysInfoProps>()
 const emit = defineEmits<SysInfoEmits>()
 </script>

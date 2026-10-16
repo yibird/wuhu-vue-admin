@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import type { TicketStats } from '../types'
 
-defineOptions({ name: 'TicketSummary' })
-
 const props = defineProps<{
   stats: TicketStats
 }>()

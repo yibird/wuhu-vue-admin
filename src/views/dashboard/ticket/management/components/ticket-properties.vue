@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import {
+  UNASSIGNED,
   getTicketPriorityMeta,
   getTicketStatusMeta,
   ticketPriorityList,
@@ -15,8 +16,6 @@ import {
 } from '../data'
 import type { TicketPriority, TicketRecord } from '../../center/types'
 import type { TicketAssignment, TicketResolution } from '../types'
-
-defineOptions({ name: 'TicketProperties' })
 
 const props = defineProps<{
   ticket?: TicketRecord
@@ -62,9 +61,9 @@ const assignmentChanged = computed(
 watch(
   () => [props.ticket?.id, props.ticket?.team, props.ticket?.assignee] as const,
   ([, nextTeam, nextAssignee]) => {
-    team.value = nextTeam === '待分配' ? '平台支持组' : nextTeam || ''
+    team.value = nextTeam === UNASSIGNED ? '平台支持组' : nextTeam || ''
     assignee.value =
-      nextAssignee === '待分配' ? CURRENT_AGENT : nextAssignee || ''
+      nextAssignee === UNASSIGNED ? CURRENT_AGENT : nextAssignee || ''
   },
   { immediate: true }
 )

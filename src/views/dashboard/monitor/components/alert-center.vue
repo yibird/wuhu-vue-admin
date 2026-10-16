@@ -6,8 +6,6 @@ import type {
   MonitorSeverity,
 } from './types'
 
-defineOptions({ name: 'AlertCenter' })
-
 const props = defineProps<AlertCenterProps>()
 const emit = defineEmits<AlertCenterEmits>()
 

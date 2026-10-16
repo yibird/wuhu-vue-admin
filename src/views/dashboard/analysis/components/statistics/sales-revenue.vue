@@ -1,14 +1,17 @@
+<template>
+  <VChart
+    :option="chartOption"
+    :theme="eChartsThemeName"
+    autoresize
+    class="full min-h-0"
+  />
+</template>
 <script lang="ts" setup>
 import { getCssRgbVarAlpha, useEChartsTheme } from '@/theme'
-import { useECharts } from '@/plugins/echarts'
 import VChart from 'vue-echarts'
 import { bucketValue, buildBuckets } from './data'
-import type { StatisticsChartProps } from '../types'
+import type { StatisticsChartProps } from './types'
 import type { EChartsCoreOption } from 'echarts/core'
-
-defineOptions({ name: 'SalesRevenue' })
-
-useECharts()
 
 const props = defineProps<StatisticsChartProps>()
 
@@ -84,12 +87,3 @@ const chartOption = computed<EChartsCoreOption>(() => {
   }
 })
 </script>
-
-<template>
-  <VChart
-    :option="chartOption"
-    :theme="eChartsThemeName"
-    autoresize
-    class="full min-h-0"
-  />
-</template>

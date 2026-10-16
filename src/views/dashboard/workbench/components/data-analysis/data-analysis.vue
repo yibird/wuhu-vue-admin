@@ -1,11 +1,7 @@
 <template>
   <DataAnalysisSkeleton v-if="loading" />
-  <section
-    v-else
-    data-swapy-slot="analysis"
-    class="page-enter page-enter--7 min-w-0"
-  >
-    <WCard :styles="{ body: { padding: 0 } }" data-swapy-item="analysis">
+  <section v-else class="page-enter page-enter--7 min-w-0">
+    <Card class="shadow-none!" :styles="{ body: { padding: 0 } }">
       <template #title>
         <span class="text-base text-main font-700">数据概览</span>
       </template>
@@ -76,17 +72,15 @@
           </div>
         </div>
       </div>
-    </WCard>
+    </Card>
   </section>
 </template>
 
 <script lang="ts" setup>
-import { WCard } from '@/components'
+import { Card } from '@/components'
 import { NumberTicker } from '@/components/number-ticker'
 import DataAnalysisSkeleton from './data-analysis-skeleton.vue'
 import type { AnalysisMetric, AnalysisRankItem } from './types'
-
-defineOptions({ name: 'DataAnalysis' })
 
 const { loading = false } = defineProps<{
   loading?: boolean

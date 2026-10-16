@@ -1,13 +1,21 @@
+<template>
+  <Card class="page-enter page-enter--4" title="热门搜索">
+    <div class="h-380 w-full p-12 max-md:h-280">
+      <VChart
+        :option="chartOption"
+        :theme="eChartsThemeName"
+        autoresize
+        class="full min-h-0"
+      />
+    </div>
+  </Card>
+</template>
+
 <script lang="ts" setup>
-import { useEChartsTheme } from '@/theme'
-import { useECharts } from '@/plugins/echarts'
-import Card from './card.vue'
 import VChart from 'vue-echarts'
+import { useEChartsTheme } from '@/theme'
+import { Card } from '@/components'
 import type { EChartsCoreOption } from 'echarts/core'
-
-defineOptions({ name: 'HotSearch' })
-
-useECharts()
 
 const { baseChartOption, eChartsThemeName, getEChartsColor } = useEChartsTheme()
 
@@ -61,22 +69,3 @@ const chartOption = computed<EChartsCoreOption>(() => ({
   ],
 }))
 </script>
-
-<template>
-  <Card
-    class="page-enter page-enter--4"
-    title="热门搜索"
-    icon="i-lucide:search"
-    description="搜索占比分布"
-    body-class="p-0"
-  >
-    <div class="h-380 w-full p-12 max-md:h-280">
-      <VChart
-        :option="chartOption"
-        :theme="eChartsThemeName"
-        autoresize
-        class="full min-h-0"
-      />
-    </div>
-  </Card>
-</template>

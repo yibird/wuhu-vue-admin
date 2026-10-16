@@ -1,13 +1,21 @@
+<template>
+  <Card class="page-enter page-enter--4" title="最近访问">
+    <div class="h-380 w-full p-12 max-md:h-260">
+      <VChart
+        :option="chartOption"
+        :theme="eChartsThemeName"
+        autoresize
+        class="full min-h-0"
+      />
+    </div>
+  </Card>
+</template>
+
 <script lang="ts" setup>
 import VChart from 'vue-echarts'
-import Card from './card.vue'
+import { Card } from '@/components'
 import { getCssRgbVar, getCssRgbVarAlpha, useEChartsTheme } from '@/theme'
-import { useECharts } from '@/plugins/echarts'
 import type { EChartsCoreOption } from 'echarts/core'
-
-defineOptions({ name: 'VisitStatistics' })
-
-useECharts()
 
 const { baseChartOption, eChartsThemeName, getEChartsColor } = useEChartsTheme()
 
@@ -74,22 +82,3 @@ const chartOption = computed<EChartsCoreOption>(() => ({
   ],
 }))
 </script>
-
-<template>
-  <Card
-    class="page-enter page-enter--4"
-    title="最近访问"
-    icon="i-lucide:chart-area"
-    description="近 9 日访问趋势"
-    body-class="p-0"
-  >
-    <div class="h-380 w-full p-12 max-md:h-260">
-      <VChart
-        :option="chartOption"
-        :theme="eChartsThemeName"
-        autoresize
-        class="full min-h-0"
-      />
-    </div>
-  </Card>
-</template>

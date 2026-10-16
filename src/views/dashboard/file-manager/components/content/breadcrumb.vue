@@ -2,8 +2,6 @@
 import { Icon } from '@/components/icon'
 import type { FileBreadcrumbItem } from '../types'
 
-defineOptions({ name: 'Breadcrumb' })
-
 defineProps<{
   items: FileBreadcrumbItem[]
 }>()

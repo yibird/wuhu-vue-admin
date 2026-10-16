@@ -7,8 +7,6 @@ import {
 } from '../data'
 import type { TicketActivityType, TicketRecord, TicketStatus } from '../types'
 
-defineOptions({ name: 'TicketDetailDrawer' })
-
 const props = defineProps<{
   ticket?: TicketRecord
 }>()

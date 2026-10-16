@@ -1,6 +1,4 @@
-<script setup lang="ts">
-defineOptions({ name: 'Skeleton' })
-</script>
+<script setup lang="ts"></script>
 
 <template>
   <div
@@ -25,7 +23,7 @@ defineOptions({ name: 'Skeleton' })
             <div
               v-for="item in group === 4 ? 2 : 3"
               :key="item"
-              class="min-h-176 p-10 rounded-6 border-color-muted"
+              class="min-h-176 p-10 rounded-6 border-1 border-color-muted border-solid"
             >
               <div class="flex justify-between gap-8">
                 <a-skeleton-input active size="small" class="!w-136" />

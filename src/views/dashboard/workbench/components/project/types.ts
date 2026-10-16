@@ -22,7 +22,7 @@ export interface Project {
   name: string
   describe: string
   master: string
-  createAt: string
+  createdAt: string
   dueAt: string
   progress: number
   status: string

@@ -7,8 +7,6 @@ import {
 import { activityTypeMeta } from '../data'
 import type { TicketRecord } from '../../center/types'
 
-defineOptions({ name: 'TicketConversation' })
-
 const props = defineProps<{
   ticket?: TicketRecord
   currentAgent: string

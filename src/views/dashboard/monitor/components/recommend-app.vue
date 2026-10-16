@@ -2,13 +2,11 @@
 import Card from './card.vue'
 import type { MonitorTone, RecommendAppEmits, RecommendAppProps } from './types'
 
-defineOptions({ name: 'RecommendApp' })
-
 const { items = [], loading = false } = defineProps<RecommendAppProps>()
 const emit = defineEmits<RecommendAppEmits>()
 
 const toneClassMap: Record<MonitorTone, string> = {
-  primary: 'icon-primary-soft',
+  primary: 'primary-tinted',
   success: 'bg-success-tint text-success',
   warning: 'bg-warning-tint text-warning',
   error: 'bg-error-tint text-error',

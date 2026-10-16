@@ -6,8 +6,6 @@ import {
 } from '../data'
 import type { TicketRecord } from '../types'
 
-defineOptions({ name: 'TicketCard' })
-
 const props = defineProps<{
   ticket: TicketRecord
 }>()

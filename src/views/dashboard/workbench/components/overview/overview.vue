@@ -59,7 +59,7 @@
             }}</span>
             <span
               class="size-30 shrink-0 flex items-center justify-center rounded-8 transition-transform duration-motion-base group-hover:scale-110"
-              :class="item.tone"
+              :class="item.iconClass"
             >
               <Icon :name="item.icon" :size="16" />
             </span>
@@ -81,8 +81,6 @@ import { NumberTicker } from '@/components/number-ticker'
 import OverviewSkeleton from './overview-skeleton.vue'
 import type { OverviewMetric } from './types'
 
-defineOptions({ name: 'Overview' })
-
 const { loading = false } = defineProps<{
   loading?: boolean
 }>()
@@ -93,28 +91,28 @@ const metrics: OverviewMetric[] = [
     value: 18,
     desc: '3 个高优先级',
     icon: 'i-lucide:folder-kanban',
-    tone: 'icon-primary-soft',
+    iconClass: 'primary-tinted',
   },
   {
     title: '待处理任务',
     value: 42,
     desc: '今日需完成 8 项',
     icon: 'i-lucide:badge-check',
-    tone: 'bg-warning-tint text-warning',
+    iconClass: 'bg-warning-tint text-warning',
   },
   {
     title: '团队在线',
     value: 26,
     desc: '覆盖 5 个小组',
     icon: 'i-lucide:users-round',
-    tone: 'bg-success-tint text-success',
+    iconClass: 'bg-success-tint text-success',
   },
   {
     title: '风险提醒',
     value: 5,
     desc: '2 项需要升级',
     icon: 'i-lucide:triangle-alert',
-    tone: 'bg-error-tint text-error',
+    iconClass: 'bg-error-tint text-error',
   },
 ]
 </script>

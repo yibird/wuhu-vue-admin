@@ -26,8 +26,6 @@ import folderIcon from '@/assets/svg/folder.svg'
 import type { MenuProps } from 'antdv-next'
 import type { FileSelectionKey, FileViewMode, IFile } from '../types'
 
-defineOptions({ name: 'Grid' })
-
 const selectedKeys = defineModel<FileSelectionKey[]>('selectedKeys', {
   required: true,
 })
@@ -354,7 +352,7 @@ function handleAction(file: IFile, { key }: { key: string }) {
 <template>
   <div
     ref="gridRef"
-    class="file-grid min-h-0 w-full h-full overflow-x-hidden overflow-y-auto"
+    class="file-grid min-h-0 w-full h-full overflow-x-hidden overflow-y-auto outline-none"
     :class="
       viewMode === 'grid'
         ? 'relative grid content-start auto-rows-max select-none grid-cols-[repeat(auto-fill,minmax(148px,1fr))] gap-10 py-10 px-2 max-[575px]:grid-cols-[repeat(auto-fill,minmax(118px,1fr))] max-[575px]:gap-8'
@@ -441,6 +439,7 @@ function handleAction(file: IFile, { key }: { key: string }) {
               <img
                 :src="getIcon(item)"
                 :alt="item.fileName"
+                draggable="false"
                 :class="getImageClass(item, 'grid')"
               />
             </span>
@@ -489,6 +488,7 @@ function handleAction(file: IFile, { key }: { key: string }) {
             <img
               :src="getIcon(item)"
               :alt="item.fileName"
+              draggable="false"
               :class="getImageClass(item, 'list')"
             />
           </span>

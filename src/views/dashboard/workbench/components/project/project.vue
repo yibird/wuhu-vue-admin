@@ -1,11 +1,7 @@
 <template>
   <ProjectSkeleton v-if="props.loading" />
-  <section
-    v-else
-    data-swapy-slot="project"
-    class="page-enter page-enter--3 min-w-0"
-  >
-    <WCard :styles="{ body: { padding: 0 } }" data-swapy-item="project">
+  <section v-else class="page-enter page-enter--3 min-w-0">
+    <Card class="shadow-none!" :styles="{ body: { padding: 0 } }">
       <template #title>
         <div class="min-w-0 flex items-center gap-8">
           <span class="text-base text-main font-700">重点项目</span>
@@ -108,22 +104,20 @@
               </template>
             </a-avatar-group>
             <span class="text-xs text-secondary"
-              >创建于 {{ item.createAt }}</span
+              >创建于 {{ item.createdAt }}</span
             >
           </div>
         </article>
       </div>
-    </WCard>
+    </Card>
   </section>
 </template>
 
 <script lang="ts" setup>
-import { WCard } from '@/components'
+import { Card } from '@/components'
 import { getProjectLogoOption } from './data'
 import ProjectSkeleton from './project-skeleton.vue'
 import type { Project } from './types'
-
-defineOptions({ name: 'Project' })
 
 const props = defineProps<{
   projects: Project[]

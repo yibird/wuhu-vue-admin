@@ -8,7 +8,7 @@
     <div v-if="app" class="grid gap-14">
       <div class="flex items-start gap-12">
         <div
-          class="size-48 shrink-0 flex items-center justify-center rounded-8 icon-primary-soft"
+          class="size-48 shrink-0 flex items-center justify-center rounded-8 primary-tinted"
         >
           <Icon :name="app.icon" :size="22" />
         </div>
@@ -59,8 +59,6 @@
 
 <script lang="ts" setup>
 import type { AppDetailModalEmits, AppDetailModalProps } from './types'
-
-defineOptions({ name: 'AppDetailModal' })
 
 const open = defineModel<boolean>('open', { default: false })
 const { app = null } = defineProps<AppDetailModalProps>()
