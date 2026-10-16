@@ -77,8 +77,6 @@ import type {
   SystemMonitorActions,
 } from './types'
 
-defineOptions({ name: 'RabbitPanel' })
-
 const props = defineProps<{
   rabbitmq: RabbitSnapshot
 }>()

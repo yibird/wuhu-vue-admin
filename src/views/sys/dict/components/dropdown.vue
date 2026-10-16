@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import type { DropdownEmits, DropdownProps } from './types'
 
-defineOptions({ name: 'Dropdown' })
-
 const props = defineProps<DropdownProps>()
 const emit = defineEmits<DropdownEmits>()
 
@@ -29,7 +27,7 @@ function handleMenuClick({ key }: { key: string }) {
   >
     <button
       type="button"
-      class="size-28 grid-center rounded-4 text-secondary transition-colors hover:bg-hover hover:text-main"
+      class="size-28 grid-center rounded-4 text-secondary cursor-pointer transition-colors hover:bg-white hover:text-main"
       title="更多操作"
       @click.stop
     >

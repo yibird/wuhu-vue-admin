@@ -31,12 +31,7 @@
 import VChart from 'vue-echarts'
 import type { EChartsCoreOption } from 'echarts/core'
 import { getCssRgbVar, getCssRgbVarAlpha, useEChartsTheme } from '@/theme'
-import { useECharts } from '@/plugins/echarts'
 import type { MonitorTone, ResourceMetric } from './types'
-
-defineOptions({ name: 'ResourceTrendChart' })
-
-useECharts()
 
 const props = defineProps<{
   resources: ResourceMetric[]

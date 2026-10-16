@@ -22,6 +22,13 @@ export function useSystemMonitor() {
     { immediate: true }
   )
 
+  // 页面默认开启 KeepAlive,离开页签时暂停轮询,返回时恢复
+  onActivated(() => {
+    if (autoRefresh.value) resume()
+  })
+
+  onDeactivated(pause)
+
   watch(autoRefresh, (enabled) => {
     if (enabled) {
       resume()
@@ -68,10 +75,8 @@ export function useSystemMonitor() {
     activeEnvironment,
     autoRefresh,
     lastRefreshAt,
-    pause,
     refresh,
     refreshing,
-    resume,
     setAutoRefresh,
     setEnvironment,
     snapshot,

@@ -58,17 +58,24 @@
           </a-form-item>
         </a-col>
 
-        <a-col v-if="formState.menuType !== 3" :span="12">
+        <a-col v-if="formState.menuType !== 4" :span="12">
           <a-form-item label="路由地址" name="path">
             <a-input
               v-model:value="formState.path"
               allow-clear
-              placeholder="请输入路由地址"
+              :placeholder="
+                formState.isExternal
+                  ? '请输入外部链接地址，例如 https://example.com'
+                  : '请输入路由地址'
+              "
             />
           </a-form-item>
         </a-col>
 
-        <a-col v-if="formState.menuType !== 3" :span="24">
+        <a-col
+          v-if="formState.menuType !== 4 && !formState.isExternal"
+          :span="24"
+        >
           <a-form-item name="component">
             <template #label>
               <span class="inline-flex items-center gap-4">
@@ -92,7 +99,7 @@
           </a-form-item>
         </a-col>
 
-        <a-col v-if="formState.menuType === 3" :span="12">
+        <a-col v-if="formState.menuType === 4" :span="12">
           <a-form-item label="权限标识" name="perms">
             <a-input
               v-model:value="formState.perms"
@@ -108,7 +115,13 @@
           </a-form-item>
         </a-col>
 
-        <a-col v-if="formState.menuType !== 3" :span="12">
+        <a-col v-if="formState.menuType !== 4" :span="12">
+          <a-form-item label="是否外链" name="isExternal">
+            <a-switch v-model:checked="formState.isExternal" />
+          </a-form-item>
+        </a-col>
+
+        <a-col v-if="formState.menuType !== 4" :span="12">
           <a-form-item label="是否缓存" name="keepAlive">
             <a-switch v-model:checked="formState.keepAlive" />
           </a-form-item>
@@ -131,9 +144,8 @@
 <script lang="ts" setup>
 import { IconSelector } from '@/components'
 import type { MenuResp } from '@/apis'
+import type { MenuType } from '#/config'
 import type { FormInstance } from 'antdv-next'
-
-defineOptions({ name: 'FormModal' })
 
 const open = ref(false)
 const formRef = shallowRef<FormInstance>()
@@ -143,26 +155,32 @@ const show = (_record?: MenuResp) => {
 
 defineExpose({ show })
 
-const menuTypeOptions = [
+/** 与 MenuResp.type 的语义保持一致:1 目录、2 菜单、3 子菜单、4 权限按钮 */
+const menuTypeOptions: Array<{ label: string; value: MenuType }> = [
+  {
+    label: '目录',
+    value: 1,
+  },
   {
     label: '菜单',
-    value: 1 as const,
+    value: 2,
   },
   {
-    label: '子页面',
-    value: 2 as const,
+    label: '子菜单',
+    value: 3,
   },
   {
-    label: '按钮',
-    value: 3 as const,
+    label: '权限按钮',
+    value: 4,
   },
 ]
 
 const formState = reactive({
-  menuType: 1 as 1 | 2 | 3,
+  menuType: 1 as MenuType,
   menuName: '',
   icon: '',
   path: '',
+  isExternal: false,
   component: '',
   perms: '',
   hidden: false,
@@ -180,7 +198,7 @@ const rules = computed(() => ({
   ],
   path: [
     {
-      required: formState.menuType !== 3,
+      required: formState.menuType !== 4,
       whitespace: true,
       message: '请输入路由地址',
       trigger: 'blur',
@@ -188,7 +206,7 @@ const rules = computed(() => ({
   ],
   perms: [
     {
-      required: formState.menuType === 3,
+      required: formState.menuType === 4,
       whitespace: true,
       message: '请输入权限标识',
       trigger: 'blur',
@@ -196,16 +214,26 @@ const rules = computed(() => ({
   ],
 }))
 
+/** 权限按钮不需要路由与组件 */
 watch(
   () => formState.menuType,
   (menuType) => {
     formRef.value?.clearValidate(['path', 'component', 'perms'])
-    if (menuType === 3) {
+    if (menuType === 4) {
       formState.path = ''
       formState.component = ''
     } else {
       formState.perms = ''
     }
+  }
+)
+
+/** 外部链接没有本地组件 */
+watch(
+  () => formState.isExternal,
+  (isExternal) => {
+    formRef.value?.clearValidate(['path', 'component'])
+    if (isExternal) formState.component = ''
   }
 )
 </script>

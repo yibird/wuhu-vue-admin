@@ -32,7 +32,7 @@ export function useSystemConfig<T extends object>({
       onOk: () => {
         const nextValue = cloneDeep(defaults)
         Object.assign(form, nextValue)
-        savedConfigs.set(key, nextValue)
+        savedConfigs.set(key, cloneDeep(nextValue))
         message.success(`${label}已恢复默认配置`)
       },
     })

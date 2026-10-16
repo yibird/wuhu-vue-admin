@@ -9,8 +9,6 @@ import {
 } from '@/apis'
 import type { EditorExpose } from '@/components/editor'
 
-defineOptions({ name: 'FormModal' })
-
 const Editor = defineAsyncComponent(async () => {
   const { Editor } = await import('@/components/editor')
   return Editor

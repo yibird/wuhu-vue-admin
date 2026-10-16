@@ -7,7 +7,7 @@ import {
   type DictResp,
 } from '@/apis'
 import { WView } from '@/components'
-import { useTable } from '@/components/table-plus'
+import { useRequest } from '@/hooks'
 import { Content, DictForm, Header as DictHeader, Sider } from './components'
 import type { DictItemFilters } from './components'
 
@@ -17,16 +17,17 @@ const selectedId = shallowRef<string>()
 const itemKeyword = shallowRef('')
 const itemStatus = shallowRef<boolean | undefined>(undefined)
 const itemFilters = shallowRef<DictItemFilters>({})
-const dictQuery = shallowRef<DictQuery>({ pageNum: 1, pageSize: 1000 })
+const dictQuery = shallowRef<DictQuery>({ current: 1, pageSize: 1000 })
 
 const {
+  data: dictData,
   loading: dictLoading,
-  dataSource: dictionaries,
   run: loadDictionaries,
-} = useTable<DictResp, DictQuery>({
-  api: () => getDictPageListApi(dictQuery.value),
-  rowKey: (row) => row.id,
+} = useRequest((params: DictQuery) => getDictPageListApi(params), {
+  defaultParams: [dictQuery.value],
 })
+
+const dictionaries = computed(() => dictData.value?.data?.list ?? [])
 
 const selectedDictionary = computed(() =>
   dictionaries.value.find((item) => item.id === selectedId.value)

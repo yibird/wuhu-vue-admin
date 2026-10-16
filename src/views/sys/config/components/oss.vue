@@ -2,8 +2,6 @@
 import { useSystemConfig } from '../hooks'
 import ConfigPanel from './config-panel.vue'
 
-defineOptions({ name: 'Oss' })
-
 interface OssConfigForm {
   provider: string
   endpoint: string

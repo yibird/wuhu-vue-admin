@@ -2,8 +2,6 @@
 import { useSystemConfig } from '../hooks'
 import ConfigPanel from './config-panel.vue'
 
-defineOptions({ name: 'Security' })
-
 interface SecurityConfigForm {
   passwordMinLength: number
   passwordExpiresDays: number

@@ -27,8 +27,6 @@ import ResourceTrendChart from './resource-trend-chart.vue'
 import SectionPanel from './section-panel.vue'
 import type { ResourceMetric, SystemMonitorSnapshot } from './types'
 
-defineOptions({ name: 'ServerPanel' })
-
 const props = defineProps<{
   resources: ResourceMetric[]
   snapshot: SystemMonitorSnapshot

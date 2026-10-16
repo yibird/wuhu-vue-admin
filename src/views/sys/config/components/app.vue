@@ -2,8 +2,6 @@
 import { useSystemConfig } from '../hooks'
 import ConfigPanel from './config-panel.vue'
 
-defineOptions({ name: 'App' })
-
 interface AppConfigForm {
   siteName: string
   siteUrl: string

@@ -1,3 +1,60 @@
+<template>
+  <div class="h-full min-h-0 flex flex-col gap-10 p-10">
+    <div class="flex flex-wrap items-center gap-8">
+      <a-button type="primary" @click="openCreate">
+        <template #icon><Icon name="i-lucide:plus" /></template>
+        新建明细
+      </a-button>
+      <a-button
+        danger
+        ghost
+        type="primary"
+        :disabled="selectedRowKeys.length === 0"
+        @click="handleDeleteSelected"
+      >
+        <template #icon><Icon name="i-lucide:trash-2" /></template>
+        批量删除
+      </a-button>
+    </div>
+
+    <a-table
+      :columns="columns"
+      :data-source="dataSource"
+      :loading="loading"
+      :pagination="pagination"
+      :row-selection="rowSelection"
+      :scroll="{ x: 980, y: TABLE_SCROLL_Y }"
+      row-key="id"
+      @change="onTableChange"
+    >
+      <template #bodyCell="{ column, record }">
+        <a-tag
+          v-if="column.dataIndex === 'status'"
+          bordered
+          :color="record.status ? 'success' : 'default'"
+        >
+          {{ record.status ? '正常' : '停用' }}
+        </a-tag>
+        <a-button
+          v-else-if="column.key === 'action'"
+          size="small"
+          type="link"
+          @click="openEdit(record.id)"
+        >
+          编辑
+        </a-button>
+      </template>
+    </a-table>
+
+    <DictItemForm
+      v-model:open="formOpen"
+      :dict-id="dictId"
+      :id="editingId"
+      @success="onSuccess"
+    />
+  </div>
+</template>
+
 <script setup lang="ts">
 import { Modal, message } from 'antdv-next'
 import { watch } from 'vue'
@@ -7,57 +64,61 @@ import {
   type DictItemQuery,
   type DictItemResp,
 } from '@/apis'
-import {
-  TablePlus,
-  useTable,
-  type TablePlusColumn,
-} from '@/components/table-plus'
+import { useRequest } from '@/hooks'
 import DictItemForm from './dict-item-form.vue'
-import type { DictItemContentProps } from './types'
 
-defineOptions({ name: 'Content' })
+import type {
+  TableColumnsType,
+  TablePaginationConfig,
+  TableRowSelection,
+} from 'antdv-next'
+import type { DictItemContentProps } from './types'
 
 const props = defineProps<DictItemContentProps>()
 
+const PAGE_SIZE_OPTIONS = [10, 20, 50, 100, 200, 500]
+/** 表格纵向滚动高度,扣掉应用头部、标签页与页面自身内容(含上方字典列表头部)所占空间 */
+const TABLE_SCROLL_Y = 'calc(100vh - 340px)'
+
 const formOpen = shallowRef(false)
 const editingId = shallowRef<string>()
+const selectedRowKeys = shallowRef<(string | number)[]>([])
 const query = shallowRef<DictItemQuery>(
   createQuery(props.dictId, props.filters)
 )
 
-const columns: TablePlusColumn<DictItemResp>[] = [
-  { title: '标签', dataIndex: 'label', ellipsis: true },
-  { title: '值', dataIndex: 'value', ellipsis: true },
+const columns: TableColumnsType<DictItemResp> = [
+  { title: '标签', dataIndex: 'label', width: 160, ellipsis: true },
+  { title: '值', dataIndex: 'value', width: 160, ellipsis: true },
   { title: '排序', dataIndex: 'sort', width: 90 },
   { title: '状态', dataIndex: 'status', width: 100 },
-  { title: '备注', dataIndex: 'remark', ellipsis: true },
+  { title: '备注', dataIndex: 'remark', width: 200, ellipsis: true },
   { title: '更新时间', dataIndex: 'updatedAt', width: 180 },
-  { title: '操作', key: 'action', fixed: 'right', width: 80 },
+  { title: '操作', key: 'action', fixed: 'right', width: 90 },
 ]
 
-const {
-  loading,
-  dataSource,
-  pagination,
-  rowSelection,
-  selectedKeys,
-  rowKey,
-  handleCheck,
-  run,
-  unSelectedAll,
-} = useTable<DictItemResp, DictItemQuery>({
-  api: () => getDictItemPageListApi(query.value),
-  rowKey: (row) => row.id,
-  initialPagination: {
-    page: 1,
-    pageSize: 10,
-    pageSizes: [10, 20, 50, 100, 200, 500],
+const { data, loading, run } = useRequest(
+  (params: DictItemQuery) => getDictItemPageListApi(params),
+  { defaultParams: [query.value] }
+)
+
+const dataSource = computed(() => data.value?.data?.list ?? [])
+
+const pagination = computed<TablePaginationConfig>(() => ({
+  current: query.value.current,
+  pageSize: query.value.pageSize,
+  total: data.value?.data?.total ?? 0,
+  showSizeChanger: true,
+  pageSizeOptions: PAGE_SIZE_OPTIONS,
+  showTotal: (total: number) => `共 ${total} 条`,
+}))
+
+const rowSelection = computed<TableRowSelection<DictItemResp>>(() => ({
+  selectedRowKeys: selectedRowKeys.value,
+  onChange: (keys) => {
+    selectedRowKeys.value = keys
   },
-  onPaginate: (pageNum, pageSize) => {
-    query.value = { ...query.value, pageNum, pageSize }
-    run(query.value)
-  },
-})
+}))
 
 watch(
   () => [
@@ -68,14 +129,14 @@ watch(
   ],
   () => {
     query.value = createQuery(props.dictId, props.filters)
-    unSelectedAll()
+    selectedRowKeys.value = []
     run(query.value)
   }
 )
 
 function createQuery(dictId: string, filters: DictItemContentProps['filters']) {
   return {
-    pageNum: 1,
+    current: 1,
     pageSize: 10,
     dictId,
     label: filters.label,
@@ -84,15 +145,18 @@ function createQuery(dictId: string, filters: DictItemContentProps['filters']) {
   }
 }
 
+function onTableChange(page: TablePaginationConfig) {
+  query.value = {
+    ...query.value,
+    current: page.current ?? 1,
+    pageSize: page.pageSize ?? 10,
+  }
+  run(query.value)
+}
+
 function openCreate() {
   editingId.value = undefined
   formOpen.value = true
-}
-
-function getCellText(record: DictItemResp, dataIndex?: string | number) {
-  if (typeof dataIndex !== 'string') return '-'
-  const value = record[dataIndex as keyof DictItemResp]
-  return typeof value === 'string' || typeof value === 'number' ? value : '-'
 }
 
 function openEdit(id: string) {
@@ -101,24 +165,24 @@ function openEdit(id: string) {
 }
 
 function onSuccess() {
-  query.value = { ...query.value, pageNum: 1 }
+  query.value = { ...query.value, current: 1 }
   run(query.value)
 }
 
 function handleDeleteSelected() {
-  if (selectedKeys.value.length === 0) return
+  if (selectedRowKeys.value.length === 0) return
 
   Modal.confirm({
     title: '删除字典明细',
-    content: `确定删除选中的 ${selectedKeys.value.length} 条字典明细吗？`,
+    content: `确定删除选中的 ${selectedRowKeys.value.length} 条字典明细吗？`,
     okText: '删除',
     cancelText: '取消',
     okButtonProps: { danger: true },
     onOk: async () => {
       try {
-        await deleteDictItemApi(selectedKeys.value)
+        await deleteDictItemApi(selectedRowKeys.value)
         message.success('字典明细删除成功')
-        unSelectedAll()
+        selectedRowKeys.value = []
         run(query.value)
       } catch {
         // 业务错误已由请求层统一提示
@@ -127,61 +191,3 @@ function handleDeleteSelected() {
   })
 }
 </script>
-
-<template>
-  <TablePlus
-    v-model:checked-row-keys="selectedKeys"
-    class="full"
-    :columns="columns"
-    :data-source="dataSource"
-    :loading="loading"
-    :pagination="pagination"
-    :row-key="rowKey"
-    :row-selection="rowSelection"
-    :index-col="false"
-    @refresh="run(query)"
-    @update:checked-row-keys="handleCheck"
-  >
-    <template #bodyCell="{ column, record }">
-      <a-tag
-        v-if="column.dataIndex === 'status'"
-        bordered
-        :color="record.status ? 'success' : 'default'"
-      >
-        {{ record.status ? '正常' : '停用' }}
-      </a-tag>
-      <a-button
-        v-else-if="column.key === 'action'"
-        size="small"
-        type="link"
-        @click="openEdit(record.id)"
-      >
-        编辑
-      </a-button>
-      <span v-else>{{ getCellText(record, column.dataIndex) }}</span>
-    </template>
-    <template #headerLeft>
-      <a-button type="primary" @click="openCreate">
-        <template #icon><Icon name="i-lucide:plus" /></template>
-        新建明细
-      </a-button>
-      <a-button
-        danger
-        ghost
-        type="primary"
-        :disabled="selectedKeys.length === 0"
-        @click="handleDeleteSelected"
-      >
-        <template #icon><Icon name="i-lucide:trash-2" /></template>
-        批量删除
-      </a-button>
-    </template>
-  </TablePlus>
-
-  <DictItemForm
-    v-model:open="formOpen"
-    :dict-id="dictId"
-    :id="editingId"
-    @success="onSuccess"
-  />
-</template>

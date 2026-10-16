@@ -2,8 +2,6 @@
 import { useSystemConfig } from '../hooks'
 import ConfigPanel from './config-panel.vue'
 
-defineOptions({ name: 'Client' })
-
 interface ClientConfigForm {
   sessionTimeoutMinutes: number
   fileSizeLimitMb: number

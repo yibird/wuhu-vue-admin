@@ -2,8 +2,6 @@
 import { useSystemConfig } from '../hooks'
 import ConfigPanel from './config-panel.vue'
 
-defineOptions({ name: 'Sms' })
-
 interface SmsConfigForm {
   provider: string
   accessKey: string

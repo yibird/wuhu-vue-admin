@@ -91,8 +91,6 @@ import {
 } from '@/apis'
 import { DeptPicker, type DeptPickerOption } from '@/features'
 
-defineOptions({ name: 'PostForm' })
-
 interface Props {
   id?: string
   deptOptions?: DeptPickerOption[]

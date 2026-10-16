@@ -89,8 +89,6 @@ import type {
   SystemMonitorActions,
 } from './types'
 
-defineOptions({ name: 'ProcessPanel' })
-
 const props = defineProps<{
   processes: ProcessMetric[]
 }>()

@@ -64,8 +64,6 @@ import SectionPanel from './section-panel.vue'
 import SummaryMetric from './summary-metric.vue'
 import type { RedisSnapshot, SummaryMetricItem } from './types'
 
-defineOptions({ name: 'RedisPanel' })
-
 const props = defineProps<{
   redis: RedisSnapshot
 }>()

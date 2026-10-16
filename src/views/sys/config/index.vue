@@ -3,25 +3,32 @@
     <div class="h-full min-h-0 bg-page p-10">
       <div class="h-full min-h-0 flex overflow-hidden bg-container">
         <div
-          class="w-240 shrink-0 overflow-y-auto px-10 py-20 flex flex-col gap-10 border-r-1 border-r-solid border-color-1 max-sm:w-72 max-sm:px-6"
+          class="w-300 shrink-0 overflow-y-auto px-10 py-20 flex flex-col gap-10 border-r-1 border-r-solid border-color-1 max-sm:w-72 max-sm:px-6"
         >
           <button
             v-for="item in items"
             :key="item.key"
             type="button"
             :class="[
-              'w-full px-12 py-10 flex items-center rounded-6 border-0 bg-transparent text-left cursor-pointer select-none transition-colors duration-motion-base hover:bg-hover-3 focus-visible:bg-hover-3 focus-visible:outline-none',
+              'group reset-button px-12 py-10 flex items-center rounded-6 press-spring hover:bg-hover-3 max-sm:(flex justify-center)',
               { 'bg-hover-3 text-primary': item.key === activeKey },
             ]"
             :aria-pressed="item.key === activeKey"
             :title="item.label"
             @click="onClick(item.key)"
           >
-            <Icon :name="item.icon" :size="22" />
-            <span class="ml-8 text-base max-sm:hidden">{{ item.label }}</span>
+            <Icon
+              :name="item.icon"
+              :size="22"
+              class="group-hover:text-primary"
+            />
+            <span
+              class="ml-8 text-base group-hover:text-primary max-sm:hidden"
+              >{{ item.label }}</span
+            >
           </button>
         </div>
-        <div class="h-full min-w-0 flex-1 p-20 max-sm:p-12">
+        <div class="h-full min-w-0 flex-1 py-20 max-sm:py-12">
           <Transition name="slide-right" mode="out-in">
             <div :key="activeKey" class="h-full">
               <component :is="currentComponent" />
