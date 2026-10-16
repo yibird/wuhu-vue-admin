@@ -3,8 +3,6 @@ import { useTheme } from '@/theme'
 import { themeColorOptions } from '@/config'
 import type { Color } from 'antdv-next'
 
-defineOptions({ name: 'Theme' })
-
 const presets = [
   {
     label: '主题色',

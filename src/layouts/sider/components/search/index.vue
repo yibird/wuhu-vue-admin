@@ -2,11 +2,10 @@
 import { useElementBounding, useWindowSize, onClickOutside } from '@vueuse/core'
 import { useSearch } from '../../hooks/index.ts'
 import SearchPanel from './search-panel.vue'
-import type { SearchEmits, SearchProps } from '../types.ts'
+import type { SearchProps } from '../types.ts'
 
 const value = defineModel<string>('value', { default: '' })
 const props = defineProps<SearchProps>()
-const emits = defineEmits<SearchEmits>()
 
 const {
   isCollapsed,
@@ -31,12 +30,6 @@ const {
 } = useSearch({
   value,
   collapsed: () => props.collapsed,
-  onChange: (value: string) => {
-    emits('change', value)
-  },
-  onClear: () => {
-    emits('clear')
-  },
 })
 
 const triggerRef = useTemplateRef<HTMLDivElement>('triggerRef')

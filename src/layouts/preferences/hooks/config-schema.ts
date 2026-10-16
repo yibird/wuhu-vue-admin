@@ -23,7 +23,13 @@ function mergeConfigNode(
 
   if (Array.isArray(current)) {
     if (!Array.isArray(input)) throw new Error(`${path} 必须是数组`)
-    if (current.length === 0) return [...input]
+    if (current.length === 0) {
+      // 没有样本元素可比对,至少拦截对象元素,避免未校验结构写入 store
+      if (input.some((item) => isRecord(item) || Array.isArray(item))) {
+        throw new Error(`${path} 元素类型不正确`)
+      }
+      return [...input]
+    }
 
     const sample = current[0]
     return input.map((item, index) =>

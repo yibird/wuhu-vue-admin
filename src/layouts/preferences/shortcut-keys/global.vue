@@ -25,10 +25,8 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { useShortcuts } from '../hooks'
+import { useShortcutConfig } from '../hooks'
 import { ConfigItem } from '../components'
 
-defineOptions({ name: 'Global' })
-
-const { enabled, search, logout, lockScreen } = useShortcuts()
+const { enabled, search, logout, lockScreen } = useShortcutConfig()
 </script>

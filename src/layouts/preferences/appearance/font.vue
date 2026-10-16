@@ -56,9 +56,19 @@ import { useTheme } from '@/theme'
 import { fontFamilyOptions } from '@/config'
 import type { FontFamilyOption } from '@/config'
 
-defineOptions({ name: 'AppearanceFont' })
-
 const { fontFamily, changeFontFamily } = useTheme()
+
+/**
+ * roving tabindex 的停靠点,即当前选中字体的下标
+ *
+ * 未匹配到已选字体时回退到第一项,保证始终有一个可 Tab 停靠的选项。
+ */
+const activeIndex = computed(() => {
+  const index = fontFamilyOptions.findIndex(
+    (item) => item.value === fontFamily.value
+  )
+  return index < 0 ? 0 : index
+})
 
 const buttonRefs: HTMLButtonElement[] = []
 const navigationKeys = new Set([
@@ -92,10 +102,7 @@ function onKeydown(event: KeyboardEvent) {
   event.preventDefault()
 
   const total = fontFamilyOptions.length
-  const current = fontFamilyOptions.findIndex(
-    (item) => item.value === fontFamily.value
-  )
-  const index = current < 0 ? 0 : current
+  const index = activeIndex.value
 
   let next = index
   if (event.key === 'Home') {

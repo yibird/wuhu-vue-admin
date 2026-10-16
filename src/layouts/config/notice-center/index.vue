@@ -3,7 +3,7 @@
     <div class="flex items-center justify-between">
       <span class="text-base font-bold">通知</span>
       <button
-        class="span-button rounded-2 px-8 py-5 text-sm text-secondary transition-colors hover:(bg-hover text-primary)"
+        class="reset-button rounded-2 px-8 py-5 text-sm text-secondary transition-colors hover:(bg-hover text-primary)"
       >
         标记为已读
       </button>

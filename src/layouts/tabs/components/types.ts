@@ -36,21 +36,27 @@ export interface TabListProps {
   showIcon?: boolean
 }
 
+/**
+ * 事件名必须写成字面量：defineEmits 的类型参数由 SFC 编译器静态提取，
+ * `typeof EmitEvent.XXX` 这类成员访问取不到名字，会静默生成不出运行时 emits
+ * （监听器退化成 attrs，根节点是片段时还会触发 Vue 警告）。
+ * 事件名与 EmitEvent 的一致性由 emit 调用处（emits(EmitEvent.XXX)）做类型校验。
+ */
 export interface TabItemEmits {
-  (e: typeof EmitEvent.CHANGE, tab: ITab, index: number): void
-  (e: typeof EmitEvent.CLOSE, tab: ITab, index: number): void
-  (e: typeof EmitEvent.REFRESH): void
-  (e: typeof EmitEvent.CLOSE_CURRENT): void
-  (e: typeof EmitEvent.CLOSE_LEFT): void
-  (e: typeof EmitEvent.CLOSE_RIGHT): void
-  (e: typeof EmitEvent.CLOSE_OTHER): void
-  (e: typeof EmitEvent.CLOSE_ALL): void
-  (e: typeof EmitEvent.COLLECT, index: number): void
-  (e: typeof EmitEvent.TOGGLE_PIN, tab: ITab, pin: boolean): void
+  (e: 'change', tab: ITab, index: number): void
+  (e: 'close', tab: ITab, index: number): void
+  (e: 'refresh'): void
+  (e: 'closeCurrent'): void
+  (e: 'closeLeft'): void
+  (e: 'closeRight'): void
+  (e: 'closeOther'): void
+  (e: 'closeAll'): void
+  (e: 'collect', index: number): void
+  (e: 'togglePin', tab: ITab, pin: boolean): void
 }
 
 export interface TabListEmits extends TabItemEmits {
-  (e: typeof EmitEvent.DRAG_END, tab: ITab): void
+  (e: 'dragEnd', tab: ITab): void
 }
 
 export interface TabItemProps {

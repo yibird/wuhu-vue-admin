@@ -2,8 +2,6 @@
 import { useAppStore } from '@/store'
 import { Loading } from '@/components/loading'
 
-defineOptions({ name: 'IframeView' })
-
 const props = withDefaults(
   defineProps<{
     src?: string

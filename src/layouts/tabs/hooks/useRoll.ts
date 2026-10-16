@@ -24,7 +24,7 @@ function clampScrollLeft(left: number, maxLeft: number) {
   return Math.max(0, Math.min(left, maxLeft))
 }
 
-export function getScrollLeftToReveal(
+function getScrollLeftToReveal(
   viewport: HorizontalViewport,
   item: HorizontalItemBounds,
   tolerance = SCROLL_TOLERANCE
@@ -79,6 +79,9 @@ function scrollToActiveTab(
   const item = findTabElement(targetEl, key)
   if (!item) return
 
+  // offsetLeft/offsetWidth 相对 offsetParent,此处约定
+  // `.layout-tabs-list__wrapper` 就是该 tab 元素的 offsetParent
+  // (依赖 common.less 中 wrapper 的 position: relative)
   const nextLeft = getScrollLeftToReveal(viewport, {
     left: item.offsetLeft,
     right: item.offsetLeft + item.offsetWidth,

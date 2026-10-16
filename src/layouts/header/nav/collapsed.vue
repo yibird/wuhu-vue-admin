@@ -1,6 +1,6 @@
 <template>
   <button
-    class="span-button size-32 group flex items-center justify-center p-8 cursor-pointer rounded-4 hover:bg-hover"
+    class="reset-button size-32 group flex items-center justify-center p-8 cursor-pointer rounded-4 hover:bg-hover"
     data-testid="sider-collapse-trigger"
     @click="toggleCollapsed"
   >
@@ -15,6 +15,5 @@
 <script lang="ts" setup>
 import { useAppStore } from '@/store'
 
-defineOptions({ name: 'Collapsed' })
 const { toggleCollapsed } = useAppStore()
 </script>

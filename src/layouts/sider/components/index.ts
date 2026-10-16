@@ -1,1 +1,3 @@
-export { default as VerticalSider } from './vertical-sider.vue'
+export { default as Logo } from './logo.vue'
+export { Search, matchesMenuTree } from './search'
+export { default as Menu } from './menu.vue'

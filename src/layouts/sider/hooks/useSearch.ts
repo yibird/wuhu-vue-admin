@@ -8,6 +8,7 @@ import {
   type Ref,
 } from 'vue'
 import { useTabs } from '@/hooks'
+import { isSearchableMenu } from '@/router/utils'
 import { useAppStore, usePermissionStore } from '@/store'
 import { normalizeSearchKeyword } from '@/utils'
 import { getMenuSearchScore } from '../components/search/util'
@@ -18,8 +19,6 @@ import type { IMenu } from '#/config'
 interface UseSearchOptions {
   value: Ref<string>
   collapsed?: MaybeRefOrGetter<boolean | undefined>
-  onChange?: (value: string) => void
-  onClear?: () => void
 }
 
 export function useSearch(options: UseSearchOptions) {
@@ -47,9 +46,7 @@ export function useSearch(options: UseSearchOptions) {
   })
 
   const searchableMenus = computed(() =>
-    flatMenus.value.filter(
-      (item) => [2, 3].includes(item.type) && item.path && !item.disabled
-    )
+    flatMenus.value.filter(isSearchableMenu)
   )
 
   const getBreadcrumb = (item: IMenu) => {
@@ -82,14 +79,12 @@ export function useSearch(options: UseSearchOptions) {
   const onChange = (e: Event) => {
     const target = e.target as HTMLInputElement
     options.value.value = target.value
-    options.onChange?.(target.value)
     panelOpen.value = true
   }
 
   const onClear = () => {
     options.value.value = ''
     inputRef.value?.focus()
-    options.onClear?.()
   }
 
   const openPanel = async () => {
@@ -108,12 +103,10 @@ export function useSearch(options: UseSearchOptions) {
     openTab(item.id)
     options.value.value = ''
     closePanel()
-    options.onClear?.()
   }
 
   const onSelectHistory = async (keyword: string) => {
     options.value.value = keyword
-    options.onChange?.(keyword)
     panelOpen.value = true
     await nextTick()
     inputRef.value?.focus()
@@ -131,8 +124,11 @@ export function useSearch(options: UseSearchOptions) {
     if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
       event.preventDefault()
       const direction = event.key === 'ArrowDown' ? 1 : -1
-      const currentIndex =
-        activeIndex.value < 0 ? (direction > 0 ? -1 : 0) : activeIndex.value
+      let currentIndex = activeIndex.value
+      if (currentIndex < 0) {
+        // 未选中时：向下从第一条开始，向上从最后一条开始
+        currentIndex = direction > 0 ? -1 : 0
+      }
       activeIndex.value =
         (currentIndex + direction + results.value.length) % results.value.length
     }

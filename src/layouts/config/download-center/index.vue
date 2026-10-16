@@ -79,7 +79,7 @@ function canResume(item: DownloadItem) {
           >
             <div class="min-w-0 flex items-start gap-12">
               <span
-                class="size-44 shrink-0 flex items-center justify-center rounded-8 icon-primary-soft"
+                class="size-44 shrink-0 flex items-center justify-center rounded-8 primary-tinted"
               >
                 <Icon name="i-lucide:hard-drive-download" :size="22" />
               </span>

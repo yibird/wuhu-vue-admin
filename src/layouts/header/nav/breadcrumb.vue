@@ -12,6 +12,7 @@
         >
           <div :key="item.id">
             <a-dropdown
+              :disabled="!dropdownMenus[index]?.length"
               :menu="{ items: dropdownMenus[index] }"
               @menu-click="onMenuClick"
             >
@@ -35,8 +36,6 @@
 </template>
 <script lang="ts" setup>
 import { useBreadcrumb } from '../hooks'
-
-defineOptions({ name: 'Breadcrumb' })
 
 const { show, showIcon, items, dropdownMenus, openMenu } = useBreadcrumb()
 

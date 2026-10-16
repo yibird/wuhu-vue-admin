@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import type { TaskCenterStat } from '../types'
 
-defineOptions({ name: 'TaskCenterStats' })
-
 defineProps<{
   stats: TaskCenterStat[]
 }>()

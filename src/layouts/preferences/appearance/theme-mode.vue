@@ -50,6 +50,5 @@
 import { useTheme } from '@/theme'
 import { themeModeOptions } from '@/config'
 
-defineOptions({ name: 'ThemeMode' })
 const { appThemeMode, changeThemeMode } = useTheme()
 </script>

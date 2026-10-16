@@ -50,6 +50,7 @@
 import { useEventListener } from '@vueuse/core'
 import { Search, List } from './components'
 import { useTabs } from '@/hooks'
+import { isSearchableMenu } from '@/router/utils'
 import { usePermissionStore } from '@/store'
 import type { SearchModalEmits } from '../types'
 import type { IMenu } from '#/config'
@@ -64,9 +65,7 @@ const isMouseDownInside = ref(false)
 const previouslyFocusedElement = shallowRef<HTMLElement | null>(null)
 const { flatMenus } = usePermissionStore()
 const { openTab } = useTabs()
-const searchableMenus = computed(() =>
-  flatMenus.value.filter((item) => [2, 3].includes(item.type) && item.path)
-)
+const searchableMenus = computed(() => flatMenus.value.filter(isSearchableMenu))
 
 const close = () => {
   if (!open.value) return

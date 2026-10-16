@@ -26,8 +26,6 @@ import { ClientError } from '@/components/exception'
 import { isNetworkDisconnectedError } from '@/errors'
 import type { ErrorBoundaryErrorPayload } from '@/components/error-boundary'
 
-defineOptions({ name: 'ContentError' })
-
 const props = withDefaults(
   defineProps<{
     error: ErrorBoundaryErrorPayload | null

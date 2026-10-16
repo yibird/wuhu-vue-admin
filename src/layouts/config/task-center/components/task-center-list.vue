@@ -3,8 +3,6 @@ import { taskStatusMeta, taskTypeMeta } from '../constants'
 import { Scrollbar } from '@/components/scrollbar'
 import type { TaskCenterItem } from '../types'
 
-defineOptions({ name: 'TaskCenterList' })
-
 defineProps<{
   activeTaskId: string
   items: TaskCenterItem[]

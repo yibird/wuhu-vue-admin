@@ -15,8 +15,6 @@ import { EmitEvent } from './constant'
 import type { MenuProps } from 'antdv-next'
 import type { TabActionEmits, TabActionKey } from './types'
 
-defineOptions({ name: 'TabAction' })
-
 const emits = defineEmits<TabActionEmits>()
 
 const options = [

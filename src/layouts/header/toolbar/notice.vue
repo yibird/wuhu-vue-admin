@@ -26,6 +26,4 @@
 </template>
 <script lang="ts" setup>
 import { NoticeCenter } from '@/layouts/config'
-
-defineOptions({ name: 'Notice' })
 </script>

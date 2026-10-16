@@ -20,35 +20,56 @@
   <DownloadCenter v-if="loaded" v-model:show="show" />
 </template>
 <script lang="ts" setup>
+import { message } from 'antdv-next'
 import { DownloadCenter } from '@/layouts/config'
 import type { WatchStopHandle } from 'vue'
-
-defineOptions({ name: 'Download' })
 
 const show = ref(false)
 const loaded = ref(false)
 const totalDownloadCount = shallowRef(0)
 
 let stopCountWatch: WatchStopHandle | undefined
+let disposed = false
 
-// 首次打开后再加载 composable，避免 downloadCenter 数据进入首屏 chunk
-watch(show, async (value) => {
-  if (!value || loaded.value) return
+/**
+ * 加载下载中心 composable 并订阅徽标计数
+ *
+ * 首次渲染后即初始化一次,保证徽标在打开下载中心前就展示真实条数;
+ * 通过动态 import 延迟加载,避免其数据进入首屏 chunk。
+ */
+async function loadDownloadCenter() {
+  if (loaded.value) return
 
   loaded.value = true
-  const { useDownloadCenter } =
-    await import('@/layouts/config/download-center/hooks')
-  const { totalDownloadCount: count } = useDownloadCenter()
-  stopCountWatch = watch(
-    count,
-    (value) => {
-      totalDownloadCount.value = value
-    },
-    { immediate: true }
-  )
+
+  try {
+    const { useDownloadCenter } =
+      await import('@/layouts/config/download-center/hooks')
+    // 组件卸载后不再创建 watcher,避免泄漏
+    if (disposed) return
+
+    const { totalDownloadCount: count } = useDownloadCenter()
+    stopCountWatch = watch(
+      count,
+      (value) => {
+        totalDownloadCount.value = value
+      },
+      { immediate: true }
+    )
+  } catch {
+    loaded.value = false
+    message.error('下载中心加载失败，请稍后重试')
+  }
+}
+
+watch(show, (value) => {
+  if (value) loadDownloadCenter()
 })
 
+onMounted(loadDownloadCenter)
+
 onBeforeUnmount(() => {
+  disposed = true
   stopCountWatch?.()
 })
 </script>

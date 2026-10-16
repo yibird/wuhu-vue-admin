@@ -24,8 +24,6 @@
 <script lang="ts" setup>
 import { Scrollbar } from '@/components/scrollbar'
 
-defineOptions({ name: 'Notify' })
-
 const items = [
   {
     id: 1,

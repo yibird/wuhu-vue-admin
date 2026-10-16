@@ -9,8 +9,6 @@
 <script lang="ts" setup>
 import type { TabHomeProps, TabControlEmits } from './types'
 
-defineOptions({ name: 'TabHome' })
-
 const { active = false } = defineProps<TabHomeProps>()
 const emits = defineEmits<TabControlEmits>()
 </script>

@@ -1,15 +1,19 @@
-import { getSearchMatch, normalizeSearchKeyword } from '@/utils'
+import {
+  PINYIN_SCORE_OFFSET,
+  getPinyinMatchScore,
+  getSearchMatch,
+  normalizeSearchKeyword,
+} from '@/utils'
 import type { IMenu } from '#/config'
 
-const PINYIN_SCORE_OFFSET = 1000
-const CONTEXT_SCORE_OFFSET = 2000
-const CONTEXT_PINYIN_SCORE_OFFSET = 3000
+const CONTEXT_SCORE_OFFSET = PINYIN_SCORE_OFFSET * 2
+const CONTEXT_PINYIN_SCORE_OFFSET = PINYIN_SCORE_OFFSET * 3
 
 function getPinyinScore(text: string, keyword: string, offset: number) {
   const match = getSearchMatch(text, keyword)
   if (!match || match.source !== 'pinyin') return Number.POSITIVE_INFINITY
 
-  return offset + match.start * 10 + match.end - match.start
+  return getPinyinMatchScore(match.start, match.end, offset)
 }
 
 export function getMenuSearchScore(

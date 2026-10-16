@@ -35,7 +35,7 @@
 </template>
 <script lang="ts" setup>
 import { useTabs } from '@/hooks'
-import { useConfig, useRoll } from './hooks'
+import { useRoll, useTabsConfig } from './hooks'
 import {
   TabPrev,
   TabHome,
@@ -66,7 +66,7 @@ const {
 
 const tabsRef = useTemplateRef<HTMLElement>('tabsRef')
 
-const { showIcon, theme } = useConfig()
+const { showIcon, theme } = useTabsConfig()
 const { rollLeft, rollRight } = useRoll(tabsRef, () => currentTab.value?.key)
 
 const onDragEnd = () => {

@@ -43,25 +43,13 @@ import { isSortable } from '@dnd-kit/vue/sortable'
 import { DraggableItem } from '@/components/draggable'
 import TabItem from './tab-item.vue'
 
-import type { TabListProps } from '../types'
+import type { TabListEmits, TabListProps } from '../types'
 import type { DragEndEvent } from '@dnd-kit/vue'
 import type { ITab } from '#/config'
 
 const { activeKey, showIcon } = defineProps<TabListProps>()
 
-const emits = defineEmits<{
-  change: [tab: ITab, index: number]
-  close: [tab: ITab, index: number]
-  refresh: []
-  closeCurrent: []
-  closeLeft: []
-  closeRight: []
-  closeOther: []
-  closeAll: []
-  collect: [index: number]
-  togglePin: [tab: ITab, fixed: boolean]
-  dragEnd: [tab: ITab]
-}>()
+const emits = defineEmits<TabListEmits>()
 
 const items = defineModel<ITab[]>('items')
 

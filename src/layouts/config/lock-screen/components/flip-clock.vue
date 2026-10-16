@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'FlipClock' })
 interface Props {
   hours: string
   minutes: string

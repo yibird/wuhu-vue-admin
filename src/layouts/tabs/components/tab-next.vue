@@ -6,7 +6,5 @@
 <script lang="ts" setup>
 import type { TabControlEmits } from './types'
 
-defineOptions({ name: 'TabNext' })
-
 const emits = defineEmits<TabControlEmits>()
 </script>

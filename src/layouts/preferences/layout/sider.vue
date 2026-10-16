@@ -32,7 +32,5 @@
 import { useAppStore } from '@/store'
 import { ConfigItem } from '../components'
 
-defineOptions({ name: 'Sider' })
-
 const { sider } = useAppStore()
 </script>

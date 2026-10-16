@@ -15,8 +15,6 @@
 <script lang="ts" setup>
 import { ChatModal } from '@/layouts/config'
 
-defineOptions({ name: 'Chat' })
-
 const show = ref(false)
 const loaded = ref(false)
 

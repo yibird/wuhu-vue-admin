@@ -1,9 +1,6 @@
 <template>
   <div
-    :class="[
-      'relative flex h-full overflow-visible shadow-[var(--w-sider-shadow)] border-r-1 border-solid border-r-[rgb(var(--w-sider-border-color))] z-[var(--w-sider-z-index)]',
-      `split-sider-${siderTheme}`,
-    ]"
+    class="relative flex h-full overflow-visible shadow-[var(--w-sider-shadow)] border-r-1 border-solid border-r-[rgb(var(--w-sider-border-color))] z-[var(--w-sider-z-index)]"
   >
     <div
       class="flex flex-col w-78 overflow-hidden bg-[rgb(var(--w-sider-bg))] border-r-1 border-solid border-r-[rgb(var(--w-border-color-2))]"
@@ -12,7 +9,7 @@
         collapsed
         class="border-b-1 border-solid border-b-[rgb(var(--w-border-color-2))]"
       />
-      <Scrollbar class="flex-1" content-class="flex flex-col gap-10 py-10">
+      <div class="flex-1 py-10 flex flex-col gap-10">
         <div
           v-for="item in menus"
           :key="item.id"
@@ -37,14 +34,13 @@
           </div>
           <div class="text-xs text-center truncate">{{ item.title }}</div>
         </div>
-      </Scrollbar>
+      </div>
     </div>
     <a-layout-sider
       :collapsed="sider.collapsed"
       :width="sider.width"
       :collapsed-width="0"
       :theme="siderTheme"
-      class="[&_.ant-layout-sider-children]:flex [&_.ant-layout-sider-children]:flex-col [&_.ant-layout-sider-children]:h-full [&_.ant-layout-sider-children]:overflow-hidden"
       data-testid="layout-sider"
       @update:collapsed="setCollapsed"
     >
@@ -54,13 +50,7 @@
       >
         <Search />
       </div>
-      <Scrollbar class="flex-1" content-class="pb-2">
-        <AppMenu
-          :items="activeRootMenuChildren"
-          :theme="siderTheme"
-          class="border-none"
-        />
-      </Scrollbar>
+      <Menu :items="activeRootMenuChildren" :theme="siderTheme" />
     </a-layout-sider>
   </div>
 </template>
@@ -68,17 +58,12 @@
 import { firstLeafPath } from '@zhouchengfeng/okay'
 import { useAppStore, usePermissionStore } from '@/store'
 import { useTabs } from '@/hooks'
-import { AppMenu } from '@/layouts/menu'
 import { ThemeMode } from '@/constants'
 import { useTheme } from '@/theme'
-import { Scrollbar } from '@/components/scrollbar'
 import { useMenu } from '@/layouts/hooks'
-import Logo from './logo.vue'
-import Search from './search/index.vue'
+import { Menu, Logo, Search } from './components'
 
 import type { IMenu } from '#/config'
-
-defineOptions({ name: 'SplitSider' })
 
 const { sider, setCollapsed } = useAppStore()
 const { menus } = usePermissionStore()

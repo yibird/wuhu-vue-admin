@@ -12,7 +12,6 @@
   <TaskCenter v-if="loaded" v-model:show="show" />
 </template>
 <script lang="ts" setup>
-defineOptions({ name: 'Task' })
 const TaskCenter = defineAsyncComponent(
   () => import('@/layouts/config/task-center/index.vue')
 )

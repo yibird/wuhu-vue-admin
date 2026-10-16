@@ -198,7 +198,7 @@ function handleEnter(event: KeyboardEvent) {
               @click="usePromptAction(action)"
             >
               <span
-                class="size-32 shrink-0 flex items-center justify-center rounded-7 icon-primary-soft"
+                class="size-32 shrink-0 flex items-center justify-center rounded-7 primary-tinted"
               >
                 <Icon :name="action.icon" :size="16" />
               </span>

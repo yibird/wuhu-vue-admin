@@ -1,5 +1,5 @@
 import type { IMenu } from '#/config'
-
+import type { MenuProps as AntdvMenuProps } from 'antdv-next'
 export interface LogoProps {
   /**
    * @desc 收缩状态
@@ -10,11 +10,6 @@ export interface LogoProps {
 
 export interface SearchProps {
   collapsed?: boolean
-}
-
-export interface SearchEmits {
-  (e: 'change', value: string): void
-  (e: 'clear'): void
 }
 
 export interface SiderSearchResult {
@@ -39,4 +34,13 @@ export interface SearchPanelEmits {
   (e: 'clear-history'): void
   (e: 'toggle-history'): void
   (e: 'active-change', index: number): void
+}
+
+export interface MenuProps extends Omit<AntdvMenuProps, 'items'> {
+  items?: IMenu[]
+  collapsed?: boolean
+  theme?: 'light' | 'dark'
+  mode?: 'horizontal' | 'vertical' | 'inline'
+  selectedKey?: string
+  expandedKeys?: string[]
 }

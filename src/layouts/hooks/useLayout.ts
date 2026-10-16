@@ -32,7 +32,7 @@ export function useLayout() {
   const contentStyle = computed(() => {
     const minHeight = !fixedHeader.value
       ? '100%'
-      : tabs.value
+      : showTabs.value
         ? 'calc(100% - 90px)'
         : 'calc(100% - 50px)'
     return {

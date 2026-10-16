@@ -4,14 +4,12 @@ import { useTabs } from '@/hooks'
 import { permissionStore, useAppStore } from '@/store'
 import type { IMenu } from '#/config'
 
-const toMenuId = (id?: string) => id
-
 export const useMenu = createSharedComposable(() => {
   const previewRootMenuId = shallowRef<string>()
   const { app } = useAppStore()
   const { currentTab } = useTabs()
 
-  const routeRootMenuId = computed(() => toMenuId(currentTab.value?.rootId))
+  const routeRootMenuId = computed(() => currentTab.value?.rootId)
   const activeRootMenuId = computed(
     () => previewRootMenuId.value ?? routeRootMenuId.value
   )
@@ -28,7 +26,7 @@ export const useMenu = createSharedComposable(() => {
   })
 
   const setPreviewRootMenuId = (id?: string) => {
-    previewRootMenuId.value = toMenuId(id)
+    previewRootMenuId.value = id
   }
 
   const clearPreviewRootMenuId = () => {

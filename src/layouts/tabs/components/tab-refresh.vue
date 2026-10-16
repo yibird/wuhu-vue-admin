@@ -4,6 +4,5 @@
   </button>
 </template>
 <script lang="ts" setup>
-defineOptions({ name: 'TabRefresh' })
 const emits = defineEmits(['click'])
 </script>

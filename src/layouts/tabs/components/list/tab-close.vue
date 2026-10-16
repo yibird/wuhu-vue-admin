@@ -9,7 +9,6 @@
   </button>
 </template>
 <script setup lang="ts">
-defineOptions({ name: 'TabClose' })
 const props = defineProps<{ pin?: boolean }>()
 const emits = defineEmits(['close'])
 

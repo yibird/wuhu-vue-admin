@@ -2,19 +2,15 @@ import { computed } from 'vue'
 import { Drawer } from 'antdv-next'
 import { useAppStore } from '@/store'
 import { MenuMode } from '@/constants'
-import { VerticalSider } from '../components'
+import VerticalSider from '../vertical-sider.vue'
 import { useCollapse } from './useCollapse.ts'
 
 const SPLIT_RAIL_WIDTH = 78
 
 const components = {
   [MenuMode.Vertical]: VerticalSider,
-  [MenuMode.Mix]: defineAsyncComponent(
-    () => import('../components/mix-sider.vue')
-  ),
-  [MenuMode.Split]: defineAsyncComponent(
-    () => import('../components/split-sider.vue')
-  ),
+  [MenuMode.Mix]: defineAsyncComponent(() => import('../mix-sider.vue')),
+  [MenuMode.Split]: defineAsyncComponent(() => import('../split-sider.vue')),
 }
 
 export function useSider() {
@@ -25,11 +21,6 @@ export function useSider() {
 
   const { isSmallScreen } = useCollapse()
 
-  /**
-   * 内联渲染的侧边栏组件
-   *
-   * 横向菜单模式的导航由头部承载,整体隐藏侧边栏时也不渲染,两种情况都返回 null
-   */
   const siderComponent = computed(() => {
     const mode = menuMode.value
     if (!showSider.value || mode === MenuMode.Horizontal) return null

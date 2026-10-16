@@ -16,8 +16,6 @@ import { useTabs } from '@/hooks'
 import { useMenu } from '@/layouts/hooks'
 import type { MenuProps } from 'antdv-next'
 
-defineOptions({ name: 'HeaderNavMenu' })
-
 const { app } = useAppStore()
 const { menus } = usePermissionStore()
 const { openTab, currentTab } = useTabs()
@@ -44,8 +42,8 @@ const options = computed(() => {
       disabled: item.disabled,
       icon: renderIcon(item.icon, { size: 20 }),
     }),
-    // 子页面(type 3)仅用于路由跳转,不在菜单中展示
-    (item) => item.type !== 3
+    // 仅目录(type 1)/菜单(type 2)参与头部菜单渲染,子页面与权限按钮不展示
+    (item) => [1, 2].includes(item.type)
   )
 })
 
@@ -61,11 +59,11 @@ const onClick: MenuProps['onClick'] = ({ key }) => {
 }
 
 watch(
-  [() => currentTab, () => app.value.menuMode],
+  [() => currentTab.value, () => app.value.menuMode],
   ([val, mode]) => {
     if (!val) return
     if (mode === MenuMode.Horizontal) {
-      selectedKeys.value = val.value?.menuId ? [val.value.menuId] : []
+      selectedKeys.value = val.menuId ? [val.menuId] : []
     }
 
     if (mode === MenuMode.Mix) {

@@ -5,7 +5,6 @@
     :size="450"
     :styles="drawerStyles"
     :destroy-on-hidden="false"
-    :focusable="{ trap: false }"
     @after-open-change="onOpenChange"
   >
     <template #title>
@@ -36,17 +35,18 @@
     </template>
 
     <div class="h-full flex flex-col pb-20 pt-12 gap-12 overflow-hidden">
-      <a-segmented
-        v-model:value="activeSection"
-        :options="sectionOptions"
-        size="large"
-        block
-        class="mx-10"
-      >
-        <template #iconRender="{ value }">
-          <Icon :name="getIcon(value)" :size="15" aria-hidden="true" />
-        </template>
-      </a-segmented>
+      <div class="mx-10">
+        <a-segmented
+          v-model:value="activeSection"
+          :options="sectionOptions"
+          size="large"
+          block
+        >
+          <template #iconRender="{ value }">
+            <Icon :name="getIcon(value)" :size="15" aria-hidden="true" />
+          </template>
+        </a-segmented>
+      </div>
       <main
         class="flex-1 px-16 pt-4 overflow-x-hidden overflow-y-auto"
         role="tabpanel"
@@ -97,8 +97,6 @@ import { useConfig } from './hooks/index.ts'
 import type { Component } from 'vue'
 import type { SettingEmit } from './types.ts'
 
-defineOptions({ name: 'Preferences' })
-
 const open = defineModel<boolean>('open', { default: false })
 const emits = defineEmits<SettingEmit>()
 const importInput = useTemplateRef<HTMLInputElement>('importInput')
@@ -111,7 +109,6 @@ const drawerStyles = {
   },
   body: {
     padding: 0,
-    backgroundColor: 'rgb(var(--w-bg-page))',
     overflowY: 'hidden',
   },
   footer: {

@@ -9,6 +9,6 @@ export const FloatingBar = defineAsyncComponent(
 export {
   usePreferences,
   useConfig,
-  useShortcuts,
+  useShortcutConfig,
   useGlobalShortcuts,
 } from './hooks'

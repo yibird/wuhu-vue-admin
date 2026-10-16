@@ -1,2 +1,2 @@
 export { useRoll } from './useRoll'
-export { useConfig } from './useConfig'
+export { useTabsConfig } from './useConfig'

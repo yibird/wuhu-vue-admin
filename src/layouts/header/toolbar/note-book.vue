@@ -14,8 +14,6 @@
 <script lang="ts" setup>
 import { NoteBookModal } from '@/layouts/config'
 
-defineOptions({ name: 'NoteBook' })
-
 const show = shallowRef(false)
 const loaded = shallowRef(false)
 

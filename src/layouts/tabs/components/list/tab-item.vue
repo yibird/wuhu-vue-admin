@@ -36,8 +36,6 @@ import TabPin from './tab-pin.vue'
 import TabClose from './tab-close.vue'
 import type { TabItemEmits, TabItemProps } from '../types'
 
-defineOptions({ name: 'TabItem' })
-
 const {
   index = 0,
   active = false,

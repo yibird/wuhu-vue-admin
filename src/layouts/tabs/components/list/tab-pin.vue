@@ -9,7 +9,6 @@
   </button>
 </template>
 <script setup lang="ts">
-defineOptions({ name: 'TabPin' })
 const props = defineProps<{ pin?: boolean }>()
 const emits = defineEmits(['toggle'])
 const onTogglePin = () => {

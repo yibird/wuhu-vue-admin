@@ -15,14 +15,7 @@
         :collapsed="sider.collapsed"
         @update:value="onSearchInput"
       />
-      <div class="flex-1 overflow-y-auto scroll-hover">
-        <AppMenu
-          :items="items"
-          :collapsed="sider.collapsed"
-          :theme="siderTheme"
-          class="border-none!"
-        />
-      </div>
+      <Menu :items="items" :collapsed="sider.collapsed" :theme="siderTheme" />
     </div>
   </a-layout-sider>
 </template>
@@ -31,12 +24,7 @@ import { useDebounceFn } from '@vueuse/core'
 import { useAppStore, usePermissionStore } from '@/store'
 import { ThemeMode } from '@/constants'
 import { useTheme } from '@/theme'
-import { AppMenu } from '@/layouts/menu'
-import Logo from './logo.vue'
-import Search from './search/index.vue'
-import { matchesMenuTree } from './search/util'
-
-defineOptions({ name: 'VerticalSider' })
+import { Menu, Logo, Search, matchesMenuTree } from './components'
 
 const { sider, setCollapsed } = useAppStore()
 const { menus } = usePermissionStore()

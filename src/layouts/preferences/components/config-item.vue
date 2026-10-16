@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ConfigItem' })
 defineProps<{ title?: string }>()
 </script>
 

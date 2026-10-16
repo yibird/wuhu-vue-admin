@@ -6,8 +6,9 @@ import { useGlobalSearch, useLockScreen } from '@/layouts/config/hooks'
 
 type ShortcutAction = 'search' | 'logout' | 'lockScreen'
 
+// macOS 按住 Option 会生成特殊字符,event.key 不可靠,需兼容物理键码
 const isKey = (event: KeyboardEvent, key: string) =>
-  event.key.toLowerCase() === key
+  event.key.toLowerCase() === key || event.code.toLowerCase() === `key${key}`
 
 const isEditableTarget = (target: EventTarget | null) =>
   target instanceof Element &&
@@ -17,11 +18,7 @@ const isEditableTarget = (target: EventTarget | null) =>
     )
   )
 
-export function useShortcuts() {
-  return useShortcutKeyConfig()
-}
-
-export function useShortcutKeyConfig() {
+export function useShortcutConfig() {
   const { shortcutKey } = useAppStore()
 
   const createModel = (key: keyof typeof shortcutKey.value) =>

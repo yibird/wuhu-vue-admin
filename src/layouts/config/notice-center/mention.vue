@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { Scrollbar } from '@/components/scrollbar'
 
-defineOptions({ name: 'Mention' })
-
 const items = [
   {
     id: 1,

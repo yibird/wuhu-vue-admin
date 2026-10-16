@@ -16,7 +16,5 @@
 import { useAppStore } from '@/store'
 import { ConfigItem } from '../components'
 
-defineOptions({ name: 'Other' })
-
 const { app } = useAppStore()
 </script>

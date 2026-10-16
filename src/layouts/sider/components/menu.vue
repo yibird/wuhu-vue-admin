@@ -1,27 +1,28 @@
 <template>
-  <a-menu
-    :selected-keys="selectedKeys"
-    :open-keys="menuOpenKeys"
-    :inline-collapsed="inlineCollapsed"
-    :items="items"
-    :mode="mode"
-    :theme="theme"
-    @open-change="onOpenChange"
-    @click="onClick"
-  />
+  <Scrollbar class="flex-1">
+    <a-menu
+      :selected-keys="selectedKeys"
+      :open-keys="menuOpenKeys"
+      :inline-collapsed="inlineCollapsed"
+      :items="items"
+      :mode="mode"
+      :theme="theme"
+      @open-change="onOpenChange"
+      @click="onClick"
+      class="border-none!"
+    />
+  </Scrollbar>
 </template>
 <script lang="ts" setup>
 import { useTabs } from '@/hooks'
+import { Scrollbar } from '@/components'
 import { renderIcon, renderMenus } from '@/utils'
-import type { AppMenuProps } from './types'
-import type { MenuProps } from 'antdv-next'
+import type { MenuProps } from './types'
 import type { IMenu } from '#/config'
-
-defineOptions({ name: 'AppMenu' })
 
 const { currentTab, openTab } = useTabs()
 
-const props = withDefaults(defineProps<AppMenuProps>(), {
+const props = withDefaults(defineProps<MenuProps>(), {
   items: () => [],
   collapsed: false,
   mode: 'inline',

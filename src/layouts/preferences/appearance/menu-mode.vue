@@ -50,8 +50,6 @@
 import { useAppStore } from '@/store'
 import { menuModeOptions, type MenuMode } from '@/config'
 
-defineOptions({ name: 'MenuMode' })
-
 const { app } = useAppStore()
 
 const onClick = (mode: MenuMode) => {

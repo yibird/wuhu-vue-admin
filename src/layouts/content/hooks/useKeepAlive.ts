@@ -3,13 +3,27 @@ import { useTabs } from '@/hooks'
 import { useAppStore } from '@/store'
 import { isUrl } from '@/utils'
 
+/** 缓存页面数上限,避免缓存过多实例占用内存 */
+const MAX_PAGE_CACHE = 20
+/** `pageCacheMax` 缺失或非法时的默认缓存页面数 */
+const DEFAULT_PAGE_CACHE = 10
+/**
+ * 缓存页面数下限,至少保留一个缓存页
+ *
+ * 注意:Vue 中 `max` 为 0 表示不限制缓存,此处下限会覆盖该语义;
+ * 如需支持"不限制",应单独区分 0 的取值。
+ */
+const MIN_PAGE_CACHE = 1
+
 export function useKeepAlive() {
   const { allTabs, currentTab, excludes } = useTabs()
   const { app } = useAppStore()
 
   const max = computed(() => {
     const value = Number(app.value.pageCacheMax)
-    return Number.isFinite(value) ? Math.min(20, Math.max(1, value)) : 10
+    return Number.isFinite(value)
+      ? Math.min(MAX_PAGE_CACHE, Math.max(MIN_PAGE_CACHE, value))
+      : DEFAULT_PAGE_CACHE
   })
   /**
    * 参与 KeepAlive 缓存的组件名集合
@@ -23,7 +37,9 @@ export function useKeepAlive() {
     const componentNames = new Set<string>()
     for (const tab of allTabs.value) {
       if (!tab?.keepAlive || !tab.path || isUrl(tab.path)) continue
-      componentNames.add(getComponentName(tab.path))
+      // 与刷新逻辑同源,优先使用 tab 上已写入的组件名
+      const componentName = tab.componentName || getComponentName(tab.path)
+      componentNames.add(componentName)
     }
     return [...componentNames].join(',')
   })

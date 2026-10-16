@@ -22,8 +22,6 @@ import { useAppStore } from '@/store'
 import { ConfigItem } from '../components'
 import { TabsTheme } from '@/constants'
 
-defineOptions({ name: 'Tab' })
-
 const { tabs: tab } = useAppStore()
 
 const themeOptions = [

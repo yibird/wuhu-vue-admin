@@ -1,9 +1,20 @@
 <script setup lang="ts">
 import type { SearchPanelEmits, SearchPanelProps } from '../types'
 
-defineOptions({ name: 'SearchPanel' })
-defineProps<SearchPanelProps>()
+const props = defineProps<SearchPanelProps>()
 const emits = defineEmits<SearchPanelEmits>()
+
+/**
+ * 结果提示文案
+ *
+ * 列表只渲染前 N 条,命中更多时需同时展示总数与实际渲染条数,
+ * 避免用户误以为结果只有这几条或结果丢失。
+ */
+const resultSummary = computed(() =>
+  props.resultCount > props.results.length
+    ? `仅显示前 ${props.results.length} 条 / 共 ${props.resultCount} 条`
+    : `${props.resultCount} 个结果`
+)
 </script>
 
 <template>
@@ -42,7 +53,7 @@ const emits = defineEmits<SearchPanelEmits>()
             {{ keyword ? '搜索结果' : '搜索提示' }}
           </span>
           <span v-if="keyword" class="text-xs text-muted">
-            {{ resultCount }} 个结果
+            {{ resultSummary }}
           </span>
         </div>
 
@@ -169,7 +180,7 @@ const emits = defineEmits<SearchPanelEmits>()
             <button
               type="button"
               :aria-label="`删除搜索记录 ${record}`"
-              class="mr-4 size-26 flex shrink-0 cursor-pointer items-center justify-center rounded-5 border-0 bg-transparent p-0 text-muted opacity-0 outline-none transition-[background-color,color,opacity] duration-motion-fast group-hover:opacity-100 hover:(bg-fill-4 text-main) focus-visible:(bg-fill-4 text-primary opacity-100)"
+              class="pointer-events-none mr-4 size-26 flex shrink-0 cursor-pointer items-center justify-center rounded-5 border-0 bg-transparent p-0 text-muted opacity-0 outline-none transition-[background-color,color,opacity] duration-motion-fast group-hover:(pointer-events-auto opacity-100) hover:(bg-fill-4 text-main) focus-visible:(pointer-events-auto bg-fill-4 text-primary opacity-100)"
               @click="emits('remove-history', record)"
             >
               <Icon name="i-lucide:x" :size="14" />

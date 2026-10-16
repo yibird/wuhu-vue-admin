@@ -20,8 +20,6 @@ import { useLocale } from '@/locales'
 import { localeOptions } from '@/config'
 import { ConfigItem } from '../components'
 
-defineOptions({ name: 'General' })
-
 const { app } = useAppStore()
 const { appLocale, changeLocale } = useLocale()
 </script>
