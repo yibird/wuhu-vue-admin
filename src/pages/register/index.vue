@@ -53,16 +53,10 @@
   </div>
 </template>
 <script lang="ts" setup>
-import {
-  Logo,
-  ActionBar,
-  Banner,
-  AccountRegister,
-  MobileRegister,
-  type Placement,
-} from './components'
 import { useI18n } from 'vue-i18n'
 import { message } from 'antdv-next'
+import { AccountRegister, MobileRegister, type Placement } from './components'
+import { Logo, ActionBar, Banner } from '../login/components'
 import { useGo } from '@/router'
 
 const { t } = useI18n()

@@ -8,8 +8,6 @@ import googleIcon from '@/assets/svg/google.svg'
 import type { FormInstance, RuleObject } from 'antdv-next'
 import type { RegisterEmits, RegisterFormProps } from './types'
 
-defineOptions({ name: 'AccountRegister' })
-
 const emits = defineEmits<RegisterEmits>()
 const props = withDefaults(defineProps<RegisterFormProps>(), { loading: false })
 const { t } = useI18n()
@@ -110,6 +108,8 @@ watch(
         v-model:value="formData.account"
         size="large"
         :placeholder="$t('register.inputAccount')"
+        allow-clear
+        autofocus
       >
         <template #prefix>
           <Icon name="i-lucide:shield-user" :size="18" class="text-secondary" />

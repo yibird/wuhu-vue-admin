@@ -18,8 +18,6 @@ import { Locale } from '@/constants'
 import type { Locale as LocaleValue } from '@/config'
 import { useLocale } from '@/locales'
 
-defineOptions({ name: 'Translate' })
-
 const options = [
   {
     label: '中文简体',

@@ -15,7 +15,6 @@
       :label="$t('login.mobileLabel')"
     >
       <a-input
-        ref="mobileInputRef"
         v-model:value="formData.mobile"
         autocomplete="tel"
         inputmode="numeric"
@@ -32,9 +31,6 @@
             tabindex="-1"
             class="text-secondary transition-colors group-focus-within:text-primary"
           />
-        </template>
-        <template #clearIcon>
-          <ClearIcon />
         </template>
       </a-input>
     </a-form-item>
@@ -70,18 +66,13 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { validateCode, validateMobile } from '@/utils'
-import ClearIcon from './clear-icon.vue'
 import type { FormInstance } from 'antdv-next'
-import type { ComponentPublicInstance } from 'vue'
 import type { LoginEmits, LoginFormProps } from './types'
-
-defineOptions({ name: 'MobileLogin' })
 
 const emits = defineEmits<LoginEmits>()
 const props = withDefaults(defineProps<LoginFormProps>(), { loading: false })
 const { t } = useI18n()
 const formRef = useTemplateRef<FormInstance>('formRef')
-const mobileInputRef = useTemplateRef<ComponentPublicInstance>('mobileInputRef')
 
 const formData = reactive({
   mobile: '',
@@ -119,20 +110,4 @@ const onSubmit = () => {
     code: formData.code,
   })
 }
-
-const removeClearButtonFromTabOrder = () => {
-  const clearButton = mobileInputRef.value?.$el?.querySelector(
-    '.ant-input-clear-icon'
-  ) as HTMLButtonElement | null | undefined
-  clearButton?.setAttribute('tabindex', '-1')
-}
-
-onMounted(() => {
-  nextTick(removeClearButtonFromTabOrder)
-})
-
-watch(
-  () => formData.mobile,
-  () => nextTick(removeClearButtonFromTabOrder)
-)
 </script>

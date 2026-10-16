@@ -16,7 +16,6 @@
     >
       <a-input
         v-model:value="formData.account"
-        ref="accountInputRef"
         allow-clear
         autofocus
         autocomplete="username"
@@ -24,7 +23,6 @@
         :maxlength="64"
         size="large"
         :placeholder="$t('login.inputAccount')"
-        @clear="formData.account = ''"
       >
         <template #prefix>
           <Icon
@@ -33,9 +31,6 @@
             tabindex="-1"
             class="text-secondary transition-colors group-focus-within:text-primary"
           />
-        </template>
-        <template #clearIcon>
-          <ClearIcon />
         </template>
       </a-input>
     </a-form-item>
@@ -134,19 +129,14 @@ import qqIcon from '@/assets/svg/qq.svg'
 import githubIcon from '@/assets/svg/github.svg'
 import googleIcon from '@/assets/svg/google.svg'
 import type { FormInstance } from 'antdv-next'
-import type { ComponentPublicInstance } from 'vue'
 import type { LoginEmits, LoginFormProps } from './types'
-import ClearIcon from './clear-icon.vue'
-
-defineOptions({ name: 'AccountLogin' })
 
 const emits = defineEmits<LoginEmits>()
 const props = withDefaults(defineProps<LoginFormProps>(), { loading: false })
 const { t } = useI18n()
 const { to } = useGo()
 const formRef = useTemplateRef<FormInstance>('formRef')
-const accountInputRef =
-  useTemplateRef<ComponentPublicInstance>('accountInputRef')
+
 const rememberedAccountKey = 'wuhu:login:remembered-account'
 const items = computed(() => [
   {
@@ -215,28 +205,12 @@ const onSubmit = () => {
   })
 }
 
-const removeClearButtonFromTabOrder = () => {
-  const clearButton = accountInputRef.value?.$el?.querySelector(
-    '.ant-input-clear-icon'
-  ) as HTMLButtonElement | null | undefined
-  clearButton?.setAttribute('tabindex', '-1')
-}
-
 onMounted(() => {
-  nextTick(removeClearButtonFromTabOrder)
-
   try {
     const account = localStorage.getItem(rememberedAccountKey)
     if (!account) return
     formData.account = account
     rememberAccount.value = true
-  } catch {
-    // Ignore unavailable storage and keep the form usable.
-  }
+  } catch {}
 })
-
-watch(
-  () => formData.account,
-  () => nextTick(removeClearButtonFromTabOrder)
-)
 </script>

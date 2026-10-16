@@ -28,8 +28,6 @@
 import { QRCode } from 'antdv-next'
 import type { LoginFormProps } from './types'
 
-defineOptions({ name: 'QrcodeLogin' })
-
 withDefaults(defineProps<LoginFormProps>(), { loading: false })
 const createQrValue = () =>
   `wuhu-admin://login/${crypto.randomUUID?.() ?? `${Date.now()}-${Math.random()}`}`

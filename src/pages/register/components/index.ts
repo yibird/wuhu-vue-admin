@@ -1,6 +1,3 @@
-export { default as Logo } from './logo.vue'
-export { default as Banner } from './banner.vue'
-export { default as ActionBar } from './action-bar/index.vue'
 export { default as AccountRegister } from './account-register.vue'
 export { default as MobileRegister } from './mobile-register.vue'
 export type { Placement } from './types'

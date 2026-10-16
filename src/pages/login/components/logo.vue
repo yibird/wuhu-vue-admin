@@ -3,24 +3,38 @@
     class="page-enter page-enter--2 absolute left-16 top-16 z-10 min-w-0 flex items-center gap-10 sm:left-20 sm:top-20"
   >
     <img
+      v-if="appLogo"
       :alt="appName"
       class="size-48 shrink-0 select-none"
       :height="48"
       :width="48"
-      :src="logo"
+      :src="appLogo"
     />
-    <span
-      class="max-w-180 truncate bg-clip-text text-xl text-transparent font-600 [background-image:linear-gradient(100deg,#6d5dfc_0%,#1677ff_48%,#00a88f_100%)] dark:[background-image:linear-gradient(100deg,#9b8cff_0%,#4ca0ff_48%,#2dd4bf_100%)]"
+    <GradientText
+      class="max-w-180 truncate text-xl font-600"
+      direction="100deg"
+      :colors="logoColors"
     >
       {{ appName }}
-    </span>
+    </GradientText>
   </div>
 </template>
 
 <script setup lang="ts">
-import logo from '@/assets/svg/logo.svg'
+import { ThemeMode } from '@/constants'
+import { useTheme } from '@/theme'
+import { useAppStore } from '@/store'
+import { GradientText } from '@/components'
 
-defineOptions({ name: 'Logo' })
+const { app } = useAppStore()
+const appName = computed(() => app.value.name)
+const appLogo = computed(() => app.value.logo)
 
-const appName = import.meta.env.VITE_APP_NAME
+const { themeMode } = useTheme()
+
+const logoColors = computed(() =>
+  themeMode.value === ThemeMode.Dark
+    ? ['#9b8cff 0%', '#4ca0ff 48%', '#2dd4bf 100%']
+    : ['#6d5dfc 0%', '#1677ff 48%', '#00a88f 100%']
+)
 </script>

@@ -26,8 +26,6 @@
 import LoginBannerImage from '@/assets/svg/login-banner.svg'
 import type { Placement } from './types'
 
-defineOptions({ name: 'Banner' })
-
 const { placement } = defineProps<{
   placement: Placement
   titleKey: string

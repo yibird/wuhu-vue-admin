@@ -5,7 +5,6 @@
       { 'flex-row': placement === 'right' },
       { 'flex-row-reverse': placement === 'left' },
     ]"
-    :aria-busy="loginLoading"
   >
     <Logo />
     <ActionBar @change="changePlacement" />
@@ -27,12 +26,10 @@
     >
       <div class="page-enter page-enter--2 w-full max-w-400">
         <div class="mb-24">
-          <h1
-            class="m-0 text-2xl font-semibold leading-10 text-main transition-colors duration-motion-base motion-reduce:transition-none"
-          >
+          <h1 class="m-0 text-2xl font-800 leading-10 text-main">
             {{ $t('login.title') }}
           </h1>
-          <p class="mb-0 mt-8 text-sm leading-6 text-regular">
+          <p class="text-regular font-600">
             {{ $t('login.description') }}
           </p>
         </div>
@@ -113,7 +110,6 @@ const changePlacement = (value: Placement) => {
 }
 const onSubmit = async (credentials: LoginRequest) => {
   if (loginLoading.value) return
-
   try {
     await login(credentials)
     message.success(t('login.success'))
