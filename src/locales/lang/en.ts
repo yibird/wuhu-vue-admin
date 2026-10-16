@@ -1,5 +1,6 @@
-import type { LocaleMessages } from './types'
-
+/**
+ * 英文语言包,同时作为 LocaleMessages 的单一事实来源
+ */
 export default {
   common: {
     ok: 'OK',
@@ -78,4 +79,4 @@ export default {
     github: 'GitHub',
     google: 'Google',
   },
-} satisfies LocaleMessages
+}

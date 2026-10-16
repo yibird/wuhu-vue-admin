@@ -13,18 +13,9 @@ export interface FontFamilyOption {
   value: FontFamily
   /**
    * 完整字体栈,写入 --w-font-family
-   *
-   * 度量兜底族(size-adjust / ascent-override 等)见 src/styles/fonts.less:
-   * global 字体族的 @font-face 由 fontless 注入 <head>,但兜底族需要在栈里显式引用。
    */
   stack: string
-  /**
-   * 写入 --w-font-weight
-   */
   fontWeight: number
-  /**
-   * 写入 --w-letter-spacing
-   */
   letterSpacing: string
 }
 
@@ -41,7 +32,7 @@ const yaheiFontStack =
 
 /**
  * @param family 拉丁字体族
- * @param fallback 度量兜底族(定义见 src/styles/fonts.less,构建期不参与解析)
+ * @param fallback 度量兜底族(定义见 src/styles/fonts.css,构建期不参与解析)
  * @returns 拉丁字体 + 度量兜底 + 中文回退 + 系统兜底的完整字体栈
  */
 function createFontStack(family: string, fallback: string) {
