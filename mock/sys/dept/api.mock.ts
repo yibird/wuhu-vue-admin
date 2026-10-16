@@ -1,7 +1,13 @@
 import { defineMock } from 'vite-plugin-mock-dev-server'
 import type { CreateDeptReq, UpdateDeptReq } from '@/apis'
 import { apiErr, apiOk, getPageList } from '#mock/helper'
-import { appendDept, dataSource, findDept, updateDept } from './data'
+import {
+  deleteDept,
+  appendDept,
+  dataSource,
+  findDept,
+  updateDept,
+} from './data'
 
 export default defineMock([
   {
@@ -24,7 +30,7 @@ export default defineMock([
 
       return apiOk(
         getPageList(filtered, {
-          pageNum: Number(query.pageNum) || 1,
+          current: Number(query.current) || 1,
           pageSize: Number(query.pageSize) || 10,
         })
       )
@@ -58,5 +64,11 @@ export default defineMock([
     body: ({ body }: { body: UpdateDeptReq }) => {
       return updateDept(body) ? apiOk(1) : apiErr('部门或岗位不存在')
     },
+  },
+  {
+    url: '/api/sys/dept/del',
+    method: 'POST',
+    body: ({ body }: { body: Array<string | number> }) =>
+      deleteDept(body) ? apiOk(1) : apiErr('部门或岗位不存在'),
   },
 ])

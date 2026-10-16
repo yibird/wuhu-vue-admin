@@ -1,7 +1,13 @@
 import { defineMock } from 'vite-plugin-mock-dev-server'
 import type { CreateRoleReq, UpdateRoleReq } from '@/apis'
 import { apiErr, apiOk, getPageList } from '#mock/helper'
-import { appendRole, dataSource, findRole, updateRole } from './data'
+import {
+  deleteRole,
+  appendRole,
+  dataSource,
+  findRole,
+  updateRole,
+} from './data'
 
 import type { BaseQuery } from '#/http'
 
@@ -36,5 +42,11 @@ export default defineMock([
     body: ({ body }: { body: UpdateRoleReq }) => {
       return updateRole(body) ? apiOk(1) : apiErr('角色不存在')
     },
+  },
+  {
+    url: '/api/sys/role/del',
+    method: 'POST',
+    body: ({ body }: { body: Array<string | number> }) =>
+      deleteRole(body) ? apiOk(1) : apiErr('角色不存在'),
   },
 ])

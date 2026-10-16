@@ -1,7 +1,13 @@
 import { defineMock } from 'vite-plugin-mock-dev-server'
 import type { CreateUserReq, UpdateUserReq } from '@/apis'
 import { apiErr, apiOk, getPageList } from '#mock/helper'
-import { appendUser, dataSource, findUser, updateUser } from './data'
+import {
+  deleteUser,
+  appendUser,
+  dataSource,
+  findUser,
+  updateUser,
+} from './data'
 import type { BaseQuery } from '#/http'
 
 export default defineMock([
@@ -35,5 +41,11 @@ export default defineMock([
     body: ({ body }: { body: UpdateUserReq }) => {
       return updateUser(body) ? apiOk(1) : apiErr('用户不存在')
     },
+  },
+  {
+    url: '/api/sys/user/del',
+    method: 'POST',
+    body: ({ body }: { body: Array<string | number> }) =>
+      deleteUser(body) ? apiOk(1) : apiErr('用户不存在'),
   },
 ])

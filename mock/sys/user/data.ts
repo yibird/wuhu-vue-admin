@@ -83,3 +83,17 @@ export function updateUser(input: UpdateUserReq) {
   })
   return true
 }
+
+/**
+ * 删除用户
+ *
+ * @param ids 主键集合
+ */
+export function deleteUser(ids: Array<string | number>) {
+  const idSet = new Set(ids.map(String))
+  const originalLength = dataSource.length
+  for (let index = dataSource.length - 1; index >= 0; index -= 1) {
+    if (idSet.has(dataSource[index].id)) dataSource.splice(index, 1)
+  }
+  return originalLength !== dataSource.length
+}

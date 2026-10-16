@@ -22,9 +22,9 @@ export const apiOk = <T>(data: T) => apiResp(ApiCode.Ok, data)
 export const apiErr = (message?: string) => apiResp(ApiCode.Err, null, message)
 
 export function getPageList<T>(data: T[], query: BaseQuery) {
-  const { pageNum = 1, pageSize = 10 } = query
+  const { current = 1, pageSize = 10 } = query
   const total = data.length
   const pages = Math.ceil(total / pageSize)
-  const list = data.slice((pageNum - 1) * pageSize, pageNum * pageSize)
-  return { pageNum, pageSize, total, totalPage: pages, list } as PageResult<T>
+  const list = data.slice((current - 1) * pageSize, current * pageSize)
+  return { current, pageSize, total, totalPage: pages, list } as PageResult<T>
 }

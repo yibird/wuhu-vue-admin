@@ -35,3 +35,17 @@ export function updateRole(input: UpdateRoleReq) {
   Object.assign(role, input)
   return true
 }
+
+/**
+ * 删除角色
+ *
+ * @param ids 主键集合
+ */
+export function deleteRole(ids: Array<string | number>) {
+  const idSet = new Set(ids.map(String))
+  const originalLength = dataSource.length
+  for (let index = dataSource.length - 1; index >= 0; index -= 1) {
+    if (idSet.has(dataSource[index].id)) dataSource.splice(index, 1)
+  }
+  return originalLength !== dataSource.length
+}

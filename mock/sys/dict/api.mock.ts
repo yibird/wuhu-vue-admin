@@ -44,7 +44,7 @@ export default defineMock([
       })
       return apiOk(
         getPageList(filtered, {
-          pageNum: Number(query.pageNum) || 1,
+          current: Number(query.current) || 1,
           pageSize: Number(query.pageSize) || 10,
         })
       )
@@ -96,7 +96,7 @@ export default defineMock([
       })
       return apiOk(
         getPageList(filtered, {
-          pageNum: Number(query.pageNum) || 1,
+          current: Number(query.current) || 1,
           pageSize: Number(query.pageSize) || 10,
         })
       )
