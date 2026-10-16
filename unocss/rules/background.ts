@@ -1,3 +1,4 @@
+import { createTokenPattern } from './utils'
 import type { Rule } from 'unocss'
 
 const themeColors = ['primary', 'success', 'warning', 'error', 'info']
@@ -46,14 +47,7 @@ const tokens: Record<string, string> = {
   'info-tint-hover': 'rgb(var(--w-bg-info-tint-hover))',
 }
 
-const escapeRegExp = (value: string) => {
-  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
-}
-
-const tokenKeysPattern = Object.keys(tokens)
-  .sort((a, b) => b.length - a.length)
-  .map(escapeRegExp)
-  .join('|')
+const tokenKeysPattern = createTokenPattern(tokens)
 
 export const bgRule: Rule = [
   new RegExp(`^bg-(${tokenKeysPattern})$`),

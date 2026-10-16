@@ -1,4 +1,4 @@
-import { defaultFontWeight, fontFamilyOptions } from '../../src/config/fonts'
+import { fontFamilyOptions } from '../../src/config/fonts'
 import type { Preset } from 'unocss'
 
 /**
@@ -16,7 +16,7 @@ export const fontsPreset: Preset = {
     {
       getCSS: () =>
         [
-          `:root{--w-font-family:${fontFamilyOptions[0].stack};--w-font-weight:${defaultFontWeight};--w-letter-spacing:${fontFamilyOptions[0].letterSpacing}}`,
+          `:root{--w-font-family:${fontFamilyOptions[0].stack};--w-font-weight:${fontFamilyOptions[0].fontWeight};--w-letter-spacing:${fontFamilyOptions[0].letterSpacing}}`,
           ...fontFamilyOptions.map(
             (option) =>
               `:root[data-font='${option.value}']{--w-font-family:${option.stack};--w-font-weight:${option.fontWeight};--w-letter-spacing:${option.letterSpacing}}`

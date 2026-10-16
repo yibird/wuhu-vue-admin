@@ -1,3 +1,4 @@
+import { createTokenPattern } from './utils'
 import type { Rule } from 'unocss'
 
 const tokens: Record<string, string> = {
@@ -11,14 +12,7 @@ const tokens: Record<string, string> = {
   link: 'rgb(var(--w-text-link))',
 }
 
-const escapeRegExp = (value: string) => {
-  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
-}
-
-const tokenKeysPattern = Object.keys(tokens)
-  .sort((a, b) => b.length - a.length)
-  .map(escapeRegExp)
-  .join('|')
+const tokenKeysPattern = createTokenPattern(tokens)
 
 export const colorRule: Rule = [
   new RegExp(`^text-(${tokenKeysPattern})$`),

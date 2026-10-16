@@ -1,3 +1,4 @@
+import { createTokenPattern } from './utils'
 import type { Rule } from 'unocss'
 
 const levelBorderColors = Object.fromEntries(
@@ -20,14 +21,7 @@ const tokens: Record<string, string> = {
   ...levelBorderColors,
 }
 
-const escapeRegExp = (value: string) => {
-  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
-}
-
-const tokenKeysPattern = Object.keys(tokens)
-  .sort((a, b) => b.length - a.length)
-  .map(escapeRegExp)
-  .join('|')
+const tokenKeysPattern = createTokenPattern(tokens)
 
 export const borderColorRule: Rule = [
   new RegExp(`^border-color-(${tokenKeysPattern})$`),

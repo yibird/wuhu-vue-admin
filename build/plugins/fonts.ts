@@ -5,7 +5,10 @@ import type { FontlessOptions } from 'fontless'
 import type { Plugin } from 'vite'
 
 /**
- * 自托管字体资源的输出目录(构建产物按 content hash 命名,可长缓存)
+ * 自托管字体资源的输出目录
+ *
+ * 注意:fontless 的产物文件名由字体源路径/格式哈希得出,不含文件内容指纹,
+ * 覆盖同名字体文件不会改变 URL,升级字体时需同步改名以刷新缓存。
  */
 const FONT_ASSETS_PREFIX = '/assets/_fonts'
 

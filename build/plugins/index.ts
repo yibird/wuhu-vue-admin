@@ -19,21 +19,20 @@ async function getDevPlugins(command: string) {
 
 async function getProdPlugins(command: string): Promise<PluginOption[]> {
   if (command !== 'build') return []
-  const [
-    { visualizerPlugin },
-    { compressionPlugin },
-    { imageOptimizerPlugin },
-  ] = await Promise.all([
-    import('./visualizer.ts'),
+  const [{ compressionPlugin }, { imageOptimizerPlugin }] = await Promise.all([
     import('./compression.ts'),
     import('./image-optimizer.ts'),
   ])
+  const plugins: PluginOption[] = [compressionPlugin(), imageOptimizerPlugin()]
 
-  return [
-    visualizerPlugin({ raw: true }),
-    compressionPlugin(),
-    imageOptimizerPlugin(),
-  ]
+  // 产物分析只在 `pnpm analyze` 时生成 stats.json(供 bundle:check 读取),
+  // 常规构建不再为此额外花一分钟
+  if (process.env.VITE_ANALYZE === 'true') {
+    const { visualizerPlugin } = await import('./visualizer.ts')
+    plugins.unshift(visualizerPlugin({ raw: true }))
+  }
+
+  return plugins
 }
 
 export async function createPlugin({ command }: CreatePluginOptions) {
