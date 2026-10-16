@@ -10,7 +10,7 @@
   >
     <div
       v-if="!isUser"
-      class="size-32 inline-flex items-center justify-center rounded-full border-1 border-main border-solid bg-[rgb(var(--w-text-main))] text-white text-xs font-600 max-md:size-28"
+      class="size-32 inline-flex items-center justify-center rounded-full border-1 border-color-main border-solid bg-[rgb(var(--w-text-main))] text-white text-xs font-600 max-md:size-28"
     >
       <Icon
         :name="
@@ -139,8 +139,6 @@
 import { defineAsyncComponent } from 'vue'
 import { parseMessageContent } from '../../json-render/parse-stream'
 import type { AgentMessage, AgentMessageFeedback } from '../types'
-
-defineOptions({ name: 'MessageItem' })
 
 /** 生成式 UI 依赖 catalog 与 zod,按需加载避免进入首屏包 */
 const GeneratedView = defineAsyncComponent(() => import('./generated-view.vue'))

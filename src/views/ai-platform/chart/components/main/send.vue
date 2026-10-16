@@ -18,7 +18,6 @@
 </template>
 
 <script setup lang="ts">
-defineOptions({ name: 'Send' })
 withDefaults(
   defineProps<{
     disabled?: boolean

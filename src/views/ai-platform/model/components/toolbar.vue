@@ -4,8 +4,6 @@ import type { ModelPageConfig, ModelProvider } from '../types'
 import type { ModelProviderFilter, ModelStatusFilter } from '../hooks'
 import type { ModelSort } from '../types'
 
-defineOptions({ name: 'Toolbar' })
-
 const props = defineProps<{
   config: ModelPageConfig
   configuredCount: number

@@ -13,8 +13,6 @@ import type {
   ModelPageConfig,
 } from '../types'
 
-defineOptions({ name: 'List' })
-
 const props = defineProps<{
   config: ModelPageConfig
   items: ModelItem[]

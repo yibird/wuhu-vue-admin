@@ -31,9 +31,7 @@
         <div class="px-12">
           <a-input v-model:value="keyword" allow-clear placeholder="搜索模型" />
         </div>
-        <div
-          class="mt-8 px-12 h-300 w-full h-full overflow-x-hidden overflow-y-auto"
-        >
+        <div class="mt-8 h-300 w-full overflow-x-hidden overflow-y-auto px-12">
           <div v-if="filteredModels.length === 0" class="h-300 flex-center">
             <a-empty />
           </div>
@@ -82,8 +80,6 @@
 
 <script setup lang="ts">
 import type { AgentModel } from '../types'
-
-defineOptions({ name: 'Model' })
 
 const props = withDefaults(
   defineProps<{

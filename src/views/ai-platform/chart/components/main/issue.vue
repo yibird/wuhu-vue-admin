@@ -11,7 +11,6 @@
 </template>
 
 <script setup lang="ts">
-defineOptions({ name: 'Issue' })
 withDefaults(
   defineProps<{
     prompt?: string

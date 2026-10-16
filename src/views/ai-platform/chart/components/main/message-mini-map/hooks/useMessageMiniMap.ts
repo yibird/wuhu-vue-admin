@@ -1,5 +1,5 @@
 import { shallowRef } from 'vue'
-import type { MessageMiniMapOptions } from './types'
+import type { MessageMiniMapOptions } from '../types'
 
 export function useMessageMiniMap(options: MessageMiniMapOptions = {}) {
   const { width = 15, radius = 4, maxWidth = 40, stiffness = 0.15 } = options

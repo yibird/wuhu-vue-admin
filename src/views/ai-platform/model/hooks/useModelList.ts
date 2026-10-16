@@ -102,17 +102,18 @@ export function useModelList(source: ModelItem[]) {
     if (!sourceItem) return undefined
 
     const now = formatDateTime(new Date())
-    const item = {
+    const item: ModelItem = {
       ...cloneModel(sourceItem),
       id: `${sourceItem.id}-copy-${Date.now().toString(36)}`,
       name: `${sourceItem.name} - 副本`,
+      status: 'draft',
       monthlyCalls: '—',
       avgLatency: '—',
       createdAt: now,
       updatedAt: now,
     }
     items.value = [item, ...items.value]
-    currentPage.value = 1
+    resetFilters()
     return item
   }
 

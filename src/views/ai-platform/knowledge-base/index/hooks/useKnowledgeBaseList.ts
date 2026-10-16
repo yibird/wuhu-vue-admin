@@ -1,4 +1,5 @@
 import { computed, shallowRef, watch } from 'vue'
+import { useAuthStore } from '@/store'
 import type {
   KnowledgeBaseCreateInput,
   KnowledgeBaseItem,
@@ -9,6 +10,7 @@ import type {
 export type KnowledgeBaseStatusFilter = KnowledgeBaseStatus | 'all'
 
 export function useKnowledgeBaseList(source: KnowledgeBaseItem[]) {
+  const { user } = useAuthStore()
   const items = shallowRef<KnowledgeBaseItem[]>(source.map(cloneKnowledgeBase))
   const keyword = shallowRef('')
   const statusFilter = shallowRef<KnowledgeBaseStatusFilter>('all')
@@ -76,7 +78,10 @@ export function useKnowledgeBaseList(source: KnowledgeBaseItem[]) {
       name: input.name.trim(),
       description: input.description.trim(),
       tags: normalizeTags(input.tags),
-      creator: { name: '当前用户', role: '知识库管理员' },
+      creator: {
+        name: user.value?.name ?? '当前用户',
+        role: user.value?.roles[0] ?? '知识库管理员',
+      },
       createdAt: now,
       updatedAt: now,
       status: 'draft',
@@ -98,7 +103,7 @@ export function useKnowledgeBaseList(source: KnowledgeBaseItem[]) {
     const sourceItem = items.value.find((item) => item.id === id)
     if (!sourceItem) return
 
-    const now = '2026-08-04 10:30'
+    const now = formatDateTime(new Date())
     items.value = [
       {
         ...cloneKnowledgeBase(sourceItem),
@@ -119,7 +124,7 @@ export function useKnowledgeBaseList(source: KnowledgeBaseItem[]) {
       return {
         ...item,
         status: item.status === 'online' ? 'offline' : 'online',
-        updatedAt: '2026-08-04 10:30',
+        updatedAt: formatDateTime(new Date()),
       }
     })
   }

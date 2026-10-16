@@ -9,8 +9,10 @@ import {
   createInitialTools,
   createModels,
   createPresets,
+  createSharePlatforms,
 } from '../data'
 import {
+  buildShareUrl,
   createChat,
   createMessage,
   formatFileSize,
@@ -27,6 +29,8 @@ import type {
   AgentPreset,
   AgentTool,
   ChatItem,
+  SharePayload,
+  SharePlatform,
 } from '../components/types'
 
 const MAX_ATTACHMENTS = 5
@@ -36,6 +40,7 @@ export function useAgent() {
   // --- Data (static, created once) ---
   const models: AgentModel[] = createModels()
   const presets: AgentPreset[] = createPresets()
+  const sharePlatforms: SharePlatform[] = createSharePlatforms()
 
   // --- Reactive state ---
   const tools = shallowRef<AgentTool[]>(createInitialTools())
@@ -51,6 +56,8 @@ export function useAgent() {
   const messagesByChatId = shallowRef<Record<string, AgentMessage[]>>(
     createInitialMessagesByChatId()
   )
+  const shareModalOpen = shallowRef(false)
+  const sharedMessage = shallowRef<AgentMessage>()
 
   // --- Streaming ---
   const {
@@ -94,6 +101,24 @@ export function useAgent() {
   const activeModel = computed(
     () => models.find((item) => item.id === selectedModelId.value) ?? models[0]
   )
+
+  /** 待分享消息对应会话的链接，带上会话与消息标识便于定位 */
+  const shareUrl = computed(() => {
+    if (!sharedMessage.value) return ''
+
+    const url = new URL(window.location.href)
+    url.search = ''
+    url.hash = ''
+    url.searchParams.set('chat', activeChatId.value)
+    url.searchParams.set('message', sharedMessage.value.id)
+    return url.toString()
+  })
+
+  const sharePayload = computed<SharePayload>(() => ({
+    url: shareUrl.value,
+    title: `${activeChat.value?.title ?? 'Agent 会话'} - Wuhu AI`,
+    text: sharedMessage.value?.content ?? '',
+  }))
 
   // --- Internal helpers ---
   function setChatStatus(id: string, status: ChatItem['status']) {
@@ -270,9 +295,13 @@ export function useAgent() {
       return
     }
 
-    copy(text).then(() => {
-      message.success(successText)
-    })
+    copy(text)
+      .then(() => {
+        message.success(successText)
+      })
+      .catch(() => {
+        message.warning('复制失败，请手动复制')
+      })
   }
 
   // --- Event handlers ---
@@ -384,14 +413,22 @@ export function useAgent() {
 
   function handleCopyShare() {
     const chat = activeChat.value
-    if (!chat || !isSupported.value) {
+    if (!chat) {
+      message.warning('当前没有可分享的会话')
+      return
+    }
+    if (!isSupported.value) {
       message.warning('当前环境不支持复制')
       return
     }
 
-    copy(`${chat.title}\n${chat.description ?? ''}`).then(() => {
-      message.success('会话摘要已复制')
-    })
+    copy(`${chat.title}\n${chat.description ?? ''}`)
+      .then(() => {
+        message.success('会话摘要已复制')
+      })
+      .catch(() => {
+        message.warning('复制失败，请手动复制')
+      })
   }
 
   function handleCopyMessage(messageItem: AgentMessage) {
@@ -403,12 +440,23 @@ export function useAgent() {
   }
 
   function handleShareMessage(messageItem: AgentMessage) {
-    const chat = activeChat.value
-    const roleText = messageItem.role === 'user' ? '你' : 'Agent'
-    copyText(
-      `${chat?.title ?? 'Agent 会话'}\n${roleText}：${messageItem.content}`,
-      '消息分享内容已复制'
-    )
+    sharedMessage.value = messageItem
+    shareModalOpen.value = true
+  }
+
+  function handleCopyShareLink() {
+    if (!shareUrl.value) return
+    copyText(shareUrl.value, '分享链接已复制')
+  }
+
+  function handleShareToPlatform(platform: SharePlatform) {
+    const target = buildShareUrl(platform.key, sharePayload.value)
+    if (!target) {
+      copyText(shareUrl.value, '链接已复制，请打开微信粘贴发送')
+      return
+    }
+
+    window.open(target, '_blank', 'noopener,noreferrer')
   }
 
   function handleEditMessage(id: string, content: string) {
@@ -477,6 +525,10 @@ export function useAgent() {
       okType: 'danger',
       cancelText: '取消',
       onOk: () => {
+        if (isStreaming(chat.id)) {
+          stopStream(chat.id)
+          setChatStatus(chat.id, 'paused')
+        }
         messagesByChatId.value = {
           ...messagesByChatId.value,
           [chat.id]: [],
@@ -496,8 +548,7 @@ export function useAgent() {
     })
     appendMessage(chat.id, userMessage)
 
-    const titleShouldUpdate =
-      (chat.messages ?? 0) === 0 || chat.title === '新的 Agent 会话'
+    const titleShouldUpdate = (chat.messages ?? 0) === 0
     chats.value = chats.value.map((item) =>
       item.id === chat.id
         ? {
@@ -560,6 +611,7 @@ export function useAgent() {
     // Static data
     models,
     presets,
+    sharePlatforms,
     // Reactive state
     tools,
     chats,
@@ -567,10 +619,13 @@ export function useAgent() {
     draftAttachments,
     generationConfig,
     messagesByChatId,
+    shareModalOpen,
+    sharedMessage,
     // Computed
     activeChat,
     activeMessages,
     activeModel,
+    shareUrl,
     // Handlers
     handleChatChange,
     handleCreateChat,
@@ -588,6 +643,8 @@ export function useAgent() {
     handleCopyMessage,
     handleCopyCode,
     handleShareMessage,
+    handleCopyShareLink,
+    handleShareToPlatform,
     handleEditMessage,
     handleFeedbackMessage,
     handleDeleteMessage,

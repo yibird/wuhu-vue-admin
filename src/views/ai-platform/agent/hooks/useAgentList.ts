@@ -71,7 +71,7 @@ export function useAgentList(source: AgentItem[]) {
   function createItem(input: AgentCreateInput) {
     const now = formatDateTime(new Date())
     const item: AgentItem = {
-      id: `agent-${Date.now().toString(36)}`,
+      id: `agent-${crypto.randomUUID()}`,
       kind: 'agent',
       name: input.name.trim(),
       description: input.description.trim(),
@@ -82,6 +82,10 @@ export function useAgentList(source: AgentItem[]) {
       status: 'draft',
       icon: input.icon,
       iconBackground: input.iconBackground,
+      modelId: input.modelId,
+      skillIds: [...input.skillIds],
+      knowledgeBaseIds: [...input.knowledgeBaseIds],
+      subAgentIds: [...input.subAgentIds],
       metrics: [],
     }
 
@@ -98,11 +102,11 @@ export function useAgentList(source: AgentItem[]) {
     const sourceItem = items.value.find((item) => item.id === id)
     if (!sourceItem) return
 
-    const now = '2026-08-04 10:30'
+    const now = formatDateTime(new Date())
     items.value = [
       {
         ...cloneAgent(sourceItem),
-        id: `${sourceItem.id}-copy-${Date.now().toString(36)}`,
+        id: `${sourceItem.id}-copy-${crypto.randomUUID()}`,
         name: `${sourceItem.name} - 副本`,
         status: 'draft',
         createdAt: now,
@@ -119,7 +123,7 @@ export function useAgentList(source: AgentItem[]) {
       return {
         ...item,
         status: item.status === 'online' ? 'offline' : 'online',
-        updatedAt: '2026-08-04 10:30',
+        updatedAt: formatDateTime(new Date()),
       }
     })
   }
@@ -158,5 +162,8 @@ function cloneAgent(item: AgentItem): AgentItem {
     creator: { ...item.creator },
     metrics: item.metrics.map((metric) => ({ ...metric })),
     tags: [...item.tags],
+    skillIds: [...item.skillIds],
+    knowledgeBaseIds: [...item.knowledgeBaseIds],
+    subAgentIds: [...item.subAgentIds],
   }
 }

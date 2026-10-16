@@ -26,8 +26,6 @@
 <script setup lang="ts">
 import { useTextareaAutosize } from '@vueuse/core'
 
-defineOptions({ name: 'Editor' })
-
 const model = defineModel<string>({ default: '' })
 
 withDefaults(

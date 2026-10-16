@@ -1,11 +1,9 @@
 <script lang="ts" setup>
 import VChart from 'vue-echarts'
-import { useECharts } from '@/plugins/echarts'
+
 import { useChartAdapter } from '../../json-render/chart-adapter'
 import { useEChartsTheme } from '@/theme'
 import type { AiChartType } from '../../json-render/catalog'
-
-defineOptions({ name: 'ChartBlock' })
 
 const props = withDefaults(
   defineProps<{
@@ -20,8 +18,6 @@ const props = withDefaults(
   }>(),
   { height: 280 }
 )
-
-useECharts()
 
 const { eChartsThemeName } = useEChartsTheme()
 const toChartOption = useChartAdapter()

@@ -1,7 +1,7 @@
 <template>
   <aside
     ref="siderRef"
-    class="relative h-full min-h-0 shrink-0 flex flex-col overflow-hidden border-0 border-r-1 border-solid border-color-3 bg-container transition-[width,min-width,max-height] duration-motion-base ease-motion-enter will-change-[width] motion-reduce:transition-none max-xl:h-auto max-xl:max-h-260 max-xl:w-full max-xl:min-w-0 max-xl:border-r-0 max-xl:border-b-1 max-md:max-h-230"
+    class="relative h-full min-h-0 shrink-0 flex flex-col overflow-hidden border-0 border-r-1 border-solid border-color-2 bg-container transition-[width,min-width,max-height] duration-motion-base ease-motion-enter will-change-[width] motion-reduce:transition-none max-xl:h-auto max-xl:max-h-260 max-xl:w-full max-xl:min-w-0 max-xl:border-r-0 max-xl:border-b-1 max-md:max-h-230"
     :class="
       collapsed
         ? 'w-72 min-w-72 max-xl:max-h-56'

@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import { renderIcon } from '@/utils'
+import { getAgentModelLabel } from '../data'
 import { getAgentIconForeground } from '../icon-palette'
 import type { AgentAction, AgentItem } from '../types'
-
-defineOptions({ name: 'Card' })
 
 const props = defineProps<{
   item: AgentItem
@@ -19,6 +18,8 @@ const iconStyle = computed(() => ({
   backgroundColor: props.item.iconBackground,
   color: getAgentIconForeground(props.item.iconBackground),
 }))
+
+const modelLabel = computed(() => getAgentModelLabel(props.item.modelId))
 
 const statusMeta = computed(() => {
   const map = {
@@ -89,21 +90,16 @@ function handleAction(key: AgentAction) {
 function handleMoreAction(info: { key: string | number }) {
   const key = String(info.key)
   if (
-    key === 'archive' ||
-    key === 'delete' ||
-    key === 'duplicate' ||
-    key === 'edit' ||
-    key === 'open' ||
-    key === 'toggle'
+    ['archive', 'delete', 'duplicate', 'edit', 'open', 'toggle'].includes(key)
   ) {
-    handleAction(key)
+    handleAction(key as AgentAction)
   }
 }
 </script>
 
 <template>
   <article
-    class="group min-w-0 flex flex-col cursor-pointer overflow-hidden rounded-8 border-1 border-color-2 border-solid bg-container shadow-[var(--w-shadow-card)] outline-none transition-[border-color,box-shadow,transform] duration-motion-base hover:(-translate-y-2 translate-x-2) hover:border-primary hover:shadow-[var(--w-shadow-elevated)] focus-visible:border-primary"
+    class="group min-w-0 flex flex-col cursor-pointer overflow-hidden rounded-8 border-1 border-color-2 border-solid bg-container shadow-[var(--w-shadow-card)] outline-none transition-[border-color,box-shadow,transform] duration-motion-base hover:(-translate-y-2) hover:border-primary hover:shadow-[var(--w-shadow-elevated)] focus-visible:border-primary"
     :aria-label="`${props.subject}：${props.item.name}`"
     role="button"
     tabindex="0"
@@ -167,6 +163,30 @@ function handleMoreAction(info: { key: string | number }) {
           >
             {{ tag }}
           </a-tag>
+        </div>
+
+        <div
+          class="mt-10 flex min-w-0 flex-wrap items-center gap-x-12 gap-y-4 text-xs text-secondary"
+        >
+          <span class="min-w-0 inline-flex items-center gap-4">
+            <Icon name="i-lucide:cpu" :size="13" />
+            <span class="truncate">{{ modelLabel }}</span>
+          </span>
+          <span class="inline-flex items-center gap-4">
+            <Icon name="i-lucide:sparkles" :size="13" />
+            {{ props.item.skillIds.length }} 项技能
+          </span>
+          <span class="inline-flex items-center gap-4">
+            <Icon name="i-lucide:library-big" :size="13" />
+            {{ props.item.knowledgeBaseIds.length }} 个知识库
+          </span>
+          <span
+            v-if="props.item.subAgentIds.length > 0"
+            class="inline-flex items-center gap-4"
+          >
+            <Icon name="i-lucide:git-fork" :size="13" />
+            {{ props.item.subAgentIds.length }} 个子 Agent
+          </span>
         </div>
       </div>
     </div>

@@ -1,13 +1,11 @@
 <script setup lang="ts">
-import { useMessageMiniMap } from './useMessageMiniMap'
+import { useMessageMiniMap } from './hooks'
 import type { CSSProperties } from 'vue'
 import type {
   MessageMiniMapEmits,
   MessageMiniMapItem,
   MessageMiniMapProps,
 } from './types'
-
-defineOptions({ name: 'MessageMiniMap' })
 
 const props = defineProps<MessageMiniMapProps>()
 const emit = defineEmits<MessageMiniMapEmits>()
@@ -17,6 +15,16 @@ const preview = shallowRef<MessageMiniMapItem>()
 const activeId = shallowRef<MessageMiniMapItem['id']>()
 const markerStep = 15
 let scrollFrame = 0
+
+/** 标记条配色：按消息类型对应 UnoCSS 背景色 class */
+const markerColorMap: Record<
+  NonNullable<MessageMiniMapItem['type']>,
+  string
+> = {
+  user: 'bg-[rgb(var(--w-color-primary))]',
+  tool: 'bg-[rgb(var(--w-color-warning))]',
+  assistant: 'bg-[rgb(var(--w-text-secondary))]',
+}
 
 const previewStyle = computed(() => {
   if (!preview.value || props.messages.length === 0) return undefined
@@ -105,7 +113,7 @@ onBeforeUnmount(() => cancelAnimationFrame(scrollFrame))
 
 <template>
   <nav
-    class="message-minimap"
+    class="absolute top-1/2 right-12 z-8 max-h-[calc(100%-48px)] w-64 flex flex-col items-end justify-center gap-12 px-8 py-12 pointer-events-auto -translate-y-1/2 max-[900px]:hidden"
     aria-label="消息导航缩略图"
     @mouseleave="handleLeave"
   >
@@ -113,9 +121,9 @@ onBeforeUnmount(() => cancelAnimationFrame(scrollFrame))
       v-for="(item, index) in messages"
       :key="item.id"
       type="button"
-      class="message-marker"
+      class="message-marker h-3 min-h-3 w-40 flex-none rounded-full border-0 p-0 cursor-pointer origin-right focus-visible:outline-none"
       :class="[
-        `message-marker--${item.type ?? 'assistant'}`,
+        markerColorMap[item.type ?? 'assistant'],
         { 'is-active': activeId === item.id },
       ]"
       :style="getMarkerStyle(index)"
@@ -128,8 +136,12 @@ onBeforeUnmount(() => cancelAnimationFrame(scrollFrame))
     />
 
     <Transition name="fade-slide-right">
-      <div v-if="preview" class="message-preview" :style="previewStyle">
-        <span class="message-preview__type">
+      <div
+        v-if="preview"
+        class="message-preview absolute top-1/2 right-[calc(100%+10px)] w-210 grid gap-4 px-10 py-9 pointer-events-none bg-[rgb(var(--w-bg-container)/96%)] border-1 border-solid border-color-1 rounded-6 shadow-elevated backdrop-blur-12"
+        :style="previewStyle"
+      >
+        <span class="text-11px text-primary font-600">
           {{
             preview.type === 'user'
               ? '我的消息'
@@ -138,47 +150,26 @@ onBeforeUnmount(() => cancelAnimationFrame(scrollFrame))
                 : 'Agent 消息'
           }}
         </span>
-        <span class="message-preview__content">{{ preview.preview }}</span>
+        <span class="message-preview__content text-12px leading-18px text-main">
+          {{ preview.preview }}
+        </span>
       </div>
     </Transition>
   </nav>
 </template>
 
 <style scoped>
-.message-minimap {
-  position: absolute;
-  top: 50%;
-  right: 12px;
-  z-index: 8;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  align-items: flex-end;
-  justify-content: center;
-  width: 64px;
-  max-height: calc(100% - 48px);
-  padding: 12px 8px;
-  pointer-events: auto;
-  transform: translateY(-50%);
-}
-
+/**
+ * 标记条与预览卡的位移动画由 JS 写入的 CSS 变量驱动，
+ * 悬浮/激活态需要改写同一变量，无法用原子类表达，故保留在此处。
+ */
 .message-marker {
   --message-marker-offset-x: 0px;
   --message-marker-scale-x: 0.375;
   --message-marker-scale-y: 1;
 
-  flex: 0 0 auto;
-  width: 40px;
-  height: 3px;
-  min-height: 3px;
-  padding: 0;
-  cursor: pointer;
-  background: rgb(var(--w-text-secondary));
-  border: 0;
-  border-radius: 999px;
   transform: translate3d(var(--message-marker-offset-x), 0, 0)
     scaleX(var(--message-marker-scale-x)) scaleY(var(--message-marker-scale-y));
-  transform-origin: right center;
   transition:
     transform var(--w-motion-duration-slow) var(--w-motion-ease-enter),
     opacity var(--w-motion-duration-base) var(--w-motion-ease-enter),
@@ -187,19 +178,10 @@ onBeforeUnmount(() => cancelAnimationFrame(scrollFrame))
   will-change: transform, opacity;
 }
 
-.message-marker--user {
-  background: rgb(var(--w-color-primary));
-}
-
-.message-marker--tool {
-  background: rgb(var(--w-color-warning));
-}
-
 .message-marker:hover,
 .message-marker:focus-visible {
   --message-marker-scale-y: 1.35;
 
-  outline: none;
   background: rgb(var(--w-color-primary));
   box-shadow:
     0 0 0 2px rgb(var(--w-color-primary) / 14%),
@@ -226,44 +208,17 @@ onBeforeUnmount(() => cancelAnimationFrame(scrollFrame))
 .message-preview {
   --message-preview-offset-y: 0px;
 
-  position: absolute;
-  top: 50%;
-  right: calc(100% + 10px);
-  display: grid;
-  gap: 4px;
-  width: 210px;
-  padding: 9px 10px;
-  pointer-events: none;
-  background: rgb(var(--w-bg-container) / 96%);
-  border: 1px solid rgb(var(--w-border-color-1));
-  border-radius: 6px;
-  box-shadow: var(--w-shadow-elevated);
-  backdrop-filter: blur(12px);
   transform: translate3d(0, calc(-50% + var(--message-preview-offset-y)), 0);
   transition: transform var(--w-motion-duration-slow) var(--w-motion-ease-enter);
   will-change: transform, opacity;
 }
 
-.message-preview__type {
-  font-size: 11px;
-  font-weight: 600;
-  color: rgb(var(--w-color-primary));
-}
-
+/** 多行文本截断所需的 -webkit-box 组合写法，原子类无法完整表达 */
 .message-preview__content {
   display: -webkit-box;
   overflow: hidden;
-  font-size: 12px;
-  line-height: 18px;
-  color: rgb(var(--w-text-main));
   overflow-wrap: anywhere;
   -webkit-box-orient: vertical;
-}
-
-@media (width <= 900px) {
-  .message-minimap {
-    display: none;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {

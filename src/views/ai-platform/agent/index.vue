@@ -1,8 +1,3 @@
-<script setup lang="ts">
-import List from './components/list.vue'
-import { agentPageConfig, agentResources } from './data'
-</script>
-
 <template>
   <List
     :config="agentPageConfig"
@@ -11,3 +6,7 @@ import { agentPageConfig, agentResources } from './data'
     :items="agentResources"
   />
 </template>
+<script setup lang="ts">
+import List from './components/list.vue'
+import { agentPageConfig, agentResources } from './data'
+</script>

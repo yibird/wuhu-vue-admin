@@ -3,8 +3,6 @@ import { renderIcon } from '@/utils'
 import { formatTokenWindow, getCapabilityLabel, getProviderMeta } from '../data'
 import type { ModelAction, ModelItem, ModelStatus } from '../types'
 
-defineOptions({ name: 'ModelCard' })
-
 const props = defineProps<{
   item: ModelItem
   statusLabels: Record<ModelStatus, string>

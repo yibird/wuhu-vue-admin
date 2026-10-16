@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import type { KnowledgeDetailSectionKey, KnowledgeNavItem } from '../types'
 
-defineOptions({ name: 'Sidebar' })
-
 const props = defineProps<{
   activeKey: KnowledgeDetailSectionKey
   description: string

@@ -1,5 +1,12 @@
 <script setup lang="ts">
-import { IconSelector } from '@/components/icon-picker'
+import { IconPreview, IconSelector } from '@/components/icon-picker'
+import {
+  agentKnowledgeBaseOptions,
+  agentModelOptions,
+  agentSkills,
+  agentSubAgentOptions,
+  agentTagOptions,
+} from '../data'
 import {
   agentIconBackgroundOptions,
   defaultAgentIconBackground,
@@ -7,8 +14,6 @@ import {
 } from '../icon-palette'
 import type { FormInstance } from 'antdv-next'
 import type { AgentCreateInput } from '../types'
-
-defineOptions({ name: 'CreateModal' })
 
 const open = defineModel<boolean>('open', { required: true })
 
@@ -20,6 +25,14 @@ const colorOptions = agentIconBackgroundOptions
 const colorPresets = [
   { label: '常用颜色', colors: colorOptions, defaultOpen: true },
 ]
+const modelSelectOptions = agentModelOptions
+const skillSelectOptions = agentSkills.map((item) => ({
+  label: item.label,
+  value: item.value,
+}))
+const knowledgeBaseSelectOptions = agentKnowledgeBaseOptions
+const subAgentSelectOptions = agentSubAgentOptions
+const tagSelectOptions = agentTagOptions
 const formRef = shallowRef<FormInstance>()
 const submitting = shallowRef(false)
 const form = reactive<AgentCreateInput>(createDefaultForm())
@@ -38,6 +51,7 @@ const rules = {
   ],
   icon: [{ required: true, message: '请选择图标' }],
   iconBackground: [{ required: true, message: '请选择图标背景色' }],
+  modelId: [{ required: true, message: '请选择使用的模型' }],
 }
 
 watch(open, async (value) => {
@@ -54,6 +68,10 @@ function createDefaultForm(): AgentCreateInput {
     tags: [],
     icon: 'i-lucide:bot',
     iconBackground: defaultAgentIconBackground,
+    modelId: modelSelectOptions[0]?.value ?? '',
+    skillIds: [],
+    knowledgeBaseIds: [],
+    subAgentIds: [],
   }
 }
 
@@ -93,7 +111,7 @@ function isValidationError(error: unknown) {
         class="size-48 flex flex-none items-center justify-center rounded-8 shadow-[inset_0_0_0_1px_rgb(15_23_42_/_6%)]"
         :style="previewIconStyle"
       >
-        <Icon :name="form.icon" :size="24" />
+        <IconPreview :name="form.icon" :size="24" />
       </span>
       <div class="min-w-0 flex-1">
         <div class="truncate text-md text-main font-700">
@@ -166,10 +184,53 @@ function isValidationError(error: unknown) {
         </a-form-item>
       </div>
 
+      <a-form-item label="使用的模型" name="modelId">
+        <a-select
+          v-model:value="form.modelId"
+          :options="modelSelectOptions"
+          placeholder="请选择模型"
+          show-search
+          option-filter-prop="label"
+        />
+      </a-form-item>
+
+      <a-form-item label="技能" name="skillIds">
+        <a-select
+          v-model:value="form.skillIds"
+          mode="multiple"
+          :options="skillSelectOptions"
+          placeholder="选择 Agent 可以使用的技能"
+          :max-tag-count="4"
+        />
+      </a-form-item>
+
+      <a-form-item label="知识库" name="knowledgeBaseIds">
+        <a-select
+          v-model:value="form.knowledgeBaseIds"
+          mode="multiple"
+          :options="knowledgeBaseSelectOptions"
+          placeholder="关联需要检索的知识库"
+          :max-tag-count="4"
+        />
+      </a-form-item>
+
+      <a-form-item label="子 Agent" name="subAgentIds">
+        <a-select
+          v-model:value="form.subAgentIds"
+          mode="multiple"
+          :options="subAgentSelectOptions"
+          placeholder="选择可作为能力调用的已有 Agent"
+          show-search
+          option-filter-prop="label"
+          :max-tag-count="3"
+        />
+      </a-form-item>
+
       <a-form-item class="!mb-0" label="标签" name="tags">
         <a-select
           v-model:value="form.tags"
           mode="tags"
+          :options="tagSelectOptions"
           placeholder="输入标签后按回车"
           :token-separators="[',', '，']"
         />

@@ -14,8 +14,6 @@ import type {
   KnowledgeBasePageConfig,
 } from '../../types'
 
-defineOptions({ name: 'List' })
-
 const props = defineProps<{
   config: KnowledgeBasePageConfig
   items: KnowledgeBaseItem[]

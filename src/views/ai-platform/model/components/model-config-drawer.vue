@@ -9,8 +9,6 @@ import {
 import type { FormInstance } from 'antdv-next'
 import type { ModelCreateInput, ModelItem, ModelProviderOption } from '../types'
 
-defineOptions({ name: 'ModelConfigDrawer' })
-
 const props = defineProps<{
   item?: ModelItem
 }>()
@@ -203,7 +201,9 @@ function isValidationError(error: unknown) {
           >
             <template #popupRender="menu">
               <component :is="menu" />
-              <div class="border-t-1 border-color-2 border-t-solid p-6">
+              <div
+                class="select-dropdown-footer border-t-1 border-color-2 border-t-solid p-6"
+              >
                 <button
                   type="button"
                   class="h-34 w-full flex items-center gap-8 rounded-6 border-0 bg-transparent px-8 text-sm text-primary cursor-pointer transition-colors duration-motion-base hover:bg-hover focus-visible:bg-hover focus-visible:outline-none"

@@ -30,17 +30,17 @@
           class="conversation-list-item min-w-0"
         >
           <article
-            class="group conversation-card relative min-h-48 w-full min-w-0 overflow-hidden rounded-8 border-1 border-transparent border-solid bg-container text-regular hover:(border-color-3 shadow-all-sm) focus-within:(border-primary/35 bg-hover shadow-[0_0_0_2px_rgb(var(--w-color-primary)_/_10%)])"
+            class="group conversation-card relative min-h-48 w-full min-w-0 overflow-hidden rounded-8 border-1 border-transparent border-solid bg-container text-regular hover:(border-color-3 shadow-all-sm) focus-within:(border-primary/35 bg-hover shadow-[0_0_0_2px_rgb(var(--w-color-primary)_/_8%)])"
             :class="
               item.id === activeId
-                ? 'conversation-card--active border-primary/35! bg-selected! text-main shadow-all-sm'
+                ? 'border-primary/25! bg-selected! text-main'
                 : ''
             "
           >
             <button
               type="button"
               class="min-h-48 w-full min-w-0 flex items-center border-0 bg-transparent text-left text-regular outline-none cursor-pointer"
-              :class="collapsed ? 'h-48 justify-center p-6' : 'px-8 py-8 pr-40'"
+              :class="collapsed ? 'h-48 justify-center p-6' : 'px-10 py-8'"
               :title="item.title"
               :aria-current="item.id === activeId ? 'true' : undefined"
               @click="emit('change', item.id)"
@@ -63,16 +63,16 @@
                 </span>
 
                 <span
-                  class="min-w-0 flex-1 flex-col gap-6 overflow-hidden transition-[max-width,opacity,transform] duration-motion-fast ease-motion-enter motion-reduce:transition-none"
+                  class="min-w-0 flex-1 flex-col gap-4 overflow-hidden transition-[max-width,opacity,transform] duration-motion-fast ease-motion-enter motion-reduce:transition-none"
                   :class="
                     collapsed
                       ? 'hidden max-h-0 max-w-0 translate-x-4 opacity-0 pointer-events-none'
-                      : 'flex max-h-88 max-w-256 translate-x-0 opacity-100'
+                      : 'flex max-h-96 max-w-256 translate-x-0 opacity-100'
                   "
                   :aria-hidden="collapsed"
                   :inert="collapsed"
                 >
-                  <span class="min-w-0 flex items-center gap-5">
+                  <span class="min-w-0 flex items-center gap-5 pr-30">
                     <Icon
                       v-if="item.pinned"
                       name="i-lucide:pin"
@@ -81,20 +81,32 @@
                     />
                     <strong
                       class="min-w-0 truncate text-sm text-main font-600 leading-20px"
+                      :title="item.title"
                     >
                       {{ item.title }}
                     </strong>
+                    <span
+                      v-if="item.tag"
+                      class="shrink-0 rounded-4 bg-fill-tertiary px-5 text-10px text-secondary leading-16px"
+                    >
+                      {{ item.tag }}
+                    </span>
                   </span>
-                  <span class="truncate text-xs text-secondary leading-18px">
+                  <span
+                    v-if="item.description"
+                    class="truncate text-xs text-secondary leading-18px"
+                    :title="item.description"
+                  >
                     {{ item.description }}
                   </span>
                   <span
                     class="min-w-0 flex items-center justify-between gap-8 text-11px text-muted leading-16px"
                   >
-                    <span class="truncate">{{
-                      item.updateTime ?? item.createTime
-                    }}</span>
-                    <span class="shrink-0 inline-flex items-center gap-4">
+                    <span class="min-w-0 truncate">{{ metaText(item) }}</span>
+                    <span
+                      class="shrink-0 inline-flex items-center gap-4"
+                      :title="statusLabel(item)"
+                    >
                       <span
                         class="size-5 rounded-full"
                         :class="statusClass(item)"
@@ -134,8 +146,6 @@ import type { MenuProps } from 'antdv-next'
 import { renderIcon } from '@/utils'
 import type { AgentStatus, ChatItem, ListEmits, ListProps } from '../types'
 
-defineOptions({ name: 'List' })
-
 withDefaults(defineProps<ListProps>(), {
   items: () => [],
   activeId: '',
@@ -173,6 +183,17 @@ function statusLabel(item: ChatItem) {
 
 function statusClass(item: ChatItem) {
   return getStatus(item).class
+}
+
+/**
+ * 卡片底部的时间与消息条数文案
+ *
+ * @param item 会话项
+ */
+function metaText(item: ChatItem) {
+  const parts = [item.updateTime ?? item.createTime]
+  if (typeof item.messages === 'number') parts.push(`${item.messages} 条消息`)
+  return parts.filter(Boolean).join(' · ')
 }
 
 function getActionMenu(item: ChatItem) {
@@ -238,21 +259,6 @@ function handleAction(action: ChatActionKey, id: string) {
   scale: 0.98;
 }
 
-.conversation-card--active {
-  animation: conversation-card-pop var(--w-motion-duration-moderate)
-    var(--w-motion-ease-spring);
-}
-
-@keyframes conversation-card-pop {
-  from {
-    scale: 0.96;
-  }
-
-  to {
-    scale: 1;
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   .conversation-card {
     transition: none;
@@ -260,10 +266,6 @@ function handleAction(action: ChatActionKey, id: string) {
 
   .conversation-card:active {
     scale: 1;
-  }
-
-  .conversation-card--active {
-    animation: none;
   }
 }
 

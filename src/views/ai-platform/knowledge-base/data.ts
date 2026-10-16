@@ -153,3 +153,13 @@ export const knowledgeBaseResources: KnowledgeBaseItem[] = [
     ],
   },
 ]
+
+/**
+ * 标签下拉候选:汇总已有知识库用过的标签
+ *
+ * 标签选择使用 tags 模式,这里只提供候选项,仍支持直接输入新标签
+ */
+export const knowledgeBaseTagOptions: Array<{ label: string; value: string }> =
+  [...new Set(knowledgeBaseResources.flatMap((item) => item.tags))].map(
+    (tag) => ({ label: tag, value: tag })
+  )

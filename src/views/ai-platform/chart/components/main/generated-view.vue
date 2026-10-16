@@ -3,8 +3,6 @@ import { JSONUIProvider, Renderer } from '@json-render/vue'
 import { registry } from '../../json-render/registry'
 import { parseRenderSpec } from '../../json-render/spec'
 
-defineOptions({ name: 'GeneratedView' })
-
 const props = defineProps<{
   raw: string
   pending?: boolean

@@ -6,8 +6,8 @@ import {
   watch,
   type MaybeRefOrGetter,
 } from 'vue'
-import type { AgentMessage } from '../../types'
-import type { MessageMiniMapItem } from './types'
+import type { AgentMessage } from '../../../types'
+import type { MessageMiniMapItem } from '../types'
 
 interface UseAgentMessageMiniMapOptions {
   messages: MaybeRefOrGetter<AgentMessage[]>

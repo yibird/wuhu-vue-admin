@@ -8,8 +8,6 @@ import type {
   ModelProtocol,
 } from '../types'
 
-defineOptions({ name: 'ProviderCreateModal' })
-
 const props = defineProps<{
   existingValues: string[]
 }>()

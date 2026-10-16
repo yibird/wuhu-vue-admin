@@ -3,8 +3,6 @@ import { renderIcon } from '@/utils'
 import { getKnowledgeBaseIconForeground } from '../../icon-palette'
 import type { KnowledgeBaseAction, KnowledgeBaseItem } from '../../types'
 
-defineOptions({ name: 'Card' })
-
 const props = defineProps<{
   item: KnowledgeBaseItem
   subject: string
@@ -89,21 +87,16 @@ function handleAction(key: KnowledgeBaseAction) {
 function handleMoreAction(info: { key: string | number }) {
   const key = String(info.key)
   if (
-    key === 'archive' ||
-    key === 'delete' ||
-    key === 'duplicate' ||
-    key === 'edit' ||
-    key === 'open' ||
-    key === 'toggle'
+    ['archive', 'delete', 'duplicate', 'edit', 'open', 'toggle'].includes(key)
   ) {
-    handleAction(key)
+    handleAction(key as KnowledgeBaseAction)
   }
 }
 </script>
 
 <template>
   <article
-    class="group min-w-0 flex flex-col cursor-pointer overflow-hidden rounded-8 border-1 border-color-2 border-solid bg-container shadow-[var(--w-shadow-card)] outline-none transition-[border-color,box-shadow,transform] duration-motion-base hover:(-translate-y-2 translate-x-2) hover:border-primary hover:shadow-[var(--w-shadow-elevated)] focus-visible:border-primary"
+    class="group min-w-0 flex flex-col cursor-pointer overflow-hidden rounded-8 border-1 border-color-2 border-solid bg-container shadow-[var(--w-shadow-card)] outline-none transition-[border-color,box-shadow,transform] duration-motion-base hover:(-translate-y-2) hover:border-primary hover:shadow-[var(--w-shadow-elevated)] focus-visible:border-primary"
     :aria-label="`${props.subject}：${props.item.name}`"
     role="button"
     tabindex="0"

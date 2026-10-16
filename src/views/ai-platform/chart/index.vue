@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Main, Sider } from './components'
+import ShareModal from './components/main/share-modal.vue'
 import { useAgent } from './hooks'
 
 const {
@@ -12,6 +13,10 @@ const {
   generationConfig,
   models,
   presets,
+  shareModalOpen,
+  sharePlatforms,
+  shareUrl,
+  sharedMessage,
   tools,
   handleAddAttachments,
   handleArchiveChat,
@@ -21,6 +26,7 @@ const {
   handleCopyCode,
   handleCopyMessage,
   handleCopyShare,
+  handleCopyShareLink,
   handleCreateChat,
   handleDeleteChat,
   handleDeleteMessage,
@@ -34,6 +40,7 @@ const {
   handleSelectModel,
   handleSend,
   handleShareMessage,
+  handleShareToPlatform,
   handleStop,
   handleToggleTool,
   handleUpdateConfig,
@@ -90,5 +97,15 @@ const {
         />
       </div>
     </div>
+
+    <ShareModal
+      v-model:open="shareModalOpen"
+      :chat-title="activeChat?.title"
+      :content="sharedMessage?.content"
+      :platforms="sharePlatforms"
+      :url="shareUrl"
+      @copy="handleCopyShareLink"
+      @share="handleShareToPlatform"
+    />
   </WView>
 </template>

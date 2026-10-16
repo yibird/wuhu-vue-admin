@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ChartSiderHeader' })
 const collapsed = defineModel<boolean>('collapsed', { default: false })
 
 const emit = defineEmits<{

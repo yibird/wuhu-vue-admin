@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useRoute, useRouter } from 'vue-router'
 import { message } from 'antdv-next'
-import { agentResources } from '../data'
+import { agentResources, agentSubAgentOptions, agentTagOptions } from '../data'
 import type { AgentStatus } from '../types'
 
 interface AgentFormState {
@@ -16,6 +16,7 @@ interface AgentFormState {
   enableMemory: boolean
   enableTools: string[]
   knowledgeBases: string[]
+  subAgentIds: string[]
   prompt: string
   guardrails: string[]
   publishChecklist: string[]
@@ -46,6 +47,7 @@ const formState = reactive<AgentFormState>({
   enableMemory: true,
   enableTools: ['knowledgeSearch', 'workflowAction'],
   knowledgeBases: ['产品能力手册', '经营指标口径库'],
+  subAgentIds: [...(sourceAgent.value?.subAgentIds ?? [])],
   prompt:
     '你是企业内部 Agent，请基于可信知识库回答问题。遇到不确定信息时说明依据和置信度，不要编造业务规则。',
   guardrails: ['敏感字段脱敏', '仅引用授权知识库', '输出包含依据来源'],
@@ -78,6 +80,9 @@ const knowledgeBaseOptions = [
   { label: '财务制度知识库', value: '财务制度知识库' },
   { label: '客服 FAQ 知识库', value: '客服 FAQ 知识库' },
 ]
+
+const subAgentOptions = agentSubAgentOptions
+const tagOptions = agentTagOptions
 
 const checklistOptions = [
   {
@@ -205,6 +210,7 @@ function publishAgent() {
                       <a-select
                         v-model:value="formState.tags"
                         mode="tags"
+                        :options="tagOptions"
                         placeholder="输入后回车创建标签"
                       />
                     </a-form-item>
@@ -266,6 +272,17 @@ function publishAgent() {
                         v-model:value="formState.knowledgeBases"
                         mode="multiple"
                         :options="knowledgeBaseOptions"
+                      />
+                    </a-form-item>
+                    <a-form-item label="子 Agent" name="subAgentIds">
+                      <a-select
+                        v-model:value="formState.subAgentIds"
+                        mode="multiple"
+                        :options="subAgentOptions"
+                        placeholder="选择可作为能力调用的已有 Agent"
+                        show-search
+                        option-filter-prop="label"
+                        :max-tag-count="3"
                       />
                     </a-form-item>
                   </div>

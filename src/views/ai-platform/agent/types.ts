@@ -21,6 +21,13 @@ export interface AgentMetric {
   tone?: 'default' | 'primary' | 'success' | 'warning'
 }
 
+export interface AgentSkillOption {
+  value: string
+  label: string
+  description: string
+  icon: string
+}
+
 export interface AgentItem {
   id: string
   kind: 'agent'
@@ -33,6 +40,22 @@ export interface AgentItem {
   status: AgentStatus
   icon: string
   iconBackground: string
+  /**
+   * 绑定的模型 id,单个 Agent 只使用一个模型
+   */
+  modelId: string
+  /**
+   * 启用的技能 id 列表
+   */
+  skillIds: string[]
+  /**
+   * 关联的知识库 id 列表
+   */
+  knowledgeBaseIds: string[]
+  /**
+   * 子 Agent id 列表,当前 Agent 可以调用它们的能力
+   */
+  subAgentIds: string[]
   metrics: AgentMetric[]
 }
 
@@ -42,6 +65,10 @@ export interface AgentCreateInput {
   tags: string[]
   icon: string
   iconBackground: string
+  modelId: string
+  skillIds: string[]
+  knowledgeBaseIds: string[]
+  subAgentIds: string[]
 }
 
 export interface AgentPageConfig {

@@ -68,6 +68,91 @@ export interface ChatItem {
   archived?: boolean
 }
 
+export type SharePlatformKey =
+  | 'wechat'
+  | 'qq'
+  | 'twitter'
+  | 'facebook'
+  | 'linkedin'
+  | 'telegram'
+
+export interface SharePlatform {
+  /**
+   * @desc 平台标识，同时决定可用的网页分享地址
+   */
+  key: SharePlatformKey
+  /**
+   * @desc 平台名称
+   */
+  label: string
+  /**
+   * @desc 品牌色，用于 lucide 图标着色
+   */
+  color: string
+  /**
+   * @desc lucide 图标名，与 iconImage 二选一
+   */
+  icon?: string
+  /**
+   * @desc 品牌图标资源，存在时优先于 icon
+   */
+  iconImage?: string
+}
+
+export interface SharePayload {
+  /**
+   * @desc 分享链接
+   */
+  url: string
+  /**
+   * @desc 分享标题
+   */
+  title: string
+  /**
+   * @desc 分享正文，取消息内容摘要
+   */
+  text: string
+}
+
+export interface ShareModalProps {
+  /**
+   * @desc 是否显示弹窗
+   * @default false
+   */
+  open?: boolean
+  /**
+   * @desc 分享链接
+   */
+  url: string
+  /**
+   * @desc 会话标题，用于分享摘要
+   */
+  chatTitle?: string
+  /**
+   * @desc 待分享的消息内容，用于分享摘要
+   */
+  content?: string
+  /**
+   * @desc 可选分享平台
+   */
+  platforms?: SharePlatform[]
+}
+
+export interface ShareModalEmits {
+  /**
+   * @desc 点击复制链接时触发
+   */
+  (e: 'copy'): void
+  /**
+   * @desc 选择某个分享平台时触发
+   */
+  (e: 'share', platform: SharePlatform): void
+  /**
+   * @desc 显示状态变化时触发
+   */
+  (e: 'update:open', open: boolean): void
+}
+
 export interface ListProps {
   items?: ChatItem[]
   activeId?: string

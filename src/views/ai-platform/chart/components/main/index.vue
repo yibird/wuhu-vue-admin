@@ -257,16 +257,16 @@
             </button>
           </div>
         </div>
-      </div>
 
-      <Transition name="fade-slide-right">
-        <MessageMiniMap
-          v-if="miniMapItems.length > 1"
-          :messages="miniMapItems"
-          :container="miniMapContainer"
-          @select="handleMiniMapSelect"
-        />
-      </Transition>
+        <Transition name="fade-slide-right">
+          <MessageMiniMap
+            v-if="miniMapItems.length > 1"
+            :messages="miniMapItems"
+            :container="miniMapContainer"
+            @select="handleMiniMapSelect"
+          />
+        </Transition>
+      </div>
     </div>
 
     <section
@@ -381,8 +381,7 @@ import Tool from './tool.vue'
 import Issue from './issue.vue'
 import Attachment from './attachment.vue'
 import MessageItem from './message-item.vue'
-import MessageMiniMap from './message-mini-map/message-mini-map.vue'
-import { useAgentMessageMiniMap } from './message-mini-map/useAgentMessageMiniMap'
+import { MessageMiniMap, useAgentMessageMiniMap } from './message-mini-map'
 import Send from './send.vue'
 import type {
   AgentGenerationConfig,

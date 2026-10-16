@@ -1,4 +1,6 @@
-import type { AgentItem, AgentPageConfig } from './types'
+import { knowledgeBaseResources } from '../knowledge-base/data'
+import { modelResources } from '../model/data'
+import type { AgentItem, AgentPageConfig, AgentSkillOption } from './types'
 
 export const agentPageConfig: AgentPageConfig = {
   kind: 'agent',
@@ -18,6 +20,83 @@ export const agentPageConfig: AgentPageConfig = {
   },
 }
 
+/**
+ * Agent 可启用的技能
+ *
+ * 技能是 Agent 的能力开关,词表与「模型能力」保持一致的语义颗粒度。
+ */
+export const agentSkills: AgentSkillOption[] = [
+  {
+    value: 'web-search',
+    label: '联网搜索',
+    description: '实时检索公开资料并给出处',
+    icon: 'i-lucide:search',
+  },
+  {
+    value: 'code-runner',
+    label: '代码执行',
+    description: '运行脚本完成数据处理与计算',
+    icon: 'i-lucide:terminal',
+  },
+  {
+    value: 'doc-parser',
+    label: '文档解析',
+    description: '解析 PDF / Word / Excel 内容',
+    icon: 'i-lucide:file-text',
+  },
+  {
+    value: 'image-understanding',
+    label: '图片理解',
+    description: '识别截图、设计稿与图片素材',
+    icon: 'i-lucide:image',
+  },
+  {
+    value: 'data-analysis',
+    label: '数据分析',
+    description: '聚合指标、发现趋势与异常',
+    icon: 'i-lucide:chart-column',
+  },
+  {
+    value: 'multi-language',
+    label: '多语言',
+    description: '多语种翻译与润色',
+    icon: 'i-lucide:languages',
+  },
+]
+
+/**
+ * 模型下拉选项,数据来自模型列表页
+ */
+export const agentModelOptions = modelResources.map((item) => ({
+  label: `${item.name} · ${item.providerName}`,
+  value: item.id,
+}))
+
+/**
+ * 知识库下拉选项,数据来自知识库页
+ */
+export const agentKnowledgeBaseOptions = knowledgeBaseResources.map((item) => ({
+  label: item.name,
+  value: item.id,
+}))
+
+/**
+ * 模型 id -> 名称,供卡片展示
+ */
+const agentModelLabels: Record<string, string> = Object.fromEntries(
+  modelResources.map((item) => [item.id, item.name])
+)
+
+/**
+ * 取模型展示名,未匹配到时回退为原始 id
+ *
+ * @param id 模型 id
+ * @returns 模型名称
+ */
+export function getAgentModelLabel(id: string) {
+  return agentModelLabels[id] ?? id
+}
+
 export const agentResources: AgentItem[] = [
   {
     id: 'agent-sales-insight',
@@ -32,6 +111,10 @@ export const agentResources: AgentItem[] = [
     status: 'online',
     icon: 'i-lucide:chart-no-axes-combined',
     iconBackground: '#DBEAFE',
+    modelId: 'model-gpt-4o',
+    skillIds: ['web-search', 'data-analysis'],
+    knowledgeBaseIds: ['kb-product-handbook', 'kb-bi-metrics'],
+    subAgentIds: ['agent-bi-narrator'],
     metrics: [
       { label: '调用次数', value: '18.6k', tone: 'primary' },
       { label: '成功率', value: '98.2%', tone: 'success' },
@@ -50,6 +133,10 @@ export const agentResources: AgentItem[] = [
     status: 'online',
     icon: 'i-lucide:badge-dollar-sign',
     iconBackground: '#DCFCE7',
+    modelId: 'model-claude-sonnet',
+    skillIds: ['doc-parser', 'data-analysis'],
+    knowledgeBaseIds: ['kb-finance-policy', 'kb-contract-clause'],
+    subAgentIds: ['agent-contract-review'],
     metrics: [
       { label: '核对单据', value: '42k', tone: 'primary' },
       { label: '异常命中', value: '312', tone: 'warning' },
@@ -68,6 +155,10 @@ export const agentResources: AgentItem[] = [
     status: 'draft',
     icon: 'i-lucide:workflow',
     iconBackground: '#EDE9FE',
+    modelId: 'model-glm-4-plus',
+    skillIds: ['doc-parser'],
+    knowledgeBaseIds: ['kb-implementation-playbook'],
+    subAgentIds: ['agent-finance-check'],
     metrics: [
       { label: '测试用例', value: '86' },
       { label: '覆盖率', value: '82%', tone: 'warning' },
@@ -86,6 +177,10 @@ export const agentResources: AgentItem[] = [
     status: 'online',
     icon: 'i-lucide:package-check',
     iconBackground: '#FFEDD5',
+    modelId: 'model-kimi-k2',
+    skillIds: ['data-analysis', 'code-runner'],
+    knowledgeBaseIds: ['kb-warehouse-sop'],
+    subAgentIds: [],
     metrics: [
       { label: '任务量', value: '9.4k', tone: 'primary' },
       { label: '节省工时', value: '186h', tone: 'success' },
@@ -105,6 +200,10 @@ export const agentResources: AgentItem[] = [
     status: 'online',
     icon: 'i-lucide:headphones',
     iconBackground: '#FCE7F3',
+    modelId: 'model-gpt-4o-mini',
+    skillIds: ['web-search', 'multi-language'],
+    knowledgeBaseIds: ['kb-customer-service', 'kb-product-handbook'],
+    subAgentIds: ['agent-sales-insight', 'agent-bi-narrator'],
     metrics: [
       { label: '接待量', value: '12.8k', tone: 'primary' },
       { label: '采纳率', value: '74%', tone: 'success' },
@@ -123,6 +222,10 @@ export const agentResources: AgentItem[] = [
     status: 'offline',
     icon: 'i-lucide:presentation',
     iconBackground: '#CFFAFE',
+    modelId: 'model-deepseek-v3',
+    skillIds: ['data-analysis', 'code-runner'],
+    knowledgeBaseIds: ['kb-bi-metrics'],
+    subAgentIds: [],
     metrics: [
       { label: '看板接入', value: '28' },
       { label: '订阅用户', value: '134' },
@@ -141,6 +244,10 @@ export const agentResources: AgentItem[] = [
     status: 'online',
     icon: 'i-lucide:file-check-2',
     iconBackground: '#E0E7FF',
+    modelId: 'model-gemini-pro',
+    skillIds: ['doc-parser', 'multi-language'],
+    knowledgeBaseIds: ['kb-contract-clause', 'kb-finance-policy'],
+    subAgentIds: [],
     metrics: [
       { label: '审阅合同', value: '1.2k', tone: 'primary' },
       { label: '风险项', value: '428', tone: 'warning' },
@@ -160,6 +267,10 @@ export const agentResources: AgentItem[] = [
     status: 'draft',
     icon: 'i-lucide:table-properties',
     iconBackground: '#CCFBF1',
+    modelId: 'model-qwen-max',
+    skillIds: ['data-analysis', 'doc-parser'],
+    knowledgeBaseIds: ['kb-bi-metrics', 'kb-product-handbook'],
+    subAgentIds: [],
     metrics: [
       { label: '模板数', value: '16' },
       { label: '通过率', value: '88%', tone: 'warning' },
@@ -167,3 +278,21 @@ export const agentResources: AgentItem[] = [
     ],
   },
 ]
+
+/**
+ * 标签下拉选项,取自现有 Agent 的标签去重结果
+ *
+ * 标签选择使用 tags 模式,这里只提供候选项,仍支持直接输入新标签
+ */
+export const agentTagOptions: Array<{ label: string; value: string }> = [
+  ...new Set(agentResources.flatMap((item) => item.tags)),
+].map((tag) => ({ label: tag, value: tag }))
+
+/**
+ * 子 Agent 下拉选项:把已有 Agent 作为能力挂载到新建 Agent 上
+ *
+ * 排除仍未发布的草稿,避免把不可用的 Agent 挂成依赖
+ */
+export const agentSubAgentOptions = agentResources
+  .filter((item) => item.status !== 'draft')
+  .map((item) => ({ label: item.name, value: item.id }))

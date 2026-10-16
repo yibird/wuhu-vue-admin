@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import type { KnowledgeSectionWorkspace } from '../types'
 
-defineOptions({ name: 'SectionPanel' })
-
 const props = defineProps<{
   section: KnowledgeSectionWorkspace
 }>()

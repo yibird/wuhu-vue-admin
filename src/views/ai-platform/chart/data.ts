@@ -1,11 +1,55 @@
+import wechatIcon from '@/assets/svg/wechat.svg'
+import qqIcon from '@/assets/svg/qq.svg'
 import type {
   AgentMessage,
   AgentModel,
   AgentPreset,
   AgentTool,
   ChatItem,
+  SharePlatform,
 } from './components/types'
 import { createMessage } from './utils'
+
+export function createSharePlatforms(): SharePlatform[] {
+  return [
+    {
+      key: 'wechat',
+      label: '微信',
+      color: '#07C160',
+      iconImage: wechatIcon,
+    },
+    {
+      key: 'qq',
+      label: 'QQ',
+      color: '#12B7F5',
+      iconImage: qqIcon,
+    },
+    {
+      key: 'twitter',
+      label: 'X',
+      color: '#0F1419',
+      icon: 'i-lucide:twitter',
+    },
+    {
+      key: 'facebook',
+      label: 'Facebook',
+      color: '#1877F2',
+      icon: 'i-lucide:facebook',
+    },
+    {
+      key: 'linkedin',
+      label: 'LinkedIn',
+      color: '#0A66C2',
+      icon: 'i-lucide:linkedin',
+    },
+    {
+      key: 'telegram',
+      label: 'Telegram',
+      color: '#26A5E4',
+      icon: 'i-lucide:send',
+    },
+  ]
+}
 
 export function createModels(): AgentModel[] {
   return [
