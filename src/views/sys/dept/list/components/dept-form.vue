@@ -10,8 +10,6 @@ import {
 } from '@/apis'
 import { DeptPicker, type DeptPickerOption } from '@/features'
 
-defineOptions({ name: 'DeptForm' })
-
 interface Props {
   id?: string
 }
@@ -96,7 +94,7 @@ async function loadParentOptions() {
   optionsLoading.value = true
   try {
     const response = await getDeptPageListApi({
-      pageNum: 1,
+      current: 1,
       pageSize: 1000,
       type: 1,
     })

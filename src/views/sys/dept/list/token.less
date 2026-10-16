@@ -1,0 +1,56 @@
+/**
+ * 部门管理模块 token
+ *
+ * 仅在 .dept-org 作用域内生效,避免污染全局设计 token。
+ * 这里的渐变相关变量被节点卡片与图例共用,颜色本身由使用处的 --w-dept-node-accent 提供。
+ */
+.dept-org {
+  // 画布光晕
+  --w-dept-canvas-glow-opacity: 8%;
+  --w-dept-canvas-glow-stop: 58%;
+
+  // 节点渐变:常态斜向淡渐变,根节点与选中态改用强调强度
+  --w-dept-node-sheen-opacity: 7%;
+  --w-dept-node-accent-opacity: 20%;
+  --w-dept-node-accent-glow-opacity: 30%;
+  --w-dept-node-glow-stop: 62%;
+  --w-dept-node-ring-width: 3px;
+  --w-dept-node-ring-opacity: 20%;
+
+  /**
+   * 节点强调色块:图标块与图例共用同一套渐变,保证图例能准确对位
+   */
+  .dept-org-accent {
+    background-image: linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--w-dept-node-accent) 74%, #fff),
+      var(--w-dept-node-accent)
+    );
+    box-shadow:
+      0 2px 4px
+        color-mix(
+          in srgb,
+          var(--w-dept-node-accent) var(--w-dept-node-accent-glow-opacity),
+          transparent
+        ),
+      inset 0 1px 0 rgb(255 255 255 / 22%);
+  }
+
+  /**
+   * 弱化强调色块:用于负责人头像等次级信息,避免与图标块争夺注意力
+   */
+  .dept-org-accent-soft {
+    background-image: linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--w-dept-node-accent) 18%, transparent),
+      color-mix(in srgb, var(--w-dept-node-accent) 8%, transparent)
+    );
+  }
+}
+
+[data-theme='dark'] .dept-org {
+  --w-dept-canvas-glow-opacity: 12%;
+  --w-dept-node-sheen-opacity: 11%;
+  --w-dept-node-accent-opacity: 26%;
+  --w-dept-node-accent-glow-opacity: 38%;
+}
