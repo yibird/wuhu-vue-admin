@@ -1,3 +1,112 @@
+<template>
+  <a-modal v-model:open="open" destroy-on-hidden title="新建通知" :width="1000">
+    <div class="max-h-[72vh] overflow-y-auto px-2 pb-20">
+      <a-form
+        ref="formRef"
+        :label-col="{ flex: '88px' }"
+        :model="form"
+        :rules="rules"
+        :wrapper-col="{ flex: '1 1 0' }"
+        layout="horizontal"
+      >
+        <a-form-item label="通知标题" name="title">
+          <a-input
+            v-model:value="form.title"
+            allow-clear
+            :maxlength="100"
+            placeholder="请输入通知标题"
+            show-count
+          />
+        </a-form-item>
+
+        <div class="grid grid-cols-1 gap-x-16 sm:grid-cols-2">
+          <a-form-item label="通知类型" name="type">
+            <a-radio-group v-model:value="form.type">
+              <a-radio :value="1">通知</a-radio>
+              <a-radio :value="2">公告</a-radio>
+            </a-radio-group>
+          </a-form-item>
+
+          <a-form-item label="发送方式" name="sendMode">
+            <a-segmented
+              v-model:value="form.sendMode"
+              block
+              :options="sendModeOptions"
+            />
+          </a-form-item>
+        </div>
+
+        <a-form-item
+          v-if="form.sendMode === 'scheduled'"
+          label="发送时间"
+          name="scheduledAt"
+        >
+          <a-date-picker
+            v-model:value="form.scheduledAt"
+            allow-clear
+            class="w-full"
+            :disabled-date="disabledScheduleDate"
+            format="YYYY-MM-DD HH:mm"
+            placeholder="请选择定时发送时间"
+            show-time
+            value-format="YYYY-MM-DD HH:mm:ss"
+          />
+        </a-form-item>
+
+        <a-form-item label="通知内容" name="content">
+          <Editor
+            ref="contentEditor"
+            v-model="form.content"
+            :min-height="220"
+            :max-height="360"
+            placeholder="请输入通知内容..."
+          />
+        </a-form-item>
+
+        <div class="flex gap-16 max-sm:flex-col max-sm:gap-0">
+          <a-form-item class="min-w-0 flex-1" label="排序" name="sort">
+            <a-input-number
+              v-model:value="form.sort"
+              class="w-full"
+              :min="0"
+              :max="9999"
+              :precision="0"
+            />
+          </a-form-item>
+
+          <a-form-item class="min-w-0 flex-1" label="状态" name="status">
+            <div class="h-32 flex items-center gap-8">
+              <a-switch v-model:checked="form.status" />
+              <span class="text-sm text-secondary">
+                {{ form.status ? '正常' : '停用' }}
+              </span>
+            </div>
+          </a-form-item>
+        </div>
+
+        <a-form-item label="备注" name="remark">
+          <a-textarea
+            v-model:value="form.remark"
+            :auto-size="{ minRows: 2, maxRows: 4 }"
+            :maxlength="200"
+            placeholder="选填，用于内部说明"
+            show-count
+          />
+        </a-form-item>
+      </a-form>
+    </div>
+
+    <template #footer>
+      <div class="flex justify-end gap-8">
+        <a-button :disabled="submitting" @click="open = false"> 取消 </a-button>
+        <a-button :loading="submitting" type="primary" @click="handleSubmit">
+          {{ form.sendMode === 'scheduled' ? '定时发送' : '发送' }}
+        </a-button>
+      </div>
+    </template>
+  </a-modal>
+</template>
+
 <script setup lang="ts">
 import dayjs from 'dayjs'
 import type { Dayjs } from 'dayjs'
@@ -16,7 +125,7 @@ const Editor = defineAsyncComponent(async () => {
 
 const open = defineModel<boolean>('open', { required: true })
 
-const emit = defineEmits<{
+const emits = defineEmits<{
   success: []
 }>()
 
@@ -127,7 +236,7 @@ async function handleSubmit() {
       form.sendMode === 'scheduled' ? '通知已设置定时发送' : '通知发送成功'
     )
     open.value = false
-    emit('success')
+    emits('success')
   } catch {
     // 业务错误已由请求层统一提示，保持弹窗打开便于重试
   } finally {
@@ -135,112 +244,3 @@ async function handleSubmit() {
   }
 }
 </script>
-
-<template>
-  <a-modal v-model:open="open" destroy-on-hidden title="新建通知" :width="1000">
-    <div class="max-h-[72vh] overflow-y-auto px-2 pb-20">
-      <a-form
-        ref="formRef"
-        :label-col="{ flex: '88px' }"
-        :model="form"
-        :rules="rules"
-        :wrapper-col="{ flex: '1 1 0' }"
-        layout="horizontal"
-      >
-        <a-form-item label="通知标题" name="title">
-          <a-input
-            v-model:value="form.title"
-            allow-clear
-            :maxlength="100"
-            placeholder="请输入通知标题"
-            show-count
-          />
-        </a-form-item>
-
-        <div class="grid grid-cols-1 gap-x-16 sm:grid-cols-2">
-          <a-form-item label="通知类型" name="type">
-            <a-radio-group v-model:value="form.type">
-              <a-radio :value="1">通知</a-radio>
-              <a-radio :value="2">公告</a-radio>
-            </a-radio-group>
-          </a-form-item>
-
-          <a-form-item label="发送方式" name="sendMode">
-            <a-segmented
-              v-model:value="form.sendMode"
-              block
-              :options="sendModeOptions"
-            />
-          </a-form-item>
-        </div>
-
-        <a-form-item
-          v-if="form.sendMode === 'scheduled'"
-          label="发送时间"
-          name="scheduledAt"
-        >
-          <a-date-picker
-            v-model:value="form.scheduledAt"
-            allow-clear
-            class="w-full"
-            :disabled-date="disabledScheduleDate"
-            format="YYYY-MM-DD HH:mm"
-            placeholder="请选择定时发送时间"
-            show-time
-            value-format="YYYY-MM-DD HH:mm:ss"
-          />
-        </a-form-item>
-
-        <a-form-item label="通知内容" name="content">
-          <Editor
-            ref="contentEditor"
-            v-model="form.content"
-            :min-height="220"
-            :max-height="360"
-            placeholder="请输入通知内容..."
-          />
-        </a-form-item>
-
-        <div class="flex gap-16 max-sm:flex-col max-sm:gap-0">
-          <a-form-item class="min-w-0 flex-1" label="排序" name="sort">
-            <a-input-number
-              v-model:value="form.sort"
-              class="w-full"
-              :min="0"
-              :max="9999"
-              :precision="0"
-            />
-          </a-form-item>
-
-          <a-form-item class="min-w-0 flex-1" label="状态" name="status">
-            <div class="h-32 flex items-center gap-8">
-              <a-switch v-model:checked="form.status" />
-              <span class="text-sm text-secondary">
-                {{ form.status ? '正常' : '停用' }}
-              </span>
-            </div>
-          </a-form-item>
-        </div>
-
-        <a-form-item label="备注" name="remark">
-          <a-textarea
-            v-model:value="form.remark"
-            :auto-size="{ minRows: 2, maxRows: 4 }"
-            :maxlength="200"
-            placeholder="选填，用于内部说明"
-            show-count
-          />
-        </a-form-item>
-      </a-form>
-    </div>
-
-    <template #footer>
-      <div class="flex justify-end gap-8">
-        <a-button :disabled="submitting" @click="open = false"> 取消 </a-button>
-        <a-button :loading="submitting" type="primary" @click="handleSubmit">
-          {{ form.sendMode === 'scheduled' ? '定时发送' : '发送' }}
-        </a-button>
-      </div>
-    </template>
-  </a-modal>
-</template>

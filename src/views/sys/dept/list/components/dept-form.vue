@@ -1,3 +1,87 @@
+<template>
+  <a-modal v-model:open="open" destroy-on-hidden :title="title" :width="680">
+    <a-form
+      ref="formRef"
+      :disabled="detailLoading"
+      :label-col="{ flex: '88px' }"
+      :model="form"
+      :rules="rules"
+      :wrapper-col="{ flex: '1 1 0' }"
+      layout="horizontal"
+    >
+      <div class="grid grid-cols-1 gap-x-16 sm:grid-cols-2">
+        <a-form-item label="部门名称" name="name">
+          <a-input
+            v-model:value="form.name"
+            allow-clear
+            placeholder="请输入部门名称"
+          />
+        </a-form-item>
+        <a-form-item label="部门编码" name="code">
+          <a-input
+            v-model:value="form.code"
+            allow-clear
+            placeholder="请输入部门编码"
+          />
+        </a-form-item>
+        <a-form-item label="上级部门" name="parentId">
+          <DeptPicker
+            v-model:value="form.parentId"
+            :loading="optionsLoading"
+            :options="parentOptions"
+            placeholder="请选择上级部门"
+          />
+        </a-form-item>
+        <a-form-item label="负责人" name="leader">
+          <a-input
+            v-model:value="form.leader"
+            allow-clear
+            placeholder="请输入负责人"
+          />
+        </a-form-item>
+        <a-form-item label="联系电话" name="phone">
+          <a-input
+            v-model:value="form.phone"
+            allow-clear
+            placeholder="请输入联系电话"
+          />
+        </a-form-item>
+        <a-form-item class="sm:col-span-2" label="联系邮箱" name="email">
+          <a-input
+            v-model:value="form.email"
+            allow-clear
+            placeholder="请输入联系邮箱"
+          />
+        </a-form-item>
+      </div>
+      <a-form-item label="备注" name="remark">
+        <a-textarea
+          v-model:value="form.remark"
+          allow-clear
+          :auto-size="{ minRows: 2, maxRows: 4 }"
+          :maxlength="200"
+          placeholder="选填，用于内部说明"
+          show-count
+        />
+      </a-form-item>
+    </a-form>
+
+    <template #footer>
+      <div class="flex justify-end gap-8">
+        <a-button :disabled="submitting" @click="open = false">取消</a-button>
+        <a-button
+          :disabled="detailLoading"
+          :loading="submitting"
+          type="primary"
+          @click="handleSubmit"
+        >
+          {{ isEdit ? '保存' : '新建' }}
+        </a-button>
+      </div>
+    </template>
+  </a-modal>
+</template>
+
 <script setup lang="ts">
 import { message, type FormInstance } from 'antdv-next'
 import {
@@ -17,7 +101,7 @@ interface Props {
 const props = defineProps<Props>()
 const open = defineModel<boolean>('open', { required: true })
 
-const emit = defineEmits<{
+const emits = defineEmits<{
   success: []
 }>()
 
@@ -164,7 +248,7 @@ async function handleSubmit() {
 
     message.success(`${entityName.value}${isEdit.value ? '编辑' : '新建'}成功`)
     open.value = false
-    emit('success')
+    emits('success')
   } catch {
     // 业务错误已由请求层统一提示，保持弹窗打开便于重试
   } finally {
@@ -172,87 +256,3 @@ async function handleSubmit() {
   }
 }
 </script>
-
-<template>
-  <a-modal v-model:open="open" destroy-on-hidden :title="title" :width="680">
-    <a-form
-      ref="formRef"
-      :disabled="detailLoading"
-      :label-col="{ flex: '88px' }"
-      :model="form"
-      :rules="rules"
-      :wrapper-col="{ flex: '1 1 0' }"
-      layout="horizontal"
-    >
-      <div class="grid grid-cols-1 gap-x-16 sm:grid-cols-2">
-        <a-form-item label="部门名称" name="name">
-          <a-input
-            v-model:value="form.name"
-            allow-clear
-            placeholder="请输入部门名称"
-          />
-        </a-form-item>
-        <a-form-item label="部门编码" name="code">
-          <a-input
-            v-model:value="form.code"
-            allow-clear
-            placeholder="请输入部门编码"
-          />
-        </a-form-item>
-        <a-form-item label="上级部门" name="parentId">
-          <DeptPicker
-            v-model:value="form.parentId"
-            :loading="optionsLoading"
-            :options="parentOptions"
-            placeholder="请选择上级部门"
-          />
-        </a-form-item>
-        <a-form-item label="负责人" name="leader">
-          <a-input
-            v-model:value="form.leader"
-            allow-clear
-            placeholder="请输入负责人"
-          />
-        </a-form-item>
-        <a-form-item label="联系电话" name="phone">
-          <a-input
-            v-model:value="form.phone"
-            allow-clear
-            placeholder="请输入联系电话"
-          />
-        </a-form-item>
-        <a-form-item class="sm:col-span-2" label="联系邮箱" name="email">
-          <a-input
-            v-model:value="form.email"
-            allow-clear
-            placeholder="请输入联系邮箱"
-          />
-        </a-form-item>
-      </div>
-      <a-form-item label="备注" name="remark">
-        <a-textarea
-          v-model:value="form.remark"
-          allow-clear
-          :auto-size="{ minRows: 2, maxRows: 4 }"
-          :maxlength="200"
-          placeholder="选填，用于内部说明"
-          show-count
-        />
-      </a-form-item>
-    </a-form>
-
-    <template #footer>
-      <div class="flex justify-end gap-8">
-        <a-button :disabled="submitting" @click="open = false">取消</a-button>
-        <a-button
-          :disabled="detailLoading"
-          :loading="submitting"
-          type="primary"
-          @click="handleSubmit"
-        >
-          {{ isEdit ? '保存' : '新建' }}
-        </a-button>
-      </div>
-    </template>
-  </a-modal>
-</template>

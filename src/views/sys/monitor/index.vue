@@ -1,123 +1,3 @@
-<script setup lang="ts">
-import { useSystemMonitor } from './hooks'
-import {
-  DatabasePanel,
-  ProcessPanel,
-  RabbitPanel,
-  RedisPanel,
-  ServerPanel,
-} from './components'
-import type {
-  MonitorEnvironment,
-  ProcessMetric,
-  QueueMetric,
-} from './components'
-
-const {
-  activeEnvironment,
-  autoRefresh,
-  lastRefreshAt,
-  refresh,
-  refreshing,
-  setAutoRefresh,
-  setEnvironment,
-  snapshot,
-} = useSystemMonitor()
-
-const selectedProcess = shallowRef<ProcessMetric | null>(null)
-const selectedQueue = shallowRef<QueueMetric | null>(null)
-
-const environmentOptions = [
-  { label: '生产环境', value: 'production' },
-  { label: '预发布环境', value: 'staging' },
-]
-
-const resourceWarningCount = computed(
-  () =>
-    snapshot.value.resources.filter((item) => {
-      const threshold = item.id === 'disk' ? 70 : item.id === 'memory' ? 75 : 85
-      return item.value >= threshold
-    }).length
-)
-const processWarningCount = computed(
-  () =>
-    snapshot.value.processes.filter((item) => item.status !== 'healthy').length
-)
-const queueWarningCount = computed(
-  () =>
-    snapshot.value.rabbitmq.queues.filter((item) => item.status !== 'healthy')
-      .length
-)
-const warningCount = computed(
-  () =>
-    resourceWarningCount.value +
-    processWarningCount.value +
-    queueWarningCount.value
-)
-const healthScore = computed(() => Math.max(0, 100 - warningCount.value * 8))
-const healthScoreClass = computed(() => {
-  if (healthScore.value >= 90) return 'text-success'
-  if (healthScore.value >= 70) return 'text-warning'
-  return 'text-error'
-})
-const monitorStatus = computed(() => {
-  if (healthScore.value >= 90) {
-    return {
-      label: '运行正常',
-      icon: 'i-lucide:circle-check',
-      class: 'bg-success-tint text-success',
-    }
-  }
-  if (healthScore.value >= 70) {
-    return {
-      label: '需要关注',
-      icon: 'i-lucide:triangle-alert',
-      class: 'bg-warning-tint text-warning',
-    }
-  }
-  return {
-    label: '存在风险',
-    icon: 'i-lucide:circle-alert',
-    class: 'bg-error-tint text-error',
-  }
-})
-
-const selectedProcessDetails = computed(() => {
-  if (!selectedProcess.value) return []
-  const item = selectedProcess.value
-  return [
-    { label: '进程名称', value: item.name },
-    { label: '进程 ID', value: String(item.pid) },
-    { label: '版本', value: item.version },
-    { label: '运行时间', value: item.uptime },
-    { label: 'CPU 使用', value: `${item.cpu}%` },
-    { label: '内存使用', value: item.memory },
-    { label: '堆内存', value: `${item.heap}%` },
-    { label: '线程数', value: String(item.threads) },
-  ]
-})
-
-const selectedQueueDetails = computed(() => {
-  if (!selectedQueue.value) return []
-  const item = selectedQueue.value
-  return [
-    { label: '队列名称', value: item.name },
-    { label: '虚拟主机', value: item.vhost },
-    { label: 'Ready 消息', value: String(item.ready) },
-    { label: '未确认消息', value: String(item.unacked) },
-    { label: '消费者', value: String(item.consumers) },
-    { label: '发布速率', value: `${item.publishRate}/s` },
-    { label: '投递速率', value: `${item.deliverRate}/s` },
-  ]
-})
-
-function handleEnvironmentChange(value: MonitorEnvironment) {
-  selectedProcess.value = null
-  selectedQueue.value = null
-  setEnvironment(value)
-}
-</script>
-
 <template>
   <WView :full="true" :padding="0">
     <div class="w-full h-full overflow-x-hidden overflow-y-auto">
@@ -310,3 +190,123 @@ function handleEnvironmentChange(value: MonitorEnvironment) {
     </a-modal>
   </WView>
 </template>
+
+<script setup lang="ts">
+import { useSystemMonitor } from './hooks'
+import {
+  DatabasePanel,
+  ProcessPanel,
+  RabbitPanel,
+  RedisPanel,
+  ServerPanel,
+} from './components'
+import type {
+  MonitorEnvironment,
+  ProcessMetric,
+  QueueMetric,
+} from './components'
+
+const {
+  activeEnvironment,
+  autoRefresh,
+  lastRefreshAt,
+  refresh,
+  refreshing,
+  setAutoRefresh,
+  setEnvironment,
+  snapshot,
+} = useSystemMonitor()
+
+const selectedProcess = shallowRef<ProcessMetric | null>(null)
+const selectedQueue = shallowRef<QueueMetric | null>(null)
+
+const environmentOptions = [
+  { label: '生产环境', value: 'production' },
+  { label: '预发布环境', value: 'staging' },
+]
+
+const resourceWarningCount = computed(
+  () =>
+    snapshot.value.resources.filter((item) => {
+      const threshold = item.id === 'disk' ? 70 : item.id === 'memory' ? 75 : 85
+      return item.value >= threshold
+    }).length
+)
+const processWarningCount = computed(
+  () =>
+    snapshot.value.processes.filter((item) => item.status !== 'healthy').length
+)
+const queueWarningCount = computed(
+  () =>
+    snapshot.value.rabbitmq.queues.filter((item) => item.status !== 'healthy')
+      .length
+)
+const warningCount = computed(
+  () =>
+    resourceWarningCount.value +
+    processWarningCount.value +
+    queueWarningCount.value
+)
+const healthScore = computed(() => Math.max(0, 100 - warningCount.value * 8))
+const healthScoreClass = computed(() => {
+  if (healthScore.value >= 90) return 'text-success'
+  if (healthScore.value >= 70) return 'text-warning'
+  return 'text-error'
+})
+const monitorStatus = computed(() => {
+  if (healthScore.value >= 90) {
+    return {
+      label: '运行正常',
+      icon: 'i-lucide:circle-check',
+      class: 'bg-success-tint text-success',
+    }
+  }
+  if (healthScore.value >= 70) {
+    return {
+      label: '需要关注',
+      icon: 'i-lucide:triangle-alert',
+      class: 'bg-warning-tint text-warning',
+    }
+  }
+  return {
+    label: '存在风险',
+    icon: 'i-lucide:circle-alert',
+    class: 'bg-error-tint text-error',
+  }
+})
+
+const selectedProcessDetails = computed(() => {
+  if (!selectedProcess.value) return []
+  const item = selectedProcess.value
+  return [
+    { label: '进程名称', value: item.name },
+    { label: '进程 ID', value: String(item.pid) },
+    { label: '版本', value: item.version },
+    { label: '运行时间', value: item.uptime },
+    { label: 'CPU 使用', value: `${item.cpu}%` },
+    { label: '内存使用', value: item.memory },
+    { label: '堆内存', value: `${item.heap}%` },
+    { label: '线程数', value: String(item.threads) },
+  ]
+})
+
+const selectedQueueDetails = computed(() => {
+  if (!selectedQueue.value) return []
+  const item = selectedQueue.value
+  return [
+    { label: '队列名称', value: item.name },
+    { label: '虚拟主机', value: item.vhost },
+    { label: 'Ready 消息', value: String(item.ready) },
+    { label: '未确认消息', value: String(item.unacked) },
+    { label: '消费者', value: String(item.consumers) },
+    { label: '发布速率', value: `${item.publishRate}/s` },
+    { label: '投递速率', value: `${item.deliverRate}/s` },
+  ]
+})
+
+function handleEnvironmentChange(value: MonitorEnvironment) {
+  selectedProcess.value = null
+  selectedQueue.value = null
+  setEnvironment(value)
+}
+</script>

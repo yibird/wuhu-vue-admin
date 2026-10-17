@@ -1,32 +1,3 @@
-<script setup lang="ts">
-import { useSystemConfig } from '../hooks'
-import ConfigPanel from './config-panel.vue'
-
-interface SecurityConfigForm {
-  passwordMinLength: number
-  passwordExpiresDays: number
-  maxLoginFailures: number
-  lockDurationMinutes: number
-  enableCaptcha: boolean
-  singleSession: boolean
-  trustedIps: string[]
-}
-
-const { form, save, reset } = useSystemConfig<SecurityConfigForm>({
-  key: 'security',
-  label: '安全配置',
-  defaults: {
-    passwordMinLength: 8,
-    passwordExpiresDays: 90,
-    maxLoginFailures: 5,
-    lockDurationMinutes: 30,
-    enableCaptcha: true,
-    singleSession: false,
-    trustedIps: [],
-  },
-})
-</script>
-
 <template>
   <ConfigPanel
     description="控制账号凭据、登录保护和受信任访问范围。"
@@ -100,3 +71,32 @@ const { form, save, reset } = useSystemConfig<SecurityConfigForm>({
     </a-form>
   </ConfigPanel>
 </template>
+
+<script setup lang="ts">
+import { useSystemConfig } from '../hooks'
+import ConfigPanel from './config-panel.vue'
+
+interface SecurityConfigForm {
+  passwordMinLength: number
+  passwordExpiresDays: number
+  maxLoginFailures: number
+  lockDurationMinutes: number
+  enableCaptcha: boolean
+  singleSession: boolean
+  trustedIps: string[]
+}
+
+const { form, save, reset } = useSystemConfig<SecurityConfigForm>({
+  key: 'security',
+  label: '安全配置',
+  defaults: {
+    passwordMinLength: 8,
+    passwordExpiresDays: 90,
+    maxLoginFailures: 5,
+    lockDurationMinutes: 30,
+    enableCaptcha: true,
+    singleSession: false,
+    trustedIps: [],
+  },
+})
+</script>

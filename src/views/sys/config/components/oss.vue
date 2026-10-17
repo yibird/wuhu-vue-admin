@@ -1,41 +1,3 @@
-<script setup lang="ts">
-import { useSystemConfig } from '../hooks'
-import ConfigPanel from './config-panel.vue'
-
-interface OssConfigForm {
-  provider: string
-  endpoint: string
-  region: string
-  bucket: string
-  accessKeyId: string
-  accessKeySecret: string
-  publicDomain: string
-  pathPrefix: string
-}
-
-const providerOptions = [
-  { label: '阿里云 OSS', value: 'aliyun-oss' },
-  { label: '腾讯云 COS', value: 'tencent-cos' },
-  { label: 'AWS S3', value: 'aws-s3' },
-  { label: 'MinIO', value: 'minio' },
-]
-
-const { form, save, reset } = useSystemConfig<OssConfigForm>({
-  key: 'oss',
-  label: '存储配置',
-  defaults: {
-    provider: 'aliyun-oss',
-    endpoint: '',
-    region: '',
-    bucket: '',
-    accessKeyId: '',
-    accessKeySecret: '',
-    publicDomain: '',
-    pathPrefix: 'uploads/',
-  },
-})
-</script>
-
 <template>
   <ConfigPanel
     description="设置附件、图片与导出文件使用的对象存储服务。"
@@ -91,3 +53,41 @@ const { form, save, reset } = useSystemConfig<OssConfigForm>({
     </a-form>
   </ConfigPanel>
 </template>
+
+<script setup lang="ts">
+import { useSystemConfig } from '../hooks'
+import ConfigPanel from './config-panel.vue'
+
+interface OssConfigForm {
+  provider: string
+  endpoint: string
+  region: string
+  bucket: string
+  accessKeyId: string
+  accessKeySecret: string
+  publicDomain: string
+  pathPrefix: string
+}
+
+const providerOptions = [
+  { label: '阿里云 OSS', value: 'aliyun-oss' },
+  { label: '腾讯云 COS', value: 'tencent-cos' },
+  { label: 'AWS S3', value: 'aws-s3' },
+  { label: 'MinIO', value: 'minio' },
+]
+
+const { form, save, reset } = useSystemConfig<OssConfigForm>({
+  key: 'oss',
+  label: '存储配置',
+  defaults: {
+    provider: 'aliyun-oss',
+    endpoint: '',
+    region: '',
+    bucket: '',
+    accessKeyId: '',
+    accessKeySecret: '',
+    publicDomain: '',
+    pathPrefix: 'uploads/',
+  },
+})
+</script>

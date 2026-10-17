@@ -1,38 +1,3 @@
-<script setup lang="ts">
-import { useRoute } from 'vue-router'
-import { getNoticeRecordApi, type NoticeResp } from '@/apis'
-import { Icon } from '@/components'
-import { useRequest, useTabs } from '@/hooks'
-
-const route = useRoute()
-const { openTabByPath } = useTabs()
-
-const noticeId = computed(() =>
-  typeof route.query.id === 'string' ? route.query.id : ''
-)
-
-const { data, loading } = useRequest(
-  (params: { id: string }) => getNoticeRecordApi(params),
-  { defaultParams: [{ id: noticeId.value }], manual: !noticeId.value }
-)
-
-const notice = computed<NoticeResp | undefined>(
-  () => data.value?.data ?? undefined
-)
-
-/** 通知类型标签与颜色,与列表页保持一致 */
-const typeLabel = computed(() => (notice.value?.type === 2 ? '公告' : '通知'))
-const typeColor = computed(() => (notice.value?.type === 2 ? 'blue' : 'cyan'))
-
-const sendModeLabel = computed(() =>
-  notice.value?.sendMode === 'scheduled' ? '定时发送' : '立即发送'
-)
-
-function goBack() {
-  openTabByPath('/sys/notice/list')
-}
-</script>
-
 <template>
   <div class="h-full min-h-0 flex flex-col gap-10 p-10">
     <header
@@ -150,3 +115,38 @@ function goBack() {
     </div>
   </div>
 </template>
+
+<script setup lang="ts">
+import { useRoute } from 'vue-router'
+import { getNoticeRecordApi, type NoticeResp } from '@/apis'
+import { Icon } from '@/components'
+import { useRequest, useTabs } from '@/hooks'
+
+const route = useRoute()
+const { openTabByPath } = useTabs()
+
+const noticeId = computed(() =>
+  typeof route.query.id === 'string' ? route.query.id : ''
+)
+
+const { data, loading } = useRequest(
+  (params: { id: string }) => getNoticeRecordApi(params),
+  { defaultParams: [{ id: noticeId.value }], manual: !noticeId.value }
+)
+
+const notice = computed<NoticeResp | undefined>(
+  () => data.value?.data ?? undefined
+)
+
+/** 通知类型标签与颜色,与列表页保持一致 */
+const typeLabel = computed(() => (notice.value?.type === 2 ? '公告' : '通知'))
+const typeColor = computed(() => (notice.value?.type === 2 ? 'blue' : 'cyan'))
+
+const sendModeLabel = computed(() =>
+  notice.value?.sendMode === 'scheduled' ? '定时发送' : '立即发送'
+)
+
+function goBack() {
+  openTabByPath('/sys/notice/list')
+}
+</script>

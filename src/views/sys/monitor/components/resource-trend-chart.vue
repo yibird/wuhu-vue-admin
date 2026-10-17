@@ -17,7 +17,7 @@
       </span>
     </div>
     <div class="h-280 w-full pt-8 max-md:h-240">
-      <VChart
+      <Chart
         :option="chartOption"
         :theme="eChartsThemeName"
         autoresize
@@ -28,9 +28,13 @@
 </template>
 
 <script setup lang="ts">
-import VChart from 'vue-echarts'
+import { Chart } from '@/components'
 import type { EChartsCoreOption } from 'echarts/core'
-import { getCssRgbVar, getCssRgbVarAlpha, useEChartsTheme } from '@/theme'
+import {
+  getCssRgbVar,
+  getCssRgbVarAlpha,
+  useEChartsTheme,
+} from '@/components/chart'
 import type { MonitorTone, ResourceMetric } from './types'
 
 const props = defineProps<{

@@ -32,7 +32,7 @@
             :key="item.id"
             type="button"
             class="grid grid-cols-[minmax(210px,1.7fr)_120px_90px_90px_90px_110px_110px] items-center gap-10 border-b-1 border-b-solid border-color-1 px-10 py-11 text-left transition-[background-color,transform] duration-motion-base hover:bg-hover-2 active:scale-[0.998] motion-reduce:transition-none"
-            @click="emit('selectQueue', item)"
+            @click="emits('selectQueue', item)"
           >
             <span class="min-w-0">
               <span class="block truncate text-sm text-main font-600">{{
@@ -80,7 +80,7 @@ import type {
 const props = defineProps<{
   rabbitmq: RabbitSnapshot
 }>()
-const emit = defineEmits<SystemMonitorActions>()
+const emits = defineEmits<SystemMonitorActions>()
 
 const statusMeta = {
   healthy: { label: '运行正常', class: 'bg-success-tint text-success' },

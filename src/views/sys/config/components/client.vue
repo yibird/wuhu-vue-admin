@@ -1,37 +1,3 @@
-<script setup lang="ts">
-import { useSystemConfig } from '../hooks'
-import ConfigPanel from './config-panel.vue'
-
-interface ClientConfigForm {
-  sessionTimeoutMinutes: number
-  fileSizeLimitMb: number
-  allowedExtensions: string[]
-  defaultPageSize: number
-  enableUploadCompression: boolean
-  clientVersion: string
-  updateUrl: string
-}
-
-const pageSizeOptions = [10, 20, 50, 100].map((value) => ({
-  label: `${value} 条/页`,
-  value,
-}))
-
-const { form, save, reset } = useSystemConfig<ClientConfigForm>({
-  key: 'client',
-  label: '客户端配置',
-  defaults: {
-    sessionTimeoutMinutes: 60,
-    fileSizeLimitMb: 20,
-    allowedExtensions: ['jpg', 'jpeg', 'png', 'pdf', 'docx', 'xlsx'],
-    defaultPageSize: 20,
-    enableUploadCompression: true,
-    clientVersion: '1.0.0',
-    updateUrl: '',
-  },
-})
-</script>
-
 <template>
   <ConfigPanel
     description="统一管理会话时长、上传限制、分页和客户端更新信息。"
@@ -99,3 +65,37 @@ const { form, save, reset } = useSystemConfig<ClientConfigForm>({
     </a-form>
   </ConfigPanel>
 </template>
+
+<script setup lang="ts">
+import { useSystemConfig } from '../hooks'
+import ConfigPanel from './config-panel.vue'
+
+interface ClientConfigForm {
+  sessionTimeoutMinutes: number
+  fileSizeLimitMb: number
+  allowedExtensions: string[]
+  defaultPageSize: number
+  enableUploadCompression: boolean
+  clientVersion: string
+  updateUrl: string
+}
+
+const pageSizeOptions = [10, 20, 50, 100].map((value) => ({
+  label: `${value} 条/页`,
+  value,
+}))
+
+const { form, save, reset } = useSystemConfig<ClientConfigForm>({
+  key: 'client',
+  label: '客户端配置',
+  defaults: {
+    sessionTimeoutMinutes: 60,
+    fileSizeLimitMb: 20,
+    allowedExtensions: ['jpg', 'jpeg', 'png', 'pdf', 'docx', 'xlsx'],
+    defaultPageSize: 20,
+    enableUploadCompression: true,
+    clientVersion: '1.0.0',
+    updateUrl: '',
+  },
+})
+</script>

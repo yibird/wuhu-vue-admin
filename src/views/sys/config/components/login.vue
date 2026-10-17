@@ -1,43 +1,3 @@
-<script setup lang="ts">
-import { useSystemConfig } from '../hooks'
-import ConfigPanel from './config-panel.vue'
-
-interface LoginConfigForm {
-  allowRegistration: boolean
-  loginMethods: string[]
-  rememberMeDays: number
-  defaultRole: string
-  loginTitle: string
-  loginSubtitle: string
-}
-
-const loginMethodOptions = [
-  { label: '账号密码', value: 'account' },
-  { label: '邮箱验证码', value: 'email' },
-  { label: '手机验证码', value: 'phone' },
-  { label: '企业 SSO', value: 'sso' },
-]
-
-const roleOptions = [
-  { label: '普通成员', value: 'member' },
-  { label: '访客', value: 'guest' },
-  { label: '运营人员', value: 'operator' },
-]
-
-const { form, save, reset } = useSystemConfig<LoginConfigForm>({
-  key: 'login',
-  label: '登录配置',
-  defaults: {
-    allowRegistration: false,
-    loginMethods: ['account'],
-    rememberMeDays: 7,
-    defaultRole: 'member',
-    loginTitle: 'Wuhu Admin',
-    loginSubtitle: '欢迎回来，请登录你的工作台',
-  },
-})
-</script>
-
 <template>
   <ConfigPanel
     description="设置登录页文案、账号创建策略和可用认证方式。"
@@ -92,3 +52,43 @@ const { form, save, reset } = useSystemConfig<LoginConfigForm>({
     </a-form>
   </ConfigPanel>
 </template>
+
+<script setup lang="ts">
+import { useSystemConfig } from '../hooks'
+import ConfigPanel from './config-panel.vue'
+
+interface LoginConfigForm {
+  allowRegistration: boolean
+  loginMethods: string[]
+  rememberMeDays: number
+  defaultRole: string
+  loginTitle: string
+  loginSubtitle: string
+}
+
+const loginMethodOptions = [
+  { label: '账号密码', value: 'account' },
+  { label: '邮箱验证码', value: 'email' },
+  { label: '手机验证码', value: 'phone' },
+  { label: '企业 SSO', value: 'sso' },
+]
+
+const roleOptions = [
+  { label: '普通成员', value: 'member' },
+  { label: '访客', value: 'guest' },
+  { label: '运营人员', value: 'operator' },
+]
+
+const { form, save, reset } = useSystemConfig<LoginConfigForm>({
+  key: 'login',
+  label: '登录配置',
+  defaults: {
+    allowRegistration: false,
+    loginMethods: ['account'],
+    rememberMeDays: 7,
+    defaultRole: 'member',
+    loginTitle: 'Wuhu Admin',
+    loginSubtitle: '欢迎回来，请登录你的工作台',
+  },
+})
+</script>

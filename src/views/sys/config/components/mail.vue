@@ -1,46 +1,3 @@
-<script setup lang="ts">
-import { useSystemConfig } from '../hooks'
-import ConfigPanel from './config-panel.vue'
-
-interface MailConfigForm {
-  provider: string
-  host: string
-  port: number
-  encryption: string
-  username: string
-  password: string
-  senderName: string
-  senderEmail: string
-}
-
-const providerOptions = [
-  { label: '自建 SMTP', value: 'smtp' },
-  { label: '阿里云邮件推送', value: 'aliyun' },
-  { label: '腾讯企业邮', value: 'tencent' },
-]
-
-const encryptionOptions = [
-  { label: 'SSL/TLS', value: 'ssl' },
-  { label: 'STARTTLS', value: 'starttls' },
-  { label: '不加密', value: 'none' },
-]
-
-const { form, save, reset } = useSystemConfig<MailConfigForm>({
-  key: 'mail',
-  label: '邮箱配置',
-  defaults: {
-    provider: 'smtp',
-    host: 'smtp.example.com',
-    port: 465,
-    encryption: 'ssl',
-    username: '',
-    password: '',
-    senderName: 'Wuhu Admin',
-    senderEmail: 'noreply@example.com',
-  },
-})
-</script>
-
 <template>
   <ConfigPanel
     description="配置系统邮件通知所使用的发送通道与发件人信息。"
@@ -92,3 +49,46 @@ const { form, save, reset } = useSystemConfig<MailConfigForm>({
     </a-form>
   </ConfigPanel>
 </template>
+
+<script setup lang="ts">
+import { useSystemConfig } from '../hooks'
+import ConfigPanel from './config-panel.vue'
+
+interface MailConfigForm {
+  provider: string
+  host: string
+  port: number
+  encryption: string
+  username: string
+  password: string
+  senderName: string
+  senderEmail: string
+}
+
+const providerOptions = [
+  { label: '自建 SMTP', value: 'smtp' },
+  { label: '阿里云邮件推送', value: 'aliyun' },
+  { label: '腾讯企业邮', value: 'tencent' },
+]
+
+const encryptionOptions = [
+  { label: 'SSL/TLS', value: 'ssl' },
+  { label: 'STARTTLS', value: 'starttls' },
+  { label: '不加密', value: 'none' },
+]
+
+const { form, save, reset } = useSystemConfig<MailConfigForm>({
+  key: 'mail',
+  label: '邮箱配置',
+  defaults: {
+    provider: 'smtp',
+    host: 'smtp.example.com',
+    port: 465,
+    encryption: 'ssl',
+    username: '',
+    password: '',
+    senderName: 'Wuhu Admin',
+    senderEmail: 'noreply@example.com',
+  },
+})
+</script>

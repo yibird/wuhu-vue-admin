@@ -1,36 +1,3 @@
-<script setup lang="ts">
-import { useSystemConfig } from '../hooks'
-import ConfigPanel from './config-panel.vue'
-
-interface SmsConfigForm {
-  provider: string
-  accessKey: string
-  accessSecret: string
-  signature: string
-  loginTemplateId: string
-  notificationTemplateId: string
-}
-
-const providerOptions = [
-  { label: '阿里云短信', value: 'aliyun' },
-  { label: '腾讯云短信', value: 'tencent' },
-  { label: '华为云短信', value: 'huawei' },
-]
-
-const { form, save, reset } = useSystemConfig<SmsConfigForm>({
-  key: 'sms',
-  label: '短信配置',
-  defaults: {
-    provider: 'aliyun',
-    accessKey: '',
-    accessSecret: '',
-    signature: '',
-    loginTemplateId: '',
-    notificationTemplateId: '',
-  },
-})
-</script>
-
 <template>
   <ConfigPanel
     description="配置验证码和业务通知使用的短信服务商凭据与模板。"
@@ -72,3 +39,36 @@ const { form, save, reset } = useSystemConfig<SmsConfigForm>({
     </a-form>
   </ConfigPanel>
 </template>
+
+<script setup lang="ts">
+import { useSystemConfig } from '../hooks'
+import ConfigPanel from './config-panel.vue'
+
+interface SmsConfigForm {
+  provider: string
+  accessKey: string
+  accessSecret: string
+  signature: string
+  loginTemplateId: string
+  notificationTemplateId: string
+}
+
+const providerOptions = [
+  { label: '阿里云短信', value: 'aliyun' },
+  { label: '腾讯云短信', value: 'tencent' },
+  { label: '华为云短信', value: 'huawei' },
+]
+
+const { form, save, reset } = useSystemConfig<SmsConfigForm>({
+  key: 'sms',
+  label: '短信配置',
+  defaults: {
+    provider: 'aliyun',
+    accessKey: '',
+    accessSecret: '',
+    signature: '',
+    loginTemplateId: '',
+    notificationTemplateId: '',
+  },
+})
+</script>

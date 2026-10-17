@@ -1,3 +1,99 @@
+<template>
+  <div class="h-full min-h-0 flex flex-col gap-10 p-10">
+    <header
+      class="flex flex-wrap items-center gap-12 rounded-4 bg-container px-16 py-12"
+    >
+      <a-button type="text" title="返回列表" @click="goBack">
+        <template #icon><Icon name="i-lucide:arrow-left" /></template>
+      </a-button>
+
+      <div
+        class="size-42 flex-none flex-center rounded-4 bg-primary-tint text-primary"
+      >
+        <Icon name="i-lucide:shield-check" :size="20" />
+      </div>
+
+      <div class="min-w-0 flex-1">
+        <h1 class="m-0 truncate text-base text-main font-700">{{ title }}</h1>
+        <p class="m-0 mt-2 truncate text-xs text-secondary">
+          {{ role ? dataScopeText : '加载中...' }}
+        </p>
+      </div>
+
+      <div class="flex flex-none items-center gap-8">
+        <a-button :disabled="!role" @click="openEdit">
+          <template #icon><Icon name="i-lucide:pencil" /></template>
+          编辑
+        </a-button>
+        <a-button danger :disabled="!role" @click="onDelete">
+          <template #icon><Icon name="i-lucide:trash-2" /></template>
+          删除
+        </a-button>
+      </div>
+    </header>
+
+    <div class="min-h-0 flex-1 overflow-y-auto">
+      <a-spin :spinning="loading">
+        <section v-if="role" class="rounded-4 bg-container p-16">
+          <h2 class="mb-12 text-sm text-main font-600">基础信息</h2>
+          <a-descriptions
+            bordered
+            size="middle"
+            :column="{ xs: 1, sm: 2, xl: 3 }"
+            :label-style="{ width: '110px' }"
+          >
+            <a-descriptions-item label="角色名称">
+              {{ role.roleName }}
+            </a-descriptions-item>
+            <a-descriptions-item label="数据权限">
+              <a-tag
+                :bordered="false"
+                :color="dataScopeMap[role.dataScope]?.color"
+              >
+                {{ dataScopeText }}
+              </a-tag>
+            </a-descriptions-item>
+            <a-descriptions-item label="角色 ID">
+              {{ role.id }}
+            </a-descriptions-item>
+            <a-descriptions-item label="备注" :span="3">
+              {{ role.remark || '-' }}
+            </a-descriptions-item>
+          </a-descriptions>
+        </section>
+
+        <a-empty
+          v-else-if="!loading"
+          class="py-80"
+          description="角色不存在或已被删除"
+        >
+          <a-button type="primary" @click="goBack">返回列表</a-button>
+        </a-empty>
+      </a-spin>
+    </div>
+
+    <a-modal
+      v-model:open="formOpen"
+      title="编辑角色"
+      :confirm-loading="submitting"
+      ok-text="保存"
+      cancel-text="取消"
+      destroy-on-hidden
+      @ok="handleSubmit"
+    >
+      <FormPlus
+        ref="formRef"
+        :schemas="schemas"
+        :model="form"
+        :grid="formGrid"
+        mode="edit"
+        :label-width="80"
+        @submit="onSubmit"
+      />
+    </a-modal>
+  </div>
+</template>
+
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
 import { Modal, message } from 'antdv-next'
@@ -112,99 +208,3 @@ function onDelete() {
   })
 }
 </script>
-
-<template>
-  <div class="h-full min-h-0 flex flex-col gap-10 p-10">
-    <header
-      class="flex flex-wrap items-center gap-12 rounded-4 bg-container px-16 py-12"
-    >
-      <a-button type="text" title="返回列表" @click="goBack">
-        <template #icon><Icon name="i-lucide:arrow-left" /></template>
-      </a-button>
-
-      <div
-        class="size-42 flex-none flex-center rounded-4 bg-primary-tint text-primary"
-      >
-        <Icon name="i-lucide:shield-check" :size="20" />
-      </div>
-
-      <div class="min-w-0 flex-1">
-        <h1 class="m-0 truncate text-base text-main font-700">{{ title }}</h1>
-        <p class="m-0 mt-2 truncate text-xs text-secondary">
-          {{ role ? dataScopeText : '加载中...' }}
-        </p>
-      </div>
-
-      <div class="flex flex-none items-center gap-8">
-        <a-button :disabled="!role" @click="openEdit">
-          <template #icon><Icon name="i-lucide:pencil" /></template>
-          编辑
-        </a-button>
-        <a-button danger :disabled="!role" @click="onDelete">
-          <template #icon><Icon name="i-lucide:trash-2" /></template>
-          删除
-        </a-button>
-      </div>
-    </header>
-
-    <div class="min-h-0 flex-1 overflow-y-auto">
-      <a-spin :spinning="loading">
-        <section v-if="role" class="rounded-4 bg-container p-16">
-          <h2 class="mb-12 text-sm text-main font-600">基础信息</h2>
-          <a-descriptions
-            bordered
-            size="middle"
-            :column="{ xs: 1, sm: 2, xl: 3 }"
-            :label-style="{ width: '110px' }"
-          >
-            <a-descriptions-item label="角色名称">
-              {{ role.roleName }}
-            </a-descriptions-item>
-            <a-descriptions-item label="数据权限">
-              <a-tag
-                :bordered="false"
-                :color="dataScopeMap[role.dataScope]?.color"
-              >
-                {{ dataScopeText }}
-              </a-tag>
-            </a-descriptions-item>
-            <a-descriptions-item label="角色 ID">
-              {{ role.id }}
-            </a-descriptions-item>
-            <a-descriptions-item label="备注" :span="3">
-              {{ role.remark || '-' }}
-            </a-descriptions-item>
-          </a-descriptions>
-        </section>
-
-        <a-empty
-          v-else-if="!loading"
-          class="py-80"
-          description="角色不存在或已被删除"
-        >
-          <a-button type="primary" @click="goBack">返回列表</a-button>
-        </a-empty>
-      </a-spin>
-    </div>
-
-    <a-modal
-      v-model:open="formOpen"
-      title="编辑角色"
-      :confirm-loading="submitting"
-      ok-text="保存"
-      cancel-text="取消"
-      destroy-on-hidden
-      @ok="handleSubmit"
-    >
-      <FormPlus
-        ref="formRef"
-        :schemas="schemas"
-        :model="form"
-        :grid="formGrid"
-        mode="edit"
-        :label-width="80"
-        @submit="onSubmit"
-      />
-    </a-modal>
-  </div>
-</template>

@@ -104,7 +104,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const open = defineModel<boolean>('open', { required: true })
 
-const emit = defineEmits<{
+const emits = defineEmits<{
   success: []
 }>()
 
@@ -209,7 +209,7 @@ async function handleSubmit() {
 
     message.success(`岗位${isEdit.value ? '编辑' : '新建'}成功`)
     open.value = false
-    emit('success')
+    emits('success')
   } catch {
     // 业务错误已由请求层统一提示，保持弹窗打开便于重试
   } finally {

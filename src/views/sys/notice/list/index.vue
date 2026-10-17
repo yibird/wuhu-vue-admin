@@ -1,3 +1,50 @@
+<template>
+  <div class="h-full min-h-0 flex flex-col gap-10 p-10">
+    <FormPlus
+      class="rounded-4 bg-container p-16"
+      :grid="{
+        cols: { sm: 1, md: 2, lg: 3, xl: 4, xxl: 6 },
+        xGap: 10,
+        yGap: 10,
+      }"
+      :schemas="schemas"
+      label-placement="left"
+      :label-width="80"
+      @reset="onReset"
+      @submit="onSearch"
+    />
+
+    <div class="flex flex-wrap items-center gap-8">
+      <a-button type="primary" @click="formOpen = true">
+        <template #icon><Icon name="i-lucide:plus" /></template>
+        新建
+      </a-button>
+      <a-button
+        :disabled="selectedRowKeys.length === 0"
+        danger
+        ghost
+        type="primary"
+      >
+        <template #icon><Icon name="i-lucide:trash-2" /></template>
+        删除
+      </a-button>
+    </div>
+
+    <a-table
+      :columns="columns"
+      :data-source="dataSource"
+      :loading="loading"
+      :pagination="pagination"
+      :row-selection="rowSelection"
+      :scroll="{ x: 950, y: TABLE_SCROLL_Y }"
+      row-key="id"
+      @change="onTableChange"
+    />
+
+    <FormModal v-model:open="formOpen" @success="onSuccess" />
+  </div>
+</template>
+
 <script setup lang="ts">
 import { Tag } from 'antdv-next'
 import { getNoticePageListApi, type NoticeResp, type NoticeType } from '@/apis'
@@ -193,50 +240,3 @@ function onSuccess() {
   run(query.value)
 }
 </script>
-
-<template>
-  <div class="h-full min-h-0 flex flex-col gap-10 p-10">
-    <FormPlus
-      class="rounded-4 bg-container p-16"
-      :grid="{
-        cols: { sm: 1, md: 2, lg: 3, xl: 4, xxl: 6 },
-        xGap: 10,
-        yGap: 10,
-      }"
-      :schemas="schemas"
-      label-placement="left"
-      :label-width="80"
-      @reset="onReset"
-      @submit="onSearch"
-    />
-
-    <div class="flex flex-wrap items-center gap-8">
-      <a-button type="primary" @click="formOpen = true">
-        <template #icon><Icon name="i-lucide:plus" /></template>
-        新建
-      </a-button>
-      <a-button
-        :disabled="selectedRowKeys.length === 0"
-        danger
-        ghost
-        type="primary"
-      >
-        <template #icon><Icon name="i-lucide:trash-2" /></template>
-        删除
-      </a-button>
-    </div>
-
-    <a-table
-      :columns="columns"
-      :data-source="dataSource"
-      :loading="loading"
-      :pagination="pagination"
-      :row-selection="rowSelection"
-      :scroll="{ x: 950, y: TABLE_SCROLL_Y }"
-      row-key="id"
-      @change="onTableChange"
-    />
-
-    <FormModal v-model:open="formOpen" @success="onSuccess" />
-  </div>
-</template>

@@ -1,63 +1,3 @@
-<script setup lang="ts">
-import { useRoute } from 'vue-router'
-import { getMenuRecordApi, type MenuResp } from '@/apis'
-import { Icon } from '@/components'
-import { useRequest, useTabs } from '@/hooks'
-import FormModal from '../list/components/form-modal.vue'
-
-import type { MenuType } from '#/config'
-
-const route = useRoute()
-const { openTabByPath } = useTabs()
-
-const menuId = computed(() =>
-  typeof route.query.id === 'string' ? route.query.id : ''
-)
-
-const modalRef = ref<InstanceType<typeof FormModal>>()
-
-const { data, loading, run } = useRequest(
-  (params: { id: string }) => getMenuRecordApi(params),
-  { defaultParams: [{ id: menuId.value }], manual: !menuId.value }
-)
-
-const menu = computed<MenuResp | undefined>(() => data.value?.data ?? undefined)
-
-/** 菜单类型展示配置,与 MenuResp.type 语义保持一致 */
-const menuTypeMap: Record<MenuType, { label: string; color: string }> = {
-  1: { label: '目录', color: 'blue' },
-  2: { label: '菜单', color: 'cyan' },
-  3: { label: '按钮', color: 'orange' },
-  4: { label: '权限按钮', color: 'purple' },
-}
-
-const menuType = computed(() =>
-  menu.value ? menuTypeMap[menu.value.type] : undefined
-)
-
-const typeLabel = computed(() => menuType.value?.label ?? '-')
-
-const subtitle = computed(() =>
-  menu.value
-    ? `${typeLabel.value} · ${menu.value.path || '无路由'}`
-    : '加载中...'
-)
-
-function goBack() {
-  openTabByPath('/sys/menu/list')
-}
-
-function openEdit() {
-  const record = menu.value
-  if (!record) return
-  modalRef.value?.show(record)
-}
-
-function onUpdated() {
-  run({ id: menuId.value })
-}
-</script>
-
 <template>
   <div class="h-full min-h-0 flex flex-col gap-10 p-10">
     <header
@@ -189,3 +129,63 @@ function onUpdated() {
     <FormModal ref="modalRef" @success="onUpdated" />
   </div>
 </template>
+
+<script setup lang="ts">
+import { useRoute } from 'vue-router'
+import { getMenuRecordApi, type MenuResp } from '@/apis'
+import { Icon } from '@/components'
+import { useRequest, useTabs } from '@/hooks'
+import FormModal from '../list/components/form-modal.vue'
+
+import type { MenuType } from '#/config'
+
+const route = useRoute()
+const { openTabByPath } = useTabs()
+
+const menuId = computed(() =>
+  typeof route.query.id === 'string' ? route.query.id : ''
+)
+
+const modalRef = ref<InstanceType<typeof FormModal>>()
+
+const { data, loading, run } = useRequest(
+  (params: { id: string }) => getMenuRecordApi(params),
+  { defaultParams: [{ id: menuId.value }], manual: !menuId.value }
+)
+
+const menu = computed<MenuResp | undefined>(() => data.value?.data ?? undefined)
+
+/** 菜单类型展示配置,与 MenuResp.type 语义保持一致 */
+const menuTypeMap: Record<MenuType, { label: string; color: string }> = {
+  1: { label: '目录', color: 'blue' },
+  2: { label: '菜单', color: 'cyan' },
+  3: { label: '按钮', color: 'orange' },
+  4: { label: '权限按钮', color: 'purple' },
+}
+
+const menuType = computed(() =>
+  menu.value ? menuTypeMap[menu.value.type] : undefined
+)
+
+const typeLabel = computed(() => menuType.value?.label ?? '-')
+
+const subtitle = computed(() =>
+  menu.value
+    ? `${typeLabel.value} · ${menu.value.path || '无路由'}`
+    : '加载中...'
+)
+
+function goBack() {
+  openTabByPath('/sys/menu/list')
+}
+
+function openEdit() {
+  const record = menu.value
+  if (!record) return
+  modalRef.value?.show(record)
+}
+
+function onUpdated() {
+  run({ id: menuId.value })
+}
+</script>

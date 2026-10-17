@@ -1,24 +1,3 @@
-<script setup lang="ts">
-import type { DropdownEmits, DropdownProps } from './types'
-
-const props = defineProps<DropdownProps>()
-const emit = defineEmits<DropdownEmits>()
-
-const options = [
-  { key: 'edit', label: '编辑' },
-  { key: 'delete', label: '删除', danger: true },
-]
-
-function handleMenuClick({ key }: { key: string }) {
-  if (key === 'edit') {
-    emit('edit', props.item)
-    return
-  }
-
-  emit('delete', props.item)
-}
-</script>
-
 <template>
   <a-dropdown
     :menu="{ items: options }"
@@ -35,3 +14,24 @@ function handleMenuClick({ key }: { key: string }) {
     </button>
   </a-dropdown>
 </template>
+
+<script setup lang="ts">
+import type { DropdownEmits, DropdownProps } from './types'
+
+const props = defineProps<DropdownProps>()
+const emits = defineEmits<DropdownEmits>()
+
+const options = [
+  { key: 'edit', label: '编辑' },
+  { key: 'delete', label: '删除', danger: true },
+]
+
+function handleMenuClick({ key }: { key: string }) {
+  if (key === 'edit') {
+    emits('edit', props.item)
+    return
+  }
+
+  emits('delete', props.item)
+}
+</script>

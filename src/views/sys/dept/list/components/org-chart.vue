@@ -268,7 +268,7 @@ interface TreeOrgExpose {
 
 const open = defineModel<boolean>('open', { required: true })
 
-const emit = defineEmits<{
+const emits = defineEmits<{
   edit: [id: string]
 }>()
 
@@ -403,7 +403,7 @@ function handleNodeClick(_event: MouseEvent, data: Record<string, unknown>) {
 
 function handleEdit() {
   const dept = selectedDept.value
-  if (dept) emit('edit', dept.id)
+  if (dept) emits('edit', dept.id)
 }
 
 /**

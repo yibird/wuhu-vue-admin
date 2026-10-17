@@ -1,16 +1,3 @@
-<script setup lang="ts">
-defineProps<{
-  title: string
-  description: string
-  icon: string
-}>()
-
-const emit = defineEmits<{
-  save: []
-  reset: []
-}>()
-</script>
-
 <template>
   <section class="h-full min-h-0 flex flex-col">
     <header class="shrink-0 border-b-1 border-b-solid border-color-2">
@@ -34,8 +21,8 @@ const emit = defineEmits<{
         <slot />
       </div>
       <div class="flex-center gap-12">
-        <a-button danger @click="emit('reset')">恢复默认</a-button>
-        <a-button type="primary" @click="emit('save')">
+        <a-button danger @click="emits('reset')">恢复默认</a-button>
+        <a-button type="primary" @click="emits('save')">
           <template #icon>
             <Icon name="i-lucide:save" :size="16" />
           </template>
@@ -45,3 +32,16 @@ const emit = defineEmits<{
     </main>
   </section>
 </template>
+
+<script setup lang="ts">
+defineProps<{
+  title: string
+  description: string
+  icon: string
+}>()
+
+const emits = defineEmits<{
+  save: []
+  reset: []
+}>()
+</script>

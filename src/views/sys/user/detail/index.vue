@@ -1,112 +1,3 @@
-<script setup lang="ts">
-import { useRoute } from 'vue-router'
-import { Modal, message } from 'antdv-next'
-import {
-  deleteUserApi,
-  getDeptPageListApi,
-  getRolePageListApi,
-  getUserRecordApi,
-  type DeptResp,
-  type RoleResp,
-  type UserResp,
-} from '@/apis'
-import { Icon } from '@/components'
-import { useRequest, useTabs } from '@/hooks'
-import { toRouteTabKey } from '@/store'
-import {
-  educationOptions,
-  maritalStatusOptions,
-  resolveOptionLabel,
-  sexOptions,
-  sourceOptions,
-  workExperienceOptions,
-} from '../data'
-import { UserForm } from '../list/components'
-
-const route = useRoute()
-const { closeTab, openTabByPath } = useTabs()
-
-const userId = computed(() =>
-  typeof route.query.id === 'string' ? route.query.id : ''
-)
-const formOpen = shallowRef(false)
-
-const { data, loading, run } = useRequest(
-  (params: { id: string }) => getUserRecordApi(params),
-  { defaultParams: [{ id: userId.value }], manual: !userId.value }
-)
-
-/** 部门与岗位共用一个列表接口,按 type 区分 */
-const { data: deptData } = useRequest(() =>
-  getDeptPageListApi({ current: 1, pageSize: 1000 })
-)
-const { data: roleData } = useRequest(() =>
-  getRolePageListApi({ current: 1, pageSize: 1000 })
-)
-
-const organizationMaps = computed(() => {
-  const deptNames = new Map<string, string>()
-  const postNames = new Map<string, string>()
-  ;(deptData.value?.data?.list ?? []).forEach((item: DeptResp) => {
-    if (item.type === 2) postNames.set(item.id, item.name)
-    else deptNames.set(item.id, item.name)
-  })
-
-  const roleNames = new Map<string, string>()
-  ;(roleData.value?.data?.list ?? []).forEach((item: RoleResp) => {
-    roleNames.set(item.id, item.roleName)
-  })
-
-  return { deptNames, postNames, roleNames }
-})
-
-const user = computed<UserResp | undefined>(() => data.value?.data ?? undefined)
-
-const title = computed(
-  () => user.value?.nickname || user.value?.realname || '用户详情'
-)
-
-function resolveName(map: Map<string, string>, id?: string) {
-  if (!id) return '-'
-  return map.get(id) ?? id
-}
-
-function goBack() {
-  openTabByPath('/sys/user/list')
-}
-
-function openEdit() {
-  formOpen.value = true
-}
-
-function onUpdated() {
-  run({ id: userId.value })
-}
-
-function onDelete() {
-  const record = user.value
-  if (!record) return
-
-  Modal.confirm({
-    title: '删除用户',
-    content: `确定删除用户「${record.nickname || record.username}」吗？`,
-    okText: '删除',
-    cancelText: '取消',
-    okButtonProps: { danger: true },
-    onOk: async () => {
-      try {
-        await deleteUserApi([record.id])
-        message.success('用户删除成功')
-        await openTabByPath('/sys/user/list')
-        closeTab(toRouteTabKey('/sys/user/detail', { id: record.id }))
-      } catch {
-        // 业务错误已由请求层统一提示
-      }
-    },
-  })
-}
-</script>
-
 <template>
   <div class="h-full min-h-0 flex flex-col gap-10 p-10">
     <header
@@ -279,3 +170,112 @@ function onDelete() {
     <UserForm v-model:open="formOpen" :id="userId" @success="onUpdated" />
   </div>
 </template>
+
+<script setup lang="ts">
+import { useRoute } from 'vue-router'
+import { Modal, message } from 'antdv-next'
+import {
+  deleteUserApi,
+  getDeptPageListApi,
+  getRolePageListApi,
+  getUserRecordApi,
+  type DeptResp,
+  type RoleResp,
+  type UserResp,
+} from '@/apis'
+import { Icon } from '@/components'
+import { useRequest, useTabs } from '@/hooks'
+import { toRouteTabKey } from '@/store'
+import {
+  educationOptions,
+  maritalStatusOptions,
+  resolveOptionLabel,
+  sexOptions,
+  sourceOptions,
+  workExperienceOptions,
+} from '../data'
+import { UserForm } from '../list/components'
+
+const route = useRoute()
+const { closeTab, openTabByPath } = useTabs()
+
+const userId = computed(() =>
+  typeof route.query.id === 'string' ? route.query.id : ''
+)
+const formOpen = shallowRef(false)
+
+const { data, loading, run } = useRequest(
+  (params: { id: string }) => getUserRecordApi(params),
+  { defaultParams: [{ id: userId.value }], manual: !userId.value }
+)
+
+/** 部门与岗位共用一个列表接口,按 type 区分 */
+const { data: deptData } = useRequest(() =>
+  getDeptPageListApi({ current: 1, pageSize: 1000 })
+)
+const { data: roleData } = useRequest(() =>
+  getRolePageListApi({ current: 1, pageSize: 1000 })
+)
+
+const organizationMaps = computed(() => {
+  const deptNames = new Map<string, string>()
+  const postNames = new Map<string, string>()
+  ;(deptData.value?.data?.list ?? []).forEach((item: DeptResp) => {
+    if (item.type === 2) postNames.set(item.id, item.name)
+    else deptNames.set(item.id, item.name)
+  })
+
+  const roleNames = new Map<string, string>()
+  ;(roleData.value?.data?.list ?? []).forEach((item: RoleResp) => {
+    roleNames.set(item.id, item.roleName)
+  })
+
+  return { deptNames, postNames, roleNames }
+})
+
+const user = computed<UserResp | undefined>(() => data.value?.data ?? undefined)
+
+const title = computed(
+  () => user.value?.nickname || user.value?.realname || '用户详情'
+)
+
+function resolveName(map: Map<string, string>, id?: string) {
+  if (!id) return '-'
+  return map.get(id) ?? id
+}
+
+function goBack() {
+  openTabByPath('/sys/user/list')
+}
+
+function openEdit() {
+  formOpen.value = true
+}
+
+function onUpdated() {
+  run({ id: userId.value })
+}
+
+function onDelete() {
+  const record = user.value
+  if (!record) return
+
+  Modal.confirm({
+    title: '删除用户',
+    content: `确定删除用户「${record.nickname || record.username}」吗？`,
+    okText: '删除',
+    cancelText: '取消',
+    okButtonProps: { danger: true },
+    onOk: async () => {
+      try {
+        await deleteUserApi([record.id])
+        message.success('用户删除成功')
+        await openTabByPath('/sys/user/list')
+        closeTab(toRouteTabKey('/sys/user/detail', { id: record.id }))
+      } catch {
+        // 业务错误已由请求层统一提示
+      }
+    },
+  })
+}
+</script>

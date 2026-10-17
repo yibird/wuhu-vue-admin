@@ -1,26 +1,3 @@
-<script setup lang="ts">
-import { computed } from 'vue'
-import Dropdown from './dropdown.vue'
-import type { SiderEmits, SiderProps } from './types'
-
-const props = withDefaults(defineProps<SiderProps>(), {
-  loading: false,
-})
-const emit = defineEmits<SiderEmits>()
-const keyword = shallowRef('')
-
-const visibleDictionaries = computed(() => {
-  const normalizedKeyword = keyword.value.trim().toLowerCase()
-  if (!normalizedKeyword) return props.data
-
-  return props.data.filter(
-    (item) =>
-      item.name.toLowerCase().includes(normalizedKeyword) ||
-      item.type.toLowerCase().includes(normalizedKeyword)
-  )
-})
-</script>
-
 <template>
   <div class="h-full flex flex-col overflow-hidden bg-white">
     <div class="shrink-0 border-b-1 border-color-1 border-b-solid p-12">
@@ -35,7 +12,7 @@ const visibleDictionaries = computed(() => {
             <Icon name="i-lucide:search" class="text-muted" :size="16" />
           </template>
         </a-input>
-        <a-button type="primary" title="新建字典" @click="emit('create')">
+        <a-button type="primary" title="新建字典" @click="emits('create')">
           <template #icon>
             <span class="px-10">
               <Icon name="i-lucide:plus" />
@@ -68,7 +45,7 @@ const visibleDictionaries = computed(() => {
               type="button"
               class="min-w-0 flex-1 flex items-center gap-8 text-left"
               :aria-current="item.id === selectedId ? 'true' : undefined"
-              @click="emit('select', item)"
+              @click="emits('select', item)"
             >
               <span
                 class="size-30 shrink-0 flex items-center justify-center rounded-5"
@@ -93,8 +70,8 @@ const visibleDictionaries = computed(() => {
             <Dropdown
               :item="item"
               class="shrink-0 opacity-0 transition-opacity group-hover:opacity-100 group-focus-within:opacity-100"
-              @delete="emit('delete', $event)"
-              @edit="emit('edit', $event)"
+              @delete="emits('delete', $event)"
+              @edit="emits('edit', $event)"
             />
           </div>
         </div>
@@ -103,3 +80,26 @@ const visibleDictionaries = computed(() => {
     </div>
   </div>
 </template>
+
+<script setup lang="ts">
+import { computed } from 'vue'
+import Dropdown from './dropdown.vue'
+import type { SiderEmits, SiderProps } from './types'
+
+const props = withDefaults(defineProps<SiderProps>(), {
+  loading: false,
+})
+const emits = defineEmits<SiderEmits>()
+const keyword = shallowRef('')
+
+const visibleDictionaries = computed(() => {
+  const normalizedKeyword = keyword.value.trim().toLowerCase()
+  if (!normalizedKeyword) return props.data
+
+  return props.data.filter(
+    (item) =>
+      item.name.toLowerCase().includes(normalizedKeyword) ||
+      item.type.toLowerCase().includes(normalizedKeyword)
+  )
+})
+</script>

@@ -1,22 +1,3 @@
-<script setup lang="ts">
-import type { DictHeaderProps } from './types'
-
-defineProps<DictHeaderProps>()
-const keyword = defineModel<string>('keyword', { default: '' })
-const status = defineModel<boolean | undefined>('status', {
-  default: undefined,
-})
-const emit = defineEmits<{
-  search: []
-  reset: []
-}>()
-
-const statusOptions = [
-  { label: '正常', value: true },
-  { label: '停用', value: false },
-]
-</script>
-
 <template>
   <div class="min-h-64 flex flex-wrap items-center justify-between gap-12">
     <div v-if="dictionary" class="min-w-0 flex items-center gap-10">
@@ -47,7 +28,7 @@ const statusOptions = [
         allow-clear
         class="w-220"
         placeholder="搜索标签或值"
-        @press-enter="emit('search')"
+        @press-enter="emits('search')"
       >
         <template #prefix>
           <Icon name="i-lucide:search" class="text-muted" />
@@ -59,16 +40,35 @@ const statusOptions = [
         class="w-120"
         :options="statusOptions"
         placeholder="状态"
-        @change="emit('search')"
+        @change="emits('search')"
       />
-      <a-button @click="emit('reset')">
+      <a-button @click="emits('reset')">
         <template #icon><Icon name="i-lucide:rotate-ccw" /></template>
         重置
       </a-button>
-      <a-button type="primary" @click="emit('search')">
+      <a-button type="primary" @click="emits('search')">
         <template #icon><Icon name="i-lucide:search" /></template>
         查询
       </a-button>
     </div>
   </div>
 </template>
+
+<script setup lang="ts">
+import type { DictHeaderProps } from './types'
+
+defineProps<DictHeaderProps>()
+const keyword = defineModel<string>('keyword', { default: '' })
+const status = defineModel<boolean | undefined>('status', {
+  default: undefined,
+})
+const emits = defineEmits<{
+  search: []
+  reset: []
+}>()
+
+const statusOptions = [
+  { label: '正常', value: true },
+  { label: '停用', value: false },
+]
+</script>

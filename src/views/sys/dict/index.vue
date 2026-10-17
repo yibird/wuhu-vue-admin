@@ -1,3 +1,61 @@
+<template>
+  <WView
+    :full="true"
+    :gap="10"
+    :padding="10"
+    class="bg-page"
+    direction="horizontal"
+  >
+    <WView.Sider
+      class="h-full overflow-hidden rounded-6 border-1 border-color-1 border-solid"
+      width="260px"
+    >
+      <Sider
+        :data="dictionaries"
+        :loading="dictLoading"
+        :selected-id="selectedId"
+        @create="openCreateDict"
+        @delete="deleteDictionary"
+        @edit="openEditDict"
+        @select="selectDictionary"
+      />
+    </WView.Sider>
+
+    <WView :full="false" :gap="10" :padding="false" class="min-w-0 flex-1">
+      <WView.Header
+        class="shrink-0 rounded-6 border-1 border-color-1 border-solid bg-container px-14 py-10"
+      >
+        <DictHeader
+          v-model:keyword="itemKeyword"
+          v-model:status="itemStatus"
+          :dictionary="selectedDictionary"
+          @reset="resetItemSearch"
+          @search="applyItemSearch"
+        />
+      </WView.Header>
+
+      <WView.Content
+        class="min-h-0 overflow-hidden rounded-6 border-1 border-color-1 border-solid bg-container"
+      >
+        <Content
+          v-if="selectedDictionary"
+          :dict-id="selectedDictionary.id"
+          :filters="itemFilters"
+        />
+        <div v-else class="h-full flex-center">
+          <a-empty description="暂无字典数据" />
+        </div>
+      </WView.Content>
+    </WView>
+
+    <DictForm
+      v-model:open="dictFormOpen"
+      :id="editingDictId"
+      @success="onDictSuccess"
+    />
+  </WView>
+</template>
+
 <script setup lang="ts">
 import { Modal, message } from 'antdv-next'
 import {
@@ -107,61 +165,3 @@ function deleteDictionary(item: DictResp) {
   })
 }
 </script>
-
-<template>
-  <WView
-    :full="true"
-    :gap="10"
-    :padding="10"
-    class="bg-page"
-    direction="horizontal"
-  >
-    <WView.Sider
-      class="h-full overflow-hidden rounded-6 border-1 border-color-1 border-solid"
-      width="260px"
-    >
-      <Sider
-        :data="dictionaries"
-        :loading="dictLoading"
-        :selected-id="selectedId"
-        @create="openCreateDict"
-        @delete="deleteDictionary"
-        @edit="openEditDict"
-        @select="selectDictionary"
-      />
-    </WView.Sider>
-
-    <WView :full="false" :gap="10" :padding="false" class="min-w-0 flex-1">
-      <WView.Header
-        class="shrink-0 rounded-6 border-1 border-color-1 border-solid bg-container px-14 py-10"
-      >
-        <DictHeader
-          v-model:keyword="itemKeyword"
-          v-model:status="itemStatus"
-          :dictionary="selectedDictionary"
-          @reset="resetItemSearch"
-          @search="applyItemSearch"
-        />
-      </WView.Header>
-
-      <WView.Content
-        class="min-h-0 overflow-hidden rounded-6 border-1 border-color-1 border-solid bg-container"
-      >
-        <Content
-          v-if="selectedDictionary"
-          :dict-id="selectedDictionary.id"
-          :filters="itemFilters"
-        />
-        <div v-else class="h-full flex-center">
-          <a-empty description="暂无字典数据" />
-        </div>
-      </WView.Content>
-    </WView>
-
-    <DictForm
-      v-model:open="dictFormOpen"
-      :id="editingDictId"
-      @success="onDictSuccess"
-    />
-  </WView>
-</template>

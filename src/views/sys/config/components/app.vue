@@ -1,36 +1,3 @@
-<script setup lang="ts">
-import { useSystemConfig } from '../hooks'
-import ConfigPanel from './config-panel.vue'
-
-interface AppConfigForm {
-  siteName: string
-  siteUrl: string
-  description: string
-  supportEmail: string
-  copyright: string
-  recordNumber: string
-  enabled: boolean
-  maintenanceMode: boolean
-  maintenanceMessage: string
-}
-
-const { form, save, reset } = useSystemConfig<AppConfigForm>({
-  key: 'app',
-  label: '网站配置',
-  defaults: {
-    siteName: 'Wuhu Admin',
-    siteUrl: 'https://admin.example.com',
-    description: '面向企业团队的统一管理平台',
-    supportEmail: 'support@example.com',
-    copyright: 'Copyright 2026 Wuhu Admin',
-    recordNumber: '',
-    enabled: true,
-    maintenanceMode: false,
-    maintenanceMessage: '系统维护中，请稍后再试。',
-  },
-})
-</script>
-
 <template>
   <ConfigPanel
     description="管理站点对外展示信息与服务状态。"
@@ -99,3 +66,36 @@ const { form, save, reset } = useSystemConfig<AppConfigForm>({
     </a-form>
   </ConfigPanel>
 </template>
+
+<script setup lang="ts">
+import { useSystemConfig } from '../hooks'
+import ConfigPanel from './config-panel.vue'
+
+interface AppConfigForm {
+  siteName: string
+  siteUrl: string
+  description: string
+  supportEmail: string
+  copyright: string
+  recordNumber: string
+  enabled: boolean
+  maintenanceMode: boolean
+  maintenanceMessage: string
+}
+
+const { form, save, reset } = useSystemConfig<AppConfigForm>({
+  key: 'app',
+  label: '网站配置',
+  defaults: {
+    siteName: 'Wuhu Admin',
+    siteUrl: 'https://admin.example.com',
+    description: '面向企业团队的统一管理平台',
+    supportEmail: 'support@example.com',
+    copyright: 'Copyright 2026 Wuhu Admin',
+    recordNumber: '',
+    enabled: true,
+    maintenanceMode: false,
+    maintenanceMessage: '系统维护中，请稍后再试。',
+  },
+})
+</script>

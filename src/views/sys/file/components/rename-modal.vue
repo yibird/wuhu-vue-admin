@@ -1,3 +1,27 @@
+<template>
+  <a-modal
+    v-model:open="open"
+    :confirm-loading="submitting"
+    destroy-on-hidden
+    ok-text="保存"
+    cancel-text="取消"
+    title="重命名文件"
+    :width="480"
+    @ok="handleSubmit"
+  >
+    <a-form ref="formRef" :label-col="{ span: 5 }" :model="form" :rules="rules">
+      <a-form-item label="文件名" name="name">
+        <a-input
+          v-model:value="form.name"
+          :maxlength="100"
+          placeholder="请输入文件名(含扩展名)"
+          show-count
+        />
+      </a-form-item>
+    </a-form>
+  </a-modal>
+</template>
+
 <script setup lang="ts">
 import { message, type FormInstance } from 'antdv-next'
 import { updateFileApi, type FileResp } from '@/apis'
@@ -6,7 +30,7 @@ const props = defineProps<{
   file?: FileResp
 }>()
 
-const emit = defineEmits<{
+const emits = defineEmits<{
   success: []
 }>()
 
@@ -44,7 +68,7 @@ async function handleSubmit() {
     await updateFileApi({ id: file.id, name: form.name.trim() })
     message.success('文件名已更新')
     open.value = false
-    emit('success')
+    emits('success')
   } catch {
     // 业务错误已由请求层统一提示
   } finally {
@@ -52,27 +76,3 @@ async function handleSubmit() {
   }
 }
 </script>
-
-<template>
-  <a-modal
-    v-model:open="open"
-    :confirm-loading="submitting"
-    destroy-on-hidden
-    ok-text="保存"
-    cancel-text="取消"
-    title="重命名文件"
-    :width="480"
-    @ok="handleSubmit"
-  >
-    <a-form ref="formRef" :label-col="{ span: 5 }" :model="form" :rules="rules">
-      <a-form-item label="文件名" name="name">
-        <a-input
-          v-model:value="form.name"
-          :maxlength="100"
-          placeholder="请输入文件名(含扩展名)"
-          show-count
-        />
-      </a-form-item>
-    </a-form>
-  </a-modal>
-</template>

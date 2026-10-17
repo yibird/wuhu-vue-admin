@@ -1,3 +1,190 @@
+<template>
+  <a-modal v-model:open="open" destroy-on-hidden :title="title" :width="760">
+    <div class="max-h-[70vh] overflow-y-auto px-10">
+      <a-form
+        ref="formRef"
+        :disabled="detailLoading"
+        :label-col="{ flex: '88px' }"
+        :model="form"
+        :rules="rules"
+        :wrapper-col="{ flex: '1 1 0' }"
+        layout="horizontal"
+      >
+        <div class="grid grid-cols-1 gap-x-16 sm:grid-cols-2">
+          <a-form-item label="登录账号" name="username">
+            <a-input
+              v-model:value="form.username"
+              allow-clear
+              placeholder="请输入登录账号"
+            />
+          </a-form-item>
+          <a-form-item label="用户昵称" name="nickname">
+            <a-input
+              v-model:value="form.nickname"
+              allow-clear
+              placeholder="请输入用户昵称"
+            />
+          </a-form-item>
+          <a-form-item label="真实姓名" name="realname">
+            <a-input
+              v-model:value="form.realname"
+              allow-clear
+              placeholder="请输入真实姓名"
+            />
+          </a-form-item>
+          <a-form-item label="微信号" name="wechat">
+            <a-input
+              v-model:value="form.wechat"
+              allow-clear
+              placeholder="请输入微信号"
+            />
+          </a-form-item>
+          <a-form-item label="所属部门" name="deptId">
+            <DeptPicker
+              :value="form.deptId"
+              :loading="optionsLoading"
+              :options="deptOptions"
+              @update:value="onDeptChange"
+            />
+          </a-form-item>
+          <a-form-item label="岗位" name="postId">
+            <a-select
+              v-model:value="form.postId"
+              allow-clear
+              class="w-full"
+              :disabled="!form.deptId"
+              :loading="optionsLoading"
+              option-filter-prop="label"
+              :options="availablePostOptions"
+              :placeholder="form.deptId ? '请选择岗位' : '请先选择部门'"
+              show-search
+            >
+              <template #optionRender="{ option }">
+                <div class="flex items-center gap-8">
+                  <span
+                    class="size-26 shrink-0 flex-center rounded-4 bg-primary-tint text-primary"
+                  >
+                    <Icon name="i-lucide:briefcase-business" :size="14" />
+                  </span>
+                  <span class="min-w-0 flex-1 truncate text-main">
+                    {{ option.data.label }}
+                  </span>
+                  <span class="shrink-0 text-xs text-tertiary">
+                    {{ option.data.code }}
+                  </span>
+                </div>
+              </template>
+            </a-select>
+          </a-form-item>
+          <a-form-item label="角色" name="roleId">
+            <RolePicker
+              v-model:value="form.roleId"
+              :loading="optionsLoading"
+              :options="roleOptions"
+            />
+          </a-form-item>
+          <a-form-item label="性别" name="sex">
+            <a-select
+              v-model:value="form.sex"
+              class="w-full"
+              :options="sexOptions"
+            />
+          </a-form-item>
+          <a-form-item label="年龄" name="age">
+            <a-input-number
+              v-model:value="form.age"
+              class="w-full"
+              :max="120"
+              :min="1"
+            />
+          </a-form-item>
+          <a-form-item label="手机号" name="phone">
+            <a-input
+              v-model:value="form.phone"
+              allow-clear
+              placeholder="请输入手机号"
+            />
+          </a-form-item>
+          <a-form-item label="邮箱" name="email">
+            <a-input
+              v-model:value="form.email"
+              allow-clear
+              placeholder="请输入邮箱"
+            />
+          </a-form-item>
+          <a-form-item label="生日" name="birthday">
+            <a-date-picker
+              v-model:value="form.birthday"
+              allow-clear
+              class="w-full"
+              placeholder="请选择生日"
+              value-format="YYYY-MM-DD"
+            />
+          </a-form-item>
+          <a-form-item label="学历" name="education">
+            <a-select
+              v-model:value="form.education"
+              class="w-full"
+              :options="educationOptions"
+            />
+          </a-form-item>
+          <a-form-item label="工作经验" name="work_experience">
+            <a-select
+              v-model:value="form.work_experience"
+              class="w-full"
+              :options="workExperienceOptions"
+            />
+          </a-form-item>
+          <a-form-item label="婚姻状态" name="marital_status">
+            <a-select
+              v-model:value="form.marital_status"
+              class="w-full"
+              :options="maritalStatusOptions"
+            />
+          </a-form-item>
+          <a-form-item label="用户来源" name="source">
+            <a-select
+              v-model:value="form.source"
+              class="w-full"
+              :options="sourceOptions"
+            />
+          </a-form-item>
+          <a-form-item class="sm:col-span-2" label="地址" name="address">
+            <a-input
+              v-model:value="form.address"
+              allow-clear
+              placeholder="请输入地址"
+            />
+          </a-form-item>
+        </div>
+        <a-form-item class="!mb-0" label="备注" name="remark">
+          <a-textarea
+            v-model:value="form.remark"
+            :auto-size="{ minRows: 2, maxRows: 4 }"
+            :maxlength="200"
+            placeholder="选填，用于内部说明"
+            show-count
+          />
+        </a-form-item>
+      </a-form>
+    </div>
+
+    <template #footer>
+      <div class="flex justify-end gap-8">
+        <a-button :disabled="submitting" @click="open = false">取消</a-button>
+        <a-button
+          :disabled="detailLoading"
+          :loading="submitting"
+          type="primary"
+          @click="handleSubmit"
+        >
+          {{ isEdit ? '保存' : '新建' }}
+        </a-button>
+      </div>
+    </template>
+  </a-modal>
+</template>
+
 <script setup lang="ts">
 import { message, type FormInstance } from 'antdv-next'
 import {
@@ -38,7 +225,7 @@ interface PostOption {
 const props = defineProps<Props>()
 const open = defineModel<boolean>('open', { required: true })
 
-const emit = defineEmits<{
+const emits = defineEmits<{
   success: []
 }>()
 
@@ -234,7 +421,7 @@ async function handleSubmit() {
 
     message.success(`用户${isEdit.value ? '编辑' : '新建'}成功`)
     open.value = false
-    emit('success')
+    emits('success')
   } catch {
     // 业务错误已由请求层统一提示，保持弹窗打开便于重试
   } finally {
@@ -242,190 +429,3 @@ async function handleSubmit() {
   }
 }
 </script>
-
-<template>
-  <a-modal v-model:open="open" destroy-on-hidden :title="title" :width="760">
-    <div class="max-h-[70vh] overflow-y-auto px-10">
-      <a-form
-        ref="formRef"
-        :disabled="detailLoading"
-        :label-col="{ flex: '88px' }"
-        :model="form"
-        :rules="rules"
-        :wrapper-col="{ flex: '1 1 0' }"
-        layout="horizontal"
-      >
-        <div class="grid grid-cols-1 gap-x-16 sm:grid-cols-2">
-          <a-form-item label="登录账号" name="username">
-            <a-input
-              v-model:value="form.username"
-              allow-clear
-              placeholder="请输入登录账号"
-            />
-          </a-form-item>
-          <a-form-item label="用户昵称" name="nickname">
-            <a-input
-              v-model:value="form.nickname"
-              allow-clear
-              placeholder="请输入用户昵称"
-            />
-          </a-form-item>
-          <a-form-item label="真实姓名" name="realname">
-            <a-input
-              v-model:value="form.realname"
-              allow-clear
-              placeholder="请输入真实姓名"
-            />
-          </a-form-item>
-          <a-form-item label="微信号" name="wechat">
-            <a-input
-              v-model:value="form.wechat"
-              allow-clear
-              placeholder="请输入微信号"
-            />
-          </a-form-item>
-          <a-form-item label="所属部门" name="deptId">
-            <DeptPicker
-              :value="form.deptId"
-              :loading="optionsLoading"
-              :options="deptOptions"
-              @update:value="onDeptChange"
-            />
-          </a-form-item>
-          <a-form-item label="岗位" name="postId">
-            <a-select
-              v-model:value="form.postId"
-              allow-clear
-              class="w-full"
-              :disabled="!form.deptId"
-              :loading="optionsLoading"
-              option-filter-prop="label"
-              :options="availablePostOptions"
-              :placeholder="form.deptId ? '请选择岗位' : '请先选择部门'"
-              show-search
-            >
-              <template #optionRender="{ option }">
-                <div class="flex items-center gap-8">
-                  <span
-                    class="size-26 shrink-0 flex-center rounded-4 bg-primary-tint text-primary"
-                  >
-                    <Icon name="i-lucide:briefcase-business" :size="14" />
-                  </span>
-                  <span class="min-w-0 flex-1 truncate text-main">
-                    {{ option.data.label }}
-                  </span>
-                  <span class="shrink-0 text-xs text-tertiary">
-                    {{ option.data.code }}
-                  </span>
-                </div>
-              </template>
-            </a-select>
-          </a-form-item>
-          <a-form-item label="角色" name="roleId">
-            <RolePicker
-              v-model:value="form.roleId"
-              :loading="optionsLoading"
-              :options="roleOptions"
-            />
-          </a-form-item>
-          <a-form-item label="性别" name="sex">
-            <a-select
-              v-model:value="form.sex"
-              class="w-full"
-              :options="sexOptions"
-            />
-          </a-form-item>
-          <a-form-item label="年龄" name="age">
-            <a-input-number
-              v-model:value="form.age"
-              class="w-full"
-              :max="120"
-              :min="1"
-            />
-          </a-form-item>
-          <a-form-item label="手机号" name="phone">
-            <a-input
-              v-model:value="form.phone"
-              allow-clear
-              placeholder="请输入手机号"
-            />
-          </a-form-item>
-          <a-form-item label="邮箱" name="email">
-            <a-input
-              v-model:value="form.email"
-              allow-clear
-              placeholder="请输入邮箱"
-            />
-          </a-form-item>
-          <a-form-item label="生日" name="birthday">
-            <a-date-picker
-              v-model:value="form.birthday"
-              allow-clear
-              class="w-full"
-              placeholder="请选择生日"
-              value-format="YYYY-MM-DD"
-            />
-          </a-form-item>
-          <a-form-item label="学历" name="education">
-            <a-select
-              v-model:value="form.education"
-              class="w-full"
-              :options="educationOptions"
-            />
-          </a-form-item>
-          <a-form-item label="工作经验" name="work_experience">
-            <a-select
-              v-model:value="form.work_experience"
-              class="w-full"
-              :options="workExperienceOptions"
-            />
-          </a-form-item>
-          <a-form-item label="婚姻状态" name="marital_status">
-            <a-select
-              v-model:value="form.marital_status"
-              class="w-full"
-              :options="maritalStatusOptions"
-            />
-          </a-form-item>
-          <a-form-item label="用户来源" name="source">
-            <a-select
-              v-model:value="form.source"
-              class="w-full"
-              :options="sourceOptions"
-            />
-          </a-form-item>
-          <a-form-item class="sm:col-span-2" label="地址" name="address">
-            <a-input
-              v-model:value="form.address"
-              allow-clear
-              placeholder="请输入地址"
-            />
-          </a-form-item>
-        </div>
-        <a-form-item class="!mb-0" label="备注" name="remark">
-          <a-textarea
-            v-model:value="form.remark"
-            :auto-size="{ minRows: 2, maxRows: 4 }"
-            :maxlength="200"
-            placeholder="选填，用于内部说明"
-            show-count
-          />
-        </a-form-item>
-      </a-form>
-    </div>
-
-    <template #footer>
-      <div class="flex justify-end gap-8">
-        <a-button :disabled="submitting" @click="open = false">取消</a-button>
-        <a-button
-          :disabled="detailLoading"
-          :loading="submitting"
-          type="primary"
-          @click="handleSubmit"
-        >
-          {{ isEdit ? '保存' : '新建' }}
-        </a-button>
-      </div>
-    </template>
-  </a-modal>
-</template>
