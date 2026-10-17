@@ -1,3 +1,40 @@
+<template>
+  <div class="relative size-full min-h-full">
+    <div
+      v-if="loading"
+      class="absolute inset-0 z-1 flex items-center justify-center bg-container"
+    >
+      <Loading :type="loadingAnimation" />
+    </div>
+
+    <div
+      v-else-if="error || blocked"
+      class="absolute inset-0 z-1 flex items-center justify-center bg-container"
+    >
+      <span class="text-muted">
+        {{
+          blocked
+            ? '页面地址未通过安全校验'
+            : '页面无法加载，可能拒绝 iframe 嵌入'
+        }}
+      </span>
+    </div>
+
+    <iframe
+      v-if="safeSrc"
+      :src="safeSrc"
+      class="size-full min-h-full border-none"
+      :class="{ invisible: loading || error }"
+      loading="lazy"
+      referrerpolicy="no-referrer"
+      sandbox="allow-downloads allow-forms allow-modals allow-popups allow-popups-to-escape-sandbox allow-scripts"
+      allowfullscreen
+      @load="handleLoad"
+      @error="handleError"
+    />
+  </div>
+</template>
+
 <script lang="ts" setup>
 import { useAppStore } from '@/store'
 import { Loading } from '@/components/loading'
@@ -75,40 +112,3 @@ watch(
 
 onUnmounted(clearTimeoutId)
 </script>
-
-<template>
-  <div class="relative size-full min-h-full">
-    <div
-      v-if="loading"
-      class="absolute inset-0 z-1 flex items-center justify-center bg-container"
-    >
-      <Loading :type="loadingAnimation" />
-    </div>
-
-    <div
-      v-else-if="error || blocked"
-      class="absolute inset-0 z-1 flex items-center justify-center bg-container"
-    >
-      <span class="text-muted">
-        {{
-          blocked
-            ? '页面地址未通过安全校验'
-            : '页面无法加载，可能拒绝 iframe 嵌入'
-        }}
-      </span>
-    </div>
-
-    <iframe
-      v-if="safeSrc"
-      :src="safeSrc"
-      class="size-full min-h-full border-none"
-      :class="{ invisible: loading || error }"
-      loading="lazy"
-      referrerpolicy="no-referrer"
-      sandbox="allow-downloads allow-forms allow-modals allow-popups allow-popups-to-escape-sandbox allow-scripts"
-      allowfullscreen
-      @load="handleLoad"
-      @error="handleError"
-    />
-  </div>
-</template>

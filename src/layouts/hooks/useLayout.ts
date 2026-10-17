@@ -1,5 +1,5 @@
 import { useAppStore } from '@/store'
-import { useGlobalSearch, useLockScreen } from '../config'
+import { preloadSearchModal, useGlobalSearch, useLockScreen } from '../config'
 import { useGlobalShortcuts, usePreferences } from '../preferences'
 
 export function useLayout() {
@@ -28,6 +28,31 @@ export function useLayout() {
   )
 
   useGlobalShortcuts()
+
+  /**
+   * 空闲时预热全局搜索面板
+   *
+   * 面板首次打开才挂载,提前加载 chunk 与拼音库可消除首次打开的等待。
+   * 使用 requestIdleCallback 避免与首屏渲染争抢主线程。
+   */
+  let idleCallbackId: number | undefined
+  let preloadTimer: ReturnType<typeof setTimeout> | undefined
+
+  onMounted(() => {
+    const preload = () => {
+      void preloadSearchModal()
+    }
+    if (typeof requestIdleCallback === 'function') {
+      idleCallbackId = requestIdleCallback(preload, { timeout: 2000 })
+    } else {
+      preloadTimer = setTimeout(preload, 1000)
+    }
+  })
+
+  onBeforeUnmount(() => {
+    if (idleCallbackId !== undefined) cancelIdleCallback(idleCallbackId)
+    if (preloadTimer) clearTimeout(preloadTimer)
+  })
 
   const contentStyle = computed(() => {
     const minHeight = !fixedHeader.value

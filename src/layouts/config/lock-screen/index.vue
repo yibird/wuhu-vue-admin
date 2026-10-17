@@ -1,146 +1,3 @@
-<script setup lang="ts">
-import { onKeyStroke, useDateFormat, useIntervalFn, useNow } from '@vueuse/core'
-import { useAppStore, useAuthStore, authStore } from '@/store'
-import { useGo } from '@/router'
-import { useLockScreen } from '../hooks'
-import FlipClock from './components/flip-clock.vue'
-
-const items = [
-  {
-    label: '年',
-    value: 'year',
-  },
-  {
-    label: '月',
-    value: 'month',
-  },
-  {
-    label: '日',
-    value: 'day',
-  },
-]
-
-const open = defineModel('open', { default: false })
-const { app } = useAppStore()
-const { user } = useAuthStore()
-const { to } = useGo()
-const {
-  isSetting,
-  failedAttempts,
-  maxAttempts,
-  confirmPin,
-  cancelSetting,
-  unlock,
-  clearPin,
-} = useLockScreen()
-
-const PIN_PATTERN = /^\d{4,8}$/
-const pin = shallowRef('')
-const pinError = shallowRef('')
-const submitting = shallowRef(false)
-
-const pinPlaceholder = computed(() =>
-  isSetting.value ? '设置 4-8 位数字解锁 PIN' : '输入解锁 PIN'
-)
-const actionLabel = computed(() =>
-  isSetting.value ? '开始锁定' : '解锁工作区'
-)
-
-const now = useNow({ scheduler: (callback) => useIntervalFn(callback, 1000) })
-const dateFormatter = new Intl.DateTimeFormat('zh-CN', {
-  weekday: 'long',
-  year: 'numeric',
-  month: 'long',
-  day: 'numeric',
-})
-
-const appName = computed(() => app.value.name)
-const appLogo = computed(() => app.value.logo)
-const hours = useDateFormat(now, 'HH')
-const minutes = useDateFormat(now, 'mm')
-const seconds = useDateFormat(now, 'ss')
-
-const currentDate = computed(() => dateFormatter.format(now.value))
-const currentDateParts = computed(() => {
-  const parts = dateFormatter.formatToParts(now.value)
-  const getPart = (type: string) =>
-    parts.find((part) => part.type === type)?.value || ''
-
-  return {
-    year: getPart('year'),
-    month: getPart('month'),
-    day: getPart('day'),
-    weekday: getPart('weekday'),
-  }
-})
-const currentTimeLabel = computed(
-  () => `${hours.value}:${minutes.value}:${seconds.value}`
-)
-const displayName = computed(
-  () => user.value?.name || user.value?.account || '当前用户'
-)
-const userAvatar = computed(() => user.value?.avatar)
-
-function pinErrorMessage() {
-  if (failedAttempts.value === 0) return 'PIN 错误，请重试'
-  const remaining = maxAttempts - failedAttempts.value
-  return `PIN 错误，还可尝试 ${remaining} 次`
-}
-
-async function handleSubmit() {
-  if (submitting.value) return
-  const value = pin.value.trim()
-  if (!PIN_PATTERN.test(value)) {
-    pinError.value = '请输入 4-8 位数字 PIN'
-    return
-  }
-
-  submitting.value = true
-  try {
-    if (isSetting.value) {
-      await confirmPin(value)
-      pin.value = ''
-      pinError.value = ''
-      return
-    }
-
-    const result = await unlock(value)
-    if (result === 'unlocked') {
-      pin.value = ''
-      pinError.value = ''
-      return
-    }
-    if (result === 'exceeded') {
-      clearPin()
-      authStore().logout()
-      await to('/login', true)
-      return
-    }
-    pinError.value = pinErrorMessage()
-    pin.value = ''
-  } finally {
-    submitting.value = false
-  }
-}
-
-function handleCancelSetting() {
-  cancelSetting()
-  pin.value = ''
-  pinError.value = ''
-}
-
-onKeyStroke(
-  'Enter',
-  (event) => {
-    if (!open.value || event.defaultPrevented || event.isComposing) return
-
-    event.preventDefault()
-    handleSubmit()
-  },
-  { dedupe: true }
-)
-</script>
-
 <template>
   <Teleport to="body">
     <Transition name="fade-zoom" appear>
@@ -284,3 +141,146 @@ onKeyStroke(
     </Transition>
   </Teleport>
 </template>
+
+<script setup lang="ts">
+import { onKeyStroke, useDateFormat, useIntervalFn, useNow } from '@vueuse/core'
+import { useAppStore, useAuthStore, authStore } from '@/store'
+import { useGo } from '@/router'
+import { useLockScreen } from '../hooks'
+import FlipClock from './components/flip-clock.vue'
+
+const items = [
+  {
+    label: '年',
+    value: 'year',
+  },
+  {
+    label: '月',
+    value: 'month',
+  },
+  {
+    label: '日',
+    value: 'day',
+  },
+]
+
+const open = defineModel('open', { default: false })
+const { app } = useAppStore()
+const { user } = useAuthStore()
+const { to } = useGo()
+const {
+  isSetting,
+  failedAttempts,
+  maxAttempts,
+  confirmPin,
+  cancelSetting,
+  unlock,
+  clearPin,
+} = useLockScreen()
+
+const PIN_PATTERN = /^\d{4,8}$/
+const pin = shallowRef('')
+const pinError = shallowRef('')
+const submitting = shallowRef(false)
+
+const pinPlaceholder = computed(() =>
+  isSetting.value ? '设置 4-8 位数字解锁 PIN' : '输入解锁 PIN'
+)
+const actionLabel = computed(() =>
+  isSetting.value ? '开始锁定' : '解锁工作区'
+)
+
+const now = useNow({ scheduler: (callback) => useIntervalFn(callback, 1000) })
+const dateFormatter = new Intl.DateTimeFormat('zh-CN', {
+  weekday: 'long',
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+})
+
+const appName = computed(() => app.value.name)
+const appLogo = computed(() => app.value.logo)
+const hours = useDateFormat(now, 'HH')
+const minutes = useDateFormat(now, 'mm')
+const seconds = useDateFormat(now, 'ss')
+
+const currentDate = computed(() => dateFormatter.format(now.value))
+const currentDateParts = computed(() => {
+  const parts = dateFormatter.formatToParts(now.value)
+  const getPart = (type: string) =>
+    parts.find((part) => part.type === type)?.value || ''
+
+  return {
+    year: getPart('year'),
+    month: getPart('month'),
+    day: getPart('day'),
+    weekday: getPart('weekday'),
+  }
+})
+const currentTimeLabel = computed(
+  () => `${hours.value}:${minutes.value}:${seconds.value}`
+)
+const displayName = computed(
+  () => user.value?.name || user.value?.account || '当前用户'
+)
+const userAvatar = computed(() => user.value?.avatar)
+
+function pinErrorMessage() {
+  if (failedAttempts.value === 0) return 'PIN 错误，请重试'
+  const remaining = maxAttempts - failedAttempts.value
+  return `PIN 错误，还可尝试 ${remaining} 次`
+}
+
+async function handleSubmit() {
+  if (submitting.value) return
+  const value = pin.value.trim()
+  if (!PIN_PATTERN.test(value)) {
+    pinError.value = '请输入 4-8 位数字 PIN'
+    return
+  }
+
+  submitting.value = true
+  try {
+    if (isSetting.value) {
+      await confirmPin(value)
+      pin.value = ''
+      pinError.value = ''
+      return
+    }
+
+    const result = await unlock(value)
+    if (result === 'unlocked') {
+      pin.value = ''
+      pinError.value = ''
+      return
+    }
+    if (result === 'exceeded') {
+      clearPin()
+      authStore().logout()
+      await to('/login', true)
+      return
+    }
+    pinError.value = pinErrorMessage()
+    pin.value = ''
+  } finally {
+    submitting.value = false
+  }
+}
+
+function handleCancelSetting() {
+  cancelSetting()
+  pin.value = ''
+  pinError.value = ''
+}
+
+onKeyStroke(
+  'Enter',
+  (event) => {
+    if (!open.value || event.defaultPrevented || event.isComposing) return
+
+    event.preventDefault()
+    handleSubmit()
+  },
+  { dedupe: true }
+)
+</script>

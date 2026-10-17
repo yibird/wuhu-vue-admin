@@ -1,18 +1,3 @@
-<script setup lang="ts">
-import { taskStatusMeta, taskTypeMeta } from '../constants'
-import { Scrollbar } from '@/components/scrollbar'
-import type { TaskCenterItem } from '../types'
-
-defineProps<{
-  activeTaskId: string
-  items: TaskCenterItem[]
-}>()
-
-const emit = defineEmits<{
-  select: [taskId: string]
-}>()
-</script>
-
 <template>
   <div
     class="h-full min-h-0 flex flex-col overflow-hidden rounded-6 border-1 border-color-2 border-solid bg-container"
@@ -29,11 +14,13 @@ const emit = defineEmits<{
         v-for="item in items"
         :key="item.id"
         type="button"
-        class="mb-8 w-full rounded-6 border-1 border-color-2 border-solid bg-container p-12 text-left transition-colors hover:(border-primary bg-hover)"
+        class="mb-8 w-full rounded-6 border-1 border-solid p-12 text-left transition-colors"
         :class="
-          item.id === activeTaskId ? 'border-primary bg-primary-tint' : ''
+          item.id === activeTaskId
+            ? 'border-primary bg-primary-tint'
+            : 'border-color-2 bg-container hover:(border-primary bg-hover)'
         "
-        @click="emit('select', item.id)"
+        @click="emits('select', item.id)"
       >
         <div class="flex items-start justify-between gap-10">
           <div class="min-w-0">
@@ -86,3 +73,18 @@ const emit = defineEmits<{
     </div>
   </div>
 </template>
+
+<script setup lang="ts">
+import { taskStatusMeta, taskTypeMeta } from '../constants'
+import { Scrollbar } from '@/components/scrollbar'
+import type { TaskCenterItem } from '../types'
+
+defineProps<{
+  activeTaskId: string
+  items: TaskCenterItem[]
+}>()
+
+const emits = defineEmits<{
+  select: [taskId: string]
+}>()
+</script>

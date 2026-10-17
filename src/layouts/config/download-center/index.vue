@@ -1,54 +1,3 @@
-<script setup lang="ts">
-import { useMediaQuery } from '@vueuse/core'
-import { Icon } from '@/components/icon'
-import { Scrollbar } from '@/components/scrollbar'
-import {
-  categoryMeta,
-  categoryOptions,
-  statusMeta,
-  statusOptions,
-} from './data'
-import { useDownloadCenter } from './hooks'
-import type { DownloadItem } from './types'
-
-const show = defineModel('show', { default: false })
-const isNarrowScreen = useMediaQuery('(max-width: 768px)')
-const drawerSize = computed(() => (isNarrowScreen.value ? '100%' : 980))
-const {
-  activeDownload,
-  activeDownloadCount,
-  categoryFilter,
-  failedDownloadCount,
-  filteredDownloads,
-  hasFinishedDownloads,
-  keyword,
-  overallProgress,
-  stats,
-  statusFilter,
-  totalDownloadCount,
-  clearFinishedDownloads,
-  copyPath,
-  deleteDownload,
-  openFile,
-  pauseDownload,
-  resetFilters,
-  resumeDownload,
-  retryDownload,
-  selectDownload,
-} = useDownloadCenter()
-
-const queueSummary = computed(() => {
-  if (!totalDownloadCount.value) return '当前没有下载记录'
-  if (!activeDownloadCount.value)
-    return `${totalDownloadCount.value} 个下载已归档`
-  return `${activeDownloadCount.value} 个队列项正在等待或处理中`
-})
-
-function canResume(item: DownloadItem) {
-  return ['paused', 'waiting'].includes(item.status)
-}
-</script>
-
 <template>
   <a-drawer
     v-model:open="show"
@@ -210,11 +159,11 @@ function canResume(item: DownloadItem) {
                 v-for="item in filteredDownloads"
                 :key="item.id"
                 type="button"
-                class="mb-8 w-full rounded-8 border-1 border-color-2 border-solid bg-container p-12 text-left transition-colors hover:(border-primary bg-hover)"
+                class="mb-8 w-full rounded-8 border-1 border-solid p-12 text-left transition-colors"
                 :class="
                   item.id === activeDownload?.id
                     ? 'border-primary bg-primary-tint'
-                    : ''
+                    : 'border-color-2 bg-container hover:(border-primary bg-hover)'
                 "
                 @click="selectDownload(item.id)"
               >
@@ -418,3 +367,54 @@ function canResume(item: DownloadItem) {
     </div>
   </a-drawer>
 </template>
+
+<script setup lang="ts">
+import { useMediaQuery } from '@vueuse/core'
+import { Icon } from '@/components/icon'
+import { Scrollbar } from '@/components/scrollbar'
+import {
+  categoryMeta,
+  categoryOptions,
+  statusMeta,
+  statusOptions,
+} from './data'
+import { useDownloadCenter } from './hooks'
+import type { DownloadItem } from './types'
+
+const show = defineModel('show', { default: false })
+const isNarrowScreen = useMediaQuery('(max-width: 768px)')
+const drawerSize = computed(() => (isNarrowScreen.value ? '100%' : 980))
+const {
+  activeDownload,
+  activeDownloadCount,
+  categoryFilter,
+  failedDownloadCount,
+  filteredDownloads,
+  hasFinishedDownloads,
+  keyword,
+  overallProgress,
+  stats,
+  statusFilter,
+  totalDownloadCount,
+  clearFinishedDownloads,
+  copyPath,
+  deleteDownload,
+  openFile,
+  pauseDownload,
+  resetFilters,
+  resumeDownload,
+  retryDownload,
+  selectDownload,
+} = useDownloadCenter()
+
+const queueSummary = computed(() => {
+  if (!totalDownloadCount.value) return '当前没有下载记录'
+  if (!activeDownloadCount.value)
+    return `${totalDownloadCount.value} 个下载已归档`
+  return `${activeDownloadCount.value} 个队列项正在等待或处理中`
+})
+
+function canResume(item: DownloadItem) {
+  return ['paused', 'waiting'].includes(item.status)
+}
+</script>

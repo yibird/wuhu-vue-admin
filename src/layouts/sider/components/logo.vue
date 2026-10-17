@@ -1,11 +1,3 @@
-<script lang="ts" setup>
-import { useLogo } from '../hooks'
-import type { LogoProps } from './types'
-
-const { collapsed = false } = defineProps<LogoProps>()
-const { showLogo, logo, name } = useLogo()
-</script>
-
 <template>
   <div v-if="showLogo" class="group h-50 flex-center gap-10 px-10">
     <img
@@ -22,3 +14,11 @@ const { showLogo, logo, name } = useLogo()
     </span>
   </div>
 </template>
+
+<script lang="ts" setup>
+import { useLogo } from '../hooks'
+import type { LogoProps } from './types'
+
+const { collapsed = false } = defineProps<LogoProps>()
+const { showLogo, logo, name } = useLogo()
+</script>

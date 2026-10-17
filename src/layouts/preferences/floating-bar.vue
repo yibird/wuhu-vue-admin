@@ -1,9 +1,3 @@
-<script setup lang="ts">
-import { usePreferences } from './hooks'
-
-const { preferencesOpen, openPreferences } = usePreferences()
-</script>
-
 <template>
   <aside
     v-show="!preferencesOpen"
@@ -23,6 +17,12 @@ const { preferencesOpen, openPreferences } = usePreferences()
     </button>
   </aside>
 </template>
+
+<script setup lang="ts">
+import { usePreferences } from './hooks'
+
+const { preferencesOpen, openPreferences } = usePreferences()
+</script>
 
 <style scoped>
 .preferences-floating-bar {

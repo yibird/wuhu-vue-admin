@@ -1,11 +1,3 @@
-<script setup lang="ts">
-import type { TaskCenterStat } from '../types'
-
-defineProps<{
-  stats: TaskCenterStat[]
-}>()
-</script>
-
 <template>
   <div class="grid grid-cols-4 gap-10 max-md:grid-cols-2 max-sm:grid-cols-1">
     <div
@@ -30,3 +22,11 @@ defineProps<{
     </div>
   </div>
 </template>
+
+<script setup lang="ts">
+import type { TaskCenterStat } from '../types'
+
+defineProps<{
+  stats: TaskCenterStat[]
+}>()
+</script>

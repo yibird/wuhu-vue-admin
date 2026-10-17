@@ -1,9 +1,3 @@
-<script lang="ts" setup>
-import { usePreferences } from '@/layouts/preferences/hooks'
-
-const { openPreferences } = usePreferences()
-</script>
-
 <template>
   <button
     type="button"
@@ -16,3 +10,9 @@ const { openPreferences } = usePreferences()
     <Icon name="i-lucide:settings" :size="20" />
   </button>
 </template>
+
+<script lang="ts" setup>
+import { usePreferences } from '@/layouts/preferences/hooks'
+
+const { openPreferences } = usePreferences()
+</script>

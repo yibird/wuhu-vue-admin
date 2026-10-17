@@ -1,34 +1,3 @@
-<script setup lang="ts">
-import { taskStatusMeta, taskTypeMeta } from '../constants'
-import { Scrollbar } from '@/components/scrollbar'
-import type { TaskCenterItem } from '../types'
-
-const props = defineProps<{
-  task: TaskCenterItem | null
-}>()
-
-const emit = defineEmits<{
-  pause: [task: TaskCenterItem]
-  resume: [task: TaskCenterItem]
-  retry: [task: TaskCenterItem]
-  cancel: [task: TaskCenterItem]
-  delete: [task: TaskCenterItem]
-  copy: [task: TaskCenterItem]
-}>()
-
-const canPause = computed(() => props.task?.status === 'running')
-const canResume = computed(
-  () => props.task?.status === 'paused' || props.task?.status === 'waiting'
-)
-const canRetry = computed(
-  () => props.task?.status === 'failed' || props.task?.status === 'canceled'
-)
-const canCancel = computed(() => {
-  if (!props.task) return false
-  return !['success', 'failed', 'canceled'].includes(props.task.status)
-})
-</script>
-
 <template>
   <div
     class="h-full min-h-0 flex flex-col overflow-hidden rounded-6 border-1 border-color-2 border-solid bg-container"
@@ -62,7 +31,11 @@ const canCancel = computed(() => {
             </div>
           </div>
           <div class="flex flex-wrap items-center justify-end gap-8">
-            <a-button v-if="canPause" size="small" @click="emit('pause', task)">
+            <a-button
+              v-if="canPause"
+              size="small"
+              @click="emits('pause', task)"
+            >
               <template #icon>
                 <Icon name="i-lucide:pause" />
               </template>
@@ -72,7 +45,7 @@ const canCancel = computed(() => {
               v-if="canResume"
               size="small"
               type="primary"
-              @click="emit('resume', task)"
+              @click="emits('resume', task)"
             >
               <template #icon>
                 <Icon name="i-lucide:play" />
@@ -83,14 +56,14 @@ const canCancel = computed(() => {
               v-if="canRetry"
               size="small"
               type="primary"
-              @click="emit('retry', task)"
+              @click="emits('retry', task)"
             >
               <template #icon>
                 <Icon name="i-lucide:rotate-cw" />
               </template>
               重试
             </a-button>
-            <a-button size="small" @click="emit('copy', task)">
+            <a-button size="small" @click="emits('copy', task)">
               <template #icon>
                 <Icon name="i-lucide:copy" />
               </template>
@@ -168,13 +141,13 @@ const canCancel = computed(() => {
         </div>
 
         <div class="mt-16 flex flex-wrap justify-end gap-8">
-          <a-button v-if="canCancel" danger @click="emit('cancel', task)">
+          <a-button v-if="canCancel" danger @click="emits('cancel', task)">
             <template #icon>
               <Icon name="i-lucide:ban" />
             </template>
             取消任务
           </a-button>
-          <a-button danger @click="emit('delete', task)">
+          <a-button danger @click="emits('delete', task)">
             <template #icon>
               <Icon name="i-lucide:trash-2" />
             </template>
@@ -189,3 +162,34 @@ const canCancel = computed(() => {
     </div>
   </div>
 </template>
+
+<script setup lang="ts">
+import { taskStatusMeta, taskTypeMeta } from '../constants'
+import { Scrollbar } from '@/components/scrollbar'
+import type { TaskCenterItem } from '../types'
+
+const props = defineProps<{
+  task: TaskCenterItem | null
+}>()
+
+const emits = defineEmits<{
+  pause: [task: TaskCenterItem]
+  resume: [task: TaskCenterItem]
+  retry: [task: TaskCenterItem]
+  cancel: [task: TaskCenterItem]
+  delete: [task: TaskCenterItem]
+  copy: [task: TaskCenterItem]
+}>()
+
+const canPause = computed(() => props.task?.status === 'running')
+const canResume = computed(
+  () => props.task?.status === 'paused' || props.task?.status === 'waiting'
+)
+const canRetry = computed(
+  () => props.task?.status === 'failed' || props.task?.status === 'canceled'
+)
+const canCancel = computed(() => {
+  if (!props.task) return false
+  return !['success', 'failed', 'canceled'].includes(props.task.status)
+})
+</script>

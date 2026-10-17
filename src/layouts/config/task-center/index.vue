@@ -1,43 +1,3 @@
-<script lang="ts" setup>
-import { useMediaQuery } from '@vueuse/core'
-import TaskCenterDetail from './components/task-center-detail.vue'
-import TaskCenterFilters from './components/task-center-filters.vue'
-import TaskCenterList from './components/task-center-list.vue'
-import TaskCenterStats from './components/task-center-stats.vue'
-import TaskCreateModal from './components/task-create-modal.vue'
-import { useTaskCenter } from './hooks'
-import { Scrollbar } from '@/components/scrollbar'
-
-const show = defineModel('show', { default: false })
-const isNarrowScreen = useMediaQuery('(max-width: 768px)')
-const drawerSize = computed(() => (isNarrowScreen.value ? '100%' : 960))
-
-const {
-  activeTask,
-  activeTaskId,
-  cancelTask,
-  clearFinishedTasks,
-  copyTaskInfo,
-  createModalOpen,
-  createTask,
-  deleteTask,
-  filteredTasks,
-  formState,
-  hasFinishedTasks,
-  keyword,
-  openCreateModal,
-  pauseTask,
-  resetFilters,
-  resumeTask,
-  retryTask,
-  selectTask,
-  statusFilter,
-  stats,
-  timeFilter,
-  typeFilter,
-} = useTaskCenter(show)
-</script>
-
 <template>
   <a-drawer
     v-model:open="show"
@@ -91,3 +51,43 @@ const {
     />
   </a-drawer>
 </template>
+
+<script lang="ts" setup>
+import { useMediaQuery } from '@vueuse/core'
+import TaskCenterDetail from './components/task-center-detail.vue'
+import TaskCenterFilters from './components/task-center-filters.vue'
+import TaskCenterList from './components/task-center-list.vue'
+import TaskCenterStats from './components/task-center-stats.vue'
+import TaskCreateModal from './components/task-create-modal.vue'
+import { useTaskCenter } from './hooks'
+import { Scrollbar } from '@/components/scrollbar'
+
+const show = defineModel('show', { default: false })
+const isNarrowScreen = useMediaQuery('(max-width: 768px)')
+const drawerSize = computed(() => (isNarrowScreen.value ? '100%' : 960))
+
+const {
+  activeTask,
+  activeTaskId,
+  cancelTask,
+  clearFinishedTasks,
+  copyTaskInfo,
+  createModalOpen,
+  createTask,
+  deleteTask,
+  filteredTasks,
+  formState,
+  hasFinishedTasks,
+  keyword,
+  openCreateModal,
+  pauseTask,
+  resetFilters,
+  resumeTask,
+  retryTask,
+  selectTask,
+  statusFilter,
+  stats,
+  timeFilter,
+  typeFilter,
+} = useTaskCenter(show)
+</script>

@@ -1,41 +1,3 @@
-<script setup lang="ts">
-import { useTheme } from '@/theme'
-import { themeColorOptions } from '@/config'
-import type { Color } from 'antdv-next'
-
-const presets = [
-  {
-    label: '主题色',
-    colors: themeColorOptions.map((item) => `rgb(${item.value})`),
-    defaultOpen: true,
-  },
-]
-
-const { themeColor, changeThemeColor } = useTheme()
-
-const colorPickerValue = computed(() => `rgb(${themeColor.value})`)
-const colorOptions = computed(() =>
-  themeColorOptions.map((item) => ({
-    ...item,
-    selected: themeColor.value === item.value,
-    style: { backgroundColor: `rgb(${item.value})` },
-  }))
-)
-const selectedPreset = computed(() =>
-  themeColorOptions.find((item) => item.value === themeColor.value)
-)
-const selectedColorLabel = computed(
-  () => selectedPreset.value?.label ?? '自定义颜色'
-)
-const colorDisplayValue = computed(() => `RGB ${themeColor.value}`)
-const isCustomColor = computed(() => !selectedPreset.value)
-
-function onComplete(value: Color) {
-  const { r, g, b } = value.toRgb()
-  changeThemeColor(`${r}, ${g}, ${b}`)
-}
-</script>
-
 <template>
   <section>
     <a-divider>主题</a-divider>
@@ -131,3 +93,41 @@ function onComplete(value: Color) {
     </div>
   </section>
 </template>
+
+<script setup lang="ts">
+import { useTheme } from '@/theme'
+import { themeColorOptions } from '@/config'
+import type { Color } from 'antdv-next'
+
+const presets = [
+  {
+    label: '主题色',
+    colors: themeColorOptions.map((item) => `rgb(${item.value})`),
+    defaultOpen: true,
+  },
+]
+
+const { themeColor, changeThemeColor } = useTheme()
+
+const colorPickerValue = computed(() => `rgb(${themeColor.value})`)
+const colorOptions = computed(() =>
+  themeColorOptions.map((item) => ({
+    ...item,
+    selected: themeColor.value === item.value,
+    style: { backgroundColor: `rgb(${item.value})` },
+  }))
+)
+const selectedPreset = computed(() =>
+  themeColorOptions.find((item) => item.value === themeColor.value)
+)
+const selectedColorLabel = computed(
+  () => selectedPreset.value?.label ?? '自定义颜色'
+)
+const colorDisplayValue = computed(() => `RGB ${themeColor.value}`)
+const isCustomColor = computed(() => !selectedPreset.value)
+
+function onComplete(value: Color) {
+  const { r, g, b } = value.toRgb()
+  changeThemeColor(`${r}, ${g}, ${b}`)
+}
+</script>

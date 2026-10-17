@@ -17,7 +17,7 @@
     v-else
     :error="error"
     :show-details="showDetails"
-    @reset="emit('reset')"
+    @reset="emits('reset')"
   />
 </template>
 
@@ -36,7 +36,7 @@ const props = withDefaults(
   }
 )
 
-const emit = defineEmits<{
+const emits = defineEmits<{
   reset: []
 }>()
 

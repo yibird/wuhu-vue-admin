@@ -1,67 +1,3 @@
-<script setup lang="ts">
-interface Props {
-  hours: string
-  minutes: string
-  seconds: string
-  label: string
-}
-
-const props = defineProps<Props>()
-
-const timeUnits = computed(() => [
-  { key: 'hours', label: '时', value: props.hours },
-  { key: 'minutes', label: '分', value: props.minutes },
-  { key: 'seconds', label: '秒', value: props.seconds },
-])
-
-const flippingValues = shallowRef<Record<string, string>>({})
-const flipTimers = new Map<string, ReturnType<typeof setTimeout>>()
-const flipDuration = 680
-
-function clearFlipTimer(key: string) {
-  const timer = flipTimers.get(key)
-
-  if (timer) {
-    clearTimeout(timer)
-    flipTimers.delete(key)
-  }
-}
-
-function startFlip(key: string, previousValue: string) {
-  clearFlipTimer(key)
-  flippingValues.value = { ...flippingValues.value, [key]: previousValue }
-
-  const timer = setTimeout(() => {
-    const nextValues = { ...flippingValues.value }
-    delete nextValues[key]
-    flippingValues.value = nextValues
-    flipTimers.delete(key)
-  }, flipDuration)
-
-  flipTimers.set(key, timer)
-}
-
-watch(
-  () => timeUnits.value.map((unit) => unit.value),
-  (values, previousValues) => {
-    if (!previousValues) return
-
-    timeUnits.value.forEach((unit, index) => {
-      const previousValue = previousValues[index]
-
-      if (previousValue && previousValue !== values[index]) {
-        startFlip(unit.key, previousValue)
-      }
-    })
-  }
-)
-
-onScopeDispose(() => {
-  flipTimers.forEach((timer) => clearTimeout(timer))
-  flipTimers.clear()
-})
-</script>
-
 <template>
   <div
     class="flex items-start justify-center gap-8 sm:gap-12"
@@ -127,10 +63,7 @@ onScopeDispose(() => {
             </div>
           </template>
 
-          <div
-            aria-hidden="true"
-            class="pointer-events-none absolute inset-x-0 top-1/2 z-5 h-1px bg-[rgb(var(--w-border-color-2))]"
-          />
+          <div aria-hidden="true" class="flip-clock-divider" />
         </div>
         <div class="mt-10 text-center text-xs text-muted">{{ unit.label }}</div>
       </div>
@@ -147,11 +80,75 @@ onScopeDispose(() => {
   </div>
 </template>
 
+<script setup lang="ts">
+interface Props {
+  hours: string
+  minutes: string
+  seconds: string
+  label: string
+}
+
+const props = defineProps<Props>()
+
+const timeUnits = computed(() => [
+  { key: 'hours', label: '时', value: props.hours },
+  { key: 'minutes', label: '分', value: props.minutes },
+  { key: 'seconds', label: '秒', value: props.seconds },
+])
+
+const flippingValues = shallowRef<Record<string, string>>({})
+const flipTimers = new Map<string, ReturnType<typeof setTimeout>>()
+const flipDuration = 680
+
+function clearFlipTimer(key: string) {
+  const timer = flipTimers.get(key)
+
+  if (timer) {
+    clearTimeout(timer)
+    flipTimers.delete(key)
+  }
+}
+
+function startFlip(key: string, previousValue: string) {
+  clearFlipTimer(key)
+  flippingValues.value = { ...flippingValues.value, [key]: previousValue }
+
+  const timer = setTimeout(() => {
+    const nextValues = { ...flippingValues.value }
+    delete nextValues[key]
+    flippingValues.value = nextValues
+    flipTimers.delete(key)
+  }, flipDuration)
+
+  flipTimers.set(key, timer)
+}
+
+watch(
+  () => timeUnits.value.map((unit) => unit.value),
+  (values, previousValues) => {
+    if (!previousValues) return
+
+    timeUnits.value.forEach((unit, index) => {
+      const previousValue = previousValues[index]
+
+      if (previousValue && previousValue !== values[index]) {
+        startFlip(unit.key, previousValue)
+      }
+    })
+  }
+)
+
+onScopeDispose(() => {
+  flipTimers.forEach((timer) => clearTimeout(timer))
+  flipTimers.clear()
+})
+</script>
+
 <style scoped>
 .flip-clock-card {
   isolation: isolate;
   transform-style: preserve-3d;
-  perspective: 900px;
+  perspective: 560px;
 }
 
 .flip-clock-half,
@@ -199,6 +196,50 @@ onScopeDispose(() => {
   will-change: transform;
 }
 
+/**
+ * 中缝分隔线
+ *
+ * 1px 细线配合上下浅投影,让上下两页的拼接更清晰,同时避免纯灰线生硬。
+ */
+.flip-clock-divider {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  left: 0;
+  z-index: 5;
+  height: 1px;
+  pointer-events: none;
+  background: rgb(var(--w-border-color-2) / 60%);
+  box-shadow:
+    0 -1px 0 rgb(255 255 255 / 12%),
+    0 1px 0 rgb(0 0 0 / 14%);
+}
+
+/**
+ * 翻页过程中的明暗遮罩
+ *
+ * 卡片靠近水平状态时压暗,形成「表面转向背光」的立体感;
+ * 仅动画 opacity,不影响 3D 变换本身。
+ */
+.flip-clock-flap::after {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  content: '';
+  background: rgb(0 0 0 / 62%);
+  opacity: 0;
+}
+
+.flip-clock-flap--top::after {
+  animation: flip-clock-top-shade 680ms cubic-bezier(0.55, 0.06, 0.68, 0.19)
+    forwards;
+}
+
+.flip-clock-flap--new-bottom::after {
+  animation: flip-clock-new-bottom-shade 680ms cubic-bezier(0.22, 1, 0.36, 1)
+    forwards;
+}
+
 .flip-clock-flap--top {
   z-index: 4;
   transform-origin: center bottom;
@@ -232,6 +273,28 @@ onScopeDispose(() => {
   46%,
   100% {
     transform: rotateX(-90deg);
+  }
+}
+
+@keyframes flip-clock-top-shade {
+  0% {
+    opacity: 0;
+  }
+
+  46%,
+  100% {
+    opacity: 0.55;
+  }
+}
+
+@keyframes flip-clock-new-bottom-shade {
+  0%,
+  46% {
+    opacity: 0.55;
+  }
+
+  100% {
+    opacity: 0;
   }
 }
 

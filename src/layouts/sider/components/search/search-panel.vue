@@ -1,22 +1,3 @@
-<script setup lang="ts">
-import type { SearchPanelEmits, SearchPanelProps } from '../types'
-
-const props = defineProps<SearchPanelProps>()
-const emits = defineEmits<SearchPanelEmits>()
-
-/**
- * 结果提示文案
- *
- * 列表只渲染前 N 条,命中更多时需同时展示总数与实际渲染条数,
- * 避免用户误以为结果只有这几条或结果丢失。
- */
-const resultSummary = computed(() =>
-  props.resultCount > props.results.length
-    ? `仅显示前 ${props.results.length} 条 / 共 ${props.resultCount} 条`
-    : `${props.resultCount} 个结果`
-)
-</script>
-
 <template>
   <section
     id="layout-sider-search-panel"
@@ -208,3 +189,22 @@ const resultSummary = computed(() =>
     </div>
   </section>
 </template>
+
+<script setup lang="ts">
+import type { SearchPanelEmits, SearchPanelProps } from '../types'
+
+const props = defineProps<SearchPanelProps>()
+const emits = defineEmits<SearchPanelEmits>()
+
+/**
+ * 结果提示文案
+ *
+ * 列表只渲染前 N 条,命中更多时需同时展示总数与实际渲染条数,
+ * 避免用户误以为结果只有这几条或结果丢失。
+ */
+const resultSummary = computed(() =>
+  props.resultCount > props.results.length
+    ? `仅显示前 ${props.results.length} 条 / 共 ${props.resultCount} 条`
+    : `${props.resultCount} 个结果`
+)
+</script>

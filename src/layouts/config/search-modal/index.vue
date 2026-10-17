@@ -49,6 +49,7 @@
 <script lang="ts" setup>
 import { useEventListener } from '@vueuse/core'
 import { Search, List } from './components'
+import { loadPinyinMatch } from '@/utils'
 import { useTabs } from '@/hooks'
 import { isSearchableMenu } from '@/router/utils'
 import { usePermissionStore } from '@/store'
@@ -72,6 +73,16 @@ const close = () => {
   open.value = false
   emits('close')
 }
+
+// 打开即预热拼音匹配,避免首个关键词漏掉拼音命中
+// 组件在首次打开时才挂载,immediate 才能覆盖"挂载时已经打开"这一次
+watch(
+  open,
+  (value) => {
+    if (value) void loadPinyinMatch()
+  },
+  { immediate: true }
+)
 
 function handleWindowKeydown(event: KeyboardEvent) {
   if (!open.value || event.key !== 'Escape') return

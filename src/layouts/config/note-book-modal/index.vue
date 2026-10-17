@@ -1,40 +1,3 @@
-<script setup lang="ts">
-import { useMediaQuery } from '@vueuse/core'
-import { message } from 'antdv-next'
-import { Icon } from '@/components/icon'
-import { Scrollbar } from '@/components/scrollbar'
-import { useNotebook } from './hooks'
-import type { NoteItem } from './types'
-
-const show = defineModel('show', { default: false })
-const isNarrowScreen = useMediaQuery('(max-width: 768px)')
-const drawerSize = computed(() => (isNarrowScreen.value ? '100%' : 920))
-const {
-  activeNote,
-  filteredNotes,
-  keyword,
-  noteCountLabel,
-  addNote,
-  deleteNote,
-  selectNote,
-  togglePin,
-  updateNote,
-} = useNotebook()
-
-async function copyNote(note: NoteItem) {
-  if (!navigator.clipboard) {
-    message.warning('当前环境不支持复制')
-    return
-  }
-  try {
-    await navigator.clipboard.writeText(`${note.title}\n${note.content}`)
-    message.success('已复制笔记内容')
-  } catch {
-    message.error('复制失败，请检查剪贴板权限')
-  }
-}
-</script>
-
 <template>
   <a-drawer
     v-model:open="show"
@@ -86,11 +49,11 @@ async function copyNote(note: NoteItem) {
               v-for="note in filteredNotes"
               :key="note.id"
               type="button"
-              class="mb-8 w-full rounded-8 border-1 border-color-2 border-solid bg-container p-10 text-left transition-colors hover:(border-primary bg-hover)"
+              class="mb-8 w-full rounded-8 border-1 border-solid p-10 text-left transition-colors"
               :class="
                 note.id === activeNote?.id
                   ? 'border-primary bg-primary-tint'
-                  : ''
+                  : 'border-color-2 bg-container hover:(border-primary bg-hover)'
               "
               @click="selectNote(note.id)"
             >
@@ -212,6 +175,43 @@ async function copyNote(note: NoteItem) {
     </div>
   </a-drawer>
 </template>
+
+<script setup lang="ts">
+import { useMediaQuery } from '@vueuse/core'
+import { message } from 'antdv-next'
+import { Icon } from '@/components/icon'
+import { Scrollbar } from '@/components/scrollbar'
+import { useNotebook } from './hooks'
+import type { NoteItem } from './types'
+
+const show = defineModel('show', { default: false })
+const isNarrowScreen = useMediaQuery('(max-width: 768px)')
+const drawerSize = computed(() => (isNarrowScreen.value ? '100%' : 920))
+const {
+  activeNote,
+  filteredNotes,
+  keyword,
+  noteCountLabel,
+  addNote,
+  deleteNote,
+  selectNote,
+  togglePin,
+  updateNote,
+} = useNotebook()
+
+async function copyNote(note: NoteItem) {
+  if (!navigator.clipboard) {
+    message.warning('当前环境不支持复制')
+    return
+  }
+  try {
+    await navigator.clipboard.writeText(`${note.title}\n${note.content}`)
+    message.success('已复制笔记内容')
+  } catch {
+    message.error('复制失败，请检查剪贴板权限')
+  }
+}
+</script>
 
 <style scoped lang="less">
 .note-title-input :deep(input) {

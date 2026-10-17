@@ -3,6 +3,8 @@
     type="button"
     class="group mr-6 h-34 items-center rounded-full border-0 bg-fill-6 px-12 cursor-pointer outline-none transition-[background-color,box-shadow,transform] duration-motion-base ease-motion-enter md:flex hover:(bg-hover shadow-all-sm) focus-visible:shadow-[0_0_0_2px_rgb(var(--w-color-primary)_/_24%)] active:(scale-98 translate-y-0 shadow-none) motion-reduce:(transform-none transition-none) max-md:hidden"
     @click="onClick"
+    @pointerenter="preload"
+    @focus="preload"
     role="search"
   >
     <Icon
@@ -24,9 +26,14 @@
 </template>
 
 <script lang="ts" setup>
+import { preloadSearchModal } from '@/layouts/config'
 import { useGlobalSearch } from '@/layouts/config/hooks'
 
 const { openSearch } = useGlobalSearch()
+
+const preload = () => {
+  void preloadSearchModal()
+}
 
 const onClick = () => {
   openSearch()

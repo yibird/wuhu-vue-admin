@@ -1,21 +1,3 @@
-<script setup lang="ts">
-import { ownerOptions, taskTypeOptions } from '../constants'
-import type { TaskCenterFormState } from '../types'
-
-const formState = defineModel<TaskCenterFormState>('formState', {
-  required: true,
-})
-
-defineProps<{
-  open: boolean
-}>()
-
-const emit = defineEmits<{
-  'update:open': [open: boolean]
-  submit: []
-}>()
-</script>
-
 <template>
   <a-modal
     :open="open"
@@ -24,9 +6,9 @@ const emit = defineEmits<{
     cancel-text="取消"
     destroy-on-hidden
     :width="680"
-    @ok="emit('submit')"
-    @cancel="emit('update:open', false)"
-    @update:open="emit('update:open', $event)"
+    @ok="emits('submit')"
+    @cancel="emits('update:open', false)"
+    @update:open="emits('update:open', $event)"
   >
     <a-form :model="formState" :label-col="{ style: { width: '84px' } }">
       <a-form-item label="任务名称" required>
@@ -72,3 +54,21 @@ const emit = defineEmits<{
     </a-form>
   </a-modal>
 </template>
+
+<script setup lang="ts">
+import { ownerOptions, taskTypeOptions } from '../constants'
+import type { TaskCenterFormState } from '../types'
+
+const formState = defineModel<TaskCenterFormState>('formState', {
+  required: true,
+})
+
+defineProps<{
+  open: boolean
+}>()
+
+const emits = defineEmits<{
+  'update:open': [open: boolean]
+  submit: []
+}>()
+</script>

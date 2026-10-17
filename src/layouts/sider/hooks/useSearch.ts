@@ -10,7 +10,7 @@ import {
 import { useTabs } from '@/hooks'
 import { isSearchableMenu } from '@/router/utils'
 import { useAppStore, usePermissionStore } from '@/store'
-import { normalizeSearchKeyword } from '@/utils'
+import { loadPinyinMatch, normalizeSearchKeyword } from '@/utils'
 import { getMenuSearchScore } from '../components/search/util'
 import { useSearchHistory } from './useSearchHistory'
 
@@ -90,6 +90,8 @@ export function useSearch(options: UseSearchOptions) {
   const openPanel = async () => {
     if (isCollapsed.value) setCollapsed(false)
     panelOpen.value = true
+    // 打开面板后用户很快开始输入,这里先把拼音匹配库预热,避免首个关键词漏掉拼音命中
+    void loadPinyinMatch()
     await nextTick()
     inputRef.value?.focus()
   }

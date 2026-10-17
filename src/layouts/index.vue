@@ -2,12 +2,16 @@
   <a-layout class="h-full">
     <LayoutSider />
     <a-layout content-class="h-full">
-      <Scrollbar class="h-full" content-class="min-h-full flex flex-col">
+      <Scrollbar
+        ref="scrollbarRef"
+        class="h-full"
+        content-class="min-h-full flex flex-col"
+      >
         <div :class="fixedHeader ? 'sticky top-0 z-100' : ''">
           <LayoutHeader />
           <LayoutTabs v-if="showTabs" />
         </div>
-        <LayoutContent :style="contentStyle" />
+        <LayoutContent :style="contentStyle" @page-enter="resetContentScroll" />
         <LayoutFooter />
       </Scrollbar>
     </a-layout>
@@ -33,6 +37,19 @@ import { Preferences, FloatingBar } from './preferences'
 import { SearchModal, LockScreenModal } from './config'
 import { Scrollbar } from '@/components/scrollbar'
 import { useLayout } from './hooks'
+import type { ScrollbarInstance } from '@/components/scrollbar'
+
+const scrollbarRef = useTemplateRef<ScrollbarInstance>('scrollbarRef')
+
+/**
+ * 新页面入场前把内容区滚回顶部
+ *
+ * 滚动容器由所有页面共享,不复位会把上一页的滚动位置带给新页面;
+ * 放在入场时复位,也可以避免上一页在离场动画里被滚走。
+ */
+const resetContentScroll = () => {
+  scrollbarRef.value?.setScrollTop(0)
+}
 
 const {
   fixedHeader,

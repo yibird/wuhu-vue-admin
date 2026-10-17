@@ -1,63 +1,3 @@
-<script lang="ts" setup>
-import { useElementBounding, useWindowSize, onClickOutside } from '@vueuse/core'
-import { useSearch } from '../../hooks/index.ts'
-import SearchPanel from './search-panel.vue'
-import type { SearchProps } from '../types.ts'
-
-const value = defineModel<string>('value', { default: '' })
-const props = defineProps<SearchProps>()
-
-const {
-  isCollapsed,
-  panelOpen,
-  results,
-  resultCount,
-  history,
-  historyExpanded,
-  canToggleHistory,
-  activeIndex,
-  onChange,
-  onClear,
-  openPanel,
-  closePanel,
-  onSelect,
-  onSelectHistory,
-  onKeydown,
-  removeHistory,
-  clearHistory,
-  toggleHistory,
-  setActiveIndex,
-} = useSearch({
-  value,
-  collapsed: () => props.collapsed,
-})
-
-const triggerRef = useTemplateRef<HTMLDivElement>('triggerRef')
-const panelRef = useTemplateRef<HTMLElement>('panelRef')
-const { left, bottom } = useElementBounding(triggerRef)
-const { width: viewportWidth, height: viewportHeight } = useWindowSize()
-const panelStyle = computed(() => {
-  const panelWidth = Math.min(380, Math.max(280, viewportWidth.value - 24))
-  const panelLeft = Math.min(
-    Math.max(12, left.value),
-    Math.max(12, viewportWidth.value - panelWidth - 12)
-  )
-  const panelTop = Math.min(
-    Math.max(12, bottom.value + 8),
-    viewportHeight.value - 12
-  )
-
-  return {
-    left: `${panelLeft}px`,
-    top: `${panelTop}px`,
-    width: `${panelWidth}px`,
-    maxHeight: `${Math.max(0, viewportHeight.value - panelTop - 12)}px`,
-  }
-})
-
-onClickOutside(panelRef, closePanel, { ignore: [triggerRef] })
-</script>
-
 <template>
   <div class="relative h-48 flex items-center justify-center px-10">
     <div
@@ -138,3 +78,63 @@ onClickOutside(panelRef, closePanel, { ignore: [triggerRef] })
     </Transition>
   </Teleport>
 </template>
+
+<script lang="ts" setup>
+import { useElementBounding, useWindowSize, onClickOutside } from '@vueuse/core'
+import { useSearch } from '../../hooks/index.ts'
+import SearchPanel from './search-panel.vue'
+import type { SearchProps } from '../types.ts'
+
+const value = defineModel<string>('value', { default: '' })
+const props = defineProps<SearchProps>()
+
+const {
+  isCollapsed,
+  panelOpen,
+  results,
+  resultCount,
+  history,
+  historyExpanded,
+  canToggleHistory,
+  activeIndex,
+  onChange,
+  onClear,
+  openPanel,
+  closePanel,
+  onSelect,
+  onSelectHistory,
+  onKeydown,
+  removeHistory,
+  clearHistory,
+  toggleHistory,
+  setActiveIndex,
+} = useSearch({
+  value,
+  collapsed: () => props.collapsed,
+})
+
+const triggerRef = useTemplateRef<HTMLDivElement>('triggerRef')
+const panelRef = useTemplateRef<HTMLElement>('panelRef')
+const { left, bottom } = useElementBounding(triggerRef)
+const { width: viewportWidth, height: viewportHeight } = useWindowSize()
+const panelStyle = computed(() => {
+  const panelWidth = Math.min(380, Math.max(280, viewportWidth.value - 24))
+  const panelLeft = Math.min(
+    Math.max(12, left.value),
+    Math.max(12, viewportWidth.value - panelWidth - 12)
+  )
+  const panelTop = Math.min(
+    Math.max(12, bottom.value + 8),
+    viewportHeight.value - 12
+  )
+
+  return {
+    left: `${panelLeft}px`,
+    top: `${panelTop}px`,
+    width: `${panelWidth}px`,
+    maxHeight: `${Math.max(0, viewportHeight.value - panelTop - 12)}px`,
+  }
+})
+
+onClickOutside(panelRef, closePanel, { ignore: [triggerRef] })
+</script>
