@@ -1,5 +1,6 @@
 <!doctype html>
-<html lang="en">
+<!-- 静态默认对齐默认语言(zh_CN);实际语言由下方脚本按持久化设置改写 -->
+<html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/src/assets/svg/logo.svg" />
@@ -37,6 +38,10 @@
           if (typeof config?.fontFamily === 'string') {
             root.dataset.font = config.fontFamily
           }
+
+          // lang 影响 CJK 字形选择、断词与读屏发音,首屏就要与持久化语言一致
+          if (config?.locale === 'en') root.lang = 'en'
+          else if (typeof config?.locale === 'string') root.lang = 'zh-CN'
         } catch {}
       })()
     </script>

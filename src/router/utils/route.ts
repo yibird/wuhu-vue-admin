@@ -1,4 +1,6 @@
 import { defineComponent, h } from 'vue'
+import { Loading } from '@/components/loading'
+import { useAppStore } from '@/store'
 import { normalizePath } from './path'
 
 import type { Component } from 'vue'
@@ -76,10 +78,25 @@ export function getComponentName(path: string) {
 }
 
 /**
+ * 路由组件加载态
+ *
+ * 动画类型跟随外观设置,作为内容区的「页面」渲染,加载时只覆盖内容区。
+ */
+const RouteLoading = defineComponent({
+  name: 'RouteLoading',
+  setup() {
+    const { animation } = useAppStore()
+    return () => h(Loading, { type: animation.value.loadingAnimation })
+  },
+})
+
+/**
  * 创建带名称的路由组件
  *
- * 路由组件保持 suspensible(默认),加载态交由内容区的 Suspense 承接,
- * 这样 loading 只覆盖内容区,不会盖住整个应用。
+ * 关闭 suspensible 并由组件自身的 loadingComponent 承接加载态:
+ * 走 Suspense 时待加载页面会先挂载在 Suspense 的隐藏容器里,
+ * 内容区的 Transition 只能识别到 Suspense 本身(页面切换被吞掉),
+ * 页面自身的入场动画也会在隐藏容器中被提前消耗掉。
  *
  * @param loader - 组件加载器
  * @param name - 组件名称
@@ -89,7 +106,11 @@ const createRouteComponent = (
   loader: RouteLoader<RouteModule>,
   name: string
 ) => {
-  const AsyncComponent = defineAsyncComponent({ loader })
+  const AsyncComponent = defineAsyncComponent({
+    loader,
+    loadingComponent: RouteLoading,
+    suspensible: false,
+  })
   return defineComponent({
     name,
     setup(_, { attrs, slots }) {

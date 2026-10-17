@@ -1,8 +1,10 @@
 import { FontFamily } from '../constants/config'
 
 /**
- * 全局兜底字重(未命中字体选项时生效),同时作为「系统默认」选项的字重。
- * 与字体栈一起写入 --w-font-weight。
+ * 「系统默认」选项的字重
+ *
+ * 系统字体族的可用字重不可控,统一取中等偏粗的 500;其余选项各自声明字重,
+ * 与字体栈、字距一起写入 --w-font-weight / --w-letter-spacing
  */
 export const defaultFontWeight = 500
 
@@ -38,6 +40,16 @@ const yaheiFontStack =
 function createFontStack(family: string, fallback: string) {
   return `'${family}', '${fallback}', '${cjkFont}', ${systemFontStack}`
 }
+
+/**
+ * 等宽字体栈(代码块、编辑器、JSON 预览等),写入 --w-font-family-mono,
+ * 同时接管 UnoCSS 主题变量 --font-mono(见 unocss/presets/fonts.ts)
+ *
+ * 走自托管 Roboto Mono(src/assets/fonts,按需下载),其后是系统等宽兜底;
+ * 刻意不接比例字体兜底:等宽场景需要稳定的字符网格,比例兜底会破坏对齐
+ */
+export const monoFontStack =
+  "'Roboto Mono', ui-monospace, 'SFMono-Regular', Menlo, Consolas, 'Liberation Mono', 'Courier New', monospace"
 
 /**
  * 字体选项:首个字体族需与 build/plugins/fonts.ts 中的 families 声明保持一致

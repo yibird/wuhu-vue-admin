@@ -28,13 +28,14 @@ export const routes: IRoute[] = [
     name: 'login',
     path: '/login',
     component: () => import('@/pages/login/index.vue'),
-    meta: { public: true },
+    // title 由 titlePlugin 写入 document.title,静态路由必须显式声明
+    meta: { public: true, title: '登录' },
   },
   {
     name: 'register',
     path: '/register',
     component: () => import('@/pages/register/index.vue'),
-    meta: { public: true },
+    meta: { public: true, title: '注册' },
   },
   {
     name: 'forbidden',

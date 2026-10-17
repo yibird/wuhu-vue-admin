@@ -12,6 +12,26 @@ const locales: Record<LocaleValue, AntdvLocale> = {
   [Locale.EN]: enGB,
 }
 
+/**
+ * 语言 → `<html lang>` 的 BCP 47 标记
+ */
+const langTags: Record<LocaleValue, string> = {
+  [Locale.ZH_CN]: 'zh-CN',
+  [Locale.EN]: 'en',
+}
+
+/**
+ * 同步 `<html lang>`
+ *
+ * lang 决定 CJK 字形变体、断词与读屏发音,首屏由 index.html 内联脚本先行写入,
+ * 运行时在这里跟随语言切换
+ *
+ * @param locale 当前语言
+ */
+function syncDocumentLang(locale: LocaleValue) {
+  document.documentElement.lang = langTags[locale] ?? langTags[Locale.ZH_CN]
+}
+
 export function useLocale() {
   const { locale: i18nLocale } = useI18n()
   const { app } = useAppStore()
@@ -24,10 +44,12 @@ export function useLocale() {
   const changeLocale = (newLocale: LocaleValue) => {
     app.value.locale = newLocale
     i18nLocale.value = newLocale
+    syncDocumentLang(newLocale)
   }
 
   onMounted(() => {
     i18nLocale.value = appLocale.value
+    syncDocumentLang(appLocale.value)
   })
 
   return {
