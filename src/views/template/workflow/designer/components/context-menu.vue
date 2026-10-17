@@ -1,3 +1,22 @@
+<template>
+  <a-dropdown
+    :open="menu.open"
+    :trigger="['click']"
+    :menu="{ items: menuItems, selectable: false }"
+    :classes="{ root: 'workflow-context-menu' }"
+    destroy-on-hidden
+    placement="bottomLeft"
+    @menu-click="handleMenuClick"
+    @open-change="handleOpenChange"
+  >
+    <span
+      class="pointer-events-none fixed size-0"
+      :style="anchorStyle"
+      data-workflow-context-menu-anchor
+    />
+  </a-dropdown>
+</template>
+
 <script setup lang="ts">
 import { h } from 'vue'
 import { Icon } from '@/components'
@@ -22,7 +41,7 @@ const props = defineProps<{
   menu: WorkflowContextMenuState
 }>()
 
-const emit = defineEmits<{
+const emits = defineEmits<{
   action: [key: WorkflowContextActionKey]
   close: []
 }>()
@@ -72,32 +91,13 @@ function findAction(
 
 function handleMenuClick({ key }: { key: number | string }) {
   const action = findAction(props.actions, String(key))
-  if (action && !action.disabled) emit('action', action.key)
+  if (action && !action.disabled) emits('action', action.key)
 }
 
 function handleOpenChange(open: boolean) {
-  if (!open) emit('close')
+  if (!open) emits('close')
 }
 </script>
-
-<template>
-  <a-dropdown
-    :open="menu.open"
-    :trigger="['click']"
-    :menu="{ items: menuItems, selectable: false }"
-    :classes="{ root: 'workflow-context-menu' }"
-    destroy-on-hidden
-    placement="bottomLeft"
-    @menu-click="handleMenuClick"
-    @open-change="handleOpenChange"
-  >
-    <span
-      class="pointer-events-none fixed size-0"
-      :style="anchorStyle"
-      data-workflow-context-menu-anchor
-    />
-  </a-dropdown>
-</template>
 
 <style lang="less">
 // 下拉菜单通过 Teleport 渲染到 body，需使用非 scoped 样式

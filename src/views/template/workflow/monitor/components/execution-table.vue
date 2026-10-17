@@ -1,40 +1,3 @@
-<script setup lang="ts">
-import { workflowRunStatusMeta } from '../../shared/meta'
-import type { WorkflowRunInstance, WorkflowRunStatus } from '../../shared/types'
-import type { TableProps } from 'antdv-next'
-
-defineProps<{
-  instances: WorkflowRunInstance[]
-  loading: boolean
-}>()
-
-const emit = defineEmits<{
-  open: [id: string]
-  retry: [id: string]
-  terminate: [id: string]
-}>()
-
-const columns = [
-  { title: '实例 / 流程', key: 'instance', width: 270 },
-  { title: '状态', key: 'status', width: 105 },
-  { title: '执行进度', key: 'progress', width: 190 },
-  { title: '触发信息', key: 'trigger', width: 170 },
-  { title: '开始时间', key: 'startedAt', width: 170 },
-  { title: '耗时', key: 'duration', width: 100 },
-  { title: '环境', key: 'environment', width: 95 },
-  { title: '操作', key: 'action', width: 132, fixed: 'right' as const },
-]
-
-const onRow: TableProps<WorkflowRunInstance>['onRow'] = (record) => ({
-  class: 'cursor-pointer',
-  onClick: () => emit('open', record.id),
-})
-
-function getRunStatusMeta(status: WorkflowRunStatus) {
-  return workflowRunStatusMeta[status]
-}
-</script>
-
 <template>
   <section
     class="min-w-0 overflow-hidden rounded-8 border-1 border-color-2 border-solid bg-container shadow-[var(--w-shadow-card)]"
@@ -70,7 +33,7 @@ function getRunStatusMeta(status: WorkflowRunStatus) {
           <button
             type="button"
             class="block min-w-0 w-full border-0 bg-transparent p-0 text-left cursor-pointer"
-            @click.stop="emit('open', record.id)"
+            @click.stop="emits('open', record.id)"
           >
             <span class="block truncate text-sm text-link font-600">
               {{ record.id }}
@@ -148,7 +111,7 @@ function getRunStatusMeta(status: WorkflowRunStatus) {
                 type="text"
                 size="small"
                 aria-label="查看执行详情"
-                @click.stop="emit('open', record.id)"
+                @click.stop="emits('open', record.id)"
               >
                 <template #icon>
                   <Icon name="i-lucide:panel-right-open" />
@@ -163,7 +126,7 @@ function getRunStatusMeta(status: WorkflowRunStatus) {
                 type="text"
                 size="small"
                 aria-label="重新执行"
-                @click.stop="emit('retry', record.id)"
+                @click.stop="emits('retry', record.id)"
               >
                 <template #icon>
                   <Icon name="i-lucide:rotate-ccw" />
@@ -177,7 +140,7 @@ function getRunStatusMeta(status: WorkflowRunStatus) {
               ok-text="终止"
               ok-type="danger"
               cancel-text="取消"
-              @confirm="emit('terminate', record.id)"
+              @confirm="emits('terminate', record.id)"
             >
               <a-tooltip title="终止执行">
                 <a-button type="text" danger size="small" aria-label="终止执行">
@@ -193,3 +156,40 @@ function getRunStatusMeta(status: WorkflowRunStatus) {
     </a-table>
   </section>
 </template>
+
+<script setup lang="ts">
+import { workflowRunStatusMeta } from '../../shared/meta'
+import type { WorkflowRunInstance, WorkflowRunStatus } from '../../shared/types'
+import type { TableProps } from 'antdv-next'
+
+defineProps<{
+  instances: WorkflowRunInstance[]
+  loading: boolean
+}>()
+
+const emits = defineEmits<{
+  open: [id: string]
+  retry: [id: string]
+  terminate: [id: string]
+}>()
+
+const columns = [
+  { title: '实例 / 流程', key: 'instance', width: 270 },
+  { title: '状态', key: 'status', width: 105 },
+  { title: '执行进度', key: 'progress', width: 190 },
+  { title: '触发信息', key: 'trigger', width: 170 },
+  { title: '开始时间', key: 'startedAt', width: 170 },
+  { title: '耗时', key: 'duration', width: 100 },
+  { title: '环境', key: 'environment', width: 95 },
+  { title: '操作', key: 'action', width: 132, fixed: 'right' as const },
+]
+
+const onRow: TableProps<WorkflowRunInstance>['onRow'] = (record) => ({
+  class: 'cursor-pointer',
+  onClick: () => emits('open', record.id),
+})
+
+function getRunStatusMeta(status: WorkflowRunStatus) {
+  return workflowRunStatusMeta[status]
+}
+</script>

@@ -1,53 +1,3 @@
-<script setup lang="ts">
-import { isJsonValue } from '../../domain'
-import type {
-  JsonValue,
-  WorkflowEditableField,
-  WorkflowNodeData,
-} from '../types'
-
-const props = defineProps<{
-  selectedNodeData?: WorkflowNodeData
-  selectedNodeId: string
-}>()
-
-const emit = defineEmits<{
-  close: []
-  'remove-selected': []
-  'update-config': [key: string, value: JsonValue]
-  'update-data': [key: WorkflowEditableField, value: string]
-}>()
-
-const configEntries = computed(() => {
-  const data = props.selectedNodeData
-  if (!data) return []
-  return data.configSchema.map(
-    (field) =>
-      [field, data.config[field.key] ?? field.schema.default ?? null] as const
-  )
-})
-
-function formatComplexValue(value: JsonValue) {
-  return JSON.stringify(value, null, 2)
-}
-
-function emitConfig(
-  field: (typeof configEntries.value)[number][0],
-  value: unknown
-) {
-  if (field.control === 'json' && typeof value === 'string') {
-    try {
-      const parsed: unknown = JSON.parse(value)
-      if (isJsonValue(parsed)) emit('update-config', field.key, parsed)
-    } catch {
-      return
-    }
-    return
-  }
-  if (isJsonValue(value)) emit('update-config', field.key, value)
-}
-</script>
-
 <template>
   <aside
     class="min-h-0 min-w-0 overflow-hidden rounded-8 border-1 border-color-2 border-solid bg-container shadow-floating"
@@ -228,3 +178,53 @@ function emitConfig(
     <div v-else class="h-full"></div>
   </aside>
 </template>
+
+<script setup lang="ts">
+import { isJsonValue } from '../../domain'
+import type {
+  JsonValue,
+  WorkflowEditableField,
+  WorkflowNodeData,
+} from '../types'
+
+const props = defineProps<{
+  selectedNodeData?: WorkflowNodeData
+  selectedNodeId: string
+}>()
+
+const emits = defineEmits<{
+  close: []
+  'remove-selected': []
+  'update-config': [key: string, value: JsonValue]
+  'update-data': [key: WorkflowEditableField, value: string]
+}>()
+
+const configEntries = computed(() => {
+  const data = props.selectedNodeData
+  if (!data) return []
+  return data.configSchema.map(
+    (field) =>
+      [field, data.config[field.key] ?? field.schema.default ?? null] as const
+  )
+})
+
+function formatComplexValue(value: JsonValue) {
+  return JSON.stringify(value, null, 2)
+}
+
+function emitConfig(
+  field: (typeof configEntries.value)[number][0],
+  value: unknown
+) {
+  if (field.control === 'json' && typeof value === 'string') {
+    try {
+      const parsed: unknown = JSON.parse(value)
+      if (isJsonValue(parsed)) emits('update-config', field.key, parsed)
+    } catch {
+      return
+    }
+    return
+  }
+  if (isJsonValue(value)) emits('update-config', field.key, value)
+}
+</script>

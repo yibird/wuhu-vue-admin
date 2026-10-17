@@ -1,88 +1,3 @@
-<script setup lang="ts">
-import { Handle, Position, type NodeProps } from '@vue-flow/core'
-import type { CSSProperties } from 'vue'
-import { getWorkflowNodeDefinition } from '../../../domain'
-import type { WorkflowNodeData, WorkflowNodeStatus } from '../../types'
-
-const props = defineProps<NodeProps<WorkflowNodeData>>()
-
-const statusText: Record<WorkflowNodeStatus, string> = {
-  failed: '失败',
-  idle: '待运行',
-  paused: '已暂停',
-  queued: '排队中',
-  running: '运行中',
-  skipped: '已跳过',
-  success: '成功',
-  warning: '需关注',
-}
-
-const kindLabel = computed(
-  () => getWorkflowNodeDefinition(props.data.kind)?.title ?? props.data.kind
-)
-
-const accent = computed(() => props.data.accent)
-
-const rootStyle = computed<CSSProperties>(() => {
-  const accentColor = accent.value
-  const active = props.selected || props.data.status === 'running'
-
-  return {
-    borderColor: props.selected ? accentColor : undefined,
-    backgroundImage: `radial-gradient(circle at 0% 0%, color-mix(in srgb, ${accentColor} var(--w-workflow-node-accent-opacity), transparent), transparent var(--w-workflow-node-accent-stop)), linear-gradient(135deg, color-mix(in srgb, ${accentColor} 9%, transparent), color-mix(in srgb, ${accentColor} 3%, transparent) 52%, transparent)`,
-    boxShadow: active
-      ? `0 0 0 var(--w-workflow-node-active-ring-size) color-mix(in srgb, ${accentColor} var(--w-workflow-node-accent-ring-opacity), transparent), var(--w-shadow-node-active)`
-      : undefined,
-  }
-})
-
-const iconStyle = computed<CSSProperties>(() => {
-  const accentColor = accent.value
-
-  return {
-    backgroundImage: `linear-gradient(135deg, color-mix(in srgb, ${accentColor} 78%, #fff), ${accentColor})`,
-    boxShadow: `0 6px 16px color-mix(in srgb, ${accentColor} 32%, transparent)`,
-  }
-})
-
-const visibleInputs = computed(() => props.data.inputs.slice(0, 2))
-const visibleOutputs = computed(() => props.data.outputs.slice(0, 2))
-const statusLabel = computed(() => statusText[props.data.status])
-const statusDotClass = computed(() => {
-  if (props.data.status === 'running') return 'bg-primary animate-pulse'
-  if (props.data.status === 'success') return 'bg-success'
-  if (props.data.status === 'warning') return 'bg-warning'
-  if (props.data.status === 'failed') return 'bg-error'
-  if (props.data.status === 'paused') return 'bg-warning'
-  if (props.data.status === 'queued') return 'bg-info'
-  return 'bg-disabled'
-})
-
-const metadata = computed(() => {
-  return [
-    props.data.model,
-    props.data.latency,
-    props.data.tokens,
-    ...Object.entries(props.data.config ?? {})
-      .slice(0, 2)
-      .map(([key, value]) => `${key}: ${formatConfigValue(value)}`),
-  ].filter(Boolean)
-})
-
-function handleStyle(index: number, count: number): CSSProperties {
-  return {
-    top: `${((index + 1) / (count + 1)) * 100}%`,
-    borderColor: props.data.accent,
-  }
-}
-
-function formatConfigValue(value: unknown) {
-  if (Array.isArray(value)) return `Array(${value.length})`
-  if (typeof value === 'object' && value !== null) return 'Object'
-  return String(value)
-}
-</script>
-
 <template>
   <div
     class="workflow-node relative w-292 select-none rounded-12 border-1 border-color-2 border-solid bg-main p-14 text-main shadow-node transition-[border-color,box-shadow,transform] duration-motion-base ease-motion-standard motion-reduce:transition-none"
@@ -194,3 +109,88 @@ function formatConfigValue(value: unknown) {
     />
   </div>
 </template>
+
+<script setup lang="ts">
+import { Handle, Position, type NodeProps } from '@vue-flow/core'
+import type { CSSProperties } from 'vue'
+import { getWorkflowNodeDefinition } from '../../../domain'
+import type { WorkflowNodeData, WorkflowNodeStatus } from '../../types'
+
+const props = defineProps<NodeProps<WorkflowNodeData>>()
+
+const statusText: Record<WorkflowNodeStatus, string> = {
+  failed: '失败',
+  idle: '待运行',
+  paused: '已暂停',
+  queued: '排队中',
+  running: '运行中',
+  skipped: '已跳过',
+  success: '成功',
+  warning: '需关注',
+}
+
+const kindLabel = computed(
+  () => getWorkflowNodeDefinition(props.data.kind)?.title ?? props.data.kind
+)
+
+const accent = computed(() => props.data.accent)
+
+const rootStyle = computed<CSSProperties>(() => {
+  const accentColor = accent.value
+  const active = props.selected || props.data.status === 'running'
+
+  return {
+    borderColor: props.selected ? accentColor : undefined,
+    backgroundImage: `radial-gradient(circle at 0% 0%, color-mix(in srgb, ${accentColor} var(--w-workflow-node-accent-opacity), transparent), transparent var(--w-workflow-node-accent-stop)), linear-gradient(135deg, color-mix(in srgb, ${accentColor} 9%, transparent), color-mix(in srgb, ${accentColor} 3%, transparent) 52%, transparent)`,
+    boxShadow: active
+      ? `0 0 0 var(--w-workflow-node-active-ring-size) color-mix(in srgb, ${accentColor} var(--w-workflow-node-accent-ring-opacity), transparent), var(--w-shadow-node-active)`
+      : undefined,
+  }
+})
+
+const iconStyle = computed<CSSProperties>(() => {
+  const accentColor = accent.value
+
+  return {
+    backgroundImage: `linear-gradient(135deg, color-mix(in srgb, ${accentColor} 78%, #fff), ${accentColor})`,
+    boxShadow: `0 6px 16px color-mix(in srgb, ${accentColor} 32%, transparent)`,
+  }
+})
+
+const visibleInputs = computed(() => props.data.inputs.slice(0, 2))
+const visibleOutputs = computed(() => props.data.outputs.slice(0, 2))
+const statusLabel = computed(() => statusText[props.data.status])
+const statusDotClass = computed(() => {
+  if (props.data.status === 'running') return 'bg-primary animate-pulse'
+  if (props.data.status === 'success') return 'bg-success'
+  if (props.data.status === 'warning') return 'bg-warning'
+  if (props.data.status === 'failed') return 'bg-error'
+  if (props.data.status === 'paused') return 'bg-warning'
+  if (props.data.status === 'queued') return 'bg-info'
+  return 'bg-disabled'
+})
+
+const metadata = computed(() => {
+  return [
+    props.data.model,
+    props.data.latency,
+    props.data.tokens,
+    ...Object.entries(props.data.config ?? {})
+      .slice(0, 2)
+      .map(([key, value]) => `${key}: ${formatConfigValue(value)}`),
+  ].filter(Boolean)
+})
+
+function handleStyle(index: number, count: number): CSSProperties {
+  return {
+    top: `${((index + 1) / (count + 1)) * 100}%`,
+    borderColor: props.data.accent,
+  }
+}
+
+function formatConfigValue(value: unknown) {
+  if (Array.isArray(value)) return `Array(${value.length})`
+  if (typeof value === 'object' && value !== null) return 'Object'
+  return String(value)
+}
+</script>

@@ -1,49 +1,3 @@
-<script setup lang="ts">
-import type {
-  WorkflowEnvironmentFilter,
-  WorkflowRunStatusFilter,
-} from '../hooks'
-
-const props = defineProps<{
-  alertCount: number
-  lastRefreshAt: string
-  refreshing: boolean
-  workflowOptions: Array<{ label: string; value: string }>
-}>()
-
-const emit = defineEmits<{
-  refresh: []
-}>()
-
-const autoRefresh = defineModel<boolean>('autoRefresh', { required: true })
-const environment = defineModel<WorkflowEnvironmentFilter>('environment', {
-  required: true,
-})
-const keyword = defineModel<string>('keyword', { required: true })
-const status = defineModel<WorkflowRunStatusFilter>('status', {
-  required: true,
-})
-const workflow = defineModel<string>('workflow', { required: true })
-
-const statusOptions = [
-  { label: '全部状态', value: 'all' },
-  { label: '运行中', value: 'running' },
-  { label: '成功', value: 'success' },
-  { label: '失败', value: 'failed' },
-  { label: '等待中', value: 'suspended' },
-  { label: '已终止', value: 'terminated' },
-]
-const workflowSelectOptions = computed(() => [
-  { label: '全部流程', value: 'all' },
-  ...props.workflowOptions,
-])
-const environmentOptions = [
-  { label: '全部环境', value: 'all' },
-  { label: '生产环境', value: 'production' },
-  { label: '预发环境', value: 'staging' },
-]
-</script>
-
 <template>
   <header
     class="border-b-1 border-color-2 border-b-solid bg-container px-16 py-14"
@@ -72,7 +26,7 @@ const environmentOptions = [
       <div class="flex flex-wrap items-center gap-7">
         <span class="text-xs text-secondary">自动刷新</span>
         <a-switch v-model:checked="autoRefresh" size="small" />
-        <a-button :loading="refreshing" @click="emit('refresh')">
+        <a-button :loading="refreshing" @click="emits('refresh')">
           <template #icon>
             <Icon name="i-lucide:refresh-cw" />
           </template>
@@ -110,3 +64,49 @@ const environmentOptions = [
     </div>
   </header>
 </template>
+
+<script setup lang="ts">
+import type {
+  WorkflowEnvironmentFilter,
+  WorkflowRunStatusFilter,
+} from '../hooks'
+
+const props = defineProps<{
+  alertCount: number
+  lastRefreshAt: string
+  refreshing: boolean
+  workflowOptions: Array<{ label: string; value: string }>
+}>()
+
+const emits = defineEmits<{
+  refresh: []
+}>()
+
+const autoRefresh = defineModel<boolean>('autoRefresh', { required: true })
+const environment = defineModel<WorkflowEnvironmentFilter>('environment', {
+  required: true,
+})
+const keyword = defineModel<string>('keyword', { required: true })
+const status = defineModel<WorkflowRunStatusFilter>('status', {
+  required: true,
+})
+const workflow = defineModel<string>('workflow', { required: true })
+
+const statusOptions = [
+  { label: '全部状态', value: 'all' },
+  { label: '运行中', value: 'running' },
+  { label: '成功', value: 'success' },
+  { label: '失败', value: 'failed' },
+  { label: '等待中', value: 'suspended' },
+  { label: '已终止', value: 'terminated' },
+]
+const workflowSelectOptions = computed(() => [
+  { label: '全部流程', value: 'all' },
+  ...props.workflowOptions,
+])
+const environmentOptions = [
+  { label: '全部环境', value: 'all' },
+  { label: '生产环境', value: 'production' },
+  { label: '预发环境', value: 'staging' },
+]
+</script>

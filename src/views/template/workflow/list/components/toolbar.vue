@@ -1,42 +1,3 @@
-<script setup lang="ts">
-import type { WorkflowListSort, WorkflowListStatusFilter } from '../hooks'
-
-const props = defineProps<{
-  draftCount: number
-  ownerOptions: Array<{ label: string; value: string }>
-  publishedCount: number
-  total: number
-}>()
-
-const emit = defineEmits<{
-  create: []
-}>()
-
-const keyword = defineModel<string>('keyword', { required: true })
-const owner = defineModel<string>('owner', { required: true })
-const sort = defineModel<WorkflowListSort>('sort', { required: true })
-const status = defineModel<WorkflowListStatusFilter>('status', {
-  required: true,
-})
-
-const statusOptions = [
-  { label: '全部状态', value: 'all' },
-  { label: '已发布', value: 'published' },
-  { label: '草稿', value: 'draft' },
-  { label: '已停用', value: 'disabled' },
-]
-
-const sortOptions = [
-  { label: '最近更新', value: 'updated-desc' },
-  { label: '最近创建', value: 'created-desc' },
-  { label: '运行次数', value: 'runs-desc' },
-]
-const ownerSelectOptions = computed(() => [
-  { label: '全部负责人', value: 'all' },
-  ...props.ownerOptions,
-])
-</script>
-
 <template>
   <header
     class="border-b-1 border-color-2 border-b-solid bg-container px-16 py-16"
@@ -61,7 +22,7 @@ const ownerSelectOptions = computed(() => [
         </div>
       </div>
 
-      <a-button type="primary" @click="emit('create')">
+      <a-button type="primary" @click="emits('create')">
         <template #icon>
           <Icon name="i-lucide:plus" />
         </template>
@@ -98,3 +59,42 @@ const ownerSelectOptions = computed(() => [
     </div>
   </header>
 </template>
+
+<script setup lang="ts">
+import type { WorkflowListSort, WorkflowListStatusFilter } from '../hooks'
+
+const props = defineProps<{
+  draftCount: number
+  ownerOptions: Array<{ label: string; value: string }>
+  publishedCount: number
+  total: number
+}>()
+
+const emits = defineEmits<{
+  create: []
+}>()
+
+const keyword = defineModel<string>('keyword', { required: true })
+const owner = defineModel<string>('owner', { required: true })
+const sort = defineModel<WorkflowListSort>('sort', { required: true })
+const status = defineModel<WorkflowListStatusFilter>('status', {
+  required: true,
+})
+
+const statusOptions = [
+  { label: '全部状态', value: 'all' },
+  { label: '已发布', value: 'published' },
+  { label: '草稿', value: 'draft' },
+  { label: '已停用', value: 'disabled' },
+]
+
+const sortOptions = [
+  { label: '最近更新', value: 'updated-desc' },
+  { label: '最近创建', value: 'created-desc' },
+  { label: '运行次数', value: 'runs-desc' },
+]
+const ownerSelectOptions = computed(() => [
+  { label: '全部负责人', value: 'all' },
+  ...props.ownerOptions,
+])
+</script>

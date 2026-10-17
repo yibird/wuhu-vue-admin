@@ -1,46 +1,3 @@
-<script lang="ts" setup>
-import { Icon } from '@/components'
-import { formatWorkflowSchema } from '../data'
-import type {
-  WorkflowAiMessage,
-  WorkflowAiPlan,
-  WorkflowAiSuggestion,
-} from '../types'
-
-const props = defineProps<{
-  /**
-   * @desc 是否正在生成
-   */
-  busy: boolean
-  /**
-   * @desc 对话消息
-   */
-  messages: readonly WorkflowAiMessage[]
-  /**
-   * @desc 待应用的生成方案,为空表示还没有可预览的结果
-   */
-  plan: WorkflowAiPlan | null
-  /**
-   * @desc 提示词模板
-   */
-  suggestions: readonly WorkflowAiSuggestion[]
-}>()
-
-const prompt = defineModel<string>('prompt', { required: true })
-
-const emit = defineEmits<{
-  apply: []
-  'apply-suggestion': [prompt: string]
-  close: []
-  discard: []
-  generate: []
-}>()
-
-const planSource = computed(() =>
-  props.plan ? formatWorkflowSchema(props.plan.schema) : ''
-)
-</script>
-
 <template>
   <section
     class="grid min-h-0 min-w-0 grid-rows-[auto_minmax(0,1fr)_auto] overflow-hidden rounded-8 border-1 border-color-2 border-solid bg-container shadow-[var(--w-shadow-floating)]"
@@ -76,7 +33,7 @@ const planSource = computed(() =>
                 v-for="suggestion in props.suggestions"
                 :key="suggestion.id"
                 class="w-full justify-start"
-                @click="emit('apply-suggestion', suggestion.prompt)"
+                @click="emits('apply-suggestion', suggestion.prompt)"
               >
                 <Icon :name="suggestion.icon" :size="14" />
                 {{ suggestion.title }}
@@ -88,7 +45,7 @@ const planSource = computed(() =>
           type="text"
           class="!size-28 !p-0 text-secondary hover:text-main"
           title="关闭"
-          @click="emit('close')"
+          @click="emits('close')"
         >
           <Icon name="i-lucide:x" :size="16" />
         </a-button>
@@ -219,8 +176,8 @@ const planSource = computed(() =>
         v-model="prompt"
         class="h-68 w-full resize-none rounded-7 border-1 border-color-2 border-solid bg-fill px-10 py-8 text-13px text-main outline-none focus:border-primary"
         placeholder="例如：客户退款审批，金额 5000 以内自动通过，否则转人工审批并通知客户"
-        @keydown.ctrl.enter.prevent="emit('generate')"
-        @keydown.meta.enter.prevent="emit('generate')"
+        @keydown.ctrl.enter.prevent="emits('generate')"
+        @keydown.meta.enter.prevent="emits('generate')"
       ></textarea>
       <div
         class="mt-8 grid gap-8"
@@ -230,7 +187,7 @@ const planSource = computed(() =>
           block
           type="primary"
           :disabled="props.busy || !prompt.trim()"
-          @click="emit('generate')"
+          @click="emits('generate')"
         >
           <Icon
             :name="
@@ -242,11 +199,11 @@ const planSource = computed(() =>
           {{ props.busy ? '生成中' : '生成工作流' }}
         </a-button>
         <template v-if="props.plan">
-          <a-button block @click="emit('discard')">
+          <a-button block @click="emits('discard')">
             <Icon name="i-lucide:undo-2" :size="15" />
             放弃
           </a-button>
-          <a-button block type="primary" @click="emit('apply')">
+          <a-button block type="primary" @click="emits('apply')">
             <Icon name="i-lucide:check" :size="15" />
             应用到画布
           </a-button>
@@ -255,3 +212,46 @@ const planSource = computed(() =>
     </footer>
   </section>
 </template>
+
+<script lang="ts" setup>
+import { Icon } from '@/components'
+import { formatWorkflowSchema } from '../data'
+import type {
+  WorkflowAiMessage,
+  WorkflowAiPlan,
+  WorkflowAiSuggestion,
+} from '../types'
+
+const props = defineProps<{
+  /**
+   * @desc 是否正在生成
+   */
+  busy: boolean
+  /**
+   * @desc 对话消息
+   */
+  messages: readonly WorkflowAiMessage[]
+  /**
+   * @desc 待应用的生成方案,为空表示还没有可预览的结果
+   */
+  plan: WorkflowAiPlan | null
+  /**
+   * @desc 提示词模板
+   */
+  suggestions: readonly WorkflowAiSuggestion[]
+}>()
+
+const prompt = defineModel<string>('prompt', { required: true })
+
+const emits = defineEmits<{
+  apply: []
+  'apply-suggestion': [prompt: string]
+  close: []
+  discard: []
+  generate: []
+}>()
+
+const planSource = computed(() =>
+  props.plan ? formatWorkflowSchema(props.plan.schema) : ''
+)
+</script>

@@ -1,195 +1,3 @@
-<script setup lang="ts">
-import { Background } from '@vue-flow/background'
-import { MiniMap } from '@vue-flow/minimap'
-import { useTheme } from '@/theme'
-import { ThemeMode } from '@/constants'
-import {
-  areWorkflowDataSchemasCompatible,
-  getWorkflowNodeDefinition,
-} from '../../domain'
-import {
-  ConnectionLineType,
-  SelectionMode,
-  VueFlow,
-  useVueFlow,
-  type Connection,
-  type ConnectionLineOptions,
-  type DefaultEdgeOptions,
-  type EdgeMouseEvent,
-  type NodeDragEvent,
-  type NodeMouseEvent,
-  type ValidConnectionFunc,
-} from '@vue-flow/core'
-import '@vue-flow/core/dist/style.css'
-import '@vue-flow/core/dist/theme-default.css'
-import '@vue-flow/minimap/dist/style.css'
-import CanvasHeader from './canvas-header.vue'
-import CanvasToolbar from './canvas-toolbar.vue'
-import CustomEdge from './custom-edge.vue'
-import { workflowNodeTypes } from './nodes'
-import { WORKFLOW_FLOW_ID } from '../constants'
-import { Icon } from '@/components'
-import type {
-  WorkflowCanvasTab,
-  WorkflowEdge,
-  WorkflowNode,
-  WorkflowRunLog,
-  WorkflowTestCase,
-  WorkflowValidationIssue,
-} from '../types'
-
-const nodes = defineModel<WorkflowNode[]>('nodes', { required: true })
-const edges = defineModel<WorkflowEdge[]>('edges', { required: true })
-const { themeMode } = useTheme()
-const showCanvasGrid = computed(() => themeMode.value !== ThemeMode.Dark)
-
-const { fitView, zoomIn, zoomOut, zoomTo, viewport } =
-  useVueFlow(WORKFLOW_FLOW_ID)
-
-const props = defineProps<{
-  aiPanelOpen: boolean
-  canRedo: boolean
-  canRemoveSelected: boolean
-  canUndo: boolean
-  validationIssues: WorkflowValidationIssue[]
-  defaultEdgeOptions: DefaultEdgeOptions
-  isPaused: boolean
-  isRunning: boolean
-  nodesLocked: boolean
-  runLogs: WorkflowRunLog[]
-  selectedTestCaseId: string
-  sourcePanelOpen: boolean
-  testCases: WorkflowTestCase[]
-  title: string
-}>()
-
-const emit = defineEmits<{
-  'arrange-nodes': []
-  'cancel-run': []
-  connect: [connection: Connection]
-  'copy-schema': []
-  'edge-context-menu': [event: EdgeMouseEvent]
-  'download-schema': []
-  'node-click': [event: NodeMouseEvent]
-  'node-context-menu': [event: NodeMouseEvent]
-  'node-drag-start': [event: NodeDragEvent]
-  'node-drag-stop': [event: NodeDragEvent]
-  'pane-click': []
-  'pane-context-menu': [event: MouseEvent]
-  'remove-selected': []
-  publish: []
-  redo: []
-  run: []
-  'share-workflow': []
-  'select-test-case': [id: string]
-  'toggle-ai': []
-  'toggle-nodes-locked': []
-  'toggle-source': []
-  'resume-run': []
-  undo: []
-}>()
-
-const activeTab = shallowRef<WorkflowCanvasTab>('design')
-type CanvasInteractionMode = 'pan' | 'select'
-
-const interactionMode = shallowRef<CanvasInteractionMode>('select')
-const panOnDrag = computed(() => interactionMode.value === 'pan')
-const selectionKeyCode = computed(() => interactionMode.value === 'select')
-
-const connectionLineOptions: ConnectionLineOptions = {
-  type: ConnectionLineType.Bezier,
-  style: {
-    stroke: 'rgb(var(--w-color-primary))',
-    strokeWidth: 2,
-    strokeDasharray: '6 4',
-    strokeLinecap: 'round',
-    strokeLinejoin: 'round',
-  },
-}
-
-const testStatusClass: Record<WorkflowTestCase['status'], string> = {
-  ready: 'bg-fill-quaternary text-secondary',
-  passed: 'bg-success-tint text-success',
-  warning: 'bg-warning-tint text-warning',
-}
-
-const selectedTestCase = computed(() => {
-  return (
-    props.testCases.find((item) => item.id === props.selectedTestCaseId) ??
-    props.testCases[0]
-  )
-})
-
-function handlePaneReady() {
-  fitView({ padding: 0.2, maxZoom: 0.85 })
-}
-
-function handleFitView() {
-  fitView({ padding: 0.2, maxZoom: 1 })
-}
-
-function handleZoomReset() {
-  zoomTo(1)
-}
-
-function handleNodeDragStart(event: NodeDragEvent) {
-  emit('node-drag-start', event)
-}
-
-function handleNodeDragStop(event: NodeDragEvent) {
-  emit('node-drag-stop', event)
-}
-
-const isValidConnection: ValidConnectionFunc = (connection) => {
-  if (connection.source === connection.target) return false
-  const connectionId = 'id' in connection ? connection.id : undefined
-  const source = nodes.value.find((node) => node.id === connection.source)
-  const target = nodes.value.find((node) => node.id === connection.target)
-  if (!source || !target) return false
-  const sourcePort = source.data.outputs.find(
-    (port) => port.id === connection.sourceHandle
-  )
-  const targetPort = target.data.inputs.find(
-    (port) => port.id === connection.targetHandle
-  )
-  if (!sourcePort || !targetPort) return false
-  if (
-    edges.value.some(
-      (edge) =>
-        edge.id !== connectionId &&
-        edge.source === connection.source &&
-        edge.sourceHandle === connection.sourceHandle &&
-        edge.target === connection.target &&
-        edge.targetHandle === connection.targetHandle
-    )
-  )
-    return false
-  if (
-    !targetPort.multiple &&
-    edges.value.some(
-      (edge) =>
-        edge.id !== connectionId &&
-        edge.target === connection.target &&
-        edge.targetHandle === connection.targetHandle
-    )
-  )
-    return false
-  const sourceDefinition = getWorkflowNodeDefinition(source.data.kind)
-  const targetDefinition = getWorkflowNodeDefinition(target.data.kind)
-  const sourceSchema = sourceDefinition?.outputs.find(
-    (port) => port.id === sourcePort.id
-  )?.schema
-  const targetSchema = targetDefinition?.inputs.find(
-    (port) => port.id === targetPort.id
-  )?.schema
-  return Boolean(
-    sourceSchema &&
-    targetSchema &&
-    areWorkflowDataSchemasCompatible(sourceSchema, targetSchema)
-  )
-}
-</script>
-
 <template>
   <main
     class="h-full min-h-0 min-w-0 grid grid-rows-[auto_minmax(0,1fr)] overflow-hidden rounded-12 border-1 border-color-2 border-solid bg-main shadow-card max-[900px]:min-h-620 max-[900px]:mt-10 max-[900px]:ml-0"
@@ -484,3 +292,195 @@ const isValidConnection: ValidConnectionFunc = (connection) => {
     </div>
   </main>
 </template>
+
+<script setup lang="ts">
+import { Background } from '@vue-flow/background'
+import { MiniMap } from '@vue-flow/minimap'
+import { useTheme } from '@/theme'
+import { ThemeMode } from '@/constants'
+import {
+  areWorkflowDataSchemasCompatible,
+  getWorkflowNodeDefinition,
+} from '../../domain'
+import {
+  ConnectionLineType,
+  SelectionMode,
+  VueFlow,
+  useVueFlow,
+  type Connection,
+  type ConnectionLineOptions,
+  type DefaultEdgeOptions,
+  type EdgeMouseEvent,
+  type NodeDragEvent,
+  type NodeMouseEvent,
+  type ValidConnectionFunc,
+} from '@vue-flow/core'
+import '@vue-flow/core/dist/style.css'
+import '@vue-flow/core/dist/theme-default.css'
+import '@vue-flow/minimap/dist/style.css'
+import CanvasHeader from './canvas-header.vue'
+import CanvasToolbar from './canvas-toolbar.vue'
+import CustomEdge from './custom-edge.vue'
+import { workflowNodeTypes } from './nodes'
+import { WORKFLOW_FLOW_ID } from '../constants'
+import { Icon } from '@/components'
+import type {
+  WorkflowCanvasTab,
+  WorkflowEdge,
+  WorkflowNode,
+  WorkflowRunLog,
+  WorkflowTestCase,
+  WorkflowValidationIssue,
+} from '../types'
+
+const nodes = defineModel<WorkflowNode[]>('nodes', { required: true })
+const edges = defineModel<WorkflowEdge[]>('edges', { required: true })
+const { themeMode } = useTheme()
+const showCanvasGrid = computed(() => themeMode.value !== ThemeMode.Dark)
+
+const { fitView, zoomIn, zoomOut, zoomTo, viewport } =
+  useVueFlow(WORKFLOW_FLOW_ID)
+
+const props = defineProps<{
+  aiPanelOpen: boolean
+  canRedo: boolean
+  canRemoveSelected: boolean
+  canUndo: boolean
+  validationIssues: WorkflowValidationIssue[]
+  defaultEdgeOptions: DefaultEdgeOptions
+  isPaused: boolean
+  isRunning: boolean
+  nodesLocked: boolean
+  runLogs: WorkflowRunLog[]
+  selectedTestCaseId: string
+  sourcePanelOpen: boolean
+  testCases: WorkflowTestCase[]
+  title: string
+}>()
+
+const emits = defineEmits<{
+  'arrange-nodes': []
+  'cancel-run': []
+  connect: [connection: Connection]
+  'copy-schema': []
+  'edge-context-menu': [event: EdgeMouseEvent]
+  'download-schema': []
+  'node-click': [event: NodeMouseEvent]
+  'node-context-menu': [event: NodeMouseEvent]
+  'node-drag-start': [event: NodeDragEvent]
+  'node-drag-stop': [event: NodeDragEvent]
+  'pane-click': []
+  'pane-context-menu': [event: MouseEvent]
+  'remove-selected': []
+  publish: []
+  redo: []
+  run: []
+  'share-workflow': []
+  'select-test-case': [id: string]
+  'toggle-ai': []
+  'toggle-nodes-locked': []
+  'toggle-source': []
+  'resume-run': []
+  undo: []
+}>()
+
+const activeTab = shallowRef<WorkflowCanvasTab>('design')
+type CanvasInteractionMode = 'pan' | 'select'
+
+const interactionMode = shallowRef<CanvasInteractionMode>('select')
+const panOnDrag = computed(() => interactionMode.value === 'pan')
+const selectionKeyCode = computed(() => interactionMode.value === 'select')
+
+const connectionLineOptions: ConnectionLineOptions = {
+  type: ConnectionLineType.Bezier,
+  style: {
+    stroke: 'rgb(var(--w-color-primary))',
+    strokeWidth: 2,
+    strokeDasharray: '6 4',
+    strokeLinecap: 'round',
+    strokeLinejoin: 'round',
+  },
+}
+
+const testStatusClass: Record<WorkflowTestCase['status'], string> = {
+  ready: 'bg-fill-quaternary text-secondary',
+  passed: 'bg-success-tint text-success',
+  warning: 'bg-warning-tint text-warning',
+}
+
+const selectedTestCase = computed(() => {
+  return (
+    props.testCases.find((item) => item.id === props.selectedTestCaseId) ??
+    props.testCases[0]
+  )
+})
+
+function handlePaneReady() {
+  fitView({ padding: 0.2, maxZoom: 0.85 })
+}
+
+function handleFitView() {
+  fitView({ padding: 0.2, maxZoom: 1 })
+}
+
+function handleZoomReset() {
+  zoomTo(1)
+}
+
+function handleNodeDragStart(event: NodeDragEvent) {
+  emits('node-drag-start', event)
+}
+
+function handleNodeDragStop(event: NodeDragEvent) {
+  emits('node-drag-stop', event)
+}
+
+const isValidConnection: ValidConnectionFunc = (connection) => {
+  if (connection.source === connection.target) return false
+  const connectionId = 'id' in connection ? connection.id : undefined
+  const source = nodes.value.find((node) => node.id === connection.source)
+  const target = nodes.value.find((node) => node.id === connection.target)
+  if (!source || !target) return false
+  const sourcePort = source.data.outputs.find(
+    (port) => port.id === connection.sourceHandle
+  )
+  const targetPort = target.data.inputs.find(
+    (port) => port.id === connection.targetHandle
+  )
+  if (!sourcePort || !targetPort) return false
+  if (
+    edges.value.some(
+      (edge) =>
+        edge.id !== connectionId &&
+        edge.source === connection.source &&
+        edge.sourceHandle === connection.sourceHandle &&
+        edge.target === connection.target &&
+        edge.targetHandle === connection.targetHandle
+    )
+  )
+    return false
+  if (
+    !targetPort.multiple &&
+    edges.value.some(
+      (edge) =>
+        edge.id !== connectionId &&
+        edge.target === connection.target &&
+        edge.targetHandle === connection.targetHandle
+    )
+  )
+    return false
+  const sourceDefinition = getWorkflowNodeDefinition(source.data.kind)
+  const targetDefinition = getWorkflowNodeDefinition(target.data.kind)
+  const sourceSchema = sourceDefinition?.outputs.find(
+    (port) => port.id === sourcePort.id
+  )?.schema
+  const targetSchema = targetDefinition?.inputs.find(
+    (port) => port.id === targetPort.id
+  )?.schema
+  return Boolean(
+    sourceSchema &&
+    targetSchema &&
+    areWorkflowDataSchemasCompatible(sourceSchema, targetSchema)
+  )
+}
+</script>

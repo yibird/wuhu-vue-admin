@@ -1,43 +1,3 @@
-<script setup lang="ts">
-import { CodeEditor } from '@/components/code-editor'
-import type { WorkflowSourceStatus } from '../types'
-
-const props = defineProps<{
-  error?: string
-  open: boolean
-  sourceCode: string
-  sourceStatus: WorkflowSourceStatus
-}>()
-
-defineEmits<{
-  apply: []
-  close: []
-  copy: []
-  download: []
-  format: []
-  'source-change': [value: string]
-}>()
-
-const sourceStats = computed(() => {
-  const lineCount = props.sourceCode
-    ? props.sourceCode.split(/\r?\n/).length
-    : 0
-  return lineCount + ' 行 · ' + props.sourceCode.length + ' 字符'
-})
-
-const statusLabel = computed(() => {
-  if (props.error) return '需要检查'
-  if (props.sourceStatus === 'formatted') return '已格式化'
-  return '已同步'
-})
-
-const statusClass = computed(() => {
-  if (props.error) return 'bg-error-tint text-error'
-  if (props.sourceStatus === 'formatted') return 'bg-warning-tint text-warning'
-  return 'bg-success-tint text-success'
-})
-</script>
-
 <template>
   <a-modal
     :open="open"
@@ -159,3 +119,43 @@ const statusClass = computed(() => {
     </div>
   </a-modal>
 </template>
+
+<script setup lang="ts">
+import { CodeEditor } from '@/components/code-editor'
+import type { WorkflowSourceStatus } from '../types'
+
+const props = defineProps<{
+  error?: string
+  open: boolean
+  sourceCode: string
+  sourceStatus: WorkflowSourceStatus
+}>()
+
+defineEmits<{
+  apply: []
+  close: []
+  copy: []
+  download: []
+  format: []
+  'source-change': [value: string]
+}>()
+
+const sourceStats = computed(() => {
+  const lineCount = props.sourceCode
+    ? props.sourceCode.split(/\r?\n/).length
+    : 0
+  return lineCount + ' 行 · ' + props.sourceCode.length + ' 字符'
+})
+
+const statusLabel = computed(() => {
+  if (props.error) return '需要检查'
+  if (props.sourceStatus === 'formatted') return '已格式化'
+  return '已同步'
+})
+
+const statusClass = computed(() => {
+  if (props.error) return 'bg-error-tint text-error'
+  if (props.sourceStatus === 'formatted') return 'bg-warning-tint text-warning'
+  return 'bg-success-tint text-success'
+})
+</script>

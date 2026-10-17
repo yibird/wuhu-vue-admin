@@ -1,63 +1,3 @@
-<script setup lang="ts">
-import { computed } from 'vue'
-import { Motion } from 'motion-v'
-import { renderIcon } from '@/utils'
-import { workflowDefinitionStatusMeta } from '../../shared/meta'
-import type { WorkflowDefinition } from '../../shared/types'
-
-const props = defineProps<{
-  workflow: WorkflowDefinition
-}>()
-
-const emit = defineEmits<{
-  action: [key: 'delete' | 'duplicate' | 'toggle', workflow: WorkflowDefinition]
-  open: [workflow: WorkflowDefinition]
-}>()
-
-const statusMeta = computed(
-  () => workflowDefinitionStatusMeta[props.workflow.status]
-)
-const actionItems = computed(() => [
-  {
-    key: 'edit',
-    label: '编辑流程',
-    icon: renderIcon('i-lucide:pencil'),
-  },
-  {
-    key: 'duplicate',
-    label: '创建副本',
-    icon: renderIcon('i-lucide:copy-plus'),
-  },
-  {
-    key: 'toggle',
-    label: props.workflow.status === 'disabled' ? '启用流程' : '停用流程',
-    icon: renderIcon(
-      props.workflow.status === 'disabled'
-        ? 'i-lucide:circle-play'
-        : 'i-lucide:circle-pause'
-    ),
-  },
-  { type: 'divider' },
-  {
-    key: 'delete',
-    label: '删除流程',
-    danger: true,
-    icon: renderIcon('i-lucide:trash-2'),
-  },
-])
-
-function handleAction(info: { key: string | number }) {
-  const key = String(info.key)
-  if (key === 'edit') {
-    emit('open', props.workflow)
-    return
-  }
-  if (key === 'delete' || key === 'duplicate' || key === 'toggle') {
-    emit('action', key, props.workflow)
-  }
-}
-</script>
-
 <template>
   <Motion
     as="article"
@@ -68,7 +8,7 @@ function handleAction(info: { key: string | number }) {
     :while-press="{ scale: 0.995 }"
     :transition="{ type: 'spring', stiffness: 380, damping: 30, mass: 0.7 }"
     class="group min-w-0 cursor-pointer overflow-hidden rounded-8 border-1 border-color-2 border-solid bg-container shadow-[var(--w-shadow-card)] outline-none transition-[border-color,box-shadow] duration-motion-base hover:border-primary hover:shadow-[var(--w-shadow-elevated)] focus-visible:border-primary"
-    @click="emit('open', workflow)"
+    @click="emits('open', workflow)"
   >
     <div class="flex items-start gap-12 px-14 pb-12 pt-14">
       <span
@@ -130,3 +70,63 @@ function handleAction(info: { key: string | number }) {
     </div>
   </Motion>
 </template>
+
+<script setup lang="ts">
+import { computed } from 'vue'
+import { Motion } from 'motion-v'
+import { renderIcon } from '@/utils'
+import { workflowDefinitionStatusMeta } from '../../shared/meta'
+import type { WorkflowDefinition } from '../../shared/types'
+
+const props = defineProps<{
+  workflow: WorkflowDefinition
+}>()
+
+const emits = defineEmits<{
+  action: [key: 'delete' | 'duplicate' | 'toggle', workflow: WorkflowDefinition]
+  open: [workflow: WorkflowDefinition]
+}>()
+
+const statusMeta = computed(
+  () => workflowDefinitionStatusMeta[props.workflow.status]
+)
+const actionItems = computed(() => [
+  {
+    key: 'edit',
+    label: '编辑流程',
+    icon: renderIcon('i-lucide:pencil'),
+  },
+  {
+    key: 'duplicate',
+    label: '创建副本',
+    icon: renderIcon('i-lucide:copy-plus'),
+  },
+  {
+    key: 'toggle',
+    label: props.workflow.status === 'disabled' ? '启用流程' : '停用流程',
+    icon: renderIcon(
+      props.workflow.status === 'disabled'
+        ? 'i-lucide:circle-play'
+        : 'i-lucide:circle-pause'
+    ),
+  },
+  { type: 'divider' },
+  {
+    key: 'delete',
+    label: '删除流程',
+    danger: true,
+    icon: renderIcon('i-lucide:trash-2'),
+  },
+])
+
+function handleAction(info: { key: string | number }) {
+  const key = String(info.key)
+  if (key === 'edit') {
+    emits('open', props.workflow)
+    return
+  }
+  if (key === 'delete' || key === 'duplicate' || key === 'toggle') {
+    emits('action', key, props.workflow)
+  }
+}
+</script>

@@ -1,3 +1,28 @@
+<template>
+  <BaseEdge
+    :id="id"
+    :path="path[0]"
+    :marker-end="markerEnd"
+    :style="edgeStyle"
+  />
+
+  <EdgeLabelRenderer>
+    <div
+      v-if="label"
+      class="nodrag nopan inline-flex items-center rounded-full border-1 border-color-secondary border-solid bg-main px-8 py-4 shadow-floating"
+      :style="{
+        pointerEvents: 'all',
+        position: 'absolute',
+        transform: `translate(-50%, -50%) translate(${path[1]}px, ${path[2]}px)`,
+      }"
+    >
+      <span class="max-w-80 truncate text-11px text-muted leading-18px">
+        {{ label }}
+      </span>
+    </div>
+  </EdgeLabelRenderer>
+</template>
+
 <script lang="ts" setup>
 import type { CSSProperties } from 'vue'
 import {
@@ -32,28 +57,3 @@ const edgeStyle = computed<CSSProperties>(() => ({
   vectorEffect: 'non-scaling-stroke',
 }))
 </script>
-
-<template>
-  <BaseEdge
-    :id="id"
-    :path="path[0]"
-    :marker-end="markerEnd"
-    :style="edgeStyle"
-  />
-
-  <EdgeLabelRenderer>
-    <div
-      v-if="label"
-      class="nodrag nopan inline-flex items-center rounded-full border-1 border-color-secondary border-solid bg-main px-8 py-4 shadow-floating"
-      :style="{
-        pointerEvents: 'all',
-        position: 'absolute',
-        transform: `translate(-50%, -50%) translate(${path[1]}px, ${path[2]}px)`,
-      }"
-    >
-      <span class="max-w-80 truncate text-11px text-muted leading-18px">
-        {{ label }}
-      </span>
-    </div>
-  </EdgeLabelRenderer>
-</template>

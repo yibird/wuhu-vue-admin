@@ -1,44 +1,3 @@
-<script setup lang="ts">
-import { Motion } from 'motion-v'
-import { workflowAlertSeverityMeta } from '../../shared/meta'
-import type {
-  WorkflowAlert,
-  WorkflowLatencyRank,
-  WorkflowThroughputPoint,
-} from '../../shared/types'
-
-const props = defineProps<{
-  alerts: WorkflowAlert[]
-  latencyRanks: WorkflowLatencyRank[]
-  throughput: WorkflowThroughputPoint[]
-}>()
-
-const emit = defineEmits<{
-  acknowledge: [id: string]
-  openInstance: [id: string]
-}>()
-
-const maxThroughput = computed(() =>
-  Math.max(...props.throughput.map((item) => item.success + item.failed), 1)
-)
-const maxLatency = computed(() =>
-  Math.max(
-    ...props.latencyRanks.map((item) =>
-      item.unit === 's' ? item.duration * 1000 : item.duration
-    ),
-    1
-  )
-)
-const unresolvedAlertCount = computed(
-  () => props.alerts.filter((item) => !item.acknowledged).length
-)
-
-function latencyPercent(item: WorkflowLatencyRank) {
-  const duration = item.unit === 's' ? item.duration * 1000 : item.duration
-  return `${Math.max(8, (duration / maxLatency.value) * 100)}%`
-}
-</script>
-
 <template>
   <div
     class="grid min-w-0 grid-cols-[minmax(0,1.45fr)_minmax(300px,0.75fr)] gap-10 max-xl:grid-cols-1"
@@ -190,7 +149,7 @@ function latencyPercent(item: WorkflowLatencyRank) {
               <button
                 type="button"
                 class="min-w-0 truncate border-0 bg-transparent p-0 text-left text-xs text-link cursor-pointer"
-                @click="emit('openInstance', alert.instanceId)"
+                @click="emits('openInstance', alert.instanceId)"
               >
                 {{ alert.workflowName }} · {{ alert.instanceId }}
               </button>
@@ -198,7 +157,7 @@ function latencyPercent(item: WorkflowLatencyRank) {
                 v-if="!alert.acknowledged"
                 type="link"
                 size="small"
-                @click="emit('acknowledge', alert.id)"
+                @click="emits('acknowledge', alert.id)"
               >
                 确认
               </a-button>
@@ -209,3 +168,44 @@ function latencyPercent(item: WorkflowLatencyRank) {
     </section>
   </div>
 </template>
+
+<script setup lang="ts">
+import { Motion } from 'motion-v'
+import { workflowAlertSeverityMeta } from '../../shared/meta'
+import type {
+  WorkflowAlert,
+  WorkflowLatencyRank,
+  WorkflowThroughputPoint,
+} from '../../shared/types'
+
+const props = defineProps<{
+  alerts: WorkflowAlert[]
+  latencyRanks: WorkflowLatencyRank[]
+  throughput: WorkflowThroughputPoint[]
+}>()
+
+const emits = defineEmits<{
+  acknowledge: [id: string]
+  openInstance: [id: string]
+}>()
+
+const maxThroughput = computed(() =>
+  Math.max(...props.throughput.map((item) => item.success + item.failed), 1)
+)
+const maxLatency = computed(() =>
+  Math.max(
+    ...props.latencyRanks.map((item) =>
+      item.unit === 's' ? item.duration * 1000 : item.duration
+    ),
+    1
+  )
+)
+const unresolvedAlertCount = computed(
+  () => props.alerts.filter((item) => !item.acknowledged).length
+)
+
+function latencyPercent(item: WorkflowLatencyRank) {
+  const duration = item.unit === 's' ? item.duration * 1000 : item.duration
+  return `${Math.max(8, (duration / maxLatency.value) * 100)}%`
+}
+</script>

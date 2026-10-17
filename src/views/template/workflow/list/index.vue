@@ -1,3 +1,76 @@
+<template>
+  <WView :full="true" :padding="0">
+    <div class="h-full min-h-0 flex flex-col overflow-hidden bg-page">
+      <WorkflowToolbar
+        class="page-enter page-enter--1 flex-none"
+        v-model:keyword="keyword"
+        v-model:owner="ownerFilter"
+        v-model:sort="sortBy"
+        v-model:status="statusFilter"
+        :draft-count="draftCount"
+        :owner-options="owners"
+        :published-count="publishedCount"
+        :total="workflows.length"
+        @create="openDesigner()"
+      />
+
+      <main
+        class="page-enter page-enter--2 min-h-0 flex-1 overflow-y-auto p-12 sm:p-16"
+      >
+        <div
+          v-if="isLoading"
+          class="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6"
+        >
+          <div
+            v-for="index in 12"
+            :key="index"
+            class="h-292 rounded-8 border-1 border-color-2 border-solid bg-container p-14"
+          >
+            <a-skeleton active :paragraph="{ rows: 6 }" />
+          </div>
+        </div>
+
+        <a-empty
+          v-else-if="paginatedWorkflows.length === 0"
+          class="py-72"
+          description="没有符合筛选条件的流程"
+        >
+          <a-button @click="clearFilters">清除筛选</a-button>
+        </a-empty>
+
+        <TransitionGroup
+          v-else
+          name="fade"
+          tag="div"
+          class="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6"
+        >
+          <WorkflowCard
+            v-for="workflow in paginatedWorkflows"
+            :key="workflow.id"
+            :workflow="workflow"
+            @action="handleCardAction"
+            @open="openDesigner"
+          />
+        </TransitionGroup>
+      </main>
+
+      <footer
+        v-if="!isLoading && filteredWorkflows.length > 0"
+        class="page-enter page-enter--3 flex flex-none justify-center border-t-1 border-color-2 border-t-solid px-12 py-10 sm:px-16"
+      >
+        <a-pagination
+          v-model:current="currentPage"
+          v-model:page-size="pageSize"
+          :page-size-options="[12, 24, 36]"
+          :show-total="paginationTotalText"
+          :total="filteredWorkflows.length"
+          show-size-changer
+        />
+      </footer>
+    </div>
+  </WView>
+</template>
+
 <script setup lang="ts">
 import message from 'antdv-next/dist/message/index'
 import Modal from 'antdv-next/dist/modal/index'
@@ -75,76 +148,3 @@ function handleCardAction(
   message.success(workflow.status === 'disabled' ? '流程已启用' : '流程已停用')
 }
 </script>
-
-<template>
-  <WView :full="true" :padding="0">
-    <div class="h-full min-h-0 flex flex-col overflow-hidden bg-page">
-      <WorkflowToolbar
-        class="page-enter page-enter--1 flex-none"
-        v-model:keyword="keyword"
-        v-model:owner="ownerFilter"
-        v-model:sort="sortBy"
-        v-model:status="statusFilter"
-        :draft-count="draftCount"
-        :owner-options="owners"
-        :published-count="publishedCount"
-        :total="workflows.length"
-        @create="openDesigner()"
-      />
-
-      <main
-        class="page-enter page-enter--2 min-h-0 flex-1 overflow-y-auto p-12 sm:p-16"
-      >
-        <div
-          v-if="isLoading"
-          class="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6"
-        >
-          <div
-            v-for="index in 12"
-            :key="index"
-            class="h-292 rounded-8 border-1 border-color-2 border-solid bg-container p-14"
-          >
-            <a-skeleton active :paragraph="{ rows: 6 }" />
-          </div>
-        </div>
-
-        <a-empty
-          v-else-if="paginatedWorkflows.length === 0"
-          class="py-72"
-          description="没有符合筛选条件的流程"
-        >
-          <a-button @click="clearFilters">清除筛选</a-button>
-        </a-empty>
-
-        <TransitionGroup
-          v-else
-          name="fade"
-          tag="div"
-          class="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6"
-        >
-          <WorkflowCard
-            v-for="workflow in paginatedWorkflows"
-            :key="workflow.id"
-            :workflow="workflow"
-            @action="handleCardAction"
-            @open="openDesigner"
-          />
-        </TransitionGroup>
-      </main>
-
-      <footer
-        v-if="!isLoading && filteredWorkflows.length > 0"
-        class="page-enter page-enter--3 flex flex-none justify-center border-t-1 border-color-2 border-t-solid px-12 py-10 sm:px-16"
-      >
-        <a-pagination
-          v-model:current="currentPage"
-          v-model:page-size="pageSize"
-          :page-size-options="[12, 24, 36]"
-          :show-total="paginationTotalText"
-          :total="filteredWorkflows.length"
-          show-size-changer
-        />
-      </footer>
-    </div>
-  </WView>
-</template>

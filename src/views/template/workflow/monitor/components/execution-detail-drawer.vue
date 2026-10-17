@@ -1,37 +1,3 @@
-<script setup lang="ts">
-import { useClipboard } from '@vueuse/core'
-import { message } from 'antdv-next'
-import {
-  workflowRunStatusMeta,
-  workflowStepStatusMeta,
-} from '../../shared/meta'
-import type { WorkflowRunInstance } from '../../shared/types'
-
-const props = defineProps<{
-  instance?: WorkflowRunInstance
-}>()
-
-const emit = defineEmits<{
-  retry: [id: string]
-  terminate: [id: string]
-}>()
-
-const open = defineModel<boolean>('open', { required: true })
-const { copy, isSupported } = useClipboard({ legacy: true })
-const statusMeta = computed(() =>
-  props.instance ? workflowRunStatusMeta[props.instance.status] : undefined
-)
-
-async function copyTraceId() {
-  if (!props.instance || !isSupported.value) {
-    message.warning('当前环境不支持复制')
-    return
-  }
-  await copy(props.instance.traceId)
-  message.success('Trace ID 已复制')
-}
-</script>
-
 <template>
   <a-drawer
     v-model:open="open"
@@ -61,7 +27,7 @@ async function copyTraceId() {
         <a-button
           v-if="['failed', 'terminated'].includes(instance.status)"
           size="small"
-          @click="emit('retry', instance.id)"
+          @click="emits('retry', instance.id)"
         >
           <template #icon>
             <Icon name="i-lucide:rotate-ccw" />
@@ -75,7 +41,7 @@ async function copyTraceId() {
           ok-text="终止"
           ok-type="danger"
           cancel-text="取消"
-          @confirm="emit('terminate', instance.id)"
+          @confirm="emits('terminate', instance.id)"
         >
           <a-button danger size="small">
             <template #icon>
@@ -217,3 +183,37 @@ async function copyTraceId() {
     </div>
   </a-drawer>
 </template>
+
+<script setup lang="ts">
+import { useClipboard } from '@vueuse/core'
+import { message } from 'antdv-next'
+import {
+  workflowRunStatusMeta,
+  workflowStepStatusMeta,
+} from '../../shared/meta'
+import type { WorkflowRunInstance } from '../../shared/types'
+
+const props = defineProps<{
+  instance?: WorkflowRunInstance
+}>()
+
+const emits = defineEmits<{
+  retry: [id: string]
+  terminate: [id: string]
+}>()
+
+const open = defineModel<boolean>('open', { required: true })
+const { copy, isSupported } = useClipboard({ legacy: true })
+const statusMeta = computed(() =>
+  props.instance ? workflowRunStatusMeta[props.instance.status] : undefined
+)
+
+async function copyTraceId() {
+  if (!props.instance || !isSupported.value) {
+    message.warning('当前环境不支持复制')
+    return
+  }
+  await copy(props.instance.traceId)
+  message.success('Trace ID 已复制')
+}
+</script>

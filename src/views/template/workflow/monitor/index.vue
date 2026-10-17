@@ -1,41 +1,3 @@
-<script setup lang="ts">
-import { useLoading } from '@/hooks'
-import { workflowLatencyRanks, workflowThroughput } from '../shared/data'
-import {
-  ExecutionDetailDrawer,
-  ExecutionTable,
-  WorkflowInsights,
-  WorkflowMonitorHeader,
-  WorkflowOverview,
-} from './components'
-import { useWorkflowMonitor } from './hooks'
-
-const { isLoading } = useLoading({ delay: 260 })
-const {
-  alerts,
-  autoRefresh,
-  detailOpen,
-  environmentFilter,
-  failureCount,
-  filteredInstances,
-  keyword,
-  lastRefreshAt,
-  refreshing,
-  runningCount,
-  selectedInstance,
-  statusFilter,
-  successRate,
-  unresolvedAlerts,
-  workflowFilter,
-  workflowOptions,
-  acknowledgeAlert,
-  openInstance,
-  refresh,
-  retryInstance,
-  terminateInstance,
-} = useWorkflowMonitor()
-</script>
-
 <template>
   <WView :full="true" :padding="0">
     <div class="h-full bg-page w-full overflow-x-hidden overflow-y-auto">
@@ -85,3 +47,41 @@ const {
     />
   </WView>
 </template>
+
+<script setup lang="ts">
+import { useLoading } from '@/hooks'
+import { workflowLatencyRanks, workflowThroughput } from '../shared/data'
+import {
+  ExecutionDetailDrawer,
+  ExecutionTable,
+  WorkflowInsights,
+  WorkflowMonitorHeader,
+  WorkflowOverview,
+} from './components'
+import { useWorkflowMonitor } from './hooks'
+
+const { isLoading } = useLoading({ delay: 260 })
+const {
+  alerts,
+  autoRefresh,
+  detailOpen,
+  environmentFilter,
+  failureCount,
+  filteredInstances,
+  keyword,
+  lastRefreshAt,
+  refreshing,
+  runningCount,
+  selectedInstance,
+  statusFilter,
+  successRate,
+  unresolvedAlerts,
+  workflowFilter,
+  workflowOptions,
+  acknowledgeAlert,
+  openInstance,
+  refresh,
+  retryInstance,
+  terminateInstance,
+} = useWorkflowMonitor()
+</script>

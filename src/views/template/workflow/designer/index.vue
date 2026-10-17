@@ -1,92 +1,3 @@
-<script lang="ts" setup>
-import { useRoute } from 'vue-router'
-import {
-  AiPanel as WorkflowAiPanel,
-  Canvas as WorkflowCanvas,
-  ContextMenu as WorkflowContextMenu,
-  Inspector as WorkflowInspector,
-  SourcePanel as WorkflowSourcePanel,
-} from './components'
-import { useWorkflowDesigner } from './hooks'
-import { findWorkflowDefinition } from '../shared/data'
-
-const route = useRoute()
-const workflowId =
-  typeof route.query.workflowId === 'string'
-    ? route.query.workflowId
-    : undefined
-const definition = findWorkflowDefinition(workflowId)
-const initialTitle =
-  route.query.mode === 'create' ? '未命名流程' : definition?.name
-
-const {
-  canRedo,
-  canRemoveSelected,
-  canUndo,
-  cancelWorkflow,
-  contextActions,
-  contextMenu,
-  defaultEdgeOptions,
-  edges,
-  isPaused,
-  isRunning,
-  nodes,
-  nodesLocked,
-  runLogs,
-  validationIssues,
-  schemaError,
-  sourceStatus,
-  selectedNodeData,
-  selectedNodeId,
-  selectedTestCaseId,
-  sourceCode,
-  sourcePanelOpen,
-  testCases,
-  workflowSchema,
-  aiBusy,
-  aiMessages,
-  aiPanelOpen,
-  aiPlan,
-  aiPrompt,
-  aiSuggestions,
-  arrangeNodes,
-  applyAiPlan,
-  applyAiSuggestion,
-  applySourceCode,
-  clearSelectedNode,
-  closeAiPanel,
-  closeContextMenu,
-  closeSourcePanel,
-  copyWorkflowSchema,
-  discardAiPlan,
-  downloadWorkflowSchema,
-  formatSourceCode,
-  generateWorkflowFromPrompt,
-  handleConnect,
-  handleContextAction,
-  handleNodeClick,
-  handleNodeDragStart,
-  handleNodeDragStop,
-  handleSourceCodeChange,
-  openEdgeContextMenu,
-  openNodeContextMenu,
-  openPaneContextMenu,
-  removeSelectedNode,
-  publishWorkflow,
-  resumeWorkflow,
-  runWorkflow,
-  shareWorkflow,
-  selectTestCase,
-  toggleAiPanel,
-  toggleNodesLocked,
-  toggleSourcePanel,
-  updateSelectedConfig,
-  updateSelectedData,
-  redoWorkflow,
-  undoWorkflow,
-} = useWorkflowDesigner({ initialTitle })
-</script>
-
 <template>
   <div
     class="workflow-designer h-full min-h-0 flex flex-col gap-10 overflow-hidden bg-page p-10 max-sm:p-8"
@@ -186,6 +97,95 @@ const {
     />
   </div>
 </template>
+
+<script lang="ts" setup>
+import { useRoute } from 'vue-router'
+import {
+  AiPanel as WorkflowAiPanel,
+  Canvas as WorkflowCanvas,
+  ContextMenu as WorkflowContextMenu,
+  Inspector as WorkflowInspector,
+  SourcePanel as WorkflowSourcePanel,
+} from './components'
+import { useWorkflowDesigner } from './hooks'
+import { findWorkflowDefinition } from '../shared/data'
+
+const route = useRoute()
+const workflowId =
+  typeof route.query.workflowId === 'string'
+    ? route.query.workflowId
+    : undefined
+const definition = findWorkflowDefinition(workflowId)
+const initialTitle =
+  route.query.mode === 'create' ? '未命名流程' : definition?.name
+
+const {
+  canRedo,
+  canRemoveSelected,
+  canUndo,
+  cancelWorkflow,
+  contextActions,
+  contextMenu,
+  defaultEdgeOptions,
+  edges,
+  isPaused,
+  isRunning,
+  nodes,
+  nodesLocked,
+  runLogs,
+  validationIssues,
+  schemaError,
+  sourceStatus,
+  selectedNodeData,
+  selectedNodeId,
+  selectedTestCaseId,
+  sourceCode,
+  sourcePanelOpen,
+  testCases,
+  workflowSchema,
+  aiBusy,
+  aiMessages,
+  aiPanelOpen,
+  aiPlan,
+  aiPrompt,
+  aiSuggestions,
+  arrangeNodes,
+  applyAiPlan,
+  applyAiSuggestion,
+  applySourceCode,
+  clearSelectedNode,
+  closeAiPanel,
+  closeContextMenu,
+  closeSourcePanel,
+  copyWorkflowSchema,
+  discardAiPlan,
+  downloadWorkflowSchema,
+  formatSourceCode,
+  generateWorkflowFromPrompt,
+  handleConnect,
+  handleContextAction,
+  handleNodeClick,
+  handleNodeDragStart,
+  handleNodeDragStop,
+  handleSourceCodeChange,
+  openEdgeContextMenu,
+  openNodeContextMenu,
+  openPaneContextMenu,
+  removeSelectedNode,
+  publishWorkflow,
+  resumeWorkflow,
+  runWorkflow,
+  shareWorkflow,
+  selectTestCase,
+  toggleAiPanel,
+  toggleNodesLocked,
+  toggleSourcePanel,
+  updateSelectedConfig,
+  updateSelectedData,
+  redoWorkflow,
+  undoWorkflow,
+} = useWorkflowDesigner({ initialTitle })
+</script>
 
 <style lang="less" scoped>
 @import './token.less';
