@@ -1,140 +1,3 @@
-<script lang="ts" setup>
-import { Icon } from '@/components/icon'
-import { useFileContentActions } from '../../hooks'
-import Breadcrumb from './breadcrumb.vue'
-import DetailModal from './detail-modal.vue'
-import PreviewModal from './preview-modal.vue'
-import Tree from './tree.vue'
-import Grid from './grid.vue'
-import {
-  type FileBreadcrumbItem,
-  type FileCategory,
-  type FileSelectionKey,
-  type FileSortBy,
-  type FileViewMode,
-  type IFile,
-} from '../types'
-import {
-  fileCategoryOptions,
-  fileSortOptions,
-  fileViewOptions,
-  getFileCategoryLabel,
-} from '../utils'
-import type { UploadFile } from 'antdv-next'
-
-const activeCategory = defineModel<FileCategory>('activeCategory', {
-  required: true,
-})
-defineModel<string>('currentDirectoryId', { required: true })
-const keyword = defineModel<string>('keyword', { required: true })
-const sortBy = defineModel<FileSortBy>('sortBy', { required: true })
-const viewMode = defineModel<FileViewMode>('viewMode', { required: true })
-const selectedKeys = defineModel<FileSelectionKey[]>('selectedKeys', {
-  required: true,
-})
-const previewFile = defineModel<IFile | null>('previewFile', {
-  required: true,
-})
-const renameFile = defineModel<IFile | null>('renameFile', {
-  required: true,
-})
-const renameValue = defineModel<string>('renameValue', { required: true })
-
-const props = defineProps<{
-  files: IFile[]
-  treeFiles: IFile[]
-  breadcrumbItems: FileBreadcrumbItem[]
-  totalCount: number
-  getFileById: (id: string) => IFile | undefined
-  getAccessLockedFile: (file: IFile) => IFile | undefined
-  getFilePathText: (file: IFile) => string
-}>()
-
-const emit = defineEmits<{
-  upload: [file: UploadFile | File]
-  rename: [file: IFile]
-  submitRename: []
-  updateEncryption: [file: IFile, password?: string]
-  delete: [file: IFile]
-  batchDelete: []
-  download: [file: IFile]
-  batchDownload: []
-  copyLink: [file: IFile]
-  copySelectedNames: []
-  restore: [file: IFile]
-  batchRestore: []
-  toggleFavorite: [file: IFile]
-  selectAllVisible: []
-  clearSelection: []
-  changeCategory: [category: FileCategory]
-  changeDirectory: [id: string]
-  resetView: []
-}>()
-
-const {
-  batchMenuItems,
-  currentVisibleCount,
-  detailFile,
-  detailPathText,
-  encryptionFile,
-  encryptionPassword,
-  encryptionTitle,
-  isRecycleBin,
-  selectedCountText,
-  unlockError,
-  unlockFile,
-  unlockPassword,
-  unlockTitle,
-  beforeUpload,
-  cancelEncryption,
-  cancelUnlock,
-  changeDirectoryWithAccess,
-  copyFileLinkWithAccess,
-  deleteFileWithAccess,
-  detailFileWithAccess,
-  downloadFileWithAccess,
-  handleBatchAction,
-  handleCategorySelect,
-  openDirectoryWithAccess,
-  openEncryptionModal,
-  previewFileWithAccess,
-  renameFileWithAccess,
-  restoreFile,
-  submitEncryption,
-  submitUnlock,
-  toggleFavoriteWithAccess,
-} = useFileContentActions({
-  activeCategory,
-  files: toRef(props, 'files'),
-  treeFiles: toRef(props, 'treeFiles'),
-  selectedKeys,
-  viewMode,
-  previewFile,
-  getFileById: props.getFileById,
-  getAccessLockedFile: props.getAccessLockedFile,
-  getFilePathText: props.getFilePathText,
-  handlers: {
-    upload: (file) => emit('upload', file),
-    rename: (file) => emit('rename', file),
-    updateEncryption: (file, password) =>
-      emit('updateEncryption', file, password),
-    delete: (file) => emit('delete', file),
-    batchDelete: () => emit('batchDelete'),
-    download: (file) => emit('download', file),
-    batchDownload: () => emit('batchDownload'),
-    copyLink: (file) => emit('copyLink', file),
-    copySelectedNames: () => emit('copySelectedNames'),
-    restore: (file) => emit('restore', file),
-    batchRestore: () => emit('batchRestore'),
-    toggleFavorite: (file) => emit('toggleFavorite', file),
-    selectAllVisible: () => emit('selectAllVisible'),
-    clearSelection: () => emit('clearSelection'),
-    changeCategory: (category) => emit('changeCategory', category),
-    changeDirectory: (id) => emit('changeDirectory', id),
-  },
-})
-</script>
-
 <template>
   <div
     class="file-manager-content h-full min-h-0 flex flex-col gap-10 overflow-hidden rounded-4 bg-container"
@@ -146,7 +9,7 @@ const {
         v-if="viewMode === 'grid'"
         :items="breadcrumbItems"
         @change-directory="changeDirectoryWithAccess"
-        @reset-view="emit('resetView')"
+        @reset-view="emits('resetView')"
       />
       <div
         class="mt-12 flex flex-wrap items-center justify-between gap-10 pb-12 max-[575px]:mt-0"
@@ -340,13 +203,150 @@ const {
     ok-text="保存"
     cancel-text="取消"
     destroy-on-hidden
-    @ok="emit('submitRename')"
+    @ok="emits('submitRename')"
     @cancel="renameFile = null"
   >
     <a-input
       v-model:value="renameValue"
       placeholder="请输入文件名称"
-      @press-enter="emit('submitRename')"
+      @press-enter="emits('submitRename')"
     />
   </a-modal>
 </template>
+
+<script lang="ts" setup>
+import { Icon } from '@/components/icon'
+import { useFileContentActions } from '../../hooks'
+import Breadcrumb from './breadcrumb.vue'
+import DetailModal from './detail-modal.vue'
+import PreviewModal from './preview-modal.vue'
+import Tree from './tree.vue'
+import Grid from './grid.vue'
+import {
+  type FileBreadcrumbItem,
+  type FileCategory,
+  type FileSelectionKey,
+  type FileSortBy,
+  type FileViewMode,
+  type IFile,
+} from '../types'
+import {
+  fileCategoryOptions,
+  fileSortOptions,
+  fileViewOptions,
+  getFileCategoryLabel,
+} from '../utils'
+import type { UploadFile } from 'antdv-next'
+
+const activeCategory = defineModel<FileCategory>('activeCategory', {
+  required: true,
+})
+defineModel<string>('currentDirectoryId', { required: true })
+const keyword = defineModel<string>('keyword', { required: true })
+const sortBy = defineModel<FileSortBy>('sortBy', { required: true })
+const viewMode = defineModel<FileViewMode>('viewMode', { required: true })
+const selectedKeys = defineModel<FileSelectionKey[]>('selectedKeys', {
+  required: true,
+})
+const previewFile = defineModel<IFile | null>('previewFile', {
+  required: true,
+})
+const renameFile = defineModel<IFile | null>('renameFile', {
+  required: true,
+})
+const renameValue = defineModel<string>('renameValue', { required: true })
+
+const props = defineProps<{
+  files: IFile[]
+  treeFiles: IFile[]
+  breadcrumbItems: FileBreadcrumbItem[]
+  totalCount: number
+  getFileById: (id: string) => IFile | undefined
+  getAccessLockedFile: (file: IFile) => IFile | undefined
+  getFilePathText: (file: IFile) => string
+}>()
+
+const emits = defineEmits<{
+  upload: [file: UploadFile | File]
+  rename: [file: IFile]
+  submitRename: []
+  updateEncryption: [file: IFile, password?: string]
+  delete: [file: IFile]
+  batchDelete: []
+  download: [file: IFile]
+  batchDownload: []
+  copyLink: [file: IFile]
+  copySelectedNames: []
+  restore: [file: IFile]
+  batchRestore: []
+  toggleFavorite: [file: IFile]
+  selectAllVisible: []
+  clearSelection: []
+  changeCategory: [category: FileCategory]
+  changeDirectory: [id: string]
+  resetView: []
+}>()
+
+const {
+  batchMenuItems,
+  currentVisibleCount,
+  detailFile,
+  detailPathText,
+  encryptionFile,
+  encryptionPassword,
+  encryptionTitle,
+  isRecycleBin,
+  selectedCountText,
+  unlockError,
+  unlockFile,
+  unlockPassword,
+  unlockTitle,
+  beforeUpload,
+  cancelEncryption,
+  cancelUnlock,
+  changeDirectoryWithAccess,
+  copyFileLinkWithAccess,
+  deleteFileWithAccess,
+  detailFileWithAccess,
+  downloadFileWithAccess,
+  handleBatchAction,
+  handleCategorySelect,
+  openDirectoryWithAccess,
+  openEncryptionModal,
+  previewFileWithAccess,
+  renameFileWithAccess,
+  restoreFile,
+  submitEncryption,
+  submitUnlock,
+  toggleFavoriteWithAccess,
+} = useFileContentActions({
+  activeCategory,
+  files: toRef(props, 'files'),
+  treeFiles: toRef(props, 'treeFiles'),
+  selectedKeys,
+  viewMode,
+  previewFile,
+  getFileById: props.getFileById,
+  getAccessLockedFile: props.getAccessLockedFile,
+  getFilePathText: props.getFilePathText,
+  handlers: {
+    upload: (file) => emits('upload', file),
+    rename: (file) => emits('rename', file),
+    updateEncryption: (file, password) =>
+      emits('updateEncryption', file, password),
+    delete: (file) => emits('delete', file),
+    batchDelete: () => emits('batchDelete'),
+    download: (file) => emits('download', file),
+    batchDownload: () => emits('batchDownload'),
+    copyLink: (file) => emits('copyLink', file),
+    copySelectedNames: () => emits('copySelectedNames'),
+    restore: (file) => emits('restore', file),
+    batchRestore: () => emits('batchRestore'),
+    toggleFavorite: (file) => emits('toggleFavorite', file),
+    selectAllVisible: () => emits('selectAllVisible'),
+    clearSelection: () => emits('clearSelection'),
+    changeCategory: (category) => emits('changeCategory', category),
+    changeDirectory: (id) => emits('changeDirectory', id),
+  },
+})
+</script>

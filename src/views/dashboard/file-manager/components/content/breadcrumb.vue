@@ -1,17 +1,3 @@
-<script lang="ts" setup>
-import { Icon } from '@/components/icon'
-import type { FileBreadcrumbItem } from '../types'
-
-defineProps<{
-  items: FileBreadcrumbItem[]
-}>()
-
-const emit = defineEmits<{
-  changeDirectory: [id: string]
-  resetView: []
-}>()
-</script>
-
 <template>
   <a-breadcrumb
     class="min-h-24 flex items-center leading-24px max-[575px]:hidden [&_.ant-breadcrumb-separator]:(inline-flex items-center leading-24px)"
@@ -22,7 +8,7 @@ const emit = defineEmits<{
       <button
         type="button"
         class="group h-24 inline-flex cursor-pointer items-center gap-4 border-none bg-transparent p-0 text-secondary leading-24px outline-none transition-colors hover:text-primary focus-visible:text-primary active:scale-98"
-        @click="emit('resetView')"
+        @click="emits('resetView')"
       >
         <Icon
           name="i-lucide:folder-open"
@@ -41,7 +27,7 @@ const emit = defineEmits<{
       <button
         type="button"
         class="group h-24 inline-flex cursor-pointer items-center gap-4 border-none bg-transparent p-0 text-primary leading-24px outline-none transition-colors hover:text-primary focus-visible:text-primary active:scale-98"
-        @click="emit('changeDirectory', item.id)"
+        @click="emits('changeDirectory', item.id)"
       >
         <Icon
           name="i-lucide:folder"
@@ -53,3 +39,17 @@ const emit = defineEmits<{
     </a-breadcrumb-item>
   </a-breadcrumb>
 </template>
+
+<script lang="ts" setup>
+import { Icon } from '@/components/icon'
+import type { FileBreadcrumbItem } from '../types'
+
+defineProps<{
+  items: FileBreadcrumbItem[]
+}>()
+
+const emits = defineEmits<{
+  changeDirectory: [id: string]
+  resetView: []
+}>()
+</script>

@@ -1,57 +1,3 @@
-<script lang="ts" setup>
-import { LayoutGroup, Motion, MotionConfig } from 'motion-v'
-import { Icon } from '@/components/icon'
-import { fileCategoryOptions } from '../utils'
-import type { FileCategory, FileCategoryStats } from '../types'
-
-const props = defineProps<{
-  activeCategory: FileCategory
-  stats: FileCategoryStats
-}>()
-
-const emit = defineEmits<{
-  'update:activeCategory': [category: FileCategory]
-}>()
-
-const onlyUsed = shallowRef(false)
-
-const categoryPress = { scale: 0.985 }
-const categorySelectionTransition = {
-  type: 'tween' as const,
-  duration: 0.26,
-  ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
-}
-const categoryPressTransition = {
-  type: 'spring' as const,
-  stiffness: 520,
-  damping: 38,
-  mass: 0.4,
-}
-const categoryItemTransition = {
-  layout: categorySelectionTransition,
-  scale: categoryPressTransition,
-}
-
-const iconMap: Record<FileCategory, string> = {
-  all: 'i-lucide:files',
-  image: 'i-lucide:image',
-  document: 'i-lucide:file-text',
-  video: 'i-lucide:film',
-  audio: 'i-lucide:music-2',
-  archive: 'i-lucide:archive',
-  code: 'i-lucide:code-2',
-  trash: 'i-lucide:trash-2',
-  other: 'i-lucide:file-question',
-}
-
-const visibleItems = computed(() => {
-  if (!onlyUsed.value) return fileCategoryOptions
-  return fileCategoryOptions.filter((item) => {
-    return item.value === 'all' || props.stats[item.value].count > 0
-  })
-})
-</script>
-
 <template>
   <div
     class="file-list min-h-0 flex flex-1 flex-col overflow-hidden max-[1199px]:min-h-120"
@@ -100,7 +46,7 @@ const visibleItems = computed(() => {
                 ? 'file-list__item--active text-primary font-medium dark:text-main'
                 : 'hover:bg-hover hover:text-main',
             ]"
-            @click="emit('update:activeCategory', item.value)"
+            @click="emits('update:activeCategory', item.value)"
           >
             <Motion
               v-if="activeCategory === item.value"
@@ -139,3 +85,57 @@ const visibleItems = computed(() => {
     </div>
   </div>
 </template>
+
+<script lang="ts" setup>
+import { LayoutGroup, Motion, MotionConfig } from 'motion-v'
+import { Icon } from '@/components/icon'
+import { fileCategoryOptions } from '../utils'
+import type { FileCategory, FileCategoryStats } from '../types'
+
+const props = defineProps<{
+  activeCategory: FileCategory
+  stats: FileCategoryStats
+}>()
+
+const emits = defineEmits<{
+  'update:activeCategory': [category: FileCategory]
+}>()
+
+const onlyUsed = shallowRef(false)
+
+const categoryPress = { scale: 0.985 }
+const categorySelectionTransition = {
+  type: 'tween' as const,
+  duration: 0.26,
+  ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
+}
+const categoryPressTransition = {
+  type: 'spring' as const,
+  stiffness: 520,
+  damping: 38,
+  mass: 0.4,
+}
+const categoryItemTransition = {
+  layout: categorySelectionTransition,
+  scale: categoryPressTransition,
+}
+
+const iconMap: Record<FileCategory, string> = {
+  all: 'i-lucide:files',
+  image: 'i-lucide:image',
+  document: 'i-lucide:file-text',
+  video: 'i-lucide:film',
+  audio: 'i-lucide:music-2',
+  archive: 'i-lucide:archive',
+  code: 'i-lucide:code-2',
+  trash: 'i-lucide:trash-2',
+  other: 'i-lucide:file-question',
+}
+
+const visibleItems = computed(() => {
+  if (!onlyUsed.value) return fileCategoryOptions
+  return fileCategoryOptions.filter((item) => {
+    return item.value === 'all' || props.stats[item.value].count > 0
+  })
+})
+</script>

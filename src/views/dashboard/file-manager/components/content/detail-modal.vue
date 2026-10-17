@@ -1,30 +1,3 @@
-<script setup lang="ts">
-import { FILE_NODE_TYPE, type IFile } from '../types'
-import {
-  formatFileSize,
-  getFileCategoryLabel,
-  getFileExtension,
-} from '../utils'
-
-const file = defineModel<IFile | null>('file', {
-  required: true,
-})
-
-defineProps<{
-  pathText: string
-}>()
-
-const detailTitle = computed(() => file.value?.fileName ?? '文件详情')
-const fileExtension = computed(() => {
-  if (!file.value || file.value.type === FILE_NODE_TYPE.DIRECTORY) return '-'
-  return (
-    file.value.fileExtension?.toUpperCase() ||
-    getFileExtension(file.value.fileName).toUpperCase() ||
-    '-'
-  )
-})
-</script>
-
 <template>
   <a-modal
     :open="!!file"
@@ -142,3 +115,30 @@ const fileExtension = computed(() => {
     </a-descriptions>
   </a-modal>
 </template>
+
+<script setup lang="ts">
+import { FILE_NODE_TYPE, type IFile } from '../types'
+import {
+  formatFileSize,
+  getFileCategoryLabel,
+  getFileExtension,
+} from '../utils'
+
+const file = defineModel<IFile | null>('file', {
+  required: true,
+})
+
+defineProps<{
+  pathText: string
+}>()
+
+const detailTitle = computed(() => file.value?.fileName ?? '文件详情')
+const fileExtension = computed(() => {
+  if (!file.value || file.value.type === FILE_NODE_TYPE.DIRECTORY) return '-'
+  return (
+    file.value.fileExtension?.toUpperCase() ||
+    getFileExtension(file.value.fileName).toUpperCase() ||
+    '-'
+  )
+})
+</script>

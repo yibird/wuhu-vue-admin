@@ -1,30 +1,3 @@
-<script lang="ts" setup>
-import { Icon } from '@/components/icon'
-import { formatFileSize } from '../utils'
-
-const props = defineProps<{
-  usedSize: number
-  totalSize: number
-}>()
-
-const percent = computed(() => {
-  if (props.totalSize <= 0) return 0
-  return Math.min(props.usedSize / props.totalSize, 1)
-})
-
-const usageRatio = computed(() => {
-  if (props.totalSize <= 0) return 0
-  return props.usedSize / props.totalSize
-})
-const percentText = computed(() => `${Math.round(usageRatio.value * 100)}%`)
-const isOverLimit = computed(() => props.usedSize > props.totalSize)
-const progressColor = computed(() =>
-  isOverLimit.value
-    ? 'rgb(var(--w-color-error))'
-    : 'rgb(var(--w-color-primary))'
-)
-</script>
-
 <template>
   <div
     class="border-t-1 border-t-solid border-color-1 px-16 py-14 transition-colors duration-motion-base ease-motion-standard motion-reduce:transition-none max-[1199px]:(border-t-0 border-l-1 border-l-solid border-color-1 px-16 py-12) max-[767px]:(border-t-1 border-l-0 border-t-solid border-color-1 px-12 py-12)"
@@ -63,3 +36,30 @@ const progressColor = computed(() =>
     </div>
   </div>
 </template>
+
+<script lang="ts" setup>
+import { Icon } from '@/components/icon'
+import { formatFileSize } from '../utils'
+
+const props = defineProps<{
+  usedSize: number
+  totalSize: number
+}>()
+
+const percent = computed(() => {
+  if (props.totalSize <= 0) return 0
+  return Math.min(props.usedSize / props.totalSize, 1)
+})
+
+const usageRatio = computed(() => {
+  if (props.totalSize <= 0) return 0
+  return props.usedSize / props.totalSize
+})
+const percentText = computed(() => `${Math.round(usageRatio.value * 100)}%`)
+const isOverLimit = computed(() => props.usedSize > props.totalSize)
+const progressColor = computed(() =>
+  isOverLimit.value
+    ? 'rgb(var(--w-color-error))'
+    : 'rgb(var(--w-color-primary))'
+)
+</script>

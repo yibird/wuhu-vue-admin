@@ -1,3 +1,196 @@
+<template>
+  <div
+    ref="gridRef"
+    class="file-grid min-h-0 w-full h-full overflow-x-hidden overflow-y-auto outline-none"
+    :class="
+      viewMode === 'grid'
+        ? 'relative grid content-start auto-rows-max select-none grid-cols-[repeat(auto-fill,minmax(148px,1fr))] gap-10 py-10 px-2 max-[575px]:grid-cols-[repeat(auto-fill,minmax(118px,1fr))] max-[575px]:gap-8'
+        : 'relative flex select-none flex-col gap-8 py-10'
+    "
+    tabindex="0"
+    @keydown="handleKeyDown"
+  >
+    <div
+      v-if="dragSelection"
+      class="pointer-events-none absolute left-0 top-0 z-20 rounded-4 border-1 border-primary border-solid bg-primary/12 will-change-transform"
+      :style="dragSelectionStyle"
+    ></div>
+
+    <a-empty
+      v-if="items.length === 0"
+      class="col-span-full py-72"
+      description="暂无文件"
+    />
+
+    <template v-else-if="viewMode === 'grid'">
+      <a-dropdown
+        v-for="item in items"
+        :key="item.id"
+        :trigger="['contextmenu']"
+        :menu="getActionMenu(item)"
+      >
+        <Motion
+          as="div"
+          layout="position"
+          v-bind="motions.reorder"
+          role="button"
+          tabindex="-1"
+          :while-hover="gridItemHover"
+          :while-press="itemPress"
+          :data-file-manager-item-id="item.id"
+          :class="[
+            'file-grid__card group relative min-w-0 cursor-pointer rounded-6 border-1 border-solid bg-container-secondary p-10 text-left outline-none transition-[background-color,border-color,box-shadow] duration-motion-base hover:(border-primary bg-primary-tint shadow-all-sm) focus-visible:border-primary',
+            isSelected(item)
+              ? 'border-primary bg-primary-tint text-primary'
+              : 'border-color-1 text-main',
+          ]"
+          @click="handleGridItemClick(item, $event)"
+          @keydown.enter.prevent="handleDoubleClick(item)"
+          @keydown.space.prevent="handleItemClick(item, $event)"
+          @contextmenu.stop
+        >
+          <div class="absolute left-8 top-8 z-1">
+            <a-checkbox
+              v-if="isFile(item)"
+              :checked="isSelected(item)"
+              @click.stop
+              @change="handleCheckboxChange(item, $event.target.checked)"
+            />
+          </div>
+          <div class="absolute right-8 top-8 z-1 flex items-center gap-4">
+            <Icon
+              v-if="item.favorite"
+              name="i-lucide:star"
+              class="text-warning"
+            />
+            <Icon
+              v-if="item.encrypted"
+              name="i-lucide:lock-keyhole"
+              class="text-warning"
+            />
+            <a-dropdown :trigger="['click']" :menu="getActionMenu(item)">
+              <button
+                type="button"
+                data-file-manager-action
+                class="button size-26 translate-y-1 rounded-4 text-secondary opacity-0 transition-[background-color,color,opacity,transform] group-hover:translate-y-0 group-hover:opacity-100 hover:(bg-hover text-primary) focus-visible:(translate-y-0 bg-hover text-primary opacity-100)"
+                aria-label="更多操作"
+                @pointerdown.stop
+                @click.stop
+                @dblclick.stop
+                @contextmenu.stop
+              >
+                <Icon name="i-lucide:more-horizontal" :size="16" />
+              </button>
+            </a-dropdown>
+          </div>
+          <div class="mt-18 flex flex-col items-center text-center">
+            <span :class="getPreviewClass(item, 'grid')">
+              <img
+                :src="getIcon(item)"
+                :alt="item.fileName"
+                draggable="false"
+                :class="getImageClass(item, 'grid')"
+              />
+            </span>
+            <span class="mt-10 w-full truncate text-sm text-main">
+              {{ getFileNameWithoutExtension(item.fileName) }}
+            </span>
+            <span class="mt-4 text-xs text-secondary">
+              {{ isDirectory(item) ? '文件夹' : formatFileSize(item.fileSize) }}
+            </span>
+          </div>
+        </Motion>
+      </a-dropdown>
+    </template>
+
+    <template v-else>
+      <a-dropdown
+        v-for="item in items"
+        :key="item.id"
+        :trigger="['contextmenu']"
+        :menu="getActionMenu(item)"
+      >
+        <Motion
+          as="div"
+          layout="position"
+          v-bind="motions.reorder"
+          :initial="{ opacity: 0, x: -4 }"
+          :animate="{ opacity: 1, x: 0 }"
+          :while-hover="listItemHover"
+          :while-press="itemPress"
+          :data-file-manager-item-id="item.id"
+          :class="[
+            'group min-w-0 flex cursor-pointer items-center gap-12 rounded-6 border-1 border-solid bg-container-secondary px-12 py-10 transition-colors hover:(border-primary bg-primary-tint) max-[575px]:(items-start gap-10)',
+            isSelected(item)
+              ? 'border-primary bg-primary-tint'
+              : 'border-color-1',
+          ]"
+          @click="handleItemClick(item, $event)"
+          @dblclick="handleDoubleClick(item)"
+          @contextmenu.stop
+        >
+          <a-checkbox
+            v-if="isFile(item)"
+            :checked="isSelected(item)"
+            @click.stop
+            @change="handleCheckboxChange(item, $event.target.checked)"
+          />
+          <span :class="getPreviewClass(item, 'list')">
+            <img
+              :src="getIcon(item)"
+              :alt="item.fileName"
+              draggable="false"
+              :class="getImageClass(item, 'list')"
+            />
+          </span>
+          <div class="min-w-0 flex-1">
+            <div class="flex items-center gap-6">
+              <span class="min-w-0 truncate text-sm text-main font-medium">
+                {{ item.fileName }}
+              </span>
+              <Icon
+                v-if="item.favorite"
+                name="i-lucide:star"
+                class="shrink-0 text-warning"
+              />
+              <Icon
+                v-if="item.encrypted"
+                name="i-lucide:lock-keyhole"
+                class="shrink-0 text-warning"
+              />
+            </div>
+            <div
+              class="mt-4 flex flex-wrap items-center gap-x-12 gap-y-4 text-xs text-secondary"
+            >
+              <template v-if="isDirectory(item)">
+                <span>文件夹</span>
+                <span>双击打开</span>
+              </template>
+              <template v-else>
+                <span>{{ getFileCategoryLabel(item.fileType) }}</span>
+                <span>{{ formatFileSize(item.fileSize) }}</span>
+                <span>{{ item.creator }}</span>
+                <span>{{ item.updateTime }}</span>
+              </template>
+            </div>
+          </div>
+          <a-dropdown :trigger="['click']" :menu="getActionMenu(item)">
+            <button
+              type="button"
+              data-file-manager-action
+              class="button size-30 rounded-4 text-secondary transition hover:(bg-hover text-primary)"
+              @click.stop
+              @contextmenu.stop
+            >
+              <Icon name="i-lucide:more-horizontal" :size="16" />
+            </button>
+          </a-dropdown>
+        </Motion>
+      </a-dropdown>
+    </template>
+  </div>
+</template>
+
 <script lang="ts" setup>
 import { Motion } from 'motion-v'
 import { motions } from '@/components/animated'
@@ -36,7 +229,7 @@ const props = defineProps<{
   viewMode: FileViewMode
 }>()
 
-const emit = defineEmits<{
+const emits = defineEmits<{
   openDirectory: [directory: IFile]
   preview: [file: IFile]
   detail: [file: IFile]
@@ -134,10 +327,10 @@ function isSelected(file: IFile) {
 
 function handleDoubleClick(file: IFile) {
   if (isDirectory(file)) {
-    emit('openDirectory', file)
+    emits('openDirectory', file)
     return
   }
-  emit('preview', file)
+  emits('preview', file)
 }
 
 function handleGridItemClick(file: IFile, event: MouseEvent) {
@@ -316,226 +509,35 @@ function renderMenuIcon(name: string) {
 function handleAction(file: IFile, { key }: { key: string }) {
   switch (key) {
     case 'open':
-      emit('openDirectory', file)
+      emits('openDirectory', file)
       break
     case 'preview':
-      emit('preview', file)
+      emits('preview', file)
       break
     case 'detail':
-      emit('detail', file)
+      emits('detail', file)
       break
     case 'rename':
-      emit('rename', file)
+      emits('rename', file)
       break
     case 'favorite':
-      emit('toggleFavorite', file)
+      emits('toggleFavorite', file)
       break
     case 'encrypt':
-      emit('encrypt', file)
+      emits('encrypt', file)
       break
     case 'copy':
-      emit('copyLink', file)
+      emits('copyLink', file)
       break
     case 'download':
-      emit('download', file)
+      emits('download', file)
       break
     case 'restore':
-      emit('restore', file)
+      emits('restore', file)
       break
     case 'delete':
-      emit('delete', file)
+      emits('delete', file)
       break
   }
 }
 </script>
-
-<template>
-  <div
-    ref="gridRef"
-    class="file-grid min-h-0 w-full h-full overflow-x-hidden overflow-y-auto outline-none"
-    :class="
-      viewMode === 'grid'
-        ? 'relative grid content-start auto-rows-max select-none grid-cols-[repeat(auto-fill,minmax(148px,1fr))] gap-10 py-10 px-2 max-[575px]:grid-cols-[repeat(auto-fill,minmax(118px,1fr))] max-[575px]:gap-8'
-        : 'relative flex select-none flex-col gap-8 py-10'
-    "
-    tabindex="0"
-    @keydown="handleKeyDown"
-  >
-    <div
-      v-if="dragSelection"
-      class="pointer-events-none absolute left-0 top-0 z-20 rounded-4 border-1 border-primary border-solid bg-primary/12 will-change-transform"
-      :style="dragSelectionStyle"
-    ></div>
-
-    <a-empty
-      v-if="items.length === 0"
-      class="col-span-full py-72"
-      description="暂无文件"
-    />
-
-    <template v-else-if="viewMode === 'grid'">
-      <a-dropdown
-        v-for="item in items"
-        :key="item.id"
-        :trigger="['contextmenu']"
-        :menu="getActionMenu(item)"
-      >
-        <Motion
-          as="div"
-          layout="position"
-          v-bind="motions.reorder"
-          role="button"
-          tabindex="-1"
-          :while-hover="gridItemHover"
-          :while-press="itemPress"
-          :data-file-manager-item-id="item.id"
-          :class="[
-            'file-grid__card group relative min-w-0 cursor-pointer rounded-6 border-1 border-solid bg-container-secondary p-10 text-left outline-none transition-[background-color,border-color,box-shadow] duration-motion-base hover:(border-primary bg-selected shadow-all-sm) focus-visible:border-primary',
-            isSelected(item)
-              ? 'border-primary bg-selected text-primary'
-              : 'border-color-1 text-main',
-          ]"
-          @click="handleGridItemClick(item, $event)"
-          @keydown.enter.prevent="handleDoubleClick(item)"
-          @keydown.space.prevent="handleItemClick(item, $event)"
-          @contextmenu.stop
-        >
-          <div class="absolute left-8 top-8 z-1">
-            <a-checkbox
-              v-if="isFile(item)"
-              :checked="isSelected(item)"
-              @click.stop
-              @change="handleCheckboxChange(item, $event.target.checked)"
-            />
-          </div>
-          <div class="absolute right-8 top-8 z-1 flex items-center gap-4">
-            <Icon
-              v-if="item.favorite"
-              name="i-lucide:star"
-              class="text-warning"
-            />
-            <Icon
-              v-if="item.encrypted"
-              name="i-lucide:lock-keyhole"
-              class="text-warning"
-            />
-            <a-dropdown :trigger="['click']" :menu="getActionMenu(item)">
-              <button
-                type="button"
-                data-file-manager-action
-                class="button size-26 translate-y-1 rounded-4 text-secondary opacity-0 transition-[background-color,color,opacity,transform] group-hover:translate-y-0 group-hover:opacity-100 hover:(bg-hover text-primary) focus-visible:(translate-y-0 bg-hover text-primary opacity-100)"
-                aria-label="更多操作"
-                @pointerdown.stop
-                @click.stop
-                @dblclick.stop
-                @contextmenu.stop
-              >
-                <Icon name="i-lucide:more-horizontal" :size="16" />
-              </button>
-            </a-dropdown>
-          </div>
-          <div class="mt-18 flex flex-col items-center text-center">
-            <span :class="getPreviewClass(item, 'grid')">
-              <img
-                :src="getIcon(item)"
-                :alt="item.fileName"
-                draggable="false"
-                :class="getImageClass(item, 'grid')"
-              />
-            </span>
-            <span class="mt-10 w-full truncate text-sm text-main">
-              {{ getFileNameWithoutExtension(item.fileName) }}
-            </span>
-            <span class="mt-4 text-xs text-secondary">
-              {{ isDirectory(item) ? '文件夹' : formatFileSize(item.fileSize) }}
-            </span>
-          </div>
-        </Motion>
-      </a-dropdown>
-    </template>
-
-    <template v-else>
-      <a-dropdown
-        v-for="item in items"
-        :key="item.id"
-        :trigger="['contextmenu']"
-        :menu="getActionMenu(item)"
-      >
-        <Motion
-          as="div"
-          layout="position"
-          v-bind="motions.reorder"
-          :initial="{ opacity: 0, x: -4 }"
-          :animate="{ opacity: 1, x: 0 }"
-          :while-hover="listItemHover"
-          :while-press="itemPress"
-          :data-file-manager-item-id="item.id"
-          :class="[
-            'group min-w-0 flex cursor-pointer items-center gap-12 rounded-6 border-1 border-solid bg-container-secondary px-12 py-10 transition-colors hover:(border-primary bg-selected) max-[575px]:(items-start gap-10)',
-            isSelected(item) ? 'border-primary bg-selected' : 'border-color-1',
-          ]"
-          @click="handleItemClick(item, $event)"
-          @dblclick="handleDoubleClick(item)"
-          @contextmenu.stop
-        >
-          <a-checkbox
-            v-if="isFile(item)"
-            :checked="isSelected(item)"
-            @click.stop
-            @change="handleCheckboxChange(item, $event.target.checked)"
-          />
-          <span :class="getPreviewClass(item, 'list')">
-            <img
-              :src="getIcon(item)"
-              :alt="item.fileName"
-              draggable="false"
-              :class="getImageClass(item, 'list')"
-            />
-          </span>
-          <div class="min-w-0 flex-1">
-            <div class="flex items-center gap-6">
-              <span class="min-w-0 truncate text-sm text-main font-medium">
-                {{ item.fileName }}
-              </span>
-              <Icon
-                v-if="item.favorite"
-                name="i-lucide:star"
-                class="shrink-0 text-warning"
-              />
-              <Icon
-                v-if="item.encrypted"
-                name="i-lucide:lock-keyhole"
-                class="shrink-0 text-warning"
-              />
-            </div>
-            <div
-              class="mt-4 flex flex-wrap items-center gap-x-12 gap-y-4 text-xs text-secondary"
-            >
-              <template v-if="isDirectory(item)">
-                <span>文件夹</span>
-                <span>双击打开</span>
-              </template>
-              <template v-else>
-                <span>{{ getFileCategoryLabel(item.fileType) }}</span>
-                <span>{{ formatFileSize(item.fileSize) }}</span>
-                <span>{{ item.creator }}</span>
-                <span>{{ item.updateTime }}</span>
-              </template>
-            </div>
-          </div>
-          <a-dropdown :trigger="['click']" :menu="getActionMenu(item)">
-            <button
-              type="button"
-              data-file-manager-action
-              class="button size-30 rounded-4 text-secondary transition hover:(bg-hover text-primary)"
-              @click.stop
-              @contextmenu.stop
-            >
-              <Icon name="i-lucide:more-horizontal" :size="16" />
-            </button>
-          </a-dropdown>
-        </Motion>
-      </a-dropdown>
-    </template>
-  </div>
-</template>

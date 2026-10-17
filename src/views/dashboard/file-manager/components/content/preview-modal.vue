@@ -1,3 +1,7 @@
+<template>
+  <FilePreview v-model:open="open" :file="previewSource" />
+</template>
+
 <script setup lang="ts">
 import {
   FilePreview,
@@ -68,7 +72,3 @@ const wordExtensions = new Set(['doc', 'docx', 'dot', 'dotx', 'rtf'])
 const excelExtensions = new Set(['xls', 'xlsm', 'xlsx'])
 const powerpointExtensions = new Set(['pot', 'potx', 'ppt', 'pptx'])
 </script>
-
-<template>
-  <FilePreview v-model:open="open" :file="previewSource" />
-</template>

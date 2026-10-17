@@ -1,54 +1,3 @@
-<script lang="ts" setup>
-import { Sider, Content } from './components'
-import { useFileExplorer, useFileOperations } from './hooks'
-
-const explorer = useFileExplorer()
-const operations = useFileOperations(explorer)
-
-const {
-  activeCategory,
-  categoryStats,
-  currentBreadcrumb,
-  currentDirectoryId,
-  filteredFiles,
-  keyword,
-  previewFile,
-  renameFile,
-  renameValue,
-  selectedKeys,
-  sortBy,
-  storageTotalSize,
-  storageUsedSize,
-  treeFiles,
-  viewMode,
-  visibleTotalCount,
-  changeCategory,
-  changeDirectory,
-  clearSelection,
-  getAccessLockedFile,
-  getFileById,
-  getFilePathText,
-  resetFileView,
-  selectAllVisible,
-} = explorer
-
-const {
-  batchDownload,
-  confirmBatchDelete,
-  confirmDelete,
-  copyFileLink,
-  copySelectedNames,
-  downloadFile,
-  handleUpload,
-  openRenameModal,
-  restoreFile,
-  restoreSelectedFiles,
-  submitRename,
-  toggleFavorite,
-  updateEncryption,
-} = operations
-</script>
-
 <template>
   <WView full :padding="false" class="bg-page">
     <div
@@ -109,3 +58,54 @@ const {
     </div>
   </WView>
 </template>
+
+<script lang="ts" setup>
+import { Sider, Content } from './components'
+import { useFileExplorer, useFileOperations } from './hooks'
+
+const explorer = useFileExplorer()
+const operations = useFileOperations(explorer)
+
+const {
+  activeCategory,
+  categoryStats,
+  currentBreadcrumb,
+  currentDirectoryId,
+  filteredFiles,
+  keyword,
+  previewFile,
+  renameFile,
+  renameValue,
+  selectedKeys,
+  sortBy,
+  storageTotalSize,
+  storageUsedSize,
+  treeFiles,
+  viewMode,
+  visibleTotalCount,
+  changeCategory,
+  changeDirectory,
+  clearSelection,
+  getAccessLockedFile,
+  getFileById,
+  getFilePathText,
+  resetFileView,
+  selectAllVisible,
+} = explorer
+
+const {
+  batchDownload,
+  confirmBatchDelete,
+  confirmDelete,
+  copyFileLink,
+  copySelectedNames,
+  downloadFile,
+  handleUpload,
+  openRenameModal,
+  restoreFile,
+  restoreSelectedFiles,
+  submitRename,
+  toggleFavorite,
+  updateEncryption,
+} = operations
+</script>
