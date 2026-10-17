@@ -14,11 +14,11 @@ import Theme from './theme.vue'
 import Translate from './translate.vue'
 import type { Placement } from '../types'
 
-const emit = defineEmits<{
+const emits = defineEmits<{
   change: [value: Placement]
 }>()
 
 const changePlacement = (value: Placement) => {
-  emit('change', value)
+  emits('change', value)
 }
 </script>

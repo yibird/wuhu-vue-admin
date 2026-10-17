@@ -9,13 +9,10 @@
     :scroll-to-first-error="{ focus: true }"
     @finish="onSubmit"
   >
-    <a-form-item
-      class="group mb-18!"
-      name="mobile"
-      :label="$t('login.mobileLabel')"
-    >
+    <a-form-item class="group" name="mobile" :label="$t('login.mobileLabel')">
       <a-input
         v-model:value="formData.mobile"
+        v-input-tab-out
         autocomplete="tel"
         inputmode="numeric"
         size="large"
@@ -34,7 +31,7 @@
         </template>
       </a-input>
     </a-form-item>
-    <a-form-item class="mb-12!" name="code" :label="$t('login.codeLabel')">
+    <a-form-item name="code" :label="$t('login.codeLabel')">
       <div class="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-12">
         <a-input-otp
           v-model:value="formData.code"
@@ -61,10 +58,12 @@
       :disabled="loading"
       >{{ $t('login.submit') }}</a-button
     >
+    <LoginMode />
   </a-form>
 </template>
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
+import LoginMode from './login-mode.vue'
 import { validateCode, validateMobile } from '@/utils'
 import type { FormInstance } from 'antdv-next'
 import type { LoginEmits, LoginFormProps } from './types'

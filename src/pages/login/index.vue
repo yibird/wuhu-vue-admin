@@ -15,7 +15,7 @@
     />
     <div
       :class="[
-        'relative z-1 box-border min-h-screen min-h-[100dvh] w-full shrink-0 overflow-y-auto border-color-2 bg-container px-24 pb-40 pt-104 flex items-center justify-center sm:px-48 xl:w-520 xl:px-60 xl:py-48',
+        'relative z-1 box-border min-h-screen min-h-[100dvh] w-full shrink-0 overflow-y-auto border-color-1 bg-container px-24 pb-40 pt-104 flex items-center justify-center sm:px-48 xl:w-520 xl:px-60 xl:py-48',
         placement === 'right' && 'xl:border-l-1 xl:border-l-solid',
         placement === 'left' && 'xl:border-r-1 xl:border-r-solid',
         {
@@ -67,7 +67,7 @@ import {
   type Placement,
 } from './components'
 import { useI18n } from 'vue-i18n'
-import { message } from 'antdv-next'
+import { message, notification } from 'antdv-next'
 import { useRoute } from 'vue-router'
 import { useAuth } from '@/hooks'
 import { getSafeRedirect, useGo } from '@/router'
@@ -112,8 +112,15 @@ const onSubmit = async (credentials: LoginRequest) => {
   if (loginLoading.value) return
   try {
     await login(credentials)
-    message.success(t('login.success'))
-    await to(getSafeRedirect(route.query.redirect), true)
+    // 用静态通知:页面级 useNotification 的 ContextHolder 会随登录页卸载一起销毁,
+    // 跳转后提示会立刻消失;静态 API 由 ConfigProvider 的全局 holder 承载,不受路由影响
+    notification.info({
+      title: t('login.success'),
+      placement: 'topRight',
+    })
+    setTimeout(async () => {
+      await to(getSafeRedirect(route.query.redirect), true)
+    }, 200)
   } catch (error) {
     if (isApiError(error)) return
     message.error(error instanceof Error ? error.message : t('login.error'))

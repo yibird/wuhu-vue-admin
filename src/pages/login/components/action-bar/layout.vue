@@ -24,7 +24,7 @@ const options = computed<Array<{ key: Placement; label: string }>>(() => [
   { key: 'right', label: t('common.auth.alignRight') },
 ])
 
-const emit = defineEmits<{
+const emits = defineEmits<{
   change: [value: Placement]
 }>()
 
@@ -36,6 +36,6 @@ const isPlacement = (value: string): value is Placement =>
 const onSelect = ({ key }: { key: string }) => {
   if (!isPlacement(key)) return
   placement.value = key
-  emit('change', key)
+  emits('change', key)
 }
 </script>

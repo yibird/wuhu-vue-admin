@@ -15,7 +15,7 @@
     />
     <div
       :class="[
-        'relative z-1 box-border min-h-screen min-h-[100dvh] w-full shrink-0 overflow-y-auto border-color-2 bg-container px-24 pb-40 pt-104 flex items-center justify-center sm:px-48 xl:w-520 xl:px-60 xl:py-48',
+        'relative z-1 box-border min-h-screen min-h-[100dvh] w-full shrink-0 overflow-y-auto border-color-1 bg-container px-24 pb-40 pt-104 flex items-center justify-center sm:px-48 xl:w-520 xl:px-60 xl:py-48',
         placement === 'right' && 'xl:border-l-1 xl:border-l-solid',
         placement === 'left' && 'xl:border-r-1 xl:border-r-solid',
         {

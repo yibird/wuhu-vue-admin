@@ -4,7 +4,7 @@
       <div
         class="rounded-8 border-1 border-color-2 border-solid bg-fill-quaternary p-16 shadow-all-sm transition-[border-color,box-shadow,transform] duration-motion-base hover:(-translate-y-1 border-primary/50 shadow-all-md) motion-reduce:(transform-none transition-none)"
       >
-        <QRCode :value="text" :size="196" />
+        <QRCode :value="text" :size="200" />
       </div>
     </a-spin>
     <a-button
