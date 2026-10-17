@@ -5,7 +5,7 @@
     :width="860"
     :footer="null"
     :destroy-on-hidden="true"
-    @cancel="emit('close')"
+    @cancel="emits('close')"
   >
     <div class="grid gap-10">
       <div class="flex-between-center">
@@ -37,7 +37,7 @@ import { useDesignerContext } from '../hooks'
 import type { ApplicationSchema } from '../core/schema/types'
 
 const props = defineProps<{ open: boolean }>()
-const emit = defineEmits<{ close: [] }>()
+const emits = defineEmits<{ close: [] }>()
 
 const designer = useDesignerContext()
 const code = ref('')
@@ -86,7 +86,7 @@ function apply() {
     designer.restoreVersion(parsed)
     error.value = ''
     message.success('Schema 已应用')
-    emit('close')
+    emits('close')
   } catch {
     error.value = 'JSON 格式不正确'
   }

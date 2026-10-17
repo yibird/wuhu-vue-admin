@@ -5,7 +5,7 @@
     :width="560"
     :destroy-on-hidden="true"
     @ok="submit"
-    @cancel="emit('close')"
+    @cancel="emits('close')"
   >
     <div class="grid gap-12">
       <label class="grid gap-4">
@@ -43,7 +43,7 @@ import ActionValueControl from './action-value-control.vue'
 import type { ValueSchema } from '../../core/schema/types'
 
 const props = defineProps<{ open: boolean }>()
-const emit = defineEmits<{
+const emits = defineEmits<{
   close: []
   created: [actionId: string]
 }>()
@@ -98,7 +98,7 @@ function submit() {
       params: { ...params.value },
     })
   })
-  emit('created', id)
-  emit('close')
+  emits('created', id)
+  emits('close')
 }
 </script>

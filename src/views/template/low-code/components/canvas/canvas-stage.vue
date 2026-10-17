@@ -4,7 +4,7 @@
       <CanvasToolbar
         :view="view"
         :fullscreen="fullscreen"
-        @toggle-fullscreen="emit('toggle-fullscreen')"
+        @toggle-fullscreen="emits('toggle-fullscreen')"
       />
     </div>
 
@@ -50,7 +50,13 @@
                 v-if="!designer.activePage.value.components.length"
                 class="lc-device__empty"
               >
-                从左侧「组件」面板拖入组件开始设计
+                <span>从左侧「组件」面板拖入组件开始设计</span>
+                <a-button type="primary" ghost @click="emits('open-ai')">
+                  <template #icon>
+                    <Icon name="i-lucide:sparkles" :size="14" />
+                  </template>
+                  用 AI 生成页面
+                </a-button>
               </div>
             </div>
           </DeviceFrame>
@@ -122,6 +128,7 @@ import {
   watch,
 } from 'vue'
 import type { CSSProperties } from 'vue'
+import { Icon } from '@/components'
 import { RuntimeProvider } from '../runtime'
 import DesignNode from './design-node.vue'
 import DeviceFrame from './device-frame.vue'
@@ -139,12 +146,13 @@ const props = defineProps<{
   spacePressed: boolean
   fullscreen: boolean
 }>()
-const emit = defineEmits<{ 'toggle-fullscreen': [] }>()
+const emits = defineEmits<{ 'toggle-fullscreen': []; 'open-ai': [] }>()
 
 const designer = useDesignerContext()
 const viewportRef = shallowRef<HTMLElement>()
 const stageRef = shallowRef<HTMLElement>()
 const viewportSize = useElementSize(viewportRef)
+const stageSize = useElementSize(stageRef)
 const spacePressed = computed(() => props.spacePressed)
 
 const view = useCanvasView({
@@ -285,6 +293,16 @@ const marqueeStyle = computed<CSSProperties>(() => {
 })
 
 function onContextMenu(event: MouseEvent) {
+  const target = event.target
+  // 只有画布内容区域响应右键；视口空白处与画布 UI 不弹出菜单
+  if (
+    !(target instanceof Element) ||
+    !target.closest('.lc-device') ||
+    target.closest('[data-canvas-ui]')
+  ) {
+    return
+  }
+
   const nodeEl = findNodeElementAt(event.clientX, event.clientY)
   if (nodeEl) {
     const id = nodeEl.getAttribute('data-node-id')
@@ -315,6 +333,18 @@ watch(
     positioned = true
     nextTick(() => view.resetPosition())
   }
+)
+
+/**
+ * 页面内容渲染完成后画布尺寸会变化，重新按实际尺寸居中，
+ * 避免使用初始占位尺寸计算导致 .lc-canvas__stage 的 translateY 偏移。
+ */
+watch(
+  () => [stageSize.width.value, stageSize.height.value],
+  () => {
+    view.resetPosition()
+  },
+  { flush: 'post' }
 )
 
 onBeforeUnmount(() => {
@@ -350,6 +380,11 @@ onBeforeUnmount(() => {
   position: absolute;
   top: 0;
   left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: max-content;
+  height: max-content;
   will-change: transform;
 }
 
@@ -368,15 +403,15 @@ onBeforeUnmount(() => {
 }
 
 .lc-device__empty {
+  position: absolute;
+  inset: 0;
   display: flex;
+  flex-direction: column;
+  gap: 14px;
   align-items: center;
   justify-content: center;
-  height: 360px;
-  margin: 96px 40px 40px;
   font-size: 15px;
   color: rgb(var(--w-text-muted));
-  border: 1px dashed rgb(var(--w-border-color-2));
-  border-radius: 10px;
 }
 
 .lc-drop-indicator {

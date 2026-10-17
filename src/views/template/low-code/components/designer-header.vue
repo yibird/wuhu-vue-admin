@@ -61,12 +61,15 @@
       <span class="mx-4 h-16px w-1px bg-border-color-2" />
 
       <a-tooltip title="AI 生成页面（自然语言描述即可生成 Schema）">
-        <button class="lc-header-btn" type="button" @click="emit('open-ai')">
-          <Icon name="i-lucide:sparkles" :size="15" />
-        </button>
+        <a-button @click="emits('open-ai')">
+          <template #icon>
+            <Icon name="i-lucide:sparkles" :size="14" />
+          </template>
+          AI 生成
+        </a-button>
       </a-tooltip>
       <a-tooltip title="变量 / 数据源 / 查询 / 动作 / 工作流 / 权限">
-        <button class="lc-header-btn" type="button" @click="emit('open-data')">
+        <button class="lc-header-btn" type="button" @click="emits('open-data')">
           <Icon name="i-lucide:database" :size="15" />
         </button>
       </a-tooltip>
@@ -74,7 +77,7 @@
         <button
           class="lc-header-btn"
           type="button"
-          @click="emit('open-materials')"
+          @click="emits('open-materials')"
         >
           <Icon name="i-lucide:package" :size="15" />
         </button>
@@ -83,7 +86,7 @@
         <button
           class="lc-header-btn"
           type="button"
-          @click="emit('open-source')"
+          @click="emits('open-source')"
         >
           <Icon name="i-lucide:code-xml" :size="15" />
         </button>
@@ -101,7 +104,7 @@
         <button
           class="lc-header-btn"
           type="button"
-          @click="emit('open-versions')"
+          @click="emits('open-versions')"
         >
           <Icon name="i-lucide:history" :size="15" />
         </button>
@@ -109,7 +112,7 @@
 
       <span class="mx-4 h-16px w-1px bg-border-color-2" />
 
-      <a-button @click="emit('open-preview')">
+      <a-button @click="emits('open-preview')">
         <Icon name="i-lucide:play" :size="13" class="mr-4" />
         预览
       </a-button>
@@ -117,7 +120,7 @@
         <Icon name="i-lucide:share-2" :size="13" class="mr-4" />
         分享
       </a-button>
-      <a-button type="primary" @click="emit('open-publish')">
+      <a-button type="primary" @click="emits('open-publish')">
         <Icon name="i-lucide:rocket" :size="13" class="mr-4" />
         发布
       </a-button>
@@ -131,7 +134,7 @@ import { computed } from 'vue'
 import { Icon } from '@/components'
 import { useDesignerContext } from '../hooks'
 
-const emit = defineEmits<{
+const emits = defineEmits<{
   'open-ai': []
   'open-data': []
   'open-materials': []
@@ -169,7 +172,7 @@ function saveDraft() {
 async function share() {
   if (!designer.currentVersion.value) {
     message.warning('尚未发布版本，请先发布后再分享')
-    emit('open-versions')
+    emits('open-versions')
     return
   }
   const params = new URLSearchParams({ app: designer.schema.app.id })

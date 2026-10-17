@@ -9,7 +9,7 @@
     </div>
 
     <div class="min-h-0 flex-1 w-full h-full overflow-x-hidden overflow-y-auto">
-      <div class="min-w-0 grid gap-4 p-12">
+      <div class="min-w-0 grid gap-10 p-12">
         <section
           v-for="group in filteredGroups"
           :key="group.category"
@@ -28,38 +28,46 @@
                   : 'i-lucide:chevron-down'
               "
               :size="16"
+              class="transition-transform duration-200"
             />
           </button>
           <div
-            v-if="!collapsed.has(group.category)"
-            class="grid grid-cols-2 gap-6"
+            class="lc-palette-group"
+            :class="{ 'is-collapsed': collapsed.has(group.category) }"
           >
-            <button
-              v-for="item in group.items"
-              :key="item.definition.type"
-              class="lc-palette-item"
-              type="button"
-              :draggable="true"
-              :title="item.definition.description"
-              @click="addToCanvas(item.definition.type)"
-              @dragstart="onDragStart(item.definition.type, $event)"
-              @dragend="endPaletteDrag"
+            <div
+              class="lc-palette-group__inner"
+              :inert="collapsed.has(group.category)"
             >
-              <span class="lc-palette-item__icon">
-                <Icon
-                  :name="item.definition.icon ?? 'i-lucide:box'"
-                  :size="16"
-                />
-              </span>
-              <span class="lc-palette-item__title">{{
-                item.definition.title
-              }}</span>
-              <span
-                v-if="item.definition.kind === 2"
-                class="lc-palette-item__badge"
-                >物料</span
-              >
-            </button>
+              <div class="grid grid-cols-2 gap-6">
+                <button
+                  v-for="item in group.items"
+                  :key="item.definition.type"
+                  class="lc-palette-item"
+                  type="button"
+                  :draggable="true"
+                  :title="item.definition.description"
+                  @click="addToCanvas(item.definition.type)"
+                  @dragstart="onDragStart(item.definition.type, $event)"
+                  @dragend="endPaletteDrag"
+                >
+                  <span class="lc-palette-item__icon">
+                    <Icon
+                      :name="item.definition.icon ?? 'i-lucide:box'"
+                      :size="16"
+                    />
+                  </span>
+                  <span class="lc-palette-item__title">{{
+                    item.definition.title
+                  }}</span>
+                  <span
+                    v-if="item.definition.kind === 2"
+                    class="lc-palette-item__badge"
+                    >物料</span
+                  >
+                </button>
+              </div>
+            </div>
           </div>
         </section>
         <a-empty
@@ -197,5 +205,28 @@ function addToCanvas(type: string) {
   color: rgb(var(--w-color-warning));
   background: rgb(var(--w-bg-warning) / 12%);
   border-radius: 3px;
+}
+
+/* 控件分组展开/收起过渡 */
+.lc-palette-group {
+  display: grid;
+  grid-template-rows: 1fr;
+  opacity: 1;
+  transition:
+    grid-template-rows var(--w-motion-duration-base, 0.2s)
+      var(--w-motion-ease-standard, ease),
+    opacity var(--w-motion-duration-base, 0.2s)
+      var(--w-motion-ease-standard, ease);
+
+  &.is-collapsed {
+    grid-template-rows: 0fr;
+    pointer-events: none;
+    opacity: 0;
+  }
+}
+
+.lc-palette-group__inner {
+  min-height: 0;
+  overflow: hidden;
 }
 </style>

@@ -4,7 +4,7 @@
     title="物料中心"
     :size="720"
     :styles="{ body: { padding: 0 } }"
-    @close="emit('close')"
+    @close="emits('close')"
   >
     <div class="grid h-full grid-rows-[auto_minmax(0,1fr)]">
       <div
@@ -193,7 +193,7 @@ import type {
 } from '../core/schema/types'
 
 defineProps<{ open: boolean }>()
-const emit = defineEmits<{ close: [] }>()
+const emits = defineEmits<{ close: [] }>()
 
 const designer = useDesignerContext()
 const activeTab = ref<'list' | 'register'>('list')

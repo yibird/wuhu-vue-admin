@@ -5,7 +5,7 @@
     :width="760"
     :footer="null"
     :destroy-on-hidden="true"
-    @cancel="emit('close')"
+    @cancel="emits('close')"
   >
     <div class="grid gap-18">
       <section class="grid gap-8">
@@ -112,7 +112,7 @@ import { useDesignerContext } from '../hooks'
 import type { PublishedVersion } from '../hooks'
 
 const props = defineProps<{ open: boolean }>()
-const emit = defineEmits<{ close: [] }>()
+const emits = defineEmits<{ close: [] }>()
 
 const designer = useDesignerContext()
 
@@ -182,7 +182,7 @@ function preview(item: PublishedVersion) {
 function loadVersion(item: PublishedVersion) {
   designer.restoreVersion(item.snapshotSchema)
   message.success(`已将 v${item.version} 载入设计器`)
-  emit('close')
+  emits('close')
 }
 
 function setCurrent(item: PublishedVersion) {
@@ -217,7 +217,7 @@ function confirmDelete(item: PublishedVersion) {
 }
 
 function onKeydown(event: KeyboardEvent) {
-  if (event.key === 'Escape') emit('close')
+  if (event.key === 'Escape') emits('close')
 }
 
 watch(

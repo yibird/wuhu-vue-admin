@@ -7,7 +7,12 @@
     @pointerdown.stop
     @contextmenu.prevent
   >
-    <button class="lc-context-menu__item" type="button" @click="run('copy')">
+    <button
+      class="lc-context-menu__item"
+      type="button"
+      :disabled="!canCopy"
+      @click="run('copy')"
+    >
       <Icon name="i-lucide:copy" :size="13" /> 复制
       <span class="lc-context-menu__shortcut">Ctrl+C</span>
     </button>
@@ -117,7 +122,7 @@ const props = defineProps<{
   nodeId?: string
 }>()
 
-const emit = defineEmits<{
+const emits = defineEmits<{
   close: []
   paste: []
 }>()
@@ -139,6 +144,10 @@ const siblingCount = computed(() =>
   props.nodeId
     ? designer.activeIndex.value.getChildren(parentId.value ?? '').length
     : 0
+)
+/** 右键命中节点或已有选中节点时才允许复制 */
+const canCopy = computed(
+  () => !!props.nodeId || designer.selectedIds.value.length > 0
 )
 const canMoveUp = computed(() => position.value > 0)
 const canMoveDown = computed(
@@ -168,7 +177,7 @@ function run(action: string) {
       break
     case 'paste':
       designer.pasteClipboard(id)
-      emit('paste')
+      emits('paste')
       break
     case 'duplicate':
       if (id) designer.duplicateNodes([id])
@@ -206,18 +215,18 @@ function run(action: string) {
     default:
       break
   }
-  emit('close')
+  emits('close')
 }
 
 function onGlobalPointerDown(event: PointerEvent) {
   if (!props.open) return
   const target = event.target as HTMLElement
   if (target.closest('.lc-context-menu')) return
-  emit('close')
+  emits('close')
 }
 
 function onKeydown(event: KeyboardEvent) {
-  if (event.key === 'Escape') emit('close')
+  if (event.key === 'Escape') emits('close')
 }
 
 onMounted(() => {

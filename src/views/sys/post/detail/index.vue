@@ -1,116 +1,3 @@
-<script setup lang="ts">
-import { useRoute } from 'vue-router'
-import { Modal, message } from 'antdv-next'
-import {
-  deleteDeptApi,
-  getDeptPageListApi,
-  getDeptRecordApi,
-  type DeptResp,
-} from '@/apis'
-import { Icon } from '@/components'
-import type { DeptPickerOption } from '@/features'
-import { useRequest, useTabs } from '@/hooks'
-import { toRouteTabKey } from '@/store'
-import { PostForm } from '../list/components'
-
-const route = useRoute()
-const { closeTab, openTabByPath } = useTabs()
-
-const postId = computed(() =>
-  typeof route.query.id === 'string' ? route.query.id : ''
-)
-const formOpen = shallowRef(false)
-
-const { data, loading, run } = useRequest(
-  (params: { id: string }) => getDeptRecordApi(params),
-  { defaultParams: [{ id: postId.value }], manual: !postId.value }
-)
-
-/** 岗位的所属部门取部门列表,同时供编辑弹窗的下拉选择复用 */
-const { data: deptData, loading: deptLoading } = useRequest(() =>
-  getDeptPageListApi({ current: 1, pageSize: 1000, type: 1 })
-)
-
-const departmentList = computed(() => deptData.value?.data?.list ?? [])
-
-const deptNames = computed(
-  () => new Map(departmentList.value.map((item) => [item.id, item.name]))
-)
-
-const deptOptions = computed<DeptPickerOption[]>(() =>
-  toTreeOptions(departmentList.value)
-)
-
-const post = computed<DeptResp | undefined>(() => data.value?.data ?? undefined)
-
-const title = computed(() => post.value?.name || '岗位详情')
-
-const departmentName = computed(() => {
-  const parentId = post.value?.parentId
-  if (!parentId || parentId === '0') return '-'
-  return deptNames.value.get(parentId) ?? parentId
-})
-
-function toTreeOptions(items: DeptResp[]): DeptPickerOption[] {
-  const options = new Map<string, DeptPickerOption>()
-  const roots: DeptPickerOption[] = []
-
-  items.forEach((item) => {
-    options.set(item.id, {
-      title: item.name,
-      value: item.id,
-      code: item.code,
-      children: [],
-    })
-  })
-
-  items.forEach((item) => {
-    const option = options.get(item.id)
-    if (!option) return
-    const parent = options.get(item.parentId)
-    if (parent) parent.children?.push(option)
-    else roots.push(option)
-  })
-
-  return roots
-}
-
-function goBack() {
-  openTabByPath('/sys/post/list')
-}
-
-function openEdit() {
-  formOpen.value = true
-}
-
-function onUpdated() {
-  run({ id: postId.value })
-}
-
-function onDelete() {
-  const record = post.value
-  if (!record) return
-
-  Modal.confirm({
-    title: '删除岗位',
-    content: `确定删除岗位「${record.name}」吗？`,
-    okText: '删除',
-    cancelText: '取消',
-    okButtonProps: { danger: true },
-    onOk: async () => {
-      try {
-        await deleteDeptApi([record.id])
-        message.success('岗位删除成功')
-        await openTabByPath('/sys/post/list')
-        closeTab(toRouteTabKey('/sys/post/detail', { id: record.id }))
-      } catch {
-        // 业务错误已由请求层统一提示
-      }
-    },
-  })
-}
-</script>
-
 <template>
   <div class="h-full min-h-0 flex flex-col gap-10 p-10">
     <header
@@ -229,3 +116,116 @@ function onDelete() {
     />
   </div>
 </template>
+
+<script setup lang="ts">
+import { useRoute } from 'vue-router'
+import { Modal, message } from 'antdv-next'
+import {
+  deleteDeptApi,
+  getDeptPageListApi,
+  getDeptRecordApi,
+  type DeptResp,
+} from '@/apis'
+import { Icon } from '@/components'
+import type { DeptPickerOption } from '@/features'
+import { useRequest, useTabs } from '@/hooks'
+import { toRouteTabKey } from '@/store'
+import { PostForm } from '../list/components'
+
+const route = useRoute()
+const { closeTab, openTabByPath } = useTabs()
+
+const postId = computed(() =>
+  typeof route.query.id === 'string' ? route.query.id : ''
+)
+const formOpen = shallowRef(false)
+
+const { data, loading, run } = useRequest(
+  (params: { id: string }) => getDeptRecordApi(params),
+  { defaultParams: [{ id: postId.value }], manual: !postId.value }
+)
+
+/** 岗位的所属部门取部门列表,同时供编辑弹窗的下拉选择复用 */
+const { data: deptData, loading: deptLoading } = useRequest(() =>
+  getDeptPageListApi({ current: 1, pageSize: 1000, type: 1 })
+)
+
+const departmentList = computed(() => deptData.value?.data?.list ?? [])
+
+const deptNames = computed(
+  () => new Map(departmentList.value.map((item) => [item.id, item.name]))
+)
+
+const deptOptions = computed<DeptPickerOption[]>(() =>
+  toTreeOptions(departmentList.value)
+)
+
+const post = computed<DeptResp | undefined>(() => data.value?.data ?? undefined)
+
+const title = computed(() => post.value?.name || '岗位详情')
+
+const departmentName = computed(() => {
+  const parentId = post.value?.parentId
+  if (!parentId || parentId === '0') return '-'
+  return deptNames.value.get(parentId) ?? parentId
+})
+
+function toTreeOptions(items: DeptResp[]): DeptPickerOption[] {
+  const options = new Map<string, DeptPickerOption>()
+  const roots: DeptPickerOption[] = []
+
+  items.forEach((item) => {
+    options.set(item.id, {
+      title: item.name,
+      value: item.id,
+      code: item.code,
+      children: [],
+    })
+  })
+
+  items.forEach((item) => {
+    const option = options.get(item.id)
+    if (!option) return
+    const parent = options.get(item.parentId)
+    if (parent) parent.children?.push(option)
+    else roots.push(option)
+  })
+
+  return roots
+}
+
+function goBack() {
+  openTabByPath('/sys/post/list')
+}
+
+function openEdit() {
+  formOpen.value = true
+}
+
+function onUpdated() {
+  run({ id: postId.value })
+}
+
+function onDelete() {
+  const record = post.value
+  if (!record) return
+
+  Modal.confirm({
+    title: '删除岗位',
+    content: `确定删除岗位「${record.name}」吗？`,
+    okText: '删除',
+    cancelText: '取消',
+    okButtonProps: { danger: true },
+    onOk: async () => {
+      try {
+        await deleteDeptApi([record.id])
+        message.success('岗位删除成功')
+        await openTabByPath('/sys/post/list')
+        closeTab(toRouteTabKey('/sys/post/detail', { id: record.id }))
+      } catch {
+        // 业务错误已由请求层统一提示
+      }
+    },
+  })
+}
+</script>

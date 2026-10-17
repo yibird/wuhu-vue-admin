@@ -5,7 +5,7 @@
     :width="560"
     :footer="null"
     :destroy-on-hidden="true"
-    @cancel="emit('close')"
+    @cancel="emits('close')"
   >
     <div class="grid gap-16">
       <section class="grid gap-8">
@@ -61,7 +61,7 @@
       </div>
 
       <div v-else class="flex justify-end gap-8">
-        <a-button @click="emit('close')">取消</a-button>
+        <a-button @click="emits('close')">取消</a-button>
         <a-button type="primary" @click="submit">
           <Icon name="i-lucide:rocket" :size="14" class="mr-4" />
           确认发布
@@ -79,7 +79,7 @@ import { useDesignerContext } from '../hooks'
 import type { PublishedVersion } from '../hooks'
 
 const props = defineProps<{ open: boolean }>()
-const emit = defineEmits<{ close: [] }>()
+const emits = defineEmits<{ close: [] }>()
 
 const designer = useDesignerContext()
 const version = ref('1.0.1')

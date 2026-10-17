@@ -27,7 +27,7 @@ const props = withDefaults(
   }
 )
 
-const emit = defineEmits<{ 'update:modelValue': [value: unknown] }>()
+const emits = defineEmits<{ 'update:modelValue': [value: unknown] }>()
 
 const text = ref(format(props.modelValue))
 const error = ref('')
@@ -60,13 +60,13 @@ function commit() {
   const raw = text.value.trim()
   if (!raw) {
     error.value = ''
-    emit('update:modelValue', undefined)
+    emits('update:modelValue', undefined)
     return
   }
   try {
     const parsed = JSON.parse(raw) as unknown
     error.value = ''
-    emit('update:modelValue', parsed)
+    emits('update:modelValue', parsed)
     text.value = format(parsed)
   } catch {
     error.value = 'JSON 格式不正确'

@@ -4,7 +4,7 @@
     title="数据与逻辑"
     :size="680"
     :styles="{ body: { padding: 0 } }"
-    @close="emit('close')"
+    @close="emits('close')"
   >
     <div class="grid h-full grid-rows-[auto_minmax(0,1fr)]">
       <div
@@ -381,7 +381,7 @@ type DataTab =
   | 'permissions'
 
 defineProps<{ open: boolean }>()
-const emit = defineEmits<{ close: [] }>()
+const emits = defineEmits<{ close: [] }>()
 
 const designer = useDesignerContext()
 const activeTab = ref<DataTab>('variables')

@@ -31,7 +31,7 @@ const CardRenderer = defineComponent({
     extra: { type: String, default: '' },
     bordered: { type: Boolean, default: true },
     hoverable: { type: Boolean, default: false },
-    size: { type: String as PropType<'default' | 'small'>, default: 'default' },
+    size: { type: String as PropType<'medium' | 'small'>, default: 'medium' },
   },
   setup(props, { slots, attrs }) {
     return () =>
@@ -42,7 +42,8 @@ const CardRenderer = defineComponent({
           title: props.title || undefined,
           variant: props.bordered ? 'outlined' : 'borderless',
           hoverable: props.hoverable,
-          size: props.size,
+          // 兼容旧 Schema 中的 default，antdv-next 已改为 medium
+          size: props.size === 'small' ? 'small' : 'medium',
         },
         {
           default: () => slots.default?.(),
@@ -194,7 +195,7 @@ export const layoutMaterialDefinitions: ComponentDefinition[] = [
       switchField('bordered', '显示边框'),
       switchField('hoverable', '悬浮效果'),
       selectField('size', '尺寸', [
-        { label: '默认', value: 'default' },
+        { label: '默认', value: 'medium' },
         { label: '紧凑', value: 'small' },
       ]),
     ],

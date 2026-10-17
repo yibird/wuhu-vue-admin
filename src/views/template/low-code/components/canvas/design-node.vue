@@ -81,8 +81,6 @@ import NodeActionBar from './node-action-bar.vue'
 import NodeResizeHandles from './node-resize-handles.vue'
 import type { ComponentSchema, LayoutMode } from '../../core/schema/types'
 
-defineOptions({ name: 'DesignNode' })
-
 const props = withDefaults(
   defineProps<{
     node: ComponentSchema
@@ -222,23 +220,47 @@ function onLeave(event: PointerEvent) {
   position: relative;
   box-sizing: border-box;
   min-width: 0;
-  transition:
-    outline-color 0.12s ease,
-    box-shadow 0.12s ease;
+
+  /**
+   * 设计态下控件内容不接收指针事件，避免点击时聚焦输入框、日期框等内部控件；
+   * 嵌套的设计节点与画布 UI（操作条/缩放手柄）重新启用，保证子节点仍可选中。
+   */
+  & > :deep(*) {
+    pointer-events: none;
+  }
+
+  & > :deep([data-canvas-ui]),
+  & :deep(.lc-design-node) {
+    pointer-events: auto;
+  }
 
   &:hover {
     z-index: 4;
   }
 
-  &.is-selected {
-    z-index: 5;
-    outline: 2px solid rgb(var(--w-color-primary));
-    outline-offset: -2px;
+  /**
+   * 使用伪元素绘制高亮环：
+   * outline 会落在子组件背景之下，被卡片等自带背景的控件遮住。
+   */
+  &::after {
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+    pointer-events: none;
+    content: '';
+    border-radius: 2px;
   }
 
-  &.is-hovered {
-    outline: 1px dashed rgb(var(--w-color-primary) / 70%);
-    outline-offset: -1px;
+  &.is-selected {
+    z-index: 5;
+
+    &::after {
+      border: 2px solid rgb(var(--w-color-primary));
+    }
+  }
+
+  &.is-hovered::after {
+    border: 1px dashed rgb(var(--w-color-primary) / 70%);
   }
 
   &.is-locked {
@@ -246,8 +268,9 @@ function onLeave(event: PointerEvent) {
   }
 
   &.is-condition-hidden {
-    outline: 1px dashed rgb(var(--w-color-warning) / 80%);
-    outline-offset: -1px;
+    &::after {
+      border: 1px dashed rgb(var(--w-color-warning) / 80%);
+    }
 
     & > :deep(*) {
       opacity: 0.45;
@@ -263,16 +286,8 @@ function onLeave(event: PointerEvent) {
   justify-content: center;
   font-size: 12px;
   color: rgb(var(--w-text-muted));
+  white-space: nowrap;
   pointer-events: none;
-  background: repeating-linear-gradient(
-    -45deg,
-    rgb(var(--w-bg-fill)),
-    rgb(var(--w-bg-fill)) 6px,
-    transparent 6px,
-    transparent 12px
-  );
-  border: 1px dashed rgb(var(--w-border-color-2));
-  border-radius: 6px;
 }
 
 .lc-design-node__badge {

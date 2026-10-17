@@ -61,7 +61,7 @@ const props = withDefaults(
   }
 )
 
-const emit = defineEmits<{ 'update:modelValue': [value: unknown[]] }>()
+const emits = defineEmits<{ 'update:modelValue': [value: unknown[]] }>()
 
 const items = computed<Record<string, unknown>[]>(() =>
   Array.isArray(props.modelValue)
@@ -70,7 +70,7 @@ const items = computed<Record<string, unknown>[]>(() =>
 )
 
 function commit(next: Record<string, unknown>[]) {
-  emit('update:modelValue', next)
+  emits('update:modelValue', next)
 }
 
 function onUpdate(index: number, key: string, event: Event) {

@@ -74,7 +74,7 @@ const props = defineProps<{
   field: ActionParamField
 }>()
 
-const emit = defineEmits<{ 'update:value': [value: ValueSchema] }>()
+const emits = defineEmits<{ 'update:value': [value: ValueSchema] }>()
 
 const designer = useDesignerContext()
 
@@ -128,18 +128,18 @@ const selectOptions = computed(() => {
 
 function commit(value: unknown) {
   if (mode.value === 'expression') {
-    emit('update:value', {
+    emits('update:value', {
       type: 'expression',
       value: value === undefined || value === null ? '' : String(value),
     })
   } else {
-    emit('update:value', { type: 'value', value })
+    emits('update:value', { type: 'value', value })
   }
 }
 
 function switchMode(next: string | number) {
   if (next === 'expression') {
-    emit('update:value', {
+    emits('update:value', {
       type: 'expression',
       value:
         current.value === undefined || current.value === null
@@ -147,7 +147,7 @@ function switchMode(next: string | number) {
           : String(current.value),
     })
   } else {
-    emit('update:value', { type: 'value', value: current.value })
+    emits('update:value', { type: 'value', value: current.value })
   }
 }
 </script>

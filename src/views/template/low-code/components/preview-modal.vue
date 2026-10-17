@@ -5,7 +5,7 @@
     :width="'min(1440px, 94vw)'"
     :styles="{ body: { padding: 0 } }"
     title="运行预览"
-    @cancel="emit('close')"
+    @cancel="emits('close')"
   >
     <div
       class="flex-y-center gap-10 border-0 border-b-1 border-color-2 border-b-solid px-16 py-12"
@@ -78,7 +78,7 @@ import { useDesignerContext } from '../hooks'
 import { DEVICE_PRESETS } from '../types'
 
 defineProps<{ open: boolean }>()
-const emit = defineEmits<{ close: [] }>()
+const emits = defineEmits<{ close: [] }>()
 
 const designer = useDesignerContext()
 

@@ -1,6 +1,50 @@
 <template>
-  <div class="flex w-full items-center gap-4">
-    <!-- 视图控制 -->
+  <div class="flex w-full items-center justify-between gap-10">
+    <div class="flex-y-center gap-8">
+      <div
+        class="flex-y-center gap-4 rounded-8 border-1 border-color-2 border-solid bg-elevated px-6 py-4 shadow-elevated"
+      >
+        <a-select
+          :value="designer.previewDevice.value"
+          class="w-104px"
+          :options="deviceOptions"
+          @change="designer.setDevice($event as never)"
+        />
+        <a-input-number
+          :value="deviceSize.width"
+          class="w-76px"
+          :controls="false"
+          :min="240"
+          :max="4000"
+          @change="
+            (value: number | null) =>
+              onSizeChange({ width: value ?? undefined })
+          "
+        />
+        <span class="text-xs text-muted">×</span>
+        <a-input-number
+          :value="deviceSize.height"
+          class="w-76px"
+          :controls="false"
+          :min="240"
+          :max="4000"
+          @change="
+            (value: number | null) =>
+              onSizeChange({ height: value ?? undefined })
+          "
+        />
+        <a-tooltip title="横竖屏切换">
+          <button
+            class="lc-toolbar-btn"
+            type="button"
+            @click="designer.rotateDevice()"
+          >
+            <Icon name="i-lucide:rotate-cw" :size="14" />
+          </button>
+        </a-tooltip>
+      </div>
+    </div>
+
     <div
       class="flex-y-center gap-4 rounded-8 border-1 border-color-2 border-solid bg-elevated px-6 py-4 shadow-elevated"
     >
@@ -49,7 +93,7 @@
           class="lc-toolbar-btn"
           :class="{ 'is-active': fullscreen }"
           type="button"
-          @click="emit('toggle-fullscreen')"
+          @click="emits('toggle-fullscreen')"
         >
           <Icon
             :name="fullscreen ? 'i-lucide:minimize' : 'i-lucide:expand'"
@@ -57,55 +101,6 @@
           />
         </button>
       </a-tooltip>
-    </div>
-
-    <!-- 右侧：选中状态 + 设备尺寸（Chrome 移动端调试风格） -->
-    <div class="ml-auto flex-y-center gap-8">
-      <span v-if="selectedCount" class="text-xs text-primary">
-        已选中 {{ selectedCount }} 个组件
-      </span>
-      <div
-        class="flex-y-center gap-4 rounded-8 border-1 border-color-2 border-solid bg-elevated px-6 py-4 shadow-elevated"
-      >
-        <a-select
-          :value="designer.previewDevice.value"
-          class="w-104px"
-          :options="deviceOptions"
-          @change="designer.setDevice($event as never)"
-        />
-        <a-input-number
-          :value="deviceSize.width"
-          class="w-76px"
-          :controls="false"
-          :min="240"
-          :max="4000"
-          @change="
-            (value: number | null) =>
-              onSizeChange({ width: value ?? undefined })
-          "
-        />
-        <span class="text-xs text-muted">×</span>
-        <a-input-number
-          :value="deviceSize.height"
-          class="w-76px"
-          :controls="false"
-          :min="240"
-          :max="4000"
-          @change="
-            (value: number | null) =>
-              onSizeChange({ height: value ?? undefined })
-          "
-        />
-        <a-tooltip title="横竖屏切换">
-          <button
-            class="lc-toolbar-btn"
-            type="button"
-            @click="designer.rotateDevice()"
-          >
-            <Icon name="i-lucide:rotate-cw" :size="14" />
-          </button>
-        </a-tooltip>
-      </div>
     </div>
   </div>
 </template>
@@ -118,11 +113,10 @@ import { DEVICE_PRESETS } from '../../types'
 import type { CanvasViewApi } from '../../hooks'
 
 defineProps<{ view: CanvasViewApi; fullscreen: boolean }>()
-const emit = defineEmits<{ 'toggle-fullscreen': [] }>()
+const emits = defineEmits<{ 'toggle-fullscreen': [] }>()
 
 const designer = useDesignerContext()
 const deviceSize = computed(() => designer.deviceSize.value)
-const selectedCount = computed(() => designer.selectedIds.value.length)
 
 const deviceOptions = computed(() =>
   DEVICE_PRESETS.map((preset) => ({

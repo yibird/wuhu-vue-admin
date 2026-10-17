@@ -29,8 +29,6 @@ import { toRef } from 'vue'
 import { useNodeBinding } from '../../hooks/useNodeBinding'
 import type { ComponentSchema, LayoutMode } from '../../core/schema/types'
 
-defineOptions({ name: 'RuntimeNode' })
-
 const props = withDefaults(
   defineProps<{
     node: ComponentSchema

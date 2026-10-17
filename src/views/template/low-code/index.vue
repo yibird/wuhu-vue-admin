@@ -2,7 +2,7 @@
   <WView class="absolute overflow-hidden bg-page">
     <div class="h-full min-h-0 flex flex-col">
       <DesignerHeader
-        @open-ai="aiOpen = true"
+        @open-ai="openAi"
         @open-data="dataOpen = true"
         @open-materials="materialsOpen = true"
         @open-source="sourceOpen = true"
@@ -31,18 +31,18 @@
           :space-pressed="spacePressed"
           :fullscreen="fullscreen"
           @toggle-fullscreen="fullscreen = !fullscreen"
+          @open-ai="openAi"
         />
 
         <aside
           v-show="!fullscreen"
           class="min-h-0 overflow-hidden rounded-8 border-1 border-color-2 border-solid bg-container shadow-elevated"
         >
-          <InspectorPanel />
+          <InspectorPanel v-model:mode="inspectorMode" />
         </aside>
       </div>
     </div>
 
-    <AiGenerateDrawer :open="aiOpen" @close="aiOpen = false" />
     <DataDrawer :open="dataOpen" @close="dataOpen = false" />
     <MaterialCenterDrawer
       :open="materialsOpen"
@@ -59,7 +59,6 @@
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import { WView } from '@/components'
 import {
-  AiGenerateDrawer,
   CanvasStage,
   DataDrawer,
   DesignerHeader,
@@ -80,7 +79,7 @@ const designer = useDesigner()
 provideDesigner(designer)
 
 const fullscreen = ref(false)
-const aiOpen = ref(false)
+const inspectorMode = ref<'settings' | 'ai'>('settings')
 const dataOpen = ref(false)
 const materialsOpen = ref(false)
 const sourceOpen = ref(false)
@@ -90,7 +89,6 @@ const publishOpen = ref(false)
 
 const overlayOpen = computed(
   () =>
-    aiOpen.value ||
     dataOpen.value ||
     materialsOpen.value ||
     sourceOpen.value ||
@@ -98,6 +96,12 @@ const overlayOpen = computed(
     versionOpen.value ||
     publishOpen.value
 )
+
+/** 打开右侧检查器的 AI 生成面板 */
+function openAi() {
+  fullscreen.value = false
+  inspectorMode.value = 'ai'
+}
 
 const { spacePressed } = useDesignerShortcuts({
   designer,

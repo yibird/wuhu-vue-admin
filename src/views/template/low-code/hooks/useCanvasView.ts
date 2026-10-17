@@ -139,7 +139,12 @@ export function useCanvasView(options: CanvasViewOptions): CanvasViewApi {
     resetPosition()
   }
 
-  /** 保持当前缩放：画布小于视口时居中，否则对齐到左上角 */
+  /**
+   * 保持当前缩放并居中显示
+   *
+   * 内容超出视口时仍按中心对齐（上下/左右等量溢出），
+   * 而不是贴左上角，便于继续平移查看。
+   */
   function resetPosition() {
     const viewport = options.viewport.value
     if (!viewport) return
@@ -148,14 +153,8 @@ export function useCanvasView(options: CanvasViewOptions): CanvasViewApi {
     if (!rect.width || !rect.height || !width || !height) return
     const contentWidth = width * zoom.value
     const contentHeight = height * zoom.value
-    panX.value =
-      contentWidth <= rect.width - EDGE_MARGIN * 2
-        ? Math.round((rect.width - contentWidth) / 2)
-        : EDGE_MARGIN
-    panY.value =
-      contentHeight <= rect.height - EDGE_MARGIN * 2
-        ? Math.round((rect.height - contentHeight) / 2)
-        : EDGE_MARGIN
+    panX.value = Math.round((rect.width - contentWidth) / 2)
+    panY.value = Math.round((rect.height - contentHeight) / 2)
     clampPan()
   }
 
