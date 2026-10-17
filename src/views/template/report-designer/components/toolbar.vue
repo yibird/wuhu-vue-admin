@@ -1,3 +1,54 @@
+<template>
+  <header class="report-toolbar">
+    <div class="report-toolbar__title">
+      <span>Template / Report Designer</span>
+      <h1>报表设计器</h1>
+    </div>
+
+    <div class="report-toolbar__plan" aria-label="需求规划">
+      <article v-for="phase in phases" :key="phase.phase">
+        <strong>{{ phase.phase }}</strong>
+        <span>{{ phase.title }}</span>
+      </article>
+    </div>
+
+    <div class="report-toolbar__actions">
+      <span class="report-toolbar__status">
+        <Icon name="i-lucide:database" :size="15" />
+        {{ rowCount.toLocaleString('zh-CN') }} 行 · {{ exportStatus }}
+      </span>
+      <span class="report-toolbar__status report-toolbar__status--schema">
+        <Icon name="i-lucide:file-json-2" :size="15" />
+        {{ templateTypeLabel }} · Schema v{{ schemaVersion }}
+      </span>
+      <a-button @click="emits('openTemplateSettings')">
+        <template #icon>
+          <Icon name="i-lucide:settings-2" />
+        </template>
+        模板设置
+      </a-button>
+      <a-button @click="emits('openSchema')">
+        <template #icon>
+          <Icon name="i-lucide:file-code-2" />
+        </template>
+        Schema
+      </a-button>
+      <a-dropdown
+        :menu="{ items: exportMenuItems, onClick: handleExportMenuClick }"
+        :trigger="['click']"
+      >
+        <a-button type="primary">
+          <template #icon>
+            <Icon name="i-lucide:download" />
+          </template>
+          导出
+          <Icon name="i-lucide:chevron-down" class="ml-4px" />
+        </a-button>
+      </a-dropdown>
+    </div>
+  </header>
+</template>
+
 <script setup lang="ts">
 import type {
   ExportFormat,
@@ -15,7 +66,7 @@ const props = defineProps<{
   templateType: ReportTemplateType
 }>()
 
-const emit = defineEmits<{
+const emits = defineEmits<{
   export: [format: ExportFormat]
   openSchema: []
   openTemplateSettings: []
@@ -52,60 +103,9 @@ function isExportFormat(value: string): value is ExportFormat {
 function handleExportMenuClick(event: { key: string | number }) {
   const format = String(event.key)
   if (!isExportFormat(format)) return
-  emit('export', format)
+  emits('export', format)
 }
 </script>
-
-<template>
-  <header class="report-toolbar">
-    <div class="report-toolbar__title">
-      <span>Template / Report Designer</span>
-      <h1>报表设计器</h1>
-    </div>
-
-    <div class="report-toolbar__plan" aria-label="需求规划">
-      <article v-for="phase in phases" :key="phase.phase">
-        <strong>{{ phase.phase }}</strong>
-        <span>{{ phase.title }}</span>
-      </article>
-    </div>
-
-    <div class="report-toolbar__actions">
-      <span class="report-toolbar__status">
-        <Icon name="i-lucide:database" :size="15" />
-        {{ rowCount.toLocaleString('zh-CN') }} 行 · {{ exportStatus }}
-      </span>
-      <span class="report-toolbar__status report-toolbar__status--schema">
-        <Icon name="i-lucide:file-json-2" :size="15" />
-        {{ templateTypeLabel }} · Schema v{{ schemaVersion }}
-      </span>
-      <a-button @click="emit('openTemplateSettings')">
-        <template #icon>
-          <Icon name="i-lucide:settings-2" />
-        </template>
-        模板设置
-      </a-button>
-      <a-button @click="emit('openSchema')">
-        <template #icon>
-          <Icon name="i-lucide:file-code-2" />
-        </template>
-        Schema
-      </a-button>
-      <a-dropdown
-        :menu="{ items: exportMenuItems, onClick: handleExportMenuClick }"
-        :trigger="['click']"
-      >
-        <a-button type="primary">
-          <template #icon>
-            <Icon name="i-lucide:download" />
-          </template>
-          导出
-          <Icon name="i-lucide:chevron-down" class="ml-4px" />
-        </a-button>
-      </a-dropdown>
-    </div>
-  </header>
-</template>
 
 <style scoped lang="less">
 .report-toolbar {

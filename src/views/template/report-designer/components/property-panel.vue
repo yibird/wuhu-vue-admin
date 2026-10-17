@@ -1,45 +1,3 @@
-<script setup lang="ts">
-import type {
-  ExportFormat,
-  ExportOption,
-  ReportDensity,
-  ReportSettings,
-  ReportTheme,
-} from '../types'
-
-defineProps<{
-  exportOptions: ExportOption[]
-  settings: ReportSettings
-}>()
-
-const emit = defineEmits<{
-  export: [format: ExportFormat]
-  updateSettings: [patch: Partial<ReportSettings>]
-}>()
-
-const themeOptions = [
-  { label: '默认', value: 'default' },
-  { label: '墨色', value: 'ink' },
-  { label: '青绿', value: 'teal' },
-  { label: '琥珀', value: 'amber' },
-  { label: '钢蓝', value: 'steel' },
-]
-
-const densityOptions = [
-  { label: '紧凑', value: 'compact' },
-  { label: '标准', value: 'standard' },
-  { label: '舒展', value: 'comfortable' },
-]
-
-function updateTheme(value: string) {
-  emit('updateSettings', { theme: value as ReportTheme })
-}
-
-function updateDensity(value: string) {
-  emit('updateSettings', { density: value as ReportDensity })
-}
-</script>
-
 <template>
   <section class="property-panel">
     <div class="property-panel__head">
@@ -55,7 +13,7 @@ function updateDensity(value: string) {
           <a-input
             :value="settings.title"
             size="small"
-            @update:value="emit('updateSettings', { title: String($event) })"
+            @update:value="emits('updateSettings', { title: String($event) })"
           />
         </label>
         <label class="property-field">
@@ -63,7 +21,9 @@ function updateDensity(value: string) {
           <a-input
             :value="settings.subtitle"
             size="small"
-            @update:value="emit('updateSettings', { subtitle: String($event) })"
+            @update:value="
+              emits('updateSettings', { subtitle: String($event) })
+            "
           />
         </label>
         <div class="property-panel__inline">
@@ -73,7 +33,7 @@ function updateDensity(value: string) {
               :value="settings.fileName"
               size="small"
               @update:value="
-                emit('updateSettings', { fileName: String($event) })
+                emits('updateSettings', { fileName: String($event) })
               "
             />
           </label>
@@ -83,7 +43,7 @@ function updateDensity(value: string) {
               :value="settings.sheetName"
               size="small"
               @update:value="
-                emit('updateSettings', { sheetName: String($event) })
+                emits('updateSettings', { sheetName: String($event) })
               "
             />
           </label>
@@ -114,7 +74,7 @@ function updateDensity(value: string) {
             <a-switch
               :checked="settings.showIndex"
               size="small"
-              @change="emit('updateSettings', { showIndex: Boolean($event) })"
+              @change="emits('updateSettings', { showIndex: Boolean($event) })"
             />
             <span>序号列</span>
           </label>
@@ -122,7 +82,9 @@ function updateDensity(value: string) {
             <a-switch
               :checked="settings.showSummary"
               size="small"
-              @change="emit('updateSettings', { showSummary: Boolean($event) })"
+              @change="
+                emits('updateSettings', { showSummary: Boolean($event) })
+              "
             />
             <span>汇总卡</span>
           </label>
@@ -130,7 +92,7 @@ function updateDensity(value: string) {
             <a-switch
               :checked="settings.showFooter"
               size="small"
-              @change="emit('updateSettings', { showFooter: Boolean($event) })"
+              @change="emits('updateSettings', { showFooter: Boolean($event) })"
             />
             <span>页脚</span>
           </label>
@@ -142,7 +104,7 @@ function updateDensity(value: string) {
             :value="settings.watermark"
             size="small"
             @update:value="
-              emit('updateSettings', { watermark: String($event) })
+              emits('updateSettings', { watermark: String($event) })
             "
           />
         </label>
@@ -158,7 +120,7 @@ function updateDensity(value: string) {
             :value="settings.previewLimit"
             size="small"
             @update:value="
-              emit('updateSettings', { previewLimit: Number($event) || 50 })
+              emits('updateSettings', { previewLimit: Number($event) || 50 })
             "
           />
         </label>
@@ -170,7 +132,11 @@ function updateDensity(value: string) {
               <strong>{{ option.label }}</strong>
             </div>
             <p>{{ option.description }}</p>
-            <a-button block size="small" @click="emit('export', option.format)">
+            <a-button
+              block
+              size="small"
+              @click="emits('export', option.format)"
+            >
               导出 {{ option.label }}
             </a-button>
           </article>
@@ -179,6 +145,48 @@ function updateDensity(value: string) {
     </div>
   </section>
 </template>
+
+<script setup lang="ts">
+import type {
+  ExportFormat,
+  ExportOption,
+  ReportDensity,
+  ReportSettings,
+  ReportTheme,
+} from '../types'
+
+defineProps<{
+  exportOptions: ExportOption[]
+  settings: ReportSettings
+}>()
+
+const emits = defineEmits<{
+  export: [format: ExportFormat]
+  updateSettings: [patch: Partial<ReportSettings>]
+}>()
+
+const themeOptions = [
+  { label: '默认', value: 'default' },
+  { label: '墨色', value: 'ink' },
+  { label: '青绿', value: 'teal' },
+  { label: '琥珀', value: 'amber' },
+  { label: '钢蓝', value: 'steel' },
+]
+
+const densityOptions = [
+  { label: '紧凑', value: 'compact' },
+  { label: '标准', value: 'standard' },
+  { label: '舒展', value: 'comfortable' },
+]
+
+function updateTheme(value: string) {
+  emits('updateSettings', { theme: value as ReportTheme })
+}
+
+function updateDensity(value: string) {
+  emits('updateSettings', { density: value as ReportDensity })
+}
+</script>
 
 <style scoped lang="less">
 .property-panel {

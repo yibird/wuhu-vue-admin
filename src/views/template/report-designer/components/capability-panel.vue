@@ -1,53 +1,3 @@
-<script setup lang="ts">
-import type { CapabilityStatus, ReportCapabilityGroup } from '../types'
-
-const props = defineProps<{
-  fieldCount: number
-  groups: ReportCapabilityGroup[]
-  rowCount: number
-  schemaVersion: string
-}>()
-
-const statusMeta: Record<
-  CapabilityStatus,
-  { label: string; class: string; icon: string }
-> = {
-  partial: {
-    class: 'border-warning bg-container text-warning',
-    icon: 'i-lucide:circle-dot-dashed',
-    label: '部分支持',
-  },
-  planned: {
-    class: 'border-color-2 bg-page text-tertiary',
-    icon: 'i-lucide:clock-3',
-    label: '规划中',
-  },
-  ready: {
-    class: 'border-success bg-container text-success',
-    icon: 'i-lucide:circle-check',
-    label: '已就绪',
-  },
-}
-
-const totals = computed(() => {
-  const items = props.groups.flatMap((group) => group.items)
-  const ready = items.filter((item) => item.status === 'ready').length
-  const partial = items.filter((item) => item.status === 'partial').length
-  const planned = items.filter((item) => item.status === 'planned').length
-  const score = items.length
-    ? Math.round(((ready + partial * 0.5) / items.length) * 100)
-    : 0
-
-  return {
-    partial,
-    planned,
-    ready,
-    score,
-    total: items.length,
-  }
-})
-</script>
-
 <template>
   <section class="grid min-h-full gap-12px">
     <header
@@ -160,3 +110,53 @@ const totals = computed(() => {
     </article>
   </section>
 </template>
+
+<script setup lang="ts">
+import type { CapabilityStatus, ReportCapabilityGroup } from '../types'
+
+const props = defineProps<{
+  fieldCount: number
+  groups: ReportCapabilityGroup[]
+  rowCount: number
+  schemaVersion: string
+}>()
+
+const statusMeta: Record<
+  CapabilityStatus,
+  { label: string; class: string; icon: string }
+> = {
+  partial: {
+    class: 'border-warning bg-container text-warning',
+    icon: 'i-lucide:circle-dot-dashed',
+    label: '部分支持',
+  },
+  planned: {
+    class: 'border-color-2 bg-page text-tertiary',
+    icon: 'i-lucide:clock-3',
+    label: '规划中',
+  },
+  ready: {
+    class: 'border-success bg-container text-success',
+    icon: 'i-lucide:circle-check',
+    label: '已就绪',
+  },
+}
+
+const totals = computed(() => {
+  const items = props.groups.flatMap((group) => group.items)
+  const ready = items.filter((item) => item.status === 'ready').length
+  const partial = items.filter((item) => item.status === 'partial').length
+  const planned = items.filter((item) => item.status === 'planned').length
+  const score = items.length
+    ? Math.round(((ready + partial * 0.5) / items.length) * 100)
+    : 0
+
+  return {
+    partial,
+    planned,
+    ready,
+    score,
+    total: items.length,
+  }
+})
+</script>

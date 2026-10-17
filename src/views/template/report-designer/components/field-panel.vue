@@ -1,3 +1,167 @@
+<template>
+  <section class="field-panel">
+    <div class="field-panel__head">
+      <Icon name="i-lucide:columns-3" :size="18" />
+      <h2>字段设计</h2>
+      <span>{{ fields.length }} 个字段</span>
+      <a-button
+        class="field-panel__add"
+        size="small"
+        type="primary"
+        @click="handleAddField"
+      >
+        <template #icon>
+          <Icon name="i-lucide:plus" />
+        </template>
+        添加字段
+      </a-button>
+    </div>
+
+    <div
+      ref="fieldScrollRef"
+      class="field-panel__scroll w-full h-full overflow-x-hidden overflow-y-auto"
+    >
+      <DragDropProvider @drag-end="handleDragEnd">
+        <div class="field-panel__list">
+          <DraggableItem
+            v-for="(field, index) in fields"
+            :key="field.key"
+            :id="field.key"
+            :index="index"
+            class="field-card"
+            :class="{ 'field-card--disabled': !field.enabled }"
+            :data-field-key="field.key"
+            accept="report-field"
+            handle-selector=".field-card__drag"
+            tag="article"
+            type="report-field"
+          >
+            <div class="field-card__top">
+              <button class="field-card__drag" title="拖拽排序" type="button">
+                <Icon name="i-lucide:grip-vertical" :size="15" />
+              </button>
+              <a-checkbox
+                :checked="field.enabled"
+                @change="emits('toggleField', field.key)"
+              />
+              <strong>{{ field.label || field.key }}</strong>
+              <div class="field-card__sort">
+                <a-button
+                  :disabled="index === 0"
+                  size="small"
+                  @click="emits('moveField', field.key, 'up')"
+                >
+                  <template #icon>
+                    <Icon name="i-lucide:chevron-up" />
+                  </template>
+                </a-button>
+                <a-button
+                  :disabled="index === fields.length - 1"
+                  size="small"
+                  @click="emits('moveField', field.key, 'down')"
+                >
+                  <template #icon>
+                    <Icon name="i-lucide:chevron-down" />
+                  </template>
+                </a-button>
+                <a-popconfirm
+                  cancel-text="取消"
+                  ok-text="删除"
+                  title="确认删除该字段？"
+                  @confirm="emits('removeField', field.key)"
+                >
+                  <a-button :disabled="fields.length <= 1" danger size="small">
+                    <template #icon>
+                      <Icon name="i-lucide:trash-2" />
+                    </template>
+                  </a-button>
+                </a-popconfirm>
+              </div>
+            </div>
+
+            <div class="field-card__form">
+              <label class="field-card__label field-card__label--wide">
+                <span>字段名</span>
+                <a-input
+                  :status="getFieldKeyStatus(field)"
+                  :value="getFieldKeyDraft(field)"
+                  allow-clear
+                  @blur="commitFieldKey(field)"
+                  @press-enter="commitFieldKey(field)"
+                  @update:value="updateFieldKeyDraft(field, String($event))"
+                />
+                <small v-if="getFieldKeyIssue(field)" class="field-card__hint">
+                  {{ getFieldKeyIssue(field) }}
+                </small>
+              </label>
+              <label class="field-card__label field-card__label--wide">
+                <span>列名</span>
+                <a-input
+                  :value="field.label"
+                  allow-clear
+                  @update:value="
+                    emits('updateField', field.key, { label: String($event) })
+                  "
+                />
+              </label>
+              <label class="field-card__label">
+                <span>宽度</span>
+                <a-input-number
+                  :max="360"
+                  :min="60"
+                  :value="field.width"
+                  @update:value="
+                    emits('updateField', field.key, {
+                      width: Number($event) || 100,
+                    })
+                  "
+                />
+              </label>
+              <label class="field-card__label">
+                <span>类型</span>
+                <a-select
+                  :options="typeOptions"
+                  :value="field.type"
+                  @update:value="updateType(field.key, String($event))"
+                />
+              </label>
+              <label class="field-card__label">
+                <span>对齐</span>
+                <a-select
+                  :options="alignOptions"
+                  :value="field.align"
+                  @update:value="updateAlign(field.key, String($event))"
+                />
+              </label>
+              <label class="field-card__label field-card__label--wide">
+                <span>汇总</span>
+                <a-select
+                  :options="summaryOptions"
+                  :value="field.summary"
+                  @update:value="updateSummary(field.key, String($event))"
+                />
+              </label>
+            </div>
+
+            <FieldFormatEditor
+              :field="field"
+              :format-cell="formatCell"
+              :sample-row="sampleRow"
+              :test-format-cell="testFormatCell"
+              @update-field="emits('updateField', field.key, $event)"
+            />
+
+            <FieldMappingEditor
+              :field="field"
+              @update-field="emits('updateField', field.key, $event)"
+            />
+          </DraggableItem>
+        </div>
+      </DragDropProvider>
+    </div>
+  </section>
+</template>
+
 <script setup lang="ts">
 import { DragDropProvider } from '@dnd-kit/vue'
 import { move } from '@dnd-kit/helpers'
@@ -25,7 +189,7 @@ const props = defineProps<{
   ) => FieldFormatterTestResult
 }>()
 
-const emit = defineEmits<{
+const emits = defineEmits<{
   addField: []
   moveField: [key: string, direction: 'up' | 'down']
   removeField: [key: string]
@@ -91,19 +255,19 @@ watch(
 
 function handleAddField() {
   shouldScrollToAddedField.value = true
-  emit('addField')
+  emits('addField')
 }
 
 function updateType(key: string, value: string) {
-  emit('updateField', key, { type: value as FieldType })
+  emits('updateField', key, { type: value as FieldType })
 }
 
 function updateAlign(key: string, value: string) {
-  emit('updateField', key, { align: value as FieldAlign })
+  emits('updateField', key, { align: value as FieldAlign })
 }
 
 function updateSummary(key: string, value: string) {
-  emit('updateField', key, { summary: value as FieldSummary })
+  emits('updateField', key, { summary: value as FieldSummary })
 }
 
 function getFieldKeyDraft(field: ReportField) {
@@ -142,7 +306,7 @@ function commitFieldKey(field: ReportField) {
     return
   }
 
-  emit('renameFieldKey', field.key, nextKey)
+  emits('renameFieldKey', field.key, nextKey)
 }
 
 function handleDragEnd(event: DragEndEvent) {
@@ -150,173 +314,9 @@ function handleDragEnd(event: DragEndEvent) {
   if (nextKeys === fieldKeys.value) return
 
   fieldKeys.value = nextKeys
-  emit('reorderFields', nextKeys)
+  emits('reorderFields', nextKeys)
 }
 </script>
-
-<template>
-  <section class="field-panel">
-    <div class="field-panel__head">
-      <Icon name="i-lucide:columns-3" :size="18" />
-      <h2>字段设计</h2>
-      <span>{{ fields.length }} 个字段</span>
-      <a-button
-        class="field-panel__add"
-        size="small"
-        type="primary"
-        @click="handleAddField"
-      >
-        <template #icon>
-          <Icon name="i-lucide:plus" />
-        </template>
-        添加字段
-      </a-button>
-    </div>
-
-    <div
-      ref="fieldScrollRef"
-      class="field-panel__scroll w-full h-full overflow-x-hidden overflow-y-auto"
-    >
-      <DragDropProvider @drag-end="handleDragEnd">
-        <div class="field-panel__list">
-          <DraggableItem
-            v-for="(field, index) in fields"
-            :key="field.key"
-            :id="field.key"
-            :index="index"
-            class="field-card"
-            :class="{ 'field-card--disabled': !field.enabled }"
-            :data-field-key="field.key"
-            accept="report-field"
-            handle-selector=".field-card__drag"
-            tag="article"
-            type="report-field"
-          >
-            <div class="field-card__top">
-              <button class="field-card__drag" title="拖拽排序" type="button">
-                <Icon name="i-lucide:grip-vertical" :size="15" />
-              </button>
-              <a-checkbox
-                :checked="field.enabled"
-                @change="emit('toggleField', field.key)"
-              />
-              <strong>{{ field.label || field.key }}</strong>
-              <div class="field-card__sort">
-                <a-button
-                  :disabled="index === 0"
-                  size="small"
-                  @click="emit('moveField', field.key, 'up')"
-                >
-                  <template #icon>
-                    <Icon name="i-lucide:chevron-up" />
-                  </template>
-                </a-button>
-                <a-button
-                  :disabled="index === fields.length - 1"
-                  size="small"
-                  @click="emit('moveField', field.key, 'down')"
-                >
-                  <template #icon>
-                    <Icon name="i-lucide:chevron-down" />
-                  </template>
-                </a-button>
-                <a-popconfirm
-                  cancel-text="取消"
-                  ok-text="删除"
-                  title="确认删除该字段？"
-                  @confirm="emit('removeField', field.key)"
-                >
-                  <a-button :disabled="fields.length <= 1" danger size="small">
-                    <template #icon>
-                      <Icon name="i-lucide:trash-2" />
-                    </template>
-                  </a-button>
-                </a-popconfirm>
-              </div>
-            </div>
-
-            <div class="field-card__form">
-              <label class="field-card__label field-card__label--wide">
-                <span>字段名</span>
-                <a-input
-                  :status="getFieldKeyStatus(field)"
-                  :value="getFieldKeyDraft(field)"
-                  allow-clear
-                  @blur="commitFieldKey(field)"
-                  @press-enter="commitFieldKey(field)"
-                  @update:value="updateFieldKeyDraft(field, String($event))"
-                />
-                <small v-if="getFieldKeyIssue(field)" class="field-card__hint">
-                  {{ getFieldKeyIssue(field) }}
-                </small>
-              </label>
-              <label class="field-card__label field-card__label--wide">
-                <span>列名</span>
-                <a-input
-                  :value="field.label"
-                  allow-clear
-                  @update:value="
-                    emit('updateField', field.key, { label: String($event) })
-                  "
-                />
-              </label>
-              <label class="field-card__label">
-                <span>宽度</span>
-                <a-input-number
-                  :max="360"
-                  :min="60"
-                  :value="field.width"
-                  @update:value="
-                    emit('updateField', field.key, {
-                      width: Number($event) || 100,
-                    })
-                  "
-                />
-              </label>
-              <label class="field-card__label">
-                <span>类型</span>
-                <a-select
-                  :options="typeOptions"
-                  :value="field.type"
-                  @update:value="updateType(field.key, String($event))"
-                />
-              </label>
-              <label class="field-card__label">
-                <span>对齐</span>
-                <a-select
-                  :options="alignOptions"
-                  :value="field.align"
-                  @update:value="updateAlign(field.key, String($event))"
-                />
-              </label>
-              <label class="field-card__label field-card__label--wide">
-                <span>汇总</span>
-                <a-select
-                  :options="summaryOptions"
-                  :value="field.summary"
-                  @update:value="updateSummary(field.key, String($event))"
-                />
-              </label>
-            </div>
-
-            <FieldFormatEditor
-              :field="field"
-              :format-cell="formatCell"
-              :sample-row="sampleRow"
-              :test-format-cell="testFormatCell"
-              @update-field="emit('updateField', field.key, $event)"
-            />
-
-            <FieldMappingEditor
-              :field="field"
-              @update-field="emit('updateField', field.key, $event)"
-            />
-          </DraggableItem>
-        </div>
-      </DragDropProvider>
-    </div>
-  </section>
-</template>
 
 <style scoped lang="less">
 .field-panel {

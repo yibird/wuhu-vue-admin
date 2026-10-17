@@ -1,3 +1,156 @@
+<template>
+  <section class="report-experience-panel">
+    <header class="report-experience-panel__header">
+      <div>
+        <span>Experience</span>
+        <h3>模板与视图</h3>
+      </div>
+      <a-segmented
+        v-model:value="viewMode"
+        :options="[
+          { label: '表格', value: 'table' },
+          { label: '图表', value: 'chart' },
+        ]"
+      />
+    </header>
+
+    <a-tabs v-model:active-key="activeTab" size="small">
+      <a-tab-pane key="templates" tab="模板库">
+        <div class="report-experience-panel__stack">
+          <div class="report-experience-panel__save">
+            <a-input
+              v-model:value="templateName"
+              placeholder="模板名称"
+              @press-enter="saveTemplate"
+            />
+            <a-button type="primary" @click="saveTemplate">
+              <template #icon>
+                <Icon name="i-lucide:save" />
+              </template>
+              保存
+            </a-button>
+          </div>
+
+          <div v-if="templates.length" class="report-experience-panel__list">
+            <article v-for="template in templates" :key="template.id">
+              <div>
+                <strong>{{ template.name }}</strong>
+                <span>{{ formatTime(template.savedAt) }}</span>
+              </div>
+              <div class="report-experience-panel__actions">
+                <a-button
+                  size="small"
+                  type="link"
+                  @click="emits('loadTemplate', template.id)"
+                >
+                  应用
+                </a-button>
+                <a-button
+                  size="small"
+                  type="link"
+                  danger
+                  @click="emits('deleteTemplate', template.id)"
+                >
+                  删除
+                </a-button>
+              </div>
+            </article>
+          </div>
+
+          <a-empty v-else description="暂无模板" />
+        </div>
+      </a-tab-pane>
+
+      <a-tab-pane key="versions" tab="版本历史">
+        <div class="report-experience-panel__stack">
+          <a-alert
+            show-icon
+            type="info"
+            message="版本快照会同步保存为模板，方便随时回滚。"
+          />
+          <button
+            v-for="version in versions"
+            :key="version.id"
+            type="button"
+            class="report-experience-panel__version"
+          >
+            <Icon name="i-lucide:history" :size="16" />
+            <span>
+              <strong>{{ version.name }}</strong>
+              <small
+                >{{ formatTime(version.savedAt) }} · {{ version.detail }}</small
+              >
+            </span>
+          </button>
+          <a-empty
+            v-if="!versions.length"
+            description="保存模板后生成版本记录"
+          />
+        </div>
+      </a-tab-pane>
+
+      <a-tab-pane key="fields" tab="字段分组">
+        <div class="report-experience-panel__groups">
+          <article v-for="group in fieldGroups" :key="group.label">
+            <span>{{ group.label }}</span>
+            <strong>{{ group.enabled }} / {{ group.total }}</strong>
+            <a-progress
+              :percent="Math.round((group.enabled / group.total) * 100)"
+              :show-info="false"
+              :size="5"
+            />
+          </article>
+        </div>
+      </a-tab-pane>
+
+      <a-tab-pane key="export" tab="导出配置">
+        <div class="report-experience-panel__stack">
+          <div class="report-experience-panel__density">
+            <span>密度</span>
+            <a-segmented
+              :value="settings.density"
+              :options="[
+                { label: '紧凑', value: 'compact' },
+                { label: '标准', value: 'standard' },
+                { label: '舒展', value: 'comfortable' },
+              ]"
+              @change="
+                (value: unknown) =>
+                  applyDensity(value as ReportSettings['density'])
+              "
+            />
+          </div>
+
+          <div class="report-experience-panel__exports">
+            <button
+              v-for="item in exportCards"
+              :key="item.format"
+              type="button"
+              @click="emits('export', item.format)"
+            >
+              <Icon :name="item.icon" :size="18" />
+              <span>
+                <strong>{{ item.title }}</strong>
+                <small>{{ item.desc }}</small>
+              </span>
+            </button>
+          </div>
+
+          <div
+            v-if="visibleSummary.length"
+            class="report-experience-panel__summary"
+          >
+            <article v-for="summary in visibleSummary" :key="summary.key">
+              <span>{{ summary.label }}</span>
+              <strong>{{ summary.value }}</strong>
+            </article>
+          </div>
+        </div>
+      </a-tab-pane>
+    </a-tabs>
+  </section>
+</template>
+
 <script setup lang="ts">
 import type {
   ExportFormat,
@@ -22,7 +175,7 @@ const props = defineProps<{
   templates: ReportTemplateSnapshot[]
 }>()
 
-const emit = defineEmits<{
+const emits = defineEmits<{
   deleteTemplate: [id: string]
   export: [format: ExportFormat]
   loadTemplate: [id: string]
@@ -123,7 +276,7 @@ function saveTemplate() {
   const name =
     templateName.value.trim() ||
     `${props.settings.title || '报表模板'} ${versions.value.length + 1}`
-  emit('saveTemplate', name)
+  emits('saveTemplate', name)
   versions.value = [
     {
       id: `version-${Date.now()}`,
@@ -137,7 +290,7 @@ function saveTemplate() {
 }
 
 function applyDensity(density: ReportSettings['density']) {
-  emit('updateSettings', { density })
+  emits('updateSettings', { density })
 }
 
 watch(
@@ -150,159 +303,6 @@ watch(
   { immediate: true }
 )
 </script>
-
-<template>
-  <section class="report-experience-panel">
-    <header class="report-experience-panel__header">
-      <div>
-        <span>Experience</span>
-        <h3>模板与视图</h3>
-      </div>
-      <a-segmented
-        v-model:value="viewMode"
-        :options="[
-          { label: '表格', value: 'table' },
-          { label: '图表', value: 'chart' },
-        ]"
-      />
-    </header>
-
-    <a-tabs v-model:active-key="activeTab" size="small">
-      <a-tab-pane key="templates" tab="模板库">
-        <div class="report-experience-panel__stack">
-          <div class="report-experience-panel__save">
-            <a-input
-              v-model:value="templateName"
-              placeholder="模板名称"
-              @press-enter="saveTemplate"
-            />
-            <a-button type="primary" @click="saveTemplate">
-              <template #icon>
-                <Icon name="i-lucide:save" />
-              </template>
-              保存
-            </a-button>
-          </div>
-
-          <div v-if="templates.length" class="report-experience-panel__list">
-            <article v-for="template in templates" :key="template.id">
-              <div>
-                <strong>{{ template.name }}</strong>
-                <span>{{ formatTime(template.savedAt) }}</span>
-              </div>
-              <div class="report-experience-panel__actions">
-                <a-button
-                  size="small"
-                  type="link"
-                  @click="emit('loadTemplate', template.id)"
-                >
-                  应用
-                </a-button>
-                <a-button
-                  size="small"
-                  type="link"
-                  danger
-                  @click="emit('deleteTemplate', template.id)"
-                >
-                  删除
-                </a-button>
-              </div>
-            </article>
-          </div>
-
-          <a-empty v-else description="暂无模板" />
-        </div>
-      </a-tab-pane>
-
-      <a-tab-pane key="versions" tab="版本历史">
-        <div class="report-experience-panel__stack">
-          <a-alert
-            show-icon
-            type="info"
-            message="版本快照会同步保存为模板，方便随时回滚。"
-          />
-          <button
-            v-for="version in versions"
-            :key="version.id"
-            type="button"
-            class="report-experience-panel__version"
-          >
-            <Icon name="i-lucide:history" :size="16" />
-            <span>
-              <strong>{{ version.name }}</strong>
-              <small
-                >{{ formatTime(version.savedAt) }} · {{ version.detail }}</small
-              >
-            </span>
-          </button>
-          <a-empty
-            v-if="!versions.length"
-            description="保存模板后生成版本记录"
-          />
-        </div>
-      </a-tab-pane>
-
-      <a-tab-pane key="fields" tab="字段分组">
-        <div class="report-experience-panel__groups">
-          <article v-for="group in fieldGroups" :key="group.label">
-            <span>{{ group.label }}</span>
-            <strong>{{ group.enabled }} / {{ group.total }}</strong>
-            <a-progress
-              :percent="Math.round((group.enabled / group.total) * 100)"
-              :show-info="false"
-              :size="5"
-            />
-          </article>
-        </div>
-      </a-tab-pane>
-
-      <a-tab-pane key="export" tab="导出配置">
-        <div class="report-experience-panel__stack">
-          <div class="report-experience-panel__density">
-            <span>密度</span>
-            <a-segmented
-              :value="settings.density"
-              :options="[
-                { label: '紧凑', value: 'compact' },
-                { label: '标准', value: 'standard' },
-                { label: '舒展', value: 'comfortable' },
-              ]"
-              @change="
-                (value: unknown) =>
-                  applyDensity(value as ReportSettings['density'])
-              "
-            />
-          </div>
-
-          <div class="report-experience-panel__exports">
-            <button
-              v-for="item in exportCards"
-              :key="item.format"
-              type="button"
-              @click="emit('export', item.format)"
-            >
-              <Icon :name="item.icon" :size="18" />
-              <span>
-                <strong>{{ item.title }}</strong>
-                <small>{{ item.desc }}</small>
-              </span>
-            </button>
-          </div>
-
-          <div
-            v-if="visibleSummary.length"
-            class="report-experience-panel__summary"
-          >
-            <article v-for="summary in visibleSummary" :key="summary.key">
-              <span>{{ summary.label }}</span>
-              <strong>{{ summary.value }}</strong>
-            </article>
-          </div>
-        </div>
-      </a-tab-pane>
-    </a-tabs>
-  </section>
-</template>
 
 <style scoped lang="less">
 .report-experience-panel {

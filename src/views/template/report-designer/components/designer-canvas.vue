@@ -1,77 +1,3 @@
-<script setup lang="ts">
-import type {
-  ReportField,
-  ReportRow,
-  ReportSettings,
-  ReportSummary,
-} from '../types'
-
-const props = withDefaults(
-  defineProps<{
-    fields: ReportField[]
-    formatCell: (value: unknown, field: ReportField, row?: ReportRow) => string
-    previewRows: ReportRow[]
-    rowCount: number
-    settings: ReportSettings
-    stats: Array<{ label: string; value: string }>
-    summaries: ReportSummary[]
-    viewMode?: 'table' | 'chart'
-    warning: string
-  }>(),
-  {
-    viewMode: 'table',
-  }
-)
-
-const numericFieldTypes = new Set(['number', 'currency', 'percent'])
-
-const chartField = computed(() => {
-  return (
-    props.fields.find((field) => numericFieldTypes.has(field.type)) ??
-    props.fields[0]
-  )
-})
-
-const labelField = computed(() => {
-  return (
-    props.fields.find((field) => field.type === 'string' && field.enabled) ??
-    props.fields[0]
-  )
-})
-
-const chartItems = computed(() => {
-  const field = chartField.value
-  if (!field) return []
-
-  return props.previewRows.slice(0, 8).map((row, index) => {
-    const rawValue = row[field.key]
-    const numericValue =
-      typeof rawValue === 'number'
-        ? rawValue
-        : Number(String(rawValue ?? '').replaceAll(',', ''))
-
-    return {
-      index,
-      label: String(
-        row[labelField.value?.key ?? field.key] ?? `Row ${index + 1}`
-      ),
-      value: Number.isFinite(numericValue) ? Math.abs(numericValue) : index + 1,
-      valueText: props.formatCell(rawValue, field, row),
-    }
-  })
-})
-
-const maxChartValue = computed(() => {
-  return Math.max(...chartItems.value.map((item) => item.value), 1)
-})
-
-function getRowKey(row: ReportRow, index: number) {
-  const firstField = props.fields[0]
-  const value = firstField ? row[firstField.key] : undefined
-  return `${String(value ?? 'row')}-${index}`
-}
-</script>
-
 <template>
   <section
     class="designer-canvas"
@@ -191,6 +117,80 @@ function getRowKey(row: ReportRow, index: number) {
     </footer>
   </section>
 </template>
+
+<script setup lang="ts">
+import type {
+  ReportField,
+  ReportRow,
+  ReportSettings,
+  ReportSummary,
+} from '../types'
+
+const props = withDefaults(
+  defineProps<{
+    fields: ReportField[]
+    formatCell: (value: unknown, field: ReportField, row?: ReportRow) => string
+    previewRows: ReportRow[]
+    rowCount: number
+    settings: ReportSettings
+    stats: Array<{ label: string; value: string }>
+    summaries: ReportSummary[]
+    viewMode?: 'table' | 'chart'
+    warning: string
+  }>(),
+  {
+    viewMode: 'table',
+  }
+)
+
+const numericFieldTypes = new Set(['number', 'currency', 'percent'])
+
+const chartField = computed(() => {
+  return (
+    props.fields.find((field) => numericFieldTypes.has(field.type)) ??
+    props.fields[0]
+  )
+})
+
+const labelField = computed(() => {
+  return (
+    props.fields.find((field) => field.type === 'string' && field.enabled) ??
+    props.fields[0]
+  )
+})
+
+const chartItems = computed(() => {
+  const field = chartField.value
+  if (!field) return []
+
+  return props.previewRows.slice(0, 8).map((row, index) => {
+    const rawValue = row[field.key]
+    const numericValue =
+      typeof rawValue === 'number'
+        ? rawValue
+        : Number(String(rawValue ?? '').replaceAll(',', ''))
+
+    return {
+      index,
+      label: String(
+        row[labelField.value?.key ?? field.key] ?? `Row ${index + 1}`
+      ),
+      value: Number.isFinite(numericValue) ? Math.abs(numericValue) : index + 1,
+      valueText: props.formatCell(rawValue, field, row),
+    }
+  })
+})
+
+const maxChartValue = computed(() => {
+  return Math.max(...chartItems.value.map((item) => item.value), 1)
+})
+
+function getRowKey(row: ReportRow, index: number) {
+  const firstField = props.fields[0]
+  const value = firstField ? row[firstField.key] : undefined
+  return `${String(value ?? 'row')}-${index}`
+}
+</script>
 
 <style scoped lang="less">
 .designer-canvas {

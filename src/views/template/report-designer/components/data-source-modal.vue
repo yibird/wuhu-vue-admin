@@ -1,86 +1,3 @@
-<script setup lang="ts">
-import { defaultDataSourceConfig } from '../data'
-import type {
-  DataSourceConfig,
-  DataSourceKind,
-  RequestMethod,
-  SqlDriver,
-} from '../types'
-
-type SourceModalMode = 'create' | 'edit'
-
-const props = defineProps<{
-  config: DataSourceConfig
-  mode: SourceModalMode
-  open: boolean
-}>()
-
-const emit = defineEmits<{
-  save: [config: DataSourceConfig]
-  'update:open': [open: boolean]
-}>()
-
-const draftConfig = reactive<DataSourceConfig>(
-  cloneConfig(defaultDataSourceConfig)
-)
-
-const sourceOptions = [
-  { label: '样例数据', value: 'sample' },
-  { label: '接口', value: 'rest' },
-  { label: 'JSON', value: 'json' },
-  { label: 'SQL', value: 'sql' },
-]
-
-const methodOptions = [
-  { label: 'GET', value: 'GET' },
-  { label: 'POST', value: 'POST' },
-  { label: 'PUT', value: 'PUT' },
-  { label: 'PATCH', value: 'PATCH' },
-]
-
-const driverOptions = [
-  { label: 'MySQL', value: 'mysql' },
-  { label: 'PostgreSQL', value: 'postgresql' },
-  { label: 'SQL Server', value: 'sqlserver' },
-  { label: 'Oracle', value: 'oracle' },
-  { label: '自定义', value: 'custom' },
-]
-
-const modalTitle = computed(() =>
-  props.mode === 'create' ? '新增数据源' : '编辑数据源'
-)
-
-function cloneConfig(config: Partial<DataSourceConfig>) {
-  return { ...defaultDataSourceConfig, ...config }
-}
-
-watch(
-  () => props.open,
-  (open) => {
-    if (!open) return
-    Object.assign(draftConfig, cloneConfig(props.config))
-  },
-  { immediate: true }
-)
-
-function updateKind(value: string) {
-  draftConfig.kind = value as DataSourceKind
-}
-
-function updateMethod(value: string) {
-  draftConfig.method = value as RequestMethod
-}
-
-function updateDriver(value: string) {
-  draftConfig.sqlDriver = value as SqlDriver
-}
-
-function saveConfig() {
-  emit('save', cloneConfig(draftConfig))
-  emit('update:open', false)
-}
-</script>
-
 <template>
   <a-modal
     :open="open"
@@ -90,9 +7,9 @@ function saveConfig() {
     destroy-on-hidden
     ok-text="保存"
     :title="modalTitle"
-    @cancel="emit('update:open', false)"
+    @cancel="emits('update:open', false)"
     @ok="saveConfig"
-    @update:open="emit('update:open', $event)"
+    @update:open="emits('update:open', $event)"
   >
     <div class="report-source-modal__content">
       <header class="report-source-modal__head">
@@ -257,6 +174,89 @@ function saveConfig() {
     </div>
   </a-modal>
 </template>
+
+<script setup lang="ts">
+import { defaultDataSourceConfig } from '../data'
+import type {
+  DataSourceConfig,
+  DataSourceKind,
+  RequestMethod,
+  SqlDriver,
+} from '../types'
+
+type SourceModalMode = 'create' | 'edit'
+
+const props = defineProps<{
+  config: DataSourceConfig
+  mode: SourceModalMode
+  open: boolean
+}>()
+
+const emits = defineEmits<{
+  save: [config: DataSourceConfig]
+  'update:open': [open: boolean]
+}>()
+
+const draftConfig = reactive<DataSourceConfig>(
+  cloneConfig(defaultDataSourceConfig)
+)
+
+const sourceOptions = [
+  { label: '样例数据', value: 'sample' },
+  { label: '接口', value: 'rest' },
+  { label: 'JSON', value: 'json' },
+  { label: 'SQL', value: 'sql' },
+]
+
+const methodOptions = [
+  { label: 'GET', value: 'GET' },
+  { label: 'POST', value: 'POST' },
+  { label: 'PUT', value: 'PUT' },
+  { label: 'PATCH', value: 'PATCH' },
+]
+
+const driverOptions = [
+  { label: 'MySQL', value: 'mysql' },
+  { label: 'PostgreSQL', value: 'postgresql' },
+  { label: 'SQL Server', value: 'sqlserver' },
+  { label: 'Oracle', value: 'oracle' },
+  { label: '自定义', value: 'custom' },
+]
+
+const modalTitle = computed(() =>
+  props.mode === 'create' ? '新增数据源' : '编辑数据源'
+)
+
+function cloneConfig(config: Partial<DataSourceConfig>) {
+  return { ...defaultDataSourceConfig, ...config }
+}
+
+watch(
+  () => props.open,
+  (open) => {
+    if (!open) return
+    Object.assign(draftConfig, cloneConfig(props.config))
+  },
+  { immediate: true }
+)
+
+function updateKind(value: string) {
+  draftConfig.kind = value as DataSourceKind
+}
+
+function updateMethod(value: string) {
+  draftConfig.method = value as RequestMethod
+}
+
+function updateDriver(value: string) {
+  draftConfig.sqlDriver = value as SqlDriver
+}
+
+function saveConfig() {
+  emits('save', cloneConfig(draftConfig))
+  emits('update:open', false)
+}
+</script>
 
 <style scoped lang="less">
 .report-source-modal__content {

@@ -1,72 +1,3 @@
-<script setup lang="ts">
-import type {
-  FieldMappingMode,
-  ReportField,
-  ReportFieldMappingItem,
-} from '../types'
-
-const props = defineProps<{
-  field: ReportField
-}>()
-
-const emit = defineEmits<{
-  updateField: [patch: Partial<ReportField>]
-}>()
-
-const modeOptions = [
-  { label: '内部字典', value: 'manual' },
-  { label: '映射源', value: 'source' },
-]
-
-const mappingItems = computed(() => props.field.mappingItems ?? [])
-const mappingMode = computed(() => props.field.mappingMode ?? 'manual')
-
-function updateMappingEnabled(value: boolean) {
-  emit('updateField', {
-    mappingEnabled: value,
-    mappingItems:
-      value && !mappingItems.value.length
-        ? [
-            { key: '1', label: '开启' },
-            { key: '0', label: '关闭' },
-          ]
-        : mappingItems.value,
-    mappingKeyField: props.field.mappingKeyField || 'value',
-    mappingLabelField: props.field.mappingLabelField || 'label',
-    mappingMode: props.field.mappingMode ?? 'manual',
-  })
-}
-
-function updateMappingMode(value: string) {
-  emit('updateField', { mappingMode: value as FieldMappingMode })
-}
-
-function addMappingItem() {
-  emit('updateField', {
-    mappingItems: [...mappingItems.value, { key: '', label: '' }],
-  })
-}
-
-function updateMappingItem(
-  index: number,
-  patch: Partial<ReportFieldMappingItem>
-) {
-  emit('updateField', {
-    mappingItems: mappingItems.value.map((item, itemIndex) => {
-      return itemIndex === index ? { ...item, ...patch } : item
-    }),
-  })
-}
-
-function removeMappingItem(index: number) {
-  emit('updateField', {
-    mappingItems: mappingItems.value.filter(
-      (_, itemIndex) => itemIndex !== index
-    ),
-  })
-}
-</script>
-
 <template>
   <div class="mapping-editor">
     <div class="mapping-editor__head">
@@ -127,7 +58,7 @@ function removeMappingItem(index: number) {
               :value="field.mappingKeyField || 'value'"
               placeholder="映射 key 字段"
               @update:value="
-                emit('updateField', { mappingKeyField: String($event) })
+                emits('updateField', { mappingKeyField: String($event) })
               "
             />
           </label>
@@ -137,7 +68,7 @@ function removeMappingItem(index: number) {
               :value="field.mappingLabelField || 'label'"
               placeholder="映射 label 字段"
               @update:value="
-                emit('updateField', { mappingLabelField: String($event) })
+                emits('updateField', { mappingLabelField: String($event) })
               "
             />
           </label>
@@ -147,12 +78,83 @@ function removeMappingItem(index: number) {
           :auto-size="{ minRows: 3, maxRows: 6 }"
           :value="field.mappingSource"
           placeholder='[{"value":1,"label":"开启"}]'
-          @update:value="emit('updateField', { mappingSource: String($event) })"
+          @update:value="
+            emits('updateField', { mappingSource: String($event) })
+          "
         />
       </div>
     </div>
   </div>
 </template>
+
+<script setup lang="ts">
+import type {
+  FieldMappingMode,
+  ReportField,
+  ReportFieldMappingItem,
+} from '../types'
+
+const props = defineProps<{
+  field: ReportField
+}>()
+
+const emits = defineEmits<{
+  updateField: [patch: Partial<ReportField>]
+}>()
+
+const modeOptions = [
+  { label: '内部字典', value: 'manual' },
+  { label: '映射源', value: 'source' },
+]
+
+const mappingItems = computed(() => props.field.mappingItems ?? [])
+const mappingMode = computed(() => props.field.mappingMode ?? 'manual')
+
+function updateMappingEnabled(value: boolean) {
+  emits('updateField', {
+    mappingEnabled: value,
+    mappingItems:
+      value && !mappingItems.value.length
+        ? [
+            { key: '1', label: '开启' },
+            { key: '0', label: '关闭' },
+          ]
+        : mappingItems.value,
+    mappingKeyField: props.field.mappingKeyField || 'value',
+    mappingLabelField: props.field.mappingLabelField || 'label',
+    mappingMode: props.field.mappingMode ?? 'manual',
+  })
+}
+
+function updateMappingMode(value: string) {
+  emits('updateField', { mappingMode: value as FieldMappingMode })
+}
+
+function addMappingItem() {
+  emits('updateField', {
+    mappingItems: [...mappingItems.value, { key: '', label: '' }],
+  })
+}
+
+function updateMappingItem(
+  index: number,
+  patch: Partial<ReportFieldMappingItem>
+) {
+  emits('updateField', {
+    mappingItems: mappingItems.value.map((item, itemIndex) => {
+      return itemIndex === index ? { ...item, ...patch } : item
+    }),
+  })
+}
+
+function removeMappingItem(index: number) {
+  emits('updateField', {
+    mappingItems: mappingItems.value.filter(
+      (_, itemIndex) => itemIndex !== index
+    ),
+  })
+}
+</script>
 
 <style scoped lang="less">
 .mapping-editor {

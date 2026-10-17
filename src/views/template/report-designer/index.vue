@@ -1,3 +1,127 @@
+<template>
+  <WView
+    :full="true"
+    :padding="0"
+    class="w-full h-[calc(100vh-90px)] min-h-0 max-h-[calc(100vh-90px)] overflow-hidden bg-page"
+  >
+    <main
+      class="report-designer box-border w-full min-w-0 h-full min-h-0 grid grid-rows-[auto_minmax(0,1fr)] gap-12 overflow-hidden p-12 text-main max-[640px]:p-8"
+    >
+      <ReportToolbar
+        :export-options="exportOptions"
+        :export-status="exportStatus"
+        :phases="requirementPhases"
+        :row-count="rowCount"
+        :schema-version="reportSchema.version"
+        :template-type="settings.templateType"
+        @export="exportReport"
+        @open-schema="openSchemaModal"
+        @open-template-settings="templateSettingsOpen = true"
+      />
+
+      <section
+        class="report-designer__workspace min-w-0 h-full min-h-0 grid gap-12 overflow-hidden max-[640px]:gap-8"
+      >
+        <ReportFieldPanel
+          :fields="fields"
+          :format-cell="formatCell"
+          :sample-rows="previewRows"
+          :test-format-cell="testFormatCell"
+          @add-field="addField"
+          @move-field="moveField"
+          @remove-field="removeField"
+          @rename-field-key="renameFieldKey"
+          @reorder-fields="reorderFields"
+          @toggle-field="toggleField"
+          @update-field="updateField"
+        />
+
+        <ReportCanvasStage
+          :active-source-id="activeSourceId"
+          :config="sourceConfig"
+          :data-sources="dataSources"
+          :field-count="fieldCount"
+          :is-loading="dataBusy"
+          :load-error="dataError"
+          :row-count="rowCount"
+          @create-source="openCreateSource"
+          @delete-source="deleteDataSource"
+          @edit-source="openEditSource"
+          @load-source="loadActiveSourceData"
+          @open-template-settings="templateSettingsOpen = true"
+          @select-source="selectDataSource"
+        >
+          <ReportDesignerCanvas
+            class="h-full"
+            :fields="enabledFields"
+            :format-cell="formatCell"
+            :preview-rows="previewRows"
+            :row-count="rowCount"
+            :settings="settings"
+            :stats="designerStats"
+            :summaries="summaryValues"
+            :view-mode="reportViewMode"
+            :warning="exportWarning"
+          />
+        </ReportCanvasStage>
+
+        <ReportRightTabs
+          v-model:view-mode="reportViewMode"
+          :capability-groups="enterpriseCapabilityGroups"
+          :fields="fields"
+          :filters="filters"
+          :row-count="rowCount"
+          :schema="reportSchema"
+          :settings="settings"
+          :sorts="sorts"
+          :summaries="summaryValues"
+          :template-status="templateStatus"
+          :templates="templates"
+          @add-computed-field="addComputedField"
+          @add-filter="addFilter"
+          @add-sort="addSort"
+          @delete-template="deleteTemplate"
+          @export="exportReport"
+          @load-template="loadTemplate"
+          @remove-computed-field="removeComputedField"
+          @remove-filter="removeFilter"
+          @remove-sort="removeSort"
+          @save-template="saveTemplate"
+          @update-field="updateField"
+          @update-filter="updateFilter"
+          @update-settings="updateSettings"
+          @update-sort="updateSort"
+        />
+      </section>
+
+      <ReportDataSourceModal
+        v-model:open="sourceModalOpen"
+        :config="sourceModalConfig"
+        :mode="sourceModalMode"
+        @save="saveSource"
+      />
+
+      <ReportTemplateSettingsModal
+        v-model:open="templateSettingsOpen"
+        :settings="settings"
+        @update-settings="updateSettings"
+      />
+
+      <ReportSchemaModal
+        :error="schemaError"
+        :open="schemaModalOpen"
+        :source-code="schemaDraft"
+        @apply="applySchemaDraft"
+        @close="closeSchemaModal"
+        @copy="copySchemaDraft"
+        @export="exportSchemaDraft"
+        @format="formatSchemaDraft"
+        @source-change="updateSchemaDraft"
+      />
+    </main>
+  </WView>
+</template>
+
 <script setup lang="ts">
 import { message } from 'antdv-next'
 import {
@@ -187,130 +311,6 @@ function exportSchemaDraft() {
   }
 }
 </script>
-
-<template>
-  <WView
-    :full="true"
-    :padding="0"
-    class="w-full h-[calc(100vh-90px)] min-h-0 max-h-[calc(100vh-90px)] overflow-hidden bg-page"
-  >
-    <main
-      class="report-designer box-border w-full min-w-0 h-full min-h-0 grid grid-rows-[auto_minmax(0,1fr)] gap-12 overflow-hidden p-12 text-main max-[640px]:p-8"
-    >
-      <ReportToolbar
-        :export-options="exportOptions"
-        :export-status="exportStatus"
-        :phases="requirementPhases"
-        :row-count="rowCount"
-        :schema-version="reportSchema.version"
-        :template-type="settings.templateType"
-        @export="exportReport"
-        @open-schema="openSchemaModal"
-        @open-template-settings="templateSettingsOpen = true"
-      />
-
-      <section
-        class="report-designer__workspace min-w-0 h-full min-h-0 grid gap-12 overflow-hidden max-[640px]:gap-8"
-      >
-        <ReportFieldPanel
-          :fields="fields"
-          :format-cell="formatCell"
-          :sample-rows="previewRows"
-          :test-format-cell="testFormatCell"
-          @add-field="addField"
-          @move-field="moveField"
-          @remove-field="removeField"
-          @rename-field-key="renameFieldKey"
-          @reorder-fields="reorderFields"
-          @toggle-field="toggleField"
-          @update-field="updateField"
-        />
-
-        <ReportCanvasStage
-          :active-source-id="activeSourceId"
-          :config="sourceConfig"
-          :data-sources="dataSources"
-          :field-count="fieldCount"
-          :is-loading="dataBusy"
-          :load-error="dataError"
-          :row-count="rowCount"
-          @create-source="openCreateSource"
-          @delete-source="deleteDataSource"
-          @edit-source="openEditSource"
-          @load-source="loadActiveSourceData"
-          @open-template-settings="templateSettingsOpen = true"
-          @select-source="selectDataSource"
-        >
-          <ReportDesignerCanvas
-            class="h-full"
-            :fields="enabledFields"
-            :format-cell="formatCell"
-            :preview-rows="previewRows"
-            :row-count="rowCount"
-            :settings="settings"
-            :stats="designerStats"
-            :summaries="summaryValues"
-            :view-mode="reportViewMode"
-            :warning="exportWarning"
-          />
-        </ReportCanvasStage>
-
-        <ReportRightTabs
-          v-model:view-mode="reportViewMode"
-          :capability-groups="enterpriseCapabilityGroups"
-          :fields="fields"
-          :filters="filters"
-          :row-count="rowCount"
-          :schema="reportSchema"
-          :settings="settings"
-          :sorts="sorts"
-          :summaries="summaryValues"
-          :template-status="templateStatus"
-          :templates="templates"
-          @add-computed-field="addComputedField"
-          @add-filter="addFilter"
-          @add-sort="addSort"
-          @delete-template="deleteTemplate"
-          @export="exportReport"
-          @load-template="loadTemplate"
-          @remove-computed-field="removeComputedField"
-          @remove-filter="removeFilter"
-          @remove-sort="removeSort"
-          @save-template="saveTemplate"
-          @update-field="updateField"
-          @update-filter="updateFilter"
-          @update-settings="updateSettings"
-          @update-sort="updateSort"
-        />
-      </section>
-
-      <ReportDataSourceModal
-        v-model:open="sourceModalOpen"
-        :config="sourceModalConfig"
-        :mode="sourceModalMode"
-        @save="saveSource"
-      />
-
-      <ReportTemplateSettingsModal
-        v-model:open="templateSettingsOpen"
-        :settings="settings"
-        @update-settings="updateSettings"
-      />
-
-      <ReportSchemaModal
-        :error="schemaError"
-        :open="schemaModalOpen"
-        :source-code="schemaDraft"
-        @apply="applySchemaDraft"
-        @close="closeSchemaModal"
-        @copy="copySchemaDraft"
-        @export="exportSchemaDraft"
-        @format="formatSchemaDraft"
-        @source-change="updateSchemaDraft"
-      />
-    </main>
-  </WView>
-</template>
 
 <style scoped lang="less">
 .report-designer {

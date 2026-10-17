@@ -1,3 +1,82 @@
+<template>
+  <aside
+    class="report-right-tabs grid h-full min-h-0 grid-rows-[auto_minmax(0,1fr)] overflow-hidden rounded-8px border-1 border-color-2 border-solid bg-container"
+  >
+    <header
+      class="flex min-h-44px items-center gap-8px border-b-1 border-b-solid border-color-2 px-12px"
+    >
+      <Icon name="i-lucide:panel-right" :size="18" class="text-info" />
+      <h2 class="m-0 flex-1 text-15px text-primary font-700">配置面板</h2>
+    </header>
+
+    <a-tabs
+      v-model:active-key="activeTab"
+      class="report-right-tabs__tabs min-h-0"
+      destroy-on-hidden
+      size="small"
+    >
+      <a-tab-pane key="experience" tab="模板与视图">
+        <div
+          class="h-full min-h-0 p-12px w-full overflow-x-hidden overflow-y-auto"
+        >
+          <ExperiencePanel
+            v-model:view-mode="viewMode"
+            :fields="fields"
+            :row-count="rowCount"
+            :settings="settings"
+            :summaries="summaries"
+            :templates="templates"
+            @delete-template="emits('deleteTemplate', $event)"
+            @export="emits('export', $event)"
+            @load-template="emits('loadTemplate', $event)"
+            @save-template="emits('saveTemplate', $event)"
+            @update-settings="emits('updateSettings', $event)"
+          />
+        </div>
+      </a-tab-pane>
+
+      <a-tab-pane key="transform" tab="数据加工">
+        <div
+          class="h-full min-h-0 p-12px w-full overflow-x-hidden overflow-y-auto"
+        >
+          <TransformPanel
+            :fields="fields"
+            :filters="filters"
+            :sorts="sorts"
+            :template-status="templateStatus"
+            :templates="templates"
+            @add-computed-field="emits('addComputedField', $event)"
+            @add-filter="emits('addFilter')"
+            @add-sort="emits('addSort')"
+            @delete-template="emits('deleteTemplate', $event)"
+            @load-template="emits('loadTemplate', $event)"
+            @remove-computed-field="emits('removeComputedField', $event)"
+            @remove-filter="emits('removeFilter', $event)"
+            @remove-sort="emits('removeSort', $event)"
+            @save-template="emits('saveTemplate', $event)"
+            @update-field="handleUpdateField"
+            @update-filter="handleUpdateFilter"
+            @update-sort="handleUpdateSort"
+          />
+        </div>
+      </a-tab-pane>
+
+      <a-tab-pane key="capability" tab="生产能力">
+        <div
+          class="h-full min-h-0 p-12px w-full overflow-x-hidden overflow-y-auto"
+        >
+          <CapabilityPanel
+            :field-count="fields.length"
+            :groups="capabilityGroups"
+            :row-count="rowCount"
+            :schema-version="schema.version"
+          />
+        </div>
+      </a-tab-pane>
+    </a-tabs>
+  </aside>
+</template>
+
 <script setup lang="ts">
 import CapabilityPanel from './capability-panel.vue'
 import ExperiencePanel from './experience-panel.vue'
@@ -28,7 +107,7 @@ defineProps<{
   templates: ReportTemplateSnapshot[]
 }>()
 
-const emit = defineEmits<{
+const emits = defineEmits<{
   addComputedField: [
     payload: {
       expression: string
@@ -53,13 +132,13 @@ const emit = defineEmits<{
 }>()
 
 function handleUpdateField(key: string, patch: Partial<ReportField>) {
-  emit('updateField', key, patch)
+  emits('updateField', key, patch)
 }
 function handleUpdateFilter(id: string, patch: Partial<ReportFilter>) {
-  emit('updateFilter', id, patch)
+  emits('updateFilter', id, patch)
 }
 function handleUpdateSort(id: string, patch: Partial<ReportSort>) {
-  emit('updateSort', id, patch)
+  emits('updateSort', id, patch)
 }
 
 const viewMode = defineModel<'table' | 'chart'>('viewMode', {
@@ -67,85 +146,6 @@ const viewMode = defineModel<'table' | 'chart'>('viewMode', {
 })
 const activeTab = shallowRef('experience')
 </script>
-
-<template>
-  <aside
-    class="report-right-tabs grid h-full min-h-0 grid-rows-[auto_minmax(0,1fr)] overflow-hidden rounded-8px border-1 border-color-2 border-solid bg-container"
-  >
-    <header
-      class="flex min-h-44px items-center gap-8px border-b-1 border-b-solid border-color-2 px-12px"
-    >
-      <Icon name="i-lucide:panel-right" :size="18" class="text-info" />
-      <h2 class="m-0 flex-1 text-15px text-primary font-700">配置面板</h2>
-    </header>
-
-    <a-tabs
-      v-model:active-key="activeTab"
-      class="report-right-tabs__tabs min-h-0"
-      destroy-on-hidden
-      size="small"
-    >
-      <a-tab-pane key="experience" tab="模板与视图">
-        <div
-          class="h-full min-h-0 p-12px w-full overflow-x-hidden overflow-y-auto"
-        >
-          <ExperiencePanel
-            v-model:view-mode="viewMode"
-            :fields="fields"
-            :row-count="rowCount"
-            :settings="settings"
-            :summaries="summaries"
-            :templates="templates"
-            @delete-template="emit('deleteTemplate', $event)"
-            @export="emit('export', $event)"
-            @load-template="emit('loadTemplate', $event)"
-            @save-template="emit('saveTemplate', $event)"
-            @update-settings="emit('updateSettings', $event)"
-          />
-        </div>
-      </a-tab-pane>
-
-      <a-tab-pane key="transform" tab="数据加工">
-        <div
-          class="h-full min-h-0 p-12px w-full overflow-x-hidden overflow-y-auto"
-        >
-          <TransformPanel
-            :fields="fields"
-            :filters="filters"
-            :sorts="sorts"
-            :template-status="templateStatus"
-            :templates="templates"
-            @add-computed-field="emit('addComputedField', $event)"
-            @add-filter="emit('addFilter')"
-            @add-sort="emit('addSort')"
-            @delete-template="emit('deleteTemplate', $event)"
-            @load-template="emit('loadTemplate', $event)"
-            @remove-computed-field="emit('removeComputedField', $event)"
-            @remove-filter="emit('removeFilter', $event)"
-            @remove-sort="emit('removeSort', $event)"
-            @save-template="emit('saveTemplate', $event)"
-            @update-field="handleUpdateField"
-            @update-filter="handleUpdateFilter"
-            @update-sort="handleUpdateSort"
-          />
-        </div>
-      </a-tab-pane>
-
-      <a-tab-pane key="capability" tab="生产能力">
-        <div
-          class="h-full min-h-0 p-12px w-full overflow-x-hidden overflow-y-auto"
-        >
-          <CapabilityPanel
-            :field-count="fields.length"
-            :groups="capabilityGroups"
-            :row-count="rowCount"
-            :schema-version="schema.version"
-          />
-        </div>
-      </a-tab-pane>
-    </a-tabs>
-  </aside>
-</template>
 
 <style scoped lang="less">
 .report-right-tabs__tabs {

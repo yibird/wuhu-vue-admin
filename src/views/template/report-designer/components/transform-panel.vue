@@ -1,3 +1,292 @@
+<template>
+  <section class="transform-panel">
+    <div class="transform-panel__head">
+      <Icon name="i-lucide:workflow" :size="18" />
+      <h2>数据加工</h2>
+    </div>
+
+    <div class="transform-panel__body">
+      <div class="transform-group">
+        <div class="transform-group__title">
+          <h3>模板</h3>
+          <span>{{ templates.length }} 个</span>
+        </div>
+
+        <div class="transform-row">
+          <a-input
+            :value="templateName"
+            placeholder="模板名称"
+            size="small"
+            @update:value="templateName = String($event)"
+          />
+          <a-button size="small" type="primary" @click="saveTemplate">
+            <template #icon>
+              <Icon name="i-lucide:save" />
+            </template>
+            保存
+          </a-button>
+        </div>
+
+        <div class="transform-row transform-row--actions">
+          <a-select
+            :options="templateOptions"
+            :value="selectedTemplateId"
+            allow-clear
+            placeholder="选择模板"
+            size="small"
+            @update:value="selectedTemplateId = String($event ?? '')"
+          />
+          <a-button
+            :disabled="!selectedTemplateId"
+            size="small"
+            @click="loadTemplate"
+          >
+            <template #icon>
+              <Icon name="i-lucide:folder-open" />
+            </template>
+          </a-button>
+          <a-button
+            :disabled="!selectedTemplateId"
+            danger
+            size="small"
+            @click="deleteTemplate"
+          >
+            <template #icon>
+              <Icon name="i-lucide:trash-2" />
+            </template>
+          </a-button>
+        </div>
+
+        <p class="transform-status">{{ templateStatus }}</p>
+      </div>
+
+      <div class="transform-group">
+        <div class="transform-group__title">
+          <h3>计算字段</h3>
+          <span>{{ computedFields.length }} 个</span>
+        </div>
+
+        <article
+          v-for="field in computedFields"
+          :key="field.key"
+          class="computed-card"
+        >
+          <div class="computed-card__top">
+            <strong>{{ field.label }}</strong>
+            <code>{{ field.key }}</code>
+            <a-button
+              danger
+              size="small"
+              @click="emits('removeComputedField', field.key)"
+            >
+              <template #icon>
+                <Icon name="i-lucide:x" />
+              </template>
+            </a-button>
+          </div>
+
+          <div class="computed-card__form">
+            <label class="transform-field">
+              <span>列名</span>
+              <a-input
+                :value="field.label"
+                size="small"
+                @update:value="
+                  emits('updateField', field.key, { label: String($event) })
+                "
+              />
+            </label>
+            <label class="transform-field">
+              <span>类型</span>
+              <a-select
+                :options="typeOptions"
+                :value="field.type"
+                size="small"
+                @update:value="
+                  emits('updateField', field.key, { type: $event as FieldType })
+                "
+              />
+            </label>
+            <label class="transform-field transform-field--wide">
+              <span>表达式</span>
+              <a-input
+                :value="field.expression"
+                size="small"
+                @update:value="
+                  emits('updateField', field.key, {
+                    expression: String($event),
+                  })
+                "
+              />
+            </label>
+          </div>
+        </article>
+
+        <div class="computed-draft">
+          <div class="computed-draft__grid">
+            <a-input
+              :value="computedDraft.key"
+              placeholder="字段编码"
+              size="small"
+              @update:value="computedDraft.key = String($event)"
+            />
+            <a-input
+              :value="computedDraft.label"
+              placeholder="列名"
+              size="small"
+              @update:value="computedDraft.label = String($event)"
+            />
+            <a-select
+              :options="typeOptions"
+              :value="computedDraft.type"
+              size="small"
+              @update:value="computedDraft.type = $event as FieldType"
+            />
+          </div>
+          <div class="transform-row">
+            <a-input
+              :value="computedDraft.expression"
+              placeholder="amount * grossMargin"
+              size="small"
+              @update:value="computedDraft.expression = String($event)"
+            />
+            <a-button size="small" @click="addComputedField">
+              <template #icon>
+                <Icon name="i-lucide:plus" />
+              </template>
+              添加
+            </a-button>
+          </div>
+        </div>
+      </div>
+
+      <div class="transform-group">
+        <div class="transform-group__title">
+          <h3>过滤</h3>
+          <a-button size="small" @click="emits('addFilter')">
+            <template #icon>
+              <Icon name="i-lucide:plus" />
+            </template>
+            条件
+          </a-button>
+        </div>
+
+        <article v-for="filter in filters" :key="filter.id" class="rule-card">
+          <div class="rule-card__top">
+            <a-switch
+              :checked="filter.enabled"
+              size="small"
+              @change="
+                emits('updateFilter', filter.id, { enabled: Boolean($event) })
+              "
+            />
+            <a-select
+              :options="fieldOptions"
+              :value="filter.fieldKey"
+              size="small"
+              @update:value="
+                emits('updateFilter', filter.id, { fieldKey: String($event) })
+              "
+            />
+            <a-button
+              danger
+              size="small"
+              @click="emits('removeFilter', filter.id)"
+            >
+              <template #icon>
+                <Icon name="i-lucide:trash-2" />
+              </template>
+            </a-button>
+          </div>
+          <div class="rule-card__form">
+            <a-select
+              :options="filterOperatorOptions"
+              :value="filter.operator"
+              size="small"
+              @update:value="
+                emits('updateFilter', filter.id, {
+                  operator: $event as FilterOperator,
+                })
+              "
+            />
+            <a-input
+              v-if="needsValue(filter.operator)"
+              :value="filter.value"
+              placeholder="值"
+              size="small"
+              @update:value="
+                emits('updateFilter', filter.id, { value: String($event) })
+              "
+            />
+            <a-input
+              v-if="needsSecondValue(filter.operator)"
+              :value="filter.secondValue"
+              placeholder="结束值"
+              size="small"
+              @update:value="
+                emits('updateFilter', filter.id, {
+                  secondValue: String($event),
+                })
+              "
+            />
+          </div>
+        </article>
+
+        <p v-if="!filters.length" class="transform-empty">暂无过滤条件</p>
+      </div>
+
+      <div class="transform-group">
+        <div class="transform-group__title">
+          <h3>排序</h3>
+          <a-button size="small" @click="emits('addSort')">
+            <template #icon>
+              <Icon name="i-lucide:plus" />
+            </template>
+            排序
+          </a-button>
+        </div>
+
+        <article v-for="sort in sorts" :key="sort.id" class="rule-card">
+          <div class="rule-card__top">
+            <a-switch
+              :checked="sort.enabled"
+              size="small"
+              @change="
+                emits('updateSort', sort.id, { enabled: Boolean($event) })
+              "
+            />
+            <a-select
+              :options="fieldOptions"
+              :value="sort.fieldKey"
+              size="small"
+              @update:value="
+                emits('updateSort', sort.id, { fieldKey: String($event) })
+              "
+            />
+            <a-select
+              :options="sortDirectionOptions"
+              :value="sort.direction"
+              size="small"
+              @update:value="
+                emits('updateSort', sort.id, {
+                  direction: $event as SortDirection,
+                })
+              "
+            />
+            <a-button danger size="small" @click="emits('removeSort', sort.id)">
+              <template #icon>
+                <Icon name="i-lucide:trash-2" />
+              </template>
+            </a-button>
+          </div>
+        </article>
+
+        <p v-if="!sorts.length" class="transform-empty">暂无排序规则</p>
+      </div>
+    </div>
+  </section>
+</template>
+
 <script setup lang="ts">
 import type {
   FieldType,
@@ -17,7 +306,7 @@ const props = defineProps<{
   templates: ReportTemplateSnapshot[]
 }>()
 
-const emit = defineEmits<{
+const emits = defineEmits<{
   addComputedField: [
     payload: {
       expression: string
@@ -110,7 +399,7 @@ function needsSecondValue(operator: FilterOperator) {
 }
 
 function addComputedField() {
-  emit('addComputedField', { ...computedDraft })
+  emits('addComputedField', { ...computedDraft })
   computedDraft.expression = ''
   computedDraft.key = ''
   computedDraft.label = ''
@@ -118,306 +407,21 @@ function addComputedField() {
 }
 
 function saveTemplate() {
-  emit('saveTemplate', templateName.value)
+  emits('saveTemplate', templateName.value)
   templateName.value = ''
 }
 
 function loadTemplate() {
   if (!selectedTemplateId.value) return
-  emit('loadTemplate', selectedTemplateId.value)
+  emits('loadTemplate', selectedTemplateId.value)
 }
 
 function deleteTemplate() {
   if (!selectedTemplateId.value) return
-  emit('deleteTemplate', selectedTemplateId.value)
+  emits('deleteTemplate', selectedTemplateId.value)
   selectedTemplateId.value = ''
 }
 </script>
-
-<template>
-  <section class="transform-panel">
-    <div class="transform-panel__head">
-      <Icon name="i-lucide:workflow" :size="18" />
-      <h2>数据加工</h2>
-    </div>
-
-    <div class="transform-panel__body">
-      <div class="transform-group">
-        <div class="transform-group__title">
-          <h3>模板</h3>
-          <span>{{ templates.length }} 个</span>
-        </div>
-
-        <div class="transform-row">
-          <a-input
-            :value="templateName"
-            placeholder="模板名称"
-            size="small"
-            @update:value="templateName = String($event)"
-          />
-          <a-button size="small" type="primary" @click="saveTemplate">
-            <template #icon>
-              <Icon name="i-lucide:save" />
-            </template>
-            保存
-          </a-button>
-        </div>
-
-        <div class="transform-row transform-row--actions">
-          <a-select
-            :options="templateOptions"
-            :value="selectedTemplateId"
-            allow-clear
-            placeholder="选择模板"
-            size="small"
-            @update:value="selectedTemplateId = String($event ?? '')"
-          />
-          <a-button
-            :disabled="!selectedTemplateId"
-            size="small"
-            @click="loadTemplate"
-          >
-            <template #icon>
-              <Icon name="i-lucide:folder-open" />
-            </template>
-          </a-button>
-          <a-button
-            :disabled="!selectedTemplateId"
-            danger
-            size="small"
-            @click="deleteTemplate"
-          >
-            <template #icon>
-              <Icon name="i-lucide:trash-2" />
-            </template>
-          </a-button>
-        </div>
-
-        <p class="transform-status">{{ templateStatus }}</p>
-      </div>
-
-      <div class="transform-group">
-        <div class="transform-group__title">
-          <h3>计算字段</h3>
-          <span>{{ computedFields.length }} 个</span>
-        </div>
-
-        <article
-          v-for="field in computedFields"
-          :key="field.key"
-          class="computed-card"
-        >
-          <div class="computed-card__top">
-            <strong>{{ field.label }}</strong>
-            <code>{{ field.key }}</code>
-            <a-button
-              danger
-              size="small"
-              @click="emit('removeComputedField', field.key)"
-            >
-              <template #icon>
-                <Icon name="i-lucide:x" />
-              </template>
-            </a-button>
-          </div>
-
-          <div class="computed-card__form">
-            <label class="transform-field">
-              <span>列名</span>
-              <a-input
-                :value="field.label"
-                size="small"
-                @update:value="
-                  emit('updateField', field.key, { label: String($event) })
-                "
-              />
-            </label>
-            <label class="transform-field">
-              <span>类型</span>
-              <a-select
-                :options="typeOptions"
-                :value="field.type"
-                size="small"
-                @update:value="
-                  emit('updateField', field.key, { type: $event as FieldType })
-                "
-              />
-            </label>
-            <label class="transform-field transform-field--wide">
-              <span>表达式</span>
-              <a-input
-                :value="field.expression"
-                size="small"
-                @update:value="
-                  emit('updateField', field.key, { expression: String($event) })
-                "
-              />
-            </label>
-          </div>
-        </article>
-
-        <div class="computed-draft">
-          <div class="computed-draft__grid">
-            <a-input
-              :value="computedDraft.key"
-              placeholder="字段编码"
-              size="small"
-              @update:value="computedDraft.key = String($event)"
-            />
-            <a-input
-              :value="computedDraft.label"
-              placeholder="列名"
-              size="small"
-              @update:value="computedDraft.label = String($event)"
-            />
-            <a-select
-              :options="typeOptions"
-              :value="computedDraft.type"
-              size="small"
-              @update:value="computedDraft.type = $event as FieldType"
-            />
-          </div>
-          <div class="transform-row">
-            <a-input
-              :value="computedDraft.expression"
-              placeholder="amount * grossMargin"
-              size="small"
-              @update:value="computedDraft.expression = String($event)"
-            />
-            <a-button size="small" @click="addComputedField">
-              <template #icon>
-                <Icon name="i-lucide:plus" />
-              </template>
-              添加
-            </a-button>
-          </div>
-        </div>
-      </div>
-
-      <div class="transform-group">
-        <div class="transform-group__title">
-          <h3>过滤</h3>
-          <a-button size="small" @click="emit('addFilter')">
-            <template #icon>
-              <Icon name="i-lucide:plus" />
-            </template>
-            条件
-          </a-button>
-        </div>
-
-        <article v-for="filter in filters" :key="filter.id" class="rule-card">
-          <div class="rule-card__top">
-            <a-switch
-              :checked="filter.enabled"
-              size="small"
-              @change="
-                emit('updateFilter', filter.id, { enabled: Boolean($event) })
-              "
-            />
-            <a-select
-              :options="fieldOptions"
-              :value="filter.fieldKey"
-              size="small"
-              @update:value="
-                emit('updateFilter', filter.id, { fieldKey: String($event) })
-              "
-            />
-            <a-button
-              danger
-              size="small"
-              @click="emit('removeFilter', filter.id)"
-            >
-              <template #icon>
-                <Icon name="i-lucide:trash-2" />
-              </template>
-            </a-button>
-          </div>
-          <div class="rule-card__form">
-            <a-select
-              :options="filterOperatorOptions"
-              :value="filter.operator"
-              size="small"
-              @update:value="
-                emit('updateFilter', filter.id, {
-                  operator: $event as FilterOperator,
-                })
-              "
-            />
-            <a-input
-              v-if="needsValue(filter.operator)"
-              :value="filter.value"
-              placeholder="值"
-              size="small"
-              @update:value="
-                emit('updateFilter', filter.id, { value: String($event) })
-              "
-            />
-            <a-input
-              v-if="needsSecondValue(filter.operator)"
-              :value="filter.secondValue"
-              placeholder="结束值"
-              size="small"
-              @update:value="
-                emit('updateFilter', filter.id, { secondValue: String($event) })
-              "
-            />
-          </div>
-        </article>
-
-        <p v-if="!filters.length" class="transform-empty">暂无过滤条件</p>
-      </div>
-
-      <div class="transform-group">
-        <div class="transform-group__title">
-          <h3>排序</h3>
-          <a-button size="small" @click="emit('addSort')">
-            <template #icon>
-              <Icon name="i-lucide:plus" />
-            </template>
-            排序
-          </a-button>
-        </div>
-
-        <article v-for="sort in sorts" :key="sort.id" class="rule-card">
-          <div class="rule-card__top">
-            <a-switch
-              :checked="sort.enabled"
-              size="small"
-              @change="
-                emit('updateSort', sort.id, { enabled: Boolean($event) })
-              "
-            />
-            <a-select
-              :options="fieldOptions"
-              :value="sort.fieldKey"
-              size="small"
-              @update:value="
-                emit('updateSort', sort.id, { fieldKey: String($event) })
-              "
-            />
-            <a-select
-              :options="sortDirectionOptions"
-              :value="sort.direction"
-              size="small"
-              @update:value="
-                emit('updateSort', sort.id, {
-                  direction: $event as SortDirection,
-                })
-              "
-            />
-            <a-button danger size="small" @click="emit('removeSort', sort.id)">
-              <template #icon>
-                <Icon name="i-lucide:trash-2" />
-              </template>
-            </a-button>
-          </div>
-        </article>
-
-        <p v-if="!sorts.length" class="transform-empty">暂无排序规则</p>
-      </div>
-    </div>
-  </section>
-</template>
 
 <style scoped lang="less">
 .transform-panel {

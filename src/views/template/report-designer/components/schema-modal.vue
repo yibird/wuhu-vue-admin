@@ -1,22 +1,3 @@
-<script setup lang="ts">
-import { CodeEditor } from '@/components/code-editor'
-
-defineProps<{
-  error: string
-  open: boolean
-  sourceCode: string
-}>()
-
-defineEmits<{
-  apply: []
-  close: []
-  copy: []
-  export: []
-  format: []
-  'source-change': [value: string]
-}>()
-</script>
-
 <template>
   <a-modal
     :footer="null"
@@ -105,3 +86,22 @@ defineEmits<{
     </div>
   </a-modal>
 </template>
+
+<script setup lang="ts">
+import { CodeEditor } from '@/components/code-editor'
+
+defineProps<{
+  error: string
+  open: boolean
+  sourceCode: string
+}>()
+
+defineEmits<{
+  apply: []
+  close: []
+  copy: []
+  export: []
+  format: []
+  'source-change': [value: string]
+}>()
+</script>
