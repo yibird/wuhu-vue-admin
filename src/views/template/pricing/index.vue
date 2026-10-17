@@ -1,67 +1,3 @@
-<script lang="ts" setup>
-import {
-  billingOptions,
-  compareFeatures,
-  pricingAddons,
-  pricingFaqs,
-  pricingPlans,
-} from './data'
-import {
-  Compare as PricingCompare,
-  Faq as PricingFaq,
-  Hero as PricingHero,
-  PlanCard as PricingPlanCard,
-} from './components'
-import type { BillingCycle, PlanKey, PricingPlan } from './types'
-
-const billingCycle = shallowRef<BillingCycle>('yearly')
-const selectedPlanKey = shallowRef<PlanKey>('scale')
-const openFaqIndex = shallowRef(0)
-
-const activePlan = computed(() => {
-  return (
-    pricingPlans.find((plan) => plan.key === selectedPlanKey.value) ??
-    pricingPlans[1]
-  )
-})
-
-const savedAmount = computed(() => {
-  if (billingCycle.value !== 'yearly') return 0
-
-  return pricingPlans.reduce((total, plan) => {
-    if (!plan.monthlyPrice || !plan.yearlyPrice) return total
-    return total + (plan.monthlyPrice - plan.yearlyPrice) * 12
-  }, 0)
-})
-
-const activePlanEstimate = computed(() => {
-  const plan = activePlan.value
-  const price =
-    billingCycle.value === 'yearly' ? plan.yearlyPrice : plan.monthlyPrice
-
-  if (price === null) return '按需报价'
-  if (price === 0) return '免费'
-  if (billingCycle.value === 'yearly') return `¥${price * 12} / 年`
-  return `¥${price} / 月`
-})
-
-const billingLabel = computed(() => {
-  return billingCycle.value === 'yearly' ? '年付' : '月付'
-})
-
-function updateBillingCycle(cycle: BillingCycle) {
-  billingCycle.value = cycle
-}
-
-function selectPlan(plan: PricingPlan) {
-  selectedPlanKey.value = plan.key
-}
-
-function toggleFaq(index: number) {
-  openFaqIndex.value = openFaqIndex.value === index ? -1 : index
-}
-</script>
-
 <template>
   <WView :padding="0">
     <div
@@ -265,3 +201,67 @@ function toggleFaq(index: number) {
     </div>
   </WView>
 </template>
+
+<script lang="ts" setup>
+import {
+  billingOptions,
+  compareFeatures,
+  pricingAddons,
+  pricingFaqs,
+  pricingPlans,
+} from './data'
+import {
+  Compare as PricingCompare,
+  Faq as PricingFaq,
+  Hero as PricingHero,
+  PlanCard as PricingPlanCard,
+} from './components'
+import type { BillingCycle, PlanKey, PricingPlan } from './types'
+
+const billingCycle = shallowRef<BillingCycle>('yearly')
+const selectedPlanKey = shallowRef<PlanKey>('scale')
+const openFaqIndex = shallowRef(0)
+
+const activePlan = computed(() => {
+  return (
+    pricingPlans.find((plan) => plan.key === selectedPlanKey.value) ??
+    pricingPlans[1]
+  )
+})
+
+const savedAmount = computed(() => {
+  if (billingCycle.value !== 'yearly') return 0
+
+  return pricingPlans.reduce((total, plan) => {
+    if (!plan.monthlyPrice || !plan.yearlyPrice) return total
+    return total + (plan.monthlyPrice - plan.yearlyPrice) * 12
+  }, 0)
+})
+
+const activePlanEstimate = computed(() => {
+  const plan = activePlan.value
+  const price =
+    billingCycle.value === 'yearly' ? plan.yearlyPrice : plan.monthlyPrice
+
+  if (price === null) return '按需报价'
+  if (price === 0) return '免费'
+  if (billingCycle.value === 'yearly') return `¥${price * 12} / 年`
+  return `¥${price} / 月`
+})
+
+const billingLabel = computed(() => {
+  return billingCycle.value === 'yearly' ? '年付' : '月付'
+})
+
+function updateBillingCycle(cycle: BillingCycle) {
+  billingCycle.value = cycle
+}
+
+function selectPlan(plan: PricingPlan) {
+  selectedPlanKey.value = plan.key
+}
+
+function toggleFaq(index: number) {
+  openFaqIndex.value = openFaqIndex.value === index ? -1 : index
+}
+</script>

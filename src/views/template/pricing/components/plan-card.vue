@@ -1,94 +1,3 @@
-<script setup lang="ts">
-import { useMediaQuery } from '@vueuse/core'
-import type { BillingCycle, PricingPlan } from '../types'
-
-interface Props {
-  plan: PricingPlan
-  billingCycle: BillingCycle
-  active: boolean
-}
-
-interface Emits {
-  select: [plan: PricingPlan]
-}
-
-const props = defineProps<Props>()
-const emit = defineEmits<Emits>()
-
-const MAX_TILT = 12
-
-const cardRef = useTemplateRef<HTMLElement>('cardRef')
-const tilting = shallowRef(false)
-const reduceMotion = useMediaQuery('(prefers-reduced-motion: reduce)')
-
-const priceLabel = computed(() => {
-  const price =
-    props.billingCycle === 'yearly'
-      ? props.plan.yearlyPrice
-      : props.plan.monthlyPrice
-
-  if (price === null) return '定制'
-  if (price === 0) return '¥0'
-  return `¥${price}`
-})
-
-const originalPriceLabel = computed(() => {
-  if (
-    props.billingCycle !== 'yearly' ||
-    !props.plan.monthlyPrice ||
-    !props.plan.yearlyPrice
-  ) {
-    return ''
-  }
-
-  return `¥${props.plan.monthlyPrice}`
-})
-
-const priceKey = computed(() => {
-  return `${props.plan.key}-${props.billingCycle}-${priceLabel.value}`
-})
-
-const isRecommended = computed(() => props.plan.accent === 'electric')
-
-function handleSelect() {
-  emit('select', props.plan)
-}
-
-function handlePointerMove(event: PointerEvent) {
-  if (reduceMotion.value || event.pointerType !== 'mouse') return
-
-  const card = cardRef.value
-  if (!card) return
-
-  const rect = card.getBoundingClientRect()
-  const px = (event.clientX - rect.left) / rect.width - 0.5
-  const py = (event.clientY - rect.top) / rect.height - 0.5
-  const style = card.style
-
-  style.setProperty('--pricing-rx', (-py * MAX_TILT).toFixed(2))
-  style.setProperty('--pricing-ry', (px * MAX_TILT).toFixed(2))
-  style.setProperty('--pricing-gx', `${((px + 0.5) * 100).toFixed(1)}%`)
-  style.setProperty('--pricing-gy', `${((py + 0.5) * 100).toFixed(1)}%`)
-}
-
-function handlePointerEnter(event: PointerEvent) {
-  if (reduceMotion.value || event.pointerType !== 'mouse') return
-  tilting.value = true
-}
-
-function handlePointerLeave() {
-  tilting.value = false
-
-  const card = cardRef.value
-  if (!card) return
-
-  card.style.removeProperty('--pricing-rx')
-  card.style.removeProperty('--pricing-ry')
-  card.style.removeProperty('--pricing-gx')
-  card.style.removeProperty('--pricing-gy')
-}
-</script>
-
 <template>
   <article
     ref="cardRef"
@@ -249,6 +158,97 @@ function handlePointerLeave() {
     </div>
   </article>
 </template>
+
+<script setup lang="ts">
+import { useMediaQuery } from '@vueuse/core'
+import type { BillingCycle, PricingPlan } from '../types'
+
+interface Props {
+  plan: PricingPlan
+  billingCycle: BillingCycle
+  active: boolean
+}
+
+interface Emits {
+  select: [plan: PricingPlan]
+}
+
+const props = defineProps<Props>()
+const emits = defineEmits<Emits>()
+
+const MAX_TILT = 12
+
+const cardRef = useTemplateRef<HTMLElement>('cardRef')
+const tilting = shallowRef(false)
+const reduceMotion = useMediaQuery('(prefers-reduced-motion: reduce)')
+
+const priceLabel = computed(() => {
+  const price =
+    props.billingCycle === 'yearly'
+      ? props.plan.yearlyPrice
+      : props.plan.monthlyPrice
+
+  if (price === null) return '定制'
+  if (price === 0) return '¥0'
+  return `¥${price}`
+})
+
+const originalPriceLabel = computed(() => {
+  if (
+    props.billingCycle !== 'yearly' ||
+    !props.plan.monthlyPrice ||
+    !props.plan.yearlyPrice
+  ) {
+    return ''
+  }
+
+  return `¥${props.plan.monthlyPrice}`
+})
+
+const priceKey = computed(() => {
+  return `${props.plan.key}-${props.billingCycle}-${priceLabel.value}`
+})
+
+const isRecommended = computed(() => props.plan.accent === 'electric')
+
+function handleSelect() {
+  emits('select', props.plan)
+}
+
+function handlePointerMove(event: PointerEvent) {
+  if (reduceMotion.value || event.pointerType !== 'mouse') return
+
+  const card = cardRef.value
+  if (!card) return
+
+  const rect = card.getBoundingClientRect()
+  const px = (event.clientX - rect.left) / rect.width - 0.5
+  const py = (event.clientY - rect.top) / rect.height - 0.5
+  const style = card.style
+
+  style.setProperty('--pricing-rx', (-py * MAX_TILT).toFixed(2))
+  style.setProperty('--pricing-ry', (px * MAX_TILT).toFixed(2))
+  style.setProperty('--pricing-gx', `${((px + 0.5) * 100).toFixed(1)}%`)
+  style.setProperty('--pricing-gy', `${((py + 0.5) * 100).toFixed(1)}%`)
+}
+
+function handlePointerEnter(event: PointerEvent) {
+  if (reduceMotion.value || event.pointerType !== 'mouse') return
+  tilting.value = true
+}
+
+function handlePointerLeave() {
+  tilting.value = false
+
+  const card = cardRef.value
+  if (!card) return
+
+  card.style.removeProperty('--pricing-rx')
+  card.style.removeProperty('--pricing-ry')
+  card.style.removeProperty('--pricing-gx')
+  card.style.removeProperty('--pricing-gy')
+}
+</script>
 
 <style lang="less" scoped>
 .pricing-card {

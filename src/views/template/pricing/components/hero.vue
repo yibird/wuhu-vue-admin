@@ -1,24 +1,3 @@
-<script setup lang="ts">
-import type { BillingCycle, BillingOption } from '../types'
-
-interface Props {
-  billingCycle: BillingCycle
-  billingOptions: BillingOption[]
-  savedAmount: number
-}
-
-interface Emits {
-  changeCycle: [cycle: BillingCycle]
-}
-
-const props = defineProps<Props>()
-const emit = defineEmits<Emits>()
-
-function handleCycleChange(cycle: BillingCycle) {
-  emit('changeCycle', cycle)
-}
-</script>
-
 <template>
   <section
     class="pricing-hero page-enter page-enter--1 relative overflow-hidden rounded-16 border-1 border-color-2 border-solid bg-container px-24 py-32 shadow-[0_24px_70px_rgb(var(--w-color-primary)_/_10%)] max-sm:px-16 max-sm:py-24"
@@ -96,6 +75,27 @@ function handleCycleChange(cycle: BillingCycle) {
     </div>
   </section>
 </template>
+
+<script setup lang="ts">
+import type { BillingCycle, BillingOption } from '../types'
+
+interface Props {
+  billingCycle: BillingCycle
+  billingOptions: BillingOption[]
+  savedAmount: number
+}
+
+interface Emits {
+  changeCycle: [cycle: BillingCycle]
+}
+
+const props = defineProps<Props>()
+const emits = defineEmits<Emits>()
+
+function handleCycleChange(cycle: BillingCycle) {
+  emits('changeCycle', cycle)
+}
+</script>
 
 <style lang="less" scoped>
 .pricing-hero {

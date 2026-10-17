@@ -1,3 +1,166 @@
+<template>
+  <div ref="tree" class="h-full min-h-0 w-full overflow-hidden">
+    <a-empty
+      v-if="treeData.length === 0"
+      class="py-72"
+      description="暂无文件"
+    />
+    <div v-else class="h-full min-h-0 flex flex-col overflow-hidden">
+      <div
+        class="list-group min-h-0 flex-1 overflow-x-hidden overflow-y-auto px-4"
+        role="tree"
+        aria-label="文件列表"
+        aria-multiselectable="true"
+      >
+        <div
+          class="sticky top-0 z-2 h-36 min-w-0 flex items-center gap-12 border-b-1 border-color-1 border-b-solid bg-container px-8 text-xs text-secondary font-500 select-none"
+          role="presentation"
+        >
+          <span class="min-w-0 flex-1 truncate">名称</span>
+          <span class="hidden w-96 shrink-0 md:block">类型</span>
+          <span class="hidden w-96 shrink-0 sm:block">大小</span>
+          <span class="hidden w-104 shrink-0 lg:block">更新人</span>
+          <span class="hidden w-156 shrink-0 sm:block">更新时间</span>
+          <span class="w-36 shrink-0"></span>
+        </div>
+        <TransitionGroup
+          name="list"
+          tag="div"
+          class="flex flex-col gap-4 py-6"
+          role="group"
+        >
+          <div v-for="row in visibleRows" :key="row.key" class="w-full">
+            <a-dropdown
+              :trigger="['contextmenu']"
+              :menu="getActionMenu(row.file)"
+            >
+              <div
+                :class="[
+                  'group h-52 min-w-0 flex cursor-pointer items-center gap-12 rounded-4 px-8 text-secondary outline-none transition-[background-color,transform] duration-motion-moderate ease-motion-spring hover:bg-hover-2 focus-visible:bg-primary-tint active:scale-99 motion-reduce:(transform-none transition-none)',
+                  selectedKeySet.has(row.key)
+                    ? 'bg-primary-tint hover:bg-primary-tint-hover'
+                    : '',
+                ]"
+                :data-file-manager-item-id="row.key"
+                :aria-expanded="
+                  row.hasChildren ? expandedKeySet.has(row.key) : undefined
+                "
+                :aria-selected="selectedKeySet.has(row.key)"
+                role="treeitem"
+                tabindex="0"
+                @click="handleRowClick(row.file, $event)"
+                @dblclick.stop="handleDoubleClick(row.file)"
+                @keydown.self="handleRowKeydown(row, $event)"
+                @contextmenu.prevent="handleContextMenu(row.file)"
+              >
+                <div class="min-w-0 flex flex-1 items-center gap-8">
+                  <span
+                    v-for="level in row.depth"
+                    :key="level"
+                    class="w-16 shrink-0"
+                    aria-hidden="true"
+                  ></span>
+                  <button
+                    v-if="row.hasChildren"
+                    type="button"
+                    class="button size-26 shrink-0 rounded-4 text-muted transition-[background-color,color,transform] duration-motion-base ease-motion-standard hover:(bg-hover text-primary) focus-visible:(bg-primary-tint text-primary shadow-[0_0_0_2px_rgb(var(--w-color-primary)_/_16%)]) motion-reduce:transition-none"
+                    :class="{
+                      'rotate-90 text-primary': expandedKeySet.has(row.key),
+                    }"
+                    :aria-label="
+                      expandedKeySet.has(row.key)
+                        ? `收起${row.file.fileName}`
+                        : `展开${row.file.fileName}`
+                    "
+                    :aria-expanded="expandedKeySet.has(row.key)"
+                    @click.stop="toggleExpanded(row.key)"
+                    @dblclick.stop
+                    @contextmenu.stop
+                  >
+                    <Icon name="i-lucide:chevron-right" :size="15" />
+                  </button>
+                  <span
+                    v-else
+                    class="size-26 shrink-0"
+                    aria-hidden="true"
+                  ></span>
+                  <img
+                    :src="getIcon(row.file)"
+                    :alt="row.file.fileName"
+                    class="size-32 shrink-0 rounded-4 object-cover transition-[filter,transform] duration-motion-base ease-motion-enter group-hover:(scale-104 saturate-110) motion-reduce:transition-none"
+                    @error="handleIconError(row.file)"
+                  />
+                  <span
+                    class="min-w-0 truncate text-sm text-main font-500 transition-colors duration-motion-base group-hover:text-main"
+                  >
+                    {{ row.file.fileName }}
+                  </span>
+                  <Icon
+                    v-if="row.file.favorite"
+                    name="i-lucide:star"
+                    class="shrink-0 text-warning"
+                  />
+                  <Icon
+                    v-if="row.file.encrypted"
+                    name="i-lucide:lock-keyhole"
+                    class="shrink-0 text-warning"
+                  />
+                </div>
+                <span
+                  class="hidden w-96 shrink-0 truncate whitespace-nowrap text-xs tabular-nums md:block"
+                >
+                  {{
+                    isDirectory(row.file)
+                      ? '文件夹'
+                      : getFileCategoryLabel(row.file.fileType)
+                  }}
+                </span>
+                <span
+                  class="hidden w-96 shrink-0 truncate whitespace-nowrap text-xs tabular-nums sm:block"
+                >
+                  {{
+                    isDirectory(row.file)
+                      ? '-'
+                      : formatFileSize(row.file.fileSize)
+                  }}
+                </span>
+                <span
+                  class="hidden w-104 shrink-0 truncate whitespace-nowrap text-xs lg:block"
+                >
+                  {{ row.file.updater || '-' }}
+                </span>
+                <span
+                  class="hidden w-156 shrink-0 truncate whitespace-nowrap text-xs tabular-nums sm:block"
+                >
+                  {{ row.file.updateTime || '-' }}
+                </span>
+                <div class="w-36 shrink-0 flex justify-center">
+                  <a-dropdown
+                    :trigger="['click']"
+                    :menu="getActionMenu(row.file)"
+                  >
+                    <button
+                      type="button"
+                      data-file-manager-action
+                      class="button size-30 translate-x-4 rounded-4 text-secondary opacity-0 transition-[background-color,color,opacity,transform] duration-motion-base ease-motion-standard group-focus-within:(translate-x-0 opacity-100) group-hover:(translate-x-0 opacity-100) hover:(bg-fill-tertiary text-primary) focus-visible:(translate-x-0 bg-fill-tertiary text-primary opacity-100) motion-reduce:transition-none"
+                      aria-label="更多操作"
+                      @click.stop
+                      @dblclick.stop
+                      @contextmenu.stop
+                    >
+                      <Icon name="i-lucide:more-horizontal" :size="16" />
+                    </button>
+                  </a-dropdown>
+                </div>
+              </div>
+            </a-dropdown>
+          </div>
+        </TransitionGroup>
+      </div>
+    </div>
+  </div>
+</template>
+
 <script lang="ts" setup>
 import { Icon } from '@/components/icon'
 import {
@@ -49,7 +212,7 @@ const props = defineProps<{
   recycleBin?: boolean
 }>()
 
-const emit = defineEmits<{
+const emits = defineEmits<{
   openDirectory: [directory: IFile]
   preview: [file: IFile]
   detail: [file: IFile]
@@ -340,10 +503,10 @@ function handleRowKeydown(row: FileTreeRow, event: KeyboardEvent) {
 
 function handleDoubleClick(file: IFile) {
   if (isDirectory(file)) {
-    emit('openDirectory', file)
+    emits('openDirectory', file)
     return
   }
-  emit('preview', file)
+  emits('preview', file)
 }
 
 function getActionItems(file: IFile): MenuProps['items'] {
@@ -497,198 +660,35 @@ function renderMenuIcon(name: string) {
 function handleAction(file: IFile, { key }: { key: string }) {
   switch (key) {
     case 'open':
-      emit('openDirectory', file)
+      emits('openDirectory', file)
       break
     case 'preview':
-      emit('preview', file)
+      emits('preview', file)
       break
     case 'detail':
-      emit('detail', file)
+      emits('detail', file)
       break
     case 'rename':
-      emit('rename', file)
+      emits('rename', file)
       break
     case 'favorite':
-      emit('toggleFavorite', file)
+      emits('toggleFavorite', file)
       break
     case 'encrypt':
-      emit('encrypt', file)
+      emits('encrypt', file)
       break
     case 'copy':
-      emit('copyLink', file)
+      emits('copyLink', file)
       break
     case 'download':
-      emit('download', file)
+      emits('download', file)
       break
     case 'restore':
-      emit('restore', file)
+      emits('restore', file)
       break
     case 'delete':
-      emit('delete', file)
+      emits('delete', file)
       break
   }
 }
 </script>
-
-<template>
-  <div ref="tree" class="h-full min-h-0 w-full overflow-hidden">
-    <a-empty
-      v-if="treeData.length === 0"
-      class="py-72"
-      description="暂无文件"
-    />
-    <div v-else class="h-full min-h-0 flex flex-col overflow-hidden">
-      <div
-        class="list-group min-h-0 flex-1 overflow-x-hidden overflow-y-auto px-4"
-        role="tree"
-        aria-label="文件列表"
-        aria-multiselectable="true"
-      >
-        <div
-          class="sticky top-0 z-2 h-36 min-w-0 flex items-center gap-12 border-b-1 border-color-1 border-b-solid bg-container px-8 text-xs text-secondary font-500 select-none"
-          role="presentation"
-        >
-          <span class="min-w-0 flex-1 truncate">名称</span>
-          <span class="hidden w-96 shrink-0 md:block">类型</span>
-          <span class="hidden w-96 shrink-0 sm:block">大小</span>
-          <span class="hidden w-104 shrink-0 lg:block">更新人</span>
-          <span class="hidden w-156 shrink-0 sm:block">更新时间</span>
-          <span class="w-36 shrink-0"></span>
-        </div>
-        <TransitionGroup
-          name="list"
-          tag="div"
-          class="flex flex-col gap-4 py-6"
-          role="group"
-        >
-          <div v-for="row in visibleRows" :key="row.key" class="w-full">
-            <a-dropdown
-              :trigger="['contextmenu']"
-              :menu="getActionMenu(row.file)"
-            >
-              <div
-                :class="[
-                  'group h-52 min-w-0 flex cursor-pointer items-center gap-12 rounded-4 px-8 text-secondary outline-none transition-[background-color,transform] duration-motion-moderate ease-motion-spring hover:bg-hover-2 focus-visible:bg-primary-tint active:scale-99 motion-reduce:(transform-none transition-none)',
-                  selectedKeySet.has(row.key)
-                    ? 'bg-primary-tint hover:bg-primary-tint-hover'
-                    : '',
-                ]"
-                :data-file-manager-item-id="row.key"
-                :aria-expanded="
-                  row.hasChildren ? expandedKeySet.has(row.key) : undefined
-                "
-                :aria-selected="selectedKeySet.has(row.key)"
-                role="treeitem"
-                tabindex="0"
-                @click="handleRowClick(row.file, $event)"
-                @dblclick.stop="handleDoubleClick(row.file)"
-                @keydown.self="handleRowKeydown(row, $event)"
-                @contextmenu.prevent="handleContextMenu(row.file)"
-              >
-                <div class="min-w-0 flex flex-1 items-center gap-8">
-                  <span
-                    v-for="level in row.depth"
-                    :key="level"
-                    class="w-16 shrink-0"
-                    aria-hidden="true"
-                  ></span>
-                  <button
-                    v-if="row.hasChildren"
-                    type="button"
-                    class="button size-26 shrink-0 rounded-4 text-muted transition-[background-color,color,transform] duration-motion-base ease-motion-standard hover:(bg-hover text-primary) focus-visible:(bg-primary-tint text-primary shadow-[0_0_0_2px_rgb(var(--w-color-primary)_/_16%)]) motion-reduce:transition-none"
-                    :class="{
-                      'rotate-90 text-primary': expandedKeySet.has(row.key),
-                    }"
-                    :aria-label="
-                      expandedKeySet.has(row.key)
-                        ? `收起${row.file.fileName}`
-                        : `展开${row.file.fileName}`
-                    "
-                    :aria-expanded="expandedKeySet.has(row.key)"
-                    @click.stop="toggleExpanded(row.key)"
-                    @dblclick.stop
-                    @contextmenu.stop
-                  >
-                    <Icon name="i-lucide:chevron-right" :size="15" />
-                  </button>
-                  <span
-                    v-else
-                    class="size-26 shrink-0"
-                    aria-hidden="true"
-                  ></span>
-                  <img
-                    :src="getIcon(row.file)"
-                    :alt="row.file.fileName"
-                    class="size-32 shrink-0 rounded-4 object-cover transition-[filter,transform] duration-motion-base ease-motion-enter group-hover:(scale-104 saturate-110) motion-reduce:transition-none"
-                    @error="handleIconError(row.file)"
-                  />
-                  <span
-                    class="min-w-0 truncate text-sm text-main font-500 transition-colors duration-motion-base group-hover:text-main"
-                  >
-                    {{ row.file.fileName }}
-                  </span>
-                  <Icon
-                    v-if="row.file.favorite"
-                    name="i-lucide:star"
-                    class="shrink-0 text-warning"
-                  />
-                  <Icon
-                    v-if="row.file.encrypted"
-                    name="i-lucide:lock-keyhole"
-                    class="shrink-0 text-warning"
-                  />
-                </div>
-                <span
-                  class="hidden w-96 shrink-0 truncate whitespace-nowrap text-xs tabular-nums md:block"
-                >
-                  {{
-                    isDirectory(row.file)
-                      ? '文件夹'
-                      : getFileCategoryLabel(row.file.fileType)
-                  }}
-                </span>
-                <span
-                  class="hidden w-96 shrink-0 truncate whitespace-nowrap text-xs tabular-nums sm:block"
-                >
-                  {{
-                    isDirectory(row.file)
-                      ? '-'
-                      : formatFileSize(row.file.fileSize)
-                  }}
-                </span>
-                <span
-                  class="hidden w-104 shrink-0 truncate whitespace-nowrap text-xs lg:block"
-                >
-                  {{ row.file.updater || '-' }}
-                </span>
-                <span
-                  class="hidden w-156 shrink-0 truncate whitespace-nowrap text-xs tabular-nums sm:block"
-                >
-                  {{ row.file.updateTime || '-' }}
-                </span>
-                <div class="w-36 shrink-0 flex justify-center">
-                  <a-dropdown
-                    :trigger="['click']"
-                    :menu="getActionMenu(row.file)"
-                  >
-                    <button
-                      type="button"
-                      data-file-manager-action
-                      class="button size-30 translate-x-4 rounded-4 text-secondary opacity-0 transition-[background-color,color,opacity,transform] duration-motion-base ease-motion-standard group-focus-within:(translate-x-0 opacity-100) group-hover:(translate-x-0 opacity-100) hover:(bg-fill-tertiary text-primary) focus-visible:(translate-x-0 bg-fill-tertiary text-primary opacity-100) motion-reduce:transition-none"
-                      aria-label="更多操作"
-                      @click.stop
-                      @dblclick.stop
-                      @contextmenu.stop
-                    >
-                      <Icon name="i-lucide:more-horizontal" :size="16" />
-                    </button>
-                  </a-dropdown>
-                </div>
-              </div>
-            </a-dropdown>
-          </div>
-        </TransitionGroup>
-      </div>
-    </div>
-  </div>
-</template>

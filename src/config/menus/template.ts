@@ -65,6 +65,16 @@ export const templateMenus: IMenu[] = [
         ],
       },
       {
+        id: '813',
+        title: '瀑布流',
+        type: 2,
+        rootId: '8',
+        parentId: '8',
+        level: '8-813',
+        icon: 'i-lucide:layout-grid',
+        path: '/template/masonry',
+      },
+      {
         id: '87',
         title: '定价',
         type: 2,

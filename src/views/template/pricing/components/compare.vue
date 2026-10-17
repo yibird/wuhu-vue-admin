@@ -1,19 +1,3 @@
-<script setup lang="ts">
-import type { CompareFeature, PlanKey } from '../types'
-
-interface Props {
-  features: CompareFeature[]
-  activePlanKey: PlanKey
-}
-
-const props = defineProps<Props>()
-const planColumns: { key: PlanKey; label: string }[] = [
-  { key: 'launch', label: 'Launch' },
-  { key: 'scale', label: 'Scale' },
-  { key: 'enterprise', label: 'Enterprise' },
-]
-</script>
-
 <template>
   <section
     class="overflow-hidden rounded-16 border-1 border-color-1 border-solid bg-container shadow-[0_10px_30px_rgb(15_23_42_/_5%)]"
@@ -104,3 +88,19 @@ const planColumns: { key: PlanKey; label: string }[] = [
     </div>
   </section>
 </template>
+
+<script setup lang="ts">
+import type { CompareFeature, PlanKey } from '../types'
+
+interface Props {
+  features: CompareFeature[]
+  activePlanKey: PlanKey
+}
+
+const props = defineProps<Props>()
+const planColumns: { key: PlanKey; label: string }[] = [
+  { key: 'launch', label: 'Launch' },
+  { key: 'scale', label: 'Scale' },
+  { key: 'enterprise', label: 'Enterprise' },
+]
+</script>

@@ -1,19 +1,3 @@
-<script setup lang="ts">
-import type { PricingFaq } from '../types'
-
-interface Props {
-  faqs: PricingFaq[]
-  openIndex: number
-}
-
-interface Emits {
-  toggle: [index: number]
-}
-
-const props = defineProps<Props>()
-const emit = defineEmits<Emits>()
-</script>
-
 <template>
   <section
     class="page-enter page-enter--5 mt-16 overflow-hidden rounded-16 border-1 border-color-1 border-solid bg-container shadow-[0_10px_30px_rgb(15_23_42_/_5%)]"
@@ -40,7 +24,7 @@ const emit = defineEmits<Emits>()
         type="button"
         class="group w-full cursor-pointer overflow-hidden border-0 border-b-1 border-color-1 border-b-solid bg-transparent p-0 text-left outline-none transition-colors duration-motion-base ease-motion-standard last:border-b-0 hover:bg-primary/[0.03] focus-visible:outline-2 focus-visible:outline-primary/60 focus-visible:outline-offset-2 motion-reduce:transition-none"
         :aria-expanded="props.openIndex === index"
-        @click="emit('toggle', index)"
+        @click="emits('toggle', index)"
       >
         <span class="flex items-center justify-between gap-16 px-20 py-16">
           <span
@@ -83,3 +67,19 @@ const emit = defineEmits<Emits>()
     </div>
   </section>
 </template>
+
+<script setup lang="ts">
+import type { PricingFaq } from '../types'
+
+interface Props {
+  faqs: PricingFaq[]
+  openIndex: number
+}
+
+interface Emits {
+  toggle: [index: number]
+}
+
+const props = defineProps<Props>()
+const emits = defineEmits<Emits>()
+</script>
