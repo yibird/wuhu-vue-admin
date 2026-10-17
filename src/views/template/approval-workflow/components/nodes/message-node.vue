@@ -1,3 +1,13 @@
+<template>
+  <BaseNode
+    :detail-items="detailItems"
+    kind-label="消息通知"
+    :node="node"
+    :selected="selected"
+    :summary-items="['模板消息', '多渠道触达']"
+  />
+</template>
+
 <script setup lang="ts">
 import BaseNode from './base-node.vue'
 import type { ApprovalNodeViewProps } from './types'
@@ -9,13 +19,3 @@ const detailItems = computed(() => [
   '站内 / 钉钉 / 邮件',
 ])
 </script>
-
-<template>
-  <BaseNode
-    :detail-items="detailItems"
-    kind-label="消息通知"
-    :node="node"
-    :selected="selected"
-    :summary-items="['模板消息', '多渠道触达']"
-  />
-</template>

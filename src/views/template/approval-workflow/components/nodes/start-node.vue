@@ -1,3 +1,13 @@
+<template>
+  <BaseNode
+    :detail-items="['发起权限校验', '重复提交与撤回策略']"
+    kind-label="发起节点"
+    :node="node"
+    :selected="selected"
+    :summary-items="summaryItems"
+  />
+</template>
+
 <script setup lang="ts">
 import BaseNode from './base-node.vue'
 import type { ApprovalNodeViewProps } from './types'
@@ -11,13 +21,3 @@ const summaryItems = computed(() => [
     : '字段可见',
 ])
 </script>
-
-<template>
-  <BaseNode
-    :detail-items="['发起权限校验', '重复提交与撤回策略']"
-    kind-label="发起节点"
-    :node="node"
-    :selected="selected"
-    :summary-items="summaryItems"
-  />
-</template>

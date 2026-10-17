@@ -1,3 +1,13 @@
+<template>
+  <BaseNode
+    :detail-items="['所有分支完成后汇合', '适合法务/财务并审']"
+    kind-label="并行节点"
+    :node="node"
+    :selected="selected"
+    :summary-items="summaryItems"
+  />
+</template>
+
 <script setup lang="ts">
 import BaseNode from './base-node.vue'
 import { getBranchCount, multiModeText } from './node-formatters'
@@ -11,13 +21,3 @@ const summaryItems = computed(() => [
   `${getBranchCount(props.node)} 条线`,
 ])
 </script>
-
-<template>
-  <BaseNode
-    :detail-items="['所有分支完成后汇合', '适合法务/财务并审']"
-    kind-label="并行节点"
-    :node="node"
-    :selected="selected"
-    :summary-items="summaryItems"
-  />
-</template>

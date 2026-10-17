@@ -1,23 +1,3 @@
-<script setup lang="ts">
-import type { ApprovalPaletteItem, ApprovalTemplateItem } from '../types'
-
-defineProps<{
-  palette: readonly ApprovalPaletteItem[]
-  templates: readonly ApprovalTemplateItem[]
-}>()
-
-const emit = defineEmits<{
-  add: [item: ApprovalPaletteItem]
-  applyTemplate: [id: string]
-}>()
-
-const activePaletteTab = shallowRef<'components' | 'templates'>('components')
-const paletteTabOptions = [
-  { label: '审批组件', value: 'components' },
-  { label: '流程模板', value: 'templates' },
-]
-</script>
-
 <template>
   <aside
     class="min-h-0 grid grid-rows-[auto_minmax(0,1fr)] overflow-hidden rounded-8 border-1 border-color-2 border-solid bg-container shadow-[var(--w-shadow-card)]"
@@ -47,7 +27,7 @@ const paletteTabOptions = [
             v-for="item in palette"
             :key="item.type"
             class="h-auto min-h-58 w-full grid grid-cols-[32px_minmax(0,1fr)_auto] items-center gap-10 rounded-8 border-1 border-color-2 border-solid bg-container p-10 text-left transition hover:(border-primary bg-hover)"
-            @click="emit('add', item)"
+            @click="emits('add', item)"
           >
             <span
               class="size-32 flex items-center justify-center rounded-8 text-white"
@@ -77,7 +57,7 @@ const paletteTabOptions = [
             v-for="template in templates"
             :key="template.id"
             class="block h-auto min-h-70 w-full rounded-8 border-1 border-color-2 border-solid bg-container p-10 text-left hover:(border-primary bg-hover)"
-            @click="emit('applyTemplate', template.id)"
+            @click="emits('applyTemplate', template.id)"
           >
             <div class="flex items-center gap-7">
               <span
@@ -100,3 +80,23 @@ const paletteTabOptions = [
     </div>
   </aside>
 </template>
+
+<script setup lang="ts">
+import type { ApprovalPaletteItem, ApprovalTemplateItem } from '../types'
+
+defineProps<{
+  palette: readonly ApprovalPaletteItem[]
+  templates: readonly ApprovalTemplateItem[]
+}>()
+
+const emits = defineEmits<{
+  add: [item: ApprovalPaletteItem]
+  applyTemplate: [id: string]
+}>()
+
+const activePaletteTab = shallowRef<'components' | 'templates'>('components')
+const paletteTabOptions = [
+  { label: '审批组件', value: 'components' },
+  { label: '流程模板', value: 'templates' },
+]
+</script>

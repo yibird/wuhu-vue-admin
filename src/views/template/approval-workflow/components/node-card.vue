@@ -1,50 +1,3 @@
-<script setup lang="ts">
-import { APPROVAL_WORKFLOW_SELECTORS } from '../constants'
-import { useApprovalNodeContextMenu } from '../hooks'
-import { resolveApprovalNodeComponent } from './nodes'
-import type { ApprovalBranch, ApprovalNode, ApprovalNodeType } from '../types'
-
-const props = defineProps<{
-  node: ApprovalNode
-  selectedIds: readonly string[]
-}>()
-
-const emit = defineEmits<{
-  addAfter: [id: string, type: ApprovalNodeType]
-  duplicate: [id: string]
-  remove: [id: string]
-  select: [id: string]
-}>()
-
-function getBranchSummary(branch: ApprovalBranch) {
-  if (!branch.rules.length) return '默认分支'
-  return branch.rules
-    .map((rule) => `${rule.label} ${rule.operator} ${rule.value}`)
-    .join(' 或 ')
-}
-
-const selected = computed(() => props.selectedIds.includes(props.node.id))
-const nodeComponent = computed(() =>
-  resolveApprovalNodeComponent(props.node.type)
-)
-const {
-  contextMenuAnchorStyle,
-  contextMenuItems,
-  contextMenuOpen,
-  handleContextMenuClick,
-  showContextMenu,
-} = useApprovalNodeContextMenu(() => props.node, {
-  addAfter: (id, type) => emit('addAfter', id, type),
-  duplicate: (id) => emit('duplicate', id),
-  remove: (id) => emit('remove', id),
-  select: (id) => emit('select', id),
-})
-
-function handleChildAddAfter(id: string, type: ApprovalNodeType) {
-  emit('addAfter', id, type)
-}
-</script>
-
 <template>
   <div class="approval-node-wrap">
     <a-dropdown
@@ -73,10 +26,10 @@ function handleChildAddAfter(id: string, type: ApprovalNodeType) {
       :data-testid="APPROVAL_WORKFLOW_SELECTORS.nodeCard"
       role="button"
       tabindex="0"
-      @click="emit('select', node.id)"
+      @click="emits('select', node.id)"
       @contextmenu="showContextMenu"
-      @keydown.enter="emit('select', node.id)"
-      @keydown.space.prevent="emit('select', node.id)"
+      @keydown.enter="emits('select', node.id)"
+      @keydown.space.prevent="emits('select', node.id)"
     >
       <component :is="nodeComponent" :node="node" :selected="selected" />
 
@@ -103,7 +56,7 @@ function handleChildAddAfter(id: string, type: ApprovalNodeType) {
         <a-button
           class="size-30 p-0 text-secondary"
           type="text"
-          @click.stop="emit('duplicate', node.id)"
+          @click.stop="emits('duplicate', node.id)"
         >
           <Icon name="i-lucide:copy" :size="16" />
         </a-button>
@@ -111,7 +64,7 @@ function handleChildAddAfter(id: string, type: ApprovalNodeType) {
           class="size-30 p-0 text-error"
           danger
           type="text"
-          @click.stop="emit('remove', node.id)"
+          @click.stop="emits('remove', node.id)"
         >
           <Icon name="i-lucide:trash-2" :size="16" />
         </a-button>
@@ -123,7 +76,7 @@ function handleChildAddAfter(id: string, type: ApprovalNodeType) {
       class="approval-add-btn grid h-46 w-44 cursor-pointer border-0 bg-transparent p-0 text-primary shadow-none outline-none [place-items:start_center]"
       :data-testid="APPROVAL_WORKFLOW_SELECTORS.addNode"
       type="button"
-      @click="emit('addAfter', node.id, 'approver')"
+      @click="emits('addAfter', node.id, 'approver')"
     >
       <span
         class="approval-add-icon mt-0 inline-grid size-28 place-items-center rounded-full border-1 border-color-2 border-solid bg-container shadow-[0_6px_16px_rgb(15_23_42_/_10%)] transition"
@@ -160,14 +113,61 @@ function handleChildAddAfter(id: string, type: ApprovalNodeType) {
           :node="child"
           :selected-ids="selectedIds"
           @add-after="handleChildAddAfter"
-          @duplicate="emit('duplicate', $event)"
-          @remove="emit('remove', $event)"
-          @select="emit('select', $event)"
+          @duplicate="emits('duplicate', $event)"
+          @remove="emits('remove', $event)"
+          @select="emits('select', $event)"
         />
       </div>
     </div>
   </div>
 </template>
+
+<script setup lang="ts">
+import { APPROVAL_WORKFLOW_SELECTORS } from '../constants'
+import { useApprovalNodeContextMenu } from '../hooks'
+import { resolveApprovalNodeComponent } from './nodes'
+import type { ApprovalBranch, ApprovalNode, ApprovalNodeType } from '../types'
+
+const props = defineProps<{
+  node: ApprovalNode
+  selectedIds: readonly string[]
+}>()
+
+const emits = defineEmits<{
+  addAfter: [id: string, type: ApprovalNodeType]
+  duplicate: [id: string]
+  remove: [id: string]
+  select: [id: string]
+}>()
+
+function getBranchSummary(branch: ApprovalBranch) {
+  if (!branch.rules.length) return '默认分支'
+  return branch.rules
+    .map((rule) => `${rule.label} ${rule.operator} ${rule.value}`)
+    .join(' 或 ')
+}
+
+const selected = computed(() => props.selectedIds.includes(props.node.id))
+const nodeComponent = computed(() =>
+  resolveApprovalNodeComponent(props.node.type)
+)
+const {
+  contextMenuAnchorStyle,
+  contextMenuItems,
+  contextMenuOpen,
+  handleContextMenuClick,
+  showContextMenu,
+} = useApprovalNodeContextMenu(() => props.node, {
+  addAfter: (id, type) => emits('addAfter', id, type),
+  duplicate: (id) => emits('duplicate', id),
+  remove: (id) => emits('remove', id),
+  select: (id) => emits('select', id),
+})
+
+function handleChildAddAfter(id: string, type: ApprovalNodeType) {
+  emits('addAfter', id, type)
+}
+</script>
 
 <style scoped>
 .approval-node-wrap {

@@ -1,24 +1,3 @@
-<script setup lang="ts">
-import { APPROVAL_WORKFLOW_SELECTORS } from '../constants'
-import type {
-  ApprovalSimulationInput,
-  ApprovalSimulationStep,
-  ApprovalValidationIssue,
-} from '../types'
-
-const input = defineModel<ApprovalSimulationInput>('input', { required: true })
-
-defineProps<{
-  issues: readonly ApprovalValidationIssue[]
-  steps: readonly ApprovalSimulationStep[]
-}>()
-
-const emit = defineEmits<{
-  run: []
-  validate: []
-}>()
-</script>
-
 <template>
   <section
     class="min-h-0 min-w-0 grid grid-rows-[auto_minmax(0,1fr)] overflow-hidden rounded-8 border-1 border-color-2 border-solid bg-container shadow-[var(--w-shadow-card)]"
@@ -71,7 +50,7 @@ const emit = defineEmits<{
           <button
             class="h-30 flex-1 inline-flex items-center justify-center gap-6 rounded-6 border-0 bg-primary text-12px text-white"
             type="button"
-            @click="emit('run')"
+            @click="emits('run')"
           >
             <Icon name="i-lucide:play" :size="14" />
             模拟
@@ -79,7 +58,7 @@ const emit = defineEmits<{
           <button
             class="h-30 flex-1 inline-flex items-center justify-center gap-6 rounded-6 border-1 border-color-2 border-solid bg-container text-12px text-regular hover:bg-hover"
             type="button"
-            @click="emit('validate')"
+            @click="emits('validate')"
           >
             <Icon name="i-lucide:shield-check" :size="14" />
             校验
@@ -149,3 +128,24 @@ const emit = defineEmits<{
     </div>
   </section>
 </template>
+
+<script setup lang="ts">
+import { APPROVAL_WORKFLOW_SELECTORS } from '../constants'
+import type {
+  ApprovalSimulationInput,
+  ApprovalSimulationStep,
+  ApprovalValidationIssue,
+} from '../types'
+
+const input = defineModel<ApprovalSimulationInput>('input', { required: true })
+
+defineProps<{
+  issues: readonly ApprovalValidationIssue[]
+  steps: readonly ApprovalSimulationStep[]
+}>()
+
+const emits = defineEmits<{
+  run: []
+  validate: []
+}>()
+</script>

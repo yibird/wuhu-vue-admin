@@ -1,3 +1,13 @@
+<template>
+  <BaseNode
+    :detail-items="detailItems"
+    kind-label="条件分支"
+    :node="node"
+    :selected="selected"
+    :summary-items="summaryItems"
+  />
+</template>
+
 <script setup lang="ts">
 import BaseNode from './base-node.vue'
 import { getBranchCount, getBranchRuleCount } from './node-formatters'
@@ -16,13 +26,3 @@ const detailItems = computed(() =>
     .map((branch) => `${branch.title} · P${branch.priority}`)
 )
 </script>
-
-<template>
-  <BaseNode
-    :detail-items="detailItems"
-    kind-label="条件分支"
-    :node="node"
-    :selected="selected"
-    :summary-items="summaryItems"
-  />
-</template>

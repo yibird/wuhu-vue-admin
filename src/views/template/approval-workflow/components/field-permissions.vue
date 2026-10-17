@@ -1,16 +1,3 @@
-<script setup lang="ts">
-import type { ApprovalFieldPermission, FieldPermissionMode } from '../types'
-
-defineProps<{
-  fields: readonly ApprovalFieldPermission[]
-  options: readonly { label: string; value: FieldPermissionMode }[]
-}>()
-
-const emit = defineEmits<{
-  update: [field: ApprovalFieldPermission, value: FieldPermissionMode]
-}>()
-</script>
-
 <template>
   <div class="mt-12 rounded-7 bg-fill p-10">
     <strong class="text-12px text-primary">字段权限</strong>
@@ -24,8 +11,21 @@ const emit = defineEmits<{
         size="small"
         :value="field.mode"
         :options="options"
-        @change="(value: FieldPermissionMode) => emit('update', field, value)"
+        @change="(value: FieldPermissionMode) => emits('update', field, value)"
       />
     </div>
   </div>
 </template>
+
+<script setup lang="ts">
+import type { ApprovalFieldPermission, FieldPermissionMode } from '../types'
+
+defineProps<{
+  fields: readonly ApprovalFieldPermission[]
+  options: readonly { label: string; value: FieldPermissionMode }[]
+}>()
+
+const emits = defineEmits<{
+  update: [field: ApprovalFieldPermission, value: FieldPermissionMode]
+}>()
+</script>

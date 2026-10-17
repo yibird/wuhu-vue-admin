@@ -1,95 +1,3 @@
-<script setup lang="ts">
-import { APPROVAL_WORKFLOW_SELECTORS } from '../constants'
-import { useApprovalInspectorActions } from '../hooks'
-import FieldPermissions from './field-permissions.vue'
-import type {
-  ApprovalAssigneeMode,
-  ApprovalBranch,
-  ApprovalMultiMode,
-  ApprovalNode,
-  ApprovalNodeConfig,
-  ApprovalUserRef,
-  FieldPermissionMode,
-} from '../types'
-
-const props = defineProps<{
-  node?: ApprovalNode
-  users: readonly ApprovalUserRef[]
-}>()
-
-const emit = defineEmits<{
-  addBranch: [nodeId: string]
-  updateBranch: [
-    nodeId: string,
-    branchId: string,
-    patch: Partial<ApprovalBranch>,
-  ]
-  updateConfig: [id: string, patch: Partial<ApprovalNodeConfig>]
-  updateNode: [id: string, patch: Partial<ApprovalNode>]
-}>()
-
-const assigneeModes: { label: string; value: ApprovalAssigneeMode }[] = [
-  { label: '指定成员', value: 'user' },
-  { label: '指定角色', value: 'role' },
-  { label: '直属主管', value: 'supervisor' },
-  { label: '部门主管', value: 'departmentSupervisor' },
-  { label: '连续多级主管', value: 'continuousSupervisor' },
-  { label: '发起人自选', value: 'initiatorSelect' },
-  { label: '表单联系人', value: 'formUser' },
-  { label: '发起人本人', value: 'initiator' },
-]
-
-const multiModes: { label: string; value: ApprovalMultiMode }[] = [
-  { label: '依次审批', value: 'sequential' },
-  { label: '会签全部同意', value: 'parallelAll' },
-  { label: '或签一人同意', value: 'parallelAny' },
-  { label: '百分比通过', value: 'percent' },
-]
-
-const actionOptions = [
-  { label: '同意', value: 'agree' },
-  { label: '拒绝', value: 'reject' },
-  { label: '转交', value: 'transfer' },
-  { label: '加签', value: 'addSigner' },
-  { label: '退回', value: 'rollback' },
-  { label: '评论', value: 'comment' },
-] as const
-
-const fieldPermissionOptions: { label: string; value: FieldPermissionMode }[] =
-  [
-    { label: '只读', value: 'readonly' },
-    { label: '可编辑', value: 'editable' },
-    { label: '隐藏', value: 'hidden' },
-  ]
-
-const userOptions = computed(() =>
-  props.users.map((user) => ({
-    label: `${user.name} / ${user.dept}`,
-    value: user.id,
-  }))
-)
-
-const {
-  updateActions,
-  updateAssigneeMode,
-  updateAssigneeUsers,
-  updateBranchTitle,
-  updateFieldPermissionFromSelect,
-  updateMultiMode,
-  updateNodeDescription,
-  updateNodeTitle,
-  updateSupervisorLevel,
-  updateTimeoutEnabled,
-  updateTimeoutHours,
-  updateTimeoutRemindEveryHours,
-} = useApprovalInspectorActions(() => props.node, toRef(props, 'users'), {
-  updateBranch: (nodeId, branchId, patch) =>
-    emit('updateBranch', nodeId, branchId, patch),
-  updateConfig: (id, patch) => emit('updateConfig', id, patch),
-  updateNode: (id, patch) => emit('updateNode', id, patch),
-})
-</script>
-
 <template>
   <section
     class="min-h-0 min-w-0 grid grid-rows-[auto_minmax(0,1fr)] overflow-hidden rounded-8 border-1 border-color-2 border-solid bg-container shadow-[var(--w-shadow-card)]"
@@ -227,7 +135,7 @@ const {
           <a-button
             size="small"
             type="primary"
-            @click="emit('addBranch', node.id)"
+            @click="emits('addBranch', node.id)"
           >
             新增分支
           </a-button>
@@ -260,3 +168,95 @@ const {
     </div>
   </section>
 </template>
+
+<script setup lang="ts">
+import { APPROVAL_WORKFLOW_SELECTORS } from '../constants'
+import { useApprovalInspectorActions } from '../hooks'
+import FieldPermissions from './field-permissions.vue'
+import type {
+  ApprovalAssigneeMode,
+  ApprovalBranch,
+  ApprovalMultiMode,
+  ApprovalNode,
+  ApprovalNodeConfig,
+  ApprovalUserRef,
+  FieldPermissionMode,
+} from '../types'
+
+const props = defineProps<{
+  node?: ApprovalNode
+  users: readonly ApprovalUserRef[]
+}>()
+
+const emits = defineEmits<{
+  addBranch: [nodeId: string]
+  updateBranch: [
+    nodeId: string,
+    branchId: string,
+    patch: Partial<ApprovalBranch>,
+  ]
+  updateConfig: [id: string, patch: Partial<ApprovalNodeConfig>]
+  updateNode: [id: string, patch: Partial<ApprovalNode>]
+}>()
+
+const assigneeModes: { label: string; value: ApprovalAssigneeMode }[] = [
+  { label: '指定成员', value: 'user' },
+  { label: '指定角色', value: 'role' },
+  { label: '直属主管', value: 'supervisor' },
+  { label: '部门主管', value: 'departmentSupervisor' },
+  { label: '连续多级主管', value: 'continuousSupervisor' },
+  { label: '发起人自选', value: 'initiatorSelect' },
+  { label: '表单联系人', value: 'formUser' },
+  { label: '发起人本人', value: 'initiator' },
+]
+
+const multiModes: { label: string; value: ApprovalMultiMode }[] = [
+  { label: '依次审批', value: 'sequential' },
+  { label: '会签全部同意', value: 'parallelAll' },
+  { label: '或签一人同意', value: 'parallelAny' },
+  { label: '百分比通过', value: 'percent' },
+]
+
+const actionOptions = [
+  { label: '同意', value: 'agree' },
+  { label: '拒绝', value: 'reject' },
+  { label: '转交', value: 'transfer' },
+  { label: '加签', value: 'addSigner' },
+  { label: '退回', value: 'rollback' },
+  { label: '评论', value: 'comment' },
+] as const
+
+const fieldPermissionOptions: { label: string; value: FieldPermissionMode }[] =
+  [
+    { label: '只读', value: 'readonly' },
+    { label: '可编辑', value: 'editable' },
+    { label: '隐藏', value: 'hidden' },
+  ]
+
+const userOptions = computed(() =>
+  props.users.map((user) => ({
+    label: `${user.name} / ${user.dept}`,
+    value: user.id,
+  }))
+)
+
+const {
+  updateActions,
+  updateAssigneeMode,
+  updateAssigneeUsers,
+  updateBranchTitle,
+  updateFieldPermissionFromSelect,
+  updateMultiMode,
+  updateNodeDescription,
+  updateNodeTitle,
+  updateSupervisorLevel,
+  updateTimeoutEnabled,
+  updateTimeoutHours,
+  updateTimeoutRemindEveryHours,
+} = useApprovalInspectorActions(() => props.node, toRef(props, 'users'), {
+  updateBranch: (nodeId, branchId, patch) =>
+    emits('updateBranch', nodeId, branchId, patch),
+  updateConfig: (id, patch) => emits('updateConfig', id, patch),
+  updateNode: (id, patch) => emits('updateNode', id, patch),
+})
+</script>

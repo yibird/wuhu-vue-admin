@@ -1,3 +1,13 @@
+<template>
+  <BaseNode
+    :detail-items="[ccUserLabel]"
+    kind-label="抄送节点"
+    :node="node"
+    :selected="selected"
+    :summary-items="summaryItems"
+  />
+</template>
+
 <script setup lang="ts">
 import BaseNode from './base-node.vue'
 import { formatUsers } from './node-formatters'
@@ -11,13 +21,3 @@ const summaryItems = computed(() => [
   `${props.node.config.ccUsers.length} 人`,
 ])
 </script>
-
-<template>
-  <BaseNode
-    :detail-items="[ccUserLabel]"
-    kind-label="抄送节点"
-    :node="node"
-    :selected="selected"
-    :summary-items="summaryItems"
-  />
-</template>

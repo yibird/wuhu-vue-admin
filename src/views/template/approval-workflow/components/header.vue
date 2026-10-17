@@ -1,23 +1,3 @@
-<script setup lang="ts">
-import { APPROVAL_WORKFLOW_SELECTORS } from '../constants'
-import type { ApprovalWorkflowSettings } from '../types'
-
-defineProps<{
-  issueCount: number
-  nodeCount: number
-  publishBusy: boolean
-  settings: ApprovalWorkflowSettings
-}>()
-
-const emit = defineEmits<{
-  copySchema: []
-  downloadSchema: []
-  openSimulator: []
-  publish: []
-  toggleSource: []
-}>()
-</script>
-
 <template>
   <header
     class="flex flex-wrap items-center justify-between gap-12 rounded-8 border-1 border-color-2 border-solid bg-container px-14 py-12 shadow-[var(--w-shadow-card)]"
@@ -64,19 +44,19 @@ const emit = defineEmits<{
       >
         {{ issueCount ? `${issueCount} 阻塞` : '校验就绪' }}
       </span>
-      <a-button @click="emit('openSimulator')">
+      <a-button @click="emits('openSimulator')">
         <Icon name="i-lucide:shield-check" :size="15" />
         模拟校验
       </a-button>
-      <a-button @click="emit('toggleSource')">
+      <a-button @click="emits('toggleSource')">
         <Icon name="i-lucide:braces" :size="15" />
         Schema
       </a-button>
-      <a-button @click="emit('copySchema')">
+      <a-button @click="emits('copySchema')">
         <Icon name="i-lucide:copy" :size="15" />
         复制
       </a-button>
-      <a-button @click="emit('downloadSchema')">
+      <a-button @click="emits('downloadSchema')">
         <Icon name="i-lucide:download" :size="15" />
         导出
       </a-button>
@@ -85,7 +65,7 @@ const emit = defineEmits<{
         type="primary"
         :disabled="publishBusy"
         :loading="publishBusy"
-        @click="emit('publish')"
+        @click="emits('publish')"
       >
         <Icon name="i-lucide:rocket" :size="15" />
         发布
@@ -93,3 +73,23 @@ const emit = defineEmits<{
     </div>
   </header>
 </template>
+
+<script setup lang="ts">
+import { APPROVAL_WORKFLOW_SELECTORS } from '../constants'
+import type { ApprovalWorkflowSettings } from '../types'
+
+defineProps<{
+  issueCount: number
+  nodeCount: number
+  publishBusy: boolean
+  settings: ApprovalWorkflowSettings
+}>()
+
+const emits = defineEmits<{
+  copySchema: []
+  downloadSchema: []
+  openSimulator: []
+  publish: []
+  toggleSource: []
+}>()
+</script>

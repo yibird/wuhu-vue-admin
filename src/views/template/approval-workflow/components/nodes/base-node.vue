@@ -1,21 +1,3 @@
-<script setup lang="ts">
-import type { ApprovalNode } from '../../types'
-
-const props = withDefaults(
-  defineProps<{
-    node: ApprovalNode
-    selected: boolean
-    kindLabel: string
-    summaryItems?: readonly string[]
-    detailItems?: readonly string[]
-  }>(),
-  {
-    summaryItems: () => [],
-    detailItems: () => [],
-  }
-)
-</script>
-
 <template>
   <div>
     <div
@@ -64,3 +46,21 @@ const props = withDefaults(
     </div>
   </div>
 </template>
+
+<script setup lang="ts">
+import type { ApprovalNode } from '../../types'
+
+const props = withDefaults(
+  defineProps<{
+    node: ApprovalNode
+    selected: boolean
+    kindLabel: string
+    summaryItems?: readonly string[]
+    detailItems?: readonly string[]
+  }>(),
+  {
+    summaryItems: () => [],
+    detailItems: () => [],
+  }
+)
+</script>

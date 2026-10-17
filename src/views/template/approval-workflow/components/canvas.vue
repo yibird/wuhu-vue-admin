@@ -1,61 +1,3 @@
-<script setup lang="ts">
-import { APPROVAL_WORKFLOW_SELECTORS } from '../constants'
-import { useApprovalCanvasInteraction } from '../hooks'
-import NodeCard from './node-card.vue'
-import type {
-  ApprovalNode,
-  ApprovalNodeType,
-  ApprovalWorkflowSettings,
-} from '../types'
-
-const props = defineProps<{
-  nodes: readonly ApprovalNode[]
-  selectedIds: readonly string[]
-  settings: ApprovalWorkflowSettings
-}>()
-
-const emit = defineEmits<{
-  addAfter: [id: string, type: ApprovalNodeType]
-  duplicate: [id: string]
-  duplicateSelected: []
-  remove: [id: string]
-  removeSelected: []
-  select: [id: string]
-  selectMany: [ids: string[]]
-}>()
-
-const canvasRef = useTemplateRef<HTMLElement>('canvas')
-const canvasScrollbarRef = useTemplateRef<HTMLElement>('canvasScrollbar')
-const selectedIdsRef = computed(() => props.selectedIds)
-const {
-  canvasContentStyle,
-  marqueeSelectedIds,
-  selecting,
-  selectionRect,
-  zoom,
-  zoomLabel,
-  handleWheel,
-  setZoom,
-} = useApprovalCanvasInteraction(
-  canvasRef,
-  selectedIdsRef,
-  {
-    duplicateSelected: () => emit('duplicateSelected'),
-    removeSelected: () => emit('removeSelected'),
-    selectMany: (ids) => emit('selectMany', ids),
-  },
-  () => canvasScrollbarRef.value
-)
-
-const activeSelectedIds = computed(() => {
-  if (!selecting.value) return props.selectedIds
-  return Array.from(
-    new Set([...props.selectedIds, ...marqueeSelectedIds.value])
-  )
-})
-const activeSelectedCount = computed(() => activeSelectedIds.value.length)
-</script>
-
 <template>
   <section
     class="min-h-0 min-w-0 grid grid-rows-[auto_minmax(0,1fr)] overflow-hidden rounded-8 border-1 border-color-2 border-solid bg-page shadow-[var(--w-shadow-elevated)]"
@@ -83,14 +25,18 @@ const activeSelectedCount = computed(() => activeSelectedIds.value.length)
           class="mr-4 flex items-center gap-6 rounded-7 border-1 border-primary/25 border-solid bg-primary/8 px-7 py-4 text-primary"
         >
           <span>{{ activeSelectedCount }} 已选</span>
-          <a-button size="small" type="text" @click="emit('duplicateSelected')">
+          <a-button
+            size="small"
+            type="text"
+            @click="emits('duplicateSelected')"
+          >
             <Icon name="i-lucide:copy" :size="14" />
           </a-button>
           <a-button
             danger
             size="small"
             type="text"
-            @click="emit('removeSelected')"
+            @click="emits('removeSelected')"
           >
             <Icon name="i-lucide:trash-2" :size="14" />
           </a-button>
@@ -152,10 +98,10 @@ const activeSelectedCount = computed(() => activeSelectedIds.value.length)
             :key="node.id"
             :node="node"
             :selected-ids="activeSelectedIds"
-            @add-after="(id, type) => emit('addAfter', id, type)"
-            @duplicate="emit('duplicate', $event)"
-            @remove="emit('remove', $event)"
-            @select="emit('select', $event)"
+            @add-after="(id, type) => emits('addAfter', id, type)"
+            @duplicate="emits('duplicate', $event)"
+            @remove="emits('remove', $event)"
+            @select="emits('select', $event)"
           />
         </div>
         <div
@@ -175,6 +121,64 @@ const activeSelectedCount = computed(() => activeSelectedIds.value.length)
     </div>
   </section>
 </template>
+
+<script setup lang="ts">
+import { APPROVAL_WORKFLOW_SELECTORS } from '../constants'
+import { useApprovalCanvasInteraction } from '../hooks'
+import NodeCard from './node-card.vue'
+import type {
+  ApprovalNode,
+  ApprovalNodeType,
+  ApprovalWorkflowSettings,
+} from '../types'
+
+const props = defineProps<{
+  nodes: readonly ApprovalNode[]
+  selectedIds: readonly string[]
+  settings: ApprovalWorkflowSettings
+}>()
+
+const emits = defineEmits<{
+  addAfter: [id: string, type: ApprovalNodeType]
+  duplicate: [id: string]
+  duplicateSelected: []
+  remove: [id: string]
+  removeSelected: []
+  select: [id: string]
+  selectMany: [ids: string[]]
+}>()
+
+const canvasRef = useTemplateRef<HTMLElement>('canvas')
+const canvasScrollbarRef = useTemplateRef<HTMLElement>('canvasScrollbar')
+const selectedIdsRef = computed(() => props.selectedIds)
+const {
+  canvasContentStyle,
+  marqueeSelectedIds,
+  selecting,
+  selectionRect,
+  zoom,
+  zoomLabel,
+  handleWheel,
+  setZoom,
+} = useApprovalCanvasInteraction(
+  canvasRef,
+  selectedIdsRef,
+  {
+    duplicateSelected: () => emits('duplicateSelected'),
+    removeSelected: () => emits('removeSelected'),
+    selectMany: (ids) => emits('selectMany', ids),
+  },
+  () => canvasScrollbarRef.value
+)
+
+const activeSelectedIds = computed(() => {
+  if (!selecting.value) return props.selectedIds
+  return Array.from(
+    new Set([...props.selectedIds, ...marqueeSelectedIds.value])
+  )
+})
+const activeSelectedCount = computed(() => activeSelectedIds.value.length)
+</script>
 
 <style scoped>
 .approval-selection-rect {

@@ -1,19 +1,3 @@
-<script setup lang="ts">
-import { CodeEditor } from '@/components/code-editor'
-import { APPROVAL_WORKFLOW_SELECTORS } from '../constants'
-
-defineProps<{
-  error: string
-  open: boolean
-  sourceCode: string
-}>()
-
-const emit = defineEmits<{
-  close: []
-  sourceChange: [value: string]
-}>()
-</script>
-
 <template>
   <a-modal
     :footer="null"
@@ -21,7 +5,7 @@ const emit = defineEmits<{
     :width="760"
     class="approval-source-modal"
     title="审批流 Schema"
-    @cancel="emit('close')"
+    @cancel="emits('close')"
   >
     <div
       class="grid h-[72vh] min-h-0 grid-rows-[auto_minmax(0,1fr)_auto] gap-12"
@@ -45,14 +29,14 @@ const emit = defineEmits<{
             </p>
           </div>
         </div>
-        <a-button size="small" @click="emit('close')">关闭</a-button>
+        <a-button size="small" @click="emits('close')">关闭</a-button>
       </header>
 
       <CodeEditor
         :model-value="sourceCode"
         data-approval-source-input
         language="json"
-        @update:model-value="emit('sourceChange', $event)"
+        @update:model-value="emits('sourceChange', $event)"
       />
 
       <footer
@@ -64,3 +48,19 @@ const emit = defineEmits<{
     </div>
   </a-modal>
 </template>
+
+<script setup lang="ts">
+import { CodeEditor } from '@/components/code-editor'
+import { APPROVAL_WORKFLOW_SELECTORS } from '../constants'
+
+defineProps<{
+  error: string
+  open: boolean
+  sourceCode: string
+}>()
+
+const emits = defineEmits<{
+  close: []
+  sourceChange: [value: string]
+}>()
+</script>

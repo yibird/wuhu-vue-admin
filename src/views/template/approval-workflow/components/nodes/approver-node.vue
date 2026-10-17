@@ -1,3 +1,13 @@
+<template>
+  <BaseNode
+    :detail-items="detailItems"
+    kind-label="审批节点"
+    :node="node"
+    :selected="selected"
+    :summary-items="summaryItems"
+  />
+</template>
+
 <script setup lang="ts">
 import BaseNode from './base-node.vue'
 import {
@@ -22,13 +32,3 @@ const detailItems = computed(() => [
   formatActionCount(props.node),
 ])
 </script>
-
-<template>
-  <BaseNode
-    :detail-items="detailItems"
-    kind-label="审批节点"
-    :node="node"
-    :selected="selected"
-    :summary-items="summaryItems"
-  />
-</template>
