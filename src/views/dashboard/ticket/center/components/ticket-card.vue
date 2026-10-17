@@ -1,36 +1,3 @@
-<script setup lang="ts">
-import {
-  getTicketCategoryMeta,
-  getTicketPriorityMeta,
-  getTicketStatusMeta,
-} from '../data'
-import type { TicketRecord } from '../types'
-
-const props = defineProps<{
-  ticket: TicketRecord
-}>()
-
-const emit = defineEmits<{
-  open: [ticket: TicketRecord]
-}>()
-
-const categoryMeta = computed(() =>
-  getTicketCategoryMeta(props.ticket.category)
-)
-const priorityMeta = computed(() =>
-  getTicketPriorityMeta(props.ticket.priority)
-)
-const statusMeta = computed(() => getTicketStatusMeta(props.ticket.status))
-const visibleTags = computed(() => props.ticket.tags.slice(0, 3))
-const remainingTagCount = computed(() =>
-  Math.max(0, props.ticket.tags.length - visibleTags.value.length)
-)
-
-function openTicket() {
-  emit('open', props.ticket)
-}
-</script>
-
 <template>
   <article
     class="group min-w-0 cursor-pointer overflow-hidden rounded-8 border-1 border-color-2 border-solid bg-container shadow-[var(--w-shadow-card)] outline-none transition-[border-color,box-shadow,transform] duration-motion-base hover:-translate-y-2 hover:border-primary hover:shadow-[var(--w-shadow-elevated)] focus-visible:border-primary motion-reduce:transition-none motion-reduce:hover:transform-none"
@@ -124,3 +91,36 @@ function openTicket() {
     </footer>
   </article>
 </template>
+
+<script setup lang="ts">
+import {
+  getTicketCategoryMeta,
+  getTicketPriorityMeta,
+  getTicketStatusMeta,
+} from '../data'
+import type { TicketRecord } from '../types'
+
+const props = defineProps<{
+  ticket: TicketRecord
+}>()
+
+const emits = defineEmits<{
+  open: [ticket: TicketRecord]
+}>()
+
+const categoryMeta = computed(() =>
+  getTicketCategoryMeta(props.ticket.category)
+)
+const priorityMeta = computed(() =>
+  getTicketPriorityMeta(props.ticket.priority)
+)
+const statusMeta = computed(() => getTicketStatusMeta(props.ticket.status))
+const visibleTags = computed(() => props.ticket.tags.slice(0, 3))
+const remainingTagCount = computed(() =>
+  Math.max(0, props.ticket.tags.length - visibleTags.value.length)
+)
+
+function openTicket() {
+  emits('open', props.ticket)
+}
+</script>

@@ -1,38 +1,3 @@
-<script setup lang="ts">
-import {
-  UNASSIGNED,
-  getTicketCategoryMeta,
-  getTicketPriorityMeta,
-  getTicketStatusMeta,
-} from '../../center/data'
-import type { TicketRecord } from '../../center/types'
-import { slaStatusMeta } from '../data'
-import type { TicketQueueKey, TicketQueueOption } from '../types'
-
-const props = defineProps<{
-  activeQueue: TicketQueueKey
-  items: TicketRecord[]
-  queueOptions: TicketQueueOption[]
-  selectedId: string
-}>()
-
-const emit = defineEmits<{
-  queueChange: [queue: TicketQueueKey]
-  select: [ticket: TicketRecord]
-}>()
-
-const selectOptions = computed(() =>
-  props.queueOptions.map((item) => ({
-    label: `${item.label}（${item.count}）`,
-    value: item.key,
-  }))
-)
-
-function handleQueueChange(value: TicketQueueKey) {
-  emit('queueChange', value)
-}
-</script>
-
 <template>
   <aside
     class="min-h-0 flex flex-col border-r-1 border-color-2 border-r-solid bg-container max-lg:border-b-1 max-lg:border-b-solid max-lg:border-r-0"
@@ -64,7 +29,7 @@ function handleQueueChange(value: TicketQueueKey) {
         :class="{
           'bg-selected': ticket.id === selectedId,
         }"
-        @click="emit('select', ticket)"
+        @click="emits('select', ticket)"
       >
         <div class="flex items-center gap-7">
           <span class="min-w-0 flex-1 truncate text-xs text-secondary">
@@ -118,3 +83,38 @@ function handleQueueChange(value: TicketQueueKey) {
     </div>
   </aside>
 </template>
+
+<script setup lang="ts">
+import {
+  UNASSIGNED,
+  getTicketCategoryMeta,
+  getTicketPriorityMeta,
+  getTicketStatusMeta,
+} from '../../center/data'
+import type { TicketRecord } from '../../center/types'
+import { slaStatusMeta } from '../data'
+import type { TicketQueueKey, TicketQueueOption } from '../types'
+
+const props = defineProps<{
+  activeQueue: TicketQueueKey
+  items: TicketRecord[]
+  queueOptions: TicketQueueOption[]
+  selectedId: string
+}>()
+
+const emits = defineEmits<{
+  queueChange: [queue: TicketQueueKey]
+  select: [ticket: TicketRecord]
+}>()
+
+const selectOptions = computed(() =>
+  props.queueOptions.map((item) => ({
+    label: `${item.label}（${item.count}）`,
+    value: item.key,
+  }))
+)
+
+function handleQueueChange(value: TicketQueueKey) {
+  emits('queueChange', value)
+}
+</script>

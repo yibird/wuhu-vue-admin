@@ -1,127 +1,3 @@
-<script setup lang="ts">
-import {
-  UNASSIGNED,
-  getTicketPriorityMeta,
-  getTicketStatusMeta,
-  ticketPriorityList,
-} from '../../center/data'
-import {
-  CURRENT_AGENT,
-  closingReasonOptions,
-  resolutionReasonOptions,
-  slaStatusMeta,
-  supportAgentsByTeam,
-  supportTeamOptions,
-  waitingReasonOptions,
-} from '../data'
-import type { TicketPriority, TicketRecord } from '../../center/types'
-import type { TicketAssignment, TicketResolution } from '../types'
-
-const props = defineProps<{
-  ticket?: TicketRecord
-}>()
-
-const emit = defineEmits<{
-  accept: []
-  assignmentChange: [assignment: TicketAssignment]
-  close: [reason: string]
-  continue: []
-  priorityChange: [priority: TicketPriority]
-  reopen: []
-  resolve: [resolution: TicketResolution]
-  waiting: [reason: string]
-}>()
-
-const team = shallowRef('')
-const assignee = shallowRef('')
-const waitingReason = shallowRef('')
-const resolutionReason = shallowRef('')
-const processingResult = shallowRef('')
-const closingReason = shallowRef('')
-
-const priorityOptions = ticketPriorityList.map(({ label, value }) => ({
-  label,
-  value,
-}))
-
-const assigneeOptions = computed(() =>
-  (supportAgentsByTeam[team.value] ?? []).map((name) => ({
-    label: name,
-    value: name,
-  }))
-)
-
-const assignmentChanged = computed(
-  () =>
-    !!props.ticket &&
-    (props.ticket.team !== team.value ||
-      props.ticket.assignee !== assignee.value)
-)
-
-watch(
-  () => [props.ticket?.id, props.ticket?.team, props.ticket?.assignee] as const,
-  ([, nextTeam, nextAssignee]) => {
-    team.value = nextTeam === UNASSIGNED ? '平台支持组' : nextTeam || ''
-    assignee.value =
-      nextAssignee === UNASSIGNED ? CURRENT_AGENT : nextAssignee || ''
-  },
-  { immediate: true }
-)
-
-watch(
-  () => props.ticket?.id,
-  () => {
-    waitingReason.value = ''
-    resolutionReason.value = ''
-    processingResult.value = ''
-    closingReason.value = ''
-  }
-)
-
-function handleTeamChange(value: string) {
-  team.value = value
-  const agents = supportAgentsByTeam[value] ?? []
-  if (!agents.includes(assignee.value)) assignee.value = agents[0] ?? ''
-}
-
-function saveAssignment() {
-  if (!team.value || !assignee.value) return
-  emit('assignmentChange', { team: team.value, assignee: assignee.value })
-}
-
-function assignToMe() {
-  const availableTeam = supportTeamOptions.find((option) =>
-    supportAgentsByTeam[option.value]?.includes(CURRENT_AGENT)
-  )
-  if (availableTeam) team.value = availableTeam.value
-  assignee.value = CURRENT_AGENT
-}
-
-function handlePriorityChange(value: TicketPriority) {
-  emit('priorityChange', value)
-}
-
-function submitWaiting() {
-  if (!waitingReason.value) return
-  emit('waiting', waitingReason.value)
-  waitingReason.value = ''
-}
-
-function submitResolution() {
-  const result = processingResult.value.trim()
-  if (!resolutionReason.value || !result) return
-  emit('resolve', { reason: resolutionReason.value, result })
-  resolutionReason.value = ''
-  processingResult.value = ''
-}
-
-function submitClose() {
-  if (!closingReason.value) return
-  emit('close', closingReason.value)
-  closingReason.value = ''
-}
-</script>
-
 <template>
   <aside
     class="min-h-0 flex flex-col border-l-1 border-color-2 border-l-solid bg-container max-xl:border-l-0 max-xl:border-t-1 max-xl:border-t-solid"
@@ -259,7 +135,7 @@ function submitClose() {
           v-if="ticket.status === 'pending'"
           type="primary"
           class="w-full"
-          @click="emit('accept')"
+          @click="emits('accept')"
         >
           <template #icon><Icon name="i-lucide:circle-play" /></template>
           受理并开始处理
@@ -269,7 +145,7 @@ function submitClose() {
           v-if="ticket.status === 'waiting'"
           type="primary"
           class="w-full"
-          @click="emit('continue')"
+          @click="emits('continue')"
         >
           <template #icon><Icon name="i-lucide:play" /></template>
           继续处理
@@ -340,7 +216,7 @@ function submitClose() {
             <template #icon><Icon name="i-lucide:archive" /></template>
             关闭工单
           </a-button>
-          <a-button class="mt-7 w-full" @click="emit('reopen')">
+          <a-button class="mt-7 w-full" @click="emits('reopen')">
             重新打开
           </a-button>
         </template>
@@ -348,7 +224,7 @@ function submitClose() {
         <a-button
           v-if="ticket.status === 'closed'"
           class="w-full"
-          @click="emit('reopen')"
+          @click="emits('reopen')"
         >
           <template #icon><Icon name="i-lucide:rotate-ccw" /></template>
           重新打开
@@ -357,3 +233,127 @@ function submitClose() {
     </div>
   </aside>
 </template>
+
+<script setup lang="ts">
+import {
+  UNASSIGNED,
+  getTicketPriorityMeta,
+  getTicketStatusMeta,
+  ticketPriorityList,
+} from '../../center/data'
+import {
+  CURRENT_AGENT,
+  closingReasonOptions,
+  resolutionReasonOptions,
+  slaStatusMeta,
+  supportAgentsByTeam,
+  supportTeamOptions,
+  waitingReasonOptions,
+} from '../data'
+import type { TicketPriority, TicketRecord } from '../../center/types'
+import type { TicketAssignment, TicketResolution } from '../types'
+
+const props = defineProps<{
+  ticket?: TicketRecord
+}>()
+
+const emits = defineEmits<{
+  accept: []
+  assignmentChange: [assignment: TicketAssignment]
+  close: [reason: string]
+  continue: []
+  priorityChange: [priority: TicketPriority]
+  reopen: []
+  resolve: [resolution: TicketResolution]
+  waiting: [reason: string]
+}>()
+
+const team = shallowRef('')
+const assignee = shallowRef('')
+const waitingReason = shallowRef('')
+const resolutionReason = shallowRef('')
+const processingResult = shallowRef('')
+const closingReason = shallowRef('')
+
+const priorityOptions = ticketPriorityList.map(({ label, value }) => ({
+  label,
+  value,
+}))
+
+const assigneeOptions = computed(() =>
+  (supportAgentsByTeam[team.value] ?? []).map((name) => ({
+    label: name,
+    value: name,
+  }))
+)
+
+const assignmentChanged = computed(
+  () =>
+    !!props.ticket &&
+    (props.ticket.team !== team.value ||
+      props.ticket.assignee !== assignee.value)
+)
+
+watch(
+  () => [props.ticket?.id, props.ticket?.team, props.ticket?.assignee] as const,
+  ([, nextTeam, nextAssignee]) => {
+    team.value = nextTeam === UNASSIGNED ? '平台支持组' : nextTeam || ''
+    assignee.value =
+      nextAssignee === UNASSIGNED ? CURRENT_AGENT : nextAssignee || ''
+  },
+  { immediate: true }
+)
+
+watch(
+  () => props.ticket?.id,
+  () => {
+    waitingReason.value = ''
+    resolutionReason.value = ''
+    processingResult.value = ''
+    closingReason.value = ''
+  }
+)
+
+function handleTeamChange(value: string) {
+  team.value = value
+  const agents = supportAgentsByTeam[value] ?? []
+  if (!agents.includes(assignee.value)) assignee.value = agents[0] ?? ''
+}
+
+function saveAssignment() {
+  if (!team.value || !assignee.value) return
+  emits('assignmentChange', { team: team.value, assignee: assignee.value })
+}
+
+function assignToMe() {
+  const availableTeam = supportTeamOptions.find((option) =>
+    supportAgentsByTeam[option.value]?.includes(CURRENT_AGENT)
+  )
+  if (availableTeam) team.value = availableTeam.value
+  assignee.value = CURRENT_AGENT
+}
+
+function handlePriorityChange(value: TicketPriority) {
+  emits('priorityChange', value)
+}
+
+function submitWaiting() {
+  if (!waitingReason.value) return
+  emits('waiting', waitingReason.value)
+  waitingReason.value = ''
+}
+
+function submitResolution() {
+  const result = processingResult.value.trim()
+  if (!resolutionReason.value || !result) return
+  emits('resolve', { reason: resolutionReason.value, result })
+  resolutionReason.value = ''
+  processingResult.value = ''
+}
+
+function submitClose() {
+  if (!closingReason.value) return
+  emits('close', closingReason.value)
+  closingReason.value = ''
+}
+</script>

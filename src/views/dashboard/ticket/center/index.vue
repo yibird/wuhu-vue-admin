@@ -1,60 +1,3 @@
-<script setup lang="ts">
-import { message } from 'antdv-next'
-import { AnimatedGroup } from '@/components'
-import { useLoading } from '@/hooks'
-import {
-  TicketCreateDrawer,
-  TicketDetailDrawer,
-  TicketFilters,
-  TicketSummary,
-  TicketCard,
-} from './components'
-import { useTickets } from './hooks'
-import { getTicketStatusMeta } from './data'
-import type { TicketDraft, TicketRecord, TicketStatus } from './types'
-
-const { isLoading } = useLoading({ delay: 240 })
-const {
-  createDrawerOpen,
-  currentPage,
-  detailDrawerOpen,
-  filteredTickets,
-  filters,
-  hasFilters,
-  selectedTicket,
-  stats,
-  addReply,
-  createTicket,
-  openCreateDrawer,
-  openTicket,
-  pageSize,
-  paginatedTickets,
-  resetFilters,
-  updateStatus,
-} = useTickets()
-
-function paginationTotalText(total: number) {
-  return `共 ${total} 条工单`
-}
-
-function handleCreate(draft: TicketDraft) {
-  const ticket = createTicket(draft)
-  message.success(`工单 ${ticket.id} 已提交`)
-}
-
-function handleStatusChange(ticket: TicketRecord, status: TicketStatus) {
-  const updated = updateStatus(ticket.id, status)
-  if (!updated) return
-  message.success(`工单已更新为${getTicketStatusMeta(status).label}`)
-}
-
-function handleReply(ticket: TicketRecord, content: string) {
-  const updated = addReply(ticket.id, content)
-  if (!updated) return
-  message.success('回复已添加')
-}
-</script>
-
 <template>
   <WView full>
     <div class="h-full min-h-0 flex flex-col overflow-hidden bg-page">
@@ -144,3 +87,60 @@ function handleReply(ticket: TicketRecord, content: string) {
     </div>
   </WView>
 </template>
+
+<script setup lang="ts">
+import { message } from 'antdv-next'
+import { AnimatedGroup } from '@/components'
+import { useLoading } from '@/hooks'
+import {
+  TicketCreateDrawer,
+  TicketDetailDrawer,
+  TicketFilters,
+  TicketSummary,
+  TicketCard,
+} from './components'
+import { useTickets } from './hooks'
+import { getTicketStatusMeta } from './data'
+import type { TicketDraft, TicketRecord, TicketStatus } from './types'
+
+const { isLoading } = useLoading({ delay: 240 })
+const {
+  createDrawerOpen,
+  currentPage,
+  detailDrawerOpen,
+  filteredTickets,
+  filters,
+  hasFilters,
+  selectedTicket,
+  stats,
+  addReply,
+  createTicket,
+  openCreateDrawer,
+  openTicket,
+  pageSize,
+  paginatedTickets,
+  resetFilters,
+  updateStatus,
+} = useTickets()
+
+function paginationTotalText(total: number) {
+  return `共 ${total} 条工单`
+}
+
+function handleCreate(draft: TicketDraft) {
+  const ticket = createTicket(draft)
+  message.success(`工单 ${ticket.id} 已提交`)
+}
+
+function handleStatusChange(ticket: TicketRecord, status: TicketStatus) {
+  const updated = updateStatus(ticket.id, status)
+  if (!updated) return
+  message.success(`工单已更新为${getTicketStatusMeta(status).label}`)
+}
+
+function handleReply(ticket: TicketRecord, content: string) {
+  const updated = addReply(ticket.id, content)
+  if (!updated) return
+  message.success('回复已添加')
+}
+</script>

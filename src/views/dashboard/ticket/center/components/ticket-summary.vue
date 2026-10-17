@@ -1,3 +1,33 @@
+<template>
+  <section
+    class="grid grid-cols-2 border-b-1 border-color-2 border-b-solid bg-container lg:grid-cols-4"
+  >
+    <div
+      v-for="(item, index) in items"
+      :key="item.key"
+      class="min-w-0 flex items-center gap-10 px-14 py-12 lg:px-18"
+      :class="{
+        'border-r-1 border-color-2 border-r-solid': index < items.length - 1,
+      }"
+    >
+      <span
+        class="size-34 shrink-0 flex items-center justify-center rounded-6 bg-fill"
+        :class="item.textClass"
+      >
+        <Icon :name="item.icon" :size="17" />
+      </span>
+      <div class="min-w-0">
+        <div class="text-xl text-main font-700 leading-none">
+          {{ item.value }}
+        </div>
+        <div class="mt-5 truncate text-xs text-secondary">
+          {{ item.label }}
+        </div>
+      </div>
+    </div>
+  </section>
+</template>
+
 <script setup lang="ts">
 import type { TicketStats } from '../types'
 
@@ -36,33 +66,3 @@ const items = computed(() => [
   },
 ])
 </script>
-
-<template>
-  <section
-    class="grid grid-cols-2 border-b-1 border-color-2 border-b-solid bg-container lg:grid-cols-4"
-  >
-    <div
-      v-for="(item, index) in items"
-      :key="item.key"
-      class="min-w-0 flex items-center gap-10 px-14 py-12 lg:px-18"
-      :class="{
-        'border-r-1 border-color-2 border-r-solid': index < items.length - 1,
-      }"
-    >
-      <span
-        class="size-34 shrink-0 flex items-center justify-center rounded-6 bg-fill"
-        :class="item.textClass"
-      >
-        <Icon :name="item.icon" :size="17" />
-      </span>
-      <div class="min-w-0">
-        <div class="text-xl text-main font-700 leading-none">
-          {{ item.value }}
-        </div>
-        <div class="mt-5 truncate text-xs text-secondary">
-          {{ item.label }}
-        </div>
-      </div>
-    </div>
-  </section>
-</template>

@@ -1,47 +1,3 @@
-<script setup lang="ts">
-import {
-  getTicketCategoryMeta,
-  getTicketPriorityMeta,
-  getTicketStatusMeta,
-} from '../../center/data'
-import { activityTypeMeta } from '../data'
-import type { TicketRecord } from '../../center/types'
-
-const props = defineProps<{
-  ticket?: TicketRecord
-  currentAgent: string
-}>()
-
-const emit = defineEmits<{
-  publicReply: [content: string]
-  internalNote: [content: string]
-}>()
-
-const composerMode = shallowRef<'reply' | 'internal'>('reply')
-const composerContent = shallowRef('')
-const composerOptions = [
-  { label: '公开回复', value: 'reply' },
-  { label: '内部备注', value: 'internal' },
-]
-
-watch(
-  () => props.ticket?.id,
-  () => {
-    composerMode.value = 'reply'
-    composerContent.value = ''
-  }
-)
-
-function submitComposer() {
-  const content = composerContent.value.trim()
-  if (!content) return
-
-  if (composerMode.value === 'reply') emit('publicReply', content)
-  else emit('internalNote', content)
-  composerContent.value = ''
-}
-</script>
-
 <template>
   <section class="min-h-0 flex flex-col bg-container">
     <a-empty v-if="!ticket" class="my-auto" description="请选择一条工单" />
@@ -190,3 +146,47 @@ function submitComposer() {
     </template>
   </section>
 </template>
+
+<script setup lang="ts">
+import {
+  getTicketCategoryMeta,
+  getTicketPriorityMeta,
+  getTicketStatusMeta,
+} from '../../center/data'
+import { activityTypeMeta } from '../data'
+import type { TicketRecord } from '../../center/types'
+
+const props = defineProps<{
+  ticket?: TicketRecord
+  currentAgent: string
+}>()
+
+const emits = defineEmits<{
+  publicReply: [content: string]
+  internalNote: [content: string]
+}>()
+
+const composerMode = shallowRef<'reply' | 'internal'>('reply')
+const composerContent = shallowRef('')
+const composerOptions = [
+  { label: '公开回复', value: 'reply' },
+  { label: '内部备注', value: 'internal' },
+]
+
+watch(
+  () => props.ticket?.id,
+  () => {
+    composerMode.value = 'reply'
+    composerContent.value = ''
+  }
+)
+
+function submitComposer() {
+  const content = composerContent.value.trim()
+  if (!content) return
+
+  if (composerMode.value === 'reply') emits('publicReply', content)
+  else emits('internalNote', content)
+  composerContent.value = ''
+}
+</script>

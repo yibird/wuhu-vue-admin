@@ -1,31 +1,3 @@
-<script setup lang="ts">
-import {
-  ticketCategoryOptions,
-  ticketPriorityOptions,
-  ticketStatusOptions,
-} from '../data'
-import type { TicketCategory, TicketPriority, TicketStatus } from '../types'
-
-defineProps<{
-  hasFilters: boolean
-  resultCount: number
-}>()
-
-const emit = defineEmits<{
-  create: []
-  reset: []
-}>()
-
-const keyword = defineModel<string>('keyword', { required: true })
-const status = defineModel<'all' | TicketStatus>('status', { required: true })
-const category = defineModel<'all' | TicketCategory>('category', {
-  required: true,
-})
-const priority = defineModel<'all' | TicketPriority>('priority', {
-  required: true,
-})
-</script>
-
 <template>
   <section
     class="flex flex-wrap items-center gap-8 bg-container px-12 py-10 sm:px-16"
@@ -57,7 +29,7 @@ const priority = defineModel<'all' | TicketPriority>('priority', {
       :options="ticketPriorityOptions"
     />
 
-    <a-button :disabled="!hasFilters" @click="emit('reset')">
+    <a-button :disabled="!hasFilters" @click="emits('reset')">
       <template #icon>
         <Icon name="i-lucide:rotate-ccw" />
       </template>
@@ -66,7 +38,7 @@ const priority = defineModel<'all' | TicketPriority>('priority', {
 
     <span class="mr-auto text-xs text-secondary"> {{ resultCount }} 条 </span>
 
-    <a-button type="primary" @click="emit('create')">
+    <a-button type="primary" @click="emits('create')">
       <template #icon>
         <Icon name="i-lucide:plus" />
       </template>
@@ -74,3 +46,31 @@ const priority = defineModel<'all' | TicketPriority>('priority', {
     </a-button>
   </section>
 </template>
+
+<script setup lang="ts">
+import {
+  ticketCategoryOptions,
+  ticketPriorityOptions,
+  ticketStatusOptions,
+} from '../data'
+import type { TicketCategory, TicketPriority, TicketStatus } from '../types'
+
+defineProps<{
+  hasFilters: boolean
+  resultCount: number
+}>()
+
+const emits = defineEmits<{
+  create: []
+  reset: []
+}>()
+
+const keyword = defineModel<string>('keyword', { required: true })
+const status = defineModel<'all' | TicketStatus>('status', { required: true })
+const category = defineModel<'all' | TicketCategory>('category', {
+  required: true,
+})
+const priority = defineModel<'all' | TicketPriority>('priority', {
+  required: true,
+})
+</script>

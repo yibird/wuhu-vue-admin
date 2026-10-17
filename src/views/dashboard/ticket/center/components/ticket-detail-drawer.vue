@@ -1,81 +1,3 @@
-<script setup lang="ts">
-import { useWindowSize } from '@vueuse/core'
-import {
-  getTicketCategoryMeta,
-  getTicketPriorityMeta,
-  getTicketStatusMeta,
-} from '../data'
-import type { TicketActivityType, TicketRecord, TicketStatus } from '../types'
-
-const props = defineProps<{
-  ticket?: TicketRecord
-}>()
-
-const open = defineModel<boolean>('open', { required: true })
-
-const emit = defineEmits<{
-  reply: [ticket: TicketRecord, content: string]
-  statusChange: [ticket: TicketRecord, status: TicketStatus]
-}>()
-
-const reply = shallowRef('')
-const { width: viewportWidth } = useWindowSize()
-const drawerSize = computed(() => Math.min(viewportWidth.value, 720))
-const visibleActivities = computed(
-  () =>
-    props.ticket?.activities.filter(
-      (activity) => activity.visibility !== 'internal'
-    ) ?? []
-)
-
-const statusAction = computed(() => {
-  if (!props.ticket) return undefined
-
-  const actionMap: Partial<
-    Record<
-      TicketStatus,
-      { label: string; status: TicketStatus; icon: string; danger?: boolean }
-    >
-  > = {
-    resolved: {
-      label: '确认关闭',
-      status: 'closed',
-      icon: 'i-lucide:archive',
-    },
-    closed: {
-      label: '重新打开',
-      status: 'pending',
-      icon: 'i-lucide:rotate-ccw',
-    },
-  }
-
-  return actionMap[props.ticket.status]
-})
-
-watch(open, (value) => {
-  if (value) reply.value = ''
-})
-
-function activityColor(type: TicketActivityType) {
-  if (type === 'created') return 'blue'
-  if (type === 'reply') return 'green'
-  if (type === 'resolution') return 'green'
-  return 'gray'
-}
-
-function changeStatus() {
-  if (!props.ticket || !statusAction.value) return
-  emit('statusChange', props.ticket, statusAction.value.status)
-}
-
-function sendReply() {
-  const content = reply.value.trim()
-  if (!props.ticket || !content) return
-  emit('reply', props.ticket, content)
-  reply.value = ''
-}
-</script>
-
 <template>
   <a-drawer v-model:open="open" :size="drawerSize" title="工单详情">
     <template v-if="ticket" #extra>
@@ -216,3 +138,81 @@ function sendReply() {
     </template>
   </a-drawer>
 </template>
+
+<script setup lang="ts">
+import { useWindowSize } from '@vueuse/core'
+import {
+  getTicketCategoryMeta,
+  getTicketPriorityMeta,
+  getTicketStatusMeta,
+} from '../data'
+import type { TicketActivityType, TicketRecord, TicketStatus } from '../types'
+
+const props = defineProps<{
+  ticket?: TicketRecord
+}>()
+
+const open = defineModel<boolean>('open', { required: true })
+
+const emits = defineEmits<{
+  reply: [ticket: TicketRecord, content: string]
+  statusChange: [ticket: TicketRecord, status: TicketStatus]
+}>()
+
+const reply = shallowRef('')
+const { width: viewportWidth } = useWindowSize()
+const drawerSize = computed(() => Math.min(viewportWidth.value, 720))
+const visibleActivities = computed(
+  () =>
+    props.ticket?.activities.filter(
+      (activity) => activity.visibility !== 'internal'
+    ) ?? []
+)
+
+const statusAction = computed(() => {
+  if (!props.ticket) return undefined
+
+  const actionMap: Partial<
+    Record<
+      TicketStatus,
+      { label: string; status: TicketStatus; icon: string; danger?: boolean }
+    >
+  > = {
+    resolved: {
+      label: '确认关闭',
+      status: 'closed',
+      icon: 'i-lucide:archive',
+    },
+    closed: {
+      label: '重新打开',
+      status: 'pending',
+      icon: 'i-lucide:rotate-ccw',
+    },
+  }
+
+  return actionMap[props.ticket.status]
+})
+
+watch(open, (value) => {
+  if (value) reply.value = ''
+})
+
+function activityColor(type: TicketActivityType) {
+  if (type === 'created') return 'blue'
+  if (type === 'reply') return 'green'
+  if (type === 'resolution') return 'green'
+  return 'gray'
+}
+
+function changeStatus() {
+  if (!props.ticket || !statusAction.value) return
+  emits('statusChange', props.ticket, statusAction.value.status)
+}
+
+function sendReply() {
+  const content = reply.value.trim()
+  if (!props.ticket || !content) return
+  emits('reply', props.ticket, content)
+  reply.value = ''
+}
+</script>
