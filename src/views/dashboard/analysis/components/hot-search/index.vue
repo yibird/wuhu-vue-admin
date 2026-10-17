@@ -1,19 +1,21 @@
 <template>
-  <Card class="page-enter page-enter--4" title="热门搜索">
-    <div class="h-380 w-full p-12 max-md:h-280">
-      <VChart
-        :option="chartOption"
-        :theme="eChartsThemeName"
-        autoresize
-        class="full min-h-0"
-      />
-    </div>
-  </Card>
+  <a-border-beam :duration="8" :line-width="2" :size="140">
+    <Card class="page-enter page-enter--4" title="热门搜索">
+      <div class="h-380 w-full p-12 max-md:h-280">
+        <Chart
+          :option="chartOption"
+          :theme="eChartsThemeName"
+          autoresize
+          class="full min-h-0"
+        />
+      </div>
+    </Card>
+  </a-border-beam>
 </template>
 
 <script lang="ts" setup>
-import VChart from 'vue-echarts'
-import { useEChartsTheme } from '@/theme'
+import { Chart } from '@/components'
+import { useEChartsTheme } from '@/components/chart'
 import { Card } from '@/components'
 import type { EChartsCoreOption } from 'echarts/core'
 

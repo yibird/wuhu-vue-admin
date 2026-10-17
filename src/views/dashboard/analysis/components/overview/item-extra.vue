@@ -1,3 +1,11 @@
+<template>
+  <div
+    class="inline-flex shrink-0 rounded-999 bg-fill-secondary p-2 text-xs text-secondary"
+  >
+    <a-segmented :options="items" :value="period" @change="handleChange" />
+  </div>
+</template>
+
 <script lang="ts" setup>
 import type { StatPeriod } from './types'
 
@@ -15,11 +23,3 @@ function handleChange(value: string | number) {
   if (next) period.value = next.value
 }
 </script>
-
-<template>
-  <div
-    class="inline-flex shrink-0 rounded-999 bg-fill-secondary p-2 text-xs text-secondary"
-  >
-    <a-segmented :options="items" :value="period" @change="handleChange" />
-  </div>
-</template>

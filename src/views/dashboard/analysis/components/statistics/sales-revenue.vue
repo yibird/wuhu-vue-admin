@@ -1,5 +1,5 @@
 <template>
-  <VChart
+  <Chart
     :option="chartOption"
     :theme="eChartsThemeName"
     autoresize
@@ -7,8 +7,8 @@
   />
 </template>
 <script lang="ts" setup>
-import { getCssRgbVarAlpha, useEChartsTheme } from '@/theme'
-import VChart from 'vue-echarts'
+import { getCssRgbVarAlpha, useEChartsTheme } from '@/components/chart'
+import { Chart } from '@/components'
 import { bucketValue, buildBuckets } from './data'
 import type { StatisticsChartProps } from './types'
 import type { EChartsCoreOption } from 'echarts/core'

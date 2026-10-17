@@ -1,60 +1,64 @@
 <template>
-  <Card class="page-enter page-enter--6" title="流量来源">
-    <template #extra>
-      <span class="text-xs text-secondary tabular-nums">
-        共 {{ totalCount }} 次访问
-      </span>
-    </template>
-
-    <div class="h-200 w-full">
-      <VChart
-        :option="chartOption"
-        :theme="eChartsThemeName"
-        autoresize
-        class="full min-h-0"
-      />
-    </div>
-
-    <ul class="m-0 mt-10 flex list-none flex-col p-0" role="list">
-      <li
-        v-for="item in items"
-        :key="item.name"
-        class="flex items-center gap-8 rounded-8 px-4 py-7 transition-colors duration-motion-base hover:bg-hover motion-reduce:transition-none"
-      >
-        <span
-          class="size-8 shrink-0 rounded-999"
-          :class="item.tone"
-          aria-hidden="true"
-        ></span>
-        <span class="min-w-0 flex-1 truncate text-sm text-main">
-          {{ item.name }}
+  <a-border-beam :duration="8" :line-width="2" :size="140">
+    <Card class="page-enter page-enter--6" title="流量来源">
+      <template #extra>
+        <span class="text-xs text-secondary tabular-nums">
+          共 {{ totalCount }} 次访问
         </span>
-        <span class="shrink-0 text-xs text-secondary tabular-nums">
-          {{ item.percent }}%
-        </span>
-        <span
-          class="shrink-0 flex items-center gap-2 text-xs font-700 tabular-nums"
-          :class="item.change.startsWith('-') ? 'text-warning' : 'text-success'"
+      </template>
+
+      <div class="h-200 w-full">
+        <Chart
+          :option="chartOption"
+          :theme="eChartsThemeName"
+          autoresize
+          class="full min-h-0"
+        />
+      </div>
+
+      <ul class="m-0 mt-10 flex list-none flex-col p-0" role="list">
+        <li
+          v-for="item in items"
+          :key="item.name"
+          class="flex items-center gap-8 rounded-8 px-4 py-7 transition-colors duration-motion-base hover:bg-hover motion-reduce:transition-none"
         >
-          <Icon
-            :name="
-              item.change.startsWith('-')
-                ? 'i-lucide:trending-down'
-                : 'i-lucide:trending-up'
+          <span
+            class="size-8 shrink-0 rounded-999"
+            :class="item.tone"
+            aria-hidden="true"
+          ></span>
+          <span class="min-w-0 flex-1 truncate text-sm text-main">
+            {{ item.name }}
+          </span>
+          <span class="shrink-0 text-xs text-secondary tabular-nums">
+            {{ item.percent }}%
+          </span>
+          <span
+            class="shrink-0 flex items-center gap-2 text-xs font-700 tabular-nums"
+            :class="
+              item.change.startsWith('-') ? 'text-warning' : 'text-success'
             "
-            :size="12"
-          />
-          {{ item.change }}
-        </span>
-      </li>
-    </ul>
-  </Card>
+          >
+            <Icon
+              :name="
+                item.change.startsWith('-')
+                  ? 'i-lucide:trending-down'
+                  : 'i-lucide:trending-up'
+              "
+              :size="12"
+            />
+            {{ item.change }}
+          </span>
+        </li>
+      </ul>
+    </Card>
+  </a-border-beam>
 </template>
 
 <script lang="ts" setup>
-import VChart from 'vue-echarts'
+import { Chart } from '@/components'
 import { Card } from '@/components'
-import { getCssRgbVarAlpha, useEChartsTheme } from '@/theme'
+import { getCssRgbVarAlpha, useEChartsTheme } from '@/components/chart'
 import type { EChartsCoreOption } from 'echarts/core'
 
 const { baseChartOption, eChartsThemeName, getEChartsColor } = useEChartsTheme()

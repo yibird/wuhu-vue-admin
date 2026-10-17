@@ -1,20 +1,26 @@
 <template>
-  <Card class="page-enter page-enter--4" title="最近访问">
-    <div class="h-380 w-full p-12 max-md:h-260">
-      <VChart
-        :option="chartOption"
-        :theme="eChartsThemeName"
-        autoresize
-        class="full min-h-0"
-      />
-    </div>
-  </Card>
+  <a-border-beam :duration="8" :line-width="2" :size="140">
+    <Card class="page-enter page-enter--4" title="最近访问">
+      <div class="h-380 w-full p-12 max-md:h-260">
+        <Chart
+          :option="chartOption"
+          :theme="eChartsThemeName"
+          autoresize
+          class="full min-h-0"
+        />
+      </div>
+    </Card>
+  </a-border-beam>
 </template>
 
 <script lang="ts" setup>
-import VChart from 'vue-echarts'
+import { Chart } from '@/components'
 import { Card } from '@/components'
-import { getCssRgbVar, getCssRgbVarAlpha, useEChartsTheme } from '@/theme'
+import {
+  getCssRgbVar,
+  getCssRgbVarAlpha,
+  useEChartsTheme,
+} from '@/components/chart'
 import type { EChartsCoreOption } from 'echarts/core'
 
 const { baseChartOption, eChartsThemeName, getEChartsColor } = useEChartsTheme()

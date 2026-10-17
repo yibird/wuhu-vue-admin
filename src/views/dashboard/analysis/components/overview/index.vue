@@ -1,9 +1,3 @@
-<script lang="ts" setup>
-import Item from './item.vue'
-import type { CardListProps } from './types'
-const { items = [] } = defineProps<CardListProps>()
-</script>
-
 <template>
   <div class="grid grid-cols-1 gap-12 sm:grid-cols-2 xl:grid-cols-4">
     <Item
@@ -14,3 +8,9 @@ const { items = [] } = defineProps<CardListProps>()
     />
   </div>
 </template>
+
+<script lang="ts" setup>
+import Item from './item.vue'
+import type { CardListProps } from './types'
+const { items = [] } = defineProps<CardListProps>()
+</script>

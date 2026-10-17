@@ -1,6 +1,15 @@
+<template>
+  <Chart
+    :option="chartOption"
+    :theme="eChartsThemeName"
+    autoresize
+    class="full min-h-0"
+  />
+</template>
+
 <script lang="ts" setup>
-import { getCssRgbVarAlpha, useEChartsTheme } from '@/theme'
-import VChart from 'vue-echarts'
+import { getCssRgbVarAlpha, useEChartsTheme } from '@/components/chart'
+import { Chart } from '@/components'
 import { bucketValue, buildBuckets } from './data'
 import type { StatisticsChartProps } from './types'
 import type { EChartsCoreOption } from 'echarts/core'
@@ -50,12 +59,3 @@ const chartOption = computed<EChartsCoreOption>(() => ({
   ],
 }))
 </script>
-
-<template>
-  <VChart
-    :option="chartOption"
-    :theme="eChartsThemeName"
-    autoresize
-    class="full min-h-0"
-  />
-</template>
