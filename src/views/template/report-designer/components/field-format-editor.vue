@@ -1,153 +1,3 @@
-<script setup lang="ts">
-import {
-  getDefaultCustomFormatterCode,
-  getFieldFormatPresetOptions,
-  isFieldFormatPreset,
-  parseFormatterTestValue,
-  stringifyFormatterTestValue,
-} from '../formatters'
-import type {
-  FieldFormatterTestResult,
-  ReportField,
-  ReportFieldFormatConfig,
-  ReportRow,
-} from '../types'
-
-const props = defineProps<{
-  field: ReportField
-  formatCell: (value: unknown, field: ReportField, row?: ReportRow) => string
-  sampleRow?: ReportRow
-  testFormatCell: (
-    value: unknown,
-    field: ReportField,
-    row?: ReportRow
-  ) => FieldFormatterTestResult
-}>()
-
-const emit = defineEmits<{
-  updateField: [patch: Partial<ReportField>]
-}>()
-
-const customEditorOpen = shallowRef(false)
-const draftCode = shallowRef('')
-const draftTestValue = shallowRef('')
-const testOutput = shallowRef('')
-const testError = shallowRef('')
-
-const presetOptions = computed(() =>
-  getFieldFormatPresetOptions(props.field.type)
-)
-
-const formatOptions = computed(() => [
-  { label: '自动格式', value: 'auto' },
-  ...presetOptions.value,
-  { label: '自定义函数', value: 'custom' },
-])
-
-const selectedFormat = computed(() => {
-  const format = props.field.format
-  if (format?.mode === 'custom') return 'custom'
-  if (format?.mode === 'preset' && format.preset) {
-    return presetOptions.value.some((option) => option.value === format.preset)
-      ? format.preset
-      : 'auto'
-  }
-  return 'auto'
-})
-
-const sampleValue = computed(() => {
-  return props.sampleRow?.[props.field.key] ?? ''
-})
-
-const samplePreview = computed(() => {
-  return props.formatCell(sampleValue.value, props.field, props.sampleRow)
-})
-
-const sampleError = computed(() => {
-  return props.testFormatCell(sampleValue.value, props.field, props.sampleRow)
-    .error
-})
-
-const isCustomFormat = computed(() => props.field.format?.mode === 'custom')
-
-function updateFormat(format: ReportFieldFormatConfig) {
-  emit('updateField', {
-    format: {
-      ...props.field.format,
-      ...format,
-    },
-  })
-}
-
-function updateFormatSelection(value: string) {
-  if (value === 'custom') {
-    openCustomEditor()
-    return
-  }
-
-  if (value === 'auto') {
-    updateFormat({
-      mode: 'auto',
-    })
-    return
-  }
-
-  if (isFieldFormatPreset(value)) {
-    updateFormat({
-      mode: 'preset',
-      preset: value,
-    })
-  }
-}
-
-function openCustomEditor() {
-  draftCode.value =
-    props.field.format?.customCode ||
-    getDefaultCustomFormatterCode(props.field.type)
-  draftTestValue.value =
-    props.field.format?.testValue ||
-    stringifyFormatterTestValue(sampleValue.value)
-  testOutput.value = ''
-  testError.value = ''
-  customEditorOpen.value = true
-  runDraftTest()
-}
-
-function createDraftRow(value: unknown) {
-  const row: ReportRow = props.sampleRow ? { ...props.sampleRow } : {}
-  row[props.field.key] = value as ReportRow[string]
-  return row
-}
-
-function runDraftTest() {
-  const value = parseFormatterTestValue(draftTestValue.value)
-  const row = createDraftRow(value)
-  const draftField: ReportField = {
-    ...props.field,
-    format: {
-      ...props.field.format,
-      customCode: draftCode.value,
-      mode: 'custom',
-      testValue: draftTestValue.value,
-    },
-  }
-  const result = props.testFormatCell(value, draftField, row)
-
-  testOutput.value = result.value
-  testError.value = result.error
-}
-
-function applyCustomFormatter() {
-  updateFormat({
-    customCode:
-      draftCode.value.trim() || getDefaultCustomFormatterCode(props.field.type),
-    mode: 'custom',
-    testValue: draftTestValue.value,
-  })
-  customEditorOpen.value = false
-}
-</script>
-
 <template>
   <div class="format-editor">
     <div class="format-editor__head">
@@ -238,6 +88,156 @@ function applyCustomFormatter() {
   </div>
 </template>
 
+<script setup lang="ts">
+import {
+  getDefaultCustomFormatterCode,
+  getFieldFormatPresetOptions,
+  isFieldFormatPreset,
+  parseFormatterTestValue,
+  stringifyFormatterTestValue,
+} from '../formatters'
+import type {
+  FieldFormatterTestResult,
+  ReportField,
+  ReportFieldFormatConfig,
+  ReportRow,
+} from '../types'
+
+const props = defineProps<{
+  field: ReportField
+  formatCell: (value: unknown, field: ReportField, row?: ReportRow) => string
+  sampleRow?: ReportRow
+  testFormatCell: (
+    value: unknown,
+    field: ReportField,
+    row?: ReportRow
+  ) => FieldFormatterTestResult
+}>()
+
+const emits = defineEmits<{
+  updateField: [patch: Partial<ReportField>]
+}>()
+
+const customEditorOpen = shallowRef(false)
+const draftCode = shallowRef('')
+const draftTestValue = shallowRef('')
+const testOutput = shallowRef('')
+const testError = shallowRef('')
+
+const presetOptions = computed(() =>
+  getFieldFormatPresetOptions(props.field.type)
+)
+
+const formatOptions = computed(() => [
+  { label: '自动格式', value: 'auto' },
+  ...presetOptions.value,
+  { label: '自定义函数', value: 'custom' },
+])
+
+const selectedFormat = computed(() => {
+  const format = props.field.format
+  if (format?.mode === 'custom') return 'custom'
+  if (format?.mode === 'preset' && format.preset) {
+    return presetOptions.value.some((option) => option.value === format.preset)
+      ? format.preset
+      : 'auto'
+  }
+  return 'auto'
+})
+
+const sampleValue = computed(() => {
+  return props.sampleRow?.[props.field.key] ?? ''
+})
+
+const samplePreview = computed(() => {
+  return props.formatCell(sampleValue.value, props.field, props.sampleRow)
+})
+
+const sampleError = computed(() => {
+  return props.testFormatCell(sampleValue.value, props.field, props.sampleRow)
+    .error
+})
+
+const isCustomFormat = computed(() => props.field.format?.mode === 'custom')
+
+function updateFormat(format: ReportFieldFormatConfig) {
+  emits('updateField', {
+    format: {
+      ...props.field.format,
+      ...format,
+    },
+  })
+}
+
+function updateFormatSelection(value: string) {
+  if (value === 'custom') {
+    openCustomEditor()
+    return
+  }
+
+  if (value === 'auto') {
+    updateFormat({
+      mode: 'auto',
+    })
+    return
+  }
+
+  if (isFieldFormatPreset(value)) {
+    updateFormat({
+      mode: 'preset',
+      preset: value,
+    })
+  }
+}
+
+function openCustomEditor() {
+  draftCode.value =
+    props.field.format?.customCode ||
+    getDefaultCustomFormatterCode(props.field.type)
+  draftTestValue.value =
+    props.field.format?.testValue ||
+    stringifyFormatterTestValue(sampleValue.value)
+  testOutput.value = ''
+  testError.value = ''
+  customEditorOpen.value = true
+  runDraftTest()
+}
+
+function createDraftRow(value: unknown) {
+  const row: ReportRow = props.sampleRow ? { ...props.sampleRow } : {}
+  row[props.field.key] = value as ReportRow[string]
+  return row
+}
+
+function runDraftTest() {
+  const value = parseFormatterTestValue(draftTestValue.value)
+  const row = createDraftRow(value)
+  const draftField: ReportField = {
+    ...props.field,
+    format: {
+      ...props.field.format,
+      customCode: draftCode.value,
+      mode: 'custom',
+      testValue: draftTestValue.value,
+    },
+  }
+  const result = props.testFormatCell(value, draftField, row)
+
+  testOutput.value = result.value
+  testError.value = result.error
+}
+
+function applyCustomFormatter() {
+  updateFormat({
+    customCode:
+      draftCode.value.trim() || getDefaultCustomFormatterCode(props.field.type),
+    mode: 'custom',
+    testValue: draftTestValue.value,
+  })
+  customEditorOpen.value = false
+}
+</script>
+
 <style scoped lang="less">
 .format-editor {
   display: grid;
@@ -315,7 +315,7 @@ function applyCustomFormatter() {
 
 .format-modal__signature code {
   padding: 3px 7px;
-  font-family: 'Cascadia Code', Consolas, monospace;
+  font-family: var(--w-font-family-mono);
   font-size: 12px;
   color: #0f766e;
   background: rgb(20 184 166 / 10%);
@@ -338,7 +338,7 @@ function applyCustomFormatter() {
 }
 
 .format-modal__code :deep(textarea) {
-  font-family: 'Cascadia Code', Consolas, monospace;
+  font-family: var(--w-font-family-mono);
   font-size: 13px;
   line-height: 1.6;
 }
@@ -367,7 +367,7 @@ function applyCustomFormatter() {
 
 .format-modal__result strong {
   min-width: 0;
-  font-family: 'Cascadia Code', Consolas, monospace;
+  font-family: var(--w-font-family-mono);
   font-size: 13px;
   color: rgb(var(--w-text-color));
   overflow-wrap: anywhere;

@@ -5,7 +5,7 @@
 
   <p>
     <a href="https://vuejs.org/"><img src="https://img.shields.io/badge/Vue-3.6_RC-42b883?logo=vuedotjs&amp;logoColor=white" alt="Vue 3.6 RC" /></a>
-    <a href="https://vite.dev/"><img src="https://img.shields.io/badge/Vite-8.2-646cff?logo=vite&amp;logoColor=white" alt="Vite 8.2" /></a>
+    <a href="https://vite.dev/"><img src="https://img.shields.io/badge/Vite-8.2-646cff?logo=vite&amp;logoColor=white" alt="Vite 8.3.4" /></a>
     <a href="https://www.typescriptlang.org/"><img src="https://img.shields.io/badge/TypeScript-strict-3178c6?logo=typescript&amp;logoColor=white" alt="TypeScript strict" /></a>
     <a href="./LICENSE"><img src="https://img.shields.io/badge/License-MIT-22c55e" alt="MIT License" /></a>
   </p>
