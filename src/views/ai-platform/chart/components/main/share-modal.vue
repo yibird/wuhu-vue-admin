@@ -5,7 +5,7 @@
     :width="440"
     centered
     title="分享消息"
-    @update:open="emit('update:open', $event)"
+    @update:open="emits('update:open', $event)"
   >
     <div class="flex flex-col gap-16">
       <div
@@ -28,7 +28,7 @@
               <Icon name="i-lucide:link" :size="15" class="text-secondary" />
             </template>
           </a-input>
-          <a-button type="primary" class="shrink-0" @click="emit('copy')">
+          <a-button type="primary" class="shrink-0" @click="emits('copy')">
             <template #icon>
               <Icon name="i-lucide:copy" :size="15" />
             </template>
@@ -47,7 +47,7 @@
             class="flex flex-col items-center gap-6 rounded-10 border-1 border-color-1 border-solid bg-container px-8 py-10 transition-[background-color,border-color,transform] duration-motion-base hover:(-translate-y-1 border-primary bg-hover) active:translate-y-0 motion-reduce:(transform-none transition-none)"
             :title="platform.label"
             :aria-label="`分享到${platform.label}`"
-            @click="emit('share', platform)"
+            @click="emits('share', platform)"
           >
             <img
               v-if="platform.iconImage"
@@ -82,5 +82,5 @@ withDefaults(defineProps<ShareModalProps>(), {
   platforms: () => [],
 })
 
-const emit = defineEmits<ShareModalEmits>()
+const emits = defineEmits<ShareModalEmits>()
 </script>

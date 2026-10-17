@@ -1,102 +1,3 @@
-<script setup lang="ts">
-import { renderIcon } from '@/utils'
-import { getAgentModelLabel } from '../data'
-import { getAgentIconForeground } from '../icon-palette'
-import type { AgentAction, AgentItem } from '../types'
-
-const props = defineProps<{
-  item: AgentItem
-  subject: string
-  statusLabels: Record<AgentItem['status'], string>
-}>()
-
-const emit = defineEmits<{
-  action: [key: AgentAction, item: AgentItem]
-}>()
-
-const iconStyle = computed(() => ({
-  backgroundColor: props.item.iconBackground,
-  color: getAgentIconForeground(props.item.iconBackground),
-}))
-
-const modelLabel = computed(() => getAgentModelLabel(props.item.modelId))
-
-const statusMeta = computed(() => {
-  const map = {
-    online: {
-      label: props.statusLabels.online,
-      color: 'green',
-      class: 'bg-success/10 text-success',
-    },
-    draft: {
-      label: props.statusLabels.draft,
-      color: 'blue',
-      class: 'bg-primary/10 text-primary',
-    },
-    offline: {
-      label: props.statusLabels.offline,
-      color: 'default',
-      class: 'bg-fill-tertiary text-secondary',
-    },
-  } as const
-
-  return map[props.item.status]
-})
-
-const moreActionItems = computed(() => [
-  {
-    key: 'open',
-    label: '查看详情',
-    icon: renderIcon('i-lucide:arrow-up-right'),
-  },
-  {
-    key: 'edit',
-    label: '编辑',
-    icon: renderIcon('i-lucide:pencil'),
-  },
-  {
-    key: 'duplicate',
-    label: '创建副本',
-    icon: renderIcon('i-lucide:copy-plus'),
-  },
-  {
-    key: 'toggle',
-    label: props.item.status === 'online' ? '停用' : '启用',
-    icon: renderIcon(
-      props.item.status === 'online'
-        ? 'i-lucide:circle-pause'
-        : 'i-lucide:circle-play'
-    ),
-  },
-  { type: 'divider' },
-  {
-    key: 'archive',
-    label: '归档',
-    icon: renderIcon('i-lucide:archive'),
-  },
-  { type: 'divider' },
-  {
-    key: 'delete',
-    label: '删除',
-    danger: true,
-    icon: renderIcon('i-lucide:trash-2'),
-  },
-])
-
-function handleAction(key: AgentAction) {
-  emit('action', key, props.item)
-}
-
-function handleMoreAction(info: { key: string | number }) {
-  const key = String(info.key)
-  if (
-    ['archive', 'delete', 'duplicate', 'edit', 'open', 'toggle'].includes(key)
-  ) {
-    handleAction(key as AgentAction)
-  }
-}
-</script>
-
 <template>
   <article
     class="group min-w-0 flex flex-col cursor-pointer overflow-hidden rounded-8 border-1 border-color-2 border-solid bg-container shadow-[var(--w-shadow-card)] outline-none transition-[border-color,box-shadow,transform] duration-motion-base hover:(-translate-y-2) hover:border-primary hover:shadow-[var(--w-shadow-elevated)] focus-visible:border-primary"
@@ -216,3 +117,102 @@ function handleMoreAction(info: { key: string | number }) {
     </footer>
   </article>
 </template>
+
+<script setup lang="ts">
+import { renderIcon } from '@/utils'
+import { getAgentModelLabel } from '../data'
+import { getAgentIconForeground } from '../icon-palette'
+import type { AgentAction, AgentItem } from '../types'
+
+const props = defineProps<{
+  item: AgentItem
+  subject: string
+  statusLabels: Record<AgentItem['status'], string>
+}>()
+
+const emits = defineEmits<{
+  action: [key: AgentAction, item: AgentItem]
+}>()
+
+const iconStyle = computed(() => ({
+  backgroundColor: props.item.iconBackground,
+  color: getAgentIconForeground(props.item.iconBackground),
+}))
+
+const modelLabel = computed(() => getAgentModelLabel(props.item.modelId))
+
+const statusMeta = computed(() => {
+  const map = {
+    online: {
+      label: props.statusLabels.online,
+      color: 'green',
+      class: 'bg-success/10 text-success',
+    },
+    draft: {
+      label: props.statusLabels.draft,
+      color: 'blue',
+      class: 'bg-primary/10 text-primary',
+    },
+    offline: {
+      label: props.statusLabels.offline,
+      color: 'default',
+      class: 'bg-fill-tertiary text-secondary',
+    },
+  } as const
+
+  return map[props.item.status]
+})
+
+const moreActionItems = computed(() => [
+  {
+    key: 'open',
+    label: '查看详情',
+    icon: renderIcon('i-lucide:arrow-up-right'),
+  },
+  {
+    key: 'edit',
+    label: '编辑',
+    icon: renderIcon('i-lucide:pencil'),
+  },
+  {
+    key: 'duplicate',
+    label: '创建副本',
+    icon: renderIcon('i-lucide:copy-plus'),
+  },
+  {
+    key: 'toggle',
+    label: props.item.status === 'online' ? '停用' : '启用',
+    icon: renderIcon(
+      props.item.status === 'online'
+        ? 'i-lucide:circle-pause'
+        : 'i-lucide:circle-play'
+    ),
+  },
+  { type: 'divider' },
+  {
+    key: 'archive',
+    label: '归档',
+    icon: renderIcon('i-lucide:archive'),
+  },
+  { type: 'divider' },
+  {
+    key: 'delete',
+    label: '删除',
+    danger: true,
+    icon: renderIcon('i-lucide:trash-2'),
+  },
+])
+
+function handleAction(key: AgentAction) {
+  emits('action', key, props.item)
+}
+
+function handleMoreAction(info: { key: string | number }) {
+  const key = String(info.key)
+  if (
+    ['archive', 'delete', 'duplicate', 'edit', 'open', 'toggle'].includes(key)
+  ) {
+    handleAction(key as AgentAction)
+  }
+}
+</script>

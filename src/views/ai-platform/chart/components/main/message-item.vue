@@ -54,7 +54,7 @@
             v-else-if="segment.type === 'view'"
             :raw="segment.content"
             :pending="segment.pending"
-            @ask="emit('ask', $event)"
+            @ask="emits('ask', $event)"
           />
           <div v-else class="border-0 border-t-1 border-color-2 border-solid">
             <div
@@ -65,7 +65,7 @@
                 type="button"
                 aria-label="复制代码"
                 class="h-24 inline-flex items-center gap-4 rounded-6 border-0 bg-transparent px-7 text-xs text-secondary cursor-pointer transition-colors hover:bg-hover hover:text-main"
-                @click="emit('copy-code', segment.content)"
+                @click="emits('copy-code', segment.content)"
               >
                 <Icon name="i-lucide:copy" :size="13" />
                 复制
@@ -147,7 +147,7 @@ const props = defineProps<{
   item: AgentMessage
 }>()
 
-const emit = defineEmits<{
+const emits = defineEmits<{
   (e: 'ask', prompt: string): void
   (e: 'copy', message: AgentMessage): void
   (e: 'copy-code', code: string): void
@@ -241,7 +241,7 @@ const actions = computed<MessageAction[]>(() => {
 
 function handleAction(action: MessageActionKey) {
   if (action === 'like' || action === 'dislike') {
-    emit('feedback', { id: props.item.id, feedback: action })
+    emits('feedback', { id: props.item.id, feedback: action })
     return
   }
 
@@ -252,6 +252,6 @@ function handleAction(action: MessageActionKey) {
     delete: 'delete',
     regenerate: 'regenerate',
   }
-  emit(emitMap[action] as Parameters<typeof emit>[0], props.item)
+  emits(emitMap[action] as Parameters<typeof emits>[0], props.item)
 }
 </script>

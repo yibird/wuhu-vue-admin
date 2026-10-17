@@ -127,7 +127,7 @@
         <button
           type="button"
           class="h-36 inline-flex items-center justify-center gap-6 rounded-8 border-1 border-color-muted border-solid bg-transparent px-12 text-13px text-regular cursor-pointer transition-colors hover:bg-hover hover:text-main max-md:w-36 max-md:px-0 max-md:text-[0]"
-          @click="emit('copy-share')"
+          @click="emits('copy-share')"
         >
           <Icon name="i-lucide:share" :size="16" />
           分享
@@ -235,14 +235,14 @@
           >
             <MessageItem
               :item="item"
-              @ask="emit('ask', $event)"
-              @copy-code="emit('copy-code', $event)"
-              @copy="emit('copy-message', $event)"
-              @delete="emit('delete-message', $event)"
+              @ask="emits('ask', $event)"
+              @copy-code="emits('copy-code', $event)"
+              @copy="emits('copy-message', $event)"
+              @delete="emits('delete-message', $event)"
               @edit="handleEditMessage"
-              @feedback="emit('feedback-message', $event.id, $event.feedback)"
-              @regenerate="emit('regenerate', $event)"
-              @share="emit('share-message', $event)"
+              @feedback="emits('feedback-message', $event.id, $event.feedback)"
+              @regenerate="emits('regenerate', $event)"
+              @share="emits('share-message', $event)"
             />
           </div>
 
@@ -250,7 +250,7 @@
             <button
               type="button"
               class="h-34 inline-flex items-center gap-6 rounded-8 border-1 border-color-2 border-solid bg-container px-12 text-13px text-main cursor-pointer transition-colors hover:bg-hover"
-              @click="emit('continue-generation')"
+              @click="emits('continue-generation')"
             >
               <Icon name="i-lucide:corner-down-right" :size="15" />
               继续生成
@@ -283,7 +283,7 @@
             class="max-w-220 inline-flex items-center gap-6 rounded-full border-1 border-color-2 border-solid bg-main px-9 py-5 text-xs text-regular cursor-pointer transition-colors hover:bg-hover"
             :aria-label="`移除附件：${attachment.name}`"
             :title="attachment.name"
-            @click="emit('remove-attachment', attachment.id)"
+            @click="emits('remove-attachment', attachment.id)"
           >
             <Icon name="i-lucide:file" :size="14" />
             <span class="truncate">{{ attachment.name }}</span>
@@ -311,7 +311,7 @@
           ref="editorRef"
           v-model="prompt"
           :disabled="isRunning"
-          @add-files="emit('add-attachments', $event)"
+          @add-files="emits('add-attachments', $event)"
           @submit="handleSend"
         />
 
@@ -321,18 +321,18 @@
           <div class="min-w-0 flex flex-wrap items-center gap-8 max-sm:w-full">
             <Attachment
               :disabled="isRunning"
-              @select="emit('add-attachments', $event)"
+              @select="emits('add-attachments', $event)"
             />
             <Model
               :model="model"
               :models="models"
               :disabled="isRunning"
-              @select="emit('select-model', $event)"
+              @select="emits('select-model', $event)"
             />
             <Tool
               :tools="tools"
               :disabled="isRunning"
-              @toggle="emit('toggle-tool', $event.key, $event.enabled)"
+              @toggle="emits('toggle-tool', $event.key, $event.enabled)"
             />
           </div>
           <div
@@ -347,7 +347,7 @@
               :disabled="!canSend"
               :loading="isRunning"
               @send="handleSend"
-              @stop="emit('stop')"
+              @stop="emits('stop')"
             />
           </div>
         </div>
@@ -397,7 +397,7 @@ const props = withDefaults(defineProps<MainProps>(), {
   tools: () => [],
 })
 
-const emit = defineEmits<MainEmits>()
+const emits = defineEmits<MainEmits>()
 
 const prompt = shallowRef('')
 const chatInfoOpen = shallowRef(false)
@@ -511,23 +511,23 @@ function handleOptimizePrompt(value: string) {
   prompt.value = source
     ? `请以专业 Agent 的方式处理以下任务，并给出目标、步骤、风险和交付物：${source}`
     : '请帮我拆解一个可执行任务，输出目标、关键步骤、风险点和下一步行动。'
-  emit('optimize-prompt', prompt.value)
+  emits('optimize-prompt', prompt.value)
 }
 
 function handleSend() {
   if (!canSend.value) return
 
-  emit('send', prompt.value)
+  emits('send', prompt.value)
   prompt.value = ''
 }
 
 function updateConfigValue(key: keyof AgentGenerationConfig, value: number) {
   if (!Number.isFinite(value)) return
-  emit('update-config', { [key]: value })
+  emits('update-config', { [key]: value })
 }
 
 function resetConfig() {
-  emit('update-config', {
+  emits('update-config', {
     temperature: 0.7,
     topP: 0.9,
     maxTokens: 2048,
@@ -537,11 +537,11 @@ function resetConfig() {
 function handleHeaderAction(key: 'clear' | 'continue') {
   actionOpen.value = false
   if (key === 'clear') {
-    emit('clear-messages')
+    emits('clear-messages')
     return
   }
 
-  emit('continue-generation')
+  emits('continue-generation')
 }
 
 function handleEditMessage(message: AgentMessage) {
@@ -554,7 +554,7 @@ function saveEditingMessage() {
   const nextContent = editingContent.value.trim()
   if (!editingMessageId.value || !nextContent) return
 
-  emit('edit-message', editingMessageId.value, nextContent)
+  emits('edit-message', editingMessageId.value, nextContent)
   editModalOpen.value = false
   editingMessageId.value = ''
   editingContent.value = ''

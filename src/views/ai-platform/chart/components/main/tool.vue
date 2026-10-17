@@ -48,7 +48,7 @@
             :data-agent-tool-switch="tool.key"
             :disabled="disabled"
             size="small"
-            @change="emit('toggle', { key: tool.key, enabled: !!$event })"
+            @change="emits('toggle', { key: tool.key, enabled: !!$event })"
           />
         </label>
       </div>
@@ -70,7 +70,7 @@ const props = withDefaults(
   }
 )
 
-const emit = defineEmits<{
+const emits = defineEmits<{
   toggle: [payload: { key: string; enabled: boolean }]
 }>()
 

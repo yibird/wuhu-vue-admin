@@ -67,7 +67,7 @@ import type { ProviderCreateInput } from '../types'
 
 const open = defineModel<boolean>('open', { required: true })
 
-const emit = defineEmits<{
+const emits = defineEmits<{
   success: []
 }>()
 
@@ -123,7 +123,7 @@ async function handleSubmit() {
     await createProviderApi({ ...form })
     message.success('供应商已添加')
     open.value = false
-    emit('success')
+    emits('success')
   } finally {
     submitting.value = false
   }

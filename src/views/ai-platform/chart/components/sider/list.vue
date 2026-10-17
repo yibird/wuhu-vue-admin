@@ -43,7 +43,7 @@
               :class="collapsed ? 'h-48 justify-center p-6' : 'px-10 py-8'"
               :title="item.title"
               :aria-current="item.id === activeId ? 'true' : undefined"
-              @click="emit('change', item.id)"
+              @click="emits('change', item.id)"
             >
               <span
                 class="min-w-0 w-full flex"
@@ -154,7 +154,7 @@ withDefaults(defineProps<ListProps>(), {
   emptyHint: '点击上方按钮开始新会话',
 })
 
-const emit = defineEmits<ListEmits>()
+const emits = defineEmits<ListEmits>()
 
 const statusMap: Record<AgentStatus, { label: string; class: string }> = {
   ready: {
@@ -241,7 +241,7 @@ function getActionMenu(item: ChatItem) {
 }
 
 function handleAction(action: ChatActionKey, id: string) {
-  ;(emit as (e: ChatActionKey, id: string) => void)(action, id)
+  ;(emits as (e: ChatActionKey, id: string) => void)(action, id)
 }
 </script>
 

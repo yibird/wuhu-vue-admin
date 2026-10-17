@@ -1,102 +1,3 @@
-<script setup lang="ts">
-import { IconPreview, IconSelector } from '@/components/icon-picker'
-import {
-  agentKnowledgeBaseOptions,
-  agentModelOptions,
-  agentSkills,
-  agentSubAgentOptions,
-  agentTagOptions,
-} from '../data'
-import {
-  agentIconBackgroundOptions,
-  defaultAgentIconBackground,
-  getAgentIconForeground,
-} from '../icon-palette'
-import type { FormInstance } from 'antdv-next'
-import type { AgentCreateInput } from '../types'
-
-const open = defineModel<boolean>('open', { required: true })
-
-const emit = defineEmits<{
-  create: [input: AgentCreateInput]
-}>()
-
-const colorOptions = agentIconBackgroundOptions
-const colorPresets = [
-  { label: '常用颜色', colors: colorOptions, defaultOpen: true },
-]
-const modelSelectOptions = agentModelOptions
-const skillSelectOptions = agentSkills.map((item) => ({
-  label: item.label,
-  value: item.value,
-}))
-const knowledgeBaseSelectOptions = agentKnowledgeBaseOptions
-const subAgentSelectOptions = agentSubAgentOptions
-const tagSelectOptions = agentTagOptions
-const formRef = shallowRef<FormInstance>()
-const submitting = shallowRef(false)
-const form = reactive<AgentCreateInput>(createDefaultForm())
-const previewIconStyle = computed(() => ({
-  backgroundColor: form.iconBackground,
-  color: getAgentIconForeground(form.iconBackground),
-}))
-const rules = {
-  name: [
-    { required: true, whitespace: true, message: '请输入 Agent 名称' },
-    { min: 2, max: 40, message: '名称长度为 2-40 个字符' },
-  ],
-  description: [
-    { required: true, whitespace: true, message: '请输入 Agent 描述' },
-    { max: 160, message: '描述不能超过 160 个字符' },
-  ],
-  icon: [{ required: true, message: '请选择图标' }],
-  iconBackground: [{ required: true, message: '请选择图标背景色' }],
-  modelId: [{ required: true, message: '请选择使用的模型' }],
-}
-
-watch(open, async (value) => {
-  if (!value) return
-  Object.assign(form, createDefaultForm())
-  await nextTick()
-  formRef.value?.clearValidate()
-})
-
-function createDefaultForm(): AgentCreateInput {
-  return {
-    name: '',
-    description: '',
-    tags: [],
-    icon: 'i-lucide:bot',
-    iconBackground: defaultAgentIconBackground,
-    modelId: modelSelectOptions[0]?.value ?? '',
-    skillIds: [],
-    knowledgeBaseIds: [],
-    subAgentIds: [],
-  }
-}
-
-async function handleSubmit() {
-  try {
-    await formRef.value?.validate()
-  } catch (error: unknown) {
-    if (isValidationError(error)) return
-    throw error
-  }
-
-  submitting.value = true
-  emit('create', {
-    ...form,
-    tags: [...form.tags],
-  })
-  submitting.value = false
-  open.value = false
-}
-
-function isValidationError(error: unknown) {
-  return typeof error === 'object' && error !== null && 'errorFields' in error
-}
-</script>
-
 <template>
   <a-drawer
     v-model:open="open"
@@ -247,3 +148,102 @@ function isValidationError(error: unknown) {
     </template>
   </a-drawer>
 </template>
+
+<script setup lang="ts">
+import { IconPreview, IconSelector } from '@/components/icon-picker'
+import {
+  agentKnowledgeBaseOptions,
+  agentModelOptions,
+  agentSkills,
+  agentSubAgentOptions,
+  agentTagOptions,
+} from '../data'
+import {
+  agentIconBackgroundOptions,
+  defaultAgentIconBackground,
+  getAgentIconForeground,
+} from '../icon-palette'
+import type { FormInstance } from 'antdv-next'
+import type { AgentCreateInput } from '../types'
+
+const open = defineModel<boolean>('open', { required: true })
+
+const emits = defineEmits<{
+  create: [input: AgentCreateInput]
+}>()
+
+const colorOptions = agentIconBackgroundOptions
+const colorPresets = [
+  { label: '常用颜色', colors: colorOptions, defaultOpen: true },
+]
+const modelSelectOptions = agentModelOptions
+const skillSelectOptions = agentSkills.map((item) => ({
+  label: item.label,
+  value: item.value,
+}))
+const knowledgeBaseSelectOptions = agentKnowledgeBaseOptions
+const subAgentSelectOptions = agentSubAgentOptions
+const tagSelectOptions = agentTagOptions
+const formRef = shallowRef<FormInstance>()
+const submitting = shallowRef(false)
+const form = reactive<AgentCreateInput>(createDefaultForm())
+const previewIconStyle = computed(() => ({
+  backgroundColor: form.iconBackground,
+  color: getAgentIconForeground(form.iconBackground),
+}))
+const rules = {
+  name: [
+    { required: true, whitespace: true, message: '请输入 Agent 名称' },
+    { min: 2, max: 40, message: '名称长度为 2-40 个字符' },
+  ],
+  description: [
+    { required: true, whitespace: true, message: '请输入 Agent 描述' },
+    { max: 160, message: '描述不能超过 160 个字符' },
+  ],
+  icon: [{ required: true, message: '请选择图标' }],
+  iconBackground: [{ required: true, message: '请选择图标背景色' }],
+  modelId: [{ required: true, message: '请选择使用的模型' }],
+}
+
+watch(open, async (value) => {
+  if (!value) return
+  Object.assign(form, createDefaultForm())
+  await nextTick()
+  formRef.value?.clearValidate()
+})
+
+function createDefaultForm(): AgentCreateInput {
+  return {
+    name: '',
+    description: '',
+    tags: [],
+    icon: 'i-lucide:bot',
+    iconBackground: defaultAgentIconBackground,
+    modelId: modelSelectOptions[0]?.value ?? '',
+    skillIds: [],
+    knowledgeBaseIds: [],
+    subAgentIds: [],
+  }
+}
+
+async function handleSubmit() {
+  try {
+    await formRef.value?.validate()
+  } catch (error: unknown) {
+    if (isValidationError(error)) return
+    throw error
+  }
+
+  submitting.value = true
+  emits('create', {
+    ...form,
+    tags: [...form.tags],
+  })
+  submitting.value = false
+  open.value = false
+}
+
+function isValidationError(error: unknown) {
+  return typeof error === 'object' && error !== null && 'errorFields' in error
+}
+</script>

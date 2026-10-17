@@ -1,52 +1,3 @@
-<script setup lang="ts">
-import { Main, Sider } from './components'
-import ShareModal from './components/main/share-modal.vue'
-import { useAgent } from './hooks'
-
-const {
-  activeChat,
-  activeChatId,
-  activeMessages,
-  activeModel,
-  chats,
-  draftAttachments,
-  generationConfig,
-  models,
-  presets,
-  shareModalOpen,
-  sharePlatforms,
-  shareUrl,
-  sharedMessage,
-  tools,
-  handleAddAttachments,
-  handleArchiveChat,
-  handleChatChange,
-  handleClearMessages,
-  handleContinueGeneration,
-  handleCopyCode,
-  handleCopyMessage,
-  handleCopyShare,
-  handleCopyShareLink,
-  handleCreateChat,
-  handleDeleteChat,
-  handleDeleteMessage,
-  handleEditMessage,
-  handleFeedbackMessage,
-  handleOptimizePrompt,
-  handlePinChat,
-  handleRegenerate,
-  handleRemoveAttachment,
-  handleRenameChat,
-  handleSelectModel,
-  handleSend,
-  handleShareMessage,
-  handleShareToPlatform,
-  handleStop,
-  handleToggleTool,
-  handleUpdateConfig,
-} = useAgent()
-</script>
-
 <template>
   <WView full :padding="false" class="bg-page">
     <div class="box-border h-full min-h-full min-w-0 bg-page p-10 max-md:p-8">
@@ -109,3 +60,52 @@ const {
     />
   </WView>
 </template>
+
+<script setup lang="ts">
+import { Main, Sider } from './components'
+import ShareModal from './components/main/share-modal.vue'
+import { useAgent } from './hooks'
+
+const {
+  activeChat,
+  activeChatId,
+  activeMessages,
+  activeModel,
+  chats,
+  draftAttachments,
+  generationConfig,
+  models,
+  presets,
+  shareModalOpen,
+  sharePlatforms,
+  shareUrl,
+  sharedMessage,
+  tools,
+  handleAddAttachments,
+  handleArchiveChat,
+  handleChatChange,
+  handleClearMessages,
+  handleContinueGeneration,
+  handleCopyCode,
+  handleCopyMessage,
+  handleCopyShare,
+  handleCopyShareLink,
+  handleCreateChat,
+  handleDeleteChat,
+  handleDeleteMessage,
+  handleEditMessage,
+  handleFeedbackMessage,
+  handleOptimizePrompt,
+  handlePinChat,
+  handleRegenerate,
+  handleRemoveAttachment,
+  handleRenameChat,
+  handleSelectModel,
+  handleSend,
+  handleShareMessage,
+  handleShareToPlatform,
+  handleStop,
+  handleToggleTool,
+  handleUpdateConfig,
+} = useAgent()
+</script>

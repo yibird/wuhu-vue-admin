@@ -9,7 +9,7 @@
     "
     :style="asideStyle"
   >
-    <Header v-model:collapsed="collapsed" @create="emit('create')" />
+    <Header v-model:collapsed="collapsed" @create="emits('create')" />
     <div
       class="overflow-hidden px-10 transition-[max-height,opacity,padding] duration-motion-fast ease-motion-enter motion-reduce:transition-none"
       :class="
@@ -63,11 +63,11 @@
       :collapsed="collapsed"
       :empty-text="emptyText"
       :empty-hint="emptyHint"
-      @change="emit('change', $event)"
-      @archive="emit('archive', $event)"
-      @delete="emit('delete', $event)"
-      @pin="emit('pin', $event)"
-      @rename="emit('rename', $event)"
+      @change="emits('change', $event)"
+      @archive="emits('archive', $event)"
+      @delete="emits('delete', $event)"
+      @pin="emits('pin', $event)"
+      @rename="emits('rename', $event)"
     />
 
     <div
@@ -99,7 +99,7 @@ const props = withDefaults(defineProps<SiderProps>(), {
   activeId: '',
 })
 
-const emit = defineEmits<SiderEmits>()
+const emits = defineEmits<SiderEmits>()
 const collapsed = shallowRef(false)
 const keyword = shallowRef('')
 type SiderView = 'all' | 'pinned' | 'archived'

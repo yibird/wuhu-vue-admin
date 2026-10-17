@@ -8,7 +8,7 @@
     :disabled="disabled && !loading"
     :aria-label="loading ? '停止生成' : '发送消息'"
     :title="loading ? '停止生成' : '发送'"
-    @click="loading ? emit('stop') : emit('send')"
+    @click="loading ? emits('stop') : emits('send')"
   >
     <Icon
       :name="loading ? 'i-lucide:square' : 'i-lucide:arrow-up'"
@@ -29,7 +29,7 @@ withDefaults(
   }
 )
 
-const emit = defineEmits<{
+const emits = defineEmits<{
   send: []
   stop: []
 }>()

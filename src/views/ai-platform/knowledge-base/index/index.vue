@@ -1,8 +1,3 @@
-<script setup lang="ts">
-import List from './components/list.vue'
-import { knowledgeBasePageConfig, knowledgeBaseResources } from '../data'
-</script>
-
 <template>
   <List
     :config="knowledgeBasePageConfig"
@@ -10,3 +5,8 @@ import { knowledgeBasePageConfig, knowledgeBaseResources } from '../data'
     :items="knowledgeBaseResources"
   />
 </template>
+
+<script setup lang="ts">
+import List from './components/list.vue'
+import { knowledgeBasePageConfig, knowledgeBaseResources } from '../data'
+</script>

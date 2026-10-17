@@ -27,7 +27,7 @@ withDefaults(
   }
 )
 
-const emit = defineEmits<{
+const emits = defineEmits<{
   select: [files: File[]]
 }>()
 
@@ -43,7 +43,7 @@ function handleFileChange(event: Event) {
 
   const files = Array.from(target.files ?? [])
   if (files.length) {
-    emit('select', files)
+    emits('select', files)
   }
   target.value = ''
 }

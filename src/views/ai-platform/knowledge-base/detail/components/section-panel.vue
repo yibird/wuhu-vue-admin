@@ -1,41 +1,3 @@
-<script setup lang="ts">
-import type { KnowledgeSectionWorkspace } from '../types'
-
-const props = defineProps<{
-  section: KnowledgeSectionWorkspace
-}>()
-
-const recallQuery = shallowRef('如何配置审批流条件并限制审批人范围？')
-const recallTopK = shallowRef(5)
-const scoreThreshold = shallowRef(0.62)
-
-const showRecallTester = computed(() => props.section.key === 'recall')
-
-function getToneClass(
-  tone: KnowledgeSectionWorkspace['metrics'][number]['tone']
-) {
-  const classMap = {
-    default: 'text-main bg-fill-tertiary',
-    primary: 'text-primary bg-primary/10',
-    success: 'text-success bg-success/10',
-    warning: 'text-warning bg-warning/10',
-  }
-  return classMap[tone ?? 'default']
-}
-
-function getToneLabel(
-  tone: KnowledgeSectionWorkspace['metrics'][number]['tone']
-) {
-  const labelMap = {
-    default: '稳定',
-    primary: '重点',
-    success: '良好',
-    warning: '关注',
-  }
-  return labelMap[tone ?? 'default']
-}
-</script>
-
 <template>
   <section class="min-w-0 space-y-12">
     <div
@@ -212,3 +174,41 @@ function getToneLabel(
     </div>
   </section>
 </template>
+
+<script setup lang="ts">
+import type { KnowledgeSectionWorkspace } from '../types'
+
+const props = defineProps<{
+  section: KnowledgeSectionWorkspace
+}>()
+
+const recallQuery = shallowRef('如何配置审批流条件并限制审批人范围？')
+const recallTopK = shallowRef(5)
+const scoreThreshold = shallowRef(0.62)
+
+const showRecallTester = computed(() => props.section.key === 'recall')
+
+function getToneClass(
+  tone: KnowledgeSectionWorkspace['metrics'][number]['tone']
+) {
+  const classMap = {
+    default: 'text-main bg-fill-tertiary',
+    primary: 'text-primary bg-primary/10',
+    success: 'text-success bg-success/10',
+    warning: 'text-warning bg-warning/10',
+  }
+  return classMap[tone ?? 'default']
+}
+
+function getToneLabel(
+  tone: KnowledgeSectionWorkspace['metrics'][number]['tone']
+) {
+  const labelMap = {
+    default: '稳定',
+    primary: '重点',
+    success: '良好',
+    warning: '关注',
+  }
+  return labelMap[tone ?? 'default']
+}
+</script>

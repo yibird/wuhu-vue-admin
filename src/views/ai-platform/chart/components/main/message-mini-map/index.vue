@@ -1,3 +1,50 @@
+<template>
+  <nav
+    class="absolute top-1/2 right-12 z-8 max-h-[calc(100%-48px)] w-64 flex flex-col items-end justify-center gap-12 px-8 py-12 pointer-events-auto -translate-y-1/2 max-[900px]:hidden"
+    aria-label="消息导航缩略图"
+    @mouseleave="handleLeave"
+  >
+    <button
+      v-for="(item, index) in messages"
+      :key="item.id"
+      type="button"
+      class="message-marker h-3 min-h-3 w-40 flex-none rounded-full border-0 p-0 cursor-pointer origin-right focus-visible:outline-none"
+      :class="[
+        markerColorMap[item.type ?? 'assistant'],
+        { 'is-active': activeId === item.id },
+      ]"
+      :style="getMarkerStyle(index)"
+      :title="item.preview"
+      :aria-label="`跳转到消息：${item.preview || item.id}`"
+      @mouseenter="handleEnter(index)"
+      @focus="handleEnter(index)"
+      @blur="handleLeave"
+      @click="jump(item)"
+    />
+
+    <Transition name="fade-slide-right">
+      <div
+        v-if="preview"
+        class="message-preview absolute top-1/2 right-[calc(100%+10px)] w-210 grid gap-4 px-10 py-9 pointer-events-none bg-[rgb(var(--w-bg-container)/96%)] border-1 border-solid border-color-1 rounded-6 shadow-elevated backdrop-blur-12"
+        :style="previewStyle"
+      >
+        <span class="text-11px text-primary font-600">
+          {{
+            preview.type === 'user'
+              ? '我的消息'
+              : preview.type === 'tool'
+                ? '系统消息'
+                : 'Agent 消息'
+          }}
+        </span>
+        <span class="message-preview__content text-12px leading-18px text-main">
+          {{ preview.preview }}
+        </span>
+      </div>
+    </Transition>
+  </nav>
+</template>
+
 <script setup lang="ts">
 import { useMessageMiniMap } from './hooks'
 import type { CSSProperties } from 'vue'
@@ -8,7 +55,7 @@ import type {
 } from './types'
 
 const props = defineProps<MessageMiniMapProps>()
-const emit = defineEmits<MessageMiniMapEmits>()
+const emits = defineEmits<MessageMiniMapEmits>()
 
 const { hoverIndex, getScaleX, getStrength } = useMessageMiniMap()
 const preview = shallowRef<MessageMiniMapItem>()
@@ -62,7 +109,7 @@ function jump(item: MessageMiniMapItem) {
     behavior: 'smooth',
     block: 'center',
   })
-  emit('select', item)
+  emits('select', item)
 }
 
 function updateActiveMessage() {
@@ -110,53 +157,6 @@ watch(
 
 onBeforeUnmount(() => cancelAnimationFrame(scrollFrame))
 </script>
-
-<template>
-  <nav
-    class="absolute top-1/2 right-12 z-8 max-h-[calc(100%-48px)] w-64 flex flex-col items-end justify-center gap-12 px-8 py-12 pointer-events-auto -translate-y-1/2 max-[900px]:hidden"
-    aria-label="消息导航缩略图"
-    @mouseleave="handleLeave"
-  >
-    <button
-      v-for="(item, index) in messages"
-      :key="item.id"
-      type="button"
-      class="message-marker h-3 min-h-3 w-40 flex-none rounded-full border-0 p-0 cursor-pointer origin-right focus-visible:outline-none"
-      :class="[
-        markerColorMap[item.type ?? 'assistant'],
-        { 'is-active': activeId === item.id },
-      ]"
-      :style="getMarkerStyle(index)"
-      :title="item.preview"
-      :aria-label="`跳转到消息：${item.preview || item.id}`"
-      @mouseenter="handleEnter(index)"
-      @focus="handleEnter(index)"
-      @blur="handleLeave"
-      @click="jump(item)"
-    />
-
-    <Transition name="fade-slide-right">
-      <div
-        v-if="preview"
-        class="message-preview absolute top-1/2 right-[calc(100%+10px)] w-210 grid gap-4 px-10 py-9 pointer-events-none bg-[rgb(var(--w-bg-container)/96%)] border-1 border-solid border-color-1 rounded-6 shadow-elevated backdrop-blur-12"
-        :style="previewStyle"
-      >
-        <span class="text-11px text-primary font-600">
-          {{
-            preview.type === 'user'
-              ? '我的消息'
-              : preview.type === 'tool'
-                ? '系统消息'
-                : 'Agent 消息'
-          }}
-        </span>
-        <span class="message-preview__content text-12px leading-18px text-main">
-          {{ preview.preview }}
-        </span>
-      </div>
-    </Transition>
-  </nav>
-</template>
 
 <style scoped>
 /**

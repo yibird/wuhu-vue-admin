@@ -1,3 +1,41 @@
+<template>
+  <a-modal v-model:open="open" title="新建模型供应商" :width="520">
+    <a-form ref="formRef" :model="form" :rules="rules" layout="vertical">
+      <a-form-item label="供应商名称" name="label">
+        <a-input
+          v-model:value="form.label"
+          allow-clear
+          :maxlength="40"
+          placeholder="例如：企业内部模型网关"
+        />
+      </a-form-item>
+
+      <a-form-item label="调用协议" name="protocol">
+        <a-select v-model:value="form.protocol" :options="protocolOptions" />
+      </a-form-item>
+
+      <a-form-item label="API Endpoint" name="endpoint">
+        <a-input
+          v-model:value="form.endpoint"
+          allow-clear
+          placeholder="https://api.example.com/v1"
+        />
+      </a-form-item>
+
+      <div class="text-xs text-secondary">
+        创建后可在模型配置中选择该供应商，并继续维护对应的模型与密钥。
+      </div>
+    </a-form>
+
+    <template #footer>
+      <div class="flex justify-end gap-8">
+        <a-button @click="open = false">取消</a-button>
+        <a-button type="primary" @click="handleSubmit">创建供应商</a-button>
+      </div>
+    </template>
+  </a-modal>
+</template>
+
 <script setup lang="ts">
 import type { FormInstance } from 'antdv-next'
 import { reactive, shallowRef, watch } from 'vue'
@@ -12,7 +50,7 @@ const props = defineProps<{
   existingValues: string[]
 }>()
 
-const emit = defineEmits<{
+const emits = defineEmits<{
   create: [option: ModelProviderOption]
 }>()
 
@@ -54,7 +92,7 @@ async function handleSubmit() {
   }
 
   const value = createUniqueValue(form.label, props.existingValues)
-  emit('create', {
+  emits('create', {
     value: value as ModelProvider,
     label: form.label.trim(),
     icon: 'i-lucide:blocks',
@@ -85,41 +123,3 @@ function createUniqueValue(label: string, existingValues: string[]) {
   return `${baseValue}-${index}`
 }
 </script>
-
-<template>
-  <a-modal v-model:open="open" title="新建模型供应商" :width="520">
-    <a-form ref="formRef" :model="form" :rules="rules" layout="vertical">
-      <a-form-item label="供应商名称" name="label">
-        <a-input
-          v-model:value="form.label"
-          allow-clear
-          :maxlength="40"
-          placeholder="例如：企业内部模型网关"
-        />
-      </a-form-item>
-
-      <a-form-item label="调用协议" name="protocol">
-        <a-select v-model:value="form.protocol" :options="protocolOptions" />
-      </a-form-item>
-
-      <a-form-item label="API Endpoint" name="endpoint">
-        <a-input
-          v-model:value="form.endpoint"
-          allow-clear
-          placeholder="https://api.example.com/v1"
-        />
-      </a-form-item>
-
-      <div class="text-xs text-secondary">
-        创建后可在模型配置中选择该供应商，并继续维护对应的模型与密钥。
-      </div>
-    </a-form>
-
-    <template #footer>
-      <div class="flex justify-end gap-8">
-        <a-button @click="open = false">取消</a-button>
-        <a-button type="primary" @click="handleSubmit">创建供应商</a-button>
-      </div>
-    </template>
-  </a-modal>
-</template>

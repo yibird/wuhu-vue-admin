@@ -1,48 +1,3 @@
-<script setup lang="ts">
-import { providerOptions } from '../data'
-import type { ModelPageConfig, ModelProvider } from '../types'
-import type { ModelProviderFilter, ModelStatusFilter } from '../hooks'
-import type { ModelSort } from '../types'
-
-const props = defineProps<{
-  config: ModelPageConfig
-  configuredCount: number
-  onlineCount: number
-  providerCount: number
-  total: number
-}>()
-
-const emit = defineEmits<{
-  create: []
-}>()
-
-const keyword = defineModel<string>('keyword', { required: true })
-const provider = defineModel<ModelProviderFilter>('provider', {
-  required: true,
-})
-const sort = defineModel<ModelSort>('sort', { required: true })
-const status = defineModel<ModelStatusFilter>('status', { required: true })
-
-const providerSelectOptions = computed(() => [
-  { label: '全部供应商', value: 'all' },
-  ...providerOptions.map((option) => ({
-    label: option.label,
-    value: option.value as ModelProvider,
-  })),
-])
-const statusOptions = computed(() => [
-  { label: '全部状态', value: 'all' },
-  { label: props.config.statusLabels.online, value: 'online' },
-  { label: props.config.statusLabels.draft, value: 'draft' },
-  { label: props.config.statusLabels.offline, value: 'offline' },
-])
-const sortOptions = [
-  { label: '最近更新', value: 'updated-desc' },
-  { label: '最近创建', value: 'created-desc' },
-  { label: '名称升序', value: 'name-asc' },
-]
-</script>
-
 <template>
   <header
     class="flex-none border-b-1 border-color-2 border-b-solid bg-container px-16 py-16 lg:px-20"
@@ -77,7 +32,7 @@ const sortOptions = [
         </div>
       </div>
 
-      <a-button type="primary" @click="emit('create')">
+      <a-button type="primary" @click="emits('create')">
         <template #icon>
           <Icon name="i-lucide:plus" />
         </template>
@@ -118,3 +73,48 @@ const sortOptions = [
     </div>
   </header>
 </template>
+
+<script setup lang="ts">
+import { providerOptions } from '../data'
+import type { ModelPageConfig, ModelProvider } from '../types'
+import type { ModelProviderFilter, ModelStatusFilter } from '../hooks'
+import type { ModelSort } from '../types'
+
+const props = defineProps<{
+  config: ModelPageConfig
+  configuredCount: number
+  onlineCount: number
+  providerCount: number
+  total: number
+}>()
+
+const emits = defineEmits<{
+  create: []
+}>()
+
+const keyword = defineModel<string>('keyword', { required: true })
+const provider = defineModel<ModelProviderFilter>('provider', {
+  required: true,
+})
+const sort = defineModel<ModelSort>('sort', { required: true })
+const status = defineModel<ModelStatusFilter>('status', { required: true })
+
+const providerSelectOptions = computed(() => [
+  { label: '全部供应商', value: 'all' },
+  ...providerOptions.map((option) => ({
+    label: option.label,
+    value: option.value as ModelProvider,
+  })),
+])
+const statusOptions = computed(() => [
+  { label: '全部状态', value: 'all' },
+  { label: props.config.statusLabels.online, value: 'online' },
+  { label: props.config.statusLabels.draft, value: 'draft' },
+  { label: props.config.statusLabels.offline, value: 'offline' },
+])
+const sortOptions = [
+  { label: '最近更新', value: 'updated-desc' },
+  { label: '最近创建', value: 'created-desc' },
+  { label: '名称升序', value: 'name-asc' },
+]
+</script>

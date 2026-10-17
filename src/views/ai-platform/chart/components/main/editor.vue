@@ -37,7 +37,7 @@ withDefaults(
   }
 )
 
-const emit = defineEmits<{
+const emits = defineEmits<{
   addFiles: [files: File[]]
   submit: []
 }>()
@@ -59,13 +59,13 @@ defineExpose({ focus })
 
 function emitFiles(files: File[]) {
   if (!files.length) return
-  emit('addFiles', files)
+  emits('addFiles', files)
 }
 
 function handleEnter(event: KeyboardEvent) {
   if (event.isComposing) return
   event.preventDefault()
-  emit('submit')
+  emits('submit')
 }
 
 function handleDragEnter() {

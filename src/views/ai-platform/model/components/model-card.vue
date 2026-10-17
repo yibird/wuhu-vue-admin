@@ -1,94 +1,3 @@
-<script setup lang="ts">
-import { renderIcon } from '@/utils'
-import { formatTokenWindow, getCapabilityLabel, getProviderMeta } from '../data'
-import type { ModelAction, ModelItem, ModelStatus } from '../types'
-
-const props = defineProps<{
-  item: ModelItem
-  statusLabels: Record<ModelStatus, string>
-}>()
-
-const emit = defineEmits<{
-  action: [key: ModelAction, item: ModelItem]
-}>()
-
-const providerMeta = computed(() => getProviderMeta(props.item.provider))
-const statusMeta = computed(() => {
-  const map = {
-    online: {
-      color: 'green',
-      class: 'bg-success/10 text-success',
-      icon: 'i-lucide:circle-check',
-    },
-    draft: {
-      color: 'blue',
-      class: 'bg-primary/10 text-primary',
-      icon: 'i-lucide:clock-3',
-    },
-    offline: {
-      color: 'default',
-      class: 'bg-fill-tertiary text-secondary',
-      icon: 'i-lucide:circle-pause',
-    },
-  } as const
-
-  return {
-    ...map[props.item.status],
-    label: props.statusLabels[props.item.status],
-  }
-})
-const menuItems = computed(() => [
-  {
-    key: 'edit',
-    label: '编辑配置',
-    icon: renderIcon('i-lucide:pencil'),
-  },
-  {
-    key: 'duplicate',
-    label: '创建副本',
-    icon: renderIcon('i-lucide:copy-plus'),
-  },
-  {
-    key: 'toggle',
-    label: props.item.status === 'online' ? '停用模型' : '启用模型',
-    icon: renderIcon(
-      props.item.status === 'online'
-        ? 'i-lucide:circle-pause'
-        : 'i-lucide:circle-play'
-    ),
-  },
-  {
-    key: 'test',
-    label: '测试连接',
-    icon: renderIcon('i-lucide:plug-zap'),
-  },
-  { type: 'divider' },
-  {
-    key: 'delete',
-    label: '删除模型',
-    danger: true,
-    icon: renderIcon('i-lucide:trash-2'),
-  },
-])
-
-function handleAction(key: ModelAction) {
-  emit('action', key, props.item)
-}
-
-function handleMenuClick(info: { key: string | number }) {
-  const key = String(info.key)
-  if (
-    key === 'delete' ||
-    key === 'duplicate' ||
-    key === 'edit' ||
-    key === 'test' ||
-    key === 'toggle'
-  ) {
-    handleAction(key)
-  }
-}
-</script>
-
 <template>
   <article
     class="group min-w-0 overflow-hidden rounded-8 border-1 border-color-2 border-solid bg-container shadow-[var(--w-shadow-card)] transition-[border-color,box-shadow,transform] duration-motion-base hover:-translate-y-2 hover:border-primary hover:shadow-[var(--w-shadow-elevated)] motion-reduce:transform-none"
@@ -239,3 +148,94 @@ function handleMenuClick(info: { key: string | number }) {
     </footer>
   </article>
 </template>
+
+<script setup lang="ts">
+import { renderIcon } from '@/utils'
+import { formatTokenWindow, getCapabilityLabel, getProviderMeta } from '../data'
+import type { ModelAction, ModelItem, ModelStatus } from '../types'
+
+const props = defineProps<{
+  item: ModelItem
+  statusLabels: Record<ModelStatus, string>
+}>()
+
+const emits = defineEmits<{
+  action: [key: ModelAction, item: ModelItem]
+}>()
+
+const providerMeta = computed(() => getProviderMeta(props.item.provider))
+const statusMeta = computed(() => {
+  const map = {
+    online: {
+      color: 'green',
+      class: 'bg-success/10 text-success',
+      icon: 'i-lucide:circle-check',
+    },
+    draft: {
+      color: 'blue',
+      class: 'bg-primary/10 text-primary',
+      icon: 'i-lucide:clock-3',
+    },
+    offline: {
+      color: 'default',
+      class: 'bg-fill-tertiary text-secondary',
+      icon: 'i-lucide:circle-pause',
+    },
+  } as const
+
+  return {
+    ...map[props.item.status],
+    label: props.statusLabels[props.item.status],
+  }
+})
+const menuItems = computed(() => [
+  {
+    key: 'edit',
+    label: '编辑配置',
+    icon: renderIcon('i-lucide:pencil'),
+  },
+  {
+    key: 'duplicate',
+    label: '创建副本',
+    icon: renderIcon('i-lucide:copy-plus'),
+  },
+  {
+    key: 'toggle',
+    label: props.item.status === 'online' ? '停用模型' : '启用模型',
+    icon: renderIcon(
+      props.item.status === 'online'
+        ? 'i-lucide:circle-pause'
+        : 'i-lucide:circle-play'
+    ),
+  },
+  {
+    key: 'test',
+    label: '测试连接',
+    icon: renderIcon('i-lucide:plug-zap'),
+  },
+  { type: 'divider' },
+  {
+    key: 'delete',
+    label: '删除模型',
+    danger: true,
+    icon: renderIcon('i-lucide:trash-2'),
+  },
+])
+
+function handleAction(key: ModelAction) {
+  emits('action', key, props.item)
+}
+
+function handleMenuClick(info: { key: string | number }) {
+  const key = String(info.key)
+  if (
+    key === 'delete' ||
+    key === 'duplicate' ||
+    key === 'edit' ||
+    key === 'test' ||
+    key === 'toggle'
+  ) {
+    handleAction(key)
+  }
+}
+</script>

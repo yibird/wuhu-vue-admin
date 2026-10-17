@@ -1,53 +1,3 @@
-<script setup lang="ts">
-import { useRoute, useRouter } from 'vue-router'
-import { knowledgeBaseResources } from '../data'
-import SectionPanel from './components/section-panel.vue'
-import Sidebar from './components/sidebar.vue'
-import { knowledgeNavItems, knowledgeSectionMap } from './data'
-import type { KnowledgeDetailSectionKey } from './types'
-
-const route = useRoute()
-const router = useRouter()
-const activeKey = shallowRef<KnowledgeDetailSectionKey>('documents')
-
-const routeId = computed(() =>
-  typeof route.query.id === 'string' ? route.query.id : undefined
-)
-const currentKnowledgeBase = computed(
-  () =>
-    knowledgeBaseResources.find((item) => item.id === routeId.value) ??
-    knowledgeBaseResources[0]
-)
-const activeSection = computed(() => knowledgeSectionMap[activeKey.value])
-
-const overviewStats = computed(() => [
-  {
-    label: currentKnowledgeBase.value?.metrics[0]?.label ?? '文档',
-    value: currentKnowledgeBase.value?.metrics[0]?.value ?? '0',
-    icon: 'i-lucide:files',
-  },
-  {
-    label: currentKnowledgeBase.value?.metrics[1]?.label ?? '命中率',
-    value: currentKnowledgeBase.value?.metrics[1]?.value ?? '0%',
-    icon: 'i-lucide:target',
-  },
-  {
-    label: currentKnowledgeBase.value?.metrics[2]?.label ?? '质量',
-    value: currentKnowledgeBase.value?.metrics[2]?.value ?? '96',
-    icon: 'i-lucide:shield-check',
-  },
-  {
-    label: '更新时间',
-    value: currentKnowledgeBase.value?.updatedAt.slice(5, 16) ?? '-',
-    icon: 'i-lucide:clock-3',
-  },
-])
-
-function goBack() {
-  router.push('/ai-platform/knowledge-base')
-}
-</script>
-
 <template>
   <WView :full="true" :padding="0">
     <div class="h-full min-h-0 flex overflow-hidden bg-page">
@@ -126,3 +76,53 @@ function goBack() {
     </div>
   </WView>
 </template>
+
+<script setup lang="ts">
+import { useRoute, useRouter } from 'vue-router'
+import { knowledgeBaseResources } from '../data'
+import SectionPanel from './components/section-panel.vue'
+import Sidebar from './components/sidebar.vue'
+import { knowledgeNavItems, knowledgeSectionMap } from './data'
+import type { KnowledgeDetailSectionKey } from './types'
+
+const route = useRoute()
+const router = useRouter()
+const activeKey = shallowRef<KnowledgeDetailSectionKey>('documents')
+
+const routeId = computed(() =>
+  typeof route.query.id === 'string' ? route.query.id : undefined
+)
+const currentKnowledgeBase = computed(
+  () =>
+    knowledgeBaseResources.find((item) => item.id === routeId.value) ??
+    knowledgeBaseResources[0]
+)
+const activeSection = computed(() => knowledgeSectionMap[activeKey.value])
+
+const overviewStats = computed(() => [
+  {
+    label: currentKnowledgeBase.value?.metrics[0]?.label ?? '文档',
+    value: currentKnowledgeBase.value?.metrics[0]?.value ?? '0',
+    icon: 'i-lucide:files',
+  },
+  {
+    label: currentKnowledgeBase.value?.metrics[1]?.label ?? '命中率',
+    value: currentKnowledgeBase.value?.metrics[1]?.value ?? '0%',
+    icon: 'i-lucide:target',
+  },
+  {
+    label: currentKnowledgeBase.value?.metrics[2]?.label ?? '质量',
+    value: currentKnowledgeBase.value?.metrics[2]?.value ?? '96',
+    icon: 'i-lucide:shield-check',
+  },
+  {
+    label: '更新时间',
+    value: currentKnowledgeBase.value?.updatedAt.slice(5, 16) ?? '-',
+    icon: 'i-lucide:clock-3',
+  },
+])
+
+function goBack() {
+  router.push('/ai-platform/knowledge-base')
+}
+</script>

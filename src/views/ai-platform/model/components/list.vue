@@ -1,3 +1,93 @@
+<template>
+  <WView :full="true" :padding="0">
+    <div class="h-full min-h-0 flex flex-col overflow-hidden bg-page">
+      <Toolbar
+        class="page-enter page-enter--1"
+        v-model:keyword="keyword"
+        v-model:provider="providerFilter"
+        v-model:sort="sortBy"
+        v-model:status="statusFilter"
+        :config="props.config"
+        :configured-count="configuredCount"
+        :online-count="onlineCount"
+        :provider-count="providerCount"
+        :total="items.length"
+        @create="handleCreate"
+      />
+
+      <main
+        data-testid="model-list-scroll"
+        class="page-enter page-enter--2 min-h-0 flex-1 overflow-y-auto p-12 sm:p-16 lg:p-20"
+      >
+        <div
+          v-if="isLoading"
+          class="grid grid-cols-1 gap-12 md:grid-cols-3 2xl:grid-cols-4"
+        >
+          <div
+            v-for="index in 10"
+            :key="index"
+            class="h-310 rounded-8 border-1 border-color-2 border-solid bg-container p-14"
+          >
+            <a-skeleton active :paragraph="{ rows: 6 }" />
+          </div>
+        </div>
+
+        <a-empty
+          v-else-if="paginatedItems.length === 0"
+          class="h-full min-h-360 flex flex-col items-center justify-center"
+          :description="props.config.emptyText"
+        >
+          <a-button @click="resetFilters">清除筛选</a-button>
+        </a-empty>
+
+        <AnimatedGroup
+          v-else
+          id="model-card-list"
+          reduced-motion="user"
+          :items="paginatedItems"
+          :get-key="(item: ModelItem) => item.id"
+          as="div"
+          class="grid grid-cols-1 gap-12 md:grid-cols-3 2xl:grid-cols-4"
+          motion-as="div"
+          layout="position"
+          motion-class="min-w-0"
+        >
+          <template #default="{ item }">
+            <ModelCard
+              class="h-full"
+              :item="item"
+              :status-labels="props.config.statusLabels"
+              @action="handleCardAction"
+            />
+          </template>
+        </AnimatedGroup>
+      </main>
+
+      <footer
+        data-testid="model-list-pagination"
+        class="page-enter page-enter--3 flex flex-none justify-center border-t-1 border-color-2 border-t-solid bg-container px-12 py-10 sm:px-16"
+      >
+        <a-pagination
+          v-if="!isLoading && filteredItems.length > 0"
+          v-model:current="currentPage"
+          v-model:page-size="pageSize"
+          :page-size-options="[10, 20, 50, 100, 200, 500]"
+          :show-total="paginationTotalText"
+          :total="filteredItems.length"
+          show-size-changer
+        />
+        <span v-else class="text-xs text-secondary">暂无分页数据</span>
+      </footer>
+
+      <ModelConfigDrawer
+        v-model:open="createDrawerOpen"
+        :item="editingItem"
+        @save="handleSaved"
+      />
+    </div>
+  </WView>
+</template>
+
 <script setup lang="ts">
 import { message, Modal } from 'antdv-next'
 import { AnimatedGroup } from '@/components'
@@ -109,93 +199,3 @@ function handleCardAction(action: ModelAction, item: ModelItem) {
   handleEdit(item)
 }
 </script>
-
-<template>
-  <WView :full="true" :padding="0">
-    <div class="h-full min-h-0 flex flex-col overflow-hidden bg-page">
-      <Toolbar
-        class="page-enter page-enter--1"
-        v-model:keyword="keyword"
-        v-model:provider="providerFilter"
-        v-model:sort="sortBy"
-        v-model:status="statusFilter"
-        :config="props.config"
-        :configured-count="configuredCount"
-        :online-count="onlineCount"
-        :provider-count="providerCount"
-        :total="items.length"
-        @create="handleCreate"
-      />
-
-      <main
-        data-testid="model-list-scroll"
-        class="page-enter page-enter--2 min-h-0 flex-1 overflow-y-auto p-12 sm:p-16 lg:p-20"
-      >
-        <div
-          v-if="isLoading"
-          class="grid grid-cols-1 gap-12 md:grid-cols-3 2xl:grid-cols-4"
-        >
-          <div
-            v-for="index in 10"
-            :key="index"
-            class="h-310 rounded-8 border-1 border-color-2 border-solid bg-container p-14"
-          >
-            <a-skeleton active :paragraph="{ rows: 6 }" />
-          </div>
-        </div>
-
-        <a-empty
-          v-else-if="paginatedItems.length === 0"
-          class="h-full min-h-360 flex flex-col items-center justify-center"
-          :description="props.config.emptyText"
-        >
-          <a-button @click="resetFilters">清除筛选</a-button>
-        </a-empty>
-
-        <AnimatedGroup
-          v-else
-          id="model-card-list"
-          reduced-motion="user"
-          :items="paginatedItems"
-          :get-key="(item: ModelItem) => item.id"
-          as="div"
-          class="grid grid-cols-1 gap-12 md:grid-cols-3 2xl:grid-cols-4"
-          motion-as="div"
-          layout="position"
-          motion-class="min-w-0"
-        >
-          <template #default="{ item }">
-            <ModelCard
-              class="h-full"
-              :item="item"
-              :status-labels="props.config.statusLabels"
-              @action="handleCardAction"
-            />
-          </template>
-        </AnimatedGroup>
-      </main>
-
-      <footer
-        data-testid="model-list-pagination"
-        class="page-enter page-enter--3 flex flex-none justify-center border-t-1 border-color-2 border-t-solid bg-container px-12 py-10 sm:px-16"
-      >
-        <a-pagination
-          v-if="!isLoading && filteredItems.length > 0"
-          v-model:current="currentPage"
-          v-model:page-size="pageSize"
-          :page-size-options="[10, 20, 50, 100, 200, 500]"
-          :show-total="paginationTotalText"
-          :total="filteredItems.length"
-          show-size-changer
-        />
-        <span v-else class="text-xs text-secondary">暂无分页数据</span>
-      </footer>
-
-      <ModelConfigDrawer
-        v-model:open="createDrawerOpen"
-        :item="editingItem"
-        @save="handleSaved"
-      />
-    </div>
-  </WView>
-</template>

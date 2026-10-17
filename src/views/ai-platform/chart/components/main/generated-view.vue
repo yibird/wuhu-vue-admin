@@ -1,27 +1,3 @@
-<script lang="ts" setup>
-import { JSONUIProvider, Renderer } from '@json-render/vue'
-import { registry } from '../../json-render/registry'
-import { parseRenderSpec } from '../../json-render/spec'
-
-const props = defineProps<{
-  raw: string
-  pending?: boolean
-}>()
-
-const emit = defineEmits<{
-  (e: 'ask', prompt: string): void
-}>()
-
-const result = computed(() => parseRenderSpec(props.raw))
-
-const handlers = {
-  ask: (params: Record<string, unknown>) => {
-    const prompt = typeof params.prompt === 'string' ? params.prompt.trim() : ''
-    if (prompt) emit('ask', prompt)
-  },
-}
-</script>
-
 <template>
   <div
     v-if="pending"
@@ -51,3 +27,27 @@ const handlers = {
     ><code>{{ raw }}</code></pre>
   </div>
 </template>
+
+<script lang="ts" setup>
+import { JSONUIProvider, Renderer } from '@json-render/vue'
+import { registry } from '../../json-render/registry'
+import { parseRenderSpec } from '../../json-render/spec'
+
+const props = defineProps<{
+  raw: string
+  pending?: boolean
+}>()
+
+const emits = defineEmits<{
+  (e: 'ask', prompt: string): void
+}>()
+
+const result = computed(() => parseRenderSpec(props.raw))
+
+const handlers = {
+  ask: (params: Record<string, unknown>) => {
+    const prompt = typeof params.prompt === 'string' ? params.prompt.trim() : ''
+    if (prompt) emits('ask', prompt)
+  },
+}
+</script>

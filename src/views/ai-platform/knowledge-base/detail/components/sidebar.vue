@@ -1,22 +1,3 @@
-<script setup lang="ts">
-import type { KnowledgeDetailSectionKey, KnowledgeNavItem } from '../types'
-
-const props = defineProps<{
-  activeKey: KnowledgeDetailSectionKey
-  description: string
-  sections: KnowledgeNavItem[]
-  title: string
-}>()
-
-const emit = defineEmits<{
-  'update:activeKey': [key: KnowledgeDetailSectionKey]
-}>()
-
-function selectSection(key: KnowledgeDetailSectionKey) {
-  emit('update:activeKey', key)
-}
-</script>
-
 <template>
   <aside
     class="h-full w-260 flex flex-none flex-col border-r-1 border-color-2 border-r-solid bg-container"
@@ -90,3 +71,22 @@ function selectSection(key: KnowledgeDetailSectionKey) {
     </nav>
   </aside>
 </template>
+
+<script setup lang="ts">
+import type { KnowledgeDetailSectionKey, KnowledgeNavItem } from '../types'
+
+const props = defineProps<{
+  activeKey: KnowledgeDetailSectionKey
+  description: string
+  sections: KnowledgeNavItem[]
+  title: string
+}>()
+
+const emits = defineEmits<{
+  'update:activeKey': [key: KnowledgeDetailSectionKey]
+}>()
+
+function selectSection(key: KnowledgeDetailSectionKey) {
+  emits('update:activeKey', key)
+}
+</script>

@@ -1,169 +1,3 @@
-<script setup lang="ts">
-import ProviderCreateModal from './provider-create-modal.vue'
-import {
-  capabilityOptions,
-  getProviderMeta,
-  protocolOptions,
-  providerOptions,
-} from '../data'
-import type { FormInstance } from 'antdv-next'
-import type { ModelCreateInput, ModelItem, ModelProviderOption } from '../types'
-
-const props = defineProps<{
-  item?: ModelItem
-}>()
-
-const emit = defineEmits<{
-  save: [input: ModelCreateInput]
-}>()
-
-const open = defineModel<boolean>('open', { required: true })
-const formRef = shallowRef<FormInstance>()
-const submitting = shallowRef(false)
-const providerCreateOpen = shallowRef(false)
-const providerSelectOpen = shallowRef(false)
-const availableProviderOptions = shallowRef<ModelProviderOption[]>([
-  ...providerOptions,
-])
-const form = reactive<ModelCreateInput>(createDefaultForm())
-
-const isEditing = computed(() => Boolean(props.item))
-const title = computed(() => (isEditing.value ? '编辑模型' : '新建模型'))
-const providerMeta = computed(
-  () =>
-    availableProviderOptions.value.find(
-      (option) => option.value === form.provider
-    ) ?? getProviderMeta(form.provider)
-)
-const previewName = computed(() => form.name.trim() || '未命名模型')
-const previewModelId = computed(() => form.modelId.trim() || 'model-id')
-const existingProviderValues = computed(() =>
-  availableProviderOptions.value.map((option) => option.value)
-)
-const rules = {
-  provider: [{ required: true, message: '请选择模型供应商' }],
-  providerName: [
-    {
-      validator: () =>
-        form.provider !== 'custom' || form.providerName.trim()
-          ? Promise.resolve()
-          : Promise.reject(new Error('请输入供应商名称')),
-    },
-  ],
-  name: [
-    { required: true, whitespace: true, message: '请输入模型名称' },
-    { min: 2, max: 60, message: '模型名称长度为 2-60 个字符' },
-  ],
-  modelId: [
-    { required: true, whitespace: true, message: '请输入供应商模型 ID' },
-    { max: 100, message: 'Model ID 不能超过 100 个字符' },
-  ],
-  endpoint: [
-    { required: true, whitespace: true, message: '请输入 API Endpoint' },
-  ],
-  contextWindow: [
-    { required: true, type: 'number', message: '请输入上下文窗口' },
-  ],
-  maxOutputTokens: [
-    { required: true, type: 'number', message: '请输入最大输出 Token' },
-  ],
-  capabilities: [
-    { required: true, type: 'array', min: 1, message: '至少选择一项模型能力' },
-  ],
-}
-
-watch(
-  [open, () => props.item],
-  async ([isOpen]) => {
-    if (!isOpen) return
-    Object.assign(form, createDefaultForm(props.item))
-    await nextTick()
-    formRef.value?.clearValidate()
-  },
-  { immediate: true }
-)
-
-function createDefaultForm(item?: ModelItem): ModelCreateInput {
-  if (item) {
-    return {
-      provider: item.provider,
-      providerName: item.providerName,
-      name: item.name,
-      modelId: item.modelId,
-      description: item.description,
-      protocol: item.protocol,
-      endpoint: item.endpoint,
-      apiKey: '',
-      contextWindow: item.contextWindow,
-      maxOutputTokens: item.maxOutputTokens,
-      capabilities: [...item.capabilities],
-      inputPrice: item.inputPrice,
-      outputPrice: item.outputPrice,
-    }
-  }
-
-  const defaultProvider = providerOptions[0]
-  return {
-    provider: defaultProvider.value,
-    providerName: defaultProvider.label,
-    name: '',
-    modelId: '',
-    description: '',
-    protocol: defaultProvider.protocol,
-    endpoint: defaultProvider.endpoint,
-    apiKey: '',
-    contextWindow: 128000,
-    maxOutputTokens: 8192,
-    capabilities: ['chat'],
-    inputPrice: 0,
-    outputPrice: 0,
-  }
-}
-
-function handleProviderChange(value: ModelCreateInput['provider']) {
-  const option =
-    availableProviderOptions.value.find((item) => item.value === value) ??
-    getProviderMeta(value)
-  if (value !== 'custom') form.providerName = option.label
-  form.protocol = option.protocol
-  form.endpoint = option.endpoint
-}
-
-function openProviderCreate() {
-  providerSelectOpen.value = false
-  providerCreateOpen.value = true
-}
-
-function handleProviderCreated(option: ModelProviderOption) {
-  availableProviderOptions.value = [...availableProviderOptions.value, option]
-  form.provider = option.value
-  form.providerName = option.label
-  form.protocol = option.protocol
-  form.endpoint = option.endpoint
-}
-
-async function handleSubmit() {
-  try {
-    await formRef.value?.validate()
-  } catch (error: unknown) {
-    if (isValidationError(error)) return
-    throw error
-  }
-
-  submitting.value = true
-  emit('save', {
-    ...form,
-    capabilities: [...form.capabilities],
-  })
-  submitting.value = false
-  open.value = false
-}
-
-function isValidationError(error: unknown) {
-  return typeof error === 'object' && error !== null && 'errorFields' in error
-}
-</script>
-
 <template>
   <a-drawer v-model:open="open" destroy-on-hidden :size="700" :title="title">
     <div
@@ -362,3 +196,169 @@ function isValidationError(error: unknown) {
     @create="handleProviderCreated"
   />
 </template>
+
+<script setup lang="ts">
+import ProviderCreateModal from './provider-create-modal.vue'
+import {
+  capabilityOptions,
+  getProviderMeta,
+  protocolOptions,
+  providerOptions,
+} from '../data'
+import type { FormInstance } from 'antdv-next'
+import type { ModelCreateInput, ModelItem, ModelProviderOption } from '../types'
+
+const props = defineProps<{
+  item?: ModelItem
+}>()
+
+const emits = defineEmits<{
+  save: [input: ModelCreateInput]
+}>()
+
+const open = defineModel<boolean>('open', { required: true })
+const formRef = shallowRef<FormInstance>()
+const submitting = shallowRef(false)
+const providerCreateOpen = shallowRef(false)
+const providerSelectOpen = shallowRef(false)
+const availableProviderOptions = shallowRef<ModelProviderOption[]>([
+  ...providerOptions,
+])
+const form = reactive<ModelCreateInput>(createDefaultForm())
+
+const isEditing = computed(() => Boolean(props.item))
+const title = computed(() => (isEditing.value ? '编辑模型' : '新建模型'))
+const providerMeta = computed(
+  () =>
+    availableProviderOptions.value.find(
+      (option) => option.value === form.provider
+    ) ?? getProviderMeta(form.provider)
+)
+const previewName = computed(() => form.name.trim() || '未命名模型')
+const previewModelId = computed(() => form.modelId.trim() || 'model-id')
+const existingProviderValues = computed(() =>
+  availableProviderOptions.value.map((option) => option.value)
+)
+const rules = {
+  provider: [{ required: true, message: '请选择模型供应商' }],
+  providerName: [
+    {
+      validator: () =>
+        form.provider !== 'custom' || form.providerName.trim()
+          ? Promise.resolve()
+          : Promise.reject(new Error('请输入供应商名称')),
+    },
+  ],
+  name: [
+    { required: true, whitespace: true, message: '请输入模型名称' },
+    { min: 2, max: 60, message: '模型名称长度为 2-60 个字符' },
+  ],
+  modelId: [
+    { required: true, whitespace: true, message: '请输入供应商模型 ID' },
+    { max: 100, message: 'Model ID 不能超过 100 个字符' },
+  ],
+  endpoint: [
+    { required: true, whitespace: true, message: '请输入 API Endpoint' },
+  ],
+  contextWindow: [
+    { required: true, type: 'number', message: '请输入上下文窗口' },
+  ],
+  maxOutputTokens: [
+    { required: true, type: 'number', message: '请输入最大输出 Token' },
+  ],
+  capabilities: [
+    { required: true, type: 'array', min: 1, message: '至少选择一项模型能力' },
+  ],
+}
+
+watch(
+  [open, () => props.item],
+  async ([isOpen]) => {
+    if (!isOpen) return
+    Object.assign(form, createDefaultForm(props.item))
+    await nextTick()
+    formRef.value?.clearValidate()
+  },
+  { immediate: true }
+)
+
+function createDefaultForm(item?: ModelItem): ModelCreateInput {
+  if (item) {
+    return {
+      provider: item.provider,
+      providerName: item.providerName,
+      name: item.name,
+      modelId: item.modelId,
+      description: item.description,
+      protocol: item.protocol,
+      endpoint: item.endpoint,
+      apiKey: '',
+      contextWindow: item.contextWindow,
+      maxOutputTokens: item.maxOutputTokens,
+      capabilities: [...item.capabilities],
+      inputPrice: item.inputPrice,
+      outputPrice: item.outputPrice,
+    }
+  }
+
+  const defaultProvider = providerOptions[0]
+  return {
+    provider: defaultProvider.value,
+    providerName: defaultProvider.label,
+    name: '',
+    modelId: '',
+    description: '',
+    protocol: defaultProvider.protocol,
+    endpoint: defaultProvider.endpoint,
+    apiKey: '',
+    contextWindow: 128000,
+    maxOutputTokens: 8192,
+    capabilities: ['chat'],
+    inputPrice: 0,
+    outputPrice: 0,
+  }
+}
+
+function handleProviderChange(value: ModelCreateInput['provider']) {
+  const option =
+    availableProviderOptions.value.find((item) => item.value === value) ??
+    getProviderMeta(value)
+  if (value !== 'custom') form.providerName = option.label
+  form.protocol = option.protocol
+  form.endpoint = option.endpoint
+}
+
+function openProviderCreate() {
+  providerSelectOpen.value = false
+  providerCreateOpen.value = true
+}
+
+function handleProviderCreated(option: ModelProviderOption) {
+  availableProviderOptions.value = [...availableProviderOptions.value, option]
+  form.provider = option.value
+  form.providerName = option.label
+  form.protocol = option.protocol
+  form.endpoint = option.endpoint
+}
+
+async function handleSubmit() {
+  try {
+    await formRef.value?.validate()
+  } catch (error: unknown) {
+    if (isValidationError(error)) return
+    throw error
+  }
+
+  submitting.value = true
+  emits('save', {
+    ...form,
+    capabilities: [...form.capabilities],
+  })
+  submitting.value = false
+  open.value = false
+}
+
+function isValidationError(error: unknown) {
+  return typeof error === 'object' && error !== null && 'errorFields' in error
+}
+</script>

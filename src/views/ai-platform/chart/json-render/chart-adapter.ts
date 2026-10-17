@@ -1,5 +1,5 @@
 import { createWidgetChartOption } from '@/views/template/chart-designer/chart-options'
-import { useEChartsTheme } from '@/theme'
+import { useEChartsTheme } from '@/components/chart'
 
 import type { ChartWidget } from '@/views/template/chart-designer/types'
 import type { AiChartType } from './catalog'

@@ -93,7 +93,7 @@ const props = withDefaults(
   }
 )
 
-const emit = defineEmits<{
+const emits = defineEmits<{
   select: [id: string]
 }>()
 
@@ -114,7 +114,7 @@ const filteredModels = computed(() => {
 function selectModel(id: string) {
   if (!props.models.some((item) => item.id === id)) return
 
-  emit('select', id)
+  emits('select', id)
   keyword.value = ''
   open.value = false
 }

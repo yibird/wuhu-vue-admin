@@ -1,8 +1,19 @@
+<template>
+  <div class="w-full min-w-0" :style="{ height: `${height}px` }">
+    <Chart
+      :option="chartOption"
+      :theme="eChartsThemeName"
+      autoresize
+      class="full min-h-0"
+    />
+  </div>
+</template>
+
 <script lang="ts" setup>
-import VChart from 'vue-echarts'
+import { Chart } from '@/components'
 
 import { useChartAdapter } from '../../json-render/chart-adapter'
-import { useEChartsTheme } from '@/theme'
+import { useEChartsTheme } from '@/components/chart'
 import type { AiChartType } from '../../json-render/catalog'
 
 const props = withDefaults(
@@ -30,14 +41,3 @@ const chartOption = computed(() =>
   })
 )
 </script>
-
-<template>
-  <div class="w-full min-w-0" :style="{ height: `${height}px` }">
-    <VChart
-      :option="chartOption"
-      :theme="eChartsThemeName"
-      autoresize
-      class="full min-h-0"
-    />
-  </div>
-</template>

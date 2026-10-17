@@ -1,11 +1,3 @@
-<script setup lang="ts">
-const collapsed = defineModel<boolean>('collapsed', { default: false })
-
-const emit = defineEmits<{
-  create: []
-}>()
-</script>
-
 <template>
   <header
     class="grid items-center gap-10 p-10 transition-[padding] duration-motion-base ease-motion-enter max-lg:p-10"
@@ -20,7 +12,7 @@ const emit = defineEmits<{
       type="button"
       class="h-36 w-full inline-flex items-center justify-center gap-6 rounded-8 border-1 border-color-regular border-solid bg-container px-0 text-main cursor-pointer transition-[border-color,background-color,box-shadow,color,transform] duration-motion-base ease-motion-enter hover:(-translate-y-1 border-primary/35 bg-hover text-primary shadow-all-sm) focus-visible:(border-primary/35 shadow-[0_0_0_2px_rgb(var(--w-color-primary)_/_12%)] outline-none) active:(translate-y-0 scale-98) motion-reduce:(transform-none transition-none)"
       title="新建会话"
-      @click="emit('create')"
+      @click="emits('create')"
     >
       <Icon name="i-lucide:plus" :size="18" />
       <span
@@ -47,3 +39,11 @@ const emit = defineEmits<{
     </button>
   </header>
 </template>
+
+<script setup lang="ts">
+const collapsed = defineModel<boolean>('collapsed', { default: false })
+
+const emits = defineEmits<{
+  create: []
+}>()
+</script>
