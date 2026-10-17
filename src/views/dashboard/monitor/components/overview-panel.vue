@@ -1,19 +1,3 @@
-<script lang="ts" setup>
-import { NumberTicker } from '@/components/number-ticker'
-import Card from './card.vue'
-import type { MonitorTone, OverviewProps } from './types'
-
-const { items = [], loading = false } = defineProps<OverviewProps>()
-
-const toneClassMap: Record<MonitorTone, string> = {
-  primary: 'primary-tinted',
-  success: 'bg-success-tint text-success',
-  warning: 'bg-warning-tint text-warning',
-  error: 'bg-error-tint text-error',
-  info: 'bg-info-tint text-info',
-}
-</script>
-
 <template>
   <Card
     v-if="loading"
@@ -81,3 +65,19 @@ const toneClassMap: Record<MonitorTone, string> = {
     </div>
   </Card>
 </template>
+
+<script lang="ts" setup>
+import { NumberTicker } from '@/components/number-ticker'
+import Card from './card.vue'
+import type { MonitorTone, OverviewProps } from './types'
+
+const { items = [], loading = false } = defineProps<OverviewProps>()
+
+const toneClassMap: Record<MonitorTone, string> = {
+  primary: 'primary-tinted',
+  success: 'bg-success-tint text-success',
+  warning: 'bg-warning-tint text-warning',
+  error: 'bg-error-tint text-error',
+  info: 'bg-info-tint text-info',
+}
+</script>

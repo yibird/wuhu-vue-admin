@@ -1,52 +1,3 @@
-<script lang="ts" setup>
-import Card from './card.vue'
-import type {
-  AlertCenterEmits,
-  AlertCenterProps,
-  MonitorSeverity,
-} from './types'
-
-const props = defineProps<AlertCenterProps>()
-const emit = defineEmits<AlertCenterEmits>()
-
-const severityOptions = [
-  { label: '全部', value: 'all' },
-  { label: '严重', value: 'critical' },
-  { label: '警告', value: 'warning' },
-  { label: '通知', value: 'info' },
-]
-
-const severityMeta: Record<
-  MonitorSeverity,
-  { label: string; icon: string; class: string }
-> = {
-  critical: {
-    label: '严重',
-    icon: 'i-lucide:octagon-alert',
-    class: 'bg-error-tint text-error',
-  },
-  warning: {
-    label: '警告',
-    icon: 'i-lucide:triangle-alert',
-    class: 'bg-warning-tint text-warning',
-  },
-  info: {
-    label: '通知',
-    icon: 'i-lucide:info',
-    class: 'bg-info-tint text-info',
-  },
-}
-
-const filteredItems = computed(() => {
-  if (props.activeSeverity === 'all') return props.items
-  return props.items.filter((item) => item.severity === props.activeSeverity)
-})
-
-function handleSeverityChange(value: string | number) {
-  emit('update:activeSeverity', value as MonitorSeverity | 'all')
-}
-</script>
-
 <template>
   <Card
     v-if="props.loading"
@@ -117,7 +68,7 @@ function handleSeverityChange(value: string | number) {
               <span class="truncate text-xs text-secondary">
                 {{ item.source }}
               </span>
-              <a-button size="small" @click="emit('resolve', item)">
+              <a-button size="small" @click="emits('resolve', item)">
                 处理
               </a-button>
             </div>
@@ -133,3 +84,52 @@ function handleSeverityChange(value: string | number) {
     </TransitionGroup>
   </Card>
 </template>
+
+<script lang="ts" setup>
+import Card from './card.vue'
+import type {
+  AlertCenterEmits,
+  AlertCenterProps,
+  MonitorSeverity,
+} from './types'
+
+const props = defineProps<AlertCenterProps>()
+const emits = defineEmits<AlertCenterEmits>()
+
+const severityOptions = [
+  { label: '全部', value: 'all' },
+  { label: '严重', value: 'critical' },
+  { label: '警告', value: 'warning' },
+  { label: '通知', value: 'info' },
+]
+
+const severityMeta: Record<
+  MonitorSeverity,
+  { label: string; icon: string; class: string }
+> = {
+  critical: {
+    label: '严重',
+    icon: 'i-lucide:octagon-alert',
+    class: 'bg-error-tint text-error',
+  },
+  warning: {
+    label: '警告',
+    icon: 'i-lucide:triangle-alert',
+    class: 'bg-warning-tint text-warning',
+  },
+  info: {
+    label: '通知',
+    icon: 'i-lucide:info',
+    class: 'bg-info-tint text-info',
+  },
+}
+
+const filteredItems = computed(() => {
+  if (props.activeSeverity === 'all') return props.items
+  return props.items.filter((item) => item.severity === props.activeSeverity)
+})
+
+function handleSeverityChange(value: string | number) {
+  emits('update:activeSeverity', value as MonitorSeverity | 'all')
+}
+</script>

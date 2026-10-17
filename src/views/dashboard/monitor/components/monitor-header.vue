@@ -1,22 +1,3 @@
-<script lang="ts" setup>
-const props = defineProps<{
-  criticalAlertCount: number
-  lastRefreshAt: string
-  autoRefresh: boolean
-  refreshing: boolean
-  healthScore: number
-  runningServiceCount: number
-  totalServiceCount: number
-  unresolvedAlertCount: number
-  loading?: boolean
-}>()
-
-const emit = defineEmits<{
-  'update:autoRefresh': [value: boolean]
-  refresh: []
-}>()
-</script>
-
 <template>
   <section
     v-if="props.loading"
@@ -46,91 +27,114 @@ const emit = defineEmits<{
     </div>
   </section>
 
-  <section
-    v-else
-    class="monitor-hero page-enter page-enter--1 mb-12 overflow-hidden rounded-8 border-1 border-solid border-color-2 bg-container shadow-[var(--w-shadow-card)]"
-  >
-    <div
-      class="flex flex-wrap items-center justify-between gap-12 border-b-1 border-b-solid border-color-2 px-14 py-14 sm:px-18 sm:py-16"
+  <a-border-beam v-else :duration="6" :line-width="3">
+    <section
+      class="monitor-hero page-enter page-enter--1 relative mb-12 overflow-hidden rounded-8 border-1 border-solid border-color-2 bg-container shadow-[var(--w-shadow-card)]"
     >
-      <div class="min-w-0">
-        <div class="flex flex-wrap items-center gap-10">
-          <h1 class="m-0 text-md text-main font-700 sm:text-lg">服务器监控</h1>
-          <span
-            class="inline-flex items-center gap-5 rounded-999 px-9 py-4 text-xs"
-            :class="
-              props.criticalAlertCount > 0
-                ? 'bg-error-tint text-error'
-                : 'bg-success-tint text-success'
-            "
-          >
-            <Icon
-              :name="
+      <div
+        class="flex flex-wrap items-center justify-between gap-12 border-b-1 border-b-solid border-color-2 px-14 py-14 sm:px-18 sm:py-16"
+      >
+        <div class="min-w-0">
+          <div class="flex flex-wrap items-center gap-10">
+            <h1 class="m-0 text-md text-main font-700 sm:text-lg">
+              服务器监控
+            </h1>
+            <span
+              class="inline-flex items-center gap-5 rounded-999 px-9 py-4 text-xs"
+              :class="
                 props.criticalAlertCount > 0
-                  ? 'i-lucide:circle-alert'
-                  : 'i-lucide:circle-check'
+                  ? 'bg-error-tint text-error'
+                  : 'bg-success-tint text-success'
               "
-              :size="13"
-            />
-            {{ props.criticalAlertCount > 0 ? '需要处理' : '运行正常' }}
-          </span>
+            >
+              <Icon
+                :name="
+                  props.criticalAlertCount > 0
+                    ? 'i-lucide:circle-alert'
+                    : 'i-lucide:circle-check'
+                "
+                :size="13"
+              />
+              {{ props.criticalAlertCount > 0 ? '需要处理' : '运行正常' }}
+            </span>
+          </div>
+          <div class="mt-5 text-xs text-secondary">
+            最近刷新 {{ props.lastRefreshAt }} · 自动刷新
+            {{ props.autoRefresh ? '已开启' : '已关闭' }}
+          </div>
         </div>
-        <div class="mt-5 text-xs text-secondary">
-          最近刷新 {{ props.lastRefreshAt }} · 自动刷新
-          {{ props.autoRefresh ? '已开启' : '已关闭' }}
+
+        <div
+          class="flex flex-wrap items-center justify-start gap-8 sm:justify-end"
+        >
+          <a-switch
+            :checked="props.autoRefresh"
+            @update:checked="emits('update:autoRefresh', $event)"
+          />
+          <span class="text-xs text-secondary">自动刷新</span>
+          <a-button :loading="props.refreshing" @click="emits('refresh')">
+            <template #icon>
+              <Icon
+                name="i-lucide:refresh-cw"
+                :class="{
+                  'animate-spin motion-reduce:animate-none': props.refreshing,
+                }"
+              />
+            </template>
+            刷新
+          </a-button>
         </div>
       </div>
 
-      <div
-        class="flex flex-wrap items-center justify-start gap-8 sm:justify-end"
-      >
-        <a-switch
-          :checked="props.autoRefresh"
-          @update:checked="emit('update:autoRefresh', $event)"
-        />
-        <span class="text-xs text-secondary">自动刷新</span>
-        <a-button :loading="props.refreshing" @click="emit('refresh')">
-          <template #icon>
-            <Icon
-              name="i-lucide:refresh-cw"
-              :class="{
-                'animate-spin motion-reduce:animate-none': props.refreshing,
-              }"
-            />
-          </template>
-          刷新
-        </a-button>
-      </div>
-    </div>
-
-    <div class="grid grid-cols-1 gap-0 sm:grid-cols-3">
-      <div class="px-14 py-12 sm:px-18 sm:py-14">
-        <div class="text-xs text-secondary">健康评分</div>
-        <div class="mt-6 flex items-end gap-6">
-          <span class="monitor-hero__score text-xl font-800 sm:text-2xl">{{
-            props.healthScore
-          }}</span>
-          <span class="pb-2 text-xs text-secondary">/ 100</span>
+      <div class="grid grid-cols-1 gap-0 sm:grid-cols-3">
+        <div class="px-14 py-12 sm:px-18 sm:py-14">
+          <div class="text-xs text-secondary">健康评分</div>
+          <div class="mt-6 flex items-end gap-6">
+            <span class="monitor-hero__score text-xl font-800 sm:text-2xl">{{
+              props.healthScore
+            }}</span>
+            <span class="pb-2 text-xs text-secondary">/ 100</span>
+          </div>
+        </div>
+        <div
+          class="border-y-1 border-y-solid border-color-2 px-14 py-12 sm:border-x-1 sm:border-y-0 sm:border-x-solid sm:px-18 sm:py-14"
+        >
+          <div class="text-xs text-secondary">运行服务</div>
+          <div class="mt-6 text-xl text-main font-800 sm:text-2xl">
+            {{ props.runningServiceCount }}
+            <span class="text-secondary">/</span>
+            {{ props.totalServiceCount }}
+          </div>
+        </div>
+        <div class="px-14 py-12 sm:px-18 sm:py-14">
+          <div class="text-xs text-secondary">未处理告警</div>
+          <div class="mt-6 text-xl text-main font-800 sm:text-2xl">
+            {{ props.unresolvedAlertCount }}
+          </div>
         </div>
       </div>
-      <div
-        class="border-y-1 border-y-solid border-color-2 px-14 py-12 sm:border-x-1 sm:border-y-0 sm:border-x-solid sm:px-18 sm:py-14"
-      >
-        <div class="text-xs text-secondary">运行服务</div>
-        <div class="mt-6 text-xl text-main font-800 sm:text-2xl">
-          {{ props.runningServiceCount }} <span class="text-secondary">/</span>
-          {{ props.totalServiceCount }}
-        </div>
-      </div>
-      <div class="px-14 py-12 sm:px-18 sm:py-14">
-        <div class="text-xs text-secondary">未处理告警</div>
-        <div class="mt-6 text-xl text-main font-800 sm:text-2xl">
-          {{ props.unresolvedAlertCount }}
-        </div>
-      </div>
-    </div>
-  </section>
+    </section>
+  </a-border-beam>
 </template>
+
+<script lang="ts" setup>
+const props = defineProps<{
+  criticalAlertCount: number
+  lastRefreshAt: string
+  autoRefresh: boolean
+  refreshing: boolean
+  healthScore: number
+  runningServiceCount: number
+  totalServiceCount: number
+  unresolvedAlertCount: number
+  loading?: boolean
+}>()
+
+const emits = defineEmits<{
+  'update:autoRefresh': [value: boolean]
+  refresh: []
+}>()
+</script>
 
 <style lang="less" scoped>
 .monitor-hero {

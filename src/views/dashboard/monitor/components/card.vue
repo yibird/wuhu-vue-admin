@@ -1,3 +1,43 @@
+<template>
+  <a-border-beam :duration="6" :line-width="3">
+    <Card
+      class="overflow-hidden rounded-8 border-1 border-solid border-color-2 shadow-[var(--w-shadow-card)] transition-[border-color,box-shadow,transform] duration-motion-moderate ease-motion-enter hover:(-translate-y-2 shadow-[var(--w-shadow-elevated)]) motion-reduce:transition-none motion-reduce:hover:translate-y-0"
+      variant="borderless"
+      :body-class="bodyClass"
+      :styles="cardStyles"
+    >
+      <template #title>
+        <div class="relative z-1 min-w-0 flex items-center gap-10">
+          <span
+            class="size-30 flex shrink-0 items-center justify-center rounded-8 primary-tinted"
+          >
+            <Icon :name="icon" :size="16" />
+          </span>
+          <span class="min-w-0">
+            <span class="block truncate text-sm text-main font-700">{{
+              title
+            }}</span>
+            <span
+              v-if="description"
+              class="mt-1 block truncate text-xs text-secondary font-400"
+            >
+              {{ description }}
+            </span>
+          </span>
+        </div>
+      </template>
+
+      <template v-if="$slots.extra" #extra>
+        <div class="relative z-1 flex items-center">
+          <slot name="extra" />
+        </div>
+      </template>
+
+      <slot />
+    </Card>
+  </a-border-beam>
+</template>
+
 <script setup lang="ts">
 import type { CSSProperties } from 'vue'
 import { Card } from '@/components'
@@ -28,41 +68,3 @@ const cardStyles = computed<Record<string, CSSProperties>>(() => ({
   },
 }))
 </script>
-
-<template>
-  <Card
-    class="overflow-hidden rounded-8 border-1 border-solid border-color-2 shadow-[var(--w-shadow-card)] transition-[border-color,box-shadow,transform] duration-motion-moderate ease-motion-enter hover:(-translate-y-2 shadow-[var(--w-shadow-elevated)]) motion-reduce:transition-none motion-reduce:hover:translate-y-0"
-    variant="borderless"
-    :body-class="bodyClass"
-    :styles="cardStyles"
-  >
-    <template #title>
-      <div class="relative z-1 min-w-0 flex items-center gap-10">
-        <span
-          class="size-30 flex shrink-0 items-center justify-center rounded-8 primary-tinted"
-        >
-          <Icon :name="icon" :size="16" />
-        </span>
-        <span class="min-w-0">
-          <span class="block truncate text-sm text-main font-700">{{
-            title
-          }}</span>
-          <span
-            v-if="description"
-            class="mt-1 block truncate text-xs text-secondary font-400"
-          >
-            {{ description }}
-          </span>
-        </span>
-      </div>
-    </template>
-
-    <template v-if="$slots.extra" #extra>
-      <div class="relative z-1 flex items-center">
-        <slot name="extra" />
-      </div>
-    </template>
-
-    <slot />
-  </Card>
-</template>

@@ -1,9 +1,89 @@
+<template>
+  <Card
+    v-if="props.loading"
+    title="系统监控"
+    icon="i-lucide:chart-area"
+    description="关键资源使用率趋势"
+    body-class="p-0"
+  >
+    <div class="grid grid-cols-3 border-b-1 border-b-solid border-color-2">
+      <div v-for="item in 3" :key="item" class="px-16 py-12">
+        <a-skeleton-input active size="small" class="!w-46" />
+        <a-skeleton-input active class="!mt-6 !w-72" />
+      </div>
+    </div>
+    <div class="h-360 p-16 max-md:h-280">
+      <div class="h-full flex items-end gap-10">
+        <div
+          v-for="height in chartBars"
+          :key="height"
+          class="flex-1 rounded-t-6 bg-fill-tertiary"
+          :style="{ height: `${height}%` }"
+        />
+      </div>
+    </div>
+  </Card>
+  <Card
+    v-else
+    title="系统监控"
+    icon="i-lucide:chart-area"
+    description="关键资源使用率趋势"
+    body-class="p-0"
+  >
+    <template #extra>
+      <div class="flex items-center gap-8 max-lg:flex-col max-lg:items-end">
+        <a-select
+          v-model:value="activeRange"
+          :options="timeOptions"
+          class="w-138"
+        />
+        <a-segmented v-model:value="activeMetric" :options="metricOptions" />
+      </div>
+    </template>
+
+    <div
+      class="grid grid-cols-3 gap-0 border-b-1 border-b-solid border-color-2"
+    >
+      <div class="min-w-0 px-16 py-12">
+        <div class="text-xs text-secondary">当前</div>
+        <div class="mt-4 text-lg text-main font-700">
+          <NumberTicker :value="latestValue" :duration="750" suffix="%" />
+        </div>
+      </div>
+      <div class="min-w-0 border-x-1 border-x-solid border-color-2 px-16 py-12">
+        <div class="text-xs text-secondary">峰值</div>
+        <div class="mt-4 text-lg text-main font-700">
+          <NumberTicker :value="peakValue" :duration="750" suffix="%" />
+        </div>
+      </div>
+      <div class="min-w-0 px-16 py-12">
+        <div class="text-xs text-secondary">均值</div>
+        <div class="mt-4 text-lg text-main font-700">
+          <NumberTicker :value="averageValue" :duration="750" suffix="%" />
+        </div>
+      </div>
+    </div>
+    <div class="h-360 w-full max-md:h-280">
+      <Chart
+        :option="chartOption"
+        :theme="eChartsThemeName"
+        autoresize
+        class="full min-h-0"
+      />
+    </div>
+  </Card>
+</template>
+
 <script lang="ts" setup>
 import { NumberTicker } from '@/components/number-ticker'
-import { getCssRgbVar, getCssRgbVarAlpha, useEChartsTheme } from '@/theme'
+import {
+  getCssRgbVar,
+  getCssRgbVarAlpha,
+  useEChartsTheme,
+} from '@/components/chart'
 import Card from './card.vue'
 import { metricLabels } from '../config'
-import VChart from 'vue-echarts'
+import { Chart } from '@/components'
 import type { MonitorMetric, SysMonitorProps } from './types'
 import type { EChartsCoreOption } from 'echarts/core'
 
@@ -102,79 +182,3 @@ const chartOption = computed<EChartsCoreOption>(() => {
   }
 })
 </script>
-
-<template>
-  <Card
-    v-if="props.loading"
-    title="系统监控"
-    icon="i-lucide:chart-area"
-    description="关键资源使用率趋势"
-    body-class="p-0"
-  >
-    <div class="grid grid-cols-3 border-b-1 border-b-solid border-color-2">
-      <div v-for="item in 3" :key="item" class="px-16 py-12">
-        <a-skeleton-input active size="small" class="!w-46" />
-        <a-skeleton-input active class="!mt-6 !w-72" />
-      </div>
-    </div>
-    <div class="h-360 p-16 max-md:h-280">
-      <div class="h-full flex items-end gap-10">
-        <div
-          v-for="height in chartBars"
-          :key="height"
-          class="flex-1 rounded-t-6 bg-fill-tertiary"
-          :style="{ height: `${height}%` }"
-        />
-      </div>
-    </div>
-  </Card>
-  <Card
-    v-else
-    title="系统监控"
-    icon="i-lucide:chart-area"
-    description="关键资源使用率趋势"
-    body-class="p-0"
-  >
-    <template #extra>
-      <div class="flex items-center gap-8 max-lg:flex-col max-lg:items-end">
-        <a-select
-          v-model:value="activeRange"
-          :options="timeOptions"
-          class="w-138"
-        />
-        <a-segmented v-model:value="activeMetric" :options="metricOptions" />
-      </div>
-    </template>
-
-    <div
-      class="grid grid-cols-3 gap-0 border-b-1 border-b-solid border-color-2"
-    >
-      <div class="min-w-0 px-16 py-12">
-        <div class="text-xs text-secondary">当前</div>
-        <div class="mt-4 text-lg text-main font-700">
-          <NumberTicker :value="latestValue" :duration="750" suffix="%" />
-        </div>
-      </div>
-      <div class="min-w-0 border-x-1 border-x-solid border-color-2 px-16 py-12">
-        <div class="text-xs text-secondary">峰值</div>
-        <div class="mt-4 text-lg text-main font-700">
-          <NumberTicker :value="peakValue" :duration="750" suffix="%" />
-        </div>
-      </div>
-      <div class="min-w-0 px-16 py-12">
-        <div class="text-xs text-secondary">均值</div>
-        <div class="mt-4 text-lg text-main font-700">
-          <NumberTicker :value="averageValue" :duration="750" suffix="%" />
-        </div>
-      </div>
-    </div>
-    <div class="h-360 w-full max-md:h-280">
-      <VChart
-        :option="chartOption"
-        :theme="eChartsThemeName"
-        autoresize
-        class="full min-h-0"
-      />
-    </div>
-  </Card>
-</template>

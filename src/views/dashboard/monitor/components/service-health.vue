@@ -1,44 +1,3 @@
-<script lang="ts" setup>
-import Card from './card.vue'
-import type {
-  ServiceHealthEmits,
-  ServiceHealthProps,
-  ServiceStatus,
-} from './types'
-
-const { items = [], loading = false } = defineProps<ServiceHealthProps>()
-const emit = defineEmits<ServiceHealthEmits>()
-
-const statusMeta: Record<
-  ServiceStatus,
-  {
-    label: string
-    class: string
-    icon: string
-    action: 'restart' | 'start' | 'stop'
-  }
-> = {
-  running: {
-    label: '运行中',
-    class: 'bg-success-tint text-success',
-    icon: 'i-lucide:circle-check',
-    action: 'restart',
-  },
-  degraded: {
-    label: '降级',
-    class: 'bg-warning-tint text-warning',
-    icon: 'i-lucide:circle-alert',
-    action: 'restart',
-  },
-  stopped: {
-    label: '已停止',
-    class: 'bg-error-tint text-error',
-    icon: 'i-lucide:circle-stop',
-    action: 'start',
-  },
-}
-</script>
-
 <template>
   <Card
     v-if="loading"
@@ -109,7 +68,7 @@ const statusMeta: Record<
         <div class="mt-10 flex justify-end">
           <a-button
             size="small"
-            @click="emit('action', item, statusMeta[item.status].action)"
+            @click="emits('action', item, statusMeta[item.status].action)"
           >
             {{ item.status === 'stopped' ? '启动' : '重启' }}
           </a-button>
@@ -118,3 +77,44 @@ const statusMeta: Record<
     </div>
   </Card>
 </template>
+
+<script lang="ts" setup>
+import Card from './card.vue'
+import type {
+  ServiceHealthEmits,
+  ServiceHealthProps,
+  ServiceStatus,
+} from './types'
+
+const { items = [], loading = false } = defineProps<ServiceHealthProps>()
+const emits = defineEmits<ServiceHealthEmits>()
+
+const statusMeta: Record<
+  ServiceStatus,
+  {
+    label: string
+    class: string
+    icon: string
+    action: 'restart' | 'start' | 'stop'
+  }
+> = {
+  running: {
+    label: '运行中',
+    class: 'bg-success-tint text-success',
+    icon: 'i-lucide:circle-check',
+    action: 'restart',
+  },
+  degraded: {
+    label: '降级',
+    class: 'bg-warning-tint text-warning',
+    icon: 'i-lucide:circle-alert',
+    action: 'restart',
+  },
+  stopped: {
+    label: '已停止',
+    class: 'bg-error-tint text-error',
+    icon: 'i-lucide:circle-stop',
+    action: 'start',
+  },
+}
+</script>

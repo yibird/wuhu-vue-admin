@@ -168,7 +168,7 @@ export const appItems: AppType[] = [
     id: 5,
     title: 'AList',
     description: '多存储文件列表和私人网盘',
-    icon: 'i-lucide:folder-cloud',
+    icon: 'i-lucide:cloud',
     version: '3.41.0',
     status: 'installed',
     tone: 'info',

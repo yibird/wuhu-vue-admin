@@ -48,7 +48,7 @@
         <a-button
           v-if="app.status === 'available'"
           type="primary"
-          @click="emit('install', app)"
+          @click="emits('install', app)"
         >
           安装应用
         </a-button>
@@ -62,5 +62,5 @@ import type { AppDetailModalEmits, AppDetailModalProps } from './types'
 
 const open = defineModel<boolean>('open', { default: false })
 const { app = null } = defineProps<AppDetailModalProps>()
-const emit = defineEmits<AppDetailModalEmits>()
+const emits = defineEmits<AppDetailModalEmits>()
 </script>

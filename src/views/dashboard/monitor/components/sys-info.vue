@@ -1,11 +1,3 @@
-<script lang="ts" setup>
-import Card from './card.vue'
-import type { SysInfoEmits, SysInfoProps } from './types'
-
-const { items = [], loading = false } = defineProps<SysInfoProps>()
-const emit = defineEmits<SysInfoEmits>()
-</script>
-
 <template>
   <Card
     v-if="loading"
@@ -31,7 +23,7 @@ const emit = defineEmits<SysInfoEmits>()
     description="实例、系统与网络基础信息"
   >
     <template #extra>
-      <a-button size="small" @click="emit('copyAll')">
+      <a-button size="small" @click="emits('copyAll')">
         <template #icon>
           <Icon name="i-lucide:copy" />
         </template>
@@ -56,7 +48,7 @@ const emit = defineEmits<SysInfoEmits>()
           type="button"
           class="button ml-8 size-24 shrink-0 rounded-4 text-secondary opacity-0 transition group-hover:opacity-100 hover:(bg-hover text-primary)"
           title="复制"
-          @click="emit('copy', item)"
+          @click="emits('copy', item)"
         >
           <Icon name="i-lucide:copy" :size="14" />
         </button>
@@ -65,3 +57,11 @@ const emit = defineEmits<SysInfoEmits>()
     <a-empty v-else />
   </Card>
 </template>
+
+<script lang="ts" setup>
+import Card from './card.vue'
+import type { SysInfoEmits, SysInfoProps } from './types'
+
+const { items = [], loading = false } = defineProps<SysInfoProps>()
+const emits = defineEmits<SysInfoEmits>()
+</script>

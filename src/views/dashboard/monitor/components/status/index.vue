@@ -1,11 +1,3 @@
-<script lang="ts" setup>
-import Item from './item.vue'
-import Card from '../card.vue'
-import type { StatusProps } from '../types'
-
-const { items = [], loading = false } = defineProps<StatusProps>()
-</script>
-
 <template>
   <Card
     v-if="loading"
@@ -31,3 +23,11 @@ const { items = [], loading = false } = defineProps<StatusProps>()
     </div>
   </Card>
 </template>
+
+<script lang="ts" setup>
+import Item from './item.vue'
+import Card from '../card.vue'
+import type { StatusProps } from '../types'
+
+const { items = [], loading = false } = defineProps<StatusProps>()
+</script>

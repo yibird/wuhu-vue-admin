@@ -1,19 +1,3 @@
-<script lang="ts" setup>
-import Card from './card.vue'
-import type { MonitorTone, RecommendAppEmits, RecommendAppProps } from './types'
-
-const { items = [], loading = false } = defineProps<RecommendAppProps>()
-const emit = defineEmits<RecommendAppEmits>()
-
-const toneClassMap: Record<MonitorTone, string> = {
-  primary: 'primary-tinted',
-  success: 'bg-success-tint text-success',
-  warning: 'bg-warning-tint text-warning',
-  error: 'bg-error-tint text-error',
-  info: 'bg-info-tint text-info',
-}
-</script>
-
 <template>
   <Card
     v-if="loading"
@@ -84,12 +68,12 @@ const toneClassMap: Record<MonitorTone, string> = {
             {{ item.status === 'installed' ? '已安装' : '可安装' }}
           </span>
           <div class="flex items-center gap-6">
-            <a-button size="small" @click="emit('open', item)">详情</a-button>
+            <a-button size="small" @click="emits('open', item)">详情</a-button>
             <a-button
               v-if="item.status === 'available'"
               size="small"
               type="primary"
-              @click="emit('install', item)"
+              @click="emits('install', item)"
             >
               安装
             </a-button>
@@ -99,3 +83,19 @@ const toneClassMap: Record<MonitorTone, string> = {
     </div>
   </Card>
 </template>
+
+<script lang="ts" setup>
+import Card from './card.vue'
+import type { MonitorTone, RecommendAppEmits, RecommendAppProps } from './types'
+
+const { items = [], loading = false } = defineProps<RecommendAppProps>()
+const emits = defineEmits<RecommendAppEmits>()
+
+const toneClassMap: Record<MonitorTone, string> = {
+  primary: 'primary-tinted',
+  success: 'bg-success-tint text-success',
+  warning: 'bg-warning-tint text-warning',
+  error: 'bg-error-tint text-error',
+  info: 'bg-info-tint text-info',
+}
+</script>
