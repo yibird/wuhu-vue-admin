@@ -1,3 +1,22 @@
+<template>
+  <DragDropProvider>
+    <VideoCall
+      v-if="type === 'video'"
+      key="video"
+      :open="open"
+      :conversation="conversation"
+      @update:open="emits('update:open', $event)"
+    />
+    <VoiceCall
+      v-else
+      key="voice"
+      :open="open"
+      :conversation="conversation"
+      @update:open="emits('update:open', $event)"
+    />
+  </DragDropProvider>
+</template>
+
 <script setup lang="ts">
 import { DragDropProvider } from '@dnd-kit/vue'
 import VoiceCall from './voice-call.vue'
@@ -13,26 +32,7 @@ defineProps<{
   type: CallType
 }>()
 
-const emit = defineEmits<{
+const emits = defineEmits<{
   'update:open': [value: boolean]
 }>()
 </script>
-
-<template>
-  <DragDropProvider>
-    <VideoCall
-      v-if="type === 'video'"
-      key="video"
-      :open="open"
-      :conversation="conversation"
-      @update:open="emit('update:open', $event)"
-    />
-    <VoiceCall
-      v-else
-      key="voice"
-      :open="open"
-      :conversation="conversation"
-      @update:open="emit('update:open', $event)"
-    />
-  </DragDropProvider>
-</template>

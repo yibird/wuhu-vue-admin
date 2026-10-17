@@ -1,187 +1,3 @@
-<script setup lang="ts">
-import { Icon } from '@/components/icon'
-import { defaultDirectorySearchHistory } from '../../data'
-import { useSearchHistory } from '../../hooks'
-import type {
-  Contact,
-  Conversation,
-  DirectoryGroupItem,
-  DirectoryItem,
-  DirectoryUserItem,
-  GroupCategory,
-} from '../types'
-
-type SearchTab = 'all' | 'user' | 'group'
-
-const props = withDefaults(
-  defineProps<{
-    contacts?: Contact[]
-    groups?: Conversation[]
-    candidates?: DirectoryItem[]
-  }>(),
-  {
-    contacts: () => [],
-    groups: () => [],
-    candidates: () => [],
-  }
-)
-
-const emit = defineEmits<{
-  addUser: [user: DirectoryUserItem]
-  addGroup: [group: DirectoryGroupItem]
-}>()
-
-const open = defineModel<boolean>('open', { default: false })
-const keyword = shallowRef('')
-const submittedKeyword = shallowRef('')
-const activeTab = shallowRef<SearchTab>('all')
-
-const {
-  records,
-  expanded,
-  visibleRecords,
-  canToggle,
-  addRecord,
-  removeRecord,
-  clearRecords,
-  toggleExpanded,
-} = useSearchHistory({
-  storageKey: 'wuhu-chat-directory-search-history',
-  initialRecords: defaultDirectorySearchHistory,
-  collapsedCount: 5,
-})
-
-const searchTabs = [
-  { key: 'all', label: '全部' },
-  { key: 'user', label: '用户' },
-  { key: 'group', label: '群聊' },
-]
-
-const categoryLabels: Record<GroupCategory, string> = {
-  project: '项目协作',
-  department: '部门沟通',
-  interest: '兴趣交流',
-  study: '学习成长',
-  other: '其他',
-}
-
-const allDirectoryItems = computed<DirectoryItem[]>(() => {
-  const items = new Map<string, DirectoryItem>()
-
-  for (const contact of props.contacts) {
-    items.set(`user:${contact.id}`, {
-      id: contact.id,
-      type: 'user',
-      name: contact.name,
-      avatar: contact.avatar,
-      status: contact.status,
-      title: contact.title,
-      department: contact.department,
-      tags: contact.tags,
-    })
-  }
-
-  for (const group of props.groups) {
-    items.set(`group:${group.id}`, {
-      id: group.id,
-      type: 'group',
-      name: group.title,
-      avatar: group.avatar,
-      category: group.groupInfo?.category,
-      description: group.lastMessage,
-      memberCount: group.groupInfo?.memberCount ?? 0,
-    })
-  }
-
-  for (const candidate of props.candidates) {
-    const key = `${candidate.type}:${candidate.id}`
-    if (!items.has(key)) items.set(key, candidate)
-  }
-
-  return [...items.values()]
-})
-
-const addedUserIds = computed(
-  () => new Set(props.contacts.map((item) => item.id))
-)
-const joinedGroupIds = computed(
-  () => new Set(props.groups.map((item) => item.id))
-)
-
-const filteredResults = computed(() => {
-  const normalized = submittedKeyword.value.trim().toLowerCase()
-  if (!normalized) return []
-
-  return allDirectoryItems.value.filter((item) => {
-    if (activeTab.value !== 'all' && item.type !== activeTab.value) return false
-
-    const searchFields =
-      item.type === 'user'
-        ? [item.name, item.title, item.department, ...(item.tags ?? [])]
-        : [item.name, item.description, ...(item.tags ?? [])]
-
-    return searchFields.some((field) =>
-      field?.toLowerCase().includes(normalized)
-    )
-  })
-})
-
-watch(open, (isOpen) => {
-  if (!isOpen) return
-  keyword.value = ''
-  submittedKeyword.value = ''
-  activeTab.value = 'all'
-})
-
-watch(keyword, (value) => {
-  if (!value.trim()) submittedKeyword.value = ''
-})
-
-function handleSearch(value?: string) {
-  const nextKeyword = (typeof value === 'string' ? value : keyword.value).trim()
-  if (!nextKeyword) return
-
-  keyword.value = nextKeyword
-  submittedKeyword.value = nextKeyword
-  addRecord(nextKeyword)
-}
-
-function applyHistory(record: string) {
-  handleSearch(record)
-}
-
-function isAdded(item: DirectoryItem) {
-  return item.type === 'user'
-    ? addedUserIds.value.has(item.id)
-    : joinedGroupIds.value.has(item.id)
-}
-
-function resultActionLabel(item: DirectoryItem) {
-  if (item.type === 'user') {
-    return isAdded(item) ? '已是好友' : '添加好友'
-  }
-  return isAdded(item) ? '已加入' : '加入群聊'
-}
-
-function resultMeta(item: DirectoryItem) {
-  if (item.type === 'user') {
-    return [item.title, item.department].filter(Boolean).join(' · ') || '用户'
-  }
-
-  const category = item.category ? categoryLabels[item.category] : '群聊'
-  return `${category} · ${item.memberCount} 人`
-}
-
-function handleAdd(item: DirectoryItem) {
-  if (isAdded(item)) return
-  if (item.type === 'user') {
-    emit('addUser', item)
-    return
-  }
-  emit('addGroup', item)
-}
-</script>
-
 <template>
   <a-modal
     v-model:open="open"
@@ -375,3 +191,187 @@ function handleAdd(item: DirectoryItem) {
     </div>
   </a-modal>
 </template>
+
+<script setup lang="ts">
+import { Icon } from '@/components/icon'
+import { defaultDirectorySearchHistory } from '../../data'
+import { useSearchHistory } from '../../hooks'
+import type {
+  Contact,
+  Conversation,
+  DirectoryGroupItem,
+  DirectoryItem,
+  DirectoryUserItem,
+  GroupCategory,
+} from '../types'
+
+type SearchTab = 'all' | 'user' | 'group'
+
+const props = withDefaults(
+  defineProps<{
+    contacts?: Contact[]
+    groups?: Conversation[]
+    candidates?: DirectoryItem[]
+  }>(),
+  {
+    contacts: () => [],
+    groups: () => [],
+    candidates: () => [],
+  }
+)
+
+const emits = defineEmits<{
+  addUser: [user: DirectoryUserItem]
+  addGroup: [group: DirectoryGroupItem]
+}>()
+
+const open = defineModel<boolean>('open', { default: false })
+const keyword = shallowRef('')
+const submittedKeyword = shallowRef('')
+const activeTab = shallowRef<SearchTab>('all')
+
+const {
+  records,
+  expanded,
+  visibleRecords,
+  canToggle,
+  addRecord,
+  removeRecord,
+  clearRecords,
+  toggleExpanded,
+} = useSearchHistory({
+  storageKey: 'wuhu-chat-directory-search-history',
+  initialRecords: defaultDirectorySearchHistory,
+  collapsedCount: 5,
+})
+
+const searchTabs = [
+  { key: 'all', label: '全部' },
+  { key: 'user', label: '用户' },
+  { key: 'group', label: '群聊' },
+]
+
+const categoryLabels: Record<GroupCategory, string> = {
+  project: '项目协作',
+  department: '部门沟通',
+  interest: '兴趣交流',
+  study: '学习成长',
+  other: '其他',
+}
+
+const allDirectoryItems = computed<DirectoryItem[]>(() => {
+  const items = new Map<string, DirectoryItem>()
+
+  for (const contact of props.contacts) {
+    items.set(`user:${contact.id}`, {
+      id: contact.id,
+      type: 'user',
+      name: contact.name,
+      avatar: contact.avatar,
+      status: contact.status,
+      title: contact.title,
+      department: contact.department,
+      tags: contact.tags,
+    })
+  }
+
+  for (const group of props.groups) {
+    items.set(`group:${group.id}`, {
+      id: group.id,
+      type: 'group',
+      name: group.title,
+      avatar: group.avatar,
+      category: group.groupInfo?.category,
+      description: group.lastMessage,
+      memberCount: group.groupInfo?.memberCount ?? 0,
+    })
+  }
+
+  for (const candidate of props.candidates) {
+    const key = `${candidate.type}:${candidate.id}`
+    if (!items.has(key)) items.set(key, candidate)
+  }
+
+  return [...items.values()]
+})
+
+const addedUserIds = computed(
+  () => new Set(props.contacts.map((item) => item.id))
+)
+const joinedGroupIds = computed(
+  () => new Set(props.groups.map((item) => item.id))
+)
+
+const filteredResults = computed(() => {
+  const normalized = submittedKeyword.value.trim().toLowerCase()
+  if (!normalized) return []
+
+  return allDirectoryItems.value.filter((item) => {
+    if (activeTab.value !== 'all' && item.type !== activeTab.value) return false
+
+    const searchFields =
+      item.type === 'user'
+        ? [item.name, item.title, item.department, ...(item.tags ?? [])]
+        : [item.name, item.description, ...(item.tags ?? [])]
+
+    return searchFields.some((field) =>
+      field?.toLowerCase().includes(normalized)
+    )
+  })
+})
+
+watch(open, (isOpen) => {
+  if (!isOpen) return
+  keyword.value = ''
+  submittedKeyword.value = ''
+  activeTab.value = 'all'
+})
+
+watch(keyword, (value) => {
+  if (!value.trim()) submittedKeyword.value = ''
+})
+
+function handleSearch(value?: string) {
+  const nextKeyword = (typeof value === 'string' ? value : keyword.value).trim()
+  if (!nextKeyword) return
+
+  keyword.value = nextKeyword
+  submittedKeyword.value = nextKeyword
+  addRecord(nextKeyword)
+}
+
+function applyHistory(record: string) {
+  handleSearch(record)
+}
+
+function isAdded(item: DirectoryItem) {
+  return item.type === 'user'
+    ? addedUserIds.value.has(item.id)
+    : joinedGroupIds.value.has(item.id)
+}
+
+function resultActionLabel(item: DirectoryItem) {
+  if (item.type === 'user') {
+    return isAdded(item) ? '已是好友' : '添加好友'
+  }
+  return isAdded(item) ? '已加入' : '加入群聊'
+}
+
+function resultMeta(item: DirectoryItem) {
+  if (item.type === 'user') {
+    return [item.title, item.department].filter(Boolean).join(' · ') || '用户'
+  }
+
+  const category = item.category ? categoryLabels[item.category] : '群聊'
+  return `${category} · ${item.memberCount} 人`
+}
+
+function handleAdd(item: DirectoryItem) {
+  if (isAdded(item)) return
+  if (item.type === 'user') {
+    emits('addUser', item)
+    return
+  }
+  emits('addGroup', item)
+}
+</script>

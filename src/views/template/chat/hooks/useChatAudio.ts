@@ -142,7 +142,14 @@ export function useChatAudio() {
     outgoingTones.clear()
   }
 
-  function playIncomingMessageTone() {
+  /**
+   * 播放入站消息提示音
+   * @param volume 音量系数,取值 0-1;0 表示静音
+   */
+  function playIncomingMessageTone(volume = 0.7) {
+    const level = Math.min(1, Math.max(0, volume))
+    if (level <= 0) return
+
     getRunningAudioContext().then((context) => {
       if (!context) return
 
@@ -151,13 +158,13 @@ export function useChatAudio() {
         duration: 0.1,
         frequency: 1046.5,
         startAt,
-        volume: 0.055,
+        volume: 0.12 * level,
       })
       createTone(context, {
         duration: 0.13,
         frequency: 1318.5,
         startAt: startAt + 0.09,
-        volume: 0.045,
+        volume: 0.1 * level,
       })
     })
   }

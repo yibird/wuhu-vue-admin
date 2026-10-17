@@ -151,7 +151,7 @@
 <script setup lang="ts">
 import type { EmojiPickerEmits } from '../../types'
 
-const emit = defineEmits<EmojiPickerEmits>()
+const emits = defineEmits<EmojiPickerEmits>()
 
 const searchValue = ref('')
 const activeTab = ref('smileys')
@@ -459,6 +459,6 @@ function handleSelect(emoji: string) {
     recent.pop()
   }
 
-  emit('select', emoji)
+  emits('select', emoji)
 }
 </script>

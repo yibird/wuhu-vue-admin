@@ -81,7 +81,7 @@
             type="link"
             size="small"
             :disabled="categoryUnreadCount === 0"
-            @click="emit('read', category)"
+            @click="emits('read', category)"
           >
             全部已读
           </a-button>
@@ -134,12 +134,12 @@
                   </span>
 
                   <div v-if="notice.status === 'pending'" class="flex gap-8">
-                    <a-button @click="emit('resolve', notice, false)">
+                    <a-button @click="emits('resolve', notice, false)">
                       忽略
                     </a-button>
                     <a-button
                       type="primary"
-                      @click="emit('resolve', notice, true)"
+                      @click="emits('resolve', notice, true)"
                     >
                       {{ category === 'friend' ? '同意申请' : '加入群聊' }}
                     </a-button>
@@ -187,7 +187,7 @@ const props = withDefaults(
   }
 )
 
-const emit = defineEmits<{
+const emits = defineEmits<{
   read: [category: ContactNotificationCategory]
   resolve: [notification: ContactNotification, accepted: boolean]
 }>()

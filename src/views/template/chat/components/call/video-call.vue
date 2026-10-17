@@ -1,39 +1,3 @@
-<script setup lang="ts">
-import WindowShell from './window-shell.vue'
-import { useCallSession } from './hooks'
-import type { CallWindowEmits, CallWindowProps } from './types'
-
-const props = defineProps<CallWindowProps>()
-const emit = defineEmits<CallWindowEmits>()
-
-const {
-  cameraEnabled,
-  hasLocalVideo,
-  micEnabled,
-  permissionError,
-  speakerEnabled,
-  status,
-  statusText,
-  cleanupCall,
-  setLocalVideoElement,
-  toggleCamera,
-  toggleMic,
-} = useCallSession({
-  open: toRef(props, 'open'),
-  video: true,
-})
-
-const remoteVideoText = computed(() => {
-  if (status.value === 'calling') return '等待对方接听'
-  if (status.value === 'error') return '已进入模拟通话'
-  return '对方视频画面'
-})
-
-function endCall() {
-  cleanupCall()
-}
-</script>
-
 <template>
   <WindowShell
     :fallback-height="460"
@@ -44,7 +8,7 @@ function endCall() {
     :status="status"
     :status-text="statusText"
     @end="endCall"
-    @update:open="emit('update:open', $event)"
+    @update:open="emits('update:open', $event)"
   >
     <div
       class="relative min-h-260 overflow-hidden rounded-8 bg-[rgb(15_23_42)] text-white shadow-[inset_0_0_0_1px_rgb(255_255_255_/_8%)]"
@@ -146,10 +110,46 @@ function endCall() {
         type="button"
         class="call-action call-action-end"
         title="挂断"
-        @click="emit('update:open', false)"
+        @click="emits('update:open', false)"
       >
         <Icon name="i-lucide:phone-off" :size="19" />
       </button>
     </div>
   </WindowShell>
 </template>
+
+<script setup lang="ts">
+import WindowShell from './window-shell.vue'
+import { useCallSession } from './hooks'
+import type { CallWindowEmits, CallWindowProps } from './types'
+
+const props = defineProps<CallWindowProps>()
+const emits = defineEmits<CallWindowEmits>()
+
+const {
+  cameraEnabled,
+  hasLocalVideo,
+  micEnabled,
+  permissionError,
+  speakerEnabled,
+  status,
+  statusText,
+  cleanupCall,
+  setLocalVideoElement,
+  toggleCamera,
+  toggleMic,
+} = useCallSession({
+  open: toRef(props, 'open'),
+  video: true,
+})
+
+const remoteVideoText = computed(() => {
+  if (status.value === 'calling') return '等待对方接听'
+  if (status.value === 'error') return '已进入模拟通话'
+  return '对方视频画面'
+})
+
+function endCall() {
+  cleanupCall()
+}
+</script>

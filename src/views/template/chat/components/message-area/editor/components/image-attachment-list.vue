@@ -10,7 +10,7 @@
         type="button"
         class="button absolute right-4 top-4 size-18 rounded-full bg-mask text-white opacity-0 transition-[opacity,colors] group-hover:opacity-100 hover:bg-mask-2"
         aria-label="移除待发送图片"
-        @click="emit('remove', index)"
+        @click="emits('remove', index)"
       >
         <Icon name="i-lucide:x" :size="12" />
       </button>
@@ -22,7 +22,7 @@
       class="button size-64 flex-col gap-4 rounded-8 border-1 border-dashed border-color-2 bg-fill-quaternary text-secondary transition-colors hover:(border-primary bg-primary/8 text-primary)"
       title="继续添加图片"
       aria-label="继续添加图片"
-      @click="emit('add')"
+      @click="emits('add')"
     >
       <Icon name="i-lucide:plus" :size="18" />
       <span class="text-11px">添加</span>
@@ -35,7 +35,7 @@ import type { ImageAttachmentListProps } from '../types'
 
 defineProps<ImageAttachmentListProps>()
 
-const emit = defineEmits<{
+const emits = defineEmits<{
   add: []
   remove: [index: number]
 }>()

@@ -13,15 +13,19 @@
           <Icon name="i-lucide:settings-2" :size="18" />
         </span>
         <span>
-          <span class="block text-lg text-main font-600">聊天设置</span>
+          <span class="block text-lg text-main font-600">设置</span>
           <span class="mt-2 block text-xs text-secondary font-400">
-            管理消息、通知和会话偏好
+            管理通知、消息显示与会话偏好
           </span>
         </span>
       </div>
     </template>
 
-    <SettingPanel v-model="draftSettings" :show-header="false" />
+    <SettingPanel
+      v-model="draftSettings"
+      :show-header="false"
+      @preview-sound="emits('previewSound')"
+    />
 
     <div class="settings-modal__footer">
       <a-button @click="handleCancel">取消</a-button>
@@ -37,6 +41,12 @@ import type { ChatSettings } from '../types'
 
 const open = defineModel<boolean>('open', { default: false })
 const settings = defineModel<ChatSettings>('settings', { required: true })
+const emits = defineEmits<{
+  /**
+   * @desc 请求试听消息提示音
+   */
+  previewSound: []
+}>()
 
 const draftSettings = shallowRef<ChatSettings>({ ...settings.value })
 

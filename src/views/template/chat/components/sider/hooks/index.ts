@@ -1,2 +1,2 @@
 export { useContactGroups } from './useContactGroups'
-export type { ContactGroupMode, ContactRow } from './useContactGroups'
+export type { ContactGroupMode, ContactGroupView } from './useContactGroups'

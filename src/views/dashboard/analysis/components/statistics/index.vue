@@ -1,3 +1,67 @@
+<template>
+  <a-border-beam :duration="6" :line-width="3">
+    <Card
+      class="page-enter page-enter--3 overflow-hidden rounded-8 border-1 border-solid border-color-2 shadow-[var(--w-shadow-card)]"
+      variant="borderless"
+      :styles="{
+        body: {
+          padding: '0',
+        },
+      }"
+    >
+      <div
+        class="flex flex-wrap items-center justify-between gap-12 border-b-1 border-b-solid border-color-2 bg-container px-14 py-12 sm:px-18"
+      >
+        <div class="min-w-0">
+          <div class="text-sm text-main font-700">经营趋势</div>
+          <div class="mt-2 text-xs text-secondary">销售额与访问量对比分析</div>
+        </div>
+        <div class="min-w-0 flex flex-wrap items-center justify-end gap-8">
+          <a-radio-group
+            v-model:value="activeRange"
+            name="analysis-range"
+            @change="onRangeChange"
+          >
+            <a-radio-button
+              v-for="item in rangeOptions"
+              :key="item.value"
+              :value="item.value"
+            >
+              {{ item.title }}
+            </a-radio-button>
+          </a-radio-group>
+          <DateRangePicker
+            v-model:value="dateRange"
+            allow-clear
+            :presets="[]"
+            class="w-260! max-sm:w-full"
+            @change="onDateChange"
+          />
+        </div>
+      </div>
+
+      <a-tabs
+        class="analysis-tabs"
+        :tabs-padding="18"
+        :tab-bar-style="{ padding: '0 18px' }"
+        :animated="{ inkBar: true, tabPane: false }"
+        destroy-on-hidden
+      >
+        <a-tab-pane
+          v-for="item in items"
+          :key="item.name"
+          :name="item.name"
+          :tab="item.title"
+        >
+          <div class="h-360 rounded-8 bg-transparent p-12 max-md:h-300">
+            <component :is="item.component" :range="dateRange" />
+          </div>
+        </a-tab-pane>
+      </a-tabs>
+    </Card>
+  </a-border-beam>
+</template>
+
 <script lang="ts" setup>
 import { DateRangePicker, Card } from '@/components'
 import SalesRevenue from './sales-revenue.vue'
@@ -44,65 +108,3 @@ function onDateChange(dates: Array<Dayjs> | null) {
   dateRange.value = [start, end]
 }
 </script>
-
-<template>
-  <Card
-    class="page-enter page-enter--3 overflow-hidden rounded-8 border-1 border-solid border-color-2 shadow-[var(--w-shadow-card)]"
-    variant="borderless"
-    :styles="{
-      body: {
-        padding: '0',
-      },
-    }"
-  >
-    <div
-      class="flex flex-wrap items-center justify-between gap-12 border-b-1 border-b-solid border-color-2 bg-container px-14 py-12 sm:px-18"
-    >
-      <div class="min-w-0">
-        <div class="text-sm text-main font-700">经营趋势</div>
-        <div class="mt-2 text-xs text-secondary">销售额与访问量对比分析</div>
-      </div>
-      <div class="min-w-0 flex flex-wrap items-center justify-end gap-8">
-        <a-radio-group
-          v-model:value="activeRange"
-          name="analysis-range"
-          @change="onRangeChange"
-        >
-          <a-radio-button
-            v-for="item in rangeOptions"
-            :key="item.value"
-            :value="item.value"
-          >
-            {{ item.title }}
-          </a-radio-button>
-        </a-radio-group>
-        <DateRangePicker
-          v-model:value="dateRange"
-          allow-clear
-          :presets="[]"
-          class="w-260! max-sm:w-full"
-          @change="onDateChange"
-        />
-      </div>
-    </div>
-
-    <a-tabs
-      class="analysis-tabs"
-      :tabs-padding="18"
-      :tab-bar-style="{ padding: '0 18px' }"
-      :animated="{ inkBar: true, tabPane: false }"
-      destroy-on-hidden
-    >
-      <a-tab-pane
-        v-for="item in items"
-        :key="item.name"
-        :name="item.name"
-        :tab="item.title"
-      >
-        <div class="h-360 rounded-8 bg-transparent p-12 max-md:h-300">
-          <component :is="item.component" :range="dateRange" />
-        </div>
-      </a-tab-pane>
-    </a-tabs>
-  </Card>
-</template>

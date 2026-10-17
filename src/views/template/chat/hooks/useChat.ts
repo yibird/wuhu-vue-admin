@@ -7,6 +7,7 @@ import { useChatMessages } from './useChatMessages'
 import { useContactNotifications } from './useContactNotifications'
 import { useResizableSidebar } from './useResizableSidebar'
 import { createInitialMessagesByConversation } from '../data'
+import { createDefaultChatSettings } from '../components/settings/constants'
 import type {
   ChatSettings,
   Contact,
@@ -27,17 +28,14 @@ export function useChat() {
   const callOpen = shallowRef(false)
   const callType = shallowRef<'voice' | 'video'>('voice')
   const callConversation = shallowRef<Conversation>()
-  const chatSettings = shallowRef<ChatSettings>({
-    enterToSend: true,
-    desktopNotify: true,
-    messageSound: true,
-    readReceipt: true,
-    dnd: false,
-    compactMode: false,
-    autoArchiveDays: 30,
-  })
+  const chatSettings = shallowRef<ChatSettings>(createDefaultChatSettings())
   const messagesByConversation = ref(createInitialMessagesByConversation())
   const { playIncomingMessageTone } = useChatAudio()
+
+  /** 按当前音量设置播放一次提示音,供收到消息与设置里的试听共用 */
+  function previewMessageSound() {
+    playIncomingMessageTone(chatSettings.value.soundVolume / 100)
+  }
 
   const {
     activeConversation,
@@ -112,7 +110,7 @@ export function useChat() {
     conversations,
     messagesByConversation,
     typingConversations,
-    onIncomingMessage: playIncomingMessageTone,
+    onIncomingMessage: previewMessageSound,
   })
 
   function handleConversationSelect(conversation: Conversation) {
@@ -230,5 +228,6 @@ export function useChat() {
     addDirectoryGroup,
     markContactNotificationsRead,
     resolveContactNotification,
+    previewMessageSound,
   }
 }

@@ -1,84 +1,3 @@
-<script setup lang="ts">
-import { Icon } from '@/components/icon'
-import type { Contact, CreateGroupPayload, GroupCategory } from '../types'
-
-interface CreateGroupForm {
-  name: string
-  category?: GroupCategory
-  memberIds: string[]
-}
-
-const props = withDefaults(
-  defineProps<{
-    contacts?: Contact[]
-  }>(),
-  {
-    contacts: () => [],
-  }
-)
-
-const emit = defineEmits<{
-  submit: [payload: CreateGroupPayload]
-}>()
-
-const open = defineModel<boolean>('open', { default: false })
-const friendKeyword = shallowRef('')
-const form = reactive<CreateGroupForm>({
-  name: '',
-  category: undefined,
-  memberIds: [],
-})
-
-const categoryOptions = [
-  { label: '项目协作', value: 'project' },
-  { label: '部门沟通', value: 'department' },
-  { label: '兴趣交流', value: 'interest' },
-  { label: '学习成长', value: 'study' },
-  { label: '其他', value: 'other' },
-]
-
-const filteredContacts = computed(() => {
-  const keyword = friendKeyword.value.trim().toLowerCase()
-  if (!keyword) return props.contacts
-
-  return props.contacts.filter((contact) =>
-    [contact.name, contact.title, contact.department].some((text) =>
-      text?.toLowerCase().includes(keyword)
-    )
-  )
-})
-
-const canSubmit = computed(
-  () =>
-    Boolean(form.name.trim()) &&
-    form.name.trim().length <= 50 &&
-    Boolean(form.category) &&
-    form.memberIds.length > 0
-)
-
-watch(open, (isOpen) => {
-  if (isOpen) resetForm()
-})
-
-function resetForm() {
-  form.name = ''
-  form.category = undefined
-  form.memberIds = []
-  friendKeyword.value = ''
-}
-
-function handleSubmit() {
-  if (!canSubmit.value || !form.category) return
-
-  emit('submit', {
-    name: form.name.trim(),
-    category: form.category,
-    memberIds: [...form.memberIds],
-  })
-  open.value = false
-}
-</script>
-
 <template>
   <a-modal
     v-model:open="open"
@@ -200,3 +119,84 @@ function handleSubmit() {
     </div>
   </a-modal>
 </template>
+
+<script setup lang="ts">
+import { Icon } from '@/components/icon'
+import type { Contact, CreateGroupPayload, GroupCategory } from '../types'
+
+interface CreateGroupForm {
+  name: string
+  category?: GroupCategory
+  memberIds: string[]
+}
+
+const props = withDefaults(
+  defineProps<{
+    contacts?: Contact[]
+  }>(),
+  {
+    contacts: () => [],
+  }
+)
+
+const emits = defineEmits<{
+  submit: [payload: CreateGroupPayload]
+}>()
+
+const open = defineModel<boolean>('open', { default: false })
+const friendKeyword = shallowRef('')
+const form = reactive<CreateGroupForm>({
+  name: '',
+  category: undefined,
+  memberIds: [],
+})
+
+const categoryOptions = [
+  { label: '项目协作', value: 'project' },
+  { label: '部门沟通', value: 'department' },
+  { label: '兴趣交流', value: 'interest' },
+  { label: '学习成长', value: 'study' },
+  { label: '其他', value: 'other' },
+]
+
+const filteredContacts = computed(() => {
+  const keyword = friendKeyword.value.trim().toLowerCase()
+  if (!keyword) return props.contacts
+
+  return props.contacts.filter((contact) =>
+    [contact.name, contact.title, contact.department].some((text) =>
+      text?.toLowerCase().includes(keyword)
+    )
+  )
+})
+
+const canSubmit = computed(
+  () =>
+    Boolean(form.name.trim()) &&
+    form.name.trim().length <= 50 &&
+    Boolean(form.category) &&
+    form.memberIds.length > 0
+)
+
+watch(open, (isOpen) => {
+  if (isOpen) resetForm()
+})
+
+function resetForm() {
+  form.name = ''
+  form.category = undefined
+  form.memberIds = []
+  friendKeyword.value = ''
+}
+
+function handleSubmit() {
+  if (!canSubmit.value || !form.category) return
+
+  emits('submit', {
+    name: form.name.trim(),
+    category: form.category,
+    memberIds: [...form.memberIds],
+  })
+  open.value = false
+}
+</script>

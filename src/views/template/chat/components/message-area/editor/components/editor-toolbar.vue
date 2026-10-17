@@ -69,7 +69,7 @@
       "
       title="语音"
       :aria-label="recording ? '停止录音' : '开始录音'"
-      @click="emit('toggleRecording')"
+      @click="emits('toggleRecording')"
     >
       <Icon name="i-lucide:mic" :size="20" />
     </button>
@@ -111,7 +111,7 @@ withDefaults(defineProps<EditorToolbarProps>(), {
   feedback: '',
 })
 
-const emit = defineEmits<{
+const emits = defineEmits<{
   addImages: [files: File[]]
   emojiSelect: [emoji: string]
   extensionSelect: [action: EditorAction]
@@ -126,23 +126,23 @@ const showExtensionMenu = ref(false)
 
 function handleEmojiSelect(emoji: string) {
   showEmojiPicker.value = false
-  emit('emojiSelect', emoji)
+  emits('emojiSelect', emoji)
 }
 
 function handleAttachmentPick(key: string) {
   showAttachmentMenu.value = false
-  if (key === 'file') emit('pickFile')
-  else emit('pickImage')
+  if (key === 'file') emits('pickFile')
+  else emits('pickImage')
 }
 
 function handleAddImages(files: File[]) {
   showAttachmentMenu.value = false
-  emit('addImages', files)
+  emits('addImages', files)
 }
 
 function handleExtensionSelect(action: EditorAction) {
   showExtensionMenu.value = false
-  emit('extensionSelect', action)
+  emits('extensionSelect', action)
 }
 
 /** 关闭工具栏内的所有浮层。 */

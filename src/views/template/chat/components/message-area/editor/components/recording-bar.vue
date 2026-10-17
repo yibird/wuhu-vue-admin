@@ -9,14 +9,14 @@
         <button
           type="button"
           class="button rounded-4 px-15 py-6 text-sm text-secondary transition-colors hover:bg-hover"
-          @click="emit('cancel')"
+          @click="emits('cancel')"
         >
           取消
         </button>
         <button
           type="button"
           class="button rounded-4 bg-error px-15 py-6 text-sm text-white transition-colors hover:bg-error-2"
-          @click="emit('stop')"
+          @click="emits('stop')"
         >
           停止
         </button>
@@ -30,7 +30,7 @@ import type { RecordingBarProps } from '../types'
 
 defineProps<RecordingBarProps>()
 
-const emit = defineEmits<{
+const emits = defineEmits<{
   cancel: []
   stop: []
 }>()

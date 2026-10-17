@@ -76,6 +76,7 @@
     <SettingsModal
       v-model:open="settingsModalOpen"
       v-model:settings="chatSettings"
+      @preview-sound="previewMessageSound"
     />
 
     <GroupDrawer
@@ -197,6 +198,7 @@ const {
   addDirectoryGroup,
   markContactNotificationsRead,
   resolveContactNotification,
+  previewMessageSound,
 } = useChat()
 
 const {

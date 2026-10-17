@@ -29,7 +29,7 @@
             v-if="activeKey === item.key"
             as="span"
             layout-id="chat-nav-active-background"
-            class="pointer-events-none absolute inset-0 rounded-6 bg-primary/10"
+            class="pointer-events-none absolute inset-0 bg-primary/10"
             :transition="activeIndicatorTransition"
           />
           <Motion
@@ -66,7 +66,7 @@
         </Motion>
       </LayoutGroup>
     </div>
-    <Setting @open-settings="emit('openSettings')" />
+    <Setting @open-settings="emits('openSettings')" />
   </nav>
 </template>
 
@@ -76,7 +76,7 @@ import Header from './header.vue'
 import Setting from './setting.vue'
 import type { NavType, NavItem, NavigationEmits } from '../types'
 
-const emit = defineEmits<NavigationEmits>()
+const emits = defineEmits<NavigationEmits>()
 const props = withDefaults(
   defineProps<{
     unreadCount?: number
@@ -121,6 +121,6 @@ const activeIndicatorTransition = {
 
 function handleNavClick(key: NavType) {
   activeKey.value = key
-  emit('navChange', key)
+  emits('navChange', key)
 }
 </script>

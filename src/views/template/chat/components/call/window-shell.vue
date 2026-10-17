@@ -1,72 +1,3 @@
-<script setup lang="ts">
-import { computed, shallowRef, useTemplateRef, watch } from 'vue'
-import { Icon } from '@/components/icon'
-import { useDraggableCallWindow } from './hooks'
-import type { CallStatus } from './types'
-
-const props = defineProps<{
-  fallbackHeight?: number
-  fallbackWidth?: number
-  open: boolean
-  status: CallStatus
-  statusText: string
-  title: string
-  variant?: 'voice' | 'video'
-}>()
-
-const emit = defineEmits<{
-  'update:open': [value: boolean]
-  end: []
-}>()
-
-const minimized = shallowRef(false)
-const windowRef = useTemplateRef<HTMLElement>('windowRef')
-const dragHandleRef = useTemplateRef<HTMLElement>('dragHandleRef')
-const {
-  dragging,
-  windowStyle,
-  keepWindowInViewportAfterRender,
-  placeWindowAtBottomRightAfterRender,
-  resetWindowPositionAfterRender,
-} = useDraggableCallWindow(windowRef, dragHandleRef, {
-  disabled: () => !props.open,
-  fallbackHeight: () => props.fallbackHeight ?? 420,
-  fallbackWidth: () =>
-    props.fallbackWidth ?? (props.variant === 'video' ? 420 : 380),
-})
-
-const windowClass = computed(() => ({
-  'call-window-minimized': minimized.value,
-  'call-window-dragging': dragging.value,
-  '!w-420 max-w-[calc(100vw-32px)]':
-    props.variant === 'video' && !minimized.value,
-}))
-
-watch(
-  () => props.open,
-  (open) => {
-    if (!open) return
-
-    minimized.value = false
-    resetWindowPositionAfterRender()
-  },
-  { immediate: true }
-)
-
-watch(minimized, (value) => {
-  if (value) {
-    placeWindowAtBottomRightAfterRender()
-    return
-  }
-  keepWindowInViewportAfterRender()
-})
-
-function endCall() {
-  emit('end')
-  emit('update:open', false)
-}
-</script>
-
 <template>
   <Teleport to="body">
     <transition name="chat-call-window">
@@ -123,3 +54,72 @@ function endCall() {
     </transition>
   </Teleport>
 </template>
+
+<script setup lang="ts">
+import { computed, shallowRef, useTemplateRef, watch } from 'vue'
+import { Icon } from '@/components/icon'
+import { useDraggableCallWindow } from './hooks'
+import type { CallStatus } from './types'
+
+const props = defineProps<{
+  fallbackHeight?: number
+  fallbackWidth?: number
+  open: boolean
+  status: CallStatus
+  statusText: string
+  title: string
+  variant?: 'voice' | 'video'
+}>()
+
+const emits = defineEmits<{
+  'update:open': [value: boolean]
+  end: []
+}>()
+
+const minimized = shallowRef(false)
+const windowRef = useTemplateRef<HTMLElement>('windowRef')
+const dragHandleRef = useTemplateRef<HTMLElement>('dragHandleRef')
+const {
+  dragging,
+  windowStyle,
+  keepWindowInViewportAfterRender,
+  placeWindowAtBottomRightAfterRender,
+  resetWindowPositionAfterRender,
+} = useDraggableCallWindow(windowRef, dragHandleRef, {
+  disabled: () => !props.open,
+  fallbackHeight: () => props.fallbackHeight ?? 420,
+  fallbackWidth: () =>
+    props.fallbackWidth ?? (props.variant === 'video' ? 420 : 380),
+})
+
+const windowClass = computed(() => ({
+  'call-window-minimized': minimized.value,
+  'call-window-dragging': dragging.value,
+  '!w-420 max-w-[calc(100vw-32px)]':
+    props.variant === 'video' && !minimized.value,
+}))
+
+watch(
+  () => props.open,
+  (open) => {
+    if (!open) return
+
+    minimized.value = false
+    resetWindowPositionAfterRender()
+  },
+  { immediate: true }
+)
+
+watch(minimized, (value) => {
+  if (value) {
+    placeWindowAtBottomRightAfterRender()
+    return
+  }
+  keepWindowInViewportAfterRender()
+})
+
+function endCall() {
+  emits('end')
+  emits('update:open', false)
+}
+</script>

@@ -10,7 +10,7 @@
     <ComposeTip
       :edit-message="editMessage"
       :reply-message="replyMessage"
-      @cancel="emit('cancelCompose')"
+      @cancel="emits('cancelCompose')"
     />
 
     <RecordingBar
@@ -89,6 +89,7 @@
 </template>
 
 <script setup lang="ts">
+import { createDefaultChatSettings } from '../../settings/constants'
 import { useTextareaAutosize } from '@vueuse/core'
 import {
   ComposeTip,
@@ -110,18 +111,10 @@ const props = withDefaults(defineProps<EditorProps>(), {
   disabled: false,
   replyMessage: null,
   editMessage: null,
-  settings: () => ({
-    enterToSend: true,
-    desktopNotify: true,
-    messageSound: true,
-    readReceipt: true,
-    dnd: false,
-    compactMode: false,
-    autoArchiveDays: 30,
-  }),
+  settings: () => createDefaultChatSettings(),
 })
 
-const emit = defineEmits<MessageEditorEmits>()
+const emits = defineEmits<MessageEditorEmits>()
 
 const inputText = ref('')
 const feedback = shallowRef('')
@@ -157,9 +150,9 @@ const {
   toggleRecording,
 } = useMessageRecording({
   onSend: (duration) =>
-    emit('send', { type: 'voice', content: String(duration) }),
-  onTyping: () => emit('typing'),
-  onStopTyping: () => emit('stopTyping'),
+    emits('send', { type: 'voice', content: String(duration) }),
+  onTyping: () => emits('typing'),
+  onStopTyping: () => emits('stopTyping'),
 })
 
 useTextareaAutosize({
@@ -170,7 +163,7 @@ useTextareaAutosize({
 function handleSend() {
   const text = inputText.value.trim()
   if (props.editMessage && text) {
-    emit('send', {
+    emits('send', {
       type: props.editMessage.type,
       content: text,
       editId: props.editMessage.id,
@@ -191,13 +184,13 @@ function handleSend() {
         content: props.replyMessage.content,
       }
     }
-    emit('send', payload)
+    emits('send', payload)
     inputText.value = ''
   }
 
   if (imageList.value.length > 0) {
     imageList.value.forEach((img) => {
-      emit('send', { type: 'image', content: img })
+      emits('send', { type: 'image', content: img })
     })
     clearImages()
   }
@@ -263,17 +256,17 @@ function handleFileSelect(e: Event) {
   const target = e.target as HTMLInputElement
   const file = target.files?.[0]
   if (file) {
-    emit('send', { type: 'file', content: file.name })
+    emits('send', { type: 'file', content: file.name })
   }
   target.value = ''
 }
 
 function handleFocus() {
-  emit('typing')
+  emits('typing')
 }
 
 function handleBlur() {
-  emit('stopTyping')
+  emits('stopTyping')
 }
 
 onBeforeUnmount(() => {

@@ -10,24 +10,24 @@
         :conversations="conversations"
         :active-conversation-id="activeConversationId"
         @select="handleConversationSelect"
-        @create-group="emit('open-create-group')"
-        @add-contact="emit('open-add-contact')"
-        @open-global-search="emit('open-global-search')"
-        @delete="(conversation) => emit('delete-conversation', conversation)"
-        @mute="(conversation) => emit('mute-conversation', conversation)"
-        @pin="(conversation) => emit('pin-conversation', conversation)"
-        @mark-unread="(conversation) => emit('mark-unread', conversation)"
-        @archive="(conversation) => emit('archive-conversation', conversation)"
+        @create-group="emits('open-create-group')"
+        @add-contact="emits('open-add-contact')"
+        @open-global-search="emits('open-global-search')"
+        @delete="(conversation) => emits('delete-conversation', conversation)"
+        @mute="(conversation) => emits('mute-conversation', conversation)"
+        @pin="(conversation) => emits('pin-conversation', conversation)"
+        @mark-unread="(conversation) => emits('mark-unread', conversation)"
+        @archive="(conversation) => emits('archive-conversation', conversation)"
       />
       <ContactList
         v-else-if="activeKey === 'contact'"
         key="contact"
         :contacts="contacts"
-        @select="(contact) => emit('show-contact', contact)"
+        @select="(contact) => emits('show-contact', contact)"
         @chat="handleContactChat"
-        @create-group="emit('open-create-group')"
-        @add-contact="emit('open-add-contact')"
-        @open-global-search="emit('open-global-search')"
+        @create-group="emits('open-create-group')"
+        @add-contact="emits('open-add-contact')"
+        @open-global-search="emits('open-global-search')"
       />
       <ContactCenter
         v-else-if="activeKey === 'contactCenter'"
@@ -38,14 +38,16 @@
         :notifications="notifications"
         @select="handleConversationSelect"
         @chat="handleContactChat"
-        @show-contact="(contact) => emit('show-contact', contact)"
-        @create-group="emit('open-create-group')"
-        @add-contact="emit('open-add-contact')"
-        @open-global-search="emit('open-global-search')"
-        @read-notifications="(category) => emit('read-notifications', category)"
+        @show-contact="(contact) => emits('show-contact', contact)"
+        @create-group="emits('open-create-group')"
+        @add-contact="emits('open-add-contact')"
+        @open-global-search="emits('open-global-search')"
+        @read-notifications="
+          (category) => emits('read-notifications', category)
+        "
         @resolve-notification="
           (notification, accepted) =>
-            emit('resolve-notification', notification, accepted)
+            emits('resolve-notification', notification, accepted)
         "
       />
     </Transition>
@@ -94,7 +96,7 @@ withDefaults(
   }
 )
 
-const emit = defineEmits<{
+const emits = defineEmits<{
   select: [conversation: Conversation]
   chat: [contact: Contact]
   'show-contact': [contact: Contact]
@@ -116,11 +118,11 @@ const activeConversationId = defineModel<string>('activeConversationId', {
 })
 function handleConversationSelect(conversation: Conversation) {
   activeConversationId.value = conversation.id
-  emit('select', conversation)
+  emits('select', conversation)
 }
 
 function handleContactChat(contact: Contact) {
-  emit('chat', contact)
+  emits('chat', contact)
 }
 </script>
 

@@ -1,30 +1,3 @@
-<script setup lang="ts">
-import { Icon } from '@/components/icon'
-import WindowShell from './window-shell.vue'
-import { useCallSession } from './hooks'
-import type { CallWindowEmits, CallWindowProps } from './types'
-
-const props = defineProps<CallWindowProps>()
-const emit = defineEmits<CallWindowEmits>()
-
-const {
-  micEnabled,
-  permissionError,
-  speakerEnabled,
-  status,
-  statusText,
-  cleanupCall,
-  toggleMic,
-} = useCallSession({
-  open: toRef(props, 'open'),
-  video: false,
-})
-
-function endCall() {
-  cleanupCall()
-}
-</script>
-
 <template>
   <WindowShell
     :fallback-height="430"
@@ -34,7 +7,7 @@ function endCall() {
     :status="status"
     :status-text="statusText"
     @end="endCall"
-    @update:open="emit('update:open', $event)"
+    @update:open="emits('update:open', $event)"
   >
     <div class="call-stage call-stage-voice">
       <div class="call-avatar-ring">
@@ -86,10 +59,37 @@ function endCall() {
         type="button"
         class="call-action call-action-end"
         title="挂断"
-        @click="emit('update:open', false)"
+        @click="emits('update:open', false)"
       >
         <Icon name="i-lucide:phone-off" :size="19" />
       </button>
     </div>
   </WindowShell>
 </template>
+
+<script setup lang="ts">
+import { Icon } from '@/components/icon'
+import WindowShell from './window-shell.vue'
+import { useCallSession } from './hooks'
+import type { CallWindowEmits, CallWindowProps } from './types'
+
+const props = defineProps<CallWindowProps>()
+const emits = defineEmits<CallWindowEmits>()
+
+const {
+  micEnabled,
+  permissionError,
+  speakerEnabled,
+  status,
+  statusText,
+  cleanupCall,
+  toggleMic,
+} = useCallSession({
+  open: toRef(props, 'open'),
+  video: false,
+})
+
+function endCall() {
+  cleanupCall()
+}
+</script>

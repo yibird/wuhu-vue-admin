@@ -12,6 +12,7 @@
         @contextmenu.prevent.stop
       >
         <button
+          v-if="showAvatar"
           type="button"
           class="button size-36 shrink-0 rounded-full transition-transform hover:scale-105 focus-visible:(outline-2 outline-primary outline-offset-2)"
           :disabled="!message.senderInfo"
@@ -70,6 +71,7 @@
               v-else-if="message.type === 'voice'"
               :content="message.content"
               :is-playing="isPlaying"
+              :is-mine="isMine"
               @toggle-play="togglePlay"
             />
             <FileContent
@@ -110,7 +112,10 @@
           </div>
 
           <div class="flex items-center gap-8 px-4">
-            <span class="whitespace-nowrap text-xs text-regular">
+            <span
+              v-if="showTimestamp"
+              class="whitespace-nowrap text-xs text-regular"
+            >
               {{ message.timestamp }}
             </span>
             <span v-if="message.editedAt" class="text-xs text-secondary">
@@ -213,13 +218,17 @@ interface Props {
   favorite?: boolean
   message: Message
   isMine: boolean
+  showAvatar?: boolean
+  showTimestamp?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
   favorite: false,
+  showAvatar: true,
+  showTimestamp: true,
 })
 
-const emit = defineEmits<MessageItemEmits>()
+const emits = defineEmits<MessageItemEmits>()
 
 const isPlaying = ref(false)
 const showEmojiPicker = ref(false)
@@ -308,21 +317,21 @@ function togglePlay() {
 }
 
 function handleDownload() {
-  emit('download')
+  emits('download')
 }
 
 function previewImage(url: string) {
-  emit('previewImage', url)
+  emits('previewImage', url)
 }
 
 function handleUserClick() {
   if (!props.message.senderInfo) return
-  emit('showUser', props.message.senderInfo)
+  emits('showUser', props.message.senderInfo)
 }
 
 function handleReaction(emoji: string) {
   showEmojiPicker.value = false
-  emit('reaction', emoji)
+  emits('reaction', emoji)
 }
 
 function handleFavoriteToggle() {
@@ -333,7 +342,7 @@ function handleFavoriteToggle() {
     favoritePulse.value = false
     favoritePulseTimer = undefined
   }, 900)
-  emit('favorite')
+  emits('favorite')
 }
 
 function handleAction(key: string) {
@@ -341,10 +350,10 @@ function handleAction(key: string) {
 
   switch (key) {
     case 'reply':
-      emit('reply')
+      emits('reply')
       break
     case 'copy':
-      emit('copy')
+      emits('copy')
       break
     case 'favorite':
       handleFavoriteToggle()
@@ -356,13 +365,13 @@ function handleAction(key: string) {
       handleDownload()
       break
     case 'edit':
-      emit('edit')
+      emits('edit')
       break
     case 'recall':
-      emit('recall')
+      emits('recall')
       break
     case 'delete':
-      emit('delete')
+      emits('delete')
       break
   }
 }

@@ -28,12 +28,45 @@ export interface Conversation {
 }
 
 export interface ChatSettings {
+  /**
+   * @desc 按 Enter 直接发送
+   */
   enterToSend: boolean
+  /**
+   * @desc 桌面通知
+   */
   desktopNotify: boolean
+  /**
+   * @desc 消息提示音
+   */
   messageSound: boolean
+  /**
+   * @desc 提示音音量,取值 0-100
+   */
+  soundVolume: number
+  /**
+   * @desc 已读回执
+   */
   readReceipt: boolean
+  /**
+   * @desc 全局免打扰
+   */
   dnd: boolean
+  /**
+   * @desc 紧凑消息流
+   */
   compactMode: boolean
+  /**
+   * @desc 显示头像
+   */
+  showAvatar: boolean
+  /**
+   * @desc 显示消息时间
+   */
+  showTimestamp: boolean
+  /**
+   * @desc 自动归档静默会话的天数
+   */
   autoArchiveDays: number
 }
 
@@ -248,6 +281,7 @@ export interface SettingPanelProps {
 
 export interface SettingPanelEmits {
   (e: 'update:modelValue', value: ChatSettings): void
+  (e: 'previewSound'): void
 }
 
 export interface MessageEditorEmits {

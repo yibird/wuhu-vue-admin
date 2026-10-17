@@ -1,24 +1,11 @@
-import { computed, shallowRef, toValue } from 'vue'
+import { computed, toValue } from 'vue'
 import type { MaybeRefOrGetter } from 'vue'
 import { commonSurnameInitials } from '../data'
 import type { Contact, FriendGroup } from '../../types'
 
 export type ContactGroupMode = 'alphabet' | 'friendGroup'
 
-export type ContactRow =
-  | {
-      key: string
-      type: 'header'
-      groupKey: string
-      label: string
-      count: number
-      icon?: string
-      collapsed: boolean
-      collapsible: boolean
-    }
-  | { key: string; type: 'contact'; contact: Contact }
-
-interface ContactGroupView {
+export interface ContactGroupView {
   key: string
   label: string
   icon?: string
@@ -35,12 +22,10 @@ interface UseContactGroupsOptions {
 }
 
 /**
- * 统一处理联系人过滤、分组和收缩状态。搜索期间临时展开匹配分组，
- * 搜索结束后恢复用户原有的收缩状态。
+ * 统一处理联系人过滤与分组，输出扁平列表和分组键，
+ * 供 Listy 的分组渲染能力直接使用。
  */
 export function useContactGroups(options: UseContactGroupsOptions) {
-  const collapsedGroupKeys = shallowRef<ReadonlySet<string>>(new Set())
-
   const normalizedKeyword = computed(() =>
     toValue(options.keyword).trim().toLowerCase()
   )
@@ -66,7 +51,7 @@ export function useContactGroups(options: UseContactGroupsOptions) {
     )
   })
 
-  const groupedContacts = computed<ContactGroupView[]>(() => {
+  const contactGroups = computed<ContactGroupView[]>(() => {
     if (toValue(options.groupMode) === 'friendGroup') {
       return groupContactsByFriendGroup(
         filteredContacts.value,
@@ -76,47 +61,27 @@ export function useContactGroups(options: UseContactGroupsOptions) {
     return groupContactsByLetter(filteredContacts.value)
   })
 
-  const contactRows = computed<ContactRow[]>(() => {
-    const canCollapse =
-      toValue(options.groupMode) === 'friendGroup' && !normalizedKeyword.value
+  const flatContacts = computed(() =>
+    contactGroups.value.flatMap((group) => group.contacts)
+  )
 
-    return groupedContacts.value.flatMap((group) => {
-      const collapsed = canCollapse && collapsedGroupKeys.value.has(group.key)
-      const header: ContactRow = {
-        key: `header:${group.key}`,
-        type: 'header',
-        groupKey: group.key,
-        label: group.label,
-        count: group.contacts.length,
-        icon: group.icon,
-        collapsed,
-        collapsible: canCollapse,
-      }
+  const contactGroupKeyMap = computed(
+    () =>
+      new Map(
+        contactGroups.value.flatMap((group) =>
+          group.contacts.map((contact) => [contact.id, group.key] as const)
+        )
+      )
+  )
 
-      if (collapsed) return [header]
-      return [
-        header,
-        ...group.contacts.map((contact) => ({
-          key: `contact:${contact.id}`,
-          type: 'contact' as const,
-          contact,
-        })),
-      ]
-    })
-  })
-
-  function toggleGroup(groupKey: string) {
-    if (toValue(options.groupMode) !== 'friendGroup') return
-
-    const nextKeys = new Set(collapsedGroupKeys.value)
-    if (nextKeys.has(groupKey)) nextKeys.delete(groupKey)
-    else nextKeys.add(groupKey)
-    collapsedGroupKeys.value = nextKeys
+  function getContactGroupKey(contact: Contact) {
+    return contactGroupKeyMap.value.get(contact.id) ?? 'other'
   }
 
   return {
-    contactRows,
-    toggleGroup,
+    contactGroups,
+    flatContacts,
+    getContactGroupKey,
   }
 }
 

@@ -1,95 +1,3 @@
-<script setup lang="ts">
-import { useRoute } from 'vue-router'
-import { Modal, message } from 'antdv-next'
-import {
-  deleteDeptApi,
-  getDeptPageListApi,
-  getDeptRecordApi,
-  type DeptResp,
-} from '@/apis'
-import { Icon } from '@/components'
-import { useRequest, useTabs } from '@/hooks'
-import { toRouteTabKey } from '@/store'
-import { DeptForm } from '../list/components'
-
-const route = useRoute()
-const { closeTab, openTabByPath } = useTabs()
-
-const deptId = computed(() =>
-  typeof route.query.id === 'string' ? route.query.id : ''
-)
-const formOpen = shallowRef(false)
-
-const { data, loading, run } = useRequest(
-  (params: { id: string }) => getDeptRecordApi(params),
-  { defaultParams: [{ id: deptId.value }], manual: !deptId.value }
-)
-
-/** 部门与岗位共用一个列表接口,这里按 id 映射上级部门名称 */
-const { data: deptData } = useRequest(() =>
-  getDeptPageListApi({ current: 1, pageSize: 1000 })
-)
-
-const deptNames = computed(() => {
-  const names = new Map<string, string>()
-  ;(deptData.value?.data?.list ?? []).forEach((item: DeptResp) => {
-    names.set(item.id, item.name)
-  })
-  return names
-})
-
-const dept = computed<DeptResp | undefined>(() => data.value?.data ?? undefined)
-
-const entityName = computed(() => (dept.value?.type === 2 ? '岗位' : '部门'))
-
-const title = computed(() => dept.value?.name || `${entityName.value}详情`)
-
-const iconName = computed(() =>
-  dept.value?.type === 2 ? 'i-lucide:briefcase-business' : 'i-lucide:building-2'
-)
-
-const parentName = computed(() => {
-  const parentId = dept.value?.parentId
-  if (!parentId || parentId === '0') return '顶级部门'
-  return deptNames.value.get(parentId) ?? parentId
-})
-
-function goBack() {
-  openTabByPath('/sys/dept/list')
-}
-
-function openEdit() {
-  formOpen.value = true
-}
-
-function onUpdated() {
-  run({ id: deptId.value })
-}
-
-function onDelete() {
-  const record = dept.value
-  if (!record) return
-
-  Modal.confirm({
-    title: `删除${entityName.value}`,
-    content: `确定删除${entityName.value}「${record.name}」吗？`,
-    okText: '删除',
-    cancelText: '取消',
-    okButtonProps: { danger: true },
-    onOk: async () => {
-      try {
-        await deleteDeptApi([record.id])
-        message.success(`${entityName.value}删除成功`)
-        await openTabByPath('/sys/dept/list')
-        closeTab(toRouteTabKey('/sys/dept/detail', { id: record.id }))
-      } catch {
-        // 业务错误已由请求层统一提示
-      }
-    },
-  })
-}
-</script>
-
 <template>
   <div class="h-full min-h-0 flex flex-col gap-10 p-10">
     <header
@@ -221,3 +129,95 @@ function onDelete() {
     <DeptForm v-model:open="formOpen" :id="deptId" @success="onUpdated" />
   </div>
 </template>
+
+<script setup lang="ts">
+import { useRoute } from 'vue-router'
+import { Modal, message } from 'antdv-next'
+import {
+  deleteDeptApi,
+  getDeptPageListApi,
+  getDeptRecordApi,
+  type DeptResp,
+} from '@/apis'
+import { Icon } from '@/components'
+import { useRequest, useTabs } from '@/hooks'
+import { toRouteTabKey } from '@/store'
+import { DeptForm } from '../list/components'
+
+const route = useRoute()
+const { closeTab, openTabByPath } = useTabs()
+
+const deptId = computed(() =>
+  typeof route.query.id === 'string' ? route.query.id : ''
+)
+const formOpen = shallowRef(false)
+
+const { data, loading, run } = useRequest(
+  (params: { id: string }) => getDeptRecordApi(params),
+  { defaultParams: [{ id: deptId.value }], manual: !deptId.value }
+)
+
+/** 部门与岗位共用一个列表接口,这里按 id 映射上级部门名称 */
+const { data: deptData } = useRequest(() =>
+  getDeptPageListApi({ current: 1, pageSize: 1000 })
+)
+
+const deptNames = computed(() => {
+  const names = new Map<string, string>()
+  ;(deptData.value?.data?.list ?? []).forEach((item: DeptResp) => {
+    names.set(item.id, item.name)
+  })
+  return names
+})
+
+const dept = computed<DeptResp | undefined>(() => data.value?.data ?? undefined)
+
+const entityName = computed(() => (dept.value?.type === 2 ? '岗位' : '部门'))
+
+const title = computed(() => dept.value?.name || `${entityName.value}详情`)
+
+const iconName = computed(() =>
+  dept.value?.type === 2 ? 'i-lucide:briefcase-business' : 'i-lucide:building-2'
+)
+
+const parentName = computed(() => {
+  const parentId = dept.value?.parentId
+  if (!parentId || parentId === '0') return '顶级部门'
+  return deptNames.value.get(parentId) ?? parentId
+})
+
+function goBack() {
+  openTabByPath('/sys/dept/list')
+}
+
+function openEdit() {
+  formOpen.value = true
+}
+
+function onUpdated() {
+  run({ id: deptId.value })
+}
+
+function onDelete() {
+  const record = dept.value
+  if (!record) return
+
+  Modal.confirm({
+    title: `删除${entityName.value}`,
+    content: `确定删除${entityName.value}「${record.name}」吗？`,
+    okText: '删除',
+    cancelText: '取消',
+    okButtonProps: { danger: true },
+    onOk: async () => {
+      try {
+        await deleteDeptApi([record.id])
+        message.success(`${entityName.value}删除成功`)
+        await openTabByPath('/sys/dept/list')
+        closeTab(toRouteTabKey('/sys/dept/detail', { id: record.id }))
+      } catch {
+        // 业务错误已由请求层统一提示
+      }
+    },
+  })
+}
+</script>

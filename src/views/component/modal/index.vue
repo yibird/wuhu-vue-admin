@@ -1,35 +1,3 @@
-<script setup lang="ts">
-import { message } from 'antdv-next'
-import { Icon } from '@/components/icon'
-import { Modal } from '@/components/modal'
-import type { ModalInstance, ModalPosition } from '@/components/modal'
-
-const basicOpen = shallowRef(false)
-const enhancedOpen = shallowRef(false)
-const controlledOpen = shallowRef(false)
-const controlledFullscreen = shallowRef(false)
-const lastEvent = shallowRef('等待交互')
-const enhancedModal = useTemplateRef<ModalInstance>('enhancedModal')
-
-function handleDragEnd(position: ModalPosition) {
-  lastEvent.value = `拖拽结束：x ${Math.round(position.x)} / y ${Math.round(position.y)}`
-}
-
-function handleFullscreenChange(fullscreen: boolean) {
-  lastEvent.value = fullscreen ? '已进入全屏' : '已退出全屏'
-}
-
-function resetEnhancedPosition() {
-  enhancedModal.value?.resetPosition()
-  lastEvent.value = '已重置弹窗位置'
-  message.success('弹窗位置已重置')
-}
-
-function toggleControlledFullscreen() {
-  controlledFullscreen.value = !controlledFullscreen.value
-}
-</script>
-
 <template>
   <WView :full="true" :padding="false" class="bg-page">
     <div
@@ -190,3 +158,35 @@ function toggleControlledFullscreen() {
     </div>
   </WView>
 </template>
+
+<script setup lang="ts">
+import { message } from 'antdv-next'
+import { Icon } from '@/components/icon'
+import { Modal } from '@/components/modal'
+import type { ModalInstance, ModalPosition } from '@/components/modal'
+
+const basicOpen = shallowRef(false)
+const enhancedOpen = shallowRef(false)
+const controlledOpen = shallowRef(false)
+const controlledFullscreen = shallowRef(false)
+const lastEvent = shallowRef('等待交互')
+const enhancedModal = useTemplateRef<ModalInstance>('enhancedModal')
+
+function handleDragEnd(position: ModalPosition) {
+  lastEvent.value = `拖拽结束：x ${Math.round(position.x)} / y ${Math.round(position.y)}`
+}
+
+function handleFullscreenChange(fullscreen: boolean) {
+  lastEvent.value = fullscreen ? '已进入全屏' : '已退出全屏'
+}
+
+function resetEnhancedPosition() {
+  enhancedModal.value?.resetPosition()
+  lastEvent.value = '已重置弹窗位置'
+  message.success('弹窗位置已重置')
+}
+
+function toggleControlledFullscreen() {
+  controlledFullscreen.value = !controlledFullscreen.value
+}
+</script>

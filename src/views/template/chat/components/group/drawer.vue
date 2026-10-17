@@ -1,105 +1,3 @@
-<script setup lang="ts">
-import { Icon } from '@/components/icon'
-import { VirtualList } from '../common'
-import type {
-  Conversation,
-  GroupMember,
-  GroupMemberRole,
-  GroupPanelTab,
-  UserInfo,
-} from '../types'
-
-const props = defineProps<{
-  conversation?: Conversation
-}>()
-
-const emit = defineEmits<{
-  updateAnnouncement: [conversation: Conversation, content: string]
-  showUser: [user: UserInfo]
-}>()
-
-const open = defineModel<boolean>('open', { default: false })
-const activeTab = defineModel<GroupPanelTab>('activeTab', {
-  default: 'announcement',
-})
-const memberKeyword = shallowRef('')
-const announcementDraft = shallowRef('')
-const editingAnnouncement = shallowRef(false)
-
-const drawerStyles = {
-  body: { padding: 0, overflow: 'hidden' },
-}
-const roleLabels: Record<GroupMemberRole, string> = {
-  owner: '群主',
-  admin: '管理员',
-  member: '成员',
-}
-const roleColors: Record<GroupMemberRole, string | undefined> = {
-  owner: 'gold',
-  admin: 'blue',
-  member: undefined,
-}
-
-const groupInfo = computed(() => props.conversation?.groupInfo)
-const announcement = computed(() => groupInfo.value?.announcement)
-const members = computed(() => groupInfo.value?.members ?? [])
-const tabOptions = computed(() => [
-  { label: '群公告', value: 'announcement' },
-  {
-    label: `群成员 ${groupInfo.value?.memberCount ?? members.value.length}`,
-    value: 'members',
-  },
-])
-const filteredMembers = computed(() => {
-  const keyword = memberKeyword.value.trim().toLowerCase()
-  if (!keyword) return members.value
-
-  return members.value.filter((member) =>
-    [
-      member.name,
-      member.title,
-      member.department,
-      roleLabels[member.role],
-    ].some((value) => value?.toLowerCase().includes(keyword))
-  )
-})
-const canSaveAnnouncement = computed(() => {
-  const content = announcementDraft.value.trim()
-  return Boolean(content) && content !== announcement.value?.content
-})
-
-watch(
-  [open, () => props.conversation?.id],
-  ([isOpen]) => {
-    if (!isOpen) return
-    memberKeyword.value = ''
-    editingAnnouncement.value = false
-    announcementDraft.value = announcement.value?.content ?? ''
-  },
-  { immediate: true }
-)
-
-function startAnnouncementEdit() {
-  announcementDraft.value = announcement.value?.content ?? ''
-  editingAnnouncement.value = true
-}
-
-function cancelAnnouncementEdit() {
-  announcementDraft.value = announcement.value?.content ?? ''
-  editingAnnouncement.value = false
-}
-
-function saveAnnouncement() {
-  if (!props.conversation || !canSaveAnnouncement.value) return
-  emit('updateAnnouncement', props.conversation, announcementDraft.value.trim())
-  editingAnnouncement.value = false
-}
-
-function getMemberInitial(member: GroupMember) {
-  return member.name.trim().slice(0, 1).toUpperCase()
-}
-</script>
-
 <template>
   <a-drawer
     v-model:open="open"
@@ -229,7 +127,7 @@ function getMemberInitial(member: GroupMember) {
               <button
                 type="button"
                 class="button group w-full flex items-center gap-10 rounded-6 px-10 py-9 text-left transition-[background-color,box-shadow,transform] duration-motion-base ease-motion-enter hover:(translate-x-1 bg-hover shadow-all-sm) active:scale-99 focus-visible:(outline-none bg-hover shadow-[0_0_0_2px_rgb(var(--w-color-primary)/24%)]) motion-reduce:(transform-none transition-none)"
-                @click="emit('showUser', member)"
+                @click="emits('showUser', member)"
               >
                 <span class="relative shrink-0">
                   <a-avatar
@@ -289,3 +187,109 @@ function getMemberInitial(member: GroupMember) {
     </div>
   </a-drawer>
 </template>
+
+<script setup lang="ts">
+import { Icon } from '@/components/icon'
+import { VirtualList } from '../common'
+import type {
+  Conversation,
+  GroupMember,
+  GroupMemberRole,
+  GroupPanelTab,
+  UserInfo,
+} from '../types'
+
+const props = defineProps<{
+  conversation?: Conversation
+}>()
+
+const emits = defineEmits<{
+  updateAnnouncement: [conversation: Conversation, content: string]
+  showUser: [user: UserInfo]
+}>()
+
+const open = defineModel<boolean>('open', { default: false })
+const activeTab = defineModel<GroupPanelTab>('activeTab', {
+  default: 'announcement',
+})
+const memberKeyword = shallowRef('')
+const announcementDraft = shallowRef('')
+const editingAnnouncement = shallowRef(false)
+
+const drawerStyles = {
+  body: { padding: 0, overflow: 'hidden' },
+}
+const roleLabels: Record<GroupMemberRole, string> = {
+  owner: '群主',
+  admin: '管理员',
+  member: '成员',
+}
+const roleColors: Record<GroupMemberRole, string | undefined> = {
+  owner: 'gold',
+  admin: 'blue',
+  member: undefined,
+}
+
+const groupInfo = computed(() => props.conversation?.groupInfo)
+const announcement = computed(() => groupInfo.value?.announcement)
+const members = computed(() => groupInfo.value?.members ?? [])
+const tabOptions = computed(() => [
+  { label: '群公告', value: 'announcement' },
+  {
+    label: `群成员 ${groupInfo.value?.memberCount ?? members.value.length}`,
+    value: 'members',
+  },
+])
+const filteredMembers = computed(() => {
+  const keyword = memberKeyword.value.trim().toLowerCase()
+  if (!keyword) return members.value
+
+  return members.value.filter((member) =>
+    [
+      member.name,
+      member.title,
+      member.department,
+      roleLabels[member.role],
+    ].some((value) => value?.toLowerCase().includes(keyword))
+  )
+})
+const canSaveAnnouncement = computed(() => {
+  const content = announcementDraft.value.trim()
+  return Boolean(content) && content !== announcement.value?.content
+})
+
+watch(
+  [open, () => props.conversation?.id],
+  ([isOpen]) => {
+    if (!isOpen) return
+    memberKeyword.value = ''
+    editingAnnouncement.value = false
+    announcementDraft.value = announcement.value?.content ?? ''
+  },
+  { immediate: true }
+)
+
+function startAnnouncementEdit() {
+  announcementDraft.value = announcement.value?.content ?? ''
+  editingAnnouncement.value = true
+}
+
+function cancelAnnouncementEdit() {
+  announcementDraft.value = announcement.value?.content ?? ''
+  editingAnnouncement.value = false
+}
+
+function saveAnnouncement() {
+  if (!props.conversation || !canSaveAnnouncement.value) return
+  emits(
+    'updateAnnouncement',
+    props.conversation,
+    announcementDraft.value.trim()
+  )
+  editingAnnouncement.value = false
+}
+
+function getMemberInitial(member: GroupMember) {
+  return member.name.trim().slice(0, 1).toUpperCase()
+}
+</script>

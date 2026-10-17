@@ -22,7 +22,7 @@
         class="button size-34 shrink-0 rounded-6 bg-fill-quaternary text-secondary transition-colors hover:(bg-hover text-primary)"
         title="全局搜索"
         aria-label="打开全局搜索"
-        @click="emit('openGlobalSearch')"
+        @click="emits('openGlobalSearch')"
       >
         <Icon name="i-lucide:command" :size="16" />
       </button>
@@ -75,7 +75,7 @@ withDefaults(
 const searchValue = defineModel<string>({ default: '' })
 const menuOpen = shallowRef(false)
 
-const emit = defineEmits<{
+const emits = defineEmits<{
   createGroup: []
   addContact: []
   openGlobalSearch: []
@@ -100,9 +100,9 @@ function renderMenuIcon(name: string) {
 
 function handleMenuClick({ key }: { key: string }) {
   if (key === 'create-group') {
-    emit('createGroup')
+    emits('createGroup')
     return
   }
-  if (key === 'add-contact') emit('addContact')
+  if (key === 'add-contact') emits('addContact')
 }
 </script>

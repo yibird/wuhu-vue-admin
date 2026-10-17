@@ -1,132 +1,3 @@
-<script setup lang="ts">
-import { Icon } from '@/components'
-import {
-  useChatGlobalSearch,
-  useSearchHistory,
-  type MessageSearchResult,
-} from '../hooks'
-import { statusText } from '../utils'
-import type {
-  Contact,
-  Conversation,
-  GlobalSearchMessagePayload,
-  GlobalSearchTab,
-  Message,
-} from './types'
-
-const props = withDefaults(
-  defineProps<{
-    contacts?: Contact[]
-    groups?: Conversation[]
-    conversations?: Conversation[]
-    messagesByConversation?: Record<string, Message[]>
-  }>(),
-  {
-    contacts: () => [],
-    groups: () => [],
-    conversations: () => [],
-    messagesByConversation: () => ({}),
-  }
-)
-
-const emit = defineEmits<{
-  selectContact: [contact: Contact]
-  selectGroup: [group: Conversation]
-  selectMessage: [payload: GlobalSearchMessagePayload]
-}>()
-
-const open = defineModel<boolean>('open', { default: false })
-const query = shallowRef('')
-const activeTab = shallowRef<GlobalSearchTab>('all')
-
-const {
-  records,
-  visibleRecords,
-  canToggle,
-  expanded,
-  addRecord,
-  removeRecord,
-  clearRecords,
-  toggleExpanded,
-} = useSearchHistory({
-  storageKey: 'wuhu-chat-global-search-history',
-  initialRecords: ['项目进展', 'Alice', '产品研发群', '代码审查', '设计评审'],
-  collapsedCount: 6,
-})
-
-const {
-  activeResultCount,
-  contactResults,
-  groupResults,
-  hasQuery,
-  messageResults,
-  resultCounts,
-  resultSummary,
-  scopeItems,
-  searchTabs,
-  visibleSections,
-  groupMeta,
-  messageSenderName,
-} = useChatGlobalSearch({
-  activeTab,
-  contacts: () => props.contacts,
-  conversations: () => props.conversations,
-  groups: () => props.groups,
-  messagesByConversation: () => props.messagesByConversation,
-  query,
-})
-
-watch(open, (isOpen) => {
-  if (!isOpen) return
-  query.value = ''
-  activeTab.value = 'all'
-})
-
-watch(query, (value) => {
-  if (!value.trim()) activeTab.value = 'all'
-})
-
-function handleSearch(value?: string) {
-  const keyword = (typeof value === 'string' ? value : query.value).trim()
-  if (!keyword) return
-  query.value = keyword
-  addRecord(keyword)
-}
-
-function applyHistory(record: string) {
-  query.value = record
-  activeTab.value = 'all'
-  addRecord(record)
-}
-
-function applyScope(tab: GlobalSearchTab) {
-  activeTab.value = tab
-}
-
-function closeAfterPick() {
-  if (query.value.trim()) addRecord(query.value)
-  open.value = false
-}
-
-function handleSelectContact(contact: Contact) {
-  closeAfterPick()
-  emit('selectContact', contact)
-}
-
-function handleSelectGroup(group: Conversation) {
-  closeAfterPick()
-  emit('selectGroup', group)
-}
-
-function handleSelectMessage(result: MessageSearchResult) {
-  closeAfterPick()
-  emit('selectMessage', {
-    conversation: result.conversation,
-    message: result.message,
-  })
-}
-</script>
-
 <template>
   <a-modal
     v-model:open="open"
@@ -460,6 +331,135 @@ function handleSelectMessage(result: MessageSearchResult) {
     </div>
   </a-modal>
 </template>
+
+<script setup lang="ts">
+import { Icon } from '@/components'
+import {
+  useChatGlobalSearch,
+  useSearchHistory,
+  type MessageSearchResult,
+} from '../hooks'
+import { statusText } from '../utils'
+import type {
+  Contact,
+  Conversation,
+  GlobalSearchMessagePayload,
+  GlobalSearchTab,
+  Message,
+} from './types'
+
+const props = withDefaults(
+  defineProps<{
+    contacts?: Contact[]
+    groups?: Conversation[]
+    conversations?: Conversation[]
+    messagesByConversation?: Record<string, Message[]>
+  }>(),
+  {
+    contacts: () => [],
+    groups: () => [],
+    conversations: () => [],
+    messagesByConversation: () => ({}),
+  }
+)
+
+const emits = defineEmits<{
+  selectContact: [contact: Contact]
+  selectGroup: [group: Conversation]
+  selectMessage: [payload: GlobalSearchMessagePayload]
+}>()
+
+const open = defineModel<boolean>('open', { default: false })
+const query = shallowRef('')
+const activeTab = shallowRef<GlobalSearchTab>('all')
+
+const {
+  records,
+  visibleRecords,
+  canToggle,
+  expanded,
+  addRecord,
+  removeRecord,
+  clearRecords,
+  toggleExpanded,
+} = useSearchHistory({
+  storageKey: 'wuhu-chat-global-search-history',
+  initialRecords: ['项目进展', 'Alice', '产品研发群', '代码审查', '设计评审'],
+  collapsedCount: 6,
+})
+
+const {
+  activeResultCount,
+  contactResults,
+  groupResults,
+  hasQuery,
+  messageResults,
+  resultCounts,
+  resultSummary,
+  scopeItems,
+  searchTabs,
+  visibleSections,
+  groupMeta,
+  messageSenderName,
+} = useChatGlobalSearch({
+  activeTab,
+  contacts: () => props.contacts,
+  conversations: () => props.conversations,
+  groups: () => props.groups,
+  messagesByConversation: () => props.messagesByConversation,
+  query,
+})
+
+watch(open, (isOpen) => {
+  if (!isOpen) return
+  query.value = ''
+  activeTab.value = 'all'
+})
+
+watch(query, (value) => {
+  if (!value.trim()) activeTab.value = 'all'
+})
+
+function handleSearch(value?: string) {
+  const keyword = (typeof value === 'string' ? value : query.value).trim()
+  if (!keyword) return
+  query.value = keyword
+  addRecord(keyword)
+}
+
+function applyHistory(record: string) {
+  query.value = record
+  activeTab.value = 'all'
+  addRecord(record)
+}
+
+function applyScope(tab: GlobalSearchTab) {
+  activeTab.value = tab
+}
+
+function closeAfterPick() {
+  if (query.value.trim()) addRecord(query.value)
+  open.value = false
+}
+
+function handleSelectContact(contact: Contact) {
+  closeAfterPick()
+  emits('selectContact', contact)
+}
+
+function handleSelectGroup(group: Conversation) {
+  closeAfterPick()
+  emits('selectGroup', group)
+}
+
+function handleSelectMessage(result: MessageSearchResult) {
+  closeAfterPick()
+  emits('selectMessage', {
+    conversation: result.conversation,
+    message: result.message,
+  })
+}
+</script>
 
 <style scoped>
 .global-search-shell {

@@ -70,7 +70,7 @@
               class="button size-40 rounded-full text-secondary transition-[background-color,color,transform] hover:(bg-hover text-primary) active:scale-90"
               title="群公告"
               aria-label="打开群公告"
-              @click="emit('openGroupPanel', 'announcement')"
+              @click="emits('openGroupPanel', 'announcement')"
             >
               <Icon name="i-lucide:megaphone" :size="18" />
             </button>
@@ -80,7 +80,7 @@
               class="button size-40 rounded-full text-secondary transition-[background-color,color,transform] hover:(bg-hover text-primary) active:scale-90"
               title="群成员"
               aria-label="打开群成员列表"
-              @click="emit('openGroupPanel', 'members')"
+              @click="emits('openGroupPanel', 'members')"
             >
               <Icon name="i-lucide:users" :size="18" />
             </button>
@@ -89,7 +89,7 @@
               class="button size-40 rounded-full text-secondary transition-[background-color,color,transform] hover:(bg-hover text-primary) active:scale-90"
               title="语音通话"
               aria-label="发起语音通话"
-              @click="emit('call', 'voice')"
+              @click="emits('call', 'voice')"
             >
               <Icon name="i-lucide:phone" :size="18" />
             </button>
@@ -98,7 +98,7 @@
               class="button size-40 rounded-full text-secondary transition-[background-color,color,transform] hover:(bg-hover text-primary) active:scale-90"
               title="视频通话"
               aria-label="发起视频通话"
-              @click="emit('call', 'video')"
+              @click="emits('call', 'video')"
             >
               <Icon name="i-lucide:video" :size="18" />
             </button>
@@ -127,19 +127,21 @@
               :typing="typing"
               :unread-count="unreadCount"
               :compact="settings.compactMode"
+              :show-avatar="settings.showAvatar"
+              :show-timestamp="settings.showTimestamp"
               @retry="handleRetry"
               @recall="handleRecall"
-              @delete="(message) => emit('deleteMessage', message)"
-              @copy="(message) => emit('copyMessage', message)"
+              @delete="(message) => emits('deleteMessage', message)"
+              @copy="(message) => emits('copyMessage', message)"
               @reply="handleReply"
               @edit="handleEdit"
-              @favorite="(message) => emit('toggleFavorite', message)"
+              @favorite="(message) => emits('toggleFavorite', message)"
               @reaction="handleReaction"
-              @preview-image="(url) => emit('previewImage', url)"
-              @download="(message) => emit('downloadMessage', message)"
-              @show-user="(user) => emit('showUser', user)"
+              @preview-image="(url) => emits('previewImage', url)"
+              @download="(message) => emits('downloadMessage', message)"
+              @show-user="(user) => emits('showUser', user)"
               @scroll-to-bottom="handleScrollToBottom"
-              @unread-clear="emit('unreadClear')"
+              @unread-clear="emits('unreadClear')"
             />
           </div>
         </Transition>
@@ -162,6 +164,7 @@
 </template>
 
 <script setup lang="ts">
+import { createDefaultChatSettings } from '../settings/constants'
 import MessageList from './list/index.vue'
 import MessageEditor from './editor/index.vue'
 import type { MenuProps } from 'antdv-next'
@@ -190,18 +193,10 @@ const props = withDefaults(defineProps<Props>(), {
   favoriteMessageIds: () => [],
   typing: false,
   unreadCount: 0,
-  settings: () => ({
-    enterToSend: true,
-    desktopNotify: true,
-    messageSound: true,
-    readReceipt: true,
-    dnd: false,
-    compactMode: false,
-    autoArchiveDays: 30,
-  }),
+  settings: () => createDefaultChatSettings(),
 })
 
-const emit = defineEmits<{
+const emits = defineEmits<{
   send: [message: ChatSendPayload]
   typing: []
   stopTyping: []
@@ -263,29 +258,29 @@ const conversationStatus = computed(() => {
 })
 
 function handleSend(payload: ChatSendPayload) {
-  emit('send', payload)
+  emits('send', payload)
   clearComposeContext()
   nextTick(() => messageListRef.value?.scrollToBottom())
 }
 
 function handleRetry(message: Message) {
-  emit('retryMessage', message)
+  emits('retryMessage', message)
 }
 
 function handleRecall(message: Message) {
-  emit('recallMessage', message)
+  emits('recallMessage', message)
 }
 
 function handleReaction(message: Message, emoji: string) {
-  emit('reactionMessage', message, emoji)
+  emits('reactionMessage', message, emoji)
 }
 
 function handleTyping() {
-  emit('typing')
+  emits('typing')
 }
 
 function handleStopTyping() {
-  emit('stopTyping')
+  emits('stopTyping')
 }
 
 function handleScrollToBottom() {
@@ -318,13 +313,13 @@ function handleHeaderAction({ key }: { key: string }) {
 
   switch (key) {
     case 'pin':
-      emit('togglePin', props.conversation)
+      emits('togglePin', props.conversation)
       break
     case 'mute':
-      emit('toggleMute', props.conversation)
+      emits('toggleMute', props.conversation)
       break
     case 'clear':
-      emit('clearMessages', props.conversation)
+      emits('clearMessages', props.conversation)
       break
   }
 }

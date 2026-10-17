@@ -8,8 +8,8 @@
       :while-press="{ scale: 0.96 }"
       :transition="{ type: 'spring', stiffness: 420, damping: 28 }"
       title="设置"
-      aria-label="打开聊天设置"
-      @click="emit('openSettings')"
+      aria-label="打开设置"
+      @click="emits('openSettings')"
     >
       <div class="relative">
         <Icon name="i-lucide:settings" :size="22" />
@@ -21,7 +21,7 @@
 <script lang="ts" setup>
 import { Motion } from 'motion-v'
 
-const emit = defineEmits<{
+const emits = defineEmits<{
   openSettings: []
 }>()
 </script>

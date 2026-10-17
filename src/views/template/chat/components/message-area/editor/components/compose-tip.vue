@@ -14,7 +14,7 @@
         type="button"
         class="button size-26 rounded-4 text-secondary hover:bg-hover"
         aria-label="取消回复或编辑"
-        @click="emit('cancel')"
+        @click="emits('cancel')"
       >
         <Icon name="i-lucide:x" :size="14" />
       </button>
@@ -30,7 +30,7 @@ const props = withDefaults(defineProps<ComposeTipProps>(), {
   replyMessage: null,
 })
 
-const emit = defineEmits<{
+const emits = defineEmits<{
   cancel: []
 }>()
 

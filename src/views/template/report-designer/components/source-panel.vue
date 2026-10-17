@@ -1,3 +1,103 @@
+<template>
+  <section class="source-panel">
+    <div class="source-panel__head">
+      <Icon name="i-lucide:plug-zap" :size="18" />
+      <h2>数据源</h2>
+    </div>
+
+    <div class="source-panel__body">
+      <section class="source-library">
+        <div class="source-library__title">
+          <span>选择数据源</span>
+          <a-button size="small" type="primary" @click="openCreateSource">
+            <template #icon>
+              <Icon name="i-lucide:plus" />
+            </template>
+            新增
+          </a-button>
+        </div>
+        <a-select
+          :options="sourceOptions"
+          :value="activeSourceId"
+          placeholder="选择已有数据源"
+          @update:value="emits('selectSource', String($event))"
+        />
+      </section>
+
+      <article class="source-summary">
+        <div class="source-summary__icon">
+          <Icon :name="sourceMeta.icon" :size="22" />
+        </div>
+        <div class="source-summary__content">
+          <span>{{ sourceMeta.label }}</span>
+          <strong>{{
+            config.name || activeSource?.name || '未命名数据源'
+          }}</strong>
+          <p>{{ sourceMeta.detail }}</p>
+        </div>
+        <div class="source-summary__actions">
+          <a-tooltip title="编辑当前数据源">
+            <a-button size="small" @click="openEditSource">
+              <template #icon>
+                <Icon name="i-lucide:pencil" />
+              </template>
+            </a-button>
+          </a-tooltip>
+          <a-popconfirm
+            cancel-text="取消"
+            ok-text="删除"
+            title="确认删除该数据源？"
+            @confirm="emits('deleteSource', activeSourceId)"
+          >
+            <a-tooltip title="删除当前数据源">
+              <a-button :disabled="!canDeleteActiveSource" danger size="small">
+                <template #icon>
+                  <Icon name="i-lucide:trash-2" />
+                </template>
+              </a-button>
+            </a-tooltip>
+          </a-popconfirm>
+        </div>
+      </article>
+
+      <a-button
+        block
+        :loading="isLoading"
+        type="primary"
+        @click="emits('loadSource')"
+      >
+        <template #icon>
+          <Icon name="i-lucide:play" />
+        </template>
+        {{ loadButtonText }}
+      </a-button>
+
+      <p v-if="loadError" class="source-panel__error">
+        <Icon name="i-lucide:circle-alert" :size="14" />
+        {{ loadError }}
+      </p>
+    </div>
+
+    <div class="source-panel__stats">
+      <div>
+        <span>行数</span>
+        <strong>{{ rowCount.toLocaleString('zh-CN') }}</strong>
+      </div>
+      <div>
+        <span>字段</span>
+        <strong>{{ fieldCount.toLocaleString('zh-CN') }}</strong>
+      </div>
+    </div>
+
+    <DataSourceModal
+      v-model:open="sourceModalOpen"
+      :config="modalConfig"
+      :mode="sourceModalMode"
+      @save="saveSource"
+    />
+  </section>
+</template>
+
 <script setup lang="ts">
 import { defaultDataSourceConfig } from '../data'
 import DataSourceModal from './data-source-modal.vue'
@@ -21,7 +121,7 @@ const props = defineProps<{
   rowCount: number
 }>()
 
-const emit = defineEmits<{
+const emits = defineEmits<{
   deleteSource: [id: string]
   loadSource: []
   saveSource: [payload: { config: DataSourceConfig; id?: string }]
@@ -133,112 +233,12 @@ function openEditSource() {
 }
 
 function saveSource(config: DataSourceConfig) {
-  emit('saveSource', {
+  emits('saveSource', {
     config,
     id: sourceModalMode.value === 'edit' ? editingSourceId.value : undefined,
   })
 }
 </script>
-
-<template>
-  <section class="source-panel">
-    <div class="source-panel__head">
-      <Icon name="i-lucide:plug-zap" :size="18" />
-      <h2>数据源</h2>
-    </div>
-
-    <div class="source-panel__body">
-      <section class="source-library">
-        <div class="source-library__title">
-          <span>选择数据源</span>
-          <a-button size="small" type="primary" @click="openCreateSource">
-            <template #icon>
-              <Icon name="i-lucide:plus" />
-            </template>
-            新增
-          </a-button>
-        </div>
-        <a-select
-          :options="sourceOptions"
-          :value="activeSourceId"
-          placeholder="选择已有数据源"
-          @update:value="emit('selectSource', String($event))"
-        />
-      </section>
-
-      <article class="source-summary">
-        <div class="source-summary__icon">
-          <Icon :name="sourceMeta.icon" :size="22" />
-        </div>
-        <div class="source-summary__content">
-          <span>{{ sourceMeta.label }}</span>
-          <strong>{{
-            config.name || activeSource?.name || '未命名数据源'
-          }}</strong>
-          <p>{{ sourceMeta.detail }}</p>
-        </div>
-        <div class="source-summary__actions">
-          <a-tooltip title="编辑当前数据源">
-            <a-button size="small" @click="openEditSource">
-              <template #icon>
-                <Icon name="i-lucide:pencil" />
-              </template>
-            </a-button>
-          </a-tooltip>
-          <a-popconfirm
-            cancel-text="取消"
-            ok-text="删除"
-            title="确认删除该数据源？"
-            @confirm="emit('deleteSource', activeSourceId)"
-          >
-            <a-tooltip title="删除当前数据源">
-              <a-button :disabled="!canDeleteActiveSource" danger size="small">
-                <template #icon>
-                  <Icon name="i-lucide:trash-2" />
-                </template>
-              </a-button>
-            </a-tooltip>
-          </a-popconfirm>
-        </div>
-      </article>
-
-      <a-button
-        block
-        :loading="isLoading"
-        type="primary"
-        @click="emit('loadSource')"
-      >
-        <template #icon>
-          <Icon name="i-lucide:play" />
-        </template>
-        {{ loadButtonText }}
-      </a-button>
-
-      <p v-if="loadError" class="source-panel__error">
-        <Icon name="i-lucide:circle-alert" :size="14" />
-        {{ loadError }}
-      </p>
-    </div>
-
-    <div class="source-panel__stats">
-      <div>
-        <span>行数</span>
-        <strong>{{ rowCount.toLocaleString('zh-CN') }}</strong>
-      </div>
-      <div>
-        <span>字段</span>
-        <strong>{{ fieldCount.toLocaleString('zh-CN') }}</strong>
-      </div>
-    </div>
-
-    <DataSourceModal
-      v-model:open="sourceModalOpen"
-      :config="modalConfig"
-      :mode="sourceModalMode"
-      @save="saveSource"
-    />
-  </section>
-</template>
 
 <style scoped lang="less">
 .source-panel {

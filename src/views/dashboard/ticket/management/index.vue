@@ -1,3 +1,114 @@
+<template>
+  <WView :full="true" :padding="0">
+    <div class="h-full min-h-0 flex flex-col overflow-hidden bg-page">
+      <header
+        class="flex flex-none flex-wrap items-center justify-between gap-12 border-b-1 border-color-2 border-b-solid bg-container px-14 py-11 sm:px-18"
+      >
+        <div class="min-w-0">
+          <div class="flex items-center gap-7">
+            <h1 class="mb-0 truncate text-lg text-main font-700">工单处理</h1>
+            <a-tag :bordered="false" color="blue">客服工作台</a-tag>
+          </div>
+          <div class="mt-4 text-xs text-secondary">
+            {{ tickets.length }} 条工单 · 当前处理人 {{ currentAgent }}
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-x-18 gap-y-8 sm:grid-cols-4">
+          <div
+            v-for="item in statItems"
+            :key="item.key"
+            class="flex min-w-74 items-center gap-7"
+          >
+            <Icon :name="item.icon" :size="15" :class="item.className" />
+            <div>
+              <div class="text-md text-main font-700 leading-none">
+                {{ item.value }}
+              </div>
+              <div class="mt-3 text-xs text-secondary">{{ item.label }}</div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <section
+        class="flex flex-none flex-wrap items-center gap-8 border-b-1 border-color-2 border-b-solid bg-container px-10 py-9 sm:px-14"
+      >
+        <a-input
+          v-model:value="filters.keyword"
+          allow-clear
+          class="w-full sm:w-240"
+          placeholder="搜索编号、标题、提交人或处理人"
+        >
+          <template #prefix>
+            <Icon name="i-lucide:search" :size="14" class="text-placeholder" />
+          </template>
+        </a-input>
+        <a-select
+          v-model:value="filters.status"
+          class="w-116"
+          :options="ticketStatusOptions"
+        />
+        <a-select
+          v-model:value="filters.priority"
+          class="w-116"
+          :options="ticketPriorityOptions"
+        />
+        <a-select
+          v-model:value="filters.category"
+          class="w-116"
+          :options="ticketCategoryOptions"
+        />
+        <a-select
+          v-model:value="filters.team"
+          class="w-132"
+          :options="teamOptions"
+        />
+        <a-button :disabled="!hasFilters" @click="resetFilters">
+          <template #icon><Icon name="i-lucide:rotate-ccw" /></template>
+          重置
+        </a-button>
+        <span class="ml-auto text-xs text-secondary">
+          当前队列 {{ visibleTickets.length }} 条
+        </span>
+      </section>
+
+      <main
+        class="min-h-0 flex-1 grid grid-cols-[310px_minmax(0,1fr)_300px] overflow-hidden max-xl:grid-cols-[300px_minmax(0,1fr)] max-lg:grid-cols-1 max-lg:overflow-y-auto"
+      >
+        <TicketQueue
+          :active-queue="queue"
+          class="max-lg:min-h-320"
+          :items="visibleTickets"
+          :queue-options="queueOptions"
+          :selected-id="selectedTicketId"
+          @queue-change="handleQueueChange"
+          @select="selectTicket"
+        />
+        <TicketConversation
+          class="max-lg:min-h-600"
+          :current-agent="currentAgent"
+          :ticket="selectedTicket"
+          @internal-note="handleInternalNote"
+          @public-reply="handlePublicReply"
+        />
+        <TicketProperties
+          class="max-h-full max-xl:col-span-2 max-xl:max-h-480 max-lg:col-span-1 max-lg:max-h-none"
+          :ticket="selectedTicket"
+          @accept="handleAccept"
+          @assignment-change="handleAssignment"
+          @close="handleClose"
+          @continue="handleContinue"
+          @priority-change="handlePriority"
+          @reopen="handleReopen"
+          @resolve="handleResolve"
+          @waiting="handleWaiting"
+        />
+      </main>
+    </div>
+  </WView>
+</template>
+
 <script setup lang="ts">
 import { message } from 'antdv-next'
 import {
@@ -132,114 +243,3 @@ function handleInternalNote(content: string) {
   message.success('内部备注已添加')
 }
 </script>
-
-<template>
-  <WView :full="true" :padding="0">
-    <div class="h-full min-h-0 flex flex-col overflow-hidden bg-page">
-      <header
-        class="flex flex-none flex-wrap items-center justify-between gap-12 border-b-1 border-color-2 border-b-solid bg-container px-14 py-11 sm:px-18"
-      >
-        <div class="min-w-0">
-          <div class="flex items-center gap-7">
-            <h1 class="mb-0 truncate text-lg text-main font-700">工单处理</h1>
-            <a-tag :bordered="false" color="blue">客服工作台</a-tag>
-          </div>
-          <div class="mt-4 text-xs text-secondary">
-            {{ tickets.length }} 条工单 · 当前处理人 {{ currentAgent }}
-          </div>
-        </div>
-
-        <div class="grid grid-cols-2 gap-x-18 gap-y-8 sm:grid-cols-4">
-          <div
-            v-for="item in statItems"
-            :key="item.key"
-            class="flex min-w-74 items-center gap-7"
-          >
-            <Icon :name="item.icon" :size="15" :class="item.className" />
-            <div>
-              <div class="text-md text-main font-700 leading-none">
-                {{ item.value }}
-              </div>
-              <div class="mt-3 text-xs text-secondary">{{ item.label }}</div>
-            </div>
-          </div>
-        </div>
-      </header>
-
-      <section
-        class="flex flex-none flex-wrap items-center gap-8 border-b-1 border-color-2 border-b-solid bg-container px-10 py-9 sm:px-14"
-      >
-        <a-input
-          v-model:value="filters.keyword"
-          allow-clear
-          class="w-full sm:w-240"
-          placeholder="搜索编号、标题、提交人或处理人"
-        >
-          <template #prefix>
-            <Icon name="i-lucide:search" :size="14" class="text-placeholder" />
-          </template>
-        </a-input>
-        <a-select
-          v-model:value="filters.status"
-          class="w-116"
-          :options="ticketStatusOptions"
-        />
-        <a-select
-          v-model:value="filters.priority"
-          class="w-116"
-          :options="ticketPriorityOptions"
-        />
-        <a-select
-          v-model:value="filters.category"
-          class="w-116"
-          :options="ticketCategoryOptions"
-        />
-        <a-select
-          v-model:value="filters.team"
-          class="w-132"
-          :options="teamOptions"
-        />
-        <a-button :disabled="!hasFilters" @click="resetFilters">
-          <template #icon><Icon name="i-lucide:rotate-ccw" /></template>
-          重置
-        </a-button>
-        <span class="ml-auto text-xs text-secondary">
-          当前队列 {{ visibleTickets.length }} 条
-        </span>
-      </section>
-
-      <main
-        class="min-h-0 flex-1 grid grid-cols-[310px_minmax(0,1fr)_300px] overflow-hidden max-xl:grid-cols-[300px_minmax(0,1fr)] max-lg:grid-cols-1 max-lg:overflow-y-auto"
-      >
-        <TicketQueue
-          :active-queue="queue"
-          class="max-lg:min-h-320"
-          :items="visibleTickets"
-          :queue-options="queueOptions"
-          :selected-id="selectedTicketId"
-          @queue-change="handleQueueChange"
-          @select="selectTicket"
-        />
-        <TicketConversation
-          class="max-lg:min-h-600"
-          :current-agent="currentAgent"
-          :ticket="selectedTicket"
-          @internal-note="handleInternalNote"
-          @public-reply="handlePublicReply"
-        />
-        <TicketProperties
-          class="max-h-full max-xl:col-span-2 max-xl:max-h-480 max-lg:col-span-1 max-lg:max-h-none"
-          :ticket="selectedTicket"
-          @accept="handleAccept"
-          @assignment-change="handleAssignment"
-          @close="handleClose"
-          @continue="handleContinue"
-          @priority-change="handlePriority"
-          @reopen="handleReopen"
-          @resolve="handleResolve"
-          @waiting="handleWaiting"
-        />
-      </main>
-    </div>
-  </WView>
-</template>

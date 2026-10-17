@@ -1,143 +1,3 @@
-<script setup lang="ts">
-import { useRoute, useRouter } from 'vue-router'
-import { message } from 'antdv-next'
-import { agentResources, agentSubAgentOptions, agentTagOptions } from '../data'
-import type { AgentStatus } from '../types'
-
-interface AgentFormState {
-  name: string
-  description: string
-  status: AgentStatus
-  tags: string[]
-  owner: string
-  model: string
-  temperature: number
-  maxTokens: number
-  enableMemory: boolean
-  enableTools: string[]
-  knowledgeBases: string[]
-  subAgentIds: string[]
-  prompt: string
-  guardrails: string[]
-  publishChecklist: string[]
-}
-
-const route = useRoute()
-const router = useRouter()
-const activeTab = shallowRef('profile')
-
-const routeId = computed(() =>
-  typeof route.query.id === 'string' ? route.query.id : undefined
-)
-const sourceAgent = computed(
-  () =>
-    agentResources.find((item) => item.id === routeId.value) ??
-    agentResources[0]
-)
-
-const formState = reactive<AgentFormState>({
-  name: sourceAgent.value?.name ?? '新建 Agent',
-  description: sourceAgent.value?.description ?? '',
-  status: sourceAgent.value?.status ?? 'draft',
-  tags: [...(sourceAgent.value?.tags ?? ['运营助手'])],
-  owner: sourceAgent.value?.creator.name ?? '系统管理员',
-  model: 'GPT-4.1',
-  temperature: 0.35,
-  maxTokens: 4096,
-  enableMemory: true,
-  enableTools: ['knowledgeSearch', 'workflowAction'],
-  knowledgeBases: ['产品能力手册', '经营指标口径库'],
-  subAgentIds: [...(sourceAgent.value?.subAgentIds ?? [])],
-  prompt:
-    '你是企业内部 Agent，请基于可信知识库回答问题。遇到不确定信息时说明依据和置信度，不要编造业务规则。',
-  guardrails: ['敏感字段脱敏', '仅引用授权知识库', '输出包含依据来源'],
-  publishChecklist: ['intent', 'permission', 'fallback'],
-})
-
-const statusOptions = [
-  { label: '运行中', value: 'online' },
-  { label: '草稿', value: 'draft' },
-  { label: '已停用', value: 'offline' },
-]
-
-const modelOptions = [
-  { label: 'GPT-4.1', value: 'GPT-4.1' },
-  { label: 'GPT-4.1 Mini', value: 'GPT-4.1 Mini' },
-  { label: 'Claude Sonnet', value: 'Claude Sonnet' },
-  { label: '企业私有模型', value: 'Private LLM' },
-]
-
-const toolOptions = [
-  { label: '知识库检索', value: 'knowledgeSearch' },
-  { label: '工作流执行', value: 'workflowAction' },
-  { label: '报表查询', value: 'reportQuery' },
-  { label: '工单创建', value: 'ticketCreate' },
-]
-
-const knowledgeBaseOptions = [
-  { label: '产品能力手册', value: '产品能力手册' },
-  { label: '经营指标口径库', value: '经营指标口径库' },
-  { label: '财务制度知识库', value: '财务制度知识库' },
-  { label: '客服 FAQ 知识库', value: '客服 FAQ 知识库' },
-]
-
-const subAgentOptions = agentSubAgentOptions
-const tagOptions = agentTagOptions
-
-const checklistOptions = [
-  {
-    label: '意图识别测试通过',
-    value: 'intent',
-    description: '覆盖主要业务问法，避免命中错误流程。',
-  },
-  {
-    label: '权限边界已校验',
-    value: 'permission',
-    description: '不同角色只能访问授权知识和动作。',
-  },
-  {
-    label: '兜底策略可用',
-    value: 'fallback',
-    description: '低置信度时给出澄清问题或人工转接。',
-  },
-  {
-    label: '审计日志已接入',
-    value: 'audit',
-    description: '关键调用可追踪、可回放、可定位。',
-  },
-]
-
-const previewStatusClass = computed(() => {
-  const classMap: Record<AgentStatus, string> = {
-    online: 'bg-success/10 text-success',
-    draft: 'bg-primary/10 text-primary',
-    offline: 'bg-fill-tertiary text-secondary',
-  }
-  return classMap[formState.status]
-})
-
-const previewStatusLabel = computed(() => {
-  const labelMap: Record<AgentStatus, string> = {
-    online: '运行中',
-    draft: '草稿',
-    offline: '已停用',
-  }
-  return labelMap[formState.status]
-})
-
-function goBack() {
-  router.push('/ai-platform/agent')
-}
-
-function saveDraft() {
-  message.success('Agent 配置已保存为草稿')
-}
-
-function publishAgent() {
-  message.success('发布检查已提交，等待校验通过后上线')
-}
-</script>
-
 <template>
   <WView :full="true" :padding="0">
     <div class="h-full min-h-0 flex flex-col overflow-hidden bg-page">
@@ -439,3 +299,143 @@ function publishAgent() {
     </div>
   </WView>
 </template>
+
+<script setup lang="ts">
+import { useRoute, useRouter } from 'vue-router'
+import { message } from 'antdv-next'
+import { agentResources, agentSubAgentOptions, agentTagOptions } from '../data'
+import type { AgentStatus } from '../types'
+
+interface AgentFormState {
+  name: string
+  description: string
+  status: AgentStatus
+  tags: string[]
+  owner: string
+  model: string
+  temperature: number
+  maxTokens: number
+  enableMemory: boolean
+  enableTools: string[]
+  knowledgeBases: string[]
+  subAgentIds: string[]
+  prompt: string
+  guardrails: string[]
+  publishChecklist: string[]
+}
+
+const route = useRoute()
+const router = useRouter()
+const activeTab = shallowRef('profile')
+
+const routeId = computed(() =>
+  typeof route.query.id === 'string' ? route.query.id : undefined
+)
+const sourceAgent = computed(
+  () =>
+    agentResources.find((item) => item.id === routeId.value) ??
+    agentResources[0]
+)
+
+const formState = reactive<AgentFormState>({
+  name: sourceAgent.value?.name ?? '新建 Agent',
+  description: sourceAgent.value?.description ?? '',
+  status: sourceAgent.value?.status ?? 'draft',
+  tags: [...(sourceAgent.value?.tags ?? ['运营助手'])],
+  owner: sourceAgent.value?.creator.name ?? '系统管理员',
+  model: 'GPT-4.1',
+  temperature: 0.35,
+  maxTokens: 4096,
+  enableMemory: true,
+  enableTools: ['knowledgeSearch', 'workflowAction'],
+  knowledgeBases: ['产品能力手册', '经营指标口径库'],
+  subAgentIds: [...(sourceAgent.value?.subAgentIds ?? [])],
+  prompt:
+    '你是企业内部 Agent，请基于可信知识库回答问题。遇到不确定信息时说明依据和置信度，不要编造业务规则。',
+  guardrails: ['敏感字段脱敏', '仅引用授权知识库', '输出包含依据来源'],
+  publishChecklist: ['intent', 'permission', 'fallback'],
+})
+
+const statusOptions = [
+  { label: '运行中', value: 'online' },
+  { label: '草稿', value: 'draft' },
+  { label: '已停用', value: 'offline' },
+]
+
+const modelOptions = [
+  { label: 'GPT-4.1', value: 'GPT-4.1' },
+  { label: 'GPT-4.1 Mini', value: 'GPT-4.1 Mini' },
+  { label: 'Claude Sonnet', value: 'Claude Sonnet' },
+  { label: '企业私有模型', value: 'Private LLM' },
+]
+
+const toolOptions = [
+  { label: '知识库检索', value: 'knowledgeSearch' },
+  { label: '工作流执行', value: 'workflowAction' },
+  { label: '报表查询', value: 'reportQuery' },
+  { label: '工单创建', value: 'ticketCreate' },
+]
+
+const knowledgeBaseOptions = [
+  { label: '产品能力手册', value: '产品能力手册' },
+  { label: '经营指标口径库', value: '经营指标口径库' },
+  { label: '财务制度知识库', value: '财务制度知识库' },
+  { label: '客服 FAQ 知识库', value: '客服 FAQ 知识库' },
+]
+
+const subAgentOptions = agentSubAgentOptions
+const tagOptions = agentTagOptions
+
+const checklistOptions = [
+  {
+    label: '意图识别测试通过',
+    value: 'intent',
+    description: '覆盖主要业务问法，避免命中错误流程。',
+  },
+  {
+    label: '权限边界已校验',
+    value: 'permission',
+    description: '不同角色只能访问授权知识和动作。',
+  },
+  {
+    label: '兜底策略可用',
+    value: 'fallback',
+    description: '低置信度时给出澄清问题或人工转接。',
+  },
+  {
+    label: '审计日志已接入',
+    value: 'audit',
+    description: '关键调用可追踪、可回放、可定位。',
+  },
+]
+
+const previewStatusClass = computed(() => {
+  const classMap: Record<AgentStatus, string> = {
+    online: 'bg-success/10 text-success',
+    draft: 'bg-primary/10 text-primary',
+    offline: 'bg-fill-tertiary text-secondary',
+  }
+  return classMap[formState.status]
+})
+
+const previewStatusLabel = computed(() => {
+  const labelMap: Record<AgentStatus, string> = {
+    online: '运行中',
+    draft: '草稿',
+    offline: '已停用',
+  }
+  return labelMap[formState.status]
+})
+
+function goBack() {
+  router.push('/ai-platform/agent')
+}
+
+function saveDraft() {
+  message.success('Agent 配置已保存为草稿')
+}
+
+function publishAgent() {
+  message.success('发布检查已提交，等待校验通过后上线')
+}
+</script>

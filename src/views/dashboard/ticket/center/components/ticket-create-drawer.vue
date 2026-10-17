@@ -1,77 +1,3 @@
-<script setup lang="ts">
-import { useWindowSize } from '@vueuse/core'
-import {
-  ticketCategoryList,
-  ticketEnvironmentOptions,
-  ticketPriorityList,
-} from '../data'
-import type { FormInstance } from 'antdv-next'
-import type { TicketDraft } from '../types'
-
-const open = defineModel<boolean>('open', { required: true })
-
-const emit = defineEmits<{
-  submit: [draft: TicketDraft]
-}>()
-
-const formRef = useTemplateRef<FormInstance>('formRef')
-const { width: viewportWidth } = useWindowSize()
-const drawerSize = computed(() => Math.min(viewportWidth.value, 640))
-
-const createDefaultDraft = (): TicketDraft => ({
-  subject: '',
-  description: '',
-  category: 'bug',
-  priority: 'medium',
-  environment: '生产环境',
-  contact: '',
-})
-
-const formState = reactive<TicketDraft>(createDefaultDraft())
-
-const categoryOptions = ticketCategoryList.map(({ label, value }) => ({
-  label,
-  value,
-}))
-const priorityOptions = ticketPriorityList.map(({ label, value }) => ({
-  label,
-  value,
-}))
-
-const rules = {
-  subject: [
-    { required: true, message: '请输入问题标题', trigger: 'blur' },
-    { min: 4, message: '问题标题至少 4 个字符', trigger: 'blur' },
-  ],
-  description: [
-    { required: true, message: '请描述问题现象', trigger: 'blur' },
-    { min: 10, message: '问题描述至少 10 个字符', trigger: 'blur' },
-  ],
-  category: [{ required: true, message: '请选择问题类型' }],
-  priority: [{ required: true, message: '请选择优先级' }],
-  environment: [{ required: true, message: '请选择发生环境' }],
-  contact: [{ required: true, message: '请输入联系方式', trigger: 'blur' }],
-}
-
-watch(open, (value) => {
-  if (!value) return
-  Object.assign(formState, createDefaultDraft())
-  formRef.value?.clearValidate()
-})
-
-function close() {
-  open.value = false
-}
-
-function submit() {
-  formRef.value?.submit()
-}
-
-function handleFinish() {
-  emit('submit', { ...formState })
-}
-</script>
-
 <template>
   <a-drawer
     v-model:open="open"
@@ -151,3 +77,77 @@ function handleFinish() {
     </template>
   </a-drawer>
 </template>
+
+<script setup lang="ts">
+import { useWindowSize } from '@vueuse/core'
+import {
+  ticketCategoryList,
+  ticketEnvironmentOptions,
+  ticketPriorityList,
+} from '../data'
+import type { FormInstance } from 'antdv-next'
+import type { TicketDraft } from '../types'
+
+const open = defineModel<boolean>('open', { required: true })
+
+const emits = defineEmits<{
+  submit: [draft: TicketDraft]
+}>()
+
+const formRef = useTemplateRef<FormInstance>('formRef')
+const { width: viewportWidth } = useWindowSize()
+const drawerSize = computed(() => Math.min(viewportWidth.value, 640))
+
+const createDefaultDraft = (): TicketDraft => ({
+  subject: '',
+  description: '',
+  category: 'bug',
+  priority: 'medium',
+  environment: '生产环境',
+  contact: '',
+})
+
+const formState = reactive<TicketDraft>(createDefaultDraft())
+
+const categoryOptions = ticketCategoryList.map(({ label, value }) => ({
+  label,
+  value,
+}))
+const priorityOptions = ticketPriorityList.map(({ label, value }) => ({
+  label,
+  value,
+}))
+
+const rules = {
+  subject: [
+    { required: true, message: '请输入问题标题', trigger: 'blur' },
+    { min: 4, message: '问题标题至少 4 个字符', trigger: 'blur' },
+  ],
+  description: [
+    { required: true, message: '请描述问题现象', trigger: 'blur' },
+    { min: 10, message: '问题描述至少 10 个字符', trigger: 'blur' },
+  ],
+  category: [{ required: true, message: '请选择问题类型' }],
+  priority: [{ required: true, message: '请选择优先级' }],
+  environment: [{ required: true, message: '请选择发生环境' }],
+  contact: [{ required: true, message: '请输入联系方式', trigger: 'blur' }],
+}
+
+watch(open, (value) => {
+  if (!value) return
+  Object.assign(formState, createDefaultDraft())
+  formRef.value?.clearValidate()
+})
+
+function close() {
+  open.value = false
+}
+
+function submit() {
+  formRef.value?.submit()
+}
+
+function handleFinish() {
+  emits('submit', { ...formState })
+}
+</script>

@@ -3,9 +3,9 @@
     <Search
       v-model="keyword"
       placeholder="搜索好友或群聊…"
-      @create-group="emit('createGroup')"
-      @add-contact="emit('addContact')"
-      @open-global-search="emit('openGlobalSearch')"
+      @create-group="emits('createGroup')"
+      @add-contact="emits('addContact')"
+      @open-global-search="emits('openGlobalSearch')"
     />
 
     <section class="border-b-1 border-b-solid border-color-1 px-10 py-10">
@@ -111,8 +111,8 @@
           :search-keyword="keyword"
           :show-toolbar="false"
           :show-status-filter="false"
-          @select="(contact) => emit('showContact', contact)"
-          @chat="(contact) => emit('chat', contact)"
+          @select="(contact) => emits('showContact', contact)"
+          @chat="(contact) => emits('chat', contact)"
         />
         <GroupList
           v-else
@@ -121,7 +121,7 @@
           :groups="groups"
           :search-keyword="keyword"
           :show-toolbar="false"
-          @select="(group) => emit('select', group)"
+          @select="(group) => emits('select', group)"
         />
       </Transition>
     </div>
@@ -130,7 +130,7 @@
       v-model:open="notificationModalOpen"
       v-model:category="notificationCategory"
       :notifications="notifications"
-      @read="emit('readNotifications', $event)"
+      @read="emits('readNotifications', $event)"
       @resolve="handleResolveNotification"
     />
   </div>
@@ -167,7 +167,7 @@ const props = withDefaults(
   }
 )
 
-const emit = defineEmits<{
+const emits = defineEmits<{
   select: [conversation: Conversation]
   chat: [contact: Contact]
   showContact: [contact: Contact]
@@ -213,6 +213,6 @@ function handleResolveNotification(
   notification: ContactNotification,
   accepted: boolean
 ) {
-  emit('resolveNotification', notification, accepted)
+  emits('resolveNotification', notification, accepted)
 }
 </script>
