@@ -1,23 +1,3 @@
-<script setup lang="ts">
-import type { TaskFilterStatus, TaskViewOption, TaskViewType } from './types'
-
-const props = defineProps<{
-  loading?: boolean
-  taskCount: number
-  filteredTaskCount: number
-  statusOptions: Array<{ label: string; value: TaskFilterStatus }>
-  viewOptions: TaskViewOption[]
-}>()
-
-const emit = defineEmits<{
-  create: []
-}>()
-
-const keyword = defineModel<string>('keyword', { default: '' })
-const status = defineModel<TaskFilterStatus>('status', { default: 'all' })
-const view = defineModel<TaskViewType>('view', { default: 'card' })
-</script>
-
 <template>
   <div
     v-if="props.loading"
@@ -44,7 +24,7 @@ const view = defineModel<TaskViewType>('view', { default: 'card' })
     class="page-enter page-enter--1 flex flex-wrap items-center justify-between gap-12 rounded-4 bg-container p-12"
   >
     <div class="flex flex-wrap items-center gap-8">
-      <a-button type="primary" @click="emit('create')">
+      <a-button type="primary" @click="emits('create')">
         <template #icon>
           <Icon name="i-lucide:plus" />
         </template>
@@ -78,3 +58,23 @@ const view = defineModel<TaskViewType>('view', { default: 'card' })
     </div>
   </div>
 </template>
+
+<script setup lang="ts">
+import type { TaskFilterStatus, TaskViewOption, TaskViewType } from './types'
+
+const props = defineProps<{
+  loading?: boolean
+  taskCount: number
+  filteredTaskCount: number
+  statusOptions: Array<{ label: string; value: TaskFilterStatus }>
+  viewOptions: TaskViewOption[]
+}>()
+
+const emits = defineEmits<{
+  create: []
+}>()
+
+const keyword = defineModel<string>('keyword', { default: '' })
+const status = defineModel<TaskFilterStatus>('status', { default: 'all' })
+const view = defineModel<TaskViewType>('view', { default: 'card' })
+</script>

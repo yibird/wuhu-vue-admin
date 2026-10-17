@@ -84,7 +84,7 @@
           </a-tag>
         </template>
         <template v-else-if="column.key === 'action'">
-          <a-button type="link" size="small" @click="emit('edit', record)">
+          <a-button type="link" size="small" @click="emits('edit', record)">
             <template #icon>
               <Icon name="i-lucide:pencil" />
             </template>
@@ -94,7 +94,7 @@
             type="link"
             size="small"
             danger
-            @click="emit('delete', record)"
+            @click="emits('delete', record)"
           >
             <template #icon>
               <Icon name="i-lucide:trash-2" />
@@ -118,7 +118,7 @@ import {
 } from '../../constants'
 import type { Task, TaskActionEmits, TaskStatusValue } from '../types'
 
-const emit = defineEmits<TaskActionEmits>()
+const emits = defineEmits<TaskActionEmits>()
 const { loading = false } = defineProps<{ loading?: boolean }>()
 const items = defineModel<Task[]>('items', { default: () => [] })
 

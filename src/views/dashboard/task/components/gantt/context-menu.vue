@@ -1,30 +1,3 @@
-<script lang="ts" setup>
-import { getTaskDueMeta } from '../../constants'
-import { taskProgress } from './utils'
-import type { Task } from '../types'
-import type { TaskGanttMenuPosition } from './utils'
-
-interface Props {
-  readonly open: boolean
-  readonly task: Task | null
-  readonly position: TaskGanttMenuPosition
-}
-
-interface Emits {
-  edit: []
-  duplicate: []
-  markDone: []
-  delete: []
-}
-
-const props = defineProps<Props>()
-const emit = defineEmits<Emits>()
-
-const menuStyle = computed(() => ({
-  transform: `translate3d(${props.position.x}px, ${props.position.y}px, 0)`,
-}))
-</script>
-
 <template>
   <Teleport to="body">
     <div
@@ -49,7 +22,7 @@ const menuStyle = computed(() => ({
         class="mt-4 h-34 w-full flex items-center gap-8 rounded-6 border-0 bg-transparent px-9 text-left text-13px text-main cursor-pointer transition-colors hover:bg-hover"
         type="button"
         role="menuitem"
-        @click="emit('edit')"
+        @click="emits('edit')"
       >
         <Icon name="i-lucide:pencil" :size="15" />
         编辑任务
@@ -58,7 +31,7 @@ const menuStyle = computed(() => ({
         class="h-34 w-full flex items-center gap-8 rounded-6 border-0 bg-transparent px-9 text-left text-13px text-main cursor-pointer transition-colors hover:bg-hover"
         type="button"
         role="menuitem"
-        @click="emit('duplicate')"
+        @click="emits('duplicate')"
       >
         <Icon name="i-lucide:copy-plus" :size="15" />
         复制任务
@@ -67,7 +40,7 @@ const menuStyle = computed(() => ({
         class="h-34 w-full flex items-center gap-8 rounded-6 border-0 bg-transparent px-9 text-left text-13px text-main cursor-pointer transition-colors hover:bg-hover"
         type="button"
         role="menuitem"
-        @click="emit('markDone')"
+        @click="emits('markDone')"
       >
         <Icon name="i-lucide:circle-check" :size="15" />
         标记完成
@@ -77,7 +50,7 @@ const menuStyle = computed(() => ({
         class="h-34 w-full flex items-center gap-8 rounded-6 border-0 bg-transparent px-9 text-left text-13px text-error cursor-pointer transition-colors hover:bg-error-tint"
         type="button"
         role="menuitem"
-        @click="emit('delete')"
+        @click="emits('delete')"
       >
         <Icon name="i-lucide:trash-2" :size="15" />
         删除任务
@@ -85,3 +58,30 @@ const menuStyle = computed(() => ({
     </div>
   </Teleport>
 </template>
+
+<script lang="ts" setup>
+import { getTaskDueMeta } from '../../constants'
+import { taskProgress } from './utils'
+import type { Task } from '../types'
+import type { TaskGanttMenuPosition } from './utils'
+
+interface Props {
+  readonly open: boolean
+  readonly task: Task | null
+  readonly position: TaskGanttMenuPosition
+}
+
+interface Emits {
+  edit: []
+  duplicate: []
+  markDone: []
+  delete: []
+}
+
+const props = defineProps<Props>()
+const emits = defineEmits<Emits>()
+
+const menuStyle = computed(() => ({
+  transform: `translate3d(${props.position.x}px, ${props.position.y}px, 0)`,
+}))
+</script>

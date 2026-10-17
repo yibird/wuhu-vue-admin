@@ -10,17 +10,17 @@
       reduced-motion="user"
       :items="visibleTaskStatus"
       :get-key="(item: CardTaskStatus) => item.status"
-      class="relative grid h-full min-h-0 grid-cols-1 gap-10 overflow-y-auto md:grid-cols-3 xl:grid-cols-4 xl:overflow-hidden 2xl:grid-cols-6"
+      class="relative grid h-full min-h-0 grid-cols-1 gap-10 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6 overflow-x-auto"
       motion-class="min-h-0 min-w-0 xl:max-h-full xl:overflow-hidden"
     >
       <template #default="{ item }">
         <Group
           v-bind="item"
           :items="groupItems[getTaskGroupId(item.status)] ?? []"
-          @delete="emit('delete', $event)"
-          @duplicate="emit('duplicate', $event)"
-          @edit="emit('edit', $event)"
-          @mark-done="emit('markDone', $event)"
+          @delete="emits('delete', $event)"
+          @duplicate="emits('duplicate', $event)"
+          @edit="emits('edit', $event)"
+          @mark-done="emits('markDone', $event)"
         />
       </template>
     </AnimatedGroup>
@@ -42,7 +42,7 @@ import type {
   TaskStatusValue,
 } from '../types'
 
-const emit = defineEmits<CardTaskEmits>()
+const emits = defineEmits<CardTaskEmits>()
 const { loading = false, status = 'all' } = defineProps<{
   loading?: boolean
   status?: TaskFilterStatus
@@ -273,6 +273,6 @@ function handleDragEnd(event: DragEndEvent) {
   // 落回原位时锚点就是自己,不需要上报
   if (!target || target.beforeId === id) return
 
-  emit('move', { id, ...target })
+  emits('move', { id, ...target })
 }
 </script>

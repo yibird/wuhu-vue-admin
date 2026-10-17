@@ -24,10 +24,10 @@
           >
             <Item
               :item="item"
-              @delete="emit('delete', $event)"
-              @duplicate="emit('duplicate', $event)"
-              @edit="emit('edit', $event)"
-              @mark-done="emit('markDone', $event)"
+              @delete="emits('delete', $event)"
+              @duplicate="emits('duplicate', $event)"
+              @edit="emits('edit', $event)"
+              @mark-done="emits('markDone', $event)"
             />
           </DraggableItem>
           <!-- 拖到分组空白处(末尾、空分组)时显示的合成占位盒子,默认隐藏 -->
@@ -51,7 +51,7 @@ import Item from './item.vue'
 import type { CardTaskActionEmits, CardTaskGroupProps } from '../types.ts'
 
 const props = defineProps<CardTaskGroupProps>()
-const emit = defineEmits<CardTaskActionEmits>()
+const emits = defineEmits<CardTaskActionEmits>()
 const groupRef = useTemplateRef<HTMLElement>('groupRef')
 const groupId = computed(() => `task-group:${props.status}`)
 

@@ -1,39 +1,3 @@
-<script lang="ts" setup>
-import {
-  getTaskAssigneeMeta,
-  getTaskDueMeta,
-  getTaskPriorityMeta,
-} from '../../constants'
-import type { Task } from '../types'
-import { statusBarClass, taskProgress } from './utils'
-
-interface Props {
-  readonly items: Task[]
-  readonly selectedTaskId: number | null
-}
-
-interface Emits {
-  select: [taskId: number]
-  edit: [task: Task]
-  delete: [task: Task]
-}
-
-defineProps<Props>()
-const emit = defineEmits<Emits>()
-
-function priorityMeta(task: Task) {
-  return getTaskPriorityMeta(task.priority)
-}
-
-function assigneeMeta(task: Task) {
-  return getTaskAssigneeMeta(task.assignee)
-}
-
-function dueMeta(task: Task) {
-  return getTaskDueMeta(task.dueDate, task.status)
-}
-</script>
-
 <template>
   <div
     class="h-176 min-h-0 rounded-4 bg-container p-12 w-full overflow-x-auto overflow-y-auto"
@@ -46,7 +10,7 @@ function dueMeta(task: Task) {
         :class="
           item.id === selectedTaskId ? 'border-primary bg-selected-1' : ''
         "
-        @click="emit('select', item.id)"
+        @click="emits('select', item.id)"
       >
         <div class="min-w-0">
           <div class="truncate font-600 text-main">{{ item.title }}</div>
@@ -96,7 +60,7 @@ function dueMeta(task: Task) {
           </span>
         </div>
         <div class="text-right">
-          <a-button type="link" size="small" @click.stop="emit('edit', item)">
+          <a-button type="link" size="small" @click.stop="emits('edit', item)">
             <template #icon>
               <Icon name="i-lucide:pencil" />
             </template>
@@ -106,7 +70,7 @@ function dueMeta(task: Task) {
             type="link"
             size="small"
             danger
-            @click.stop="emit('delete', item)"
+            @click.stop="emits('delete', item)"
           >
             <template #icon>
               <Icon name="i-lucide:trash-2" />
@@ -119,3 +83,39 @@ function dueMeta(task: Task) {
     </div>
   </div>
 </template>
+
+<script lang="ts" setup>
+import {
+  getTaskAssigneeMeta,
+  getTaskDueMeta,
+  getTaskPriorityMeta,
+} from '../../constants'
+import type { Task } from '../types'
+import { statusBarClass, taskProgress } from './utils'
+
+interface Props {
+  readonly items: Task[]
+  readonly selectedTaskId: number | null
+}
+
+interface Emits {
+  select: [taskId: number]
+  edit: [task: Task]
+  delete: [task: Task]
+}
+
+defineProps<Props>()
+const emits = defineEmits<Emits>()
+
+function priorityMeta(task: Task) {
+  return getTaskPriorityMeta(task.priority)
+}
+
+function assigneeMeta(task: Task) {
+  return getTaskAssigneeMeta(task.assignee)
+}
+
+function dueMeta(task: Task) {
+  return getTaskDueMeta(task.dueDate, task.status)
+}
+</script>

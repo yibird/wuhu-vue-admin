@@ -61,7 +61,7 @@
     >
       <span
         class="flex-1 inline-flex items-center justify-center gap-4 text-xs text-muted cursor-pointer hover:text-primary"
-        @click="emit('edit', item)"
+        @click="emits('edit', item)"
       >
         <Icon name="i-lucide:pencil" :size="13" />
         修改
@@ -69,7 +69,7 @@
       <a-divider vertical />
       <span
         class="flex-1 inline-flex items-center justify-center gap-4 text-xs text-muted cursor-pointer hover:text-error"
-        @click="emit('delete', item)"
+        @click="emits('delete', item)"
       >
         <Icon name="i-lucide:trash-2" :size="13" />
         删除
@@ -105,7 +105,7 @@ import type { MenuProps } from 'antdv-next'
 import type { CardTaskActionEmits, CardTaskItemProps } from '../types'
 
 const { item } = defineProps<CardTaskItemProps>()
-const emit = defineEmits<CardTaskActionEmits>()
+const emits = defineEmits<CardTaskActionEmits>()
 
 const priorityMeta = computed(() => getTaskPriorityMeta(item.priority))
 const assigneeMeta = computed(() => getTaskAssigneeMeta(item.assignee))
@@ -133,8 +133,8 @@ const menuItems = computed(
 )
 
 const menuActions: Record<CardMenuItemKey, () => void> = {
-  duplicate: () => emit('duplicate', item),
-  markDone: () => emit('markDone', item),
+  duplicate: () => emits('duplicate', item),
+  markDone: () => emits('markDone', item),
 }
 
 const isCardMenuItemKey = (value: unknown): value is CardMenuItemKey =>

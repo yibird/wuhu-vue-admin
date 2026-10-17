@@ -1,5 +1,3 @@
-<script setup lang="ts"></script>
-
 <template>
   <div class="h-full min-h-0 flex flex-col gap-12" aria-busy="true">
     <div
