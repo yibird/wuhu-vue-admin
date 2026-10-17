@@ -1,3 +1,25 @@
+<template>
+  <a-form-item
+    :name="schema.field"
+    :label="resolvedSchema.label"
+    :rules="mergedRules"
+    :tooltip="resolvedSchema.tooltip"
+    v-bind="resolvedSchema.formItemProps"
+  >
+    <FieldSlotRenderer
+      v-if="fieldSlot"
+      :render="fieldSlot"
+      :slot-props="fieldSlotProps"
+    />
+    <component
+      :is="control"
+      v-else-if="control"
+      v-bind="controlProps"
+      v-on="controlEvents"
+    />
+  </a-form-item>
+</template>
+
 <script setup lang="ts">
 import { computed, toValue, watch } from 'vue'
 import { FieldSlotRenderer } from './field-slot-renderer'
@@ -165,25 +187,3 @@ watch(
   { immediate: true }
 )
 </script>
-
-<template>
-  <a-form-item
-    :name="schema.field"
-    :label="resolvedSchema.label"
-    :rules="mergedRules"
-    :tooltip="resolvedSchema.tooltip"
-    v-bind="resolvedSchema.formItemProps"
-  >
-    <FieldSlotRenderer
-      v-if="fieldSlot"
-      :render="fieldSlot"
-      :slot-props="fieldSlotProps"
-    />
-    <component
-      :is="control"
-      v-else-if="control"
-      v-bind="controlProps"
-      v-on="controlEvents"
-    />
-  </a-form-item>
-</template>

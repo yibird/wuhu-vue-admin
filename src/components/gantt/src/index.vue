@@ -1,3 +1,20 @@
+<template>
+  <div
+    class="relative full min-h-0 overflow-hidden rounded-4 border-1 border-color-2 border-solid bg-container"
+    v-bind="$attrs"
+    @contextmenu="handleContextMenu"
+    @mousedown="handleContextMouseDown"
+  >
+    <div ref="ganttRef" class="w-gantt full min-h-0" />
+    <div
+      v-if="tasks.length === 0"
+      class="absolute inset-0 flex items-center justify-center bg-container text-sm text-secondary"
+    >
+      {{ emptyText }}
+    </div>
+  </div>
+</template>
+
 <script lang="ts" setup>
 import Gantt from 'frappe-gantt'
 import 'frappe-gantt/dist/frappe-gantt.css'
@@ -20,7 +37,7 @@ const props = withDefaults(defineProps<GanttProps>(), {
   options: () => ({}),
 })
 
-const emit = defineEmits<GanttEmits>()
+const emits = defineEmits<GanttEmits>()
 
 const ganttRef = useTemplateRef<HTMLDivElement>('ganttRef')
 const ganttInstance = shallowRef<Gantt | null>(null)
@@ -40,27 +57,27 @@ function createGanttOptions(): FrappeGanttOptions {
     readonly_dates: props.readonly,
     readonly_progress: props.readonly,
     on_click: (task: FrappeGanttTask) => {
-      emit('click', task as GanttTask)
+      emits('click', task as GanttTask)
       props.options?.on_click?.(task)
     },
     on_double_click: (task: FrappeGanttTask) => {
-      emit('doubleClick', task as GanttTask)
+      emits('doubleClick', task as GanttTask)
       props.options?.on_double_click?.(task)
     },
     on_date_change: (task: FrappeGanttTask, start: Date, end: Date) => {
-      emit('dateChange', task as GanttTask, start, end)
+      emits('dateChange', task as GanttTask, start, end)
       props.options?.on_date_change?.(task, start, end)
     },
     on_progress_change: (task: FrappeGanttTask, progress: number) => {
-      emit('progressChange', task as GanttTask, progress)
+      emits('progressChange', task as GanttTask, progress)
       props.options?.on_progress_change?.(task, progress)
     },
     on_view_change: (mode: FrappeGanttViewModeDefinition) => {
-      emit('viewChange', mode)
+      emits('viewChange', mode)
       props.options?.on_view_change?.(mode)
     },
     on_date_click: (date: string | null) => {
-      emit('dateClick', date)
+      emits('dateClick', date)
       props.options?.on_date_click?.(date)
     },
   }
@@ -96,7 +113,7 @@ function handleContextMenu(event: MouseEvent) {
   if (!task) return
 
   event.preventDefault()
-  emit('contextMenu', {
+  emits('contextMenu', {
     task: task as GanttTask,
     nativeEvent: event,
     x: event.clientX,
@@ -223,22 +240,5 @@ onUnmounted(() => {
   if (ganttRef.value) ganttRef.value.innerHTML = ''
 })
 </script>
-
-<template>
-  <div
-    class="relative full min-h-0 overflow-hidden rounded-4 border-1 border-color-2 border-solid bg-container"
-    v-bind="$attrs"
-    @contextmenu="handleContextMenu"
-    @mousedown="handleContextMouseDown"
-  >
-    <div ref="ganttRef" class="w-gantt full min-h-0" />
-    <div
-      v-if="tasks.length === 0"
-      class="absolute inset-0 flex items-center justify-center bg-container text-sm text-secondary"
-    >
-      {{ emptyText }}
-    </div>
-  </div>
-</template>
 
 <style lang="less" scoped src="./styles.less"></style>

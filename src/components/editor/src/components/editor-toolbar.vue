@@ -1,57 +1,3 @@
-<script setup lang="ts">
-import ToolbarButtonGroup from './toolbar-button-group.vue'
-import type { MenuProps } from 'antdv-next'
-import type {
-  EditorColorOption,
-  EditorLocale,
-  EditorSelectOption,
-  EditorToolbarItem,
-} from '../types'
-
-defineProps<{
-  readonly disabled?: boolean
-  readonly showSelectControls?: boolean
-  readonly currentBlock: string
-  readonly currentFontFamily: string
-  readonly currentFontSize: string
-  readonly currentTextColor: string
-  readonly currentHighlightColor: string
-  readonly blockOptions: readonly EditorSelectOption[]
-  readonly fontFamilyOptions: readonly EditorSelectOption[]
-  readonly fontSizeOptions: readonly EditorSelectOption[]
-  readonly textColorOptions: readonly EditorColorOption[]
-  readonly highlightColorOptions: readonly EditorColorOption[]
-  readonly inlineItems: readonly EditorToolbarItem[]
-  readonly blockItems: readonly EditorToolbarItem[]
-  readonly alignItems: readonly EditorToolbarItem[]
-  readonly imageMenu: MenuProps
-  readonly tableMenu: MenuProps
-  readonly canUndo: boolean
-  readonly canRedo: boolean
-  readonly isLinkActive: boolean
-  readonly isTableActive: boolean
-  readonly buttonClass: (active?: boolean) => string
-  readonly stateVersion: number
-  readonly locale: EditorLocale
-}>()
-
-const emit = defineEmits<{
-  setBlock: [value: string | number]
-  setFontFamily: [value: string | number]
-  setFontSize: [value: string | number]
-  setTextColor: [value: string | number]
-  setHighlightColor: [value: string | number]
-  openLink: []
-  clearFormatting: []
-  undo: []
-  redo: []
-}>()
-
-function toOptionValue(value: unknown): string | number {
-  return typeof value === 'number' ? value : String(value ?? '')
-}
-</script>
-
 <template>
   <div
     class="flex flex-wrap items-center gap-8 border-b-1 border-b-solid border-color-2 bg-fill-quaternary px-10 py-9"
@@ -62,7 +8,7 @@ function toOptionValue(value: unknown): string | number {
         class="w-112!"
         :disabled="disabled"
         :options="blockOptions"
-        @change="emit('setBlock', toOptionValue($event))"
+        @change="emits('setBlock', toOptionValue($event))"
       />
 
       <a-select
@@ -70,7 +16,7 @@ function toOptionValue(value: unknown): string | number {
         class="w-140!"
         :disabled="disabled"
         :options="fontFamilyOptions"
-        @change="emit('setFontFamily', toOptionValue($event))"
+        @change="emits('setFontFamily', toOptionValue($event))"
       >
         <template #optionRender="{ option }">
           <span :style="{ fontFamily: option.data.value || undefined }">
@@ -84,7 +30,7 @@ function toOptionValue(value: unknown): string | number {
         class="w-100!"
         :disabled="disabled"
         :options="fontSizeOptions"
-        @change="emit('setFontSize', toOptionValue($event))"
+        @change="emits('setFontSize', toOptionValue($event))"
       />
 
       <a-select
@@ -92,7 +38,7 @@ function toOptionValue(value: unknown): string | number {
         class="w-100!"
         :disabled="disabled"
         :options="textColorOptions"
-        @change="emit('setTextColor', toOptionValue($event))"
+        @change="emits('setTextColor', toOptionValue($event))"
       >
         <template #optionRender="{ option }">
           <span class="inline-flex items-center gap-6">
@@ -110,7 +56,7 @@ function toOptionValue(value: unknown): string | number {
         class="w-112!"
         :disabled="disabled"
         :options="highlightColorOptions"
-        @change="emit('setHighlightColor', toOptionValue($event))"
+        @change="emits('setHighlightColor', toOptionValue($event))"
       >
         <template #optionRender="{ option }">
           <span class="inline-flex items-center gap-6">
@@ -153,7 +99,7 @@ function toOptionValue(value: unknown): string | number {
           :class="buttonClass(isLinkActive)"
           :disabled="disabled"
           :aria-label="locale.link"
-          @click="emit('openLink')"
+          @click="emits('openLink')"
         >
           <Icon name="i-lucide:link" :size="16" />
         </button>
@@ -194,7 +140,7 @@ function toOptionValue(value: unknown): string | number {
           class="button size-30 rounded-6 text-secondary transition-colors hover:(bg-hover text-primary)"
           :disabled="disabled"
           :aria-label="locale.clearFormatting"
-          @click="emit('clearFormatting')"
+          @click="emits('clearFormatting')"
         >
           <Icon name="i-lucide:eraser" :size="16" />
         </button>
@@ -205,7 +151,7 @@ function toOptionValue(value: unknown): string | number {
           class="button size-30 rounded-6 text-secondary transition-colors hover:(bg-hover text-primary) disabled:(cursor-not-allowed text-disabled)"
           :disabled="disabled || !canUndo"
           :aria-label="locale.undo"
-          @click="emit('undo')"
+          @click="emits('undo')"
         >
           <Icon name="i-lucide:undo-2" :size="16" />
         </button>
@@ -216,7 +162,7 @@ function toOptionValue(value: unknown): string | number {
           class="button size-30 rounded-6 text-secondary transition-colors hover:(bg-hover text-primary) disabled:(cursor-not-allowed text-disabled)"
           :disabled="disabled || !canRedo"
           :aria-label="locale.redo"
-          @click="emit('redo')"
+          @click="emits('redo')"
         >
           <Icon name="i-lucide:redo-2" :size="16" />
         </button>
@@ -224,3 +170,57 @@ function toOptionValue(value: unknown): string | number {
     </div>
   </div>
 </template>
+
+<script setup lang="ts">
+import ToolbarButtonGroup from './toolbar-button-group.vue'
+import type { MenuProps } from 'antdv-next'
+import type {
+  EditorColorOption,
+  EditorLocale,
+  EditorSelectOption,
+  EditorToolbarItem,
+} from '../types'
+
+defineProps<{
+  readonly disabled?: boolean
+  readonly showSelectControls?: boolean
+  readonly currentBlock: string
+  readonly currentFontFamily: string
+  readonly currentFontSize: string
+  readonly currentTextColor: string
+  readonly currentHighlightColor: string
+  readonly blockOptions: readonly EditorSelectOption[]
+  readonly fontFamilyOptions: readonly EditorSelectOption[]
+  readonly fontSizeOptions: readonly EditorSelectOption[]
+  readonly textColorOptions: readonly EditorColorOption[]
+  readonly highlightColorOptions: readonly EditorColorOption[]
+  readonly inlineItems: readonly EditorToolbarItem[]
+  readonly blockItems: readonly EditorToolbarItem[]
+  readonly alignItems: readonly EditorToolbarItem[]
+  readonly imageMenu: MenuProps
+  readonly tableMenu: MenuProps
+  readonly canUndo: boolean
+  readonly canRedo: boolean
+  readonly isLinkActive: boolean
+  readonly isTableActive: boolean
+  readonly buttonClass: (active?: boolean) => string
+  readonly stateVersion: number
+  readonly locale: EditorLocale
+}>()
+
+const emits = defineEmits<{
+  setBlock: [value: string | number]
+  setFontFamily: [value: string | number]
+  setFontSize: [value: string | number]
+  setTextColor: [value: string | number]
+  setHighlightColor: [value: string | number]
+  openLink: []
+  clearFormatting: []
+  undo: []
+  redo: []
+}>()
+
+function toOptionValue(value: unknown): string | number {
+  return typeof value === 'number' ? value : String(value ?? '')
+}
+</script>

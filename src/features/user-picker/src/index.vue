@@ -1,41 +1,3 @@
-<script lang="ts" setup>
-import { matchesOption } from '@/utils'
-import type { UserPickerProps, UserPickerOption } from './types'
-
-const props = withDefaults(defineProps<UserPickerProps>(), {
-  options: () => [],
-  placeholder: '请选择用户',
-  disabled: false,
-  allowClear: false,
-  loading: false,
-  popupMatchSelectWidth: true,
-})
-
-const model = defineModel<string | undefined>('value')
-
-const selectedUser = computed(() => {
-  return props.options.find((item) => item.value === model.value)
-})
-
-function getInitial(label?: string) {
-  return (label || '?').slice(0, 1)
-}
-
-function getAvatarClass(option?: UserPickerOption) {
-  return option?.avatarClass ?? 'bg-fill-secondary text-secondary'
-}
-
-function filterOption(inputValue: string, option?: UserPickerOption) {
-  return matchesOption(
-    inputValue,
-    option?.label,
-    option?.role,
-    option?.department,
-    option?.email
-  )
-}
-</script>
-
 <template>
   <a-select
     v-model:value="model"
@@ -43,6 +5,7 @@ function filterOption(inputValue: string, option?: UserPickerOption) {
     :allow-clear="allowClear"
     :disabled="disabled"
     :filter-option="filterOption"
+    @dropdown-visible-change="preloadPinyinMatch"
     :loading="loading"
     option-filter-prop="label"
     :options="options"
@@ -88,3 +51,46 @@ function filterOption(inputValue: string, option?: UserPickerOption) {
     </template>
   </a-select>
 </template>
+
+<script lang="ts" setup>
+import { loadPinyinMatch, matchesOption } from '@/utils'
+import type { UserPickerProps, UserPickerOption } from './types'
+
+const props = withDefaults(defineProps<UserPickerProps>(), {
+  options: () => [],
+  placeholder: '请选择用户',
+  disabled: false,
+  allowClear: false,
+  loading: false,
+  popupMatchSelectWidth: true,
+})
+
+const model = defineModel<string | undefined>('value')
+
+const selectedUser = computed(() => {
+  return props.options.find((item) => item.value === model.value)
+})
+
+function getInitial(label?: string) {
+  return (label || '?').slice(0, 1)
+}
+
+function getAvatarClass(option?: UserPickerOption) {
+  return option?.avatarClass ?? 'bg-fill-secondary text-secondary'
+}
+
+function filterOption(inputValue: string, option?: UserPickerOption) {
+  return matchesOption(
+    inputValue,
+    option?.label,
+    option?.role,
+    option?.department,
+    option?.email
+  )
+}
+
+/** 展开下拉即预热拼音匹配库,过滤是同步回调,首个关键词不该漏掉拼音命中 */
+function preloadPinyinMatch() {
+  void loadPinyinMatch()
+}
+</script>

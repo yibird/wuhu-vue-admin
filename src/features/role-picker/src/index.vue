@@ -1,23 +1,3 @@
-<script lang="ts" setup>
-import { matchesOption } from '@/utils'
-import type { RolePickerProps, RolePickerOption } from './types'
-
-const props = withDefaults(defineProps<RolePickerProps>(), {
-  options: () => [],
-  placeholder: '请选择角色',
-  disabled: false,
-  allowClear: true,
-  loading: false,
-  popupMatchSelectWidth: true,
-})
-
-const model = defineModel<string | undefined>('value')
-
-function filterOption(inputValue: string, option?: RolePickerOption) {
-  return matchesOption(inputValue, option?.label, option?.description)
-}
-</script>
-
 <template>
   <a-select
     v-model:value="model"
@@ -25,6 +5,7 @@ function filterOption(inputValue: string, option?: RolePickerOption) {
     :allow-clear="allowClear"
     :disabled="disabled"
     :filter-option="filterOption"
+    @dropdown-visible-change="preloadPinyinMatch"
     :loading="loading"
     option-filter-prop="label"
     :options="options"
@@ -56,3 +37,28 @@ function filterOption(inputValue: string, option?: RolePickerOption) {
     </template>
   </a-select>
 </template>
+
+<script lang="ts" setup>
+import { loadPinyinMatch, matchesOption } from '@/utils'
+import type { RolePickerProps, RolePickerOption } from './types'
+
+const props = withDefaults(defineProps<RolePickerProps>(), {
+  options: () => [],
+  placeholder: '请选择角色',
+  disabled: false,
+  allowClear: true,
+  loading: false,
+  popupMatchSelectWidth: true,
+})
+
+const model = defineModel<string | undefined>('value')
+
+function filterOption(inputValue: string, option?: RolePickerOption) {
+  return matchesOption(inputValue, option?.label, option?.description)
+}
+
+/** 展开下拉即预热拼音匹配库,过滤是同步回调,首个关键词不该漏掉拼音命中 */
+function preloadPinyinMatch() {
+  void loadPinyinMatch()
+}
+</script>

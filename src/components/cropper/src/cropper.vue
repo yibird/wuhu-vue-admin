@@ -21,7 +21,7 @@ const props = withDefaults(defineProps<CropperProps>(), {
   options: () => ({}),
 })
 
-const emit = defineEmits<CropperEmits>()
+const emits = defineEmits<CropperEmits>()
 
 const imgRef = useTemplateRef<HTMLImageElement>('imgRef')
 const cropper = shallowRef<Cropper | null>(null)
@@ -32,7 +32,7 @@ const initCropper = () => {
   }
   if (imgRef.value) {
     cropper.value = new Cropper(imgRef.value, props.options)
-    emit('ready', cropper.value)
+    emits('ready', cropper.value)
   }
 }
 

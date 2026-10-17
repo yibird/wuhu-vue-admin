@@ -1,4 +1,4 @@
-import { fontFamilyOptions } from '../../src/config/fonts'
+import { fontFamilyOptions, monoFontStack } from '../../src/config/fonts'
 import type { Preset } from 'unocss'
 
 /**
@@ -9,6 +9,8 @@ import type { Preset } from 'unocss'
  *
  * 注意:UnoCSS 的 CSS 在 generate 阶段产出,不经过模块 transform,
  * fontless 扫描不到这里的 font-family,因此各字体族在构建配置里显式声明为 global。
+ *
+ * 等宽栈同时接管主题变量 --font-mono,让 font-mono 工具类与 --w-font-family-mono 同源。
  */
 export const fontsPreset: Preset = {
   name: 'w-fonts',
@@ -16,7 +18,10 @@ export const fontsPreset: Preset = {
     {
       getCSS: () =>
         [
-          `:root{--w-font-family:${fontFamilyOptions[0].stack};--w-font-weight:${fontFamilyOptions[0].fontWeight};--w-letter-spacing:${fontFamilyOptions[0].letterSpacing}}`,
+          `:root{--w-font-family:${fontFamilyOptions[0].stack};--w-font-weight:${fontFamilyOptions[0].fontWeight};--w-letter-spacing:${fontFamilyOptions[0].letterSpacing};--w-font-family-mono:${monoFontStack}}`,
+          // 惰性 CSS 分片会各自重复注入 wind4 的主题默认值(:host,:root{--font-mono:...}),
+          // 这些分片后加载时会盖掉本文件的值;提高一级优先级,让结果与加载顺序无关
+          ':root:root{--font-mono:var(--w-font-family-mono)}',
           ...fontFamilyOptions.map(
             (option) =>
               `:root[data-font='${option.value}']{--w-font-family:${option.stack};--w-font-weight:${option.fontWeight};--w-letter-spacing:${option.letterSpacing}}`

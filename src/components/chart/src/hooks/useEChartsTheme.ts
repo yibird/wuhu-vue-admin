@@ -1,6 +1,6 @@
 import { createSharedComposable } from '@vueuse/core'
 import { ThemeMode } from '@/constants'
-import { useTheme } from './use-theme'
+import { useTheme } from '@/theme'
 
 export type EChartsPaletteKey =
   | 'primaryText'
@@ -110,7 +110,6 @@ function getCssVarValue(name: string) {
 
 export function getCssRgbVar(name: string, fallback: string) {
   const channels = getRgbChannels(getCssVarValue(name))
-
   return channels ? `rgb(${channels})` : fallback
 }
 
@@ -131,7 +130,6 @@ export const useEChartsTheme = createSharedComposable(() => {
   )
 
   const colorPalette = computed(() => {
-    // themeColor 作为依赖触发重新计算，因为 getCssRgbVar 读取的 CSS 变量非响应式
     themeColor.value
     const primary = getCssRgbVar('--w-color-primary', lightPalette[0])
     const palette =

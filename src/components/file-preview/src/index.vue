@@ -1,127 +1,3 @@
-<script setup lang="ts">
-import { CodeEditor } from '../../code-editor'
-import { Icon } from '../../icon'
-import { inferFilePreviewKind, resolveFilePreviewUrl } from './source'
-import { useTextPreview } from './useTextPreview'
-import type { FilePreviewLocale, FilePreviewProps } from './types'
-
-const defaultLocale: FilePreviewLocale = {
-  defaultTitle: '文件预览',
-  emptyText: '请选择要预览的文件',
-  enterFullscreen: '全屏预览',
-  exitFullscreen: '退出全屏',
-  missingTextUrl: '当前文本文件没有可读取的地址。',
-  pdfTitle: 'PDF 预览',
-  textAriaSuffix: '文本内容',
-  textLoadFailed: '文本内容读取失败，请下载后查看。',
-  textLoading: '读取文本内容...',
-  textTooLarge: (maxSize) => `文件超过 ${maxSize}，请下载后查看。`,
-  unsupportedDescription: '当前文件没有可预览的地址。',
-  unsupportedDescriptionWithUrl: '当前类型需要下载后查看。',
-  unsupportedTitles: {
-    archive: '压缩包暂不支持在线预览',
-    excel: 'Excel 表格预览待接入',
-    powerpoint: 'PPT 预览待接入',
-    unknown: '暂不支持在线预览',
-    word: 'Word 文档预览待接入',
-  },
-  unsupportedTypeDescriptions: {
-    excel: '可以后续接入 xlsx 解析、表格渲染或后端转码服务。',
-    powerpoint: '可以后续接入演示文稿解析或后端转图片/PDF 预览。',
-    word: '可以后续接入 docx 解析、Office Online 或后端转码服务。',
-  },
-}
-
-const props = withDefaults(defineProps<FilePreviewProps>(), {
-  file: null,
-  maxTextBytes: 2 * 1024 * 1024,
-})
-
-const emit = defineEmits<{
-  'update:open': [value: boolean]
-}>()
-
-const fullscreen = shallowRef(false)
-const locale = computed<FilePreviewLocale>(() => ({
-  ...defaultLocale,
-  ...props.locale,
-  unsupportedTitles: {
-    ...defaultLocale.unsupportedTitles,
-    ...props.locale?.unsupportedTitles,
-  },
-  unsupportedTypeDescriptions: {
-    ...defaultLocale.unsupportedTypeDescriptions,
-    ...props.locale?.unsupportedTypeDescriptions,
-  },
-}))
-
-const title = computed(() => props.file?.filename || locale.value.defaultTitle)
-const open = computed(() => props.open)
-const inferredKind = computed(() => inferFilePreviewKind(props.file))
-const previewKind = computed(() => props.file?.kind ?? inferredKind.value)
-const safeUrl = computed(() => resolveFilePreviewUrl(props.file))
-const fileSize = computed(() => props.file?.size ?? 0)
-const maxTextBytes = computed(() => props.maxTextBytes)
-const hasUrl = computed(() => Boolean(safeUrl.value))
-const canRenderPdf = computed(
-  () =>
-    previewKind.value === 'pdf' && inferredKind.value === 'pdf' && hasUrl.value
-)
-const {
-  content: textContent,
-  error: textError,
-  loading: textLoading,
-} = useTextPreview({
-  open,
-  kind: previewKind,
-  url: safeUrl,
-  size: fileSize,
-  maxBytes: maxTextBytes,
-  locale,
-})
-
-const unsupportedTitle = computed(() => {
-  const kind = previewKind.value
-  return locale.value.unsupportedTitles[
-    kind === 'word' ||
-    kind === 'excel' ||
-    kind === 'powerpoint' ||
-    kind === 'archive'
-      ? kind
-      : 'unknown'
-  ]
-})
-
-const unsupportedDescription = computed(() => {
-  const kind = previewKind.value
-  if (kind === 'word' || kind === 'excel' || kind === 'powerpoint') {
-    return locale.value.unsupportedTypeDescriptions[kind]
-  }
-  return hasUrl.value
-    ? locale.value.unsupportedDescriptionWithUrl
-    : locale.value.unsupportedDescription
-})
-
-const modalWidth = computed(() => (fullscreen.value ? '100vw' : 960))
-const modalWrapClass = computed(() =>
-  fullscreen.value
-    ? 'w-file-preview-modal-wrap w-file-preview-modal-wrap--fullscreen'
-    : 'w-file-preview-modal-wrap'
-)
-
-watch(open, (value) => {
-  if (!value) fullscreen.value = false
-})
-
-function closeModal() {
-  emit('update:open', false)
-}
-
-function toggleFullscreen() {
-  fullscreen.value = !fullscreen.value
-}
-</script>
-
 <template>
   <a-modal
     :open="open"
@@ -252,6 +128,130 @@ function toggleFullscreen() {
     <a-empty v-else :description="locale.emptyText" />
   </a-modal>
 </template>
+
+<script setup lang="ts">
+import { CodeEditor } from '../../code-editor'
+import { Icon } from '../../icon'
+import { inferFilePreviewKind, resolveFilePreviewUrl } from './source'
+import { useTextPreview } from './useTextPreview'
+import type { FilePreviewLocale, FilePreviewProps } from './types'
+
+const defaultLocale: FilePreviewLocale = {
+  defaultTitle: '文件预览',
+  emptyText: '请选择要预览的文件',
+  enterFullscreen: '全屏预览',
+  exitFullscreen: '退出全屏',
+  missingTextUrl: '当前文本文件没有可读取的地址。',
+  pdfTitle: 'PDF 预览',
+  textAriaSuffix: '文本内容',
+  textLoadFailed: '文本内容读取失败，请下载后查看。',
+  textLoading: '读取文本内容...',
+  textTooLarge: (maxSize) => `文件超过 ${maxSize}，请下载后查看。`,
+  unsupportedDescription: '当前文件没有可预览的地址。',
+  unsupportedDescriptionWithUrl: '当前类型需要下载后查看。',
+  unsupportedTitles: {
+    archive: '压缩包暂不支持在线预览',
+    excel: 'Excel 表格预览待接入',
+    powerpoint: 'PPT 预览待接入',
+    unknown: '暂不支持在线预览',
+    word: 'Word 文档预览待接入',
+  },
+  unsupportedTypeDescriptions: {
+    excel: '可以后续接入 xlsx 解析、表格渲染或后端转码服务。',
+    powerpoint: '可以后续接入演示文稿解析或后端转图片/PDF 预览。',
+    word: '可以后续接入 docx 解析、Office Online 或后端转码服务。',
+  },
+}
+
+const props = withDefaults(defineProps<FilePreviewProps>(), {
+  file: null,
+  maxTextBytes: 2 * 1024 * 1024,
+})
+
+const emits = defineEmits<{
+  'update:open': [value: boolean]
+}>()
+
+const fullscreen = shallowRef(false)
+const locale = computed<FilePreviewLocale>(() => ({
+  ...defaultLocale,
+  ...props.locale,
+  unsupportedTitles: {
+    ...defaultLocale.unsupportedTitles,
+    ...props.locale?.unsupportedTitles,
+  },
+  unsupportedTypeDescriptions: {
+    ...defaultLocale.unsupportedTypeDescriptions,
+    ...props.locale?.unsupportedTypeDescriptions,
+  },
+}))
+
+const title = computed(() => props.file?.filename || locale.value.defaultTitle)
+const open = computed(() => props.open)
+const inferredKind = computed(() => inferFilePreviewKind(props.file))
+const previewKind = computed(() => props.file?.kind ?? inferredKind.value)
+const safeUrl = computed(() => resolveFilePreviewUrl(props.file))
+const fileSize = computed(() => props.file?.size ?? 0)
+const maxTextBytes = computed(() => props.maxTextBytes)
+const hasUrl = computed(() => Boolean(safeUrl.value))
+const canRenderPdf = computed(
+  () =>
+    previewKind.value === 'pdf' && inferredKind.value === 'pdf' && hasUrl.value
+)
+const {
+  content: textContent,
+  error: textError,
+  loading: textLoading,
+} = useTextPreview({
+  open,
+  kind: previewKind,
+  url: safeUrl,
+  size: fileSize,
+  maxBytes: maxTextBytes,
+  locale,
+})
+
+const unsupportedTitle = computed(() => {
+  const kind = previewKind.value
+  return locale.value.unsupportedTitles[
+    kind === 'word' ||
+    kind === 'excel' ||
+    kind === 'powerpoint' ||
+    kind === 'archive'
+      ? kind
+      : 'unknown'
+  ]
+})
+
+const unsupportedDescription = computed(() => {
+  const kind = previewKind.value
+  if (kind === 'word' || kind === 'excel' || kind === 'powerpoint') {
+    return locale.value.unsupportedTypeDescriptions[kind]
+  }
+  return hasUrl.value
+    ? locale.value.unsupportedDescriptionWithUrl
+    : locale.value.unsupportedDescription
+})
+
+const modalWidth = computed(() => (fullscreen.value ? '100vw' : 960))
+const modalWrapClass = computed(() =>
+  fullscreen.value
+    ? 'w-file-preview-modal-wrap w-file-preview-modal-wrap--fullscreen'
+    : 'w-file-preview-modal-wrap'
+)
+
+watch(open, (value) => {
+  if (!value) fullscreen.value = false
+})
+
+function closeModal() {
+  emits('update:open', false)
+}
+
+function toggleFullscreen() {
+  fullscreen.value = !fullscreen.value
+}
+</script>
 
 <style scoped>
 .w-file-preview-shell {

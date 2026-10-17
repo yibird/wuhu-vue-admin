@@ -13,7 +13,6 @@ body,
   color: rgb(var(--w-text-main));
   letter-spacing: var(--w-letter-spacing, 0);
   background-color: rgb(var(--w-bg-page));
-  text-rendering: optimizelegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

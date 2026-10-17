@@ -1,108 +1,3 @@
-<script setup lang="ts">
-import { useResizeObserver } from '@vueuse/core'
-import { Nav, List, Preview } from './components'
-import { useIconCategories, useIconOptions } from './hooks'
-import { ALL_ICON_CATEGORY } from './data'
-import type {
-  IconOptionEmits,
-  IconPickerProps,
-  IconSelectorOption,
-} from './types'
-
-type IconPickerBaseProps = Omit<IconPickerProps, 'open'>
-
-const props = withDefaults(defineProps<IconPickerBaseProps>(), {
-  allowClear: true,
-  clearText: 'Clear icon',
-  disabled: false,
-  emptyText: 'No icons found',
-  gridColumns: 7,
-  iconSize: 20,
-  maxVisible: 0,
-  placeholder: 'Select icon',
-  popupMaxHeight: 420,
-  searchPlaceholder: 'Search icons',
-  showCategories: true,
-  size: 'middle',
-  title: 'Select icon',
-  virtualOverscan: 4,
-  width: 760,
-})
-
-const emit = defineEmits<IconOptionEmits>()
-const modelOpen = defineModel<boolean>('open', { default: false })
-const dialogId = `icon-picker-${useId()}`
-const triggerRef = useTemplateRef<HTMLButtonElement>('triggerRef')
-const gridPanelRef = useTemplateRef<HTMLElement>('gridPanelRef')
-const gridPanelWidth = shallowRef(0)
-
-const {
-  filteredOptions,
-  searchValue,
-  selectedOption,
-  clearIcon,
-  emitSearch,
-  resetSearch,
-  selectIcon,
-} = useIconOptions(props, emit)
-const { activeCategory, activeCategoryItem, categoryItems, visibleOptions } =
-  useIconCategories(filteredOptions, () => props.showCategories)
-
-const updateOpen = (open: boolean) => {
-  if (props.disabled && open) return
-  modelOpen.value = open
-}
-
-const modalWidth = computed(() => {
-  if (typeof props.width === 'number') {
-    return `min(${props.width}px, calc(100vw - 24px))`
-  }
-
-  return props.width
-})
-const accessibleTriggerLabel = computed(
-  () =>
-    props.triggerLabel ||
-    `${props.title}: ${selectedOption.value?.label ?? props.placeholder}`
-)
-const gridMaxHeight = computed(() => Math.max(160, props.popupMaxHeight))
-const gridViewportHeight = computed(() =>
-  Math.max(120, gridMaxHeight.value - 40)
-)
-const resolvedGridColumns = computed(() => {
-  const configuredColumns = Math.max(2, props.gridColumns)
-  if (!gridPanelWidth.value) return configuredColumns
-
-  return Math.min(
-    configuredColumns,
-    Math.max(2, Math.floor((gridPanelWidth.value - 12) / 72))
-  )
-})
-
-useResizeObserver(gridPanelRef, ([entry]) => {
-  gridPanelWidth.value = entry.contentRect.width
-})
-
-const handleSelect = (option: IconSelectorOption) => {
-  selectIcon(option)
-  updateOpen(false)
-}
-
-const handleClear = (event: MouseEvent) => {
-  event.stopPropagation()
-  clearIcon()
-}
-
-const restoreTriggerFocus = () => {
-  triggerRef.value?.focus()
-}
-
-const handleAfterClose = () => {
-  resetSearch()
-  restoreTriggerFocus()
-}
-</script>
-
 <template>
   <div
     class="w-icon-picker-trigger relative inline-flex w-full min-w-0 items-center"
@@ -260,6 +155,111 @@ const handleAfterClose = () => {
     </div>
   </a-modal>
 </template>
+
+<script setup lang="ts">
+import { useResizeObserver } from '@vueuse/core'
+import { Nav, List, Preview } from './components'
+import { useIconCategories, useIconOptions } from './hooks'
+import { ALL_ICON_CATEGORY } from './data'
+import type {
+  IconOptionEmits,
+  IconPickerProps,
+  IconSelectorOption,
+} from './types'
+
+type IconPickerBaseProps = Omit<IconPickerProps, 'open'>
+
+const props = withDefaults(defineProps<IconPickerBaseProps>(), {
+  allowClear: true,
+  clearText: 'Clear icon',
+  disabled: false,
+  emptyText: 'No icons found',
+  gridColumns: 7,
+  iconSize: 20,
+  maxVisible: 0,
+  placeholder: 'Select icon',
+  popupMaxHeight: 420,
+  searchPlaceholder: 'Search icons',
+  showCategories: true,
+  size: 'middle',
+  title: 'Select icon',
+  virtualOverscan: 4,
+  width: 760,
+})
+
+const emits = defineEmits<IconOptionEmits>()
+const modelOpen = defineModel<boolean>('open', { default: false })
+const dialogId = `icon-picker-${useId()}`
+const triggerRef = useTemplateRef<HTMLButtonElement>('triggerRef')
+const gridPanelRef = useTemplateRef<HTMLElement>('gridPanelRef')
+const gridPanelWidth = shallowRef(0)
+
+const {
+  filteredOptions,
+  searchValue,
+  selectedOption,
+  clearIcon,
+  emitSearch,
+  resetSearch,
+  selectIcon,
+} = useIconOptions(props, emits)
+const { activeCategory, activeCategoryItem, categoryItems, visibleOptions } =
+  useIconCategories(filteredOptions, () => props.showCategories)
+
+const updateOpen = (open: boolean) => {
+  if (props.disabled && open) return
+  modelOpen.value = open
+}
+
+const modalWidth = computed(() => {
+  if (typeof props.width === 'number') {
+    return `min(${props.width}px, calc(100vw - 24px))`
+  }
+
+  return props.width
+})
+const accessibleTriggerLabel = computed(
+  () =>
+    props.triggerLabel ||
+    `${props.title}: ${selectedOption.value?.label ?? props.placeholder}`
+)
+const gridMaxHeight = computed(() => Math.max(160, props.popupMaxHeight))
+const gridViewportHeight = computed(() =>
+  Math.max(120, gridMaxHeight.value - 40)
+)
+const resolvedGridColumns = computed(() => {
+  const configuredColumns = Math.max(2, props.gridColumns)
+  if (!gridPanelWidth.value) return configuredColumns
+
+  return Math.min(
+    configuredColumns,
+    Math.max(2, Math.floor((gridPanelWidth.value - 12) / 72))
+  )
+})
+
+useResizeObserver(gridPanelRef, ([entry]) => {
+  gridPanelWidth.value = entry.contentRect.width
+})
+
+const handleSelect = (option: IconSelectorOption) => {
+  selectIcon(option)
+  updateOpen(false)
+}
+
+const handleClear = (event: MouseEvent) => {
+  event.stopPropagation()
+  clearIcon()
+}
+
+const restoreTriggerFocus = () => {
+  triggerRef.value?.focus()
+}
+
+const handleAfterClose = () => {
+  resetSearch()
+  restoreTriggerFocus()
+}
+</script>
 
 <style scoped>
 .w-icon-picker-trigger__button {

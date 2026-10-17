@@ -1,3 +1,69 @@
+<template>
+  <a-modal
+    v-bind="getModalBindings()"
+    :root-class="rootClass"
+    :width="modalWidth"
+    :wrap-class-name="wrapClassName"
+    :after-open-change="handleAfterOpenChange"
+    @cancel="handleCancel"
+    @ok="handleOk"
+    @update:open="handleOpenChange"
+  >
+    <template v-if="hasEnhancedHeader" #title>
+      <div
+        class="w-modal-title min-w-0 flex items-center gap-8 pr-32"
+        :class="{
+          'w-modal-title--draggable cursor-move select-none':
+            draggable && !isFullscreen,
+        }"
+        @pointerdown="handleTitlePointerDown"
+      >
+        <div class="min-w-0 flex-1">
+          <TitleContent />
+        </div>
+        <a-tooltip
+          v-if="fullscreenable"
+          :title="
+            isFullscreen
+              ? exitFullscreenText || 'Exit fullscreen'
+              : fullscreenText || 'Enter fullscreen'
+          "
+        >
+          <a-button
+            type="text"
+            size="middle"
+            class="shrink-0"
+            :aria-label="
+              isFullscreen
+                ? exitFullscreenText || 'Exit fullscreen'
+                : fullscreenText || 'Enter fullscreen'
+            "
+            @click.stop="toggleFullscreen"
+            @pointerdown.stop
+          >
+            <template #icon>
+              <Icon
+                :name="
+                  isFullscreen ? 'i-lucide:minimize-2' : 'i-lucide:maximize-2'
+                "
+                :size="16"
+              />
+            </template>
+          </a-button>
+        </a-tooltip>
+      </div>
+    </template>
+
+    <template
+      v-for="slotName in forwardedSlotNames"
+      :key="slotName"
+      #[slotName]="slotProps"
+    >
+      <slot :name="slotName" v-bind="slotProps ?? {}" />
+    </template>
+  </a-modal>
+</template>
+
 <script setup lang="ts">
 import type { ModalProps as AntdvModalProps } from 'antdv-next'
 import type {
@@ -13,7 +79,7 @@ defineOptions({ inheritAttrs: false })
 const props = withDefaults(defineProps<ModalProps>(), {
   fullscreen: undefined,
 })
-const emit = defineEmits<ModalEmits>()
+const emits = defineEmits<ModalEmits>()
 const slots = defineSlots<ModalSlots>()
 const attrs = useAttrs()
 const instance = getCurrentInstance()
@@ -119,8 +185,8 @@ function setFullscreen(fullscreen: boolean) {
   if (fullscreen === isFullscreen.value) return
 
   if (props.fullscreen === undefined) internalFullscreen.value = fullscreen
-  emit('update:fullscreen', fullscreen)
-  emit('fullscreenChange', fullscreen)
+  emits('update:fullscreen', fullscreen)
+  emits('fullscreenChange', fullscreen)
 }
 
 function toggleFullscreen() {
@@ -204,7 +270,7 @@ function handleTitlePointerDown(event: PointerEvent) {
   window.addEventListener('pointermove', handlePointerMove)
   window.addEventListener('pointerup', handlePointerUp)
   window.addEventListener('pointercancel', handlePointerUp)
-  emit('dragStart', event)
+  emits('dragStart', event)
 }
 
 function handlePointerMove(event: PointerEvent) {
@@ -224,7 +290,7 @@ function handlePointerUp() {
 
   const position = { ...modalPosition }
   stopDragging()
-  emit('dragEnd', position)
+  emits('dragEnd', position)
 }
 
 function stopDragging() {
@@ -245,16 +311,16 @@ function stopDragging() {
 }
 
 function handleOk(event: MouseEvent) {
-  emit('ok', event)
+  emits('ok', event)
 }
 
 function handleCancel(event: MouseEvent | KeyboardEvent) {
   stopDragging()
-  emit('cancel', event)
+  emits('cancel', event)
 }
 
 function handleOpenChange(open: boolean) {
-  emit('update:open', open)
+  emits('update:open', open)
 }
 
 /**
@@ -264,7 +330,7 @@ function handleOpenChange(open: boolean) {
  * afterOpenChange 同时以事件（@after-open-change）与属性（:after-open-change）形式兼容。
  */
 function handleAfterOpenChange(open: boolean) {
-  emit('afterOpenChange', open)
+  emits('afterOpenChange', open)
   props.afterOpenChange?.(open)
 
   if (open) return
@@ -298,72 +364,6 @@ defineExpose<ModalInstance>({
   toggleFullscreen,
 })
 </script>
-
-<template>
-  <a-modal
-    v-bind="getModalBindings()"
-    :root-class="rootClass"
-    :width="modalWidth"
-    :wrap-class-name="wrapClassName"
-    :after-open-change="handleAfterOpenChange"
-    @cancel="handleCancel"
-    @ok="handleOk"
-    @update:open="handleOpenChange"
-  >
-    <template v-if="hasEnhancedHeader" #title>
-      <div
-        class="w-modal-title min-w-0 flex items-center gap-8 pr-32"
-        :class="{
-          'w-modal-title--draggable cursor-move select-none':
-            draggable && !isFullscreen,
-        }"
-        @pointerdown="handleTitlePointerDown"
-      >
-        <div class="min-w-0 flex-1">
-          <TitleContent />
-        </div>
-        <a-tooltip
-          v-if="fullscreenable"
-          :title="
-            isFullscreen
-              ? exitFullscreenText || 'Exit fullscreen'
-              : fullscreenText || 'Enter fullscreen'
-          "
-        >
-          <a-button
-            type="text"
-            size="middle"
-            class="shrink-0"
-            :aria-label="
-              isFullscreen
-                ? exitFullscreenText || 'Exit fullscreen'
-                : fullscreenText || 'Enter fullscreen'
-            "
-            @click.stop="toggleFullscreen"
-            @pointerdown.stop
-          >
-            <template #icon>
-              <Icon
-                :name="
-                  isFullscreen ? 'i-lucide:minimize-2' : 'i-lucide:maximize-2'
-                "
-                :size="16"
-              />
-            </template>
-          </a-button>
-        </a-tooltip>
-      </div>
-    </template>
-
-    <template
-      v-for="slotName in forwardedSlotNames"
-      :key="slotName"
-      #[slotName]="slotProps"
-    >
-      <slot :name="slotName" v-bind="slotProps ?? {}" />
-    </template>
-  </a-modal>
-</template>
 
 <style scoped>
 /* 使用独立的 translate 属性，避免覆盖弹窗进出场的缩放动画 */

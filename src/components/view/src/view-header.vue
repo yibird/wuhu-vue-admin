@@ -1,45 +1,3 @@
-<script setup lang="ts">
-import { Icon } from '../../icon'
-import { getCssSize, viewContextKey } from './context'
-import type {
-  ViewCollapseEmits,
-  WViewHeaderProps,
-  WViewHeaderSlots,
-} from './types'
-import type { CSSProperties } from 'vue'
-
-const props = withDefaults(defineProps<WViewHeaderProps>(), {
-  collapsible: false,
-  trigger: true,
-  collapseLabel: '收起头部',
-  expandLabel: '展开头部',
-})
-
-const collapsed = defineModel<boolean>('collapsed', { default: false })
-const emits = defineEmits<ViewCollapseEmits>()
-const slots = defineSlots<WViewHeaderSlots>()
-defineOptions({ name: 'WViewHeader', inheritAttrs: false })
-
-const contentId = useId()
-const viewContext = inject(viewContextKey, null)
-const showTrigger = computed(() => props.collapsible && props.trigger)
-const headerStyle = computed<CSSProperties>(() => {
-  const gap = viewContext?.gap.value ?? '0px'
-  const shouldOffsetGap =
-    collapsed.value && viewContext?.direction.value === 'vertical'
-
-  return {
-    marginBlockEnd: shouldOffsetGap ? getCssSize(gap) : '0px',
-  }
-})
-
-function toggle() {
-  const nextCollapsed = !collapsed.value
-  collapsed.value = nextCollapsed
-  emits('collapse', nextCollapsed)
-}
-</script>
-
 <template>
   <header
     class="w-view-header"
@@ -84,6 +42,48 @@ function toggle() {
     </div>
   </header>
 </template>
+
+<script setup lang="ts">
+import { Icon } from '../../icon'
+import { getCssSize, viewContextKey } from './context'
+import type {
+  ViewCollapseEmits,
+  WViewHeaderProps,
+  WViewHeaderSlots,
+} from './types'
+import type { CSSProperties } from 'vue'
+
+const props = withDefaults(defineProps<WViewHeaderProps>(), {
+  collapsible: false,
+  trigger: true,
+  collapseLabel: '收起头部',
+  expandLabel: '展开头部',
+})
+
+const collapsed = defineModel<boolean>('collapsed', { default: false })
+const emits = defineEmits<ViewCollapseEmits>()
+const slots = defineSlots<WViewHeaderSlots>()
+defineOptions({ name: 'WViewHeader', inheritAttrs: false })
+
+const contentId = useId()
+const viewContext = inject(viewContextKey, null)
+const showTrigger = computed(() => props.collapsible && props.trigger)
+const headerStyle = computed<CSSProperties>(() => {
+  const gap = viewContext?.gap.value ?? '0px'
+  const shouldOffsetGap =
+    collapsed.value && viewContext?.direction.value === 'vertical'
+
+  return {
+    marginBlockEnd: shouldOffsetGap ? getCssSize(gap) : '0px',
+  }
+})
+
+function toggle() {
+  const nextCollapsed = !collapsed.value
+  collapsed.value = nextCollapsed
+  emits('collapse', nextCollapsed)
+}
+</script>
 
 <style lang="less" scoped>
 .w-view-header {

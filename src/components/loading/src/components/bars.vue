@@ -1,5 +1,3 @@
-<script setup lang="ts"></script>
-
 <template>
   <div class="w-loading-bars">
     <span v-for="item in 5" :key="item"></span>
@@ -50,14 +48,6 @@
   50% {
     opacity: 1;
     transform: scaleY(1);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .w-loading-bars span {
-    opacity: 0.72;
-    transform: scaleY(0.72);
-    animation: none !important;
   }
 }
 </style>

@@ -1,3 +1,69 @@
+<template>
+  <a-form
+    ref="formRef"
+    class="form-plus"
+    :model="formModel"
+    :rules="props.rules"
+    :layout="formLayout"
+    :label-col="labelCol"
+    :wrapper-col="wrapperCol"
+    :colon="props.colon"
+    :disabled="props.disabled"
+    :size="props.size"
+    :validate-trigger="props.validateTrigger"
+    :scroll-to-first-error="props.scrollToFirstError"
+  >
+    <template v-if="slots.default">
+      <slot />
+
+      <FormActions v-if="showActions" v-bind="actionsBinding" />
+    </template>
+
+    <template v-else>
+      <a-row
+        class="w-full"
+        :gutter="[props.grid?.xGap ?? 0, props.grid?.yGap ?? 0]"
+      >
+        <FormFields
+          :schemas="primarySchemas"
+          :context="context"
+          :size="props.size"
+          :rules="props.rules"
+          :local-components="props.components"
+          :slot-of="resolveFieldSlot"
+          :col-of="resolveCol"
+        />
+
+        <a-col v-if="showActions && !extraVisible" :flex="1">
+          <FormActions v-bind="actionsBinding" />
+        </a-col>
+      </a-row>
+
+      <Transition v-if="extraSchemas.length" name="fade-slide">
+        <a-row
+          v-if="!collapsed"
+          class="w-full"
+          :gutter="[props.grid?.xGap ?? 0, props.grid?.yGap ?? 0]"
+        >
+          <FormFields
+            :schemas="extraSchemas"
+            :context="context"
+            :size="props.size"
+            :rules="props.rules"
+            :local-components="props.components"
+            :slot-of="resolveFieldSlot"
+            :col-of="resolveCol"
+          />
+
+          <a-col v-if="showActions" :flex="1">
+            <FormActions v-bind="actionsBinding" />
+          </a-col>
+        </a-row>
+      </Transition>
+    </template>
+  </a-form>
+</template>
+
 <script setup lang="ts">
 import { computed, onMounted, useSlots, useTemplateRef } from 'vue'
 import { FormActions, FormFields } from './components'
@@ -25,7 +91,7 @@ const props = withDefaults(defineProps<FormPlusProps>(), {
   actions: undefined,
 })
 
-const emit = defineEmits<FormPlusEmits>()
+const emits = defineEmits<FormPlusEmits>()
 
 const slots = useSlots() as Record<
   string,
@@ -45,10 +111,11 @@ const {
   schemas: () => props.schemas,
   formRef,
   collapse: () => props.collapse,
-  onFieldChange: (field, value, values) => emit('change', field, value, values),
-  onControlledUpdate: (values) => emit('update:model', values),
-  onCollapseChange: (collapsed) => emit('collapse-change', collapsed),
-  onOptionsError: (field, error) => emit('options-error', field, error),
+  onFieldChange: (field, value, values) =>
+    emits('change', field, value, values),
+  onControlledUpdate: (values) => emits('update:model', values),
+  onCollapseChange: (collapsed) => emits('collapse-change', collapsed),
+  onOptionsError: (field, error) => emits('options-error', field, error),
 })
 
 const {
@@ -66,7 +133,7 @@ provideFormPlusContext(context)
  * 是否存在需要校验的规则
  *
  * 规则可能在联动或 setSchema 时动态注入,因此以合并后的 schema 为准,
- * 否则「提交前先校验」会被跳过,把不合法的值直接 emit 出去。
+ * 否则「提交前先校验」会被跳过,把不合法的值直接 emits 出去。
  */
 const hasRules = computed(
   () =>
@@ -182,7 +249,7 @@ async function handleSubmit() {
   try {
     if (hasRules.value) await context.validate()
   } catch (error) {
-    emit('validate-fail', error)
+    emits('validate-fail', error)
     // 校验失败由 antd 就地提示,非校验异常也不阻断交互
     if (!isValidationError(error)) {
       console.error('[form-plus] 表单校验异常', error)
@@ -190,7 +257,7 @@ async function handleSubmit() {
     return
   }
 
-  emit('submit', model.getFieldsValue())
+  emits('submit', model.getFieldsValue())
 }
 
 function handleReset() {
@@ -199,7 +266,7 @@ function handleReset() {
   if (props.collapse && props.collapse.resetOnReset !== false) {
     resetCollapse()
   }
-  emit('reset')
+  emits('reset')
 }
 
 onMounted(() => {
@@ -231,69 +298,3 @@ defineExpose<FormPlusInstance>({
   getFormRef: () => formRef.value ?? undefined,
 })
 </script>
-
-<template>
-  <a-form
-    ref="formRef"
-    class="form-plus"
-    :model="formModel"
-    :rules="props.rules"
-    :layout="formLayout"
-    :label-col="labelCol"
-    :wrapper-col="wrapperCol"
-    :colon="props.colon"
-    :disabled="props.disabled"
-    :size="props.size"
-    :validate-trigger="props.validateTrigger"
-    :scroll-to-first-error="props.scrollToFirstError"
-  >
-    <template v-if="slots.default">
-      <slot />
-
-      <FormActions v-if="showActions" v-bind="actionsBinding" />
-    </template>
-
-    <template v-else>
-      <a-row
-        class="w-full"
-        :gutter="[props.grid?.xGap ?? 0, props.grid?.yGap ?? 0]"
-      >
-        <FormFields
-          :schemas="primarySchemas"
-          :context="context"
-          :size="props.size"
-          :rules="props.rules"
-          :local-components="props.components"
-          :slot-of="resolveFieldSlot"
-          :col-of="resolveCol"
-        />
-
-        <a-col v-if="showActions && !extraVisible" :flex="1">
-          <FormActions v-bind="actionsBinding" />
-        </a-col>
-      </a-row>
-
-      <Transition v-if="extraSchemas.length" name="fade-slide">
-        <a-row
-          v-if="!collapsed"
-          class="w-full"
-          :gutter="[props.grid?.xGap ?? 0, props.grid?.yGap ?? 0]"
-        >
-          <FormFields
-            :schemas="extraSchemas"
-            :context="context"
-            :size="props.size"
-            :rules="props.rules"
-            :local-components="props.components"
-            :slot-of="resolveFieldSlot"
-            :col-of="resolveCol"
-          />
-
-          <a-col v-if="showActions" :flex="1">
-            <FormActions v-bind="actionsBinding" />
-          </a-col>
-        </a-row>
-      </Transition>
-    </template>
-  </a-form>
-</template>

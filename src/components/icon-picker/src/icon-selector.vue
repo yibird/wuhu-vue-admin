@@ -1,115 +1,3 @@
-<script setup lang="ts">
-import { Nav, List, Preview } from './components'
-import { useIconCategories, useIconOptions } from './hooks'
-import type { CSSProperties } from 'vue'
-import type { SelectProps } from 'antdv-next'
-import type {
-  IconOptionEmits,
-  IconSelectorOption,
-  IconSelectorProps,
-} from './types'
-
-type IconSelectorBaseProps = Omit<IconSelectorProps, 'open'>
-
-defineOptions({ inheritAttrs: false })
-
-const props = withDefaults(defineProps<IconSelectorBaseProps>(), {
-  allowClear: true,
-  disabled: false,
-  emptyText: 'No icons found',
-  gridColumns: 6,
-  iconSize: 18,
-  maxVisible: 0,
-  placeholder: 'Select icon',
-  popupMaxHeight: 420,
-  popupWidth: 620,
-  searchPlaceholder: 'Search icons',
-  showCategories: true,
-  size: 'middle',
-  title: 'Select icon',
-  virtualOverscan: 4,
-})
-
-const emit = defineEmits<IconOptionEmits>()
-const modelOpen = defineModel<boolean>('open', { default: false })
-
-const {
-  filteredOptions,
-  normalizedOptions,
-  searchValue,
-  selectedOption,
-  clearIcon,
-  emitSearch,
-  resetSearch,
-  selectIcon,
-} = useIconOptions(props, emit)
-const { activeCategory, categoryItems, visibleOptions } = useIconCategories(
-  filteredOptions,
-  () => props.showCategories
-)
-
-const selectOptions = computed<SelectProps['options']>(() => {
-  const option = selectedOption.value
-  return option
-    ? [
-        {
-          disabled: option.disabled,
-          label: option.label,
-          value: option.value,
-        },
-      ]
-    : []
-})
-
-const selectClasses: NonNullable<SelectProps['classes']> = {
-  popup: {
-    root: 'w-icon-selector-popup',
-  },
-}
-
-const popupWidth = computed<CSSProperties['width']>(() => {
-  if (typeof props.popupWidth === 'number') {
-    return `min(${props.popupWidth}px, calc(100vw - 24px))`
-  }
-  return props.popupWidth
-})
-
-const selectStyles = computed<SelectProps['styles']>(() => ({
-  popup: {
-    root: {
-      padding: 0,
-      width: popupWidth.value,
-    },
-  },
-}))
-
-const gridMaxHeight = computed(() => Math.max(160, props.popupMaxHeight - 36))
-
-const model = computed<string | undefined>({
-  get: () => props.value,
-  set: (value) => {
-    if (typeof value !== 'string') {
-      clearIcon()
-      return
-    }
-
-    const option = normalizedOptions.value.find((item) => item.value === value)
-    if (option) selectIcon(option)
-  },
-})
-
-function handleOpenChange(open: boolean) {
-  modelOpen.value = open
-  if (!open) resetSearch()
-}
-
-function handleSelect(option: IconSelectorOption) {
-  selectIcon(option)
-  modelOpen.value = false
-  resetSearch()
-}
-</script>
-
 <template>
   <a-select
     v-bind="$attrs"
@@ -188,3 +76,115 @@ function handleSelect(option: IconSelectorOption) {
     </template>
   </a-select>
 </template>
+
+<script setup lang="ts">
+import { Nav, List, Preview } from './components'
+import { useIconCategories, useIconOptions } from './hooks'
+import type { CSSProperties } from 'vue'
+import type { SelectProps } from 'antdv-next'
+import type {
+  IconOptionEmits,
+  IconSelectorOption,
+  IconSelectorProps,
+} from './types'
+
+type IconSelectorBaseProps = Omit<IconSelectorProps, 'open'>
+
+defineOptions({ inheritAttrs: false })
+
+const props = withDefaults(defineProps<IconSelectorBaseProps>(), {
+  allowClear: true,
+  disabled: false,
+  emptyText: 'No icons found',
+  gridColumns: 6,
+  iconSize: 18,
+  maxVisible: 0,
+  placeholder: 'Select icon',
+  popupMaxHeight: 420,
+  popupWidth: 620,
+  searchPlaceholder: 'Search icons',
+  showCategories: true,
+  size: 'middle',
+  title: 'Select icon',
+  virtualOverscan: 4,
+})
+
+const emits = defineEmits<IconOptionEmits>()
+const modelOpen = defineModel<boolean>('open', { default: false })
+
+const {
+  filteredOptions,
+  normalizedOptions,
+  searchValue,
+  selectedOption,
+  clearIcon,
+  emitSearch,
+  resetSearch,
+  selectIcon,
+} = useIconOptions(props, emits)
+const { activeCategory, categoryItems, visibleOptions } = useIconCategories(
+  filteredOptions,
+  () => props.showCategories
+)
+
+const selectOptions = computed<SelectProps['options']>(() => {
+  const option = selectedOption.value
+  return option
+    ? [
+        {
+          disabled: option.disabled,
+          label: option.label,
+          value: option.value,
+        },
+      ]
+    : []
+})
+
+const selectClasses: NonNullable<SelectProps['classes']> = {
+  popup: {
+    root: 'w-icon-selector-popup',
+  },
+}
+
+const popupWidth = computed<CSSProperties['width']>(() => {
+  if (typeof props.popupWidth === 'number') {
+    return `min(${props.popupWidth}px, calc(100vw - 24px))`
+  }
+  return props.popupWidth
+})
+
+const selectStyles = computed<SelectProps['styles']>(() => ({
+  popup: {
+    root: {
+      padding: 0,
+      width: popupWidth.value,
+    },
+  },
+}))
+
+const gridMaxHeight = computed(() => Math.max(160, props.popupMaxHeight - 36))
+
+const model = computed<string | undefined>({
+  get: () => props.value,
+  set: (value) => {
+    if (typeof value !== 'string') {
+      clearIcon()
+      return
+    }
+
+    const option = normalizedOptions.value.find((item) => item.value === value)
+    if (option) selectIcon(option)
+  },
+})
+
+function handleOpenChange(open: boolean) {
+  modelOpen.value = open
+  if (!open) resetSearch()
+}
+
+function handleSelect(option: IconSelectorOption) {
+  selectIcon(option)
+  modelOpen.value = false
+  resetSearch()
+}
+</script>

@@ -1,38 +1,3 @@
-<script setup lang="ts">
-import { useTabs } from '@/hooks'
-import Exception from './exception.vue'
-import clientErrorImage from '@/assets/svg/500.svg'
-import type { ClientErrorProps } from './types.ts'
-
-const props = withDefaults(defineProps<ClientErrorProps>(), {
-  showDetails: false,
-})
-
-const emit = defineEmits<{
-  reset: []
-}>()
-
-const { refreshCurrentTab } = useTabs()
-
-const title = '抱歉，页面组件发生了客户端错误'
-const defaultMessage = '页面渲染时捕获到异常，请稍后重试或联系管理员。'
-
-const errorMessage = computed(() => props.error?.message || defaultMessage)
-const stack = computed(() => props.error?.stack)
-const detailRows = computed(() => [
-  { label: '错误信息', value: errorMessage.value },
-  { label: '组件', value: props.error?.componentName ?? '未知组件' },
-  { label: '阶段', value: props.error?.info ?? '未知阶段' },
-  { label: '时间', value: props.error?.timestamp ?? '-' },
-])
-
-const handleReset = () => {
-  // 先复位错误边界,再刷新当前页,避免刷新后仍停留在错误回退页
-  emit('reset')
-  refreshCurrentTab()
-}
-</script>
-
 <template>
   <Exception :image="clientErrorImage" :show-btn="false" :title="title">
     <template #description>
@@ -71,3 +36,38 @@ const handleReset = () => {
     </template>
   </Exception>
 </template>
+
+<script setup lang="ts">
+import { useTabs } from '@/hooks'
+import Exception from './exception.vue'
+import clientErrorImage from '@/assets/svg/500.svg'
+import type { ClientErrorProps } from './types.ts'
+
+const props = withDefaults(defineProps<ClientErrorProps>(), {
+  showDetails: false,
+})
+
+const emits = defineEmits<{
+  reset: []
+}>()
+
+const { refreshCurrentTab } = useTabs()
+
+const title = '抱歉，页面组件发生了客户端错误'
+const defaultMessage = '页面渲染时捕获到异常，请稍后重试或联系管理员。'
+
+const errorMessage = computed(() => props.error?.message || defaultMessage)
+const stack = computed(() => props.error?.stack)
+const detailRows = computed(() => [
+  { label: '错误信息', value: errorMessage.value },
+  { label: '组件', value: props.error?.componentName ?? '未知组件' },
+  { label: '阶段', value: props.error?.info ?? '未知阶段' },
+  { label: '时间', value: props.error?.timestamp ?? '-' },
+])
+
+const handleReset = () => {
+  // 先复位错误边界,再刷新当前页,避免刷新后仍停留在错误回退页
+  emits('reset')
+  refreshCurrentTab()
+}
+</script>

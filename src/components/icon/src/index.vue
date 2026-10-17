@@ -1,3 +1,15 @@
+<template>
+  <component
+    :is="props.tag"
+    class="w-icon"
+    :class="iconName"
+    :style="iconStyle"
+    :role="props.label ? 'img' : undefined"
+    :aria-label="props.label"
+    :aria-hidden="props.label ? undefined : 'true'"
+  />
+</template>
+
 <script lang="ts" setup>
 import type { IconProps } from './types'
 
@@ -6,7 +18,8 @@ defineOptions({
 })
 
 const props = withDefaults(defineProps<IconProps>(), {
-  size: 14,
+  // 与 presetIcons 生成的 width/height:1em 一致:未显式传 size 时跟随所在文字大小
+  size: '1em',
   tag: 'i',
 })
 
@@ -26,18 +39,6 @@ const iconStyle = computed(() => {
   }
 })
 </script>
-
-<template>
-  <component
-    :is="props.tag"
-    class="w-icon"
-    :class="iconName"
-    :style="iconStyle"
-    :role="props.label ? 'img' : undefined"
-    :aria-label="props.label"
-    :aria-hidden="props.label ? undefined : 'true'"
-  />
-</template>
 
 <style scoped>
 .w-icon {

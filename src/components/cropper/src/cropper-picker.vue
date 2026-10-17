@@ -127,7 +127,7 @@ const props = withDefaults(defineProps<CropperPickerProps>(), {
   maxFileSize: 10 * 1024 * 1024,
 })
 
-const emit = defineEmits<CropperPickerEmits>()
+const emits = defineEmits<CropperPickerEmits>()
 
 const fileInputRef = useTemplateRef<HTMLInputElement>('fileInputRef')
 const cropperRef = useTemplateRef<CropperInstance>('cropperRef')
@@ -286,8 +286,8 @@ const handleOk = async () => {
 
     if (canvas) {
       const dataUrl = canvas.toDataURL('image/jpeg')
-      emit('crop', dataUrl)
-      emit('update:open', false)
+      emits('crop', dataUrl)
+      emits('update:open', false)
     }
   } catch (error) {
     message.error('裁剪失败')

@@ -1,17 +1,3 @@
-<script setup lang="ts">
-import type { EditorToolbarItem } from '../types'
-
-defineProps<{
-  readonly items: readonly EditorToolbarItem[]
-  readonly disabled?: boolean
-  readonly buttonClass: (active?: boolean) => string
-  readonly stateVersion: number
-}>()
-
-const resolveTitle = (item: EditorToolbarItem) =>
-  typeof item.title === 'function' ? item.title() : item.title
-</script>
-
 <template>
   <div
     class="flex items-center gap-2 rounded-8 border-1 border-solid border-color-2 bg-container p-3"
@@ -34,3 +20,17 @@ const resolveTitle = (item: EditorToolbarItem) =>
     </a-tooltip>
   </div>
 </template>
+
+<script setup lang="ts">
+import type { EditorToolbarItem } from '../types'
+
+defineProps<{
+  readonly items: readonly EditorToolbarItem[]
+  readonly disabled?: boolean
+  readonly buttonClass: (active?: boolean) => string
+  readonly stateVersion: number
+}>()
+
+const resolveTitle = (item: EditorToolbarItem) =>
+  typeof item.title === 'function' ? item.title() : item.title
+</script>

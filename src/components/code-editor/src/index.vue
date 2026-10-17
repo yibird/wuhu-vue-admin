@@ -1,3 +1,10 @@
+<template>
+  <div
+    ref="editorRef"
+    class="h-full min-h-0 overflow-hidden bg-container border-1 border-solid border-color-2 rounded-8"
+  />
+</template>
+
 <script setup lang="ts">
 import { json } from '@codemirror/lang-json'
 import { Compartment, EditorState } from '@codemirror/state'
@@ -18,7 +25,7 @@ const props = withDefaults(
   }
 )
 
-const emit = defineEmits<{
+const emits = defineEmits<{
   'update:modelValue': [value: string]
 }>()
 
@@ -36,8 +43,7 @@ const editorTheme = EditorView.theme({
     color: 'rgb(var(--w-text-main))',
   },
   '.cm-scroller': {
-    fontFamily:
-      '"Cascadia Code", "JetBrains Mono", Consolas, "SFMono-Regular", monospace',
+    fontFamily: 'var(--w-font-family-mono)',
     lineHeight: '1.65',
     overflow: 'auto',
   },
@@ -110,7 +116,7 @@ function createEditor() {
         editableCompartment.of(EditorView.editable.of(!props.readonly)),
         EditorView.updateListener.of((update) => {
           if (!update.docChanged || externalUpdate.value) return
-          emit('update:modelValue', update.state.doc.toString())
+          emits('update:modelValue', update.state.doc.toString())
         }),
       ],
     }),
@@ -165,13 +171,6 @@ onBeforeUnmount(() => {
   view.value = undefined
 })
 </script>
-
-<template>
-  <div
-    ref="editorRef"
-    class="h-full min-h-0 overflow-hidden bg-container border-1 border-solid border-color-2 rounded-8"
-  />
-</template>
 
 <style lang="less" scoped>
 :deep(.cm-editor) {

@@ -4,8 +4,8 @@ export interface IconProps {
    */
   name: string
   /**
-   * @desc 图标大小
-   * @default 14
+   * @desc 图标大小,数字按 px 处理,默认跟随所在文字大小
+   * @default "1em"
    */
   size?: number | string
   /**

@@ -8,6 +8,7 @@ export {
 
 export { Icon, type IconProps } from './icon'
 export { Card, type CardProps, type CardSlots } from './card'
+export { Chart } from './chart'
 export { Copy, type CopySlots } from './copy'
 export { GradientText, type GradientTextProps } from './gradient-text'
 

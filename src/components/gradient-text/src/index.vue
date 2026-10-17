@@ -1,3 +1,14 @@
+<template>
+  <component
+    :is="as"
+    class="w-gradient-text"
+    :class="{ 'w-gradient-text--animated': animated }"
+    :style="gradientStyle"
+  >
+    <slot />
+  </component>
+</template>
+
 <script lang="ts" setup>
 import type { CSSProperties } from 'vue'
 import type { GradientTextProps } from './types'
@@ -15,17 +26,6 @@ const gradientStyle = computed<CSSProperties>(() => ({
   '--w-gradient-duration': `${Math.max(0, props.duration)}s`,
 }))
 </script>
-
-<template>
-  <component
-    :is="as"
-    class="w-gradient-text"
-    :class="{ 'w-gradient-text--animated': animated }"
-    :style="gradientStyle"
-  >
-    <slot />
-  </component>
-</template>
 
 <style scoped>
 /*

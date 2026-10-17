@@ -1,3 +1,21 @@
+<template>
+  <a-modal
+    v-model:open="open"
+    :title="title"
+    :width="440"
+    destroy-on-hidden
+    @ok="handleApply"
+  >
+    <a-input
+      ref="inputRef"
+      v-model:value="value"
+      allow-clear
+      :placeholder="placeholder"
+      @press-enter="handleApply"
+    />
+  </a-modal>
+</template>
+
 <script setup lang="ts">
 const open = defineModel<boolean>('open', { required: true })
 
@@ -17,7 +35,7 @@ const props = defineProps<{
   initialValue?: string
 }>()
 
-const emit = defineEmits<{
+const emits = defineEmits<{
   /**
    * @desc 确认时回传输入值,清空输入表示移除
    */
@@ -35,24 +53,6 @@ watch(open, async (visible) => {
 })
 
 function handleApply() {
-  emit('apply', value.value.trim())
+  emits('apply', value.value.trim())
 }
 </script>
-
-<template>
-  <a-modal
-    v-model:open="open"
-    :title="title"
-    :width="440"
-    destroy-on-hidden
-    @ok="handleApply"
-  >
-    <a-input
-      ref="inputRef"
-      v-model:value="value"
-      allow-clear
-      :placeholder="placeholder"
-      @press-enter="handleApply"
-    />
-  </a-modal>
-</template>

@@ -1,24 +1,3 @@
-<script lang="ts" setup>
-import LoadingBeat from './components/beat.vue'
-import type { LoadingProps } from './types'
-
-const props = withDefaults(defineProps<LoadingProps>(), {
-  description: 'Loading...',
-  full: false,
-})
-
-const loadingComponents = {
-  beat: LoadingBeat,
-  spinner: defineAsyncComponent(() => import('./components/spinner.vue')),
-  pulse: defineAsyncComponent(() => import('./components/pulse.vue')),
-  bars: defineAsyncComponent(() => import('./components/bars.vue')),
-  ring: defineAsyncComponent(() => import('./components/ring.vue')),
-} as const
-
-const loadingType = computed(() => props.type || 'beat')
-const loadingComponent = computed(() => loadingComponents[loadingType.value])
-</script>
-
 <template>
   <div
     class="w-loading"
@@ -40,6 +19,27 @@ const loadingComponent = computed(() => loadingComponents[loadingType.value])
     </div>
   </div>
 </template>
+
+<script lang="ts" setup>
+import LoadingBeat from './components/beat.vue'
+import type { LoadingProps } from './types'
+
+const props = withDefaults(defineProps<LoadingProps>(), {
+  description: 'Loading...',
+  full: false,
+})
+
+const loadingComponents = {
+  beat: LoadingBeat,
+  spinner: defineAsyncComponent(() => import('./components/spinner.vue')),
+  pulse: defineAsyncComponent(() => import('./components/pulse.vue')),
+  bars: defineAsyncComponent(() => import('./components/bars.vue')),
+  ring: defineAsyncComponent(() => import('./components/ring.vue')),
+} as const
+
+const loadingType = computed(() => props.type || 'beat')
+const loadingComponent = computed(() => loadingComponents[loadingType.value])
+</script>
 
 <style lang="less" scoped>
 .w-loading {

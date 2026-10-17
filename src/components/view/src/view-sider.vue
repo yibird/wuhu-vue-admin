@@ -1,3 +1,47 @@
+<template>
+  <aside
+    class="w-view-sider"
+    :class="{ 'w-view-sider-collapsed': collapsed }"
+    :style="siderStyle"
+    :aria-expanded="!collapsed"
+  >
+    <div class="w-view-sider__body" v-bind="$attrs">
+      <div
+        :id="contentId"
+        class="w-view-sider__content"
+        :style="{ width: expandedWidth }"
+        :aria-hidden="collapsed"
+        :inert="collapsed"
+      >
+        <slot :collapsed="collapsed" />
+      </div>
+    </div>
+
+    <div v-if="showTrigger" class="w-view-sider__trigger">
+      <slot
+        v-if="slots.trigger"
+        name="trigger"
+        :collapsed="collapsed"
+        :toggle="toggle"
+      />
+      <button
+        v-else
+        type="button"
+        class="w-view-sider__trigger-button"
+        :aria-label="collapsed ? expandLabel : collapseLabel"
+        :title="collapsed ? expandLabel : collapseLabel"
+        :aria-controls="contentId"
+        :aria-expanded="!collapsed"
+        @click="toggle"
+      >
+        <span class="w-view-sider__trigger-icon" aria-hidden="true">
+          <Icon name="i-lucide:chevron-left" :size="14" />
+        </span>
+      </button>
+    </div>
+  </aside>
+</template>
+
 <script setup lang="ts">
 import { computed, inject, useId, type CSSProperties } from 'vue'
 import { Icon } from '../../icon'
@@ -46,50 +90,6 @@ function toggle() {
   emits('collapse', nextCollapsed)
 }
 </script>
-
-<template>
-  <aside
-    class="w-view-sider"
-    :class="{ 'w-view-sider-collapsed': collapsed }"
-    :style="siderStyle"
-    :aria-expanded="!collapsed"
-  >
-    <div class="w-view-sider__body" v-bind="$attrs">
-      <div
-        :id="contentId"
-        class="w-view-sider__content"
-        :style="{ width: expandedWidth }"
-        :aria-hidden="collapsed"
-        :inert="collapsed"
-      >
-        <slot :collapsed="collapsed" />
-      </div>
-    </div>
-
-    <div v-if="showTrigger" class="w-view-sider__trigger">
-      <slot
-        v-if="slots.trigger"
-        name="trigger"
-        :collapsed="collapsed"
-        :toggle="toggle"
-      />
-      <button
-        v-else
-        type="button"
-        class="w-view-sider__trigger-button"
-        :aria-label="collapsed ? expandLabel : collapseLabel"
-        :title="collapsed ? expandLabel : collapseLabel"
-        :aria-controls="contentId"
-        :aria-expanded="!collapsed"
-        @click="toggle"
-      >
-        <span class="w-view-sider__trigger-icon" aria-hidden="true">
-          <Icon name="i-lucide:chevron-left" :size="14" />
-        </span>
-      </button>
-    </div>
-  </aside>
-</template>
 
 <style lang="less" scoped>
 .w-view-sider {

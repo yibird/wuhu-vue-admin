@@ -1,3 +1,93 @@
+<template>
+  <div
+    v-if="items.length"
+    ref="scrollElement"
+    class="w-icon-selector-viewport min-h-0 w-full overflow-x-hidden overflow-y-auto p-6"
+    :style="viewportStyle"
+    role="listbox"
+    aria-label="图标列表"
+    @scroll.passive="handleViewportScroll"
+  >
+    <div class="relative w-full" :style="surfaceStyle">
+      <div
+        v-for="virtualRow in virtualRows"
+        :key="getVirtualRowKey(virtualRow)"
+        class="absolute left-0 top-0 grid h-64 w-full gap-6 will-change-transform"
+        :style="getRowStyle(virtualRow)"
+      >
+        <button
+          v-for="(option, columnIndex) in getRowItems(virtualRow.index)"
+          :key="option.value"
+          type="button"
+          class="w-icon-selector-option group relative box-border h-64 min-w-0 flex cursor-pointer flex-col items-center justify-center gap-5 rounded-6 border-1 border-color-1 border-solid bg-container px-5 text-main transition-[border-color,background-color,color,box-shadow] hover:(border-primary bg-hover) focus-visible:(border-primary outline-none ring-2 ring-primary/15) disabled:(cursor-not-allowed bg-disabled text-disabled)"
+          :class="{
+            'w-icon-selector-option--motion': motion,
+          }"
+          :disabled="option.disabled"
+          :aria-selected="option.value === selectedValue"
+          :aria-posinset="virtualRow.index * safeColumns + columnIndex + 1"
+          :aria-setsize="items.length"
+          :title="
+            showNameTooltip ? undefined : `${option.label} (${option.value})`
+          "
+          role="option"
+          @mousedown.prevent
+          @pointerenter="handleNameTooltipShow($event, option)"
+          @pointerleave="handleNameTooltipHide(option)"
+          @focus="handleNameTooltipShow($event, option)"
+          @blur="handleNameTooltipHide(option)"
+          @click="emits('select', option)"
+        >
+          <Preview
+            :name="option.value"
+            :size="iconSize + 4"
+            class="w-icon-selector-option__preview pointer-events-none shrink-0"
+          />
+          <!--
+            按需挂载:每个图标都包一层 a-tooltip 时,一屏(含 overscan)会挂载近百个
+            Trigger/Popup 实例,虚拟列表每次滚动/切分类都要重建一批。
+            这里只保留当前悬浮项的那一个,实例数恒为 1。
+          -->
+          <a-tooltip
+            v-if="showNameTooltip && overflowTooltipValue === option.value"
+            :open="overflowTooltipValue === option.value"
+            :title="`${option.label} (${option.value})`"
+            placement="bottom"
+          >
+            <span
+              data-icon-name
+              class="w-full truncate text-center text-xs leading-16"
+            >
+              {{ option.label }}
+            </span>
+          </a-tooltip>
+          <span
+            v-else
+            data-icon-name
+            class="w-full truncate text-center text-xs leading-16"
+          >
+            {{ option.label }}
+          </span>
+          <Icon
+            v-if="option.value === selectedValue"
+            name="i-lucide:check"
+            :size="12"
+            class="pointer-events-none absolute right-4 top-4 text-primary"
+          />
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div
+    v-else
+    class="h-160 flex items-center justify-center"
+    :style="emptyStyle"
+  >
+    <a-empty :description="emptyText" />
+  </div>
+</template>
+
 <script setup lang="ts">
 import { useVirtualizer } from '@tanstack/vue-virtual'
 import Preview from './preview.vue'
@@ -29,7 +119,7 @@ const props = withDefaults(
   }
 )
 
-const emit = defineEmits<{
+const emits = defineEmits<{
   select: [option: IconSelectorOption]
 }>()
 
@@ -113,96 +203,6 @@ function handleViewportScroll() {
   overflowTooltipValue.value = undefined
 }
 </script>
-
-<template>
-  <div
-    v-if="items.length"
-    ref="scrollElement"
-    class="w-icon-selector-viewport min-h-0 w-full overflow-x-hidden overflow-y-auto p-6"
-    :style="viewportStyle"
-    role="listbox"
-    aria-label="图标列表"
-    @scroll.passive="handleViewportScroll"
-  >
-    <div class="relative w-full" :style="surfaceStyle">
-      <div
-        v-for="virtualRow in virtualRows"
-        :key="getVirtualRowKey(virtualRow)"
-        class="absolute left-0 top-0 grid h-64 w-full gap-6 will-change-transform"
-        :style="getRowStyle(virtualRow)"
-      >
-        <button
-          v-for="(option, columnIndex) in getRowItems(virtualRow.index)"
-          :key="option.value"
-          type="button"
-          class="w-icon-selector-option group relative box-border h-64 min-w-0 flex cursor-pointer flex-col items-center justify-center gap-5 rounded-6 border-1 border-color-1 border-solid bg-container px-5 text-main transition-[border-color,background-color,color,box-shadow] hover:(border-primary bg-hover) focus-visible:(border-primary outline-none ring-2 ring-primary/15) disabled:(cursor-not-allowed bg-disabled text-disabled)"
-          :class="{
-            'w-icon-selector-option--motion': motion,
-          }"
-          :disabled="option.disabled"
-          :aria-selected="option.value === selectedValue"
-          :aria-posinset="virtualRow.index * safeColumns + columnIndex + 1"
-          :aria-setsize="items.length"
-          :title="
-            showNameTooltip ? undefined : `${option.label} (${option.value})`
-          "
-          role="option"
-          @mousedown.prevent
-          @pointerenter="handleNameTooltipShow($event, option)"
-          @pointerleave="handleNameTooltipHide(option)"
-          @focus="handleNameTooltipShow($event, option)"
-          @blur="handleNameTooltipHide(option)"
-          @click="emit('select', option)"
-        >
-          <Preview
-            :name="option.value"
-            :size="iconSize + 4"
-            class="w-icon-selector-option__preview pointer-events-none shrink-0"
-          />
-          <!--
-            按需挂载:每个图标都包一层 a-tooltip 时,一屏(含 overscan)会挂载近百个
-            Trigger/Popup 实例,虚拟列表每次滚动/切分类都要重建一批。
-            这里只保留当前悬浮项的那一个,实例数恒为 1。
-          -->
-          <a-tooltip
-            v-if="showNameTooltip && overflowTooltipValue === option.value"
-            :open="overflowTooltipValue === option.value"
-            :title="`${option.label} (${option.value})`"
-            placement="bottom"
-          >
-            <span
-              data-icon-name
-              class="w-full truncate text-center text-xs leading-16"
-            >
-              {{ option.label }}
-            </span>
-          </a-tooltip>
-          <span
-            v-else
-            data-icon-name
-            class="w-full truncate text-center text-xs leading-16"
-          >
-            {{ option.label }}
-          </span>
-          <Icon
-            v-if="option.value === selectedValue"
-            name="i-lucide:check"
-            :size="12"
-            class="pointer-events-none absolute right-4 top-4 text-primary"
-          />
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <div
-    v-else
-    class="h-160 flex items-center justify-center"
-    :style="emptyStyle"
-  >
-    <a-empty :description="emptyText" />
-  </div>
-</template>
 
 <style scoped lang="less">
 .w-icon-selector {

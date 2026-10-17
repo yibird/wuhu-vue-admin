@@ -1,51 +1,3 @@
-<script setup lang="ts">
-import { ALL_ICON_CATEGORY, FREQUENT_ICON_CATEGORY } from '../data'
-import type { IconCategoryItem } from '../types'
-
-interface IconCategoryGroup {
-  key: 'categories' | 'quick'
-  label: string
-  items: readonly IconCategoryItem[]
-}
-
-const props = withDefaults(
-  defineProps<{
-    activeKey: string
-    items: readonly IconCategoryItem[]
-    total?: number
-  }>(),
-  {
-    total: undefined,
-  }
-)
-
-const emit = defineEmits<{
-  select: [key: string]
-}>()
-
-const categoryGroups = computed<IconCategoryGroup[]>(() => {
-  const quickKeys = new Set([ALL_ICON_CATEGORY, FREQUENT_ICON_CATEGORY])
-  const quickItems = props.items.filter((category) =>
-    quickKeys.has(category.key)
-  )
-  const categoryItems = props.items.filter(
-    (category) => !quickKeys.has(category.key)
-  )
-
-  return [
-    { key: 'quick' as const, label: '快捷入口', items: quickItems },
-    { key: 'categories' as const, label: '按用途浏览', items: categoryItems },
-  ].filter((group) => group.items.length > 0)
-})
-
-const totalCount = computed(
-  () =>
-    props.total ??
-    props.items.find(({ key }) => key === ALL_ICON_CATEGORY)?.count ??
-    0
-)
-</script>
-
 <template>
   <aside
     class="w-icon-category-nav-panel min-h-0 min-w-0 flex flex-col border-r-1 border-color-1 border-r-solid bg-fill-1"
@@ -96,7 +48,7 @@ const totalCount = computed(
               activeKey === category.key,
           }"
           :aria-pressed="activeKey === category.key"
-          @click="emit('select', category.key)"
+          @click="emits('select', category.key)"
         >
           <Transition name="w-icon-category-nav-indicator">
             <span
@@ -126,6 +78,54 @@ const totalCount = computed(
     </nav>
   </aside>
 </template>
+
+<script setup lang="ts">
+import { ALL_ICON_CATEGORY, FREQUENT_ICON_CATEGORY } from '../data'
+import type { IconCategoryItem } from '../types'
+
+interface IconCategoryGroup {
+  key: 'categories' | 'quick'
+  label: string
+  items: readonly IconCategoryItem[]
+}
+
+const props = withDefaults(
+  defineProps<{
+    activeKey: string
+    items: readonly IconCategoryItem[]
+    total?: number
+  }>(),
+  {
+    total: undefined,
+  }
+)
+
+const emits = defineEmits<{
+  select: [key: string]
+}>()
+
+const categoryGroups = computed<IconCategoryGroup[]>(() => {
+  const quickKeys = new Set([ALL_ICON_CATEGORY, FREQUENT_ICON_CATEGORY])
+  const quickItems = props.items.filter((category) =>
+    quickKeys.has(category.key)
+  )
+  const categoryItems = props.items.filter(
+    (category) => !quickKeys.has(category.key)
+  )
+
+  return [
+    { key: 'quick' as const, label: '快捷入口', items: quickItems },
+    { key: 'categories' as const, label: '按用途浏览', items: categoryItems },
+  ].filter((group) => group.items.length > 0)
+})
+
+const totalCount = computed(
+  () =>
+    props.total ??
+    props.items.find(({ key }) => key === ALL_ICON_CATEGORY)?.count ??
+    0
+)
+</script>
 
 <style scoped lang="less">
 .w-icon-category-nav {

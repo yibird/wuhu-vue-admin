@@ -1,3 +1,9 @@
+<template>
+  <a-col v-for="schema in schemas" :key="schema.field" v-bind="colOf?.(schema)">
+    <FormItem v-bind="fieldProps(schema)" />
+  </a-col>
+</template>
+
 <script setup lang="ts">
 import FormItem from './form-item.vue'
 import type { ColProps, FormProps, Rule } from 'antdv-next'
@@ -60,9 +66,3 @@ function fieldProps(schema: FormPlusSchema) {
   }
 }
 </script>
-
-<template>
-  <a-col v-for="schema in schemas" :key="schema.field" v-bind="colOf?.(schema)">
-    <FormItem v-bind="fieldProps(schema)" />
-  </a-col>
-</template>

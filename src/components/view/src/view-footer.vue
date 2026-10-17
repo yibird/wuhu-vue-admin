@@ -1,15 +1,15 @@
+<template>
+  <footer class="w-view-footer">
+    <slot />
+  </footer>
+</template>
+
 <script setup lang="ts">
 defineSlots<{
   default?: () => VNode | VNode[]
 }>()
 defineOptions({ name: 'WViewFooter' })
 </script>
-
-<template>
-  <footer class="w-view-footer">
-    <slot />
-  </footer>
-</template>
 
 <style lang="less" scoped>
 .w-view-footer {

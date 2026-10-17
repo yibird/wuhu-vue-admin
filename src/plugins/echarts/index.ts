@@ -1,1 +1,0 @@
-export { registerECharts } from './register'

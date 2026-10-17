@@ -20,7 +20,7 @@ const props = withDefaults(defineProps<ResizeContainerProps>(), {
   tag: 'div',
 })
 
-const emit = defineEmits<ResizeContainerEmits>()
+const emits = defineEmits<ResizeContainerEmits>()
 
 defineSlots<ResizeContainerSlots>()
 
@@ -40,7 +40,7 @@ const { width, height } = useElementSize(
 watch(
   [width, height],
   ([nextWidth, nextHeight]) => {
-    emit('resize', {
+    emits('resize', {
       width: nextWidth,
       height: nextHeight,
     })

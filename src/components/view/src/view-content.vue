@@ -1,15 +1,15 @@
+<template>
+  <main class="w-view-content">
+    <slot />
+  </main>
+</template>
+
 <script setup lang="ts">
 defineSlots<{
   default?: () => VNode | VNode[]
 }>()
 defineOptions({ name: 'WViewContent' })
 </script>
-
-<template>
-  <main class="w-view-content">
-    <slot />
-  </main>
-</template>
 
 <style lang="less" scoped>
 .w-view-content {

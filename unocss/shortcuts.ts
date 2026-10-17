@@ -48,11 +48,12 @@ const elements = {
   // 重置按钮
   'reset-button':
     'p-0 m-0 bg-transparent border-none outline-none appearance-none touch-none cursor-pointer select-none focus-visible:outline-none',
+  'block-button':
+    'block w-full bg-transparent border-0 border-none outline-none appearance-none box-border cursor-pointer select-none',
 }
 
 const motions = {
-  'motion-interactive':
-    'transition-[background-color,border-color,box-shadow,color,transform,translate,scale,rotate] duration-motion-base ease-motion-standard motion-reduce:transition-none',
+  'motion-interactive': 'transition-all duration-200 ease-out',
   'motion-press': 'active:scale-motion-pressed motion-reduce:active:scale-100',
 }
 

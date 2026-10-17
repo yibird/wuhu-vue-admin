@@ -1,4 +1,4 @@
-import { usePermission } from '@/hooks'
+import { hasPermissionValue } from '@/hooks/usePermission'
 
 import type { Directive, DirectiveBinding } from 'vue'
 
@@ -9,8 +9,7 @@ interface PermissionElement extends HTMLElement {
 }
 
 function checkPermission(value: PermissionValue): boolean {
-  const { hasPermission } = usePermission()
-  return hasPermission(value)
+  return hasPermissionValue(value)
 }
 
 export const permission: Directive<PermissionElement, PermissionValue> = {

@@ -1,3 +1,9 @@
+<template>
+  <div class="w-view" :class="{ 'w-view-full': props.full }" :style="style">
+    <slot />
+  </div>
+</template>
+
 <script lang="ts" setup>
 import { toCssSize, viewContextKey } from './context'
 import type { CSSProperties } from 'vue'
@@ -37,12 +43,6 @@ const style = computed(() => {
   return viewStyle
 })
 </script>
-
-<template>
-  <div class="w-view" :class="{ 'w-view-full': props.full }" :style="style">
-    <slot />
-  </div>
-</template>
 
 <style lang="less" scoped>
 .w-view {

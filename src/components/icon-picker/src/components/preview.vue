@@ -1,3 +1,18 @@
+<template>
+  <svg
+    v-if="symbolId"
+    class="inline-block shrink-0 overflow-visible align-[-0.125em]"
+    :style="iconStyle"
+    aria-hidden="true"
+    fill="none"
+    viewBox="0 0 24 24"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <use :href="`#${symbolId}`" />
+  </svg>
+  <Icon v-else :name="name" :size="size" />
+</template>
+
 <script setup lang="ts">
 import lucideIconSet from '@iconify-json/lucide/icons.json'
 
@@ -90,18 +105,3 @@ watch(
   { immediate: true }
 )
 </script>
-
-<template>
-  <svg
-    v-if="symbolId"
-    class="inline-block shrink-0 overflow-visible align-[-0.125em]"
-    :style="iconStyle"
-    aria-hidden="true"
-    fill="none"
-    viewBox="0 0 24 24"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <use :href="`#${symbolId}`" />
-  </svg>
-  <Icon v-else :name="name" :size="size" />
-</template>

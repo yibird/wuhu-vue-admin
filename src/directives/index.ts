@@ -4,6 +4,7 @@ import { debounce } from './debounce'
 import { throttle } from './throttle'
 import { clickOutside } from './click-outside'
 import { ellipsisTooltip } from './ellipsis-tooltip'
+import { inputTabOut } from './input-tab-out'
 
 import type { App, Directive } from 'vue'
 
@@ -14,6 +15,7 @@ const directives: Record<string, Directive> = {
   copy,
   clickOutside,
   ellipsisTooltip,
+  inputTabOut,
 }
 
 export const globalDirectives = {
@@ -24,4 +26,12 @@ export const globalDirectives = {
   },
 }
 
-export { permission, copy, debounce, throttle, clickOutside, ellipsisTooltip }
+export {
+  permission,
+  copy,
+  debounce,
+  throttle,
+  clickOutside,
+  ellipsisTooltip,
+  inputTabOut,
+}

@@ -92,39 +92,53 @@ export function createPoller(options: PollerOptions): Poller {
     }, interval)
   }
 
+  /**
+   * 监听只在轮询实际运行时注册
+   *
+   * 未配置轮询间隔的请求实例不需要任何全局监听,
+   * 集中到 start/stop 可避免按请求实例数量堆积 visibilitychange/online/offline 监听。
+   */
+  function attachListeners(): void {
+    if (disposers.length > 0) return
+    if (options.pauseOnHidden) {
+      disposers.push(
+        onPageVisibilityChange(() => {
+          if (!isPageHidden()) schedule()
+        })
+      )
+    }
+    if (options.pauseOnOffline) {
+      disposers.push(
+        onNetworkStatusChange(() => {
+          if (!isBrowserOffline()) schedule()
+        })
+      )
+    }
+  }
+
+  function detachListeners(): void {
+    for (const off of disposers) off()
+    disposers.length = 0
+  }
+
   function start(): void {
     if (disposed) return
     active = true
+    attachListeners()
     schedule()
   }
 
   function stop(): void {
     active = false
     clear()
+    detachListeners()
   }
 
   function dispose(): void {
     disposed = true
     active = false
     clear()
-    for (const off of disposers) off()
-    disposers.length = 0
-  }
-
-  // 暂停后恢复时立即重新排期
-  if (options.pauseOnHidden) {
-    disposers.push(
-      onPageVisibilityChange(() => {
-        if (!isPageHidden()) schedule()
-      })
-    )
-  }
-  if (options.pauseOnOffline) {
-    disposers.push(
-      onNetworkStatusChange(() => {
-        if (!isBrowserOffline()) schedule()
-      })
-    )
+    detachListeners()
   }
 
   return { start, schedule, stop, dispose }

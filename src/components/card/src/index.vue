@@ -1,3 +1,15 @@
+<template>
+  <a-card v-bind="cardProps" :class="{ 'w-card--gradient': props.gradient }">
+    <template
+      v-for="slotName in forwardedSlotNames"
+      :key="slotName"
+      #[slotName]="slotProps"
+    >
+      <slot :name="slotName" v-bind="slotProps ?? {}" />
+    </template>
+  </a-card>
+</template>
+
 <script setup lang="ts">
 import { omit } from 'es-toolkit'
 import type { CardProps, CardSlots } from './types'
@@ -26,18 +38,6 @@ const forwardedSlotNames = computed(
   () => Object.keys(slots) as (keyof CardSlots)[]
 )
 </script>
-
-<template>
-  <a-card v-bind="cardProps" :class="{ 'w-card--gradient': props.gradient }">
-    <template
-      v-for="slotName in forwardedSlotNames"
-      :key="slotName"
-      #[slotName]="slotProps"
-    >
-      <slot :name="slotName" v-bind="slotProps ?? {}" />
-    </template>
-  </a-card>
-</template>
 
 <style lang="less" scoped>
 .w-card--gradient {

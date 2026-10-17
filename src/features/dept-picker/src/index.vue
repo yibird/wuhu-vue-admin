@@ -1,5 +1,30 @@
+<template>
+  <a-tree-select
+    v-model:value="model"
+    class="w-full"
+    :allow-clear="allowClear"
+    :classes="treeClasses"
+    :disabled="disabled"
+    :filter-tree-node="filterTreeNode"
+    @dropdown-visible-change="preloadPinyinMatch"
+    :list-height="320"
+    :loading="loading"
+    :placeholder="placeholder"
+    :popup-match-select-width="popupMatchSelectWidth"
+    :show-search="{ treeNodeFilterProp: 'title' }"
+    :size="size"
+    :tree-data="options"
+    tree-default-expand-all
+    :tree-line="{ showLeafIcon: false }"
+  >
+    <template #prefix>
+      <Icon name="i-lucide:building-2" class="text-secondary" :size="14" />
+    </template>
+  </a-tree-select>
+</template>
+
 <script lang="ts" setup>
-import { matchesOption } from '@/utils'
+import { loadPinyinMatch, matchesOption } from '@/utils'
 import type { DeptPickerProps, DeptPickerOption } from './types'
 
 const props = withDefaults(defineProps<DeptPickerProps>(), {
@@ -24,28 +49,9 @@ const treeClasses = {
 function filterTreeNode(inputValue: string, treeNode: DeptPickerOption) {
   return matchesOption(inputValue, treeNode.title, treeNode.code)
 }
-</script>
 
-<template>
-  <a-tree-select
-    v-model:value="model"
-    class="w-full"
-    :allow-clear="allowClear"
-    :classes="treeClasses"
-    :disabled="disabled"
-    :filter-tree-node="filterTreeNode"
-    :list-height="320"
-    :loading="loading"
-    :placeholder="placeholder"
-    :popup-match-select-width="popupMatchSelectWidth"
-    :show-search="{ treeNodeFilterProp: 'title' }"
-    :size="size"
-    :tree-data="options"
-    tree-default-expand-all
-    :tree-line="{ showLeafIcon: false }"
-  >
-    <template #prefix>
-      <Icon name="i-lucide:building-2" class="text-secondary" :size="14" />
-    </template>
-  </a-tree-select>
-</template>
+/** 展开下拉即预热拼音匹配库,过滤是同步回调,首个关键词不该漏掉拼音命中 */
+function preloadPinyinMatch() {
+  void loadPinyinMatch()
+}
+</script>

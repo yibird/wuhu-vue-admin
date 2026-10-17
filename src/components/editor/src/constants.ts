@@ -1,3 +1,4 @@
+import { monoFontStack } from '@/config/fonts'
 import type { MenuProps } from 'antdv-next'
 import type {
   EditorColorOption,
@@ -32,7 +33,8 @@ export const defaultFontFamilyOptions = [
   { label: 'Arial', value: 'Arial, Helvetica, sans-serif' },
   { label: 'Georgia', value: 'Georgia, "Times New Roman", serif' },
   { label: 'Times', value: '"Times New Roman", Times, serif' },
-  { label: '等宽代码', value: '"Cascadia Code", Consolas, monospace' },
+  // 内容级字体样式会随正文一起持久化/导出,因此写入完整字体栈而非 CSS 变量
+  { label: '等宽代码', value: monoFontStack },
 ] satisfies readonly EditorSelectOption[]
 
 export const fontSizeOptions = [

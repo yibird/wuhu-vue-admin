@@ -1,3 +1,83 @@
+<template>
+  <div
+    class="min-h-0 min-w-0 flex flex-1 flex-col overflow-hidden rounded-8 border-1 border-solid border-color-2 bg-container shadow-[var(--w-shadow-card)]"
+    data-testid="rich-editor"
+    :class="{ 'opacity-76': disabled }"
+    :style="rootStyle"
+  >
+    <EditorToolbar
+      :disabled="disabled"
+      :show-select-controls="showSelectControls"
+      :current-block="currentBlock"
+      :current-font-family="currentFontFamily"
+      :current-font-size="currentFontSize"
+      :current-text-color="currentTextColor"
+      :current-highlight-color="currentHighlightColor"
+      :block-options="blockOptions"
+      :font-family-options="fontFamilyOptions"
+      :font-size-options="fontSizeOptions"
+      :text-color-options="textColorOptions"
+      :highlight-color-options="highlightColorOptions"
+      :inline-items="inlineItems"
+      :block-items="blockItems"
+      :align-items="alignItems"
+      :image-menu="imageMenu"
+      :table-menu="tableMenu"
+      :can-undo="canUndo"
+      :can-redo="canRedo"
+      :is-link-active="isLinkActive"
+      :is-table-active="isTableActive"
+      :button-class="toolbar.getToolbarButtonClass"
+      :state-version="editorStateVersion"
+      :locale="locale"
+      @set-block="commands.setBlock"
+      @set-font-family="commands.setFontFamily"
+      @set-font-size="commands.setFontSize"
+      @set-text-color="commands.setTextColor"
+      @set-highlight-color="commands.setHighlightColor"
+      @open-link="commands.openLinkDialog"
+      @clear-formatting="commands.clearFormatting"
+      @undo="commands.undo"
+      @redo="commands.redo"
+    />
+
+    <div
+      class="w-editor__surface min-h-0 flex-1 w-full h-full bg-container overflow-x-hidden overflow-y-auto"
+      :style="contentStyle"
+    >
+      <EditorContent :editor="editor" />
+    </div>
+
+    <EditorFooter
+      :character-count="characterCount"
+      :word-count="wordCount"
+      :locale="locale"
+    />
+
+    <input
+      ref="imageInput"
+      type="file"
+      accept="image/*"
+      class="!hidden"
+      @change="commands.handleImageSelect"
+    />
+
+    <EditorUrlDialog
+      v-model:open="linkDialogOpen"
+      :initial-value="linkInitialValue"
+      :placeholder="locale.linkPrompt"
+      :title="locale.link"
+      @apply="applyLink"
+    />
+    <EditorUrlDialog
+      v-model:open="imageDialogOpen"
+      :placeholder="locale.imagePrompt"
+      :title="locale.image"
+      @apply="applyImageUrl"
+    />
+  </div>
+</template>
+
 <script setup lang="ts">
 import { Editor as TiptapEditorCore, EditorContent } from '@tiptap/vue-3'
 import { useDeferred } from '@/hooks'
@@ -32,7 +112,7 @@ const props = withDefaults(defineProps<EditorProps>(), {
   showSelectControls: true,
   maxImageSize: 2 * 1024 * 1024,
 })
-const emit = defineEmits<EditorEmits>()
+const emits = defineEmits<EditorEmits>()
 
 const model = defineModel<string>({ default: '' })
 
@@ -161,8 +241,8 @@ const commands = useEditorCommands({
   refreshEditorState,
   maxImageSize: () => props.maxImageSize,
   uploadImage: () => props.uploadImage,
-  onImageUploadError: (error, file) => emit('imageUploadError', error, file),
-  onImageUploadSuccess: (url, file) => emit('imageUploadSuccess', url, file),
+  onImageUploadError: (error, file) => emits('imageUploadError', error, file),
+  onImageUploadSuccess: (url, file) => emits('imageUploadSuccess', url, file),
   locale: () => locale.value,
 })
 const {
@@ -184,85 +264,5 @@ defineExpose<EditorExpose>({
   insertHTML: commands.insertHTML,
 })
 </script>
-
-<template>
-  <div
-    class="min-h-0 min-w-0 flex flex-1 flex-col overflow-hidden rounded-8 border-1 border-solid border-color-2 bg-container shadow-[var(--w-shadow-card)]"
-    data-testid="rich-editor"
-    :class="{ 'opacity-76': disabled }"
-    :style="rootStyle"
-  >
-    <EditorToolbar
-      :disabled="disabled"
-      :show-select-controls="showSelectControls"
-      :current-block="currentBlock"
-      :current-font-family="currentFontFamily"
-      :current-font-size="currentFontSize"
-      :current-text-color="currentTextColor"
-      :current-highlight-color="currentHighlightColor"
-      :block-options="blockOptions"
-      :font-family-options="fontFamilyOptions"
-      :font-size-options="fontSizeOptions"
-      :text-color-options="textColorOptions"
-      :highlight-color-options="highlightColorOptions"
-      :inline-items="inlineItems"
-      :block-items="blockItems"
-      :align-items="alignItems"
-      :image-menu="imageMenu"
-      :table-menu="tableMenu"
-      :can-undo="canUndo"
-      :can-redo="canRedo"
-      :is-link-active="isLinkActive"
-      :is-table-active="isTableActive"
-      :button-class="toolbar.getToolbarButtonClass"
-      :state-version="editorStateVersion"
-      :locale="locale"
-      @set-block="commands.setBlock"
-      @set-font-family="commands.setFontFamily"
-      @set-font-size="commands.setFontSize"
-      @set-text-color="commands.setTextColor"
-      @set-highlight-color="commands.setHighlightColor"
-      @open-link="commands.openLinkDialog"
-      @clear-formatting="commands.clearFormatting"
-      @undo="commands.undo"
-      @redo="commands.redo"
-    />
-
-    <div
-      class="w-editor__surface min-h-0 flex-1 w-full h-full bg-container overflow-x-hidden overflow-y-auto"
-      :style="contentStyle"
-    >
-      <EditorContent :editor="editor" />
-    </div>
-
-    <EditorFooter
-      :character-count="characterCount"
-      :word-count="wordCount"
-      :locale="locale"
-    />
-
-    <input
-      ref="imageInput"
-      type="file"
-      accept="image/*"
-      class="!hidden"
-      @change="commands.handleImageSelect"
-    />
-
-    <EditorUrlDialog
-      v-model:open="linkDialogOpen"
-      :initial-value="linkInitialValue"
-      :placeholder="locale.linkPrompt"
-      :title="locale.link"
-      @apply="applyLink"
-    />
-    <EditorUrlDialog
-      v-model:open="imageDialogOpen"
-      :placeholder="locale.imagePrompt"
-      :title="locale.image"
-      @apply="applyImageUrl"
-    />
-  </div>
-</template>
 
 <style lang="less" scoped src="./styles.less"></style>

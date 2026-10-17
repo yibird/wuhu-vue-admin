@@ -1,3 +1,38 @@
+<template>
+  <DragDropProvider @drag-start="handleDragStart" @drag-end="handleDragEnd">
+    <component :is="props.tag" v-bind="attrs">
+      <slot name="header" />
+
+      <DraggableItem
+        v-for="entry in itemEntries"
+        :key="entry.id"
+        :data="entry.data"
+        :disabled="props.disabled"
+        :ghost-class="props.ghostClass"
+        :group="sortableGroup"
+        :handle-selector="props.handleSelector"
+        :id="entry.id"
+        :index="entry.index"
+        :tag="props.itemTag"
+        :transition="transition"
+        :type="props.type"
+        unwrap
+      >
+        <template #default="state">
+          <slot
+            name="item"
+            :element="entry.element"
+            :index="entry.index"
+            v-bind="state"
+          />
+        </template>
+      </DraggableItem>
+
+      <slot name="footer" />
+    </component>
+  </DragDropProvider>
+</template>
+
 <script setup lang="ts" generic="T = unknown">
 import { arrayMove } from '@dnd-kit/helpers'
 import { DragDropProvider } from '@dnd-kit/vue'
@@ -19,7 +54,7 @@ const props = withDefaults(defineProps<DraggableProps<T>>(), {
   itemTag: 'div',
   animation: 150,
 })
-const emit = defineEmits<DraggableEmits<T>>()
+const emits = defineEmits<DraggableEmits<T>>()
 const slots = defineSlots<DraggableSlots<T>>()
 const attrs = useAttrs()
 const items = defineModel<T[]>({ default: () => [] })
@@ -76,7 +111,7 @@ const itemEntries = computed(() => {
 })
 
 function handleDragStart(event: DragStartEvent) {
-  emit('start', event)
+  emits('start', event)
 }
 
 function handleDragEnd(event: DragEndEvent) {
@@ -95,45 +130,10 @@ function handleDragEnd(event: DragEndEvent) {
     ) {
       const nextItems = arrayMove(currentItems, from, to)
       items.value = nextItems
-      emit('update', event, nextItems)
+      emits('update', event, nextItems)
     }
   }
 
-  emit('end', event)
+  emits('end', event)
 }
 </script>
-
-<template>
-  <DragDropProvider @drag-start="handleDragStart" @drag-end="handleDragEnd">
-    <component :is="props.tag" v-bind="attrs">
-      <slot name="header" />
-
-      <DraggableItem
-        v-for="entry in itemEntries"
-        :key="entry.id"
-        :data="entry.data"
-        :disabled="props.disabled"
-        :ghost-class="props.ghostClass"
-        :group="sortableGroup"
-        :handle-selector="props.handleSelector"
-        :id="entry.id"
-        :index="entry.index"
-        :tag="props.itemTag"
-        :transition="transition"
-        :type="props.type"
-        unwrap
-      >
-        <template #default="state">
-          <slot
-            name="item"
-            :element="entry.element"
-            :index="entry.index"
-            v-bind="state"
-          />
-        </template>
-      </DraggableItem>
-
-      <slot name="footer" />
-    </component>
-  </DragDropProvider>
-</template>
