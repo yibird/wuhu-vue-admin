@@ -1,5 +1,5 @@
 import type { EChartsCoreOption } from 'echarts/core'
-import type { BaseEChartsOption, EChartsPaletteKey } from '@/theme'
+import type { BaseEChartsOption, EChartsPaletteKey } from '@/components/chart'
 import type { ChartDataRecord, ChartDataSource, ChartWidget } from '../types'
 
 export interface AggregatedChartRow {

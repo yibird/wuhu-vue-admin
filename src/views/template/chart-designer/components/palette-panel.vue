@@ -1,28 +1,3 @@
-<script setup lang="ts">
-import { CHART_DESIGNER_SELECTORS } from '../constants'
-import type { ChartPaletteItem } from '../types'
-
-const props = defineProps<{
-  favorites: readonly ChartPaletteItem[]
-  palette: readonly ChartPaletteItem[]
-}>()
-
-const emit = defineEmits<{
-  addWidget: [item: ChartPaletteItem]
-  dragStart: [item: ChartPaletteItem, event: DragEvent]
-}>()
-
-const activeTab = shallowRef<'all' | 'favorite'>('all')
-const paletteTabOptions = [
-  { label: '图表', value: 'all' },
-  { label: '收藏', value: 'favorite' },
-]
-
-const currentPalette = computed(() =>
-  activeTab.value === 'favorite' ? props.favorites : props.palette
-)
-</script>
-
 <template>
   <section
     class="min-h-0 min-w-0 grid grid-rows-[auto_minmax(0,1fr)] overflow-hidden rounded-8 border-1 border-color-2 border-solid bg-container shadow-[var(--w-shadow-card)]"
@@ -49,8 +24,8 @@ const currentPalette = computed(() =>
         :data-testid="CHART_DESIGNER_SELECTORS.paletteItem"
         :data-chart-palette-item="`${item.kind}:${item.type}`"
         draggable="true"
-        @dragstart="emit('dragStart', item, $event)"
-        @click="emit('addWidget', item)"
+        @dragstart="emits('dragStart', item, $event)"
+        @click="emits('addWidget', item)"
       >
         <span
           class="w-full grid grid-cols-[32px_minmax(0,1fr)_auto] items-center gap-8 text-left"
@@ -74,6 +49,31 @@ const currentPalette = computed(() =>
     </div>
   </section>
 </template>
+
+<script setup lang="ts">
+import { CHART_DESIGNER_SELECTORS } from '../constants'
+import type { ChartPaletteItem } from '../types'
+
+const props = defineProps<{
+  favorites: readonly ChartPaletteItem[]
+  palette: readonly ChartPaletteItem[]
+}>()
+
+const emits = defineEmits<{
+  addWidget: [item: ChartPaletteItem]
+  dragStart: [item: ChartPaletteItem, event: DragEvent]
+}>()
+
+const activeTab = shallowRef<'all' | 'favorite'>('all')
+const paletteTabOptions = [
+  { label: '图表', value: 'all' },
+  { label: '收藏', value: 'favorite' },
+]
+
+const currentPalette = computed(() =>
+  activeTab.value === 'favorite' ? props.favorites : props.palette
+)
+</script>
 
 <style scoped>
 .chart-palette-card {

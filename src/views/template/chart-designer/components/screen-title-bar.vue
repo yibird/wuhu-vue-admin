@@ -1,12 +1,3 @@
-<script setup lang="ts">
-import type { ChartDesignerStats, ChartScreenConfig } from '../types'
-
-defineProps<{
-  screenConfig: ChartScreenConfig
-  stats: ChartDesignerStats
-}>()
-</script>
-
 <template>
   <div class="mb-14 flex items-end justify-between gap-16">
     <div class="min-w-0">
@@ -26,3 +17,12 @@ defineProps<{
     </div>
   </div>
 </template>
+
+<script setup lang="ts">
+import type { ChartDesignerStats, ChartScreenConfig } from '../types'
+
+defineProps<{
+  screenConfig: ChartScreenConfig
+  stats: ChartDesignerStats
+}>()
+</script>

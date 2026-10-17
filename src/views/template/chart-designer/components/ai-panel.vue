@@ -1,22 +1,3 @@
-<script setup lang="ts">
-import type { ChartAiMessage, ChartAiSuggestion } from '../types'
-
-defineProps<{
-  busy: boolean
-  canUpdateSelected: boolean
-  messages: readonly ChartAiMessage[]
-  suggestions: readonly ChartAiSuggestion[]
-}>()
-
-const prompt = defineModel<string>('prompt', { required: true })
-
-const emit = defineEmits<{
-  applySuggestion: [prompt: string]
-  generate: []
-  updateSelected: []
-}>()
-</script>
-
 <template>
   <section
     class="min-h-0 min-w-0 grid grid-rows-[auto_minmax(0,1fr)_auto] overflow-hidden rounded-8 border-1 border-color-2 border-solid bg-container shadow-[var(--w-shadow-card)]"
@@ -43,7 +24,7 @@ const emit = defineEmits<{
                 v-for="suggestion in suggestions"
                 :key="suggestion.id"
                 class="chart-ai-suggestion-button"
-                @click="emit('applySuggestion', suggestion.prompt)"
+                @click="emits('applySuggestion', suggestion.prompt)"
               >
                 <Icon :name="suggestion.icon" :size="14" />
                 {{ suggestion.title }}
@@ -82,15 +63,15 @@ const emit = defineEmits<{
         v-model="prompt"
         class="h-68 w-full resize-none rounded-7 border-1 border-color-2 border-solid bg-fill px-10 py-8 text-13px text-primary outline-none focus:border-primary"
         placeholder="例如：生成一个销售经营大屏，包含 GMV、区域排行、渠道占比和趋势分析"
-        @keydown.ctrl.enter.prevent="emit('generate')"
-        @keydown.meta.enter.prevent="emit('generate')"
+        @keydown.ctrl.enter.prevent="emits('generate')"
+        @keydown.meta.enter.prevent="emits('generate')"
       ></textarea>
       <div class="mt-8 grid grid-cols-2 gap-8">
         <a-button
           block
           type="primary"
           :disabled="busy || !prompt.trim()"
-          @click="emit('generate')"
+          @click="emits('generate')"
         >
           <Icon
             :name="busy ? 'i-lucide:loader-circle' : 'i-lucide:wand-sparkles'"
@@ -101,7 +82,7 @@ const emit = defineEmits<{
         <a-button
           block
           :disabled="busy || !prompt.trim() || !canUpdateSelected"
-          @click="emit('updateSelected')"
+          @click="emits('updateSelected')"
         >
           <Icon name="i-lucide:sliders-horizontal" :size="15" />
           优化选中
@@ -110,6 +91,25 @@ const emit = defineEmits<{
     </footer>
   </section>
 </template>
+
+<script setup lang="ts">
+import type { ChartAiMessage, ChartAiSuggestion } from '../types'
+
+defineProps<{
+  busy: boolean
+  canUpdateSelected: boolean
+  messages: readonly ChartAiMessage[]
+  suggestions: readonly ChartAiSuggestion[]
+}>()
+
+const prompt = defineModel<string>('prompt', { required: true })
+
+const emits = defineEmits<{
+  applySuggestion: [prompt: string]
+  generate: []
+  updateSelected: []
+}>()
+</script>
 
 <style scoped>
 .chart-ai-icon-button {

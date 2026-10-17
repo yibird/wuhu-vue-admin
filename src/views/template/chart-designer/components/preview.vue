@@ -1,57 +1,3 @@
-<script setup lang="ts">
-import VChart from 'vue-echarts'
-import { useEChartsTheme } from '@/theme'
-import {
-  aggregateChartRows,
-  createWidgetChartOption,
-  formatChartValue,
-  toFiniteNumber,
-} from '../chart-options'
-import type { ChartDataSource, ChartWidget } from '../types'
-import type { ChartPreviewMode } from '../types'
-
-const props = defineProps<{
-  previewMode: ChartPreviewMode
-  source?: ChartDataSource
-  widget: ChartWidget
-}>()
-
-const { baseChartOption, eChartsThemeName, getEChartsColor } = useEChartsTheme()
-
-const aggregatedRows = computed(() =>
-  aggregateChartRows(props.source, props.widget)
-)
-
-const kpiValue = computed(() => {
-  const rows = props.source?.records ?? []
-  const total = rows.reduce(
-    (sum, record) => sum + toFiniteNumber(record[props.widget.measure]),
-    0
-  )
-  const field = props.source?.fields.find(
-    (item) => item.key === props.widget.measure
-  )
-  const value =
-    field?.type === 'percent' && rows.length > 0 ? total / rows.length : total
-
-  return formatChartValue(value, props.widget.formatter)
-})
-
-const tableRows = computed(() => (props.source?.records ?? []).slice(0, 5))
-const tableFields = computed(() => (props.source?.fields ?? []).slice(0, 4))
-
-const chartOption = computed(() => {
-  if (props.widget.kind !== 'chart') return undefined
-
-  return createWidgetChartOption({
-    baseOption: baseChartOption.value,
-    getColor: getEChartsColor,
-    rows: aggregatedRows.value,
-    widget: props.widget,
-  })
-})
-</script>
-
 <template>
   <div class="full min-h-0" :class="`chart-preview--${previewMode}`">
     <div
@@ -119,7 +65,7 @@ const chartOption = computed(() => {
       {{ widget.insight }}
     </div>
 
-    <VChart
+    <Chart
       v-else-if="chartOption"
       :option="chartOption"
       :theme="eChartsThemeName"
@@ -128,6 +74,60 @@ const chartOption = computed(() => {
     />
   </div>
 </template>
+
+<script setup lang="ts">
+import { Chart } from '@/components'
+import { useEChartsTheme } from '@/components/chart'
+import {
+  aggregateChartRows,
+  createWidgetChartOption,
+  formatChartValue,
+  toFiniteNumber,
+} from '../chart-options'
+import type { ChartDataSource, ChartWidget } from '../types'
+import type { ChartPreviewMode } from '../types'
+
+const props = defineProps<{
+  previewMode: ChartPreviewMode
+  source?: ChartDataSource
+  widget: ChartWidget
+}>()
+
+const { baseChartOption, eChartsThemeName, getEChartsColor } = useEChartsTheme()
+
+const aggregatedRows = computed(() =>
+  aggregateChartRows(props.source, props.widget)
+)
+
+const kpiValue = computed(() => {
+  const rows = props.source?.records ?? []
+  const total = rows.reduce(
+    (sum, record) => sum + toFiniteNumber(record[props.widget.measure]),
+    0
+  )
+  const field = props.source?.fields.find(
+    (item) => item.key === props.widget.measure
+  )
+  const value =
+    field?.type === 'percent' && rows.length > 0 ? total / rows.length : total
+
+  return formatChartValue(value, props.widget.formatter)
+})
+
+const tableRows = computed(() => (props.source?.records ?? []).slice(0, 5))
+const tableFields = computed(() => (props.source?.fields ?? []).slice(0, 4))
+
+const chartOption = computed(() => {
+  if (props.widget.kind !== 'chart') return undefined
+
+  return createWidgetChartOption({
+    baseOption: baseChartOption.value,
+    getColor: getEChartsColor,
+    rows: aggregatedRows.value,
+    widget: props.widget,
+  })
+})
+</script>
 
 <style scoped>
 .chart-preview--light .chart-preview-surface {

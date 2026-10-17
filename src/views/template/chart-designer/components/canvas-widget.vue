@@ -1,27 +1,3 @@
-<script setup lang="ts">
-import type { ChartDataSource, ChartScreenConfig, ChartWidget } from '../types'
-import WidgetPreview from './controls/widget-preview.vue'
-
-const props = defineProps<{
-  index: number
-  isDragging: boolean
-  isSelected: boolean
-  screenConfig: ChartScreenConfig
-  source?: ChartDataSource
-  widget: ChartWidget
-}>()
-
-const emit = defineEmits<{
-  duplicateWidget: [id: string]
-  pointerCancel: [event: PointerEvent]
-  pointerDown: [event: PointerEvent, widget: ChartWidget, index: number]
-  pointerMove: [event: PointerEvent]
-  pointerUp: [event: PointerEvent]
-  removeWidget: [id: string]
-  selectWidget: [id: string]
-}>()
-</script>
-
 <template>
   <article
     class="chart-widget-card group min-h-0 min-w-0 grid grid-rows-[auto_minmax(0,1fr)] overflow-hidden rounded-8 border-1 border-white/10 border-solid bg-[rgb(9_18_36_/_78%)] p-12 backdrop-blur transition hover:border-white/24"
@@ -36,11 +12,11 @@ const emit = defineEmits<{
       gridColumn: `span ${widget.colSpan}`,
       gridRow: `span ${widget.rowSpan}`,
     }"
-    @click.stop="emit('selectWidget', widget.id)"
-    @pointercancel="emit('pointerCancel', $event)"
-    @pointerdown="emit('pointerDown', $event, widget, props.index)"
-    @pointermove="emit('pointerMove', $event)"
-    @pointerup="emit('pointerUp', $event)"
+    @click.stop="emits('selectWidget', widget.id)"
+    @pointercancel="emits('pointerCancel', $event)"
+    @pointerdown="emits('pointerDown', $event, widget, props.index)"
+    @pointermove="emits('pointerMove', $event)"
+    @pointerup="emits('pointerUp', $event)"
   >
     <div class="mb-8 flex items-start justify-between gap-8">
       <div class="min-w-0">
@@ -60,7 +36,7 @@ const emit = defineEmits<{
           class="chart-widget-action-button"
           data-chart-widget-action="duplicate"
           size="small"
-          @click.stop="emit('duplicateWidget', widget.id)"
+          @click.stop="emits('duplicateWidget', widget.id)"
         >
           <template #icon>
             <Icon name="i-lucide:copy" :size="14" />
@@ -71,7 +47,7 @@ const emit = defineEmits<{
           class="chart-widget-action-button ml-4"
           data-chart-widget-action="remove"
           size="small"
-          @click.stop="emit('removeWidget', widget.id)"
+          @click.stop="emits('removeWidget', widget.id)"
         >
           <template #icon>
             <Icon name="i-lucide:trash-2" :size="14" />
@@ -87,6 +63,30 @@ const emit = defineEmits<{
     />
   </article>
 </template>
+
+<script setup lang="ts">
+import type { ChartDataSource, ChartScreenConfig, ChartWidget } from '../types'
+import WidgetPreview from './controls/widget-preview.vue'
+
+const props = defineProps<{
+  index: number
+  isDragging: boolean
+  isSelected: boolean
+  screenConfig: ChartScreenConfig
+  source?: ChartDataSource
+  widget: ChartWidget
+}>()
+
+const emits = defineEmits<{
+  duplicateWidget: [id: string]
+  pointerCancel: [event: PointerEvent]
+  pointerDown: [event: PointerEvent, widget: ChartWidget, index: number]
+  pointerMove: [event: PointerEvent]
+  pointerUp: [event: PointerEvent]
+  removeWidget: [id: string]
+  selectWidget: [id: string]
+}>()
+</script>
 
 <style scoped>
 .chart-widget-action-button {

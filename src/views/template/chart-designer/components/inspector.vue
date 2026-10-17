@@ -1,21 +1,3 @@
-<script setup lang="ts">
-import { CHART_DESIGNER_SELECTORS } from '../constants'
-import WidgetConfig from './controls/widget-config.vue'
-import type { ChartDataSource, ChartField, ChartWidget } from '../types'
-
-defineProps<{
-  dataSources: readonly ChartDataSource[]
-  fields: readonly ChartField[]
-  widget?: ChartWidget
-}>()
-
-defineEmits<{
-  duplicateWidget: [id: string]
-  removeWidget: [id: string]
-  updateWidget: [id: string, patch: Partial<ChartWidget>]
-}>()
-</script>
-
 <template>
   <section
     class="min-h-0 min-w-0 grid grid-rows-[auto_minmax(0,1fr)] overflow-hidden rounded-8 border-1 border-color-2 border-solid bg-container shadow-[var(--w-shadow-card)]"
@@ -48,3 +30,21 @@ defineEmits<{
     </div>
   </section>
 </template>
+
+<script setup lang="ts">
+import { CHART_DESIGNER_SELECTORS } from '../constants'
+import WidgetConfig from './controls/widget-config.vue'
+import type { ChartDataSource, ChartField, ChartWidget } from '../types'
+
+defineProps<{
+  dataSources: readonly ChartDataSource[]
+  fields: readonly ChartField[]
+  widget?: ChartWidget
+}>()
+
+defineEmits<{
+  duplicateWidget: [id: string]
+  removeWidget: [id: string]
+  updateWidget: [id: string, patch: Partial<ChartWidget>]
+}>()
+</script>

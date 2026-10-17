@@ -1,14 +1,3 @@
-<script setup lang="ts">
-defineProps<{
-  selectedCount: number
-}>()
-
-const emit = defineEmits<{
-  copy: []
-  remove: []
-}>()
-</script>
-
 <template>
   <div
     class="absolute right-14 top-14 z-20 inline-flex items-center gap-6 rounded-7 border-1 border-white/14 border-solid bg-[rgb(15_23_42_/_82%)] px-8 py-6 text-12px text-white shadow-[0_12px_32px_rgb(0_0_0_/_24%)] backdrop-blur"
@@ -18,7 +7,7 @@ const emit = defineEmits<{
       class="chart-selection-icon-button"
       data-chart-selection-action="copy"
       size="small"
-      @click.stop="emit('copy')"
+      @click.stop="emits('copy')"
     >
       <template #icon>
         <Icon name="i-lucide:copy" :size="14" />
@@ -29,7 +18,7 @@ const emit = defineEmits<{
       class="chart-selection-icon-button"
       data-chart-selection-action="remove"
       size="small"
-      @click.stop="emit('remove')"
+      @click.stop="emits('remove')"
     >
       <template #icon>
         <Icon name="i-lucide:trash-2" :size="14" />
@@ -37,6 +26,17 @@ const emit = defineEmits<{
     </a-button>
   </div>
 </template>
+
+<script setup lang="ts">
+defineProps<{
+  selectedCount: number
+}>()
+
+const emits = defineEmits<{
+  copy: []
+  remove: []
+}>()
+</script>
 
 <style scoped>
 .chart-selection-icon-button {

@@ -1,20 +1,3 @@
-<script setup lang="ts">
-import type { ChartDesignerStats } from '../types'
-
-defineProps<{
-  stats: ChartDesignerStats
-}>()
-
-const emit = defineEmits<{
-  copySchema: []
-  exportSchema: []
-  openHistory: []
-  openPreview: []
-  openSchema: []
-  openShare: []
-}>()
-</script>
-
 <template>
   <header
     class="flex flex-wrap items-center justify-between gap-12 rounded-8 border-1 border-color-2 border-solid bg-container px-14 py-12 shadow-[var(--w-shadow-card)]"
@@ -44,37 +27,37 @@ const emit = defineEmits<{
       <span class="rounded-6 bg-fill px-9 py-5 text-12px text-secondary">
         {{ stats.widgetCount }} 组件
       </span>
-      <a-button @click="emit('openSchema')">
+      <a-button @click="emits('openSchema')">
         <template #icon>
           <Icon name="i-lucide:braces" :size="15" />
         </template>
         Schema 源码
       </a-button>
-      <a-button @click="emit('openHistory')">
+      <a-button @click="emits('openHistory')">
         <template #icon>
           <Icon name="i-lucide:history" :size="15" />
         </template>
         历史
       </a-button>
-      <a-button @click="emit('openPreview')">
+      <a-button @click="emits('openPreview')">
         <template #icon>
           <Icon name="i-lucide:play" :size="15" />
         </template>
         预览
       </a-button>
-      <a-button @click="emit('openShare')">
+      <a-button @click="emits('openShare')">
         <template #icon>
           <Icon name="i-lucide:share-2" :size="15" />
         </template>
         分享
       </a-button>
-      <a-button @click="emit('copySchema')">
+      <a-button @click="emits('copySchema')">
         <template #icon>
           <Icon name="i-lucide:copy" :size="15" />
         </template>
         复制 Schema
       </a-button>
-      <a-button type="primary" @click="emit('exportSchema')">
+      <a-button type="primary" @click="emits('exportSchema')">
         <template #icon>
           <Icon name="i-lucide:download" :size="15" />
         </template>
@@ -83,3 +66,20 @@ const emit = defineEmits<{
     </div>
   </header>
 </template>
+
+<script setup lang="ts">
+import type { ChartDesignerStats } from '../types'
+
+defineProps<{
+  stats: ChartDesignerStats
+}>()
+
+const emits = defineEmits<{
+  copySchema: []
+  exportSchema: []
+  openHistory: []
+  openPreview: []
+  openSchema: []
+  openShare: []
+}>()
+</script>

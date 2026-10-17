@@ -1,96 +1,3 @@
-<script setup lang="ts">
-import { CHART_DESIGNER_SELECTORS } from '../../constants'
-import { chartControlDefinitions, isChartType } from './registry'
-import type { ChartDataSource, ChartField, ChartWidget } from '../../types'
-
-const props = defineProps<{
-  dataSources: readonly ChartDataSource[]
-  fields: readonly ChartField[]
-  widget: ChartWidget
-}>()
-
-const emit = defineEmits<{
-  duplicateWidget: [id: string]
-  removeWidget: [id: string]
-  updateWidget: [id: string, patch: Partial<ChartWidget>]
-}>()
-
-const numberFields = computed(() =>
-  props.fields.filter((field) =>
-    ['currency', 'number', 'percent'].includes(field.type)
-  )
-)
-const dimensionFields = computed(() =>
-  props.fields.filter((field) => ['date', 'string'].includes(field.type))
-)
-const chartTypes = computed(() =>
-  chartControlDefinitions
-    .filter((item) => item.kind === 'chart' && isChartType(item.type))
-    .map((item) => ({ label: item.title, value: item.type }))
-)
-const dataSourceOptions = computed(() =>
-  props.dataSources.map((source) => ({ label: source.name, value: source.id }))
-)
-const dimensionFieldOptions = computed(() =>
-  dimensionFields.value.map((field) => ({
-    label: field.label,
-    value: field.key,
-  }))
-)
-const numberFieldOptions = computed(() =>
-  numberFields.value.map((field) => ({ label: field.label, value: field.key }))
-)
-
-function updateWidget(patch: Partial<ChartWidget>) {
-  emit('updateWidget', props.widget.id, patch)
-}
-
-function updateText(
-  key: 'dimension' | 'insight' | 'measure' | 'sourceId' | 'title'
-) {
-  return (event: Event) => {
-    const target = event.target
-    if (
-      !(
-        target instanceof HTMLInputElement ||
-        target instanceof HTMLSelectElement ||
-        target instanceof HTMLTextAreaElement
-      )
-    )
-      return
-    updateWidget({ [key]: target.value })
-  }
-}
-
-function updateNumber(key: 'colSpan' | 'rowSpan') {
-  return (event: Event) => {
-    const target = event.target
-    if (!(target instanceof HTMLInputElement)) return
-    updateWidget({ [key]: Number(target.value) })
-  }
-}
-
-function updateChartType(value: string | number) {
-  const nextType = String(value)
-  if (!isChartType(nextType)) return
-
-  updateWidget({ chartType: nextType })
-}
-
-function updateTextValue(
-  key: 'dimension' | 'measure' | 'sourceId',
-  value: string | number
-) {
-  updateWidget({ [key]: String(value) })
-}
-
-function updateAccent(value: unknown) {
-  if (typeof value !== 'string') return
-
-  updateWidget({ accent: value })
-}
-</script>
-
 <template>
   <div>
     <div class="mb-10 flex items-center justify-between gap-8">
@@ -99,7 +6,7 @@ function updateAccent(value: unknown) {
         <a-button
           class="chart-widget-config-icon-button"
           size="small"
-          @click="emit('duplicateWidget', widget.id)"
+          @click="emits('duplicateWidget', widget.id)"
         >
           <template #icon>
             <Icon name="i-lucide:copy" :size="14" />
@@ -109,7 +16,7 @@ function updateAccent(value: unknown) {
           danger
           class="chart-widget-config-icon-button"
           size="small"
-          @click="emit('removeWidget', widget.id)"
+          @click="emits('removeWidget', widget.id)"
         >
           <template #icon>
             <Icon name="i-lucide:trash-2" :size="14" />
@@ -224,6 +131,99 @@ function updateAccent(value: unknown) {
     </div>
   </div>
 </template>
+
+<script setup lang="ts">
+import { CHART_DESIGNER_SELECTORS } from '../../constants'
+import { chartControlDefinitions, isChartType } from './registry'
+import type { ChartDataSource, ChartField, ChartWidget } from '../../types'
+
+const props = defineProps<{
+  dataSources: readonly ChartDataSource[]
+  fields: readonly ChartField[]
+  widget: ChartWidget
+}>()
+
+const emits = defineEmits<{
+  duplicateWidget: [id: string]
+  removeWidget: [id: string]
+  updateWidget: [id: string, patch: Partial<ChartWidget>]
+}>()
+
+const numberFields = computed(() =>
+  props.fields.filter((field) =>
+    ['currency', 'number', 'percent'].includes(field.type)
+  )
+)
+const dimensionFields = computed(() =>
+  props.fields.filter((field) => ['date', 'string'].includes(field.type))
+)
+const chartTypes = computed(() =>
+  chartControlDefinitions
+    .filter((item) => item.kind === 'chart' && isChartType(item.type))
+    .map((item) => ({ label: item.title, value: item.type }))
+)
+const dataSourceOptions = computed(() =>
+  props.dataSources.map((source) => ({ label: source.name, value: source.id }))
+)
+const dimensionFieldOptions = computed(() =>
+  dimensionFields.value.map((field) => ({
+    label: field.label,
+    value: field.key,
+  }))
+)
+const numberFieldOptions = computed(() =>
+  numberFields.value.map((field) => ({ label: field.label, value: field.key }))
+)
+
+function updateWidget(patch: Partial<ChartWidget>) {
+  emits('updateWidget', props.widget.id, patch)
+}
+
+function updateText(
+  key: 'dimension' | 'insight' | 'measure' | 'sourceId' | 'title'
+) {
+  return (event: Event) => {
+    const target = event.target
+    if (
+      !(
+        target instanceof HTMLInputElement ||
+        target instanceof HTMLSelectElement ||
+        target instanceof HTMLTextAreaElement
+      )
+    )
+      return
+    updateWidget({ [key]: target.value })
+  }
+}
+
+function updateNumber(key: 'colSpan' | 'rowSpan') {
+  return (event: Event) => {
+    const target = event.target
+    if (!(target instanceof HTMLInputElement)) return
+    updateWidget({ [key]: Number(target.value) })
+  }
+}
+
+function updateChartType(value: string | number) {
+  const nextType = String(value)
+  if (!isChartType(nextType)) return
+
+  updateWidget({ chartType: nextType })
+}
+
+function updateTextValue(
+  key: 'dimension' | 'measure' | 'sourceId',
+  value: string | number
+) {
+  updateWidget({ [key]: String(value) })
+}
+
+function updateAccent(value: unknown) {
+  if (typeof value !== 'string') return
+
+  updateWidget({ accent: value })
+}
+</script>
 
 <style scoped>
 .chart-widget-config-icon-button {

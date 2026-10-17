@@ -1,15 +1,3 @@
-<script setup lang="ts">
-defineProps<{
-  url: string
-}>()
-
-const open = defineModel<boolean>('open', { required: true })
-
-defineEmits<{
-  copy: []
-}>()
-</script>
-
 <template>
   <a-modal v-model:open="open" :footer="null" title="分享大屏" width="620px">
     <div class="grid gap-12">
@@ -32,3 +20,15 @@ defineEmits<{
     </div>
   </a-modal>
 </template>
+
+<script setup lang="ts">
+defineProps<{
+  url: string
+}>()
+
+const open = defineModel<boolean>('open', { required: true })
+
+defineEmits<{
+  copy: []
+}>()
+</script>

@@ -1,25 +1,3 @@
-<script setup lang="ts">
-import type { ChartDataSource } from '../types'
-
-const props = defineProps<{
-  activeSourceId: string
-  dataSources: readonly ChartDataSource[]
-}>()
-
-const open = defineModel<boolean>('open', { required: true })
-const jsonDraft = defineModel<string>('jsonDraft', { required: true })
-
-const emit = defineEmits<{
-  importJson: []
-  selectSource: [id: string]
-  updateSource: [id: string, patch: Partial<ChartDataSource>]
-}>()
-
-const activeSource = computed(() =>
-  props.dataSources.find((source) => source.id === props.activeSourceId)
-)
-</script>
-
 <template>
   <a-modal v-model:open="open" :footer="null" title="数据源管理" width="860px">
     <div class="h-[68vh] min-h-0 grid grid-cols-[280px_minmax(0,1fr)] gap-12">
@@ -42,7 +20,7 @@ const activeSource = computed(() =>
             :class="{
               'border-primary bg-primary/6': source.id === activeSourceId,
             }"
-            @click="emit('selectSource', source.id)"
+            @click="emits('selectSource', source.id)"
           >
             <span class="block w-full text-left">
               <div class="flex items-center justify-between gap-8">
@@ -117,7 +95,7 @@ const activeSource = computed(() =>
                 type="number"
                 :value="activeSource.refreshInterval"
                 @input="
-                  emit('updateSource', activeSource!.id, {
+                  emits('updateSource', activeSource!.id, {
                     refreshInterval: Number(
                       ($event.target as HTMLInputElement).value
                     ),
@@ -144,7 +122,7 @@ const activeSource = computed(() =>
         <footer class="border-t border-color-2 p-12">
           <div class="flex items-center justify-between gap-8">
             <strong class="text-13px text-primary">快速导入 JSON 数据源</strong>
-            <a-button type="primary" @click="emit('importJson')">
+            <a-button type="primary" @click="emits('importJson')">
               <template #icon>
                 <Icon name="i-lucide:database-zap" :size="14" />
               </template>
@@ -161,6 +139,28 @@ const activeSource = computed(() =>
     </div>
   </a-modal>
 </template>
+
+<script setup lang="ts">
+import type { ChartDataSource } from '../types'
+
+const props = defineProps<{
+  activeSourceId: string
+  dataSources: readonly ChartDataSource[]
+}>()
+
+const open = defineModel<boolean>('open', { required: true })
+const jsonDraft = defineModel<string>('jsonDraft', { required: true })
+
+const emits = defineEmits<{
+  importJson: []
+  selectSource: [id: string]
+  updateSource: [id: string, patch: Partial<ChartDataSource>]
+}>()
+
+const activeSource = computed(() =>
+  props.dataSources.find((source) => source.id === props.activeSourceId)
+)
+</script>
 
 <style scoped>
 .chart-data-source-item {

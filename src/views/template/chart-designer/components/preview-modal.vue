@@ -1,21 +1,3 @@
-<script setup lang="ts">
-import type { ChartDataSource, ChartScreenConfig, ChartWidget } from '../types'
-import Preview from './preview.vue'
-import ScreenTitleBar from './screen-title-bar.vue'
-
-const props = defineProps<{
-  dataSources: readonly ChartDataSource[]
-  screenConfig: ChartScreenConfig
-  widgets: readonly ChartWidget[]
-}>()
-
-const open = defineModel<boolean>('open', { required: true })
-
-function getSource(sourceId: string) {
-  return props.dataSources.find((source) => source.id === sourceId)
-}
-</script>
-
 <template>
   <a-modal
     v-model:open="open"
@@ -75,3 +57,21 @@ function getSource(sourceId: string) {
     </div>
   </a-modal>
 </template>
+
+<script setup lang="ts">
+import type { ChartDataSource, ChartScreenConfig, ChartWidget } from '../types'
+import Preview from './preview.vue'
+import ScreenTitleBar from './screen-title-bar.vue'
+
+const props = defineProps<{
+  dataSources: readonly ChartDataSource[]
+  screenConfig: ChartScreenConfig
+  widgets: readonly ChartWidget[]
+}>()
+
+const open = defineModel<boolean>('open', { required: true })
+
+function getSource(sourceId: string) {
+  return props.dataSources.find((source) => source.id === sourceId)
+}
+</script>

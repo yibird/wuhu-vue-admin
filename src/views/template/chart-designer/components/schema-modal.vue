@@ -1,20 +1,3 @@
-<script setup lang="ts">
-import { CodeEditor } from '@/components/code-editor'
-
-defineProps<{
-  error: string
-}>()
-
-const open = defineModel<boolean>('open', { required: true })
-const draft = defineModel<string>('draft', { required: true })
-
-defineEmits<{
-  copy: []
-  export: []
-  format: []
-}>()
-</script>
-
 <template>
   <a-modal v-model:open="open" :footer="null" title="Schema 源码" width="980px">
     <div class="h-[72vh] min-h-0 grid grid-rows-[auto_minmax(0,1fr)] gap-10">
@@ -54,3 +37,20 @@ defineEmits<{
     </div>
   </a-modal>
 </template>
+
+<script setup lang="ts">
+import { CodeEditor } from '@/components/code-editor'
+
+defineProps<{
+  error: string
+}>()
+
+const open = defineModel<boolean>('open', { required: true })
+const draft = defineModel<string>('draft', { required: true })
+
+defineEmits<{
+  copy: []
+  export: []
+  format: []
+}>()
+</script>

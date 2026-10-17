@@ -1,25 +1,3 @@
-<script setup lang="ts">
-import type {
-  ChartDataSource,
-  ChartDesignerStats,
-  ChartScreenConfig,
-} from '../types'
-import CanvasToolbar from './canvas-toolbar.vue'
-
-defineProps<{
-  activeSourceId: string
-  dataSources: readonly ChartDataSource[]
-  screenConfig: ChartScreenConfig
-  stats: ChartDesignerStats
-}>()
-
-defineEmits<{
-  openDataSource: []
-  selectSource: [id: string]
-  updateScreen: [patch: Partial<ChartScreenConfig>]
-}>()
-</script>
-
 <template>
   <header
     class="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-12 border-b border-color-2 px-14 py-12"
@@ -58,3 +36,25 @@ defineEmits<{
     </div>
   </header>
 </template>
+
+<script setup lang="ts">
+import type {
+  ChartDataSource,
+  ChartDesignerStats,
+  ChartScreenConfig,
+} from '../types'
+import CanvasToolbar from './canvas-toolbar.vue'
+
+defineProps<{
+  activeSourceId: string
+  dataSources: readonly ChartDataSource[]
+  screenConfig: ChartScreenConfig
+  stats: ChartDesignerStats
+}>()
+
+defineEmits<{
+  openDataSource: []
+  selectSource: [id: string]
+  updateScreen: [patch: Partial<ChartScreenConfig>]
+}>()
+</script>

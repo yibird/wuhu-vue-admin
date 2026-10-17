@@ -1,3 +1,101 @@
+<template>
+  <section
+    class="min-h-0 min-w-0 grid grid-rows-[auto_minmax(0,1fr)] overflow-hidden rounded-8 border-1 border-color-2 border-solid bg-container shadow-[var(--w-shadow-elevated)]"
+  >
+    <CanvasHeader
+      :active-source-id="activeSourceId"
+      :data-sources="dataSources"
+      :screen-config="screenConfig"
+      :stats="stats"
+      @open-data-source="emits('openDataSource')"
+      @select-source="emits('selectDataSource', $event)"
+      @update-screen="emits('updateScreen', $event)"
+    />
+
+    <div
+      class="min-h-0 p-16 w-full h-full overflow-auto"
+      :style="canvasViewportStyle"
+    >
+      <div
+        ref="screenRef"
+        class="chart-screen relative mx-auto min-w-860 overflow-hidden rounded-8 border-1 border-white/12 border-solid p-18 shadow-[0_32px_90px_rgb(0_0_0_/_35%)]"
+        :class="[
+          `chart-screen--${screenConfig.theme}`,
+          `chart-screen-preview--${screenConfig.previewMode}`,
+        ]"
+        :style="screenStyle"
+        :data-testid="CHART_DESIGNER_SELECTORS.canvasDropzone"
+        data-chart-canvas-dropzone="true"
+        data-chart-marquee-area="true"
+        @dragover="handleGridDragOver"
+        @drop="handleGridDrop"
+        @click.self="emits('clearSelection')"
+      >
+        <SelectionActionBar
+          v-if="hasSelection"
+          :selected-count="selectedCount"
+          @copy="emits('duplicateSelectedWidgets')"
+          @remove="emits('removeSelectedWidgets')"
+        />
+
+        <ScreenTitleBar :screen-config="screenConfig" :stats="stats" />
+
+        <div
+          ref="widgetGridRef"
+          class="chart-screen__grid"
+          @dragover="handleGridDragOver"
+          @drop="handleGridDrop"
+        >
+          <CanvasWidget
+            v-for="(widget, index) in orderedWidgets"
+            :key="widget.id"
+            :index="index"
+            :is-dragging="draggingWidget?.id === widget.id"
+            :is-selected="activeSelectedWidgetIds.includes(widget.id)"
+            :screen-config="screenConfig"
+            :source="getSource(widget.sourceId)"
+            :widget="widget"
+            @duplicate-widget="emits('duplicateWidget', $event)"
+            @pointer-cancel="handleWidgetPointerCancel"
+            @pointer-down="handleWidgetPointerDown"
+            @pointer-move="handleWidgetPointerMoveWithGrid"
+            @pointer-up="handleWidgetPointerEnd"
+            @remove-widget="emits('removeWidget', $event)"
+            @select-widget="handleWidgetClick"
+          />
+
+          <div
+            v-if="isDraggingWidget"
+            class="chart-widget-placeholder rounded-8 border-1 border-dashed border-primary bg-primary/12"
+            :style="placeholderStyle"
+          ></div>
+        </div>
+
+        <div
+          v-if="isMarqueeSelecting"
+          class="pointer-events-none absolute left-0 top-0 z-30 rounded-6 border-1 border-primary border-solid bg-primary/14"
+          :style="marqueeStyle"
+        ></div>
+
+        <div
+          v-if="isDraggingWidget && draggingWidget"
+          class="chart-widget-drag-overlay pointer-events-none fixed left-0 top-0 z-3000"
+          :style="dragOverlayStyle"
+        >
+          <div
+            class="h-full min-h-0 min-w-0 grid grid-rows-[auto_minmax(0,1fr)] overflow-hidden rounded-8 border-1 border-primary border-solid bg-[rgb(9_18_36_/_92%)] p-12 shadow-[0_18px_44px_rgb(0_0_0_/_35%)]"
+          >
+            <h4 class="m-0 truncate text-14px font-700 text-white">
+              {{ draggingWidget.title }}
+            </h4>
+            <p class="m-0 mt-6 text-12px text-white/56">拖拽调整布局位置</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</template>
+
 <script setup lang="ts">
 import { CHART_DESIGNER_SELECTORS } from '../constants'
 import { useChartCanvasDrag, useChartCanvasSelection } from '../hooks'
@@ -22,7 +120,7 @@ const props = defineProps<{
   widgets: readonly ChartWidget[]
 }>()
 
-const emit = defineEmits<{
+const emits = defineEmits<{
   clearSelection: []
   duplicateSelectedWidgets: []
   duplicateWidget: [id: string]
@@ -63,10 +161,10 @@ const {
   refreshAfterDomUpdate,
 } = useChartCanvasDrag({
   widgets: widgetsRef,
-  onDropWidget: (event, insertIndex) => emit('dropWidget', event, insertIndex),
+  onDropWidget: (event, insertIndex) => emits('dropWidget', event, insertIndex),
   onReorder: (orderedIds, selectedId) =>
-    emit('reorderWidgets', orderedIds, selectedId),
-  onSelect: (id) => emit('selectWidget', id),
+    emits('reorderWidgets', orderedIds, selectedId),
+  onSelect: (id) => emits('selectWidget', id),
 })
 
 const {
@@ -79,10 +177,10 @@ const {
   canvas: screenRef,
   selectedWidgetIds: selectedWidgetIdsRef,
   widgets: widgetsRef,
-  onClearSelection: () => emit('clearSelection'),
-  onDuplicateSelected: () => emit('duplicateSelectedWidgets'),
-  onRemoveSelected: () => emit('removeSelectedWidgets'),
-  onSelectMany: (ids) => emit('selectManyWidgets', ids),
+  onClearSelection: () => emits('clearSelection'),
+  onDuplicateSelected: () => emits('duplicateSelectedWidgets'),
+  onRemoveSelected: () => emits('removeSelectedWidgets'),
+  onSelectMany: (ids) => emits('selectManyWidgets', ids),
 })
 
 watch(
@@ -114,107 +212,9 @@ function handleWidgetPointerMoveWithGrid(event: PointerEvent) {
 }
 
 function handleWidgetClick(id: string) {
-  emit('selectWidget', id)
+  emits('selectWidget', id)
 }
 </script>
-
-<template>
-  <section
-    class="min-h-0 min-w-0 grid grid-rows-[auto_minmax(0,1fr)] overflow-hidden rounded-8 border-1 border-color-2 border-solid bg-container shadow-[var(--w-shadow-elevated)]"
-  >
-    <CanvasHeader
-      :active-source-id="activeSourceId"
-      :data-sources="dataSources"
-      :screen-config="screenConfig"
-      :stats="stats"
-      @open-data-source="emit('openDataSource')"
-      @select-source="emit('selectDataSource', $event)"
-      @update-screen="emit('updateScreen', $event)"
-    />
-
-    <div
-      class="min-h-0 p-16 w-full h-full overflow-auto"
-      :style="canvasViewportStyle"
-    >
-      <div
-        ref="screenRef"
-        class="chart-screen relative mx-auto min-w-860 overflow-hidden rounded-8 border-1 border-white/12 border-solid p-18 shadow-[0_32px_90px_rgb(0_0_0_/_35%)]"
-        :class="[
-          `chart-screen--${screenConfig.theme}`,
-          `chart-screen-preview--${screenConfig.previewMode}`,
-        ]"
-        :style="screenStyle"
-        :data-testid="CHART_DESIGNER_SELECTORS.canvasDropzone"
-        data-chart-canvas-dropzone="true"
-        data-chart-marquee-area="true"
-        @dragover="handleGridDragOver"
-        @drop="handleGridDrop"
-        @click.self="emit('clearSelection')"
-      >
-        <SelectionActionBar
-          v-if="hasSelection"
-          :selected-count="selectedCount"
-          @copy="emit('duplicateSelectedWidgets')"
-          @remove="emit('removeSelectedWidgets')"
-        />
-
-        <ScreenTitleBar :screen-config="screenConfig" :stats="stats" />
-
-        <div
-          ref="widgetGridRef"
-          class="chart-screen__grid"
-          @dragover="handleGridDragOver"
-          @drop="handleGridDrop"
-        >
-          <CanvasWidget
-            v-for="(widget, index) in orderedWidgets"
-            :key="widget.id"
-            :index="index"
-            :is-dragging="draggingWidget?.id === widget.id"
-            :is-selected="activeSelectedWidgetIds.includes(widget.id)"
-            :screen-config="screenConfig"
-            :source="getSource(widget.sourceId)"
-            :widget="widget"
-            @duplicate-widget="emit('duplicateWidget', $event)"
-            @pointer-cancel="handleWidgetPointerCancel"
-            @pointer-down="handleWidgetPointerDown"
-            @pointer-move="handleWidgetPointerMoveWithGrid"
-            @pointer-up="handleWidgetPointerEnd"
-            @remove-widget="emit('removeWidget', $event)"
-            @select-widget="handleWidgetClick"
-          />
-
-          <div
-            v-if="isDraggingWidget"
-            class="chart-widget-placeholder rounded-8 border-1 border-dashed border-primary bg-primary/12"
-            :style="placeholderStyle"
-          ></div>
-        </div>
-
-        <div
-          v-if="isMarqueeSelecting"
-          class="pointer-events-none absolute left-0 top-0 z-30 rounded-6 border-1 border-primary border-solid bg-primary/14"
-          :style="marqueeStyle"
-        ></div>
-
-        <div
-          v-if="isDraggingWidget && draggingWidget"
-          class="chart-widget-drag-overlay pointer-events-none fixed left-0 top-0 z-3000"
-          :style="dragOverlayStyle"
-        >
-          <div
-            class="h-full min-h-0 min-w-0 grid grid-rows-[auto_minmax(0,1fr)] overflow-hidden rounded-8 border-1 border-primary border-solid bg-[rgb(9_18_36_/_92%)] p-12 shadow-[0_18px_44px_rgb(0_0_0_/_35%)]"
-          >
-            <h4 class="m-0 truncate text-14px font-700 text-white">
-              {{ draggingWidget.title }}
-            </h4>
-            <p class="m-0 mt-6 text-12px text-white/56">拖拽调整布局位置</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-</template>
 
 <style scoped>
 :global(body.chart-designer--dragging) {

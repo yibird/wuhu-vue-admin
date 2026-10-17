@@ -1,17 +1,3 @@
-<script setup lang="ts">
-import type { ChartSchemaHistoryEntry } from '../hooks'
-
-defineProps<{
-  history: readonly ChartSchemaHistoryEntry[]
-}>()
-
-const open = defineModel<boolean>('open', { required: true })
-
-defineEmits<{
-  restore: [entry: ChartSchemaHistoryEntry]
-}>()
-</script>
-
 <template>
   <a-modal v-model:open="open" :footer="null" title="历史版本" width="680px">
     <div class="h-[56vh] min-h-0 overflow-hidden">
@@ -44,6 +30,20 @@ defineEmits<{
     </div>
   </a-modal>
 </template>
+
+<script setup lang="ts">
+import type { ChartSchemaHistoryEntry } from '../hooks'
+
+defineProps<{
+  history: readonly ChartSchemaHistoryEntry[]
+}>()
+
+const open = defineModel<boolean>('open', { required: true })
+
+defineEmits<{
+  restore: [entry: ChartSchemaHistoryEntry]
+}>()
+</script>
 
 <style scoped>
 .chart-history-entry-button {

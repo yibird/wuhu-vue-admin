@@ -1,61 +1,3 @@
-<script setup lang="ts">
-import type {
-  ChartDataSource,
-  ChartPreviewMode,
-  ChartScreenConfig,
-  ChartScreenTheme,
-} from '../types'
-
-const props = defineProps<{
-  activeSourceId: string
-  dataSources: readonly ChartDataSource[]
-  screenConfig: ChartScreenConfig
-}>()
-
-const emit = defineEmits<{
-  openDataSource: []
-  selectSource: [id: string]
-  updateScreen: [patch: Partial<ChartScreenConfig>]
-}>()
-
-const themes: { label: string; value: ChartScreenTheme }[] = [
-  { label: '深空蓝', value: 'midnight' },
-  { label: '浅色', value: 'light' },
-  { label: '监控绿', value: 'matrix' },
-]
-
-const previewModes: { label: string; value: ChartPreviewMode }[] = [
-  { label: '白天', value: 'light' },
-  { label: '黑夜', value: 'dark' },
-]
-const dataSourceOptions = computed(() =>
-  props.dataSources.map((source) => ({
-    label: source.name,
-    value: source.id,
-  }))
-)
-
-const previewModeValue = computed({
-  get: () => props.screenConfig.previewMode,
-  set: (previewMode: ChartPreviewMode) => emit('updateScreen', { previewMode }),
-})
-
-const canvasBackgroundValue = computed({
-  get: () => props.screenConfig.canvasBackground,
-  set: (canvasBackground: string) => emit('updateScreen', { canvasBackground }),
-})
-
-function updateSource(value: string | number) {
-  emit('selectSource', String(value))
-}
-
-function updateTheme(value: string | number) {
-  const theme = String(value) as ChartScreenTheme
-  if (themes.some((item) => item.value === theme))
-    emit('updateScreen', { theme })
-}
-</script>
-
 <template>
   <div class="min-w-0 flex flex-wrap items-center justify-end gap-8">
     <div class="h-32 flex items-center gap-6 rounded-7 bg-fill px-8">
@@ -71,7 +13,7 @@ function updateTheme(value: string | number) {
         class="chart-toolbar-icon-button"
         size="small"
         title="数据源管理"
-        @click="emit('openDataSource')"
+        @click="emits('openDataSource')"
       >
         <template #icon>
           <Icon name="i-lucide:settings-2" :size="14" />
@@ -100,6 +42,66 @@ function updateTheme(value: string | number) {
     <a-color-picker v-model:value="canvasBackgroundValue" value-format="hex" />
   </div>
 </template>
+
+<script setup lang="ts">
+import type {
+  ChartDataSource,
+  ChartPreviewMode,
+  ChartScreenConfig,
+  ChartScreenTheme,
+} from '../types'
+
+const props = defineProps<{
+  activeSourceId: string
+  dataSources: readonly ChartDataSource[]
+  screenConfig: ChartScreenConfig
+}>()
+
+const emits = defineEmits<{
+  openDataSource: []
+  selectSource: [id: string]
+  updateScreen: [patch: Partial<ChartScreenConfig>]
+}>()
+
+const themes: { label: string; value: ChartScreenTheme }[] = [
+  { label: '深空蓝', value: 'midnight' },
+  { label: '浅色', value: 'light' },
+  { label: '监控绿', value: 'matrix' },
+]
+
+const previewModes: { label: string; value: ChartPreviewMode }[] = [
+  { label: '白天', value: 'light' },
+  { label: '黑夜', value: 'dark' },
+]
+const dataSourceOptions = computed(() =>
+  props.dataSources.map((source) => ({
+    label: source.name,
+    value: source.id,
+  }))
+)
+
+const previewModeValue = computed({
+  get: () => props.screenConfig.previewMode,
+  set: (previewMode: ChartPreviewMode) =>
+    emits('updateScreen', { previewMode }),
+})
+
+const canvasBackgroundValue = computed({
+  get: () => props.screenConfig.canvasBackground,
+  set: (canvasBackground: string) =>
+    emits('updateScreen', { canvasBackground }),
+})
+
+function updateSource(value: string | number) {
+  emits('selectSource', String(value))
+}
+
+function updateTheme(value: string | number) {
+  const theme = String(value) as ChartScreenTheme
+  if (themes.some((item) => item.value === theme))
+    emits('updateScreen', { theme })
+}
+</script>
 
 <style scoped>
 .chart-toolbar-icon-button {
