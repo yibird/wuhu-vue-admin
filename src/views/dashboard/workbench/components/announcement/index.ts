@@ -1,2 +1,2 @@
-export { default as Announcement } from './announcement.vue'
+export { default as Announcement } from './index.vue'
 export type { WorkbenchAnnouncement } from './types'

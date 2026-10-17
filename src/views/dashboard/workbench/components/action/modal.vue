@@ -1,54 +1,3 @@
-<script setup lang="ts">
-import { message } from 'antdv-next'
-import type { WorkbenchAction } from './types'
-
-const MAX_ACTIONS = 8
-
-const props = defineProps<{
-  actions: WorkbenchAction[]
-}>()
-
-const open = defineModel<boolean>('open', { default: false })
-const selectedIds = defineModel<WorkbenchAction['id'][]>('selectedIds', {
-  required: true,
-})
-
-const keyword = shallowRef('')
-
-const filteredActions = computed(() => {
-  const query = keyword.value.trim().toLocaleLowerCase()
-  if (!query) return props.actions
-
-  return props.actions.filter((item) =>
-    (item.name + ' ' + item.desc).toLocaleLowerCase().includes(query)
-  )
-})
-
-watch(open, (value) => {
-  if (value) {
-    keyword.value = ''
-  }
-})
-
-function isSelected(id: WorkbenchAction['id']) {
-  return selectedIds.value.includes(id)
-}
-
-function toggleAction(id: WorkbenchAction['id']) {
-  if (isSelected(id)) {
-    selectedIds.value = selectedIds.value.filter((item) => item !== id)
-    return
-  }
-
-  if (selectedIds.value.length >= MAX_ACTIONS) {
-    message.warning('最多添加 ' + MAX_ACTIONS + ' 个快捷入口')
-    return
-  }
-
-  selectedIds.value = [...selectedIds.value, id]
-}
-</script>
-
 <template>
   <a-modal
     :open="open"
@@ -146,3 +95,54 @@ function toggleAction(id: WorkbenchAction['id']) {
     </div>
   </a-modal>
 </template>
+
+<script setup lang="ts">
+import { message } from 'antdv-next'
+import type { WorkbenchAction } from './types'
+
+const MAX_ACTIONS = 8
+
+const props = defineProps<{
+  actions: WorkbenchAction[]
+}>()
+
+const open = defineModel<boolean>('open', { default: false })
+const selectedIds = defineModel<WorkbenchAction['id'][]>('selectedIds', {
+  required: true,
+})
+
+const keyword = shallowRef('')
+
+const filteredActions = computed(() => {
+  const query = keyword.value.trim().toLocaleLowerCase()
+  if (!query) return props.actions
+
+  return props.actions.filter((item) =>
+    (item.name + ' ' + item.desc).toLocaleLowerCase().includes(query)
+  )
+})
+
+watch(open, (value) => {
+  if (value) {
+    keyword.value = ''
+  }
+})
+
+function isSelected(id: WorkbenchAction['id']) {
+  return selectedIds.value.includes(id)
+}
+
+function toggleAction(id: WorkbenchAction['id']) {
+  if (isSelected(id)) {
+    selectedIds.value = selectedIds.value.filter((item) => item !== id)
+    return
+  }
+
+  if (selectedIds.value.length >= MAX_ACTIONS) {
+    message.warning('最多添加 ' + MAX_ACTIONS + ' 个快捷入口')
+    return
+  }
+
+  selectedIds.value = [...selectedIds.value, id]
+}
+</script>

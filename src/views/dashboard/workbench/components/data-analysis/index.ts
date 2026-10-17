@@ -1,2 +1,2 @@
-export { default as DataAnalysis } from './data-analysis.vue'
+export { default as DataAnalysis } from './index.vue'
 export type { AnalysisMetric, AnalysisRankItem } from './types'

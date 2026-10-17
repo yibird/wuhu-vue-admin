@@ -1,1 +1,1 @@
-export { default as Calendar } from './calendar.vue'
+export { default as Calendar } from './index.vue'

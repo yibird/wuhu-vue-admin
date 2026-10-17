@@ -1,2 +1,2 @@
-export { default as Dynamic } from './dynamic.vue'
+export { default as Dynamic } from './index.vue'
 export type { Dynamic as DynamicItem } from './types'

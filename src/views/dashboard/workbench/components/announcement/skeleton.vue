@@ -1,5 +1,3 @@
-<script setup lang="ts"></script>
-
 <template>
   <section class="min-w-0" aria-busy="true">
     <a-card :styles="{ body: { padding: '12px' } }">

@@ -1,2 +1,2 @@
-export { default as Overview } from './overview.vue'
+export { default as Overview } from './index.vue'
 export type { OverviewMetric } from './types'

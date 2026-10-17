@@ -1,5 +1,5 @@
 <template>
-  <WView :full="false" :padding="false" class="bg-page">
+  <w-view :full="false" :padding="false" class="bg-page">
     <div class="min-h-full w-full h-full overflow-x-hidden overflow-y-auto">
       <div
         class="page-view min-h-full w-full p-12 flex flex-col gap-12 overflow-x-hidden lg:p-16"
@@ -63,11 +63,6 @@
           class="workbench-overview page-enter page-enter--2"
         />
 
-        <!--
-          GridStack 的 item 必须是静态模板:库会接管 item 的顺序、class 与内联样式,
-          属性一旦变成响应式就会与 Vue 的 patch 互相打架。因此这里不使用 v-for,
-          且 gs-* 全部写成静态属性。item 内部的响应式更新(skeleton↔卡片)是安全的。
-        -->
         <div
           ref="gridRef"
           class="grid-stack workbench-grid min-w-0"
@@ -155,7 +150,7 @@
       :project="selectedProject"
       @save="handleProjectSettingsSave"
     />
-  </WView>
+  </w-view>
 </template>
 
 <script lang="ts" setup>
@@ -347,6 +342,29 @@ function formatProjectDate(date = new Date()) {
   return new Intl.DateTimeFormat('sv-SE').format(date)
 }
 
+/**
+ * 冻结 GridStack 写入的内联布局,返回还原函数
+ *
+ * GridStack 销毁时会清掉容器高度与 item 的定位,而页面此时可能仍在播放离场过渡:
+ * 高度骤降会让内容区滚动位置被夹断,表现为整块内容生硬跳动。
+ * 先快照内联样式,销毁后再还原,让离场过程保持原有布局。
+ */
+const freezeGridLayout = (root: HTMLElement) => {
+  const elements = [
+    root,
+    ...root.querySelectorAll<HTMLElement>('.grid-stack-item'),
+  ]
+  const styles = elements.map((el) => el.getAttribute('style'))
+
+  return () => {
+    elements.forEach((el, index) => {
+      const style = styles[index]
+      if (style === null) el.removeAttribute('style')
+      else el.setAttribute('style', style)
+    })
+  }
+}
+
 onMounted(() => {
   // 与加载态无关地先建网格:骨架屏也是网格 item,
   // 这样首屏就是两列排布,不会先竖排再跳到两列
@@ -357,9 +375,13 @@ onBeforeUnmount(() => {
   window.clearTimeout(remeasureTimer)
   contentObserver.value?.disconnect()
   contentObserver.value = null
+
+  const gridEl = gridRef.value
+  const restoreLayout = gridEl ? freezeGridLayout(gridEl) : null
   // DOM 归 Vue 管,销毁时不要把节点一起删掉
   grid.value?.destroy(false)
   grid.value = null
+  restoreLayout?.()
 })
 
 watch(dragEnabled, () => {

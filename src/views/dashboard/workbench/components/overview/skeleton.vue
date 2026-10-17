@@ -1,5 +1,3 @@
-<script setup lang="ts"></script>
-
 <template>
   <section
     class="overflow-hidden rounded-4 border-1 border-color-2 border-solid bg-container"
