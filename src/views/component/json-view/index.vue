@@ -1,22 +1,3 @@
-<script setup lang="ts">
-import { JsonView } from '@/components/json-view'
-import type { JsonValue } from '@/components/json-view'
-
-const jsonData: JsonValue = {
-  project: 'wuhu-admin',
-  runtime: {
-    framework: 'Vue 3.5',
-    language: 'TypeScript',
-    bundler: 'Vite 8',
-  },
-  modules: [
-    { name: 'dashboard', enabled: true },
-    { name: 'workflow', enabled: true },
-    { name: 'low-code', enabled: true },
-  ],
-}
-</script>
-
 <template>
   <WView :full="true" :padding="false" class="bg-page">
     <div
@@ -42,3 +23,22 @@ const jsonData: JsonValue = {
     </div>
   </WView>
 </template>
+
+<script setup lang="ts">
+import { JsonView } from '@/components/json-view'
+import type { JsonValue } from '@/components/json-view'
+
+const jsonData: JsonValue = {
+  project: 'wuhu-admin',
+  runtime: {
+    framework: 'Vue 3.5',
+    language: 'TypeScript',
+    bundler: 'Vite 8',
+  },
+  modules: [
+    { name: 'dashboard', enabled: true },
+    { name: 'workflow', enabled: true },
+    { name: 'low-code', enabled: true },
+  ],
+}
+</script>

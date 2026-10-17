@@ -1,28 +1,3 @@
-<script setup lang="ts">
-import { message } from 'antdv-next'
-import { Cropper, CropperPicker, Icon } from '@/components'
-import loginBanner from '@/assets/svg/login-banner.svg'
-import type { CropperExpose } from '@/components'
-
-const cropperOpen = shallowRef(false)
-const croppedImage = shallowRef('')
-const cropperReady = shallowRef(false)
-const cropperRef = useTemplateRef<CropperExpose>('cropperRef')
-
-function handleCrop(dataUrl: string) {
-  croppedImage.value = dataUrl
-  message.success('裁剪结果已生成')
-}
-
-function rotatePreview() {
-  cropperRef.value?.rotate(Math.PI / 2)
-}
-
-function resetPreview() {
-  cropperRef.value?.reset()
-}
-</script>
-
 <template>
   <WView :full="true" :padding="false" class="bg-page">
     <div
@@ -99,3 +74,28 @@ function resetPreview() {
     </div>
   </WView>
 </template>
+
+<script setup lang="ts">
+import { message } from 'antdv-next'
+import { Cropper, CropperPicker, Icon } from '@/components'
+import loginBanner from '@/assets/svg/login-banner.svg'
+import type { CropperExpose } from '@/components'
+
+const cropperOpen = shallowRef(false)
+const croppedImage = shallowRef('')
+const cropperReady = shallowRef(false)
+const cropperRef = useTemplateRef<CropperExpose>('cropperRef')
+
+function handleCrop(dataUrl: string) {
+  croppedImage.value = dataUrl
+  message.success('裁剪结果已生成')
+}
+
+function rotatePreview() {
+  cropperRef.value?.rotate(Math.PI / 2)
+}
+
+function resetPreview() {
+  cropperRef.value?.reset()
+}
+</script>

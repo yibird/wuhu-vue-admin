@@ -1,10 +1,3 @@
-<script setup lang="ts">
-import { Icon } from '@/components/icon'
-import { IconSelector } from '@/components/icon-picker'
-
-const selectedIcon = shallowRef('i-lucide:scan-barcode')
-</script>
-
 <template>
   <WView :full="true" :padding="false" class="bg-page">
     <div
@@ -63,3 +56,10 @@ const selectedIcon = shallowRef('i-lucide:scan-barcode')
     </div>
   </WView>
 </template>
+
+<script setup lang="ts">
+import { Icon } from '@/components/icon'
+import { IconSelector } from '@/components/icon-picker'
+
+const selectedIcon = shallowRef('i-lucide:scan-barcode')
+</script>

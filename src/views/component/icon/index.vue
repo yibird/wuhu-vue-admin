@@ -1,20 +1,3 @@
-<script setup lang="ts">
-import { Icon } from '@/components/icon'
-
-const iconSamples = [
-  'i-lucide:activity',
-  'i-lucide:bell',
-  'i-lucide:calendar',
-  'i-lucide:chart-pie',
-  'i-lucide:cloud',
-  'i-lucide:database',
-  'i-lucide:folder',
-  'i-lucide:mail',
-  'i-lucide:settings',
-  'i-lucide:users',
-]
-</script>
-
 <template>
   <WView :full="true" :padding="false" class="bg-page">
     <div
@@ -54,3 +37,20 @@ const iconSamples = [
     </div>
   </WView>
 </template>
+
+<script setup lang="ts">
+import { Icon } from '@/components/icon'
+
+const iconSamples = [
+  'i-lucide:activity',
+  'i-lucide:bell',
+  'i-lucide:calendar',
+  'i-lucide:chart-pie',
+  'i-lucide:cloud',
+  'i-lucide:database',
+  'i-lucide:folder',
+  'i-lucide:mail',
+  'i-lucide:settings',
+  'i-lucide:users',
+]
+</script>

@@ -1,38 +1,3 @@
-<script setup lang="ts">
-import { usePreferredReducedMotion, useScroll, useToggle } from '@vueuse/core'
-import { Icon, LazyContainer, ResizeContainer } from '@/components'
-import type { ContainerSize } from '@/components/container'
-
-const lazyViewportRef = useTemplateRef<HTMLElement>('lazyViewportRef')
-const preferredMotion = usePreferredReducedMotion()
-const scrollBehavior = computed<ScrollBehavior>(() =>
-  preferredMotion.value === 'reduce' ? 'auto' : 'smooth'
-)
-const { y: lazyScrollTop } = useScroll(lazyViewportRef, {
-  behavior: scrollBehavior,
-})
-
-const lazyVersion = shallowRef(0)
-const lazyLoaded = shallowRef(false)
-const panelWidth = shallowRef(520)
-const measuredSize = shallowRef<ContainerSize>({ width: 0, height: 0 })
-const [expanded, toggleExpanded] = useToggle(false)
-
-const resetLazyDemo = () => {
-  lazyScrollTop.value = 0
-  lazyLoaded.value = false
-  lazyVersion.value += 1
-}
-
-const onLazyLoad = () => {
-  lazyLoaded.value = true
-}
-
-const onResize = (size: ContainerSize) => {
-  measuredSize.value = size
-}
-</script>
-
 <template>
   <WView :full="true" :padding="false" class="bg-page">
     <div
@@ -215,3 +180,38 @@ const onResize = (size: ContainerSize) => {
     </div>
   </WView>
 </template>
+
+<script setup lang="ts">
+import { usePreferredReducedMotion, useScroll, useToggle } from '@vueuse/core'
+import { Icon, LazyContainer, ResizeContainer } from '@/components'
+import type { ContainerSize } from '@/components/container'
+
+const lazyViewportRef = useTemplateRef<HTMLElement>('lazyViewportRef')
+const preferredMotion = usePreferredReducedMotion()
+const scrollBehavior = computed<ScrollBehavior>(() =>
+  preferredMotion.value === 'reduce' ? 'auto' : 'smooth'
+)
+const { y: lazyScrollTop } = useScroll(lazyViewportRef, {
+  behavior: scrollBehavior,
+})
+
+const lazyVersion = shallowRef(0)
+const lazyLoaded = shallowRef(false)
+const panelWidth = shallowRef(520)
+const measuredSize = shallowRef<ContainerSize>({ width: 0, height: 0 })
+const [expanded, toggleExpanded] = useToggle(false)
+
+const resetLazyDemo = () => {
+  lazyScrollTop.value = 0
+  lazyLoaded.value = false
+  lazyVersion.value += 1
+}
+
+const onLazyLoad = () => {
+  lazyLoaded.value = true
+}
+
+const onResize = (size: ContainerSize) => {
+  measuredSize.value = size
+}
+</script>

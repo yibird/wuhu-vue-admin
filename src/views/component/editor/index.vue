@@ -1,14 +1,3 @@
-<script setup lang="ts">
-import { shallowRef } from 'vue'
-import { Editor } from '@/components/editor'
-
-const editorContent = shallowRef(`
-  <h2>组件库设计规范</h2>
-  <p>公共组件应保持清晰的输入输出契约，并覆盖加载、空态、禁用和错误状态。</p>
-  <ul><li>Vue 3 Composition API</li><li>TypeScript 类型安全</li><li>主题与可访问性适配</li></ul>
-`)
-</script>
-
 <template>
   <WView :full="true" :padding="false" class="bg-page">
     <div
@@ -39,3 +28,14 @@ const editorContent = shallowRef(`
     </div>
   </WView>
 </template>
+
+<script setup lang="ts">
+import { shallowRef } from 'vue'
+import { Editor } from '@/components/editor'
+
+const editorContent = shallowRef(`
+  <h2>组件库设计规范</h2>
+  <p>公共组件应保持清晰的输入输出契约，并覆盖加载、空态、禁用和错误状态。</p>
+  <ul><li>Vue 3 Composition API</li><li>TypeScript 类型安全</li><li>主题与可访问性适配</li></ul>
+`)
+</script>

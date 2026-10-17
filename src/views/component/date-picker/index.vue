@@ -1,15 +1,3 @@
-<script setup lang="ts">
-import dayjs from 'dayjs'
-import { DatePicker, DateRangePicker } from '@/components/date-picker'
-import type { Dayjs } from 'dayjs'
-
-const selectedDate = shallowRef<Dayjs>(dayjs())
-const selectedRange = shallowRef<[Dayjs, Dayjs]>([
-  dayjs().startOf('week'),
-  dayjs().endOf('week'),
-])
-</script>
-
 <template>
   <WView :full="true" :padding="false" class="bg-page">
     <div
@@ -56,3 +44,15 @@ const selectedRange = shallowRef<[Dayjs, Dayjs]>([
     </div>
   </WView>
 </template>
+
+<script setup lang="ts">
+import dayjs from 'dayjs'
+import { DatePicker, DateRangePicker } from '@/components/date-picker'
+import type { Dayjs } from 'dayjs'
+
+const selectedDate = shallowRef<Dayjs>(dayjs())
+const selectedRange = shallowRef<[Dayjs, Dayjs]>([
+  dayjs().startOf('week'),
+  dayjs().endOf('week'),
+])
+</script>

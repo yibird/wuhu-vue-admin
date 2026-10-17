@@ -1,14 +1,3 @@
-<script setup lang="ts">
-import { CodeEditor } from '@/components'
-
-const sourceCode = shallowRef(`{
-  "name": "wuhu-admin",
-  "version": "1.0.0",
-  "features": ["Vue 3", "TypeScript", "UnoCSS"],
-  "enabled": true
-}`)
-</script>
-
 <template>
   <WView :full="true" :padding="false" class="bg-page">
     <div
@@ -36,3 +25,14 @@ const sourceCode = shallowRef(`{
     </div>
   </WView>
 </template>
+
+<script setup lang="ts">
+import { CodeEditor } from '@/components'
+
+const sourceCode = shallowRef(`{
+  "name": "wuhu-admin",
+  "version": "1.0.0",
+  "features": ["Vue 3", "TypeScript", "UnoCSS"],
+  "enabled": true
+}`)
+</script>

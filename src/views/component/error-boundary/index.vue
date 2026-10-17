@@ -1,23 +1,3 @@
-<script setup lang="ts">
-import {
-  ErrorBoundary,
-  Icon,
-  type ErrorBoundaryErrorPayload,
-} from '@/components'
-import DemoFault from './demo-fault.vue'
-
-const faultActive = shallowRef(false)
-const lastError = shallowRef('尚未捕获错误')
-
-function handleBoundaryError(payload: ErrorBoundaryErrorPayload) {
-  lastError.value = `${payload.componentName}: ${payload.message}`
-}
-
-function resetBoundaryDemo() {
-  faultActive.value = false
-}
-</script>
-
 <template>
   <WView :full="true" :padding="false" class="bg-page">
     <div
@@ -66,3 +46,23 @@ function resetBoundaryDemo() {
     </div>
   </WView>
 </template>
+
+<script setup lang="ts">
+import {
+  ErrorBoundary,
+  Icon,
+  type ErrorBoundaryErrorPayload,
+} from '@/components'
+import DemoFault from './demo-fault.vue'
+
+const faultActive = shallowRef(false)
+const lastError = shallowRef('尚未捕获错误')
+
+function handleBoundaryError(payload: ErrorBoundaryErrorPayload) {
+  lastError.value = `${payload.componentName}: ${payload.message}`
+}
+
+function resetBoundaryDemo() {
+  faultActive.value = false
+}
+</script>

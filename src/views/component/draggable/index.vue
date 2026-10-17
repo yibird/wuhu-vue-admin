@@ -1,14 +1,3 @@
-<script setup lang="ts">
-import { Draggable, Icon } from '@/components'
-
-const sortableItems = shallowRef([
-  { id: 'research', title: '需求分析', icon: 'i-lucide:search' },
-  { id: 'design', title: '交互设计', icon: 'i-lucide:panels-top-left' },
-  { id: 'develop', title: '功能开发', icon: 'i-lucide:code-2' },
-  { id: 'verify', title: '质量验证', icon: 'i-lucide:badge-check' },
-])
-</script>
-
 <template>
   <WView :full="true" :padding="false" class="bg-page">
     <div
@@ -58,3 +47,14 @@ const sortableItems = shallowRef([
     </div>
   </WView>
 </template>
+
+<script setup lang="ts">
+import { Draggable, Icon } from '@/components'
+
+const sortableItems = shallowRef([
+  { id: 'research', title: '需求分析', icon: 'i-lucide:search' },
+  { id: 'design', title: '交互设计', icon: 'i-lucide:panels-top-left' },
+  { id: 'develop', title: '功能开发', icon: 'i-lucide:code-2' },
+  { id: 'verify', title: '质量验证', icon: 'i-lucide:badge-check' },
+])
+</script>

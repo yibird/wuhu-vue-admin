@@ -1,33 +1,3 @@
-<script setup lang="ts">
-import { Icon, SlidingHighlight } from '@/components'
-
-interface NavItem {
-  label: string
-  icon: string
-  badge?: string
-}
-
-const navItems: NavItem[] = [
-  { label: '总览', icon: 'i-lucide:layout-dashboard' },
-  { label: '成员', icon: 'i-lucide:users', badge: '12' },
-  { label: '权限', icon: 'i-lucide:shield-check' },
-  { label: '集成', icon: 'i-lucide:plug-zap', badge: '3' },
-  { label: '操作日志', icon: 'i-lucide:scroll-text' },
-  { label: '项目设置', icon: 'i-lucide:settings-2' },
-]
-
-const tagItems = [
-  'Vue 3',
-  'TypeScript',
-  'Vite',
-  'Pinia',
-  'UnoCSS',
-  'Antdv Next',
-  'Vue Router',
-  'Dayjs',
-]
-</script>
-
 <template>
   <WView :full="true" :padding="false" class="bg-page">
     <div
@@ -196,3 +166,33 @@ const tagItems = [
     </div>
   </WView>
 </template>
+
+<script setup lang="ts">
+import { Icon, SlidingHighlight } from '@/components'
+
+interface NavItem {
+  label: string
+  icon: string
+  badge?: string
+}
+
+const navItems: NavItem[] = [
+  { label: '总览', icon: 'i-lucide:layout-dashboard' },
+  { label: '成员', icon: 'i-lucide:users', badge: '12' },
+  { label: '权限', icon: 'i-lucide:shield-check' },
+  { label: '集成', icon: 'i-lucide:plug-zap', badge: '3' },
+  { label: '操作日志', icon: 'i-lucide:scroll-text' },
+  { label: '项目设置', icon: 'i-lucide:settings-2' },
+]
+
+const tagItems = [
+  'Vue 3',
+  'TypeScript',
+  'Vite',
+  'Pinia',
+  'UnoCSS',
+  'Antdv Next',
+  'Vue Router',
+  'Dayjs',
+]
+</script>

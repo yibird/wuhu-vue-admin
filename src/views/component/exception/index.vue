@@ -1,15 +1,3 @@
-<script setup lang="ts">
-import { ClientError, ServerError, NotAuthorized, NotFound } from '@/components'
-
-const exceptionType = shallowRef('not-found')
-const exceptionOptions = [
-  { label: '404', value: 'not-found' },
-  { label: '403', value: 'not-authorized' },
-  { label: '500', value: 'server-error' },
-  { label: '客户端错误', value: 'client-error' },
-]
-</script>
-
 <template>
   <WView :full="true" :padding="false" class="bg-page">
     <div
@@ -52,3 +40,15 @@ const exceptionOptions = [
     </div>
   </WView>
 </template>
+
+<script setup lang="ts">
+import { ClientError, ServerError, NotAuthorized, NotFound } from '@/components'
+
+const exceptionType = shallowRef('not-found')
+const exceptionOptions = [
+  { label: '404', value: 'not-found' },
+  { label: '403', value: 'not-authorized' },
+  { label: '500', value: 'server-error' },
+  { label: '客户端错误', value: 'client-error' },
+]
+</script>

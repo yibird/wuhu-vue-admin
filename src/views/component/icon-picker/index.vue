@@ -1,9 +1,3 @@
-<script setup lang="ts">
-import { IconPicker } from '@/components'
-
-const selectedIcon = shallowRef('i-lucide:sparkles')
-</script>
-
 <template>
   <WView :full="true" :padding="false" class="bg-page">
     <div
@@ -48,3 +42,9 @@ const selectedIcon = shallowRef('i-lucide:sparkles')
     </div>
   </WView>
 </template>
+
+<script setup lang="ts">
+import { IconPicker } from '@/components'
+
+const selectedIcon = shallowRef('i-lucide:sparkles')
+</script>

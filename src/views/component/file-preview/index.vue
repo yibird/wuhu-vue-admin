@@ -1,26 +1,3 @@
-<script setup lang="ts">
-import { shallowRef } from 'vue'
-import { FilePreview } from '@/components/file-preview'
-import { Icon } from '@/components/icon'
-import type { FilePreviewSource } from '@/components/file-preview'
-import type { JsonValue } from '@/components/json-view'
-
-const previewOpen = shallowRef(false)
-const previewData: JsonValue = {
-  project: 'wuhu-admin',
-  runtime: 'Vue 3.5',
-  enabled: true,
-}
-const previewFile: FilePreviewSource = {
-  filename: 'component-config.json',
-  kind: 'text',
-  mimeType: 'application/json',
-  url: `data:application/json;charset=utf-8,${encodeURIComponent(
-    JSON.stringify(previewData, null, 2)
-  )}`,
-}
-</script>
-
 <template>
   <WView :full="true" :padding="false" class="bg-page">
     <div
@@ -74,3 +51,26 @@ const previewFile: FilePreviewSource = {
     </div>
   </WView>
 </template>
+
+<script setup lang="ts">
+import { shallowRef } from 'vue'
+import { FilePreview } from '@/components/file-preview'
+import { Icon } from '@/components/icon'
+import type { FilePreviewSource } from '@/components/file-preview'
+import type { JsonValue } from '@/components/json-view'
+
+const previewOpen = shallowRef(false)
+const previewData: JsonValue = {
+  project: 'wuhu-admin',
+  runtime: 'Vue 3.5',
+  enabled: true,
+}
+const previewFile: FilePreviewSource = {
+  filename: 'component-config.json',
+  kind: 'text',
+  mimeType: 'application/json',
+  url: `data:application/json;charset=utf-8,${encodeURIComponent(
+    JSON.stringify(previewData, null, 2)
+  )}`,
+}
+</script>

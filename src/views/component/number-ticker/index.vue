@@ -1,13 +1,3 @@
-<script setup lang="ts">
-import { Icon, NumberTicker } from '@/components'
-
-const tickerValue = shallowRef(128560)
-
-function updateTicker() {
-  tickerValue.value = Math.round(50000 + Math.random() * 250000)
-}
-</script>
-
 <template>
   <WView :full="true" :padding="false" class="bg-page">
     <div
@@ -64,3 +54,13 @@ function updateTicker() {
     </div>
   </WView>
 </template>
+
+<script setup lang="ts">
+import { Icon, NumberTicker } from '@/components'
+
+const tickerValue = shallowRef(128560)
+
+function updateTicker() {
+  tickerValue.value = Math.round(50000 + Math.random() * 250000)
+}
+</script>

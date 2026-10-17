@@ -1,3 +1,112 @@
+<template>
+  <WView :full="true" :padding="false" class="bg-page">
+    <div
+      class="h-full min-h-full w-full overflow-x-hidden overflow-y-auto p-16 md:p-20"
+    >
+      <section
+        class="mx-auto max-w-1280 rounded-8 border-1 border-color-1 border-solid bg-container p-16 shadow-all-sm md:p-20"
+      >
+        <header
+          class="mb-16 flex flex-wrap items-start justify-between gap-12 border-b-1 border-color-1 border-b-solid pb-14"
+        >
+          <div class="min-w-0">
+            <h1 class="m-0 text-xl text-main font-600">FormPlus</h1>
+            <p class="mb-0 mt-6 text-sm leading-22 text-secondary">
+              schema
+              驱动表单：查询/填写双模式、校验、联动、异步数据源、查询折叠与控件注册。
+            </p>
+          </div>
+          <a-tag color="blue">src/components/form-plus</a-tag>
+        </header>
+
+        <div class="grid gap-16">
+          <a-card title="查询表单:栅格 + 展开/收缩" size="small">
+            <FormPlus
+              :schemas="querySchemas"
+              :grid="{ cols: 3, xGap: 16, yGap: 8 }"
+              :collapse="{ visibleCount: 3 }"
+              :label-width="90"
+              @submit="handleQuerySubmit"
+            />
+            <div class="mt-10 text-xs text-secondary">
+              提交值：{{ JSON.stringify(queryResult) }}
+            </div>
+          </a-card>
+
+          <a-card title="填写表单:校验 + 联动 + 异步选项" size="small">
+            <FormPlus
+              ref="editFormRef"
+              :schemas="editSchemas"
+              v-model:model="formModel"
+              mode="edit"
+              :grid="{ cols: 2, xGap: 16, yGap: 8 }"
+              :rules="formRules"
+              :label-width="96"
+              @submit="handleCreate"
+              @change="handleChange"
+            />
+            <div class="mt-10 flex flex-wrap items-center gap-8">
+              <a-button size="small" @click="checkOptionsState">
+                检查选项状态
+              </a-button>
+              <a-button
+                size="small"
+                @click="editFormRef?.validate().catch(() => undefined)"
+              >
+                校验
+              </a-button>
+              <a-button size="small" @click="editFormRef?.reset()"
+                >重置</a-button
+              >
+              <a-button
+                size="small"
+                :loading="submitting"
+                @click="editFormRef?.submit()"
+              >
+                提交
+              </a-button>
+              <span class="text-xs text-secondary">
+                当前值：{{ JSON.stringify(formModel) }}
+              </span>
+            </div>
+          </a-card>
+
+          <a-card title="useForm:实例方法与提交状态" size="small">
+            <FormPlus ref="useFormRef" v-bind="formProps" />
+            <div class="mt-10 flex flex-wrap items-center gap-8">
+              <a-button size="small" @click="fillByUseForm"
+                >写入字段值</a-button
+              >
+              <a-button size="small" @click="validateByUseForm">校验</a-button>
+              <a-button
+                size="small"
+                :loading="useFormSubmitting"
+                @click="useFormRef?.submit()"
+              >
+                提交
+              </a-button>
+              <a-button size="small" @click="useFormRef?.reset()"
+                >重置</a-button
+              >
+            </div>
+          </a-card>
+
+          <a-card title="行为日志" size="small">
+            <div v-if="actionLog.length === 0" class="text-xs text-secondary">
+              暂无日志,试试切换「类型」、提交表单或展开知识库下拉。
+            </div>
+            <ul v-else class="m-0 list-none p-0 text-xs text-secondary">
+              <li v-for="log in actionLog" :key="log" class="py-3">
+                {{ log }}
+              </li>
+            </ul>
+          </a-card>
+        </div>
+      </section>
+    </div>
+  </WView>
+</template>
+
 <script setup lang="ts">
 import {
   FormPlus,
@@ -266,112 +375,3 @@ async function validateByUseForm() {
   }
 }
 </script>
-
-<template>
-  <WView :full="true" :padding="false" class="bg-page">
-    <div
-      class="h-full min-h-full w-full overflow-x-hidden overflow-y-auto p-16 md:p-20"
-    >
-      <section
-        class="mx-auto max-w-1280 rounded-8 border-1 border-color-1 border-solid bg-container p-16 shadow-all-sm md:p-20"
-      >
-        <header
-          class="mb-16 flex flex-wrap items-start justify-between gap-12 border-b-1 border-color-1 border-b-solid pb-14"
-        >
-          <div class="min-w-0">
-            <h1 class="m-0 text-xl text-main font-600">FormPlus</h1>
-            <p class="mb-0 mt-6 text-sm leading-22 text-secondary">
-              schema
-              驱动表单：查询/填写双模式、校验、联动、异步数据源、查询折叠与控件注册。
-            </p>
-          </div>
-          <a-tag color="blue">src/components/form-plus</a-tag>
-        </header>
-
-        <div class="grid gap-16">
-          <a-card title="查询表单:栅格 + 展开/收缩" size="small">
-            <FormPlus
-              :schemas="querySchemas"
-              :grid="{ cols: 3, xGap: 16, yGap: 8 }"
-              :collapse="{ visibleCount: 3 }"
-              :label-width="90"
-              @submit="handleQuerySubmit"
-            />
-            <div class="mt-10 text-xs text-secondary">
-              提交值：{{ JSON.stringify(queryResult) }}
-            </div>
-          </a-card>
-
-          <a-card title="填写表单:校验 + 联动 + 异步选项" size="small">
-            <FormPlus
-              ref="editFormRef"
-              :schemas="editSchemas"
-              v-model:model="formModel"
-              mode="edit"
-              :grid="{ cols: 2, xGap: 16, yGap: 8 }"
-              :rules="formRules"
-              :label-width="96"
-              @submit="handleCreate"
-              @change="handleChange"
-            />
-            <div class="mt-10 flex flex-wrap items-center gap-8">
-              <a-button size="small" @click="checkOptionsState">
-                检查选项状态
-              </a-button>
-              <a-button
-                size="small"
-                @click="editFormRef?.validate().catch(() => undefined)"
-              >
-                校验
-              </a-button>
-              <a-button size="small" @click="editFormRef?.reset()"
-                >重置</a-button
-              >
-              <a-button
-                size="small"
-                :loading="submitting"
-                @click="editFormRef?.submit()"
-              >
-                提交
-              </a-button>
-              <span class="text-xs text-secondary">
-                当前值：{{ JSON.stringify(formModel) }}
-              </span>
-            </div>
-          </a-card>
-
-          <a-card title="useForm:实例方法与提交状态" size="small">
-            <FormPlus ref="useFormRef" v-bind="formProps" />
-            <div class="mt-10 flex flex-wrap items-center gap-8">
-              <a-button size="small" @click="fillByUseForm"
-                >写入字段值</a-button
-              >
-              <a-button size="small" @click="validateByUseForm">校验</a-button>
-              <a-button
-                size="small"
-                :loading="useFormSubmitting"
-                @click="useFormRef?.submit()"
-              >
-                提交
-              </a-button>
-              <a-button size="small" @click="useFormRef?.reset()"
-                >重置</a-button
-              >
-            </div>
-          </a-card>
-
-          <a-card title="行为日志" size="small">
-            <div v-if="actionLog.length === 0" class="text-xs text-secondary">
-              暂无日志,试试切换「类型」、提交表单或展开知识库下拉。
-            </div>
-            <ul v-else class="m-0 list-none p-0 text-xs text-secondary">
-              <li v-for="log in actionLog" :key="log" class="py-3">
-                {{ log }}
-              </li>
-            </ul>
-          </a-card>
-        </div>
-      </section>
-    </div>
-  </WView>
-</template>

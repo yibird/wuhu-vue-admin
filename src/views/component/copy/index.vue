@@ -1,7 +1,3 @@
-<script setup lang="ts">
-import { Copy, Icon } from '@/components'
-</script>
-
 <template>
   <WView :full="true" :padding="false" class="bg-page">
     <div
@@ -53,3 +49,7 @@ import { Copy, Icon } from '@/components'
     </div>
   </WView>
 </template>
+
+<script setup lang="ts">
+import { Copy, Icon } from '@/components'
+</script>

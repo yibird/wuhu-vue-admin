@@ -1,36 +1,3 @@
-<script setup lang="ts">
-import { Loading } from '@/components/loading'
-import { Icon } from '@/components/icon'
-import { LoadingAnimation } from '@/constants'
-import type { LoadingAnimation as LoadingAnimationValue } from '@/config'
-
-const loadingType = shallowRef<LoadingAnimationValue>(LoadingAnimation.Beat)
-const showDescription = shallowRef(true)
-const fullScreenVisible = shallowRef(false)
-let fullScreenTimer: ReturnType<typeof setTimeout> | undefined
-
-const loadingOptions = [
-  { label: '跳动', value: LoadingAnimation.Beat },
-  { label: '旋转点阵', value: LoadingAnimation.Spinner },
-  { label: '脉冲扩散', value: LoadingAnimation.Pulse },
-  { label: '柱状跳动', value: LoadingAnimation.Bars },
-  { label: '圆环旋转', value: LoadingAnimation.Ring },
-] satisfies Array<{ label: string; value: LoadingAnimationValue }>
-
-function previewFullScreen() {
-  if (fullScreenTimer) clearTimeout(fullScreenTimer)
-  fullScreenVisible.value = true
-  fullScreenTimer = setTimeout(() => {
-    fullScreenVisible.value = false
-    fullScreenTimer = undefined
-  }, 1800)
-}
-
-onBeforeUnmount(() => {
-  if (fullScreenTimer) clearTimeout(fullScreenTimer)
-})
-</script>
-
 <template>
   <WView :full="true" :padding="false" class="bg-page">
     <div
@@ -89,3 +56,36 @@ onBeforeUnmount(() => {
     />
   </WView>
 </template>
+
+<script setup lang="ts">
+import { Loading } from '@/components/loading'
+import { Icon } from '@/components/icon'
+import { LoadingAnimation } from '@/constants'
+import type { LoadingAnimation as LoadingAnimationValue } from '@/config'
+
+const loadingType = shallowRef<LoadingAnimationValue>(LoadingAnimation.Beat)
+const showDescription = shallowRef(true)
+const fullScreenVisible = shallowRef(false)
+let fullScreenTimer: ReturnType<typeof setTimeout> | undefined
+
+const loadingOptions = [
+  { label: '跳动', value: LoadingAnimation.Beat },
+  { label: '旋转点阵', value: LoadingAnimation.Spinner },
+  { label: '脉冲扩散', value: LoadingAnimation.Pulse },
+  { label: '柱状跳动', value: LoadingAnimation.Bars },
+  { label: '圆环旋转', value: LoadingAnimation.Ring },
+] satisfies Array<{ label: string; value: LoadingAnimationValue }>
+
+function previewFullScreen() {
+  if (fullScreenTimer) clearTimeout(fullScreenTimer)
+  fullScreenVisible.value = true
+  fullScreenTimer = setTimeout(() => {
+    fullScreenVisible.value = false
+    fullScreenTimer = undefined
+  }, 1800)
+}
+
+onBeforeUnmount(() => {
+  if (fullScreenTimer) clearTimeout(fullScreenTimer)
+})
+</script>

@@ -1,15 +1,3 @@
-<script setup lang="ts">
-import { WView } from '@/components'
-
-const headerCollapsed = shallowRef(false)
-const siderCollapsed = shallowRef(false)
-const gap = shallowRef(8)
-
-function changeGap(step: number) {
-  gap.value = Math.min(32, Math.max(0, gap.value + step))
-}
-</script>
-
 <template>
   <WView :full="true" :padding="false" class="bg-page">
     <div
@@ -146,3 +134,15 @@ function changeGap(step: number) {
     </div>
   </WView>
 </template>
+
+<script setup lang="ts">
+import { WView } from '@/components'
+
+const headerCollapsed = shallowRef(false)
+const siderCollapsed = shallowRef(false)
+const gap = shallowRef(8)
+
+function changeGap(step: number) {
+  gap.value = Math.min(32, Math.max(0, gap.value + step))
+}
+</script>
