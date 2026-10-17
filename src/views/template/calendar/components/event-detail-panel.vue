@@ -1,17 +1,3 @@
-<script setup lang="ts">
-import type { CalendarEventDetail } from '../types'
-import { getPriorityClass, getStatusClass } from '../data'
-
-defineProps<{
-  selectedEvent: CalendarEventDetail | null
-}>()
-
-const emit = defineEmits<{
-  deleteEvent: [event: CalendarEventDetail]
-  editEvent: [event: CalendarEventDetail]
-}>()
-</script>
-
 <template>
   <section
     class="rounded-8 border-1 border-color-2 border-solid bg-container p-12"
@@ -74,13 +60,13 @@ const emit = defineEmits<{
       </div>
 
       <div class="mt-14 grid grid-cols-2 gap-8">
-        <a-button size="small" @click="emit('editEvent', selectedEvent)">
+        <a-button size="small" @click="emits('editEvent', selectedEvent)">
           编辑
         </a-button>
         <a-button
           danger
           size="small"
-          @click="emit('deleteEvent', selectedEvent)"
+          @click="emits('deleteEvent', selectedEvent)"
         >
           删除
         </a-button>
@@ -90,3 +76,17 @@ const emit = defineEmits<{
     <a-empty v-else description="选择一个日程查看详情" />
   </section>
 </template>
+
+<script setup lang="ts">
+import type { CalendarEventDetail } from '../types'
+import { getPriorityClass, getStatusClass } from '../data'
+
+defineProps<{
+  selectedEvent: CalendarEventDetail | null
+}>()
+
+const emits = defineEmits<{
+  deleteEvent: [event: CalendarEventDetail]
+  editEvent: [event: CalendarEventDetail]
+}>()
+</script>

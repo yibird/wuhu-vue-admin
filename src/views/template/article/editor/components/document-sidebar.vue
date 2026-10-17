@@ -1,26 +1,3 @@
-<script setup lang="ts">
-import type { MenuProps } from 'antdv-next'
-import type { EditorDocument } from '../types'
-
-const props = defineProps<{
-  documents: EditorDocument[]
-  activeId: string
-  keyword: string
-  getActionMenu: (doc: EditorDocument) => {
-    items: MenuProps['items']
-    onClick: MenuProps['onClick']
-  }
-  getSelectedClass: (id: string) => string
-  compact?: boolean
-}>()
-
-const emit = defineEmits<{
-  (e: 'select', id: string): void
-  (e: 'create'): void
-  (e: 'update:keyword', value: string): void
-}>()
-</script>
-
 <template>
   <div class="flex h-full flex-col">
     <div
@@ -37,7 +14,7 @@ const emit = defineEmits<{
         type="button"
         class="button size-34 rounded-6 bg-primary text-white"
         title="新建文档"
-        @click="emit('create')"
+        @click="emits('create')"
       >
         <Icon name="i-lucide:plus" :size="18" />
       </button>
@@ -48,7 +25,7 @@ const emit = defineEmits<{
         :value="props.keyword"
         allow-clear
         placeholder="搜索标题、摘要、标签"
-        @update:value="(v: string) => emit('update:keyword', v)"
+        @update:value="(v: string) => emits('update:keyword', v)"
       >
         <template #prefix>
           <Icon name="i-lucide:search" class="text-secondary" />
@@ -68,9 +45,9 @@ const emit = defineEmits<{
         ]"
         role="button"
         tabindex="0"
-        @click="emit('select', doc.id)"
-        @keydown.enter="emit('select', doc.id)"
-        @keydown.space.prevent="emit('select', doc.id)"
+        @click="emits('select', doc.id)"
+        @keydown.enter="emits('select', doc.id)"
+        @keydown.space.prevent="emits('select', doc.id)"
       >
         <div class="flex items-start justify-between gap-8">
           <div class="min-w-0">
@@ -129,3 +106,26 @@ const emit = defineEmits<{
     </div>
   </div>
 </template>
+
+<script setup lang="ts">
+import type { MenuProps } from 'antdv-next'
+import type { EditorDocument } from '../types'
+
+const props = defineProps<{
+  documents: EditorDocument[]
+  activeId: string
+  keyword: string
+  getActionMenu: (doc: EditorDocument) => {
+    items: MenuProps['items']
+    onClick: MenuProps['onClick']
+  }
+  getSelectedClass: (id: string) => string
+  compact?: boolean
+}>()
+
+const emits = defineEmits<{
+  (e: 'select', id: string): void
+  (e: 'create'): void
+  (e: 'update:keyword', value: string): void
+}>()
+</script>

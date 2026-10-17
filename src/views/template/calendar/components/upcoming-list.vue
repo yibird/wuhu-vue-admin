@@ -1,18 +1,3 @@
-<script setup lang="ts">
-import type { UpcomingEvent } from '../types'
-import { getPriorityClass, getStatusClass } from '../data'
-
-defineProps<{
-  hasActiveFilters: boolean
-  upcomingEvents: UpcomingEvent[]
-}>()
-
-const emit = defineEmits<{
-  resetFilters: []
-  selectEventDate: [date: Date, eventId: string]
-}>()
-</script>
-
 <template>
   <section>
     <div class="mb-10 flex items-center justify-between gap-10">
@@ -31,7 +16,7 @@ const emit = defineEmits<{
         :key="item.id"
         class="w-full appearance-none rounded-8 border-1 border-color-2 border-solid bg-container p-10 text-left text-main font-inherit cursor-pointer transition-[transform,colors] duration-motion-base hover:(-translate-y-1 border-primary/50 bg-hover) focus-visible:(border-primary shadow-[0_0_0_2px_rgb(var(--w-color-primary)_/_20%)] outline-none) motion-reduce:transition-none motion-reduce:hover:translate-y-0"
         type="button"
-        @click="emit('selectEventDate', item.startDate, item.id)"
+        @click="emits('selectEventDate', item.startDate, item.id)"
       >
         <div class="flex items-start gap-10">
           <span
@@ -72,10 +57,25 @@ const emit = defineEmits<{
         v-if="hasActiveFilters"
         class="mt-8"
         size="small"
-        @click="emit('resetFilters')"
+        @click="emits('resetFilters')"
       >
         清空条件
       </a-button>
     </div>
   </section>
 </template>
+
+<script setup lang="ts">
+import type { UpcomingEvent } from '../types'
+import { getPriorityClass, getStatusClass } from '../data'
+
+defineProps<{
+  hasActiveFilters: boolean
+  upcomingEvents: UpcomingEvent[]
+}>()
+
+const emits = defineEmits<{
+  resetFilters: []
+  selectEventDate: [date: Date, eventId: string]
+}>()
+</script>

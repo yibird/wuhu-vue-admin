@@ -1,12 +1,3 @@
-<script setup lang="ts">
-import type { CalendarType } from '@dayflow/core'
-
-defineProps<{
-  calendarTypes: CalendarType[]
-  getCalendarCount: (calendarId: string) => number
-}>()
-</script>
-
 <template>
   <section>
     <div class="mb-10 flex items-center gap-8 text-sm text-main font-700">
@@ -31,3 +22,12 @@ defineProps<{
     </div>
   </section>
 </template>
+
+<script setup lang="ts">
+import type { CalendarType } from '@dayflow/core'
+
+defineProps<{
+  calendarTypes: CalendarType[]
+  getCalendarCount: (calendarId: string) => number
+}>()
+</script>

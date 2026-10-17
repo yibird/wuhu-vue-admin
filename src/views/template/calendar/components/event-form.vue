@@ -1,58 +1,3 @@
-<script setup lang="ts">
-import type { FormInstance } from 'antdv-next'
-import type {
-  CalendarEventFormState,
-  CalendarEventPriority,
-  CalendarEventStatus,
-  CalendarMetaOption,
-  CalendarSelectOption,
-} from '../types'
-
-const props = defineProps<{
-  calendarOptions: CalendarSelectOption[]
-  ownerOptions: CalendarSelectOption[]
-  priorityOptions: CalendarMetaOption<CalendarEventPriority>[]
-  statusOptions: CalendarMetaOption<CalendarEventStatus>[]
-  timeOptions: CalendarSelectOption[]
-}>()
-
-const model = defineModel<CalendarEventFormState>({ required: true })
-const formRef = shallowRef<FormInstance>()
-
-function validateEndTime() {
-  if (model.value.allDay || model.value.startTime < model.value.endTime) {
-    return Promise.resolve()
-  }
-
-  return Promise.reject(new Error('结束时间需晚于开始时间'))
-}
-
-const rules = {
-  title: [
-    { required: true, message: '请输入日程标题', trigger: 'blur' },
-    { min: 2, message: '日程标题至少 2 个字符', trigger: 'blur' },
-  ],
-  calendarId: [
-    { required: true, message: '请选择日历分类', trigger: 'change' },
-  ],
-  date: [{ required: true, message: '请选择日期', trigger: 'change' }],
-  startTime: [{ required: true, message: '请选择开始时间', trigger: 'change' }],
-  endTime: [{ validator: validateEndTime, trigger: 'change' }],
-  owner: [{ required: true, message: '请选择负责人', trigger: 'change' }],
-  status: [{ required: true, message: '请选择状态', trigger: 'change' }],
-}
-
-async function validate() {
-  await formRef.value?.validate()
-}
-
-function clearValidate() {
-  formRef.value?.clearValidate()
-}
-
-defineExpose({ clearValidate, validate })
-</script>
-
 <template>
   <a-form
     ref="formRef"
@@ -192,3 +137,58 @@ defineExpose({ clearValidate, validate })
     </div>
   </a-form>
 </template>
+
+<script setup lang="ts">
+import type { FormInstance } from 'antdv-next'
+import type {
+  CalendarEventFormState,
+  CalendarEventPriority,
+  CalendarEventStatus,
+  CalendarMetaOption,
+  CalendarSelectOption,
+} from '../types'
+
+const props = defineProps<{
+  calendarOptions: CalendarSelectOption[]
+  ownerOptions: CalendarSelectOption[]
+  priorityOptions: CalendarMetaOption<CalendarEventPriority>[]
+  statusOptions: CalendarMetaOption<CalendarEventStatus>[]
+  timeOptions: CalendarSelectOption[]
+}>()
+
+const model = defineModel<CalendarEventFormState>({ required: true })
+const formRef = shallowRef<FormInstance>()
+
+function validateEndTime() {
+  if (model.value.allDay || model.value.startTime < model.value.endTime) {
+    return Promise.resolve()
+  }
+
+  return Promise.reject(new Error('结束时间需晚于开始时间'))
+}
+
+const rules = {
+  title: [
+    { required: true, message: '请输入日程标题', trigger: 'blur' },
+    { min: 2, message: '日程标题至少 2 个字符', trigger: 'blur' },
+  ],
+  calendarId: [
+    { required: true, message: '请选择日历分类', trigger: 'change' },
+  ],
+  date: [{ required: true, message: '请选择日期', trigger: 'change' }],
+  startTime: [{ required: true, message: '请选择开始时间', trigger: 'change' }],
+  endTime: [{ validator: validateEndTime, trigger: 'change' }],
+  owner: [{ required: true, message: '请选择负责人', trigger: 'change' }],
+  status: [{ required: true, message: '请选择状态', trigger: 'change' }],
+}
+
+async function validate() {
+  await formRef.value?.validate()
+}
+
+function clearValidate() {
+  formRef.value?.clearValidate()
+}
+
+defineExpose({ clearValidate, validate })
+</script>

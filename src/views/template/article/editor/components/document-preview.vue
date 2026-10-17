@@ -1,3 +1,7 @@
+<template>
+  <article class="editor-preview" v-html="safeHtml" />
+</template>
+
 <script setup lang="ts">
 import { sanitizeHtml } from '../utils'
 
@@ -7,10 +11,6 @@ const props = defineProps<{
 
 const safeHtml = computed(() => sanitizeHtml(props.html))
 </script>
-
-<template>
-  <article class="editor-preview" v-html="safeHtml" />
-</template>
 
 <style scoped>
 .editor-preview {

@@ -1,3 +1,93 @@
+<template>
+  <section class="min-w-0 flex flex-1 flex-col">
+    <div
+      class="mb-10 flex flex-wrap items-center justify-between gap-10 rounded-6 border-1 border-solid border-color-1 bg-container px-12 py-10"
+    >
+      <div class="flex flex-wrap items-center gap-8">
+        <a-button size="small" @click="emits('insert-template', 'meeting')">
+          会议纪要
+        </a-button>
+        <a-button size="small" @click="emits('insert-template', 'release')">
+          发布计划
+        </a-button>
+        <a-button size="small" @click="emits('insert-template', 'todo')">
+          行动清单
+        </a-button>
+      </div>
+      <div class="flex flex-wrap items-center gap-8">
+        <a-segmented
+          :value="props.deviceMode"
+          :options="deviceOptions"
+          @update:value="
+            (v: string | number) => emits('update:deviceMode', v as DeviceMode)
+          "
+        >
+          <template #labelRender="payload">
+            <div class="inline-flex items-center gap-2">
+              <Icon
+                v-if="payload.iconName"
+                :name="payload.iconName"
+                :size="16"
+              />
+              <span>{{ payload.label }}</span>
+            </div>
+          </template>
+        </a-segmented>
+        <a-button @click="emits('open-preview')">
+          <template #icon>
+            <Icon name="i-lucide:scan-eye" />
+          </template>
+          全屏预览
+        </a-button>
+      </div>
+    </div>
+
+    <div class="min-h-0 flex flex-1 justify-center overflow-hidden">
+      <div
+        :class="[
+          'min-h-0 w-full transition-[max-width] duration-motion-base',
+          props.previewWidthClass,
+        ]"
+      >
+        <Editor
+          v-if="props.activeMode === 'edit'"
+          ref="editor"
+          :model-value="props.editingContent"
+          class="h-full"
+          :show-select-controls="false"
+          placeholder="开始编写你的文档..."
+          min-height="100%"
+          @update:model-value="(v: string) => emits('update:editingContent', v)"
+        />
+
+        <div
+          v-else-if="props.activeMode === 'preview'"
+          class="h-full rounded-8 border-1 border-solid border-color-1 bg-container p-34 max-sm:p-18 w-full overflow-x-hidden overflow-y-auto"
+        >
+          <DocumentPreview :html="props.safeContent" />
+        </div>
+
+        <div
+          v-else
+          class="h-full overflow-hidden rounded-8 border-1 border-solid border-color-1 bg-container"
+        >
+          <textarea
+            :value="props.sourceContent"
+            class="box-border full resize-none border-0 bg-container p-16 font-mono text-sm text-main leading-22px outline-none"
+            spellcheck="false"
+            @input="
+              emits(
+                'update:sourceContent',
+                ($event.target as HTMLTextAreaElement).value
+              )
+            "
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+</template>
+
 <script setup lang="ts">
 import { Editor } from '@/components/editor'
 import DocumentPreview from './document-preview.vue'
@@ -14,7 +104,7 @@ const props = defineProps<{
   previewWidthClass: string
 }>()
 
-const emit = defineEmits<{
+const emits = defineEmits<{
   (e: 'update:editingContent', value: string): void
   (e: 'update:sourceContent', value: string): void
   (e: 'update:deviceMode', value: DeviceMode): void
@@ -42,93 +132,3 @@ defineExpose<EditorContentExpose>({
   insertHTML,
 })
 </script>
-
-<template>
-  <section class="min-w-0 flex flex-1 flex-col">
-    <div
-      class="mb-10 flex flex-wrap items-center justify-between gap-10 rounded-6 border-1 border-solid border-color-1 bg-container px-12 py-10"
-    >
-      <div class="flex flex-wrap items-center gap-8">
-        <a-button size="small" @click="emit('insert-template', 'meeting')">
-          会议纪要
-        </a-button>
-        <a-button size="small" @click="emit('insert-template', 'release')">
-          发布计划
-        </a-button>
-        <a-button size="small" @click="emit('insert-template', 'todo')">
-          行动清单
-        </a-button>
-      </div>
-      <div class="flex flex-wrap items-center gap-8">
-        <a-segmented
-          :value="props.deviceMode"
-          :options="deviceOptions"
-          @update:value="
-            (v: string | number) => emit('update:deviceMode', v as DeviceMode)
-          "
-        >
-          <template #labelRender="payload">
-            <div class="inline-flex items-center gap-2">
-              <Icon
-                v-if="payload.iconName"
-                :name="payload.iconName"
-                :size="16"
-              />
-              <span>{{ payload.label }}</span>
-            </div>
-          </template>
-        </a-segmented>
-        <a-button @click="emit('open-preview')">
-          <template #icon>
-            <Icon name="i-lucide:scan-eye" />
-          </template>
-          全屏预览
-        </a-button>
-      </div>
-    </div>
-
-    <div class="min-h-0 flex flex-1 justify-center overflow-hidden">
-      <div
-        :class="[
-          'min-h-0 w-full transition-[max-width] duration-motion-base',
-          props.previewWidthClass,
-        ]"
-      >
-        <Editor
-          v-if="props.activeMode === 'edit'"
-          ref="editor"
-          :model-value="props.editingContent"
-          class="h-full"
-          :show-select-controls="false"
-          placeholder="开始编写你的文档..."
-          min-height="100%"
-          @update:model-value="(v: string) => emit('update:editingContent', v)"
-        />
-
-        <div
-          v-else-if="props.activeMode === 'preview'"
-          class="h-full rounded-8 border-1 border-solid border-color-1 bg-container p-34 max-sm:p-18 w-full overflow-x-hidden overflow-y-auto"
-        >
-          <DocumentPreview :html="props.safeContent" />
-        </div>
-
-        <div
-          v-else
-          class="h-full overflow-hidden rounded-8 border-1 border-solid border-color-1 bg-container"
-        >
-          <textarea
-            :value="props.sourceContent"
-            class="box-border full resize-none border-0 bg-container p-16 font-mono text-sm text-main leading-22px outline-none"
-            spellcheck="false"
-            @input="
-              emit(
-                'update:sourceContent',
-                ($event.target as HTMLTextAreaElement).value
-              )
-            "
-          />
-        </div>
-      </div>
-    </div>
-  </section>
-</template>

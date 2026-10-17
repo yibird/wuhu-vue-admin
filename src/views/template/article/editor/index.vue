@@ -1,89 +1,3 @@
-<script setup lang="ts">
-import { useRoute, useRouter } from 'vue-router'
-import DocumentSidebar from './components/document-sidebar.vue'
-import Header from './components/header.vue'
-import Content from './components/content.vue'
-import DocumentInfoPanel from './components/document-info-panel.vue'
-import DocumentPreview from './components/document-preview.vue'
-import { useEditor } from './hooks'
-
-const route = useRoute()
-const router = useRouter()
-
-const {
-  // refs
-  activeMode,
-  deviceMode,
-  keyword,
-  editingContent,
-  sourceContent,
-  previewOpen,
-  outlineOpen,
-  isRenaming,
-  renameValue,
-  importModalOpen,
-  importContent,
-  documentDrawerOpen,
-  commentDraft,
-  // computed
-  activeDocument,
-  filteredDocuments,
-  safeContent,
-  wordCount,
-  paragraphCount,
-  readingMinutes,
-  documentStatusText,
-  saveText,
-  previewWidthClass,
-  outline,
-  activeVersions,
-  activeComments,
-  unresolvedCommentCount,
-  // actions
-  selectDocument,
-  createDocument,
-  getDocumentActionMenu,
-  getSelectedDocumentClass,
-  saveDocument,
-  saveVersion,
-  restoreVersion,
-  addComment,
-  toggleCommentResolved,
-  resetDocument,
-  updateStatus,
-  startRename,
-  confirmRename,
-  insertTemplate,
-  applyImportedContent,
-  copyDocumentHtml,
-  exportDocument,
-  openFileDialog,
-  handleSegmentedModeChange,
-} = useEditor()
-
-let createRequestHandled = false
-
-watch(
-  () => [route.query.id, route.query.create] as const,
-  ([rawId, create]) => {
-    const id = Array.isArray(rawId) ? rawId[0] : rawId
-    if (id) {
-      selectDocument(id)
-      return
-    }
-    if (create !== '1' || createRequestHandled) return
-
-    createRequestHandled = true
-    const document = createDocument()
-    router.replace({
-      path: '/template/article/editor',
-      query: { id: document.id },
-    })
-  },
-  { immediate: true }
-)
-</script>
-
 <template>
   <WView>
     <div class="full min-w-0 flex bg-page">
@@ -224,3 +138,89 @@ watch(
     </a-drawer>
   </WView>
 </template>
+
+<script setup lang="ts">
+import { useRoute, useRouter } from 'vue-router'
+import DocumentSidebar from './components/document-sidebar.vue'
+import Header from './components/header.vue'
+import Content from './components/content.vue'
+import DocumentInfoPanel from './components/document-info-panel.vue'
+import DocumentPreview from './components/document-preview.vue'
+import { useEditor } from './hooks'
+
+const route = useRoute()
+const router = useRouter()
+
+const {
+  // refs
+  activeMode,
+  deviceMode,
+  keyword,
+  editingContent,
+  sourceContent,
+  previewOpen,
+  outlineOpen,
+  isRenaming,
+  renameValue,
+  importModalOpen,
+  importContent,
+  documentDrawerOpen,
+  commentDraft,
+  // computed
+  activeDocument,
+  filteredDocuments,
+  safeContent,
+  wordCount,
+  paragraphCount,
+  readingMinutes,
+  documentStatusText,
+  saveText,
+  previewWidthClass,
+  outline,
+  activeVersions,
+  activeComments,
+  unresolvedCommentCount,
+  // actions
+  selectDocument,
+  createDocument,
+  getDocumentActionMenu,
+  getSelectedDocumentClass,
+  saveDocument,
+  saveVersion,
+  restoreVersion,
+  addComment,
+  toggleCommentResolved,
+  resetDocument,
+  updateStatus,
+  startRename,
+  confirmRename,
+  insertTemplate,
+  applyImportedContent,
+  copyDocumentHtml,
+  exportDocument,
+  openFileDialog,
+  handleSegmentedModeChange,
+} = useEditor()
+
+let createRequestHandled = false
+
+watch(
+  () => [route.query.id, route.query.create] as const,
+  ([rawId, create]) => {
+    const id = Array.isArray(rawId) ? rawId[0] : rawId
+    if (id) {
+      selectDocument(id)
+      return
+    }
+    if (create !== '1' || createRequestHandled) return
+
+    createRequestHandled = true
+    const document = createDocument()
+    router.replace({
+      path: '/template/article/editor',
+      query: { id: document.id },
+    })
+  },
+  { immediate: true }
+)
+</script>

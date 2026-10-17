@@ -1,43 +1,3 @@
-<script setup lang="ts">
-import type { ArticleSort } from '../../types'
-import type { ArticleStatusFilter } from '../hooks'
-
-const props = defineProps<{
-  categories: string[]
-  draftCount: number
-  publishedCount: number
-  total: number
-}>()
-
-const emit = defineEmits<{
-  create: []
-}>()
-
-const keyword = defineModel<string>('keyword', { required: true })
-const status = defineModel<ArticleStatusFilter>('status', { required: true })
-const category = defineModel<string>('category', { required: true })
-const sort = defineModel<ArticleSort>('sort', { required: true })
-
-const categoryOptions = computed(() => [
-  { label: '全部分类', value: 'all' },
-  ...props.categories.map((item) => ({ label: item, value: item })),
-])
-
-const statusOptions = [
-  { label: '全部状态', value: 'all' },
-  { label: '已发布', value: 'published' },
-  { label: '草稿', value: 'draft' },
-  { label: '已归档', value: 'archived' },
-]
-
-const sortOptions = [
-  { label: '最近更新', value: 'updated-desc' },
-  { label: '最近创建', value: 'created-desc' },
-  { label: '浏览最多', value: 'views-desc' },
-  { label: '标题升序', value: 'title-asc' },
-]
-</script>
-
 <template>
   <header
     class="flex-none border-b-1 border-color-2 border-b-solid bg-container px-16 py-16"
@@ -60,7 +20,7 @@ const sortOptions = [
         </div>
       </div>
 
-      <a-button type="primary" @click="emit('create')">
+      <a-button type="primary" @click="emits('create')">
         <template #icon>
           <Icon name="i-lucide:plus" />
         </template>
@@ -97,3 +57,43 @@ const sortOptions = [
     </div>
   </header>
 </template>
+
+<script setup lang="ts">
+import type { ArticleSort } from '../../types'
+import type { ArticleStatusFilter } from '../hooks'
+
+const props = defineProps<{
+  categories: string[]
+  draftCount: number
+  publishedCount: number
+  total: number
+}>()
+
+const emits = defineEmits<{
+  create: []
+}>()
+
+const keyword = defineModel<string>('keyword', { required: true })
+const status = defineModel<ArticleStatusFilter>('status', { required: true })
+const category = defineModel<string>('category', { required: true })
+const sort = defineModel<ArticleSort>('sort', { required: true })
+
+const categoryOptions = computed(() => [
+  { label: '全部分类', value: 'all' },
+  ...props.categories.map((item) => ({ label: item, value: item })),
+])
+
+const statusOptions = [
+  { label: '全部状态', value: 'all' },
+  { label: '已发布', value: 'published' },
+  { label: '草稿', value: 'draft' },
+  { label: '已归档', value: 'archived' },
+]
+
+const sortOptions = [
+  { label: '最近更新', value: 'updated-desc' },
+  { label: '最近创建', value: 'created-desc' },
+  { label: '浏览最多', value: 'views-desc' },
+  { label: '标题升序', value: 'title-asc' },
+]
+</script>

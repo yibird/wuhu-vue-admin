@@ -1,38 +1,3 @@
-<script setup lang="ts">
-import type {
-  EditorComment,
-  EditorDocument,
-  EditorVersion,
-  OutlineItem,
-} from '../types'
-
-const props = defineProps<{
-  activeDocument: EditorDocument | undefined
-  wordCount: number
-  paragraphCount: number
-  readingMinutes: number
-  outlineOpen: boolean
-  outline: OutlineItem[]
-  activeVersions: EditorVersion[]
-  activeComments: EditorComment[]
-  unresolvedCommentCount: number
-  commentDraft: string
-}>()
-
-const emit = defineEmits<{
-  (e: 'toggle-outline'): void
-  (e: 'copy-html'): void
-  (e: 'import'): void
-  (e: 'export', format: 'html' | 'md' | 'txt'): void
-  (e: 'save-version'): void
-  (e: 'restore-version', version: EditorVersion): void
-  (e: 'add-comment'): void
-  (e: 'toggle-comment-resolved', commentId: string): void
-  (e: 'update-status', status: EditorDocument['status']): void
-  (e: 'update:commentDraft', value: string): void
-}>()
-</script>
-
 <template>
   <aside
     class="ml-12 w-300 shrink-0 rounded-8 border-1 border-solid border-color-1 bg-container max-xl:w-260 max-lg:ml-0 max-lg:mt-12 max-lg:w-full"
@@ -44,7 +9,7 @@ const emit = defineEmits<{
       <button
         type="button"
         class="button size-28 rounded-4 text-secondary transition-colors hover:(bg-hover text-primary)"
-        @click="emit('toggle-outline')"
+        @click="emits('toggle-outline')"
       >
         <Icon
           :name="
@@ -78,13 +43,13 @@ const emit = defineEmits<{
       </div>
 
       <div class="flex flex-wrap gap-8">
-        <a-button block @click="emit('copy-html')">
+        <a-button block @click="emits('copy-html')">
           <template #icon>
             <Icon name="i-lucide:copy" />
           </template>
           复制 HTML
         </a-button>
-        <a-button block @click="emit('import')">
+        <a-button block @click="emits('import')">
           <template #icon>
             <Icon name="i-lucide:upload" />
           </template>
@@ -93,19 +58,19 @@ const emit = defineEmits<{
       </div>
 
       <div class="grid grid-cols-3 gap-8">
-        <a-button @click="emit('export', 'html')">
+        <a-button @click="emits('export', 'html')">
           <template #icon>
             <Icon name="i-lucide:file-code" />
           </template>
           HTML
         </a-button>
-        <a-button @click="emit('export', 'md')">
+        <a-button @click="emits('export', 'md')">
           <template #icon>
             <Icon name="i-lucide:file-type" />
           </template>
           MD
         </a-button>
-        <a-button @click="emit('export', 'txt')">
+        <a-button @click="emits('export', 'txt')">
           <template #icon>
             <Icon name="i-lucide:file-text" />
           </template>
@@ -119,7 +84,7 @@ const emit = defineEmits<{
           class="flex items-center justify-between border-b-1 border-b-solid border-color-1 px-10 py-8"
         >
           <div class="text-sm text-main font-600">版本历史</div>
-          <a-button size="small" type="link" @click="emit('save-version')">
+          <a-button size="small" type="link" @click="emits('save-version')">
             保存版本
           </a-button>
         </div>
@@ -132,7 +97,7 @@ const emit = defineEmits<{
             :key="version.id"
             type="button"
             class="mb-7 w-full rounded-6 border-1 border-solid border-color-1 bg-container-secondary p-8 text-left transition-colors hover:(border-primary bg-hover)"
-            @click="emit('restore-version', version)"
+            @click="emits('restore-version', version)"
           >
             <span class="block truncate text-sm text-main font-600">
               {{ version.title }}
@@ -160,9 +125,9 @@ const emit = defineEmits<{
             :value="props.commentDraft"
             :rows="2"
             placeholder="添加评论或修改建议"
-            @update:value="(v: string) => emit('update:commentDraft', v)"
+            @update:value="(v: string) => emits('update:commentDraft', v)"
           />
-          <a-button size="small" type="primary" @click="emit('add-comment')">
+          <a-button size="small" type="primary" @click="emits('add-comment')">
             添加评论
           </a-button>
           <button
@@ -170,7 +135,7 @@ const emit = defineEmits<{
             :key="comment.id"
             type="button"
             class="rounded-6 border-1 border-solid border-color-1 bg-container-secondary p-8 text-left transition-colors hover:(border-primary bg-hover)"
-            @click="emit('toggle-comment-resolved', comment.id)"
+            @click="emits('toggle-comment-resolved', comment.id)"
           >
             <span class="flex items-center justify-between gap-8">
               <strong class="truncate text-sm text-main">
@@ -197,7 +162,7 @@ const emit = defineEmits<{
           props.activeDocument?.status === 'published' ? 'default' : 'primary'
         "
         @click="
-          emit(
+          emits(
             'update-status',
             props.activeDocument?.status === 'published' ? 'draft' : 'published'
           )
@@ -242,3 +207,38 @@ const emit = defineEmits<{
     </div>
   </aside>
 </template>
+
+<script setup lang="ts">
+import type {
+  EditorComment,
+  EditorDocument,
+  EditorVersion,
+  OutlineItem,
+} from '../types'
+
+const props = defineProps<{
+  activeDocument: EditorDocument | undefined
+  wordCount: number
+  paragraphCount: number
+  readingMinutes: number
+  outlineOpen: boolean
+  outline: OutlineItem[]
+  activeVersions: EditorVersion[]
+  activeComments: EditorComment[]
+  unresolvedCommentCount: number
+  commentDraft: string
+}>()
+
+const emits = defineEmits<{
+  (e: 'toggle-outline'): void
+  (e: 'copy-html'): void
+  (e: 'import'): void
+  (e: 'export', format: 'html' | 'md' | 'txt'): void
+  (e: 'save-version'): void
+  (e: 'restore-version', version: EditorVersion): void
+  (e: 'add-comment'): void
+  (e: 'toggle-comment-resolved', commentId: string): void
+  (e: 'update-status', status: EditorDocument['status']): void
+  (e: 'update:commentDraft', value: string): void
+}>()
+</script>

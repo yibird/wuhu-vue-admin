@@ -1,31 +1,3 @@
-<script setup lang="ts">
-import type { CalendarSelectOption, CalendarView } from '../types'
-
-const {
-  activeView,
-  currentMonthLabel,
-  eventCountLabel,
-  todayLabel,
-  viewOptions,
-  loading = false,
-} = defineProps<{
-  activeView: CalendarView
-  currentMonthLabel: string
-  eventCountLabel: string
-  todayLabel: string
-  viewOptions: CalendarSelectOption<CalendarView>[]
-  loading?: boolean
-}>()
-
-const emit = defineEmits<{
-  changeView: [value: string | number]
-  createEvent: []
-  next: []
-  previous: []
-  today: []
-}>()
-</script>
-
 <template>
   <header
     class="relative overflow-hidden rounded-8 border-1 border-color-2 border-solid bg-container px-18 py-16"
@@ -77,20 +49,20 @@ const emit = defineEmits<{
           <a-segmented
             :options="viewOptions"
             :value="activeView"
-            @change="emit('changeView', $event)"
+            @change="emits('changeView', $event)"
           />
-          <a-button aria-label="上一段时间" @click="emit('previous')">
+          <a-button aria-label="上一段时间" @click="emits('previous')">
             <template #icon>
               <Icon name="i-lucide:chevron-left" />
             </template>
           </a-button>
-          <a-button @click="emit('today')">今天</a-button>
-          <a-button aria-label="下一段时间" @click="emit('next')">
+          <a-button @click="emits('today')">今天</a-button>
+          <a-button aria-label="下一段时间" @click="emits('next')">
             <template #icon>
               <Icon name="i-lucide:chevron-right" />
             </template>
           </a-button>
-          <a-button type="primary" @click="emit('createEvent')">
+          <a-button type="primary" @click="emits('createEvent')">
             <template #icon>
               <Icon name="i-lucide:plus" />
             </template>
@@ -101,3 +73,31 @@ const emit = defineEmits<{
     </template>
   </header>
 </template>
+
+<script setup lang="ts">
+import type { CalendarSelectOption, CalendarView } from '../types'
+
+const {
+  activeView,
+  currentMonthLabel,
+  eventCountLabel,
+  todayLabel,
+  viewOptions,
+  loading = false,
+} = defineProps<{
+  activeView: CalendarView
+  currentMonthLabel: string
+  eventCountLabel: string
+  todayLabel: string
+  viewOptions: CalendarSelectOption<CalendarView>[]
+  loading?: boolean
+}>()
+
+const emits = defineEmits<{
+  changeView: [value: string | number]
+  createEvent: []
+  next: []
+  previous: []
+  today: []
+}>()
+</script>

@@ -1,55 +1,3 @@
-<script setup lang="ts">
-import type { CalendarType } from '@dayflow/core'
-import type { CalendarEventStatus, CalendarMetaOption } from '../types'
-
-const props = defineProps<{
-  activeFilterCount: number
-  calendarIds: string[]
-  calendarTypes: CalendarType[]
-  hasActiveFilters: boolean
-  keyword: string
-  statusOptions: CalendarMetaOption<CalendarEventStatus>[]
-  statuses: CalendarEventStatus[]
-}>()
-
-const emit = defineEmits<{
-  resetFilters: []
-  updateCalendarIds: [value: string[]]
-  updateKeyword: [value: string]
-  updateStatuses: [value: CalendarEventStatus[]]
-}>()
-
-const calendarCheckboxOptions = computed(() =>
-  props.calendarTypes.map((item) => ({
-    label: item.name,
-    value: item.id,
-  }))
-)
-
-const statusCheckboxOptions = computed(() =>
-  props.statusOptions.map((item) => ({
-    label: item.label,
-    value: item.value,
-  }))
-)
-
-function updateCalendarIds(value: unknown[]) {
-  emit(
-    'updateCalendarIds',
-    value.filter((item): item is string => typeof item === 'string')
-  )
-}
-
-function updateStatuses(value: unknown[]) {
-  emit(
-    'updateStatuses',
-    value.filter((item): item is CalendarEventStatus =>
-      props.statusOptions.some((option) => option.value === item)
-    )
-  )
-}
-</script>
-
 <template>
   <section
     class="rounded-8 border-1 border-color-2 border-solid bg-container p-12"
@@ -66,7 +14,7 @@ function updateStatuses(value: unknown[]) {
       :value="keyword"
       allow-clear
       placeholder="搜索标题、负责人、地点"
-      @update:value="emit('updateKeyword', String($event))"
+      @update:value="emits('updateKeyword', String($event))"
     >
       <template #prefix>
         <Icon name="i-lucide:search" class="text-secondary" />
@@ -94,9 +42,61 @@ function updateStatuses(value: unknown[]) {
       block
       class="mt-12"
       size="small"
-      @click="emit('resetFilters')"
+      @click="emits('resetFilters')"
     >
       重置筛选
     </a-button>
   </section>
 </template>
+
+<script setup lang="ts">
+import type { CalendarType } from '@dayflow/core'
+import type { CalendarEventStatus, CalendarMetaOption } from '../types'
+
+const props = defineProps<{
+  activeFilterCount: number
+  calendarIds: string[]
+  calendarTypes: CalendarType[]
+  hasActiveFilters: boolean
+  keyword: string
+  statusOptions: CalendarMetaOption<CalendarEventStatus>[]
+  statuses: CalendarEventStatus[]
+}>()
+
+const emits = defineEmits<{
+  resetFilters: []
+  updateCalendarIds: [value: string[]]
+  updateKeyword: [value: string]
+  updateStatuses: [value: CalendarEventStatus[]]
+}>()
+
+const calendarCheckboxOptions = computed(() =>
+  props.calendarTypes.map((item) => ({
+    label: item.name,
+    value: item.id,
+  }))
+)
+
+const statusCheckboxOptions = computed(() =>
+  props.statusOptions.map((item) => ({
+    label: item.label,
+    value: item.value,
+  }))
+)
+
+function updateCalendarIds(value: unknown[]) {
+  emits(
+    'updateCalendarIds',
+    value.filter((item): item is string => typeof item === 'string')
+  )
+}
+
+function updateStatuses(value: unknown[]) {
+  emits(
+    'updateStatuses',
+    value.filter((item): item is CalendarEventStatus =>
+      props.statusOptions.some((option) => option.value === item)
+    )
+  )
+}
+</script>

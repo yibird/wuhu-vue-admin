@@ -1,77 +1,3 @@
-<script setup lang="ts">
-import { renderIcon } from '@/utils'
-import { getArticleIconForeground } from '../../icon-palette'
-import type { ArticleAction, ArticleItem } from '../../types'
-
-const props = defineProps<{
-  item: ArticleItem
-}>()
-
-const emit = defineEmits<{
-  action: [key: ArticleAction, item: ArticleItem]
-}>()
-
-const iconStyle = computed(() => ({
-  backgroundColor: props.item.iconBackground,
-  color: getArticleIconForeground(props.item.iconBackground),
-}))
-
-const visibleTags = computed(() => props.item.tags.slice(0, 2))
-
-const statusMeta = computed(() => {
-  const map = {
-    published: { label: '已发布', color: 'green' },
-    draft: { label: '草稿', color: 'blue' },
-    archived: { label: '已归档', color: 'default' },
-  } as const
-  return map[props.item.status]
-})
-
-const moreActionItems = computed(() => [
-  ...(props.item.status !== 'published'
-    ? [
-        {
-          key: 'publish',
-          label: '发布文章',
-          icon: renderIcon('i-lucide:send'),
-        },
-      ]
-    : []),
-  {
-    key: 'duplicate',
-    label: '创建副本',
-    icon: renderIcon('i-lucide:copy-plus'),
-  },
-  { type: 'divider' },
-  {
-    key: 'archive',
-    label: props.item.status === 'archived' ? '移出归档' : '归档',
-    icon: renderIcon(
-      props.item.status === 'archived'
-        ? 'i-lucide:archive-restore'
-        : 'i-lucide:archive'
-    ),
-  },
-])
-
-function handleAction(key: ArticleAction) {
-  emit('action', key, props.item)
-}
-
-function handleMoreAction(info: { key: string | number }) {
-  const key = String(info.key)
-  if (key === 'archive' || key === 'duplicate' || key === 'publish') {
-    handleAction(key)
-  }
-}
-
-function formatNumber(value: number) {
-  if (value >= 10_000) return (value / 10_000).toFixed(1) + 'w'
-  if (value >= 1000) return (value / 1000).toFixed(1) + 'k'
-  return String(value)
-}
-</script>
-
 <template>
   <article
     class="group relative min-w-0 cursor-pointer overflow-hidden rounded-8 border-1 border-color-2 border-solid bg-container shadow-[var(--w-shadow-card)] outline-none transition-[border-color,box-shadow,transform] duration-motion-base hover:-translate-y-2 hover:border-primary hover:shadow-[var(--w-shadow-elevated)] focus-visible:border-primary"
@@ -206,3 +132,77 @@ function formatNumber(value: number) {
     </footer>
   </article>
 </template>
+
+<script setup lang="ts">
+import { renderIcon } from '@/utils'
+import { getArticleIconForeground } from '../../icon-palette'
+import type { ArticleAction, ArticleItem } from '../../types'
+
+const props = defineProps<{
+  item: ArticleItem
+}>()
+
+const emits = defineEmits<{
+  action: [key: ArticleAction, item: ArticleItem]
+}>()
+
+const iconStyle = computed(() => ({
+  backgroundColor: props.item.iconBackground,
+  color: getArticleIconForeground(props.item.iconBackground),
+}))
+
+const visibleTags = computed(() => props.item.tags.slice(0, 2))
+
+const statusMeta = computed(() => {
+  const map = {
+    published: { label: '已发布', color: 'green' },
+    draft: { label: '草稿', color: 'blue' },
+    archived: { label: '已归档', color: 'default' },
+  } as const
+  return map[props.item.status]
+})
+
+const moreActionItems = computed(() => [
+  ...(props.item.status !== 'published'
+    ? [
+        {
+          key: 'publish',
+          label: '发布文章',
+          icon: renderIcon('i-lucide:send'),
+        },
+      ]
+    : []),
+  {
+    key: 'duplicate',
+    label: '创建副本',
+    icon: renderIcon('i-lucide:copy-plus'),
+  },
+  { type: 'divider' },
+  {
+    key: 'archive',
+    label: props.item.status === 'archived' ? '移出归档' : '归档',
+    icon: renderIcon(
+      props.item.status === 'archived'
+        ? 'i-lucide:archive-restore'
+        : 'i-lucide:archive'
+    ),
+  },
+])
+
+function handleAction(key: ArticleAction) {
+  emits('action', key, props.item)
+}
+
+function handleMoreAction(info: { key: string | number }) {
+  const key = String(info.key)
+  if (key === 'archive' || key === 'duplicate' || key === 'publish') {
+    handleAction(key)
+  }
+}
+
+function formatNumber(value: number) {
+  if (value >= 10_000) return (value / 10_000).toFixed(1) + 'w'
+  if (value >= 1000) return (value / 1000).toFixed(1) + 'k'
+  return String(value)
+}
+</script>

@@ -1,57 +1,3 @@
-<script setup lang="ts">
-import { DayFlowCalendar } from '@dayflow/vue'
-import type { UseCalendarAppReturn } from '@dayflow/core'
-
-const {
-  calendar,
-  hasActiveFilters,
-  visibleEventCount,
-  loading = false,
-} = defineProps<{
-  calendar: UseCalendarAppReturn
-  hasActiveFilters: boolean
-  visibleEventCount: number
-  loading?: boolean
-}>()
-
-defineEmits<{
-  createEvent: []
-}>()
-
-const calendarRootRef = useTemplateRef<HTMLElement>('calendarRoot')
-let dayFlowLocaleObserver: MutationObserver | null = null
-
-function localizeDayFlowLabels() {
-  const root = calendarRootRef.value
-  if (!root) return
-
-  // DayFlow 当前仍会固定输出英文 All day，这里同步为中文文案。
-  root.querySelectorAll<HTMLElement>('.df-all-day-label').forEach((node) => {
-    if (node.textContent?.trim() === 'All day') {
-      node.textContent = '全天'
-    }
-  })
-}
-
-onMounted(async () => {
-  await nextTick()
-  localizeDayFlowLabels()
-  const root = calendarRootRef.value
-  if (!root) return
-
-  dayFlowLocaleObserver = new MutationObserver(localizeDayFlowLabels)
-  dayFlowLocaleObserver.observe(root, {
-    childList: true,
-    subtree: true,
-  })
-})
-
-onUnmounted(() => {
-  dayFlowLocaleObserver?.disconnect()
-  dayFlowLocaleObserver = null
-})
-</script>
-
 <template>
   <main
     ref="calendarRoot"
@@ -120,6 +66,60 @@ onUnmounted(() => {
     </template>
   </main>
 </template>
+
+<script setup lang="ts">
+import { DayFlowCalendar } from '@dayflow/vue'
+import type { UseCalendarAppReturn } from '@dayflow/core'
+
+const {
+  calendar,
+  hasActiveFilters,
+  visibleEventCount,
+  loading = false,
+} = defineProps<{
+  calendar: UseCalendarAppReturn
+  hasActiveFilters: boolean
+  visibleEventCount: number
+  loading?: boolean
+}>()
+
+defineEmits<{
+  createEvent: []
+}>()
+
+const calendarRootRef = useTemplateRef<HTMLElement>('calendarRoot')
+let dayFlowLocaleObserver: MutationObserver | null = null
+
+function localizeDayFlowLabels() {
+  const root = calendarRootRef.value
+  if (!root) return
+
+  // DayFlow 当前仍会固定输出英文 All day，这里同步为中文文案。
+  root.querySelectorAll<HTMLElement>('.df-all-day-label').forEach((node) => {
+    if (node.textContent?.trim() === 'All day') {
+      node.textContent = '全天'
+    }
+  })
+}
+
+onMounted(async () => {
+  await nextTick()
+  localizeDayFlowLabels()
+  const root = calendarRootRef.value
+  if (!root) return
+
+  dayFlowLocaleObserver = new MutationObserver(localizeDayFlowLabels)
+  dayFlowLocaleObserver.observe(root, {
+    childList: true,
+    subtree: true,
+  })
+})
+
+onUnmounted(() => {
+  dayFlowLocaleObserver?.disconnect()
+  dayFlowLocaleObserver = null
+})
+</script>
 
 <style scoped lang="less">
 .calendar {

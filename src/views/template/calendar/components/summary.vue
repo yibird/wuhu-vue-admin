@@ -1,12 +1,3 @@
-<script setup lang="ts">
-import type { SummaryCard } from '../types'
-
-const { items, loading = false } = defineProps<{
-  items: SummaryCard[]
-  loading?: boolean
-}>()
-</script>
-
 <template>
   <div class="grid grid-cols-4 gap-12 max-lg:grid-cols-2 max-sm:grid-cols-1">
     <template v-if="loading">
@@ -47,3 +38,12 @@ const { items, loading = false } = defineProps<{
     </template>
   </div>
 </template>
+
+<script setup lang="ts">
+import type { SummaryCard } from '../types'
+
+const { items, loading = false } = defineProps<{
+  items: SummaryCard[]
+  loading?: boolean
+}>()
+</script>

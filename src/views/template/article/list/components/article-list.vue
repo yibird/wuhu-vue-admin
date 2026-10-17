@@ -1,3 +1,74 @@
+<template>
+  <div class="h-full min-h-0 flex flex-col overflow-hidden bg-page">
+    <ArticleToolbar
+      v-model:category="categoryFilter"
+      v-model:keyword="keyword"
+      v-model:sort="sortBy"
+      v-model:status="statusFilter"
+      :categories="categories"
+      :draft-count="draftCount"
+      :published-count="publishedCount"
+      :total="items.length"
+      @create="createArticle"
+    />
+
+    <main class="min-h-0 flex-1 overflow-y-auto p-12 sm:p-16">
+      <div
+        v-if="isLoading"
+        class="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5"
+      >
+        <div
+          v-for="index in 10"
+          :key="index"
+          class="h-286 rounded-8 border-1 border-color-2 border-solid bg-container p-14"
+        >
+          <a-skeleton active :paragraph="{ rows: 6 }" />
+        </div>
+      </div>
+
+      <a-empty
+        v-else-if="paginatedItems.length === 0"
+        class="h-full min-h-360 flex flex-col items-center justify-center"
+        description="没有符合条件的文章"
+      >
+        <a-button @click="clearFilters">清除筛选</a-button>
+      </a-empty>
+
+      <AnimatedGroup
+        v-else
+        id="article-card-list"
+        reduced-motion="user"
+        :items="paginatedItems"
+        :get-key="(item: ArticleItem) => item.id"
+        as="div"
+        class="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5"
+        motion-as="div"
+        layout="position"
+        motion-class="min-w-0"
+      >
+        <template #default="{ item }">
+          <ArticleCard :item="item" @action="handleCardAction" />
+        </template>
+      </AnimatedGroup>
+    </main>
+
+    <footer
+      class="flex flex-none justify-center border-t-1 border-color-2 border-t-solid bg-container px-12 py-10 sm:px-16"
+    >
+      <a-pagination
+        v-if="!isLoading && filteredItems.length > 0"
+        v-model:current="currentPage"
+        v-model:page-size="pageSize"
+        :page-size-options="[12, 24, 36]"
+        :show-total="paginationTotalText"
+        :total="filteredItems.length"
+        show-size-changer
+      />
+      <span v-else class="text-xs text-secondary">暂无分页数据</span>
+    </footer>
+  </div>
+</template>
+
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
 import { message, Modal } from 'antdv-next'
@@ -82,74 +153,3 @@ function handleCardAction(action: ArticleAction, item: ArticleItem) {
   openEditor(item.id)
 }
 </script>
-
-<template>
-  <div class="h-full min-h-0 flex flex-col overflow-hidden bg-page">
-    <ArticleToolbar
-      v-model:category="categoryFilter"
-      v-model:keyword="keyword"
-      v-model:sort="sortBy"
-      v-model:status="statusFilter"
-      :categories="categories"
-      :draft-count="draftCount"
-      :published-count="publishedCount"
-      :total="items.length"
-      @create="createArticle"
-    />
-
-    <main class="min-h-0 flex-1 overflow-y-auto p-12 sm:p-16">
-      <div
-        v-if="isLoading"
-        class="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5"
-      >
-        <div
-          v-for="index in 10"
-          :key="index"
-          class="h-286 rounded-8 border-1 border-color-2 border-solid bg-container p-14"
-        >
-          <a-skeleton active :paragraph="{ rows: 6 }" />
-        </div>
-      </div>
-
-      <a-empty
-        v-else-if="paginatedItems.length === 0"
-        class="h-full min-h-360 flex flex-col items-center justify-center"
-        description="没有符合条件的文章"
-      >
-        <a-button @click="clearFilters">清除筛选</a-button>
-      </a-empty>
-
-      <AnimatedGroup
-        v-else
-        id="article-card-list"
-        reduced-motion="user"
-        :items="paginatedItems"
-        :get-key="(item: ArticleItem) => item.id"
-        as="div"
-        class="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5"
-        motion-as="div"
-        layout="position"
-        motion-class="min-w-0"
-      >
-        <template #default="{ item }">
-          <ArticleCard :item="item" @action="handleCardAction" />
-        </template>
-      </AnimatedGroup>
-    </main>
-
-    <footer
-      class="flex flex-none justify-center border-t-1 border-color-2 border-t-solid bg-container px-12 py-10 sm:px-16"
-    >
-      <a-pagination
-        v-if="!isLoading && filteredItems.length > 0"
-        v-model:current="currentPage"
-        v-model:page-size="pageSize"
-        :page-size-options="[12, 24, 36]"
-        :show-total="paginationTotalText"
-        :total="filteredItems.length"
-        show-size-changer
-      />
-      <span v-else class="text-xs text-secondary">暂无分页数据</span>
-    </footer>
-  </div>
-</template>

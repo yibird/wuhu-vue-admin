@@ -1,3 +1,4 @@
+import { monoFontStack } from '@/config/fonts'
 import type { EditorDocument } from './types'
 
 export function createInitialDocuments(): EditorDocument[] {
@@ -106,7 +107,8 @@ export const editorFontFamilyOptions = [
   { label: 'Arial', value: 'Arial, Helvetica, sans-serif' },
   { label: 'Georgia', value: 'Georgia, "Times New Roman", serif' },
   { label: 'Times New Roman', value: '"Times New Roman", Times, serif' },
-  { label: '等宽代码', value: '"Cascadia Code", Consolas, monospace' },
+  // 内容级字体样式会随正文一起保存/导出,因此写入完整字体栈而非 CSS 变量
+  { label: '等宽代码', value: monoFontStack },
 ]
 
 export const TEMPLATE_MAP = {
