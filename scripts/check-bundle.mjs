@@ -13,7 +13,9 @@ const budgets = {
   initialJs: readBudget('BUNDLE_INITIAL_JS_GZIP_MAX', 700 * KiB),
   initialCss: readBudget('BUNDLE_INITIAL_CSS_GZIP_MAX', 100 * KiB),
   singleJs: readBudget('BUNDLE_SINGLE_JS_GZIP_MAX', 3 * MiB),
-  totalJs: readBudget('BUNDLE_TOTAL_JS_GZIP_MAX', 5 * MiB),
+  // 报表设计器按路由懒加载 Univer 表格 SDK(含 React/rxjs)。
+  // 首屏预算保持不变,仅放宽按需路由带来的整体体积。
+  totalJs: readBudget('BUNDLE_TOTAL_JS_GZIP_MAX', 8 * MiB),
 }
 
 if (

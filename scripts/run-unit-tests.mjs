@@ -1,5 +1,6 @@
 import { readdirSync } from 'node:fs'
-import { join, resolve } from 'node:path'
+import { join, relative, resolve } from 'node:path'
+import { pathToFileURL } from 'node:url'
 import { spawnSync } from 'node:child_process'
 
 const root = resolve(import.meta.dirname, '..')
@@ -27,10 +28,19 @@ if (tests.length === 0) {
   process.exit(1)
 }
 
-const result = spawnSync(process.execPath, ['--test', ...tests], {
-  cwd: root,
-  stdio: 'inherit',
-})
+const result = spawnSync(
+  process.execPath,
+  [
+    '--import',
+    pathToFileURL(join(root, 'scripts/register-ts-resolver.mjs')).href,
+    '--test',
+    ...tests.map((path) => relative(root, path).replaceAll('\\', '/')),
+  ],
+  {
+    cwd: root,
+    stdio: 'inherit',
+  }
+)
 
 if (result.error) throw result.error
 process.exit(result.status ?? 1)

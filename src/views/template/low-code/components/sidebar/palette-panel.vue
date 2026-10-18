@@ -8,74 +8,76 @@
       </a-input>
     </div>
 
-    <div class="min-h-0 flex-1 w-full h-full overflow-x-hidden overflow-y-auto">
-      <div class="min-w-0 grid gap-10 p-12">
-        <section
-          v-for="group in filteredGroups"
-          :key="group.category"
-          class="grid gap-6"
-        >
-          <button
-            class="flex-between-center w-full cursor-pointer border-0 bg-transparent px-4 py-6 text-sm text-secondary"
-            type="button"
-            @click="toggleCategory(group.category)"
+    <div class="min-h-0 flex-1 w-full">
+      <Scrollbar class="h-full">
+        <div class="min-w-0 grid gap-10 p-12">
+          <section
+            v-for="group in filteredGroups"
+            :key="group.category"
+            class="grid gap-6"
           >
-            <span class="font-600">{{ group.category }}</span>
-            <Icon
-              :name="
-                collapsed.has(group.category)
-                  ? 'i-lucide:chevron-right'
-                  : 'i-lucide:chevron-down'
-              "
-              :size="16"
-              class="transition-transform duration-200"
-            />
-          </button>
-          <div
-            class="lc-palette-group"
-            :class="{ 'is-collapsed': collapsed.has(group.category) }"
-          >
-            <div
-              class="lc-palette-group__inner"
-              :inert="collapsed.has(group.category)"
+            <button
+              class="flex-between-center w-full cursor-pointer border-0 bg-transparent px-4 py-6 text-sm text-secondary"
+              type="button"
+              @click="toggleCategory(group.category)"
             >
-              <div class="grid grid-cols-2 gap-6">
-                <button
-                  v-for="item in group.items"
-                  :key="item.definition.type"
-                  class="lc-palette-item"
-                  type="button"
-                  :draggable="true"
-                  :title="item.definition.description"
-                  @click="addToCanvas(item.definition.type)"
-                  @dragstart="onDragStart(item.definition.type, $event)"
-                  @dragend="endPaletteDrag"
-                >
-                  <span class="lc-palette-item__icon">
-                    <Icon
-                      :name="item.definition.icon ?? 'i-lucide:box'"
-                      :size="16"
-                    />
-                  </span>
-                  <span class="lc-palette-item__title">{{
-                    item.definition.title
-                  }}</span>
-                  <span
-                    v-if="item.definition.kind === 2"
-                    class="lc-palette-item__badge"
-                    >物料</span
+              <span class="font-600">{{ group.category }}</span>
+              <Icon
+                :name="
+                  collapsed.has(group.category)
+                    ? 'i-lucide:chevron-right'
+                    : 'i-lucide:chevron-down'
+                "
+                :size="16"
+                class="transition-transform duration-200"
+              />
+            </button>
+            <div
+              class="lc-palette-group"
+              :class="{ 'is-collapsed': collapsed.has(group.category) }"
+            >
+              <div
+                class="lc-palette-group__inner"
+                :inert="collapsed.has(group.category)"
+              >
+                <div class="grid grid-cols-2 gap-6">
+                  <button
+                    v-for="item in group.items"
+                    :key="item.definition.type"
+                    class="lc-palette-item"
+                    type="button"
+                    :draggable="true"
+                    :title="item.definition.description"
+                    @click="addToCanvas(item.definition.type)"
+                    @dragstart="onDragStart(item.definition.type, $event)"
+                    @dragend="endPaletteDrag"
                   >
-                </button>
+                    <span class="lc-palette-item__icon">
+                      <Icon
+                        :name="item.definition.icon ?? 'i-lucide:box'"
+                        :size="16"
+                      />
+                    </span>
+                    <span class="lc-palette-item__title">{{
+                      item.definition.title
+                    }}</span>
+                    <span
+                      v-if="item.definition.kind === 2"
+                      class="lc-palette-item__badge"
+                      >物料</span
+                    >
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
-        </section>
-        <a-empty
-          v-if="!filteredGroups.length"
-          :image="Empty.PRESENTED_IMAGE_SIMPLE"
-          description="未找到组件"
-        />
-      </div>
+          </section>
+          <a-empty
+            v-if="!filteredGroups.length"
+            :image="Empty.PRESENTED_IMAGE_SIMPLE"
+            description="未找到组件"
+          />
+        </div>
+      </Scrollbar>
     </div>
   </div>
 </template>
@@ -83,7 +85,7 @@
 <script setup lang="ts">
 import { Empty } from 'antdv-next'
 import { computed, ref } from 'vue'
-import { Icon } from '@/components'
+import { Icon, Scrollbar } from '@/components'
 import { MATERIAL_CATEGORY_ORDER } from '../../core/materials'
 import { componentRegistry, registryVersion } from '../../core/registry'
 import type { RegisteredComponent } from '../../core/registry'

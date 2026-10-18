@@ -22,71 +22,73 @@
       </a-tooltip>
     </div>
 
-    <div class="min-h-0 flex-1 w-full h-full overflow-x-hidden overflow-y-auto">
-      <div class="min-w-0 p-8">
-        <a-tree
-          v-if="treeData.length"
-          block-node
-          draggable
-          :tree-data="treeData"
-          :selected-keys="selectedKeys"
-          :expanded-keys="expandedKeys"
-          :allow-drop="allowDrop"
-          @select="onSelect"
-          @expand="onExpand"
-          @drop="onDrop"
-          @right-click="onRightClick"
-        >
-          <template
-            #titleRender="{ key, title, icon, locked, hidden, condition }"
+    <div class="min-h-0 flex-1 w-full">
+      <Scrollbar class="h-full">
+        <div class="min-w-0 p-8">
+          <a-tree
+            v-if="treeData.length"
+            block-node
+            draggable
+            :tree-data="treeData"
+            :selected-keys="selectedKeys"
+            :expanded-keys="expandedKeys"
+            :allow-drop="allowDrop"
+            @select="onSelect"
+            @expand="onExpand"
+            @drop="onDrop"
+            @right-click="onRightClick"
           >
-            <span class="lc-outline-title" :class="{ 'is-hidden': hidden }">
-              <Icon :name="icon || 'i-lucide:box'" :size="13" />
-              <span class="truncate">{{ title }}</span>
-              <Icon
-                v-if="condition"
-                name="i-lucide:eye"
-                :size="11"
-                class="lc-outline-title__tail text-warning"
-              />
-              <Icon
-                v-if="locked"
-                name="i-lucide:lock"
-                :size="11"
-                class="lc-outline-title__tail text-muted"
-              />
-              <Icon
-                v-if="hidden"
-                name="i-lucide:eye-off"
-                :size="11"
-                class="lc-outline-title__tail text-muted"
-              />
-              <span class="lc-outline-title__actions" @click.stop>
-                <button
-                  class="reset-button size-18 inline-flex items-center justify-center"
-                  type="button"
-                  title="复制"
-                  @click="designer.duplicateNodes([String(key)])"
-                >
-                  <Icon name="i-lucide:copy" :size="11" />
-                </button>
-                <button
-                  class="reset-button size-18 inline-flex items-center justify-center"
-                  type="button"
-                  title="删除"
-                  @click="designer.removeNodes([String(key)])"
-                >
-                  <Icon name="i-lucide:trash-2" :size="11" />
-                </button>
+            <template
+              #titleRender="{ key, title, icon, locked, hidden, condition }"
+            >
+              <span class="lc-outline-title" :class="{ 'is-hidden': hidden }">
+                <Icon :name="icon || 'i-lucide:box'" :size="13" />
+                <span class="truncate">{{ title }}</span>
+                <Icon
+                  v-if="condition"
+                  name="i-lucide:eye"
+                  :size="11"
+                  class="lc-outline-title__tail text-warning"
+                />
+                <Icon
+                  v-if="locked"
+                  name="i-lucide:lock"
+                  :size="11"
+                  class="lc-outline-title__tail text-muted"
+                />
+                <Icon
+                  v-if="hidden"
+                  name="i-lucide:eye-off"
+                  :size="11"
+                  class="lc-outline-title__tail text-muted"
+                />
+                <span class="lc-outline-title__actions" @click.stop>
+                  <button
+                    class="reset-button size-18 inline-flex items-center justify-center"
+                    type="button"
+                    title="复制"
+                    @click="designer.duplicateNodes([String(key)])"
+                  >
+                    <Icon name="i-lucide:copy" :size="11" />
+                  </button>
+                  <button
+                    class="reset-button size-18 inline-flex items-center justify-center"
+                    type="button"
+                    title="删除"
+                    @click="designer.removeNodes([String(key)])"
+                  >
+                    <Icon name="i-lucide:trash-2" :size="11" />
+                  </button>
+                </span>
               </span>
-            </span>
-          </template>
-        </a-tree>
+            </template>
+          </a-tree>
 
-        <div v-else class="p-24 text-center text-xs text-muted">
-          画布还没有组件，从「组件」面板拖入或点击添加
+          <div v-else class="p-24 text-center text-xs text-muted">
+            画布还没有组件，从「组件」面板拖入或点击添加
+          </div>
         </div>
-      </div>
+      </Scrollbar>
     </div>
 
     <NodeContextMenu
@@ -101,7 +103,7 @@
 
 <script setup lang="ts">
 import { computed, reactive, ref, watch } from 'vue'
-import { Icon } from '@/components'
+import { Icon, Scrollbar } from '@/components'
 import { componentRegistry } from '../../core/registry'
 import { ROOT_ID } from '../../core/schema'
 import { useDesignerContext } from '../../hooks'

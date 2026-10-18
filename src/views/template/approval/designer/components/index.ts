@@ -1,0 +1,5 @@
+export { default as BasicInfoStep } from './basic-info-step.vue'
+export { default as ExtensionStep } from './extension-step.vue'
+export { default as FlowDesignStep } from './flow-design-step.vue'
+export { default as FormDesignStep } from './form-design-step.vue'
+export { default as SchemaModal } from './schema-modal.vue'

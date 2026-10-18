@@ -1,9 +1,7 @@
 .layout-tabs-google {
   height: var(--w-tabs-height);
   min-height: var(--w-tabs-height);
-  background-color: rgb(var(--w-tabs-google-strip-bg-rgb));
-  box-shadow: none;
-  isolation: isolate;
+  background-color: var(--w-tabs-google-bg);
 
   .tab-control {
     top: var(--w-tabs-google-control-offset);
@@ -109,7 +107,7 @@
       height: calc(100% - var(--w-tabs-google-item-bottom-gap));
       margin-bottom: var(--w-tabs-google-item-bottom-gap);
       overflow: hidden;
-      background-color: rgb(var(--w-tabs-google-item-active-bg-rgb));
+      background-color: var(--w-tabs-google-item-active-bg);
       border-radius: var(--w-tabs-google-item-hover-radius);
 
       &::before,
@@ -140,43 +138,34 @@
     }
 
     &.tab-item-active {
+      position: relative;
       z-index: 2;
       height: 100%;
-      margin-bottom: 0;
-      overflow: visible;
-      color: var(--w-tabs-item-color);
-      background-color: rgb(var(--w-tabs-google-item-active-bg-rgb));
+      color: #fff;
+      background: var(--w-tabs-google-item-active-bg);
       border-radius: var(--w-tabs-google-item-active-radius)
         var(--w-tabs-google-item-active-radius) 0 0;
-      box-shadow: none;
 
       &::before,
       &::after {
         position: absolute;
         bottom: 0;
-        width: var(--w-tabs-google-curve-size);
-        height: var(--w-tabs-google-curve-size);
-        pointer-events: none;
+        width: 20px;
+        height: 20px;
         content: '';
-        background-color: transparent;
+        border-radius: 100%;
+        box-shadow: 0 0 0 40px var(--w-tabs-google-item-active-bg);
+        transition: 0.2s;
       }
 
       &::before {
-        left: calc(-1 * var(--w-tabs-google-curve-size));
-        border-bottom-right-radius: var(--w-tabs-google-curve-size);
-        box-shadow: var(--w-tabs-google-curve-shadow-offset)
-          var(--w-tabs-google-curve-shadow-offset) 0
-          var(--w-tabs-google-curve-shadow-offset)
-          rgb(var(--w-tabs-google-item-active-bg-rgb));
+        left: -20px;
+        clip-path: inset(50% -10px 0 50%);
       }
 
       &::after {
-        right: calc(-1 * var(--w-tabs-google-curve-size));
-        border-bottom-left-radius: var(--w-tabs-google-curve-size);
-        box-shadow: calc(-1 * var(--w-tabs-google-curve-shadow-offset))
-          var(--w-tabs-google-curve-shadow-offset) 0
-          var(--w-tabs-google-curve-shadow-offset)
-          rgb(var(--w-tabs-google-item-active-bg-rgb));
+        right: -20px;
+        clip-path: inset(50% 50% 0 -10px);
       }
     }
 

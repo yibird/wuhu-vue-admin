@@ -117,17 +117,6 @@ export const templateMenus: IMenu[] = [
         path: '/template/chart-designer',
         keepAlive: false,
       },
-      {
-        id: '811',
-        title: '审批流设计器',
-        type: 2,
-        rootId: '8',
-        parentId: '8',
-        level: '8-811',
-        icon: 'i-lucide:workflow',
-        path: '/template/approval-workflow',
-        keepAlive: false,
-      },
     ],
   },
 ]

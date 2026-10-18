@@ -5,6 +5,16 @@ const rgbVar = (name: string) => `rgb(var(${name}))`
 
 export default defineConfig({
   blocklist: ['?'],
+  /**
+   * 这些图标只出现在 mock 审批流数据中，源码里没有字面量引用，
+   * 需要显式加入 safelist 才会生成对应的原子类。
+   */
+  safelist: [
+    'i-lucide:stamp',
+    'i-lucide:badge-percent',
+    'i-lucide:banknote',
+    'i-lucide:handshake',
+  ],
   content: {
     pipeline: {
       include: ['src/**/*.{vue,ts,tsx}'],

@@ -1,301 +1,231 @@
-export type DataSourceKind = 'sample' | 'rest' | 'json' | 'sql'
-export type RequestMethod = 'GET' | 'POST' | 'PUT' | 'PATCH'
-export type SqlDriver =
-  | 'mysql'
-  | 'postgresql'
-  | 'sqlserver'
-  | 'oracle'
-  | 'custom'
-export type FieldType = 'string' | 'number' | 'currency' | 'percent' | 'date'
-export type FieldAlign = 'left' | 'center' | 'right'
-export type FieldSummary = 'none' | 'sum' | 'avg' | 'count'
-export type ReportTheme = 'default' | 'ink' | 'teal' | 'amber' | 'steel'
-export type ReportDensity = 'compact' | 'standard' | 'comfortable'
-export type ExportFormat = 'csv' | 'xls' | 'json' | 'pdf' | 'print'
-export type FieldMappingMode = 'manual' | 'source'
-export type FieldFormatMode = 'auto' | 'preset' | 'custom'
-export type ReportTemplateType =
-  | 'detail'
-  | 'summary'
-  | 'group'
-  | 'masterDetail'
-  | 'label'
-  | 'delivery'
-  | 'inbound'
-  | 'invoice'
-  | 'statement'
-  | 'bi'
-  | 'finance'
-export type ReportPaperSize = 'A4' | 'A5' | 'Letter' | 'label100x150'
-export type ReportOrientation = 'portrait' | 'landscape'
-export type PermissionMode = 'inherit' | 'template' | 'private'
-export type CapabilityStatus = 'ready' | 'partial' | 'planned'
-export type FieldFormatPreset =
-  | 'text-trim'
-  | 'text-uppercase'
-  | 'text-lowercase'
-  | 'number-integer'
-  | 'number-decimal-1'
-  | 'number-decimal-2'
-  | 'number-decimal-4'
-  | 'number-compact'
-  | 'currency-cny-0'
-  | 'currency-cny-2'
-  | 'currency-usd-2'
-  | 'currency-plain-2'
-  | 'percent-0'
-  | 'percent-1'
-  | 'percent-2'
-  | 'date-yyyy-mm-dd'
-  | 'date-yyyy-slash-mm-dd'
-  | 'date-cn'
-  | 'date-yyyy-mm-dd-hh-mm'
-  | 'date-mm-dd'
-  | 'date-timestamp'
-export type FilterOperator =
+import type { IWorkbookData } from '@univerjs/core'
+
+/**
+ * 单元格错误值
+ */
+export type CellError =
+  | '#REF!'
+  | '#VALUE!'
+  | '#DIV/0!'
+  | '#NAME?'
+  | '#CIRC!'
+  | '#N/A'
+
+/**
+ * 报表标量值
+ */
+export type Scalar = string | number | boolean | null
+
+export interface ComputeError {
+  /**
+   * @desc 错误码
+   */
+  __error: CellError
+}
+
+export type ComputedValue = Scalar | ComputeError
+
+export type NumberFormat =
+  | 'general'
+  | 'number'
+  | 'currency'
+  | 'percent'
+  | 'date'
+  | 'datetime'
+
+export type HorizontalAlign = 'left' | 'center' | 'right'
+export type VerticalAlign = 'top' | 'middle' | 'bottom'
+
+export interface CellBorder {
+  top?: string
+  right?: string
+  bottom?: string
+  left?: string
+}
+
+/**
+ * 报表导出/旧版迁移使用的样式描述
+ */
+export interface CellStyle {
+  fontFamily?: string
+  fontSize?: number
+  bold?: boolean
+  italic?: boolean
+  underline?: boolean
+  color?: string
+  fill?: string
+  align?: HorizontalAlign
+  valign?: VerticalAlign
+  border?: CellBorder
+  numFmt?: NumberFormat
+}
+
+export interface Band {
+  startRow: number
+  endRow: number
+}
+
+export type RegionFilterOperator =
+  | 'eq'
+  | 'neq'
   | 'contains'
-  | 'equals'
-  | 'notEquals'
-  | 'startsWith'
-  | 'endsWith'
-  | 'greaterThan'
-  | 'greaterOrEqual'
-  | 'lessThan'
-  | 'lessOrEqual'
-  | 'between'
-  | 'empty'
-  | 'notEmpty'
-export type SortDirection = 'asc' | 'desc'
+  | 'gt'
+  | 'gte'
+  | 'lt'
+  | 'lte'
 
-export interface ReportRow {
-  [key: string]: string | number | boolean | null | undefined
-}
-
-export interface DataSourceConfig {
-  kind: DataSourceKind
-  name: string
-  /** Backend-managed credential reference; secrets must not be persisted client-side. */
-  credentialId?: string
-  method: RequestMethod
-  endpoint: string
-  dataPath: string
-  queryParams: string
-  headers: string
-  body: string
-  rawJson: string
-  sqlDatabase: string
-  sqlDriver: SqlDriver
-  sqlHost: string
-  sqlPassword: string
-  sqlPort: string
-  sqlText: string
-  sqlUsername: string
-}
-
-export interface ReportDataSourceItem {
+export interface RegionFilter {
   id: string
-  name: string
-  kind: DataSourceKind
-  savedAt: string
-  config: DataSourceConfig
-}
-
-export interface ReportField {
-  key: string
-  label: string
-  type: FieldType
-  enabled: boolean
-  width: number
-  align: FieldAlign
-  summary: FieldSummary
-  computed?: boolean
-  expression?: string
-  mappingEnabled?: boolean
-  mappingItems?: ReportFieldMappingItem[]
-  mappingKeyField?: string
-  mappingLabelField?: string
-  mappingMode?: FieldMappingMode
-  mappingSource?: string
-  format?: ReportFieldFormatConfig
-}
-
-export interface ReportFieldMappingItem {
-  key: string
-  label: string
-}
-
-export interface ReportFieldFormatConfig {
-  mode: FieldFormatMode
-  preset?: FieldFormatPreset
-  customCode?: string
-  testValue?: string
-}
-
-export interface FieldFormatterTestResult {
-  error: string
+  field: string
+  operator: RegionFilterOperator
   value: string
 }
 
-export interface ReportSettings {
-  title: string
-  subtitle: string
-  fileName: string
-  sheetName: string
-  templateType: ReportTemplateType
-  theme: ReportTheme
-  density: ReportDensity
-  showIndex: boolean
-  showSummary: boolean
-  showFooter: boolean
-  watermark: string
-  previewLimit: number
-  paperSize: ReportPaperSize
-  orientation: ReportOrientation
-  marginTop: number
-  marginRight: number
-  marginBottom: number
-  marginLeft: number
-  pageHeader: string
-  pageFooter: string
-  repeatTableHeader: boolean
-  permissionMode: PermissionMode
-  asyncExportThreshold: number
-  streamExportThreshold: number
+export interface SortSpec {
+  field: string
+  desc: boolean
 }
 
-export interface ReportSummary {
-  key: string
-  label: string
-  value: string
+export interface GroupSpec {
+  field: string
+  /**
+   * @desc 分组头 Band,可选
+   */
+  header?: Band
+  /**
+   * @desc 分组尾 Band,可选
+   */
+  footer?: Band
 }
 
-export interface ExportOption {
-  format: ExportFormat
-  label: string
-  icon: string
-  description: string
-}
-
-export interface RequirementPhase {
-  phase: string
-  title: string
-  items: string[]
-}
-
-export interface ReportFilter {
+export interface DataRegion {
   id: string
-  fieldKey: string
-  operator: FilterOperator
-  value: string
-  secondValue: string
-  enabled: boolean
+  datasetId: string
+  /**
+   * @desc 明细行 Band,预览时按数据行重复
+   */
+  detail: Band
+  /**
+   * @desc 分组配置,按顺序嵌套
+   */
+  groups: GroupSpec[]
+  filters: RegionFilter[]
+  sort: SortSpec[]
 }
 
-export interface ReportSort {
-  id: string
-  fieldKey: string
-  direction: SortDirection
-  enabled: boolean
+export interface ReportSheetMeta {
+  regions: DataRegion[]
 }
 
-export interface ReportTemplateSnapshot {
-  id: string
-  name: string
-  savedAt: string
-  sourceConfig: DataSourceConfig
-  settings: ReportSettings
-  fields: ReportField[]
-  filters: ReportFilter[]
-  sorts: ReportSort[]
+export interface ReportMeta {
+  datasets: Dataset[]
+  parameters: ReportParameter[]
+  print: PrintSettings
+  /**
+   * @desc 当前活动工作表 id
+   */
+  activeSheetId: string
+  /**
+   * @desc 按工作表 id 保存的报表配置
+   */
+  sheets: Record<string, ReportSheetMeta>
 }
 
-export interface ReportDatasetSchema {
-  id: string
-  name: string
-  primaryKey: string
-  sourceId: string
-  rowPath: string
-  fields: ReportField[]
-}
-
-export interface ReportParameterSchema {
-  id: string
-  key: string
-  label: string
-  type: FieldType | 'boolean'
-  defaultValue: string | number | boolean
-  required: boolean
-}
-
-export interface ReportCapabilityItem {
-  label: string
-  description: string
-  icon: string
-  status: CapabilityStatus
-}
-
-export interface ReportCapabilityGroup {
-  title: string
-  description: string
-  icon: string
-  items: ReportCapabilityItem[]
-}
-
-export interface ReportDesignerSchema {
-  $schema: string
+/**
+ * 报表设计器持久化文档
+ */
+export interface ReportDocument {
   schemaVersion: number
-  version: string
-  title: string
-  description: string
-  activeSourceId: string
-  templateType: ReportTemplateType
-  settings: ReportSettings
-  dataSources: ReportDataSourceItem[]
-  datasets: ReportDatasetSchema[]
-  parameters: ReportParameterSchema[]
-  fields: ReportField[]
-  filters: ReportFilter[]
-  sorts: ReportSort[]
-  export: {
-    csv: {
-      encoding: string
-      separator: string
-      streaming: boolean
+  workbook: IWorkbookData
+  report: ReportMeta
+}
+
+export type DatasetFieldType = 'string' | 'number' | 'boolean' | 'date'
+
+export interface DatasetField {
+  key: string
+  label: string
+  type: DatasetFieldType
+}
+
+export type DatasetSource =
+  | {
+      kind: 'sample' | 'json'
+      json: string
     }
-    excel: {
-      engine: 'clientHtmlXls' | 'serverXlsx'
-      multiSheet: boolean
-      stylePreserved: boolean
+  | {
+      kind: 'rest'
+      url: string
+      dataPath?: string
+      headers?: Record<string, string>
     }
-    pdf: {
-      engine: 'browserPrint' | 'serverPdf'
-      fontEmbedding: boolean
-      pageBreaks: boolean
-    }
-  }
-  print: {
-    paperSize: ReportPaperSize
-    orientation: ReportOrientation
-    margins: {
-      top: number
-      right: number
-      bottom: number
-      left: number
-    }
-    pageHeader: string
-    pageFooter: string
-    repeatTableHeader: boolean
-  }
-  security: {
-    mode: PermissionMode
-    auditEnabled: boolean
-    watermarkEnabled: boolean
-    permissions: string[]
-  }
-  performance: {
-    previewLimit: number
-    asyncExportThreshold: number
-    streamExportThreshold: number
-    virtualPreview: boolean
-  }
+
+export interface Dataset {
+  id: string
+  name: string
+  source: DatasetSource
+  fields: DatasetField[]
+  rows: Record<string, Scalar>[]
+  /**
+   * @desc 最近一次加载错误
+   */
+  error?: string
+}
+
+export type ReportParameterType = 'text' | 'number' | 'date'
+
+export interface ReportParameter {
+  key: string
+  label: string
+  type: ReportParameterType
+  defaultValue: string
+}
+
+export interface PrintSettings {
+  paper: 'A4' | 'A3' | 'Letter'
+  orientation: 'portrait' | 'landscape'
+  margins: [number, number, number, number]
+}
+
+export interface CellRange {
+  startRow: number
+  startCol: number
+  endRow: number
+  endCol: number
+}
+
+export interface SheetInfo {
+  id: string
+  name: string
+  rowCount: number
+  columnCount: number
+  freezeRows: number
+  freezeCols: number
+  mergeCount: number
+  regionCount: number
+}
+
+export interface PreviewResult {
+  workbook: IWorkbookData
+  activeSheetId: string
+  rowCount: number
+  truncated: boolean
+  errors: string[]
+}
+
+export interface ValidationResult {
+  valid: boolean
+  errors: string[]
+  warnings: string[]
+}
+
+export const MAX_ROWS = 20000
+export const MAX_COLS = 200
+export const MAX_SHEETS = 8
+export const SCHEMA_VERSION = 3
+export const DEFAULT_ROW_HEIGHT = 24
+export const DEFAULT_COL_WIDTH = 96
+
+export function isComputeError(value: ComputedValue): value is ComputeError {
+  return typeof value === 'object' && value !== null && '__error' in value
 }

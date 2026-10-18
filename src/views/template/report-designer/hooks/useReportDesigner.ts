@@ -1,1543 +1,1157 @@
-import { computed, reactive, shallowRef } from 'vue'
+import { debounce } from 'es-toolkit'
+import { message } from 'antdv-next'
+import type { IWorkbookData } from '@univerjs/core'
+import { ThemeMode } from '@/constants'
+import { useTheme } from '@/theme'
 import {
-  defaultDataSourceConfig,
-  defaultFields,
-  defaultReportSettings,
-  sampleRows,
-} from '../data'
-import { formatFieldValue, testFieldFormatter } from '../formatters'
-import {
-  expressionHasIdentifier,
-  isExpressionIdentifier,
-  renameExpressionIdentifier,
-} from '../model/expression'
-import { useReportDataPipeline } from './useReportDataPipeline'
-import {
-  cloneSourceConfig,
-  defaultSourceId,
-  maxTemplateCount,
-  normalizeDataSources,
-  persistDataSources,
-  persistTemplates,
-  readDataSources,
-  readTemplates,
-} from '../repositories/report-designer-repository'
-import {
-  parseReportSchema,
-  REPORT_SCHEMA_VERSION,
-  sanitizeDataSourceConfig,
-  sanitizeDataSourceItem,
-} from '../schema'
-import type {
-  DataSourceConfig,
-  ExportFormat,
-  FieldType,
-  ReportDataSourceItem,
-  ReportDesignerSchema,
-  ReportField,
-  ReportFieldMappingItem,
-  ReportFilter,
-  ReportRow,
-  ReportSettings,
-  ReportSort,
-  ReportTemplateSnapshot,
+  MAX_COLS,
+  MAX_ROWS,
+  MAX_SHEETS,
+  SCHEMA_VERSION,
+  type CellRange,
+  type DataRegion,
+  type Dataset,
+  type DatasetSource,
+  type ReportDocument,
+  type ReportMeta,
+  type ReportParameter,
+  type Scalar,
+  type SheetInfo,
+  type ValidationResult,
 } from '../types'
+import {
+  createBlankDocument,
+  createDefaultDocument,
+} from '../data/default-workbook'
+import { deriveFields } from '../data/sample-datasets'
+import {
+  createExportDocument,
+  deserializeDocument,
+  serializeDocument,
+} from '../core/schema/document'
+import {
+  createPreviewSnapshot,
+  resolveParameterValues,
+} from '../core/preview/expand'
+import { validateReport } from '../core/preview/validate'
+import {
+  bandsIntersect,
+  regionRowRange,
+  shiftRegions,
+} from '../core/regions/shift'
+import { pruneWorkbookData } from '../core/adapters/snapshot'
+import { buildExportSheet } from '../core/adapters/export-model'
+import { createCsv } from '../core/io/csv'
+import { createHtml } from '../core/io/html'
+import { createSpreadsheetMl } from '../core/io/spreadsheetml'
+import { printHtml } from '../core/io/print'
+import { downloadText } from '../core/io/download'
+import { createId } from '../core/util/id'
+import { toA1Address } from '../core/model/reference'
+import { REPORT_COMMAND_IDS } from '../core/univer/commands'
+import * as workbookRepository from '../repositories/workbook-repository'
+import {
+  useUniverWorkbook,
+  type SheetSelection,
+  type UniverCallbacks,
+} from './useUniverWorkbook'
 
-const currencyKeys = ['amount', 'price', 'cost', 'fee', 'revenue', 'sales']
-const percentKeys = ['rate', 'ratio', 'percent', 'margin']
-const dateKeys = ['date', 'time', 'created', 'updated']
-const REPORT_SCHEMA_ID = 'https://wuhu.dev/schemas/report-designer/v1.json'
-const REPORT_DOCUMENT_VERSION = '1.0.0'
-const printPaperSizes: ReportSettings['paperSize'][] = [
-  'A4',
-  'A5',
-  'Letter',
-  'label100x150',
-]
-const printOrientations: ReportSettings['orientation'][] = [
-  'portrait',
-  'landscape',
-]
-const exportThemeTokens: Record<
-  ReportSettings['theme'],
-  { headerBackground: string; headerColor: string }
-> = {
-  amber: { headerBackground: '#b45309', headerColor: '#fff' },
-  default: { headerBackground: 'transparent', headerColor: '#111827' },
-  ink: { headerBackground: '#111827', headerColor: '#fff' },
-  steel: { headerBackground: '#2563eb', headerColor: '#fff' },
-  teal: { headerBackground: '#0f766e', headerColor: '#fff' },
+export type AutosaveState = 'idle' | 'saving' | 'saved' | 'error'
+
+function loadInitialDocument() {
+  return workbookRepository.listDrafts()[0] ?? createDefaultDocument()
 }
 
-function cloneFields(fields: ReportField[] = []) {
-  return fields.map((field) => ({
-    ...field,
-    format: field.format ? { ...field.format } : undefined,
-    mappingItems: field.mappingItems?.map((item) => ({ ...item })),
-  }))
+function clamp(value: number, min: number, max: number) {
+  return Math.min(max, Math.max(min, value))
 }
 
-function cloneFilters(filters: ReportFilter[] = []) {
-  return filters.map((filter) => ({ ...filter }))
+function sanitizeFilename(name: string) {
+  return (name || 'report').replace(/[\\/:*?"<>|]/g, '_')
 }
 
-function cloneSorts(sorts: ReportSort[] = []) {
-  return sorts.map((sort) => ({ ...sort }))
-}
-
-function cloneRows(rows: ReportRow[]) {
-  return rows.map((row) => ({ ...row }))
-}
-
-function toTitle(value: string) {
-  return value
-    .replace(/[_-]+/g, ' ')
-    .replace(/([a-z])([A-Z])/g, '$1 $2')
-    .replace(/^\w/, (letter) => letter.toUpperCase())
-}
-
-function isPlainRecord(value: unknown): value is Record<string, unknown> {
-  return !!value && typeof value === 'object' && !Array.isArray(value)
-}
-
-function normalizeRows(value: unknown): ReportRow[] {
-  if (!Array.isArray(value)) {
-    return isPlainRecord(value) ? [value as ReportRow] : []
-  }
-
-  return value
-    .map((item) => {
-      if (isPlainRecord(item)) return item as ReportRow
-      return { value: String(item) }
-    })
-    .filter((item) => Object.keys(item).length > 0)
-}
-
-function pickDataByPath(payload: unknown, path: string) {
-  if (!path.trim()) return payload
-
-  return path
-    .split('.')
-    .map((part) => part.trim())
-    .filter(Boolean)
-    .reduce<unknown>((current, part) => {
-      if (!isPlainRecord(current)) return undefined
-      return current[part]
-    }, payload)
-}
-
-function resolveRowsFromPayload(payload: unknown, path: string) {
-  const explicitRows = normalizeRows(pickDataByPath(payload, path))
-  if (explicitRows.length) return explicitRows
-
-  if (!isPlainRecord(payload)) return normalizeRows(payload)
-
-  for (const key of ['data', 'list', 'items', 'records', 'rows']) {
-    const rows = normalizeRows(payload[key])
-    if (rows.length) return rows
-  }
-
-  return normalizeRows(payload)
-}
-
-function detectFieldType(key: string, values: unknown[]): FieldType {
-  const normalizedKey = key.toLowerCase()
-  const meaningfulValues = values.filter(
-    (value) => value !== null && value !== undefined
-  )
-
-  if (percentKeys.some((part) => normalizedKey.includes(part))) return 'percent'
-  if (currencyKeys.some((part) => normalizedKey.includes(part)))
-    return 'currency'
-  if (dateKeys.some((part) => normalizedKey.includes(part))) return 'date'
-
-  if (
-    meaningfulValues.length > 0 &&
-    meaningfulValues.every((value) => typeof value === 'number')
-  ) {
-    return 'number'
-  }
-
-  return 'string'
-}
-
-function inferFields(rows: ReportRow[], previousFields: ReportField[]) {
-  const previousBaseFields = previousFields.filter((field) => !field.computed)
-  const previousMap = new Map(
-    previousBaseFields.map((field) => [field.key, field])
-  )
-  const keys = Array.from(
-    rows.slice(0, 20).reduce((set, row) => {
-      Object.keys(row).forEach((key) => set.add(key))
-      return set
-    }, new Set<string>())
-  )
-
-  return keys.map((key) => {
-    const previous = previousMap.get(key)
-    if (previous) return { ...previous }
-
-    const values = rows.slice(0, 30).map((row) => row[key])
-    const type = detectFieldType(key, values)
-    const isNumberLike = ['number', 'currency', 'percent'].includes(type)
-
-    return {
-      key,
-      label: toTitle(key),
-      type,
-      enabled: true,
-      width: type === 'string' ? 150 : 110,
-      align: isNumberLike ? 'right' : 'left',
-      summary: isNumberLike ? 'sum' : 'none',
-    } satisfies ReportField
-  })
-}
-
-function escapeCsv(value: unknown) {
-  const text = value === null || value === undefined ? '' : String(value)
-  return `"${text.replaceAll('"', '""')}"`
-}
-
-function escapeHtml(value: unknown) {
-  const text = value === null || value === undefined ? '' : String(value)
-  return text
-    .replaceAll('&', '&amp;')
-    .replaceAll('<', '&lt;')
-    .replaceAll('>', '&gt;')
-    .replaceAll('"', '&quot;')
-}
-
-function sanitizeFileName(value: string) {
-  const cleanName = value.trim().replace(/[\\/:*?"<>|]/g, '-')
-  return cleanName || 'report-export'
-}
-
-function clampPrintMargin(value: number) {
-  if (!Number.isFinite(value)) return 16
-  return Math.min(Math.max(value, 0), 50)
-}
-
-function getPrintPageSize(settings: ReportSettings) {
-  const paperSize = printPaperSizes.includes(settings.paperSize)
-    ? settings.paperSize
-    : 'A4'
-  const orientation = printOrientations.includes(settings.orientation)
-    ? settings.orientation
-    : 'portrait'
-  const size = paperSize === 'label100x150' ? '100mm 150mm' : paperSize
-  return `${size} ${orientation}`
-}
-
-function getPrintMargins(settings: ReportSettings) {
-  return [
-    clampPrintMargin(settings.marginTop),
-    clampPrintMargin(settings.marginRight),
-    clampPrintMargin(settings.marginBottom),
-    clampPrintMargin(settings.marginLeft),
-  ]
-    .map((value) => `${value}mm`)
-    .join(' ')
-}
-
-function createId(prefix: string) {
-  return `${prefix}-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`
-}
-
-function sanitizeFieldKey(value: string) {
-  const key = value
-    .trim()
-    .replace(/[^A-Za-z0-9_$]/g, '_')
-    .replace(/_+/g, '_')
-  if (!key) return ''
-  return /^\d/.test(key) ? `field_${key}` : key
-}
-
-function renameRawRowKey(row: ReportRow, currentKey: string, nextKey: string) {
-  if (!Object.prototype.hasOwnProperty.call(row, currentKey)) return { ...row }
-
-  const { [currentKey]: value, ...rest } = row
-  return { ...rest, [nextKey]: value }
-}
-
-function downloadBlob(blob: Blob, fileName: string) {
-  const url = URL.createObjectURL(blob)
-  const link = document.createElement('a')
-  link.href = url
-  link.download = fileName
-  link.click()
-  URL.revokeObjectURL(url)
-}
-
-function parseKeyValueText(value: string): Record<string, string> {
-  const text = value.trim()
-  if (!text) return {}
-
-  try {
-    const payload = JSON.parse(text)
-    if (isPlainRecord(payload)) {
-      return Object.fromEntries(
-        Object.entries(payload)
-          .filter(([key]) => key.trim())
-          .map(([key, nextValue]) => [key.trim(), String(nextValue ?? '')])
-      )
-    }
-  } catch {
-    // Fall back to line based key-value parsing.
-  }
-
-  return Object.fromEntries(
-    text
-      .split(/\r?\n/)
-      .map((line) => line.trim())
-      .filter((line) => line && !line.startsWith('#'))
-      .map((line) => {
-        const equalIndex = line.indexOf('=')
-        const colonIndex = line.indexOf(':')
-        let separatorIndex = -1
-        if (equalIndex < 0) separatorIndex = colonIndex
-        else if (colonIndex < 0) separatorIndex = equalIndex
-        else separatorIndex = Math.min(equalIndex, colonIndex)
-        if (separatorIndex <= 0) return ['', '']
-        return [
-          line.slice(0, separatorIndex).trim(),
-          line.slice(separatorIndex + 1).trim(),
-        ]
-      })
-      .filter(([key]) => key)
-  )
-}
-
-function inferParametersFromConfig(
-  config: DataSourceConfig
-): ReportDesignerSchema['parameters'] {
-  const keys = new Set<string>()
-
-  Object.keys(parseKeyValueText(config.queryParams)).forEach((key) =>
-    keys.add(key)
-  )
-
-  const sourceText = [config.endpoint, config.body, config.sqlText].join('\n')
-  for (const match of sourceText.matchAll(
-    /[:{]([A-Za-z_$][A-Za-z0-9_$]*)}?/g
-  )) {
-    const key = match[1]
-    if (key && !['http', 'https'].includes(key)) keys.add(key)
-  }
-
-  return Array.from(keys).map((key) => ({
-    defaultValue: '',
-    id: `param-${key}`,
-    key,
-    label: toTitle(key),
-    required: false,
-    type: 'string',
-  }))
-}
-
-function normalizeMappingKey(value: unknown) {
-  return value === null || value === undefined ? '' : String(value).trim()
-}
-
-function normalizeMappingItems(items: ReportFieldMappingItem[] = []) {
-  return items
-    .map((item) => ({
-      key: item.key.trim(),
-      label: item.label.trim(),
-    }))
-    .filter((item) => item.key)
-}
-
-function parseMappingSource(field: ReportField) {
-  const source = field.mappingSource?.trim()
-  if (!source) return []
-
-  const keyField = field.mappingKeyField?.trim() || 'key'
-  const labelField = field.mappingLabelField?.trim() || 'label'
-
-  try {
-    const payload = JSON.parse(source)
-
-    if (Array.isArray(payload)) {
-      return payload
-        .map((item) => {
-          if (!isPlainRecord(item)) return undefined
-          const key = normalizeMappingKey(
-            item[keyField] ?? item.value ?? item.key
-          )
-          const label = normalizeMappingKey(
-            item[labelField] ?? item.label ?? item.name
-          )
-          return key ? { key, label } : undefined
-        })
-        .filter((item): item is ReportFieldMappingItem => !!item)
-    }
-
-    if (isPlainRecord(payload)) {
-      return Object.entries(payload)
-        .map(([key, value]) => {
-          if (isPlainRecord(value)) {
-            return {
-              key: normalizeMappingKey(key),
-              label: normalizeMappingKey(
-                value[labelField] ?? value.label ?? value.name
-              ),
-            }
-          }
-
-          return {
-            key: normalizeMappingKey(key),
-            label: normalizeMappingKey(value),
-          }
-        })
-        .filter((item) => item.key)
-    }
-  } catch {
-    // Fall back to key=value or key:label lines.
-  }
-
-  return Object.entries(parseKeyValueText(source)).map(([key, label]) => ({
-    key,
-    label,
-  }))
-}
-
-function buildFieldMappingMap(field: ReportField) {
-  if (!field.mappingEnabled) return new Map<string, string>()
-
-  const items =
-    field.mappingMode === 'source'
-      ? parseMappingSource(field)
-      : normalizeMappingItems(field.mappingItems)
-
-  return new Map(items.map((item) => [item.key, item.label]))
-}
-
-function appendQueryParams(endpoint: string, paramsText: string) {
-  const params = parseKeyValueText(paramsText)
-  const entries = Object.entries(params).filter(([key]) => key)
-  if (!entries.length) return endpoint
-
-  const url = new URL(endpoint, window.location.origin)
-  entries.forEach(([key, value]) => {
-    if (value) url.searchParams.set(key, value)
-  })
-
-  return url.origin === window.location.origin
-    ? `${url.pathname}${url.search}`
-    : url.toString()
-}
-
-function buildRequestBody(bodyText: string) {
-  const text = bodyText.trim()
-  if (!text) return undefined
-
-  try {
-    return JSON.stringify(JSON.parse(text))
-  } catch {
-    return text
-  }
-}
-
-function isJsonBody(bodyText: string) {
-  if (!bodyText.trim()) return false
-
-  try {
-    JSON.parse(bodyText)
-    return true
-  } catch {
-    return false
-  }
-}
-
-function buildTableRows(
-  rows: ReportRow[],
-  fields: ReportField[],
-  withIndex: boolean,
-  valueFormatter: (
-    value: unknown,
-    field: ReportField,
-    row: ReportRow
-  ) => unknown
+function regionOverlaps(
+  regions: DataRegion[],
+  startRow: number,
+  endRow: number
 ) {
-  return rows.map((row, index) => {
-    const cells = fields.map((field) =>
-      valueFormatter(row[field.key], field, row)
-    )
-    return withIndex ? [index + 1, ...cells] : cells
+  return regions.some((region) => {
+    const [start, end] = regionRowRange(region)
+    return startRow <= end && endRow >= start
   })
 }
 
 export function useReportDesigner() {
-  const sourceConfig = reactive<DataSourceConfig>({
-    ...defaultDataSourceConfig,
-  })
-  const settings = reactive<ReportSettings>({ ...defaultReportSettings })
-  const fields = shallowRef<ReportField[]>(cloneFields(defaultFields))
-  const rawRows = shallowRef<ReportRow[]>(cloneRows(sampleRows))
-  const filters = shallowRef<ReportFilter[]>([])
-  const sorts = shallowRef<ReportSort[]>([])
-  const dataSources = shallowRef<ReportDataSourceItem[]>(readDataSources())
-  const activeSourceId = shallowRef(defaultSourceId)
-  const templates = shallowRef<ReportTemplateSnapshot[]>(readTemplates())
-  const isLoading = shallowRef(false)
-  const loadError = shallowRef('')
-  const exportStatus = shallowRef('已加载样例数据')
-  const templateStatus = shallowRef('模板可保存到当前浏览器')
-  let remoteRequestSeq = 0
-  const {
-    isProcessing,
-    processingError,
-    rows,
-    summaries: summaryAggregates,
-  } = useReportDataPipeline({ fields, filters, rawRows, sorts })
+  const initial = loadInitialDocument()
+  const controller = useUniverWorkbook()
+  const { themeMode } = useTheme()
+  const darkMode = computed(() => themeMode.value === ThemeMode.Dark)
 
-  const computedFields = computed(() => {
-    return fields.value.filter((field) => field.computed)
-  })
-
-  const fieldMappingMaps = computed(() => {
-    return new Map(
-      fields.value.map((field) => [field.key, buildFieldMappingMap(field)])
-    )
-  })
-
-  const enabledFields = computed(() => {
-    return fields.value.filter((field) => field.enabled)
-  })
-
-  const previewRows = computed(() => {
-    return rows.value.slice(0, settings.previewLimit)
-  })
-
-  const designerStats = computed(() => {
-    return [
-      { label: '原始行', value: rawRows.value.length.toLocaleString('zh-CN') },
-      { label: '有效行', value: rows.value.length.toLocaleString('zh-CN') },
-      {
-        label: '展示列',
-        value: enabledFields.value.length.toLocaleString('zh-CN'),
-      },
-    ]
-  })
-
-  const exportWarning = computed(() => {
-    if (rows.value.length >= settings.streamExportThreshold) {
-      return `当前数据量达到百万级阈值（${settings.streamExportThreshold.toLocaleString('zh-CN')} 行），生产环境应走服务端流式导出和下载中心。`
-    }
-
-    if (rows.value.length >= settings.asyncExportThreshold) {
-      return '当前数据量较大，建议优先导出 CSV，复杂 Excel 后续应切换 Web Worker 或服务端异步任务。'
-    }
-
-    if (rawRows.value.length !== rows.value.length) {
-      return `已应用筛选：当前导出 ${rows.value.length.toLocaleString('zh-CN')} / ${rawRows.value.length.toLocaleString('zh-CN')} 行。`
-    }
-
-    if (enabledFields.value.length >= 30) {
-      return '列数较多，建议控制样式复杂度，避免浏览器生成文件时出现明显卡顿。'
-    }
-
-    return ''
-  })
-
-  const summaryValues = computed(() => {
-    if (!settings.showSummary) return []
-
-    return enabledFields.value
-      .filter((field) => field.summary !== 'none')
-      .map((field) => {
-        if (field.summary === 'count') {
-          return {
-            key: field.key,
-            label: `${field.label} 数`,
-            value: rows.value.length.toLocaleString('zh-CN'),
-          }
-        }
-
-        const aggregate = summaryAggregates.value[field.key]
-        const total = aggregate?.total ?? 0
-        const value =
-          field.summary === 'avg'
-            ? total / Math.max(aggregate?.count ?? 0, 1)
-            : total
-
-        return {
-          key: field.key,
-          label: `${field.label}${field.summary === 'avg' ? '平均' : '合计'}`,
-          value: formatCell(value, field),
-        }
-      })
-  })
-
-  const reportSchema = computed<ReportDesignerSchema>(() => {
-    const activeSource = dataSources.value.find(
-      (source) => source.id === activeSourceId.value
-    )
-    const sourceId = activeSource?.id ?? defaultSourceId
-
-    return {
-      $schema: REPORT_SCHEMA_ID,
-      schemaVersion: REPORT_SCHEMA_VERSION,
-      activeSourceId: sourceId,
-      dataSources: dataSources.value.map((source) => ({
-        ...source,
-        config: sanitizeDataSourceItem(source).config,
-      })),
-      datasets: [
-        {
-          fields: cloneFields(fields.value),
-          id: 'dataset-main',
-          name: activeSource?.name ?? settings.sheetName,
-          primaryKey: fields.value[0]?.key ?? 'id',
-          rowPath: sourceConfig.dataPath,
-          sourceId,
-        },
-      ],
-      description: settings.subtitle,
-      export: {
-        csv: {
-          encoding: 'UTF-8 with BOM',
-          separator: ',',
-          streaming: rows.value.length >= settings.streamExportThreshold,
-        },
-        excel: {
-          engine:
-            rows.value.length >= settings.asyncExportThreshold
-              ? 'serverXlsx'
-              : 'clientHtmlXls',
-          multiSheet: false,
-          stylePreserved: true,
-        },
-        pdf: {
-          engine:
-            rows.value.length >= settings.asyncExportThreshold
-              ? 'serverPdf'
-              : 'browserPrint',
-          fontEmbedding: false,
-          pageBreaks: true,
-        },
-      },
-      fields: cloneFields(fields.value),
-      filters: cloneFilters(filters.value),
-      parameters: inferParametersFromConfig(sourceConfig),
-      performance: {
-        asyncExportThreshold: settings.asyncExportThreshold,
-        previewLimit: settings.previewLimit,
-        streamExportThreshold: settings.streamExportThreshold,
-        virtualPreview: rows.value.length > settings.previewLimit,
-      },
-      print: {
-        margins: {
-          bottom: settings.marginBottom,
-          left: settings.marginLeft,
-          right: settings.marginRight,
-          top: settings.marginTop,
-        },
-        orientation: settings.orientation,
-        pageFooter: settings.pageFooter,
-        pageHeader: settings.pageHeader,
-        paperSize: settings.paperSize,
-        repeatTableHeader: settings.repeatTableHeader,
-      },
-      security: {
-        auditEnabled: settings.permissionMode !== 'private',
-        mode: settings.permissionMode,
-        permissions: ['view', 'edit', 'export', 'print'],
-        watermarkEnabled: !!settings.watermark,
-      },
-      settings: { ...settings },
-      sorts: cloneSorts(sorts.value),
-      templateType: settings.templateType,
-      title: settings.title,
-      version: REPORT_DOCUMENT_VERSION,
-    }
-  })
-
-  const schemaSource = computed(() =>
-    JSON.stringify(reportSchema.value, null, 2)
+  const document = shallowRef<ReportDocument>(initial)
+  const report = shallowRef<ReportMeta>(initial.report)
+  const workbookName = shallowRef(initial.workbook.name)
+  const parameterValues = shallowRef<Record<string, Scalar>>(
+    resolveParameterValues(initial.report)
   )
+  const activeSheetId = shallowRef(initial.report.activeSheetId)
+  const sheetInfo = shallowRef<SheetInfo>()
+  const selection = shallowRef<SheetSelection>()
+  const previewMode = shallowRef(false)
+  const previewResult = shallowRef<ReturnType<typeof createPreviewSnapshot>>()
+  const designSnapshot = shallowRef<IWorkbookData>()
+  const isLoading = shallowRef(false)
+  const univerError = shallowRef<string>()
+  const autosaveState = shallowRef<AutosaveState>('idle')
+  const storageError = shallowRef(workbookRepository.getStorageError())
+  const regionSyncDegraded = shallowRef(false)
+  const mounted = shallowRef(false)
+  let rollingBack = false
+  let hadStructuralChange = false
+  let degradedNotified = false
+  let previewGeneration = 0
 
-  function resolveMappedValue(value: unknown, field: ReportField) {
-    if (!field.mappingEnabled) return value
-
-    const mappingMap = fieldMappingMaps.value.get(field.key)
-    const mappedValue = mappingMap?.get(normalizeMappingKey(value))
-    return mappedValue === undefined ? value : mappedValue
-  }
-
-  function formatCell(value: unknown, field: ReportField, row?: ReportRow) {
-    const mappedValue = resolveMappedValue(value, field)
-    return formatFieldValue({ field, mappedValue, row, value })
-  }
-
-  function testFormatCell(value: unknown, field: ReportField, row?: ReportRow) {
-    const mappedValue = resolveMappedValue(value, field)
-    return testFieldFormatter({ field, mappedValue, row, value })
-  }
-
-  function updateSourceConfig(patch: Partial<DataSourceConfig>) {
-    Object.assign(sourceConfig, patch)
-  }
-
-  function normalizeSourceConfigName(config: DataSourceConfig) {
-    if (config.name.trim()) return config.name.trim()
-    if (config.kind === 'rest') return 'REST API 数据源'
-    if (config.kind === 'json') return 'JSON 数据源'
-    if (config.kind === 'sql') return 'SQL 数据源'
-    return defaultDataSourceConfig.name
-  }
-
-  function assignSourceConfig(config: DataSourceConfig) {
-    Object.assign(sourceConfig, cloneSourceConfig(config))
-  }
-
-  function syncActiveDataSource() {
-    const activeId = activeSourceId.value || defaultSourceId
-    const nextConfig = cloneSourceConfig(sourceConfig)
-    nextConfig.name = normalizeSourceConfigName(nextConfig)
-    const nextSource: ReportDataSourceItem = {
-      config: nextConfig,
-      id: activeId,
-      kind: nextConfig.kind,
-      name: nextConfig.name,
-      savedAt: new Date().toISOString(),
-    }
-
-    dataSources.value = normalizeDataSources([
-      nextSource,
-      ...dataSources.value.filter((source) => source.id !== activeId),
-    ])
-    persistDataSources(dataSources.value)
-  }
-
-  function selectDataSource(id: string) {
-    const source = dataSources.value.find((item) => item.id === id)
-    if (!source) return
-
-    activeSourceId.value = source.id
-    assignSourceConfig(source.config)
-    loadError.value = ''
-    exportStatus.value = `已选择数据源：${source.name}`
-  }
-
-  function saveDataSource(payload: { config: DataSourceConfig; id?: string }) {
-    const sourceId =
-      payload.id && payload.id !== defaultSourceId
-        ? payload.id
-        : createId('source')
-    const config = cloneSourceConfig(payload.config)
-    config.name = normalizeSourceConfigName(config)
-    const nextSource: ReportDataSourceItem = {
-      config,
-      id: sourceId,
-      kind: config.kind,
-      name: config.name,
-      savedAt: new Date().toISOString(),
-    }
-
-    dataSources.value = normalizeDataSources([
-      nextSource,
-      ...dataSources.value.filter((source) => source.id !== sourceId),
-    ])
-    persistDataSources(dataSources.value)
-    activeSourceId.value = sourceId
-    assignSourceConfig(config)
-    loadError.value = ''
-    exportStatus.value = `已保存数据源：${config.name}`
-  }
-
-  function deleteDataSource(id: string) {
-    if (id === defaultSourceId) return
-
-    const nextSources = normalizeDataSources(
-      dataSources.value.filter((source) => source.id !== id)
-    )
-    dataSources.value = nextSources
-    persistDataSources(nextSources)
-
-    if (activeSourceId.value === id) {
-      selectDataSource(nextSources[0]?.id ?? defaultSourceId)
-    }
-  }
-
-  function updateSettings(patch: Partial<ReportSettings>) {
-    Object.assign(settings, patch)
-  }
-
-  function replaceRows(nextRows: ReportRow[], nextFields?: ReportField[]) {
-    const previousComputedFields = fields.value.filter(
-      (field) => field.computed
-    )
-    rawRows.value = cloneRows(nextRows)
-    fields.value = nextFields
-      ? cloneFields(nextFields)
-      : [
-          ...inferFields(nextRows, fields.value),
-          ...cloneFields(previousComputedFields),
-        ]
-  }
-
-  function loadSampleData() {
-    loadError.value = ''
-    sourceConfig.kind = 'sample'
-    sourceConfig.name = sourceConfig.name.trim() || defaultDataSourceConfig.name
-    filters.value = []
-    sorts.value = []
-    replaceRows(sampleRows, defaultFields)
-    syncActiveDataSource()
-    exportStatus.value = '已恢复样例数据'
-  }
-
-  async function loadRemoteData() {
-    if (!sourceConfig.endpoint.trim()) {
-      loadError.value = '请先填写接口地址'
-      return
-    }
-
-    const requestId = ++remoteRequestSeq
-    isLoading.value = true
-    loadError.value = ''
-
-    try {
-      const headers = parseKeyValueText(sourceConfig.headers)
-      const body = buildRequestBody(sourceConfig.body)
-      if (body && isJsonBody(sourceConfig.body) && !headers['Content-Type']) {
-        headers['Content-Type'] = 'application/json'
-      }
-
-      const response = await fetch(
-        appendQueryParams(sourceConfig.endpoint, sourceConfig.queryParams),
-        {
-          body: sourceConfig.method === 'GET' ? undefined : body,
-          headers,
-          method: sourceConfig.method,
+  const datasets = computed(() => report.value.datasets)
+  const parameters = computed(() => report.value.parameters)
+  const regions = computed(
+    () => report.value.sheets[activeSheetId.value]?.regions ?? []
+  )
+  const selectedRange = computed<CellRange | undefined>(
+    () => selection.value?.range
+  )
+  const selectionStats = computed(() => {
+    const current = selection.value
+    const values = current?.values ?? []
+    const displays = current?.displayValues ?? []
+    let count = 0
+    let numericCount = 0
+    let sum = 0
+    values.forEach((row, rowIndex) => {
+      row.forEach((value, colIndex) => {
+        const display = displays[rowIndex]?.[colIndex]
+        if (
+          (display === undefined || display === '') &&
+          (value === null || value === undefined)
+        ) {
+          return
         }
-      )
-
-      if (!response.ok) {
-        throw new Error(`接口返回 ${response.status}`)
-      }
-
-      const payload = await response.json()
-      const nextRows = resolveRowsFromPayload(payload, sourceConfig.dataPath)
-
-      if (requestId !== remoteRequestSeq) return
-
-      if (!nextRows.length) {
-        throw new Error('没有解析到数组数据')
-      }
-
-      replaceRows(nextRows)
-      sourceConfig.kind = 'rest'
-      sourceConfig.name = sourceConfig.name.trim() || 'REST API 数据源'
-      syncActiveDataSource()
-      exportStatus.value = `已加载接口数据：${nextRows.length.toLocaleString('zh-CN')} 行`
-    } catch (error) {
-      if (requestId !== remoteRequestSeq) return
-      loadError.value = error instanceof Error ? error.message : '接口加载失败'
-    } finally {
-      if (requestId === remoteRequestSeq) {
-        isLoading.value = false
-      }
+        count += 1
+        if (typeof value === 'number') {
+          numericCount += 1
+          sum += value
+        }
+      })
+    })
+    return {
+      rangeLabel: current?.rangeLabel ?? '',
+      count,
+      numericCount,
+      sum,
+      average: numericCount ? sum / numericCount : 0,
     }
+  })
+
+  function getSchemaText() {
+    const snapshot = controller.save() ?? document.value.workbook
+    const current: ReportDocument = {
+      schemaVersion: SCHEMA_VERSION,
+      workbook: snapshot,
+      report: report.value,
+    }
+    return serializeDocument(createExportDocument(current))
   }
 
-  function loadJsonData() {
-    loadError.value = ''
+  const callbacks: UniverCallbacks = {
+    onDirty: markDirty,
+    onCommandExecuted: handleCommand,
+    onSelectionChange: (next) => {
+      selection.value = next
+    },
+    onActiveSheetChange: (sheetId) => {
+      if (activeSheetId.value !== sheetId) {
+        activeSheetId.value = sheetId
+        selection.value = undefined
+      }
+      refreshSheetInfo()
+    },
+    onUndoRedo: handleUndoRedo,
+  }
 
+  const saveDebounced = debounce(() => saveDraftInternal(false), 1200)
+  const rebuildPreviewDebounced = debounce(() => {
+    void rebuildPreview()
+  }, 300)
+  const refreshSheetInfoDebounced = debounce(() => refreshSheetInfo(), 150)
+
+  onScopeDispose(() => {
+    saveDebounced.cancel()
+    rebuildPreviewDebounced.cancel()
+    refreshSheetInfoDebounced.cancel()
+    controller.dispose()
+  })
+
+  watch(darkMode, async () => {
+    if (!mounted.value || isLoading.value) return
+    const snapshot = previewMode.value
+      ? (previewResult.value?.workbook ?? designSnapshot.value)
+      : (controller.save() ?? document.value.workbook)
+    if (!snapshot) return
+    isLoading.value = true
     try {
-      const payload = JSON.parse(sourceConfig.rawJson)
-      const nextRows = resolveRowsFromPayload(payload, sourceConfig.dataPath)
+      await controller.recreate({
+        snapshot,
+        activeSheetId:
+          controller.getActiveSheetId() ?? report.value.activeSheetId,
+        readonly: previewMode.value,
+        darkMode: darkMode.value,
+        callbacks,
+      })
+    } finally {
+      isLoading.value = false
+    }
+  })
 
-      if (!nextRows.length) {
-        throw new Error('没有解析到数组数据')
-      }
-
-      sourceConfig.kind = 'json'
-      sourceConfig.name = sourceConfig.name.trim() || 'JSON 数据源'
-      replaceRows(nextRows)
-      syncActiveDataSource()
-      exportStatus.value = `已加载 JSON 数据：${nextRows.length.toLocaleString('zh-CN')} 行`
+  async function attach(container: HTMLElement) {
+    isLoading.value = true
+    univerError.value = undefined
+    try {
+      await controller.mount({
+        container,
+        snapshot: document.value.workbook,
+        activeSheetId: report.value.activeSheetId,
+        readonly: false,
+        darkMode: darkMode.value,
+        callbacks,
+      })
+      mounted.value = true
+      refreshSheetInfo()
     } catch (error) {
-      loadError.value = error instanceof Error ? error.message : 'JSON 解析失败'
+      univerError.value =
+        error instanceof Error ? error.message : '表格引擎初始化失败'
+      message.error(univerError.value)
+    } finally {
+      isLoading.value = false
     }
   }
 
-  function loadSqlData() {
-    const requiredFields = [
-      ['数据库地址', sourceConfig.sqlHost],
-      ['端口', sourceConfig.sqlPort],
-      ['数据库名', sourceConfig.sqlDatabase],
-      ['用户名', sourceConfig.sqlUsername],
-      ['密码', sourceConfig.sqlPassword],
-      ['SQL 语句', sourceConfig.sqlText],
-    ].filter(([, value]) => !String(value).trim())
+  function dispose() {
+    mounted.value = false
+    controller.dispose()
+  }
 
-    if (requiredFields.length) {
-      loadError.value = `请完善 SQL 数据源：${requiredFields.map(([label]) => label).join('、')}`
+  function markDirty() {
+    if (previewMode.value) return
+    autosaveState.value = 'saving'
+    saveDebounced()
+  }
+
+  function buildDocument(): ReportDocument {
+    const snapshot =
+      controller.save() ?? structuredClone(document.value.workbook)
+    const nextReport = structuredClone(report.value)
+    const sheetIds = [...snapshot.sheetOrder]
+    const active = controller.getActiveSheetId() ?? nextReport.activeSheetId
+    nextReport.activeSheetId = sheetIds.includes(active)
+      ? active
+      : (sheetIds[0] ?? '')
+    const sheets: ReportMeta['sheets'] = {}
+    sheetIds.forEach((sheetId) => {
+      sheets[sheetId] = nextReport.sheets[sheetId] ?? { regions: [] }
+    })
+    nextReport.sheets = sheets
+    const next: ReportDocument = {
+      schemaVersion: SCHEMA_VERSION,
+      workbook: pruneWorkbookData(snapshot),
+      report: nextReport,
+    }
+    document.value = next
+    report.value = nextReport
+    workbookName.value = snapshot.name
+    return next
+  }
+
+  function saveDraftInternal(notify: boolean) {
+    if (previewMode.value) return
+    try {
+      const next = buildDocument()
+      workbookRepository.saveDraft(next)
+      autosaveState.value = 'saved'
+      if (notify) message.success('草稿已保存')
+    } catch {
+      autosaveState.value = 'error'
+      storageError.value = '保存失败,浏览器存储空间可能已满'
+      if (notify) message.error(storageError.value)
+    }
+  }
+
+  function saveDraft() {
+    saveDraftInternal(true)
+  }
+
+  function updateReport(updater: (next: ReportMeta) => void) {
+    const next = structuredClone(report.value)
+    updater(next)
+    report.value = next
+    refreshSheetInfo()
+    markDirty()
+  }
+
+  function refreshSheetInfo() {
+    const sheet = controller.getActiveSheet()
+    if (!sheet) return
+    const id = sheet.getSheetId()
+    const freeze = sheet.getFreeze()
+    activeSheetId.value = id
+    sheetInfo.value = {
+      id,
+      name: sheet.getSheetName(),
+      rowCount: sheet.getMaxRows(),
+      columnCount: sheet.getMaxColumns(),
+      freezeRows: freeze?.ySplit ?? 0,
+      freezeCols: freeze?.xSplit ?? 0,
+      mergeCount: sheet.getMergeData().length,
+      regionCount: report.value.sheets[id]?.regions.length ?? 0,
+    }
+  }
+
+  function handleCommand(id: string, params: unknown) {
+    if (previewMode.value) return
+    refreshSheetInfoDebounced()
+    const record = isRecord(params) ? params : {}
+    const sheetId =
+      typeof record.subUnitId === 'string'
+        ? record.subUnitId
+        : activeSheetId.value
+
+    if (id === REPORT_COMMAND_IDS.insertRow) {
+      const range = asRange(record.range)
+      if (!range) {
+        degradeRegionSync()
+        return
+      }
+      const count = range.endRow - range.startRow + 1
+      // UP/DOWN 只影响样式继承方向,插入位置始终是 range.startRow
+      applyRowInsert(sheetId, range.startRow, count)
       return
     }
 
-    loadError.value = ''
-    sourceConfig.kind = 'sql'
+    if (id === REPORT_COMMAND_IDS.removeRow) {
+      const ranges = readRowRanges(record)
+      if (!ranges.length) {
+        degradeRegionSync()
+        return
+      }
+      applyRowDelete(sheetId, ranges)
+      return
+    }
+
     if (
-      !sourceConfig.name.trim() ||
-      sourceConfig.name.trim() === defaultDataSourceConfig.name
+      id === REPORT_COMMAND_IDS.moveRows ||
+      id === REPORT_COMMAND_IDS.moveColumns
     ) {
-      sourceConfig.name = `${sourceConfig.sqlDatabase} SQL 数据源`
-    }
-    syncActiveDataSource()
-    exportStatus.value = '已保存 SQL 数据源配置，等待服务端执行查询'
-  }
-
-  function loadActiveSourceData() {
-    if (sourceConfig.kind === 'sample') {
-      loadSampleData()
-      return
-    }
-
-    if (sourceConfig.kind === 'rest') {
-      loadRemoteData()
-      return
-    }
-
-    if (sourceConfig.kind === 'json') {
-      loadJsonData()
-      return
-    }
-
-    loadSqlData()
-  }
-
-  function toggleField(key: string) {
-    fields.value = fields.value.map((field) => {
-      return field.key === key ? { ...field, enabled: !field.enabled } : field
-    })
-  }
-
-  function updateField(key: string, patch: Partial<ReportField>) {
-    fields.value = fields.value.map((field) => {
-      return field.key === key ? { ...field, ...patch } : field
-    })
-  }
-
-  function renameFieldKey(currentKey: string, nextKeyValue: string) {
-    const nextKey = nextKeyValue.trim()
-    const targetField = fields.value.find((field) => field.key === currentKey)
-    if (!targetField) return
-
-    if (!nextKey) {
-      templateStatus.value = '字段名不能为空'
-      return
-    }
-
-    if (nextKey === currentKey) return
-
-    if (fields.value.some((field) => field.key === nextKey)) {
-      templateStatus.value = '字段名已存在'
-      return
-    }
-
-    const blocksComputedExpression = fields.value.some((field) => {
-      return (
-        field.computed &&
-        expressionHasIdentifier(field.expression ?? '', currentKey)
-      )
-    })
-
-    if (blocksComputedExpression && !isExpressionIdentifier(nextKey)) {
-      templateStatus.value = '字段被计算字段引用，请使用字母、数字、_ 或 $'
-      return
-    }
-
-    fields.value = fields.value.map((field) => {
-      const renamedField =
-        field.key === currentKey ? { ...field, key: nextKey } : field
-
-      if (!renamedField.computed || !renamedField.expression) {
-        return renamedField
+      if ((report.value.sheets[sheetId]?.regions.length ?? 0) > 0) {
+        rollback('数据区域内不支持移动行列')
       }
-
-      return {
-        ...renamedField,
-        expression: renameExpressionIdentifier(
-          renamedField.expression,
-          currentKey,
-          nextKey
-        ),
-      }
-    })
-    filters.value = filters.value.map((filter) => {
-      return filter.fieldKey === currentKey
-        ? { ...filter, fieldKey: nextKey }
-        : filter
-    })
-    sorts.value = sorts.value.map((sort) => {
-      return sort.fieldKey === currentKey
-        ? { ...sort, fieldKey: nextKey }
-        : sort
-    })
-
-    if (!targetField.computed) {
-      rawRows.value = rawRows.value.map((row) =>
-        renameRawRowKey(row, currentKey, nextKey)
-      )
-    }
-
-    templateStatus.value = `已重命名字段：${currentKey} 为 ${nextKey}`
-  }
-
-  function createCustomFieldKey() {
-    let index = fields.value.length + 1
-    let key = `customField${index}`
-
-    while (fields.value.some((field) => field.key === key)) {
-      index += 1
-      key = `customField${index}`
-    }
-
-    return { index, key }
-  }
-
-  function addField() {
-    const { index, key } = createCustomFieldKey()
-
-    rawRows.value = rawRows.value.map((row) => ({
-      ...row,
-      [key]: '',
-    }))
-    fields.value = [
-      ...fields.value,
-      {
-        align: 'left',
-        enabled: true,
-        key,
-        label: `自定义字段 ${index}`,
-        summary: 'none',
-        type: 'string',
-        width: 140,
-      },
-    ]
-    templateStatus.value = `已添加字段：${key}`
-  }
-
-  function removeField(key: string) {
-    const targetField = fields.value.find((field) => field.key === key)
-    if (!targetField) return
-
-    if (fields.value.length <= 1) {
-      templateStatus.value = '至少保留一个字段'
       return
     }
 
-    fields.value = fields.value.filter((field) => field.key !== key)
-    filters.value = filters.value.filter((filter) => filter.fieldKey !== key)
-    sorts.value = sorts.value.filter((sort) => sort.fieldKey !== key)
+    if (id === REPORT_COMMAND_IDS.removeSheet) {
+      if ((report.value.sheets[sheetId]?.regions.length ?? 0) > 0) {
+        rollback('请先删除该工作表的数据区域')
+        return
+      }
+      if ((controller.getWorkbook()?.getSheets().length ?? 0) < 1) {
+        rollback('至少保留一个工作表')
+        return
+      }
+      updateReport((next) => {
+        delete next.sheets[sheetId]
+      })
+      return
+    }
 
-    if (!targetField.computed) {
-      rawRows.value = rawRows.value.map((row) => {
-        const nextRow = { ...row }
-        delete nextRow[key]
-        return nextRow
+    if (id === REPORT_COMMAND_IDS.insertSheet) {
+      if ((controller.getWorkbook()?.getSheets().length ?? 0) > MAX_SHEETS) {
+        rollback(`最多支持 ${MAX_SHEETS} 个工作表`)
+        return
+      }
+      syncSheetMeta()
+    }
+  }
+
+  function applyRowInsert(sheetId: string, index: number, count: number) {
+    const current = report.value.sheets[sheetId]?.regions ?? []
+    if (!current.length) return
+    const conflict = current.some((region) => {
+      const [start, end] = regionRowRange(region)
+      return index > start && index <= end
+    })
+    if (conflict) {
+      rollback('数据区域内部不支持插入行,请先调整区域 Band')
+      return
+    }
+    const result = shiftRegions(current, 'insert', index, count)
+    if (!result.changed) return
+    updateReport((next) => {
+      next.sheets[sheetId] = { regions: result.regions }
+    })
+    hadStructuralChange = true
+  }
+
+  function applyRowDelete(sheetId: string, ranges: CellRange[]) {
+    const current = report.value.sheets[sheetId]?.regions ?? []
+    if (!current.length) return
+    const conflict = ranges.some((range) =>
+      bandsIntersect(current, range.startRow, range.endRow)
+    )
+    if (conflict) {
+      rollback('数据区域所在行不支持删除,请先调整区域 Band')
+      return
+    }
+    let nextRegions = current
+    let changed = false
+    ;[...ranges]
+      .sort((left, right) => right.startRow - left.startRow)
+      .forEach((range) => {
+        const result = shiftRegions(
+          nextRegions,
+          'delete',
+          range.startRow,
+          range.endRow - range.startRow + 1
+        )
+        nextRegions = result.regions
+        changed ||= result.changed
+      })
+    if (!changed) return
+    updateReport((next) => {
+      next.sheets[sheetId] = { regions: nextRegions }
+    })
+    hadStructuralChange = true
+  }
+
+  function syncSheetMeta() {
+    const snapshot = controller.save()
+    if (!snapshot) return
+    const ids = snapshot.sheetOrder
+    updateReport((next) => {
+      ids.forEach((id) => {
+        next.sheets[id] ??= { regions: [] }
+      })
+      Object.keys(next.sheets).forEach((id) => {
+        if (!ids.includes(id)) delete next.sheets[id]
+      })
+    })
+  }
+
+  function rollback(text: string) {
+    if (rollingBack) return
+    rollingBack = true
+    controller.undo()
+    rollingBack = false
+    message.warning(text)
+  }
+
+  function handleUndoRedo() {
+    if (rollingBack) return
+    refreshSheetInfo()
+    if (hadStructuralChange) {
+      regionSyncDegraded.value = true
+      if (!degradedNotified) {
+        degradedNotified = true
+        message.warning('撤销/重做后请检查数据区域 Band 行号')
+      }
+    }
+  }
+
+  function degradeRegionSync() {
+    regionSyncDegraded.value = true
+    message.warning('无法同步数据区域行号,请在右侧检查区域配置')
+  }
+
+  function setParameterValue(key: string, value: Scalar) {
+    parameterValues.value = { ...parameterValues.value, [key]: value }
+    if (previewMode.value) rebuildPreviewDebounced()
+  }
+
+  function addParameter(parameter: ReportParameter) {
+    const key = parameter.key.trim()
+    if (!/^[A-Za-z_][A-Za-z0-9_]*$/.test(key)) {
+      message.warning('参数标识需以字母或下划线开头,只能包含字母、数字和下划线')
+      return
+    }
+    if (
+      report.value.parameters.some(
+        (item) => item.key.toLowerCase() === key.toLowerCase()
+      )
+    ) {
+      message.warning('参数标识已存在')
+      return
+    }
+    const next = { ...parameter, key }
+    updateReport((current) => {
+      current.parameters.push(next)
+    })
+    parameterValues.value = {
+      ...parameterValues.value,
+      [next.key]:
+        next.type === 'number'
+          ? Number(next.defaultValue) || 0
+          : next.defaultValue,
+    }
+  }
+
+  function updateParameter(parameter: ReportParameter) {
+    updateReport((current) => {
+      const index = current.parameters.findIndex(
+        (item) => item.key === parameter.key
+      )
+      if (index >= 0) current.parameters[index] = parameter
+    })
+    parameterValues.value = {
+      ...parameterValues.value,
+      [parameter.key]:
+        parameter.type === 'number'
+          ? Number(parameter.defaultValue) || 0
+          : parameter.defaultValue,
+    }
+  }
+
+  function removeParameter(key: string) {
+    updateReport((current) => {
+      current.parameters = current.parameters.filter((item) => item.key !== key)
+    })
+    const next = { ...parameterValues.value }
+    delete next[key]
+    parameterValues.value = next
+  }
+
+  function addDataset(
+    name: string,
+    rows: Record<string, Scalar>[],
+    source: DatasetSource
+  ) {
+    const dataset: Dataset = {
+      id: createId('dataset'),
+      name,
+      source,
+      fields: deriveFields(rows),
+      rows,
+    }
+    updateReport((current) => {
+      current.datasets.push(dataset)
+    })
+    return dataset
+  }
+
+  function addDatasetFromJson(name: string, json: string) {
+    try {
+      const parsed = JSON.parse(json) as unknown
+      if (!Array.isArray(parsed)) throw new Error('JSON 必须是对象数组')
+      const rows = parsed
+        .filter(
+          (item): item is Record<string, Scalar> =>
+            typeof item === 'object' && item !== null
+        )
+        .map((item) => ({ ...item }))
+      if (!rows.length) throw new Error('JSON 数组不能为空')
+      addDataset(name, rows, {
+        kind: 'json',
+        json: JSON.stringify(rows, null, 2),
+      })
+      message.success('数据集已创建')
+    } catch (error) {
+      message.error(
+        error instanceof Error ? error.message : 'JSON 数据集解析失败'
+      )
+    }
+  }
+
+  async function addDatasetFromRest(name: string, url: string) {
+    try {
+      const response = await fetch(url)
+      if (!response.ok) throw new Error(`请求失败: ${response.status}`)
+      const parsed = (await response.json()) as unknown
+      if (!Array.isArray(parsed)) throw new Error('REST 返回必须是对象数组')
+      const rows = parsed
+        .filter(
+          (item): item is Record<string, Scalar> =>
+            typeof item === 'object' && item !== null
+        )
+        .map((item) => ({ ...item }))
+      addDataset(name, rows, { kind: 'rest', url })
+      message.success('REST 数据集已加载')
+    } catch (error) {
+      message.error(
+        error instanceof Error ? error.message : 'REST 数据集加载失败'
+      )
+    }
+  }
+
+  function removeDataset(datasetId: string) {
+    const removed = report.value.datasets.find(
+      (dataset) => dataset.id === datasetId
+    )
+    const keys = new Set(
+      [datasetId, removed?.name].filter((key): key is string => Boolean(key))
+    )
+    updateReport((current) => {
+      current.datasets = current.datasets.filter(
+        (dataset) => dataset.id !== datasetId
+      )
+      Object.values(current.sheets).forEach((sheet) => {
+        sheet.regions = sheet.regions.filter(
+          (region) => !keys.has(region.datasetId)
+        )
+      })
+    })
+  }
+
+  function createRegionFromSelection(datasetId: string) {
+    const range = selectedRange.value
+    if (!range) {
+      message.warning('请先在表格中选择明细行')
+      return undefined
+    }
+    const startRow = Math.min(range.startRow, range.endRow)
+    const endRow = Math.max(range.startRow, range.endRow)
+    if (regionOverlaps(regions.value, startRow, endRow)) {
+      message.warning('选中行与已有数据区域重叠')
+      return undefined
+    }
+    const region = {
+      id: createId('region'),
+      datasetId,
+      detail: { startRow, endRow },
+      groups: [],
+      filters: [],
+      sort: [],
+    }
+    updateReport((current) => {
+      current.sheets[activeSheetId.value] ??= { regions: [] }
+      current.sheets[activeSheetId.value].regions.push(region)
+    })
+    message.success('数据区域已创建')
+    return region
+  }
+
+  function updateRegion(regionId: string, patch: Partial<DataRegion>) {
+    updateReport((current) => {
+      const sheet = current.sheets[activeSheetId.value]
+      const region = sheet?.regions.find((item) => item.id === regionId)
+      if (region) Object.assign(region, patch)
+    })
+  }
+
+  function removeRegion(regionId: string) {
+    updateReport((current) => {
+      const sheet = current.sheets[activeSheetId.value]
+      if (!sheet) return
+      sheet.regions = sheet.regions.filter((region) => region.id !== regionId)
+    })
+  }
+
+  function insertField(datasetId: string, fieldKey: string) {
+    const range = controller.getActiveSheet()?.getActiveRange()
+    if (!range) {
+      message.warning('请先选择目标单元格')
+      return
+    }
+    range.setValue(`{{${datasetId}.${fieldKey}}}`)
+  }
+
+  function renameWorkbook(name: string) {
+    const trimmed = name.trim()
+    if (!trimmed) return
+    controller.getWorkbook()?.setName(trimmed)
+    workbookName.value = trimmed
+    markDirty()
+  }
+
+  function renameSheet(sheetId: string, name: string) {
+    const trimmed = name.trim()
+    if (!trimmed) return
+    const sheet = controller.getWorkbook()?.getSheetBySheetId(sheetId)
+    if (!sheet || sheet.getSheetName() === trimmed) return
+    sheet.setName(trimmed)
+    refreshSheetInfo()
+  }
+
+  function setSheetSize(rowCount: number, columnCount: number) {
+    const sheet = controller.getActiveSheet()
+    if (!sheet) return
+    sheet.setRowCount(clamp(rowCount, 1, MAX_ROWS))
+    sheet.setColumnCount(clamp(columnCount, 1, MAX_COLS))
+    refreshSheetInfo()
+    markDirty()
+  }
+
+  function setFreeze(rows: number, cols: number) {
+    const sheet = controller.getActiveSheet()
+    if (!sheet) return
+    if (!rows && !cols) {
+      sheet.cancelFreeze()
+    } else {
+      sheet.setFreeze({
+        startRow: rows,
+        startColumn: cols,
+        xSplit: cols,
+        ySplit: rows,
       })
     }
-
-    templateStatus.value = `已删除字段：${key}`
+    refreshSheetInfo()
+    markDirty()
   }
 
-  function moveField(key: string, direction: 'up' | 'down') {
-    const nextFields = cloneFields(fields.value)
-    const currentIndex = nextFields.findIndex((field) => field.key === key)
-    const targetIndex = direction === 'up' ? currentIndex - 1 : currentIndex + 1
-
-    if (currentIndex < 0 || targetIndex < 0 || targetIndex >= nextFields.length)
-      return
-
-    const [field] = nextFields.splice(currentIndex, 1)
-    nextFields.splice(targetIndex, 0, field)
-    fields.value = nextFields
-  }
-
-  function reorderFields(nextFieldKeys: string[]) {
-    const fieldMap = new Map(fields.value.map((field) => [field.key, field]))
-    const orderedKeys = Array.from(
-      new Set(nextFieldKeys.filter((fieldKey) => fieldMap.has(fieldKey)))
-    )
-    const orderedFields = orderedKeys
-      .map((fieldKey) => fieldMap.get(fieldKey))
-      .filter((field): field is ReportField => !!field)
-    const orderedKeySet = new Set(orderedKeys)
-    const remainingFields = fields.value.filter(
-      (field) => !orderedKeySet.has(field.key)
-    )
-
-    fields.value = cloneFields([...orderedFields, ...remainingFields])
-  }
-
-  function addComputedField(payload: {
-    expression: string
-    key: string
-    label: string
-    type: FieldType
-  }) {
-    const key = sanitizeFieldKey(payload.key)
-    if (!key || !payload.expression.trim()) {
-      templateStatus.value = '请填写计算字段编码和表达式'
+  function insertRowAtSelection() {
+    const range = selectedRange.value
+    if (!range) return
+    const sheet = controller.getActiveSheet()
+    if (!sheet) return
+    const start = Math.min(range.startRow, range.endRow)
+    const count = Math.abs(range.endRow - range.startRow) + 1
+    if (sheet.getMaxRows() + count > MAX_ROWS) {
+      message.warning(`最多支持 ${MAX_ROWS} 行`)
       return
     }
-
-    if (fields.value.some((field) => field.key === key)) {
-      templateStatus.value = '字段编码已存在'
+    const conflict = regions.value.some((region) => {
+      const [bandStart, bandEnd] = regionRowRange(region)
+      return start > bandStart && start <= bandEnd
+    })
+    if (conflict) {
+      message.warning('数据区域内部不支持插入行')
       return
     }
-
-    const isNumberLike = ['number', 'currency', 'percent'].includes(
-      payload.type
-    )
-    fields.value = [
-      ...fields.value,
-      {
-        align: isNumberLike ? 'right' : 'left',
-        computed: true,
-        enabled: true,
-        expression: payload.expression.trim(),
-        key,
-        label: payload.label.trim() || toTitle(key),
-        summary: isNumberLike ? 'sum' : 'none',
-        type: payload.type,
-        width: 120,
-      },
-    ]
-    templateStatus.value = `已添加计算字段：${key}`
+    sheet.insertRows(start, count)
   }
 
-  function removeComputedField(key: string) {
-    fields.value = fields.value.filter(
-      (field) => field.key !== key || !field.computed
-    )
-    filters.value = filters.value.filter((filter) => filter.fieldKey !== key)
-    sorts.value = sorts.value.filter((sort) => sort.fieldKey !== key)
-    templateStatus.value = `已移除计算字段：${key}`
+  function deleteRowAtSelection() {
+    const range = selectedRange.value
+    if (!range) return
+    const sheet = controller.getActiveSheet()
+    if (!sheet) return
+    const start = Math.min(range.startRow, range.endRow)
+    const end = Math.max(range.startRow, range.endRow)
+    if (sheet.getMaxRows() - (end - start + 1) < 1) {
+      message.warning('至少保留一行')
+      return
+    }
+    if (bandsIntersect(regions.value, start, end)) {
+      message.warning('数据区域所在行不支持删除')
+      return
+    }
+    sheet.deleteRows(start, end - start + 1)
   }
 
-  function firstFieldKey() {
-    return fields.value[0]?.key ?? ''
+  function insertColumnAtSelection() {
+    const range = selectedRange.value
+    if (!range) return
+    const sheet = controller.getActiveSheet()
+    if (!sheet) return
+    const start = Math.min(range.startCol, range.endCol)
+    const count = Math.abs(range.endCol - range.startCol) + 1
+    if (sheet.getMaxColumns() + count > MAX_COLS) {
+      message.warning(`最多支持 ${MAX_COLS} 列`)
+      return
+    }
+    sheet.insertColumns(start, count)
   }
 
-  function addFilter() {
-    filters.value = [
-      ...filters.value,
-      {
-        enabled: true,
-        fieldKey: firstFieldKey(),
-        id: createId('filter'),
-        operator: 'contains',
-        secondValue: '',
-        value: '',
-      },
-    ]
+  function deleteColumnAtSelection() {
+    const range = selectedRange.value
+    if (!range) return
+    const sheet = controller.getActiveSheet()
+    if (!sheet) return
+    const start = Math.min(range.startCol, range.endCol)
+    const count = Math.abs(range.endCol - range.startCol) + 1
+    if (sheet.getMaxColumns() - count < 1) {
+      message.warning('至少保留一列')
+      return
+    }
+    sheet.deleteColumns(start, count)
   }
 
-  function updateFilter(id: string, patch: Partial<ReportFilter>) {
-    filters.value = filters.value.map((filter) => {
-      return filter.id === id ? { ...filter, ...patch } : filter
+  function undo() {
+    controller.undo()
+  }
+
+  function redo() {
+    controller.redo()
+  }
+
+  function validate(): ValidationResult {
+    const next = buildDocument()
+    const result = validateReport(next, collectRuntimeErrors())
+    if (regionSyncDegraded.value) {
+      result.warnings.push('撤销/重做后区域 Band 可能已偏移,请检查右侧区域配置')
+    }
+    return result
+  }
+
+  function collectRuntimeErrors() {
+    const errors: string[] = []
+    const workbook = controller.getWorkbook()
+    if (!workbook) return errors
+    workbook.getSheets().forEach((sheet) => {
+      const rowCount = sheet.getLastRow() + 1
+      const colCount = sheet.getLastColumn() + 1
+      if (rowCount <= 0 || colCount <= 0) return
+      const values = sheet.getRange(0, 0, rowCount, colCount).getDisplayValues()
+      values.forEach((row, rowIndex) => {
+        row.forEach((value, colIndex) => {
+          if (
+            /^#(?:REF!|VALUE!|DIV\/0!|NAME\?|N\/A|CIRC!|SPILL|CALC|NUM!)/.test(
+              value
+            )
+          ) {
+            errors.push(
+              `${sheet.getSheetName()}!${toA1Address(
+                rowIndex,
+                colIndex
+              )} ${value}`
+            )
+          }
+        })
+      })
     })
+    return errors
   }
 
-  function removeFilter(id: string) {
-    filters.value = filters.value.filter((filter) => filter.id !== id)
-  }
-
-  function addSort() {
-    sorts.value = [
-      ...sorts.value,
-      {
-        direction: 'asc',
-        enabled: true,
-        fieldKey: firstFieldKey(),
-        id: createId('sort'),
-      },
-    ]
-  }
-
-  function updateSort(id: string, patch: Partial<ReportSort>) {
-    sorts.value = sorts.value.map((sort) => {
-      return sort.id === id ? { ...sort, ...patch } : sort
-    })
-  }
-
-  function removeSort(id: string) {
-    sorts.value = sorts.value.filter((sort) => sort.id !== id)
-  }
-
-  function buildExportRows() {
-    return buildTableRows(
-      rows.value,
-      enabledFields.value,
-      settings.showIndex,
-      formatCell
-    )
-  }
-
-  function buildExportHeaders() {
-    const headers = enabledFields.value.map((field) => field.label)
-    return settings.showIndex ? ['序号', ...headers] : headers
-  }
-
-  function exportCsv() {
-    const headers = buildExportHeaders()
-    const tableRows = buildExportRows()
-    const content = [headers, ...tableRows]
-      .map((line) => line.map(escapeCsv).join(','))
-      .join('\r\n')
-
-    downloadBlob(
-      new Blob([`\uFEFF${content}`], { type: 'text/csv;charset=utf-8' }),
-      `${sanitizeFileName(settings.fileName)}.csv`
-    )
-  }
-
-  function exportJson() {
-    const payload = {
-      template: {
-        fields: enabledFields.value,
-        filters: filters.value,
-        settings: { ...settings },
-        sheetName: settings.sheetName,
-        sorts: sorts.value,
-        sourceConfig: sanitizeDataSourceConfig(cloneSourceConfig(sourceConfig)),
-        subtitle: settings.subtitle,
-        title: settings.title,
-      },
-      rows: rows.value.map((row) => {
-        return Object.fromEntries(
-          enabledFields.value.map((field) => [
-            field.key,
-            formatCell(row[field.key], field, row),
-          ])
+  async function enterPreview() {
+    if (previewMode.value || isLoading.value) return
+    saveDebounced.cancel()
+    saveDraftInternal(false)
+    isLoading.value = true
+    try {
+      const snapshot =
+        controller.save() ?? structuredClone(document.value.workbook)
+      designSnapshot.value = snapshot
+      const result = createPreviewSnapshot(
+        {
+          schemaVersion: SCHEMA_VERSION,
+          workbook: snapshot,
+          report: {
+            ...report.value,
+            activeSheetId:
+              controller.getActiveSheetId() ?? report.value.activeSheetId,
+          },
+        },
+        parameterValues.value
+      )
+      previewResult.value = result
+      previewMode.value = true
+      await controller.recreate({
+        snapshot: result.workbook,
+        activeSheetId: result.activeSheetId,
+        readonly: true,
+        darkMode: darkMode.value,
+        callbacks,
+      })
+      if (result.truncated) {
+        message.warning(`预览数据超过 ${MAX_ROWS} 行,已截断`)
+      }
+      if (result.errors.length) {
+        message.warning(
+          `预览展开有 ${result.errors.length} 个问题: ${result.errors[0]}`
         )
-      }),
+      }
+    } catch (error) {
+      previewMode.value = false
+      message.error(error instanceof Error ? error.message : '进入预览失败')
+      if (designSnapshot.value) {
+        try {
+          await controller.recreate({
+            snapshot: designSnapshot.value,
+            activeSheetId: report.value.activeSheetId,
+            readonly: false,
+            darkMode: darkMode.value,
+            callbacks,
+          })
+        } catch {
+          // 恢复失败时保留错误提示,用户可刷新页面
+        }
+      }
+    } finally {
+      isLoading.value = false
     }
+  }
 
-    downloadBlob(
-      new Blob([JSON.stringify(payload, null, 2)], {
-        type: 'application/json;charset=utf-8',
-      }),
-      `${sanitizeFileName(settings.fileName)}.json`
+  async function exitPreview() {
+    if (!previewMode.value || isLoading.value) return
+    isLoading.value = true
+    try {
+      const snapshot =
+        designSnapshot.value ?? structuredClone(document.value.workbook)
+      await controller.recreate({
+        snapshot,
+        activeSheetId: report.value.activeSheetId,
+        readonly: false,
+        darkMode: darkMode.value,
+        callbacks,
+      })
+    } finally {
+      previewMode.value = false
+      designSnapshot.value = undefined
+      previewResult.value = undefined
+      isLoading.value = false
+      refreshSheetInfo()
+    }
+  }
+
+  async function rebuildPreview() {
+    if (!previewMode.value || !designSnapshot.value || isLoading.value) return
+    const generation = ++previewGeneration
+    const result = createPreviewSnapshot(
+      {
+        schemaVersion: SCHEMA_VERSION,
+        workbook: designSnapshot.value,
+        report: report.value,
+      },
+      parameterValues.value
     )
+    previewResult.value = result
+    isLoading.value = true
+    try {
+      await controller.recreate({
+        snapshot: result.workbook,
+        activeSheetId: result.activeSheetId,
+        readonly: true,
+        darkMode: darkMode.value,
+        callbacks,
+      })
+    } finally {
+      if (generation === previewGeneration) isLoading.value = false
+    }
+  }
+
+  function togglePreview() {
+    if (previewMode.value) void exitPreview()
+    else void enterPreview()
+  }
+
+  function publish() {
+    const result = validate()
+    if (!result.valid) {
+      message.error(`存在 ${result.errors.length} 个阻塞问题,无法发布`)
+      return result
+    }
+    try {
+      const next = buildDocument()
+      workbookRepository.publishDocument(next)
+      workbookRepository.saveDraft(next)
+      autosaveState.value = 'saved'
+      message.success('报表已发布')
+    } catch {
+      storageError.value = '发布失败,浏览器存储空间可能已满'
+      message.error(storageError.value)
+    }
+    return result
+  }
+
+  async function resetDocument(next: ReportDocument) {
+    document.value = next
+    report.value = next.report
+    workbookName.value = next.workbook.name
+    parameterValues.value = resolveParameterValues(next.report)
+    activeSheetId.value = next.report.activeSheetId
+    previewMode.value = false
+    designSnapshot.value = undefined
+    previewResult.value = undefined
+    regionSyncDegraded.value = false
+    hadStructuralChange = false
+    degradedNotified = false
+    isLoading.value = true
+    try {
+      await controller.recreate({
+        snapshot: next.workbook,
+        activeSheetId: next.report.activeSheetId,
+        readonly: false,
+        darkMode: darkMode.value,
+        callbacks,
+      })
+      refreshSheetInfo()
+      markDirty()
+    } finally {
+      isLoading.value = false
+    }
+  }
+
+  function newDocument() {
+    void resetDocument(createBlankDocument())
+    message.success('已新建空白报表')
+  }
+
+  function loadSample() {
+    void resetDocument(createDefaultDocument())
+    message.success('已加载示例报表')
+  }
+
+  function importSchema(json: string) {
+    const next = deserializeDocument(json)
+    if (!next) {
+      message.error('Schema 解析失败或版本不兼容')
+      return false
+    }
+    void resetDocument(next)
+    message.success('Schema 已导入')
+    return true
   }
 
   function exportSchema() {
-    downloadBlob(
-      new Blob([schemaSource.value], {
-        type: 'application/schema+json;charset=utf-8',
-      }),
-      `${sanitizeFileName(settings.fileName)}.schema.json`
+    downloadText(
+      `${sanitizeFilename(workbookName.value)}.schema.json`,
+      getSchemaText(),
+      'application/json'
     )
-    exportStatus.value = '已导出报表 Schema'
   }
 
-  function createHtmlTable(options: { inlineBorders?: boolean } = {}) {
-    const headers = buildExportHeaders()
-    const tableRows = buildExportRows()
-    const tableAttributes = options.inlineBorders
-      ? 'border="1" cellspacing="0" cellpadding="0" style="border-collapse:collapse;border:1px solid #d1d5db;mso-border-alt:solid #d1d5db .5pt;"'
-      : ''
-    const cellStyle = options.inlineBorders
-      ? ' style="border:1px solid #d1d5db;mso-border-alt:solid #d1d5db .5pt;"'
-      : ''
-    const headCells = headers
-      .map((header) => `<th${cellStyle}>${escapeHtml(header)}</th>`)
-      .join('')
-    const bodyRows = tableRows
-      .map((row) => {
-        return `<tr>${row.map((cell) => `<td${cellStyle}>${escapeHtml(cell)}</td>`).join('')}</tr>`
-      })
-      .join('')
+  function exportContext() {
+    const snapshot = controller.save()
+    const sheet = controller.getActiveSheet()
+    if (!snapshot || !sheet) {
+      message.warning('表格尚未初始化')
+      return undefined
+    }
+    return { snapshot, sheet: buildExportSheet(snapshot, sheet) }
+  }
 
-    return `
-      <h1>${escapeHtml(settings.title)}</h1>
-      <p>${escapeHtml(settings.subtitle)}</p>
-      <table ${tableAttributes}>
-        <thead><tr>${headCells}</tr></thead>
-        <tbody>${bodyRows}</tbody>
-      </table>
-      ${
-        settings.showFooter
-          ? `<footer>${escapeHtml(settings.watermark)} · ${escapeHtml(settings.pageFooter)} · ${new Date().toLocaleString('zh-CN')}</footer>`
-          : ''
-      }
-    `
+  function exportCsv() {
+    const context = exportContext()
+    if (!context) return
+    downloadText(
+      `${sanitizeFilename(workbookName.value)}-${sanitizeFilename(
+        context.sheet.name
+      )}.csv`,
+      createCsv(context.sheet),
+      'text/csv'
+    )
+  }
+
+  function exportHtml() {
+    const context = exportContext()
+    if (!context) return
+    downloadText(
+      `${sanitizeFilename(workbookName.value)}-${sanitizeFilename(
+        context.sheet.name
+      )}.html`,
+      createHtml(context.sheet, {
+        document: true,
+        print: report.value.print,
+        workbookName: workbookName.value,
+      }),
+      'text/html'
+    )
   }
 
   function exportXls() {
-    const theme = exportThemeTokens[settings.theme] ?? exportThemeTokens.default
-    const html = `
-      <!doctype html>
-      <html>
-        <head>
-          <meta charset="utf-8" />
-          <style>
-            body { font-family: "Microsoft YaHei", sans-serif; color: #111827; }
-            h1 { font-size: 20px; margin: 0 0 6px; }
-            p { margin: 0 0 14px; color: #64748b; }
-            table { border-collapse: collapse; width: 100%; border: 1px solid #d1d5db; mso-border-alt: solid #d1d5db .5pt; }
-            th { background: ${theme.headerBackground}; color: ${theme.headerColor}; font-weight: 700; }
-            th, td { border: 1px solid #d1d5db; padding: 8px 10px; mso-border-alt: solid #d1d5db .5pt; mso-number-format: "\\@"; }
-            tbody tr:last-child td { border-bottom: 1px solid #d1d5db; }
-            footer { margin-top: 16px; color: #64748b; }
-          </style>
-        </head>
-        <body>${createHtmlTable({ inlineBorders: true })}</body>
-      </html>
-    `
-
-    downloadBlob(
-      new Blob([`\uFEFF${html}`], {
-        type: 'application/vnd.ms-excel;charset=utf-8',
-      }),
-      `${sanitizeFileName(settings.fileName)}.xls`
+    const context = exportContext()
+    if (!context) return
+    downloadText(
+      `${sanitizeFilename(workbookName.value)}-${sanitizeFilename(
+        context.sheet.name
+      )}.xls`,
+      createSpreadsheetMl(context.sheet),
+      'application/vnd.ms-excel'
     )
   }
 
-  function buildPrintDocument() {
-    const theme = exportThemeTokens[settings.theme] ?? exportThemeTokens.default
-
-    return `
-      <!doctype html>
-      <html>
-        <head>
-          <meta charset="utf-8" />
-          <title>${escapeHtml(settings.title)}</title>
-          <style>
-            @page {
-              size: ${getPrintPageSize(settings)};
-              margin: ${getPrintMargins(settings)};
-            }
-            body { font-family: "Microsoft YaHei", sans-serif; color: #111827; }
-            h1 { font-size: 22px; margin: 0 0 6px; }
-            p { margin: 0 0 16px; color: #64748b; }
-            table { border-collapse: collapse; width: 100%; font-size: 12px; }
-            thead { display: ${settings.repeatTableHeader ? 'table-header-group' : 'table-row-group'}; }
-            th { background: ${theme.headerBackground}; color: ${theme.headerColor}; font-weight: 700; }
-            th, td { border: 1px solid #d1d5db; padding: 7px 8px; }
-            .print-header { margin-bottom: 10px; color: #64748b; font-size: 12px; }
-            footer { margin-top: 16px; color: #64748b; }
-          </style>
-        </head>
-        <body>
-          ${settings.pageHeader ? `<div class="print-header">${escapeHtml(settings.pageHeader)}</div>` : ''}
-          ${createHtmlTable()}
-        </body>
-      </html>
-    `
-  }
-
-  function printReport() {
-    // 使用 Blob URL 渲染打印页，替代 document.write 拼接，规避 XSS 风险。
-    const url = URL.createObjectURL(
-      new Blob([buildPrintDocument()], { type: 'text/html;charset=utf-8' })
+  function printSheet() {
+    const context = exportContext()
+    if (!context) return
+    printHtml(
+      createHtml(context.sheet, {
+        document: true,
+        print: report.value.print,
+        workbookName: workbookName.value,
+      })
     )
-    const printWindow = window.open(url, '_blank')
-    if (!printWindow) {
-      URL.revokeObjectURL(url)
-      exportStatus.value = '浏览器拦截了打印窗口'
-      return
-    }
-
-    let printed = false
-    const triggerPrint = () => {
-      if (printed) return
-      printed = true
-      printWindow.focus()
-      printWindow.print()
-      URL.revokeObjectURL(url)
-    }
-
-    printWindow.addEventListener('load', triggerPrint, { once: true })
-  }
-
-  function exportReport(format: ExportFormat) {
-    if (isProcessing.value) {
-      exportStatus.value = '数据正在计算，请稍后导出'
-      return
-    }
-
-    if (!enabledFields.value.length) {
-      exportStatus.value = '请至少选择一个字段'
-      return
-    }
-
-    if (!rows.value.length) {
-      exportStatus.value = '当前没有可导出的数据'
-      return
-    }
-
-    if (rows.value.length >= settings.asyncExportThreshold) {
-      exportStatus.value = `数据量已达到 ${settings.asyncExportThreshold.toLocaleString('zh-CN')} 行，请使用服务端异步导出`
-      return
-    }
-
-    if (format === 'csv') exportCsv()
-    if (format === 'xls') exportXls()
-    if (format === 'json') exportJson()
-    if (format === 'pdf') printReport()
-    if (format === 'print') printReport()
-
-    exportStatus.value =
-      format === 'pdf' || format === 'print'
-        ? '已打开打印预览，可打印或另存为 PDF'
-        : `已生成 ${format.toUpperCase()} 导出`
-  }
-
-  function importReportSchema(value: string) {
-    const payload = parseReportSchema(value)
-
-    const nextSettings = {
-      ...defaultReportSettings,
-      ...payload.settings,
-      subtitle:
-        payload.description ?? payload.settings?.subtitle ?? settings.subtitle,
-      templateType:
-        payload.templateType ??
-        payload.settings?.templateType ??
-        settings.templateType,
-      title: payload.title ?? payload.settings?.title ?? settings.title,
-    }
-
-    Object.assign(settings, nextSettings)
-    fields.value = cloneFields(payload.fields)
-    filters.value = cloneFilters(payload.filters ?? [])
-    sorts.value = cloneSorts(payload.sorts ?? [])
-
-    if (Array.isArray(payload.dataSources) && payload.dataSources.length) {
-      const nextSources = normalizeDataSources(payload.dataSources)
-      dataSources.value = nextSources
-      persistDataSources(nextSources)
-
-      const sourceId = nextSources.some(
-        (source) => source.id === payload.activeSourceId
-      )
-        ? payload.activeSourceId
-        : nextSources[0]?.id
-      if (sourceId) {
-        activeSourceId.value = sourceId
-        const activeSource = nextSources.find(
-          (source) => source.id === sourceId
-        )
-        if (activeSource) assignSourceConfig(activeSource.config)
-      }
-    }
-
-    templateStatus.value = `已导入 Schema：${settings.title}`
-    exportStatus.value = 'Schema 已同步到设计器'
-  }
-
-  function saveTemplate(name: string) {
-    const cleanName = name.trim() || settings.title.trim() || '未命名模板'
-    const existingTemplate = templates.value.find(
-      (template) => template.name === cleanName
-    )
-    const snapshot: ReportTemplateSnapshot = {
-      fields: cloneFields(fields.value),
-      filters: cloneFilters(filters.value),
-      id: existingTemplate?.id ?? createId('template'),
-      name: cleanName,
-      savedAt: new Date().toISOString(),
-      settings: { ...settings },
-      sorts: cloneSorts(sorts.value),
-      sourceConfig: cloneSourceConfig(sourceConfig),
-    }
-    const nextTemplates = [
-      snapshot,
-      ...templates.value.filter((template) => template.id !== snapshot.id),
-    ].slice(0, maxTemplateCount)
-
-    templates.value = nextTemplates
-    persistTemplates(nextTemplates)
-    templateStatus.value = `已保存模板：${cleanName}`
-  }
-
-  function loadTemplate(id: string) {
-    const snapshot = templates.value.find((template) => template.id === id)
-    if (!snapshot) {
-      templateStatus.value = '请选择要加载的模板'
-      return
-    }
-
-    Object.assign(sourceConfig, cloneSourceConfig(snapshot.sourceConfig))
-    Object.assign(settings, { ...defaultReportSettings, ...snapshot.settings })
-    fields.value = cloneFields(snapshot.fields)
-    filters.value = cloneFilters(snapshot.filters)
-    sorts.value = cloneSorts(snapshot.sorts)
-    templateStatus.value = `已加载模板：${snapshot.name}`
-  }
-
-  function deleteTemplate(id: string) {
-    const snapshot = templates.value.find((template) => template.id === id)
-    templates.value = templates.value.filter((template) => template.id !== id)
-    persistTemplates(templates.value)
-    templateStatus.value = snapshot
-      ? `已删除模板：${snapshot.name}`
-      : '模板已删除'
   }
 
   return {
-    activeSourceId,
-    computedFields,
-    dataSources,
-    designerStats,
-    enabledFields,
-    exportStatus,
-    exportWarning,
-    fields,
-    filters,
-    isLoading,
-    isProcessing,
-    loadError,
-    processingError,
-    previewRows,
-    reportSchema,
-    rows,
-    schemaSource,
-    settings,
-    sorts,
-    sourceConfig,
-    summaryValues,
-    templateStatus,
-    templates,
-    addComputedField,
-    addFilter,
-    addSort,
-    deleteTemplate,
+    activeSheetId,
+    addDatasetFromJson,
+    addDatasetFromRest,
+    addParameter,
+    attach,
+    autosaveState,
+    createRegionFromSelection,
+    datasets,
+    deleteColumnAtSelection,
+    deleteRowAtSelection,
+    dispose,
+    exportCsv,
+    exportHtml,
     exportSchema,
-    exportReport,
-    formatCell,
-    addField,
-    testFormatCell,
-    loadJsonData,
-    loadActiveSourceData,
-    importReportSchema,
-    loadRemoteData,
-    loadSampleData,
-    loadSqlData,
-    loadTemplate,
-    moveField,
-    removeField,
-    renameFieldKey,
-    reorderFields,
-    removeComputedField,
-    removeFilter,
-    removeSort,
-    saveTemplate,
-    saveDataSource,
-    selectDataSource,
-    toggleField,
-    deleteDataSource,
-    updateField,
-    updateFilter,
-    updateSettings,
-    updateSort,
-    updateSourceConfig,
+    exportXls,
+    getSchemaText,
+    importSchema,
+    insertColumnAtSelection,
+    insertField,
+    insertRowAtSelection,
+    isLoading,
+    loadSample,
+    newDocument,
+    parameterValues,
+    parameters,
+    previewMode,
+    previewResult,
+    printSheet,
+    publish,
+    redo,
+    refreshSheetInfo,
+    regionSyncDegraded,
+    regions,
+    removeDataset,
+    removeParameter,
+    removeRegion,
+    renameSheet,
+    renameWorkbook,
+    saveDraft,
+    selectedRange,
+    selectionStats,
+    setFreeze,
+    setParameterValue,
+    setSheetSize,
+    sheetInfo,
+    storageError,
+    togglePreview,
+    undo,
+    univerError,
+    updateParameter,
+    updateRegion,
+    validate,
+    workbookName,
   }
 }
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null
+}
+
+function asRange(value: unknown): CellRange | undefined {
+  if (!isRecord(value)) return undefined
+  if (
+    typeof value.startRow !== 'number' ||
+    typeof value.endRow !== 'number' ||
+    typeof value.startColumn !== 'number' ||
+    typeof value.endColumn !== 'number'
+  ) {
+    return undefined
+  }
+  return {
+    startRow: value.startRow,
+    startCol: value.startColumn,
+    endRow: value.endRow,
+    endCol: value.endColumn,
+  }
+}
+
+function readRowRanges(record: Record<string, unknown>): CellRange[] {
+  if (Array.isArray(record.ranges)) {
+    return record.ranges
+      .map((item) => asRange(item))
+      .filter((item): item is CellRange => Boolean(item))
+  }
+  const range = asRange(record.range)
+  return range ? [range] : []
+}
+
+export type ReportDesignerState = ReturnType<typeof useReportDesigner>

@@ -157,5 +157,46 @@ export {
   streamChatCompletionApi,
 } from './ai'
 export { getAuthSessionApi, loginApi } from './auth'
+export {
+  createApprovalCategoryApi,
+  createApprovalDefinitionApi,
+  createApprovalGroupApi,
+  deleteApprovalCategoryApi,
+  deleteApprovalDefinitionApi,
+  deleteApprovalGroupApi,
+  duplicateApprovalDefinitionApi,
+  getApprovalCategoryListApi,
+  getApprovalDefinitionPageListApi,
+  getApprovalDefinitionRecordApi,
+  getApprovalGroupPageListApi,
+  getApprovalGroupRecordApi,
+  getApprovalInstancePageListApi,
+  getApprovalInstanceRecordApi,
+  getApprovalMonitorSummaryApi,
+  publishApprovalDefinitionApi,
+  updateApprovalCategoryApi,
+  updateApprovalDefinitionApi,
+  updateApprovalGroupApi,
+} from './approval'
+export type {
+  ApprovalCategoryResp,
+  ApprovalDefinitionQuery,
+  ApprovalDefinitionResp,
+  ApprovalDefinitionState,
+  ApprovalGroupQuery,
+  ApprovalGroupResp,
+  ApprovalInstanceQuery,
+  ApprovalInstanceResp,
+  ApprovalInstanceStatus,
+  ApprovalInstanceStep,
+  ApprovalInstanceStepStatus,
+  ApprovalMonitorSummary,
+  CreateApprovalCategoryReq,
+  CreateApprovalDefinitionReq,
+  CreateApprovalGroupReq,
+  UpdateApprovalCategoryReq,
+  UpdateApprovalDefinitionReq,
+  UpdateApprovalGroupReq,
+} from './approval'
 export type { ChatCompletionMessage, ChatCompletionRequest } from './ai'
 export type { AuthSession, AuthUser, LoginRequest, LoginResponse } from './auth'

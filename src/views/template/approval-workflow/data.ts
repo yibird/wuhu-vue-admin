@@ -1,19 +1,16 @@
+import {
+  approvalFormFields,
+  createApprovalNode,
+  createNodeConfig,
+} from '@/components/approval-designer'
 import type {
   ApprovalAssigneeConfig,
-  ApprovalFieldPermission,
-  ApprovalFormField,
-  ApprovalNode,
-  ApprovalNodeConfig,
-  ApprovalNodeType,
-  ApprovalPaletteItem,
   ApprovalTemplateItem,
   ApprovalTimeoutRule,
   ApprovalUserRef,
   ApprovalWorkflowSchema,
-} from './types'
+} from '@/components/approval-designer'
 
-// SIZE_OK: local sample users, palettes, templates, and typed node factories stay
-// together so the workflow designer can render a complete offline preview.
 export const approvalUsers: ApprovalUserRef[] = [
   { id: 'u-001', name: '张敏', dept: '销售一部' },
   { id: 'u-002', name: '李航', dept: '财务部' },
@@ -21,23 +18,6 @@ export const approvalUsers: ApprovalUserRef[] = [
   { id: 'u-004', name: '赵宁', dept: '总经办' },
   { id: 'u-005', name: '周明', dept: '人力资源' },
 ]
-
-export const approvalFormFields: ApprovalFormField[] = [
-  { key: 'applicant', label: '申请人', type: 'user', required: true },
-  { key: 'department', label: '所在部门', type: 'department', required: true },
-  { key: 'amount', label: '报销金额', type: 'money', required: true },
-  { key: 'leaveDays', label: '请假天数', type: 'number', required: false },
-  { key: 'assetType', label: '资产类型', type: 'select', required: false },
-  { key: 'reason', label: '申请事由', type: 'text', required: true },
-  { key: 'attachment', label: '附件', type: 'text', required: false },
-]
-
-const defaultFieldPermissions: ApprovalFieldPermission[] =
-  approvalFormFields.map((field) => ({
-    field: field.key,
-    label: field.label,
-    mode: field.required ? 'readonly' : 'editable',
-  }))
 
 const defaultAssignee: ApprovalAssigneeConfig = {
   mode: 'supervisor',
@@ -57,118 +37,6 @@ const defaultTimeout: ApprovalTimeoutRule = {
   remindEveryHours: 4,
   escalateTo: [approvalUsers[3]],
   autoAction: 'transferAdmin',
-}
-
-export const approvalPalette: ApprovalPaletteItem[] = [
-  {
-    type: 'approver',
-    title: '审批人',
-    description: '指定成员、主管、角色、表单联系人或发起人自选',
-    icon: 'i-lucide:user-check',
-    accent: '#1677ff',
-  },
-  {
-    type: 'handler',
-    title: '办理人',
-    description: '审批通过后补充处理业务动作',
-    icon: 'i-lucide:clipboard-check',
-    accent: '#13c2c2',
-  },
-  {
-    type: 'cc',
-    title: '抄送人',
-    description: '流程到达时通知相关人',
-    icon: 'i-lucide:send',
-    accent: '#722ed1',
-  },
-  {
-    type: 'condition',
-    title: '条件分支',
-    description: '按金额、天数、部门等字段分流',
-    icon: 'i-lucide:git-branch',
-    accent: '#fa8c16',
-  },
-  {
-    type: 'parallel',
-    title: '并行分支',
-    description: '多条线同时审批，全部完成后汇合',
-    icon: 'i-lucide:git-fork',
-    accent: '#eb2f96',
-  },
-  {
-    type: 'subProcess',
-    title: '子流程',
-    description: '调用采购、合同、人事等复用流程',
-    icon: 'i-lucide:workflow',
-    accent: '#2f54eb',
-  },
-  {
-    type: 'data',
-    title: '数据动作',
-    description: '写入业务系统、更新状态或生成单据',
-    icon: 'i-lucide:database-zap',
-    accent: '#52c41a',
-  },
-  {
-    type: 'message',
-    title: '消息通知',
-    description: '钉钉、站内、邮件等通知模板',
-    icon: 'i-lucide:message-square-more',
-    accent: '#0891b2',
-  },
-]
-
-function createNodeConfig(type: ApprovalNodeType): ApprovalNodeConfig {
-  return {
-    assignee: {
-      ...defaultAssignee,
-      mode: type === 'cc' ? 'user' : defaultAssignee.mode,
-      users: type === 'cc' ? [approvalUsers[2]] : [...defaultAssignee.users],
-      roles: [...defaultAssignee.roles],
-    },
-    actions:
-      type === 'cc'
-        ? ['comment']
-        : ['agree', 'reject', 'transfer', 'addSigner', 'rollback', 'comment'],
-    conditionRules: [],
-    fieldPermissions: defaultFieldPermissions.map((item) => ({ ...item })),
-    timeout: {
-      ...defaultTimeout,
-      escalateTo: [...defaultTimeout.escalateTo],
-    },
-    ccUsers: type === 'cc' ? [approvalUsers[2]] : [],
-    formRequiredFields: approvalFormFields
-      .filter((field) => field.required)
-      .map((field) => field.key),
-    messageTemplate: '您有一条审批任务待处理：${workflowName}',
-    webhookUrl: '',
-    subProcessId: '',
-    script: 'return { approved: true }',
-  }
-}
-
-export function createApprovalNode(
-  type: ApprovalNodeType,
-  title?: string
-): ApprovalNode {
-  const palette = approvalPalette.find((item) => item.type === type)
-  const fallback = {
-    title: title ?? '审批节点',
-    description: '配置审批规则',
-    icon: 'i-lucide:circle',
-    accent: '#1677ff',
-  }
-
-  return {
-    id: `${type}-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 6)}`,
-    type,
-    title: title ?? palette?.title ?? fallback.title,
-    description: palette?.description ?? fallback.description,
-    icon: palette?.icon ?? fallback.icon,
-    accent: palette?.accent ?? fallback.accent,
-    required: type === 'start' || type === 'end',
-    config: createNodeConfig(type),
-  }
 }
 
 export const initialApprovalSchema: ApprovalWorkflowSchema = {
@@ -209,6 +77,10 @@ export const initialApprovalSchema: ApprovalWorkflowSchema = {
           mode: 'supervisor',
           supervisorLevel: 1,
           multiMode: 'sequential',
+        },
+        timeout: {
+          ...defaultTimeout,
+          escalateTo: [...defaultTimeout.escalateTo],
         },
       },
     },

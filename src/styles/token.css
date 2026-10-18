@@ -175,18 +175,10 @@
 
   /* Primary / 主题色：solid 用于主按钮，subtle 用于 Tag / Alert / 选中底色 */
   --w-bg-primary: var(--w-color-primary);
-  --w-bg-primary-hover: 64 150 255;
-  --w-bg-primary-active: 9 88 217;
-  --w-bg-primary-tint: color-mix(
-    in srgb,
-    rgb(var(--w-bg-primary)) 10%,
-    rgb(var(--w-bg-container))
-  );
-  --w-bg-primary-tint-hover: color-mix(
-    in srgb,
-    rgb(var(--w-bg-primary)) 24%,
-    rgb(var(--w-bg-container))
-  );
+  --w-bg-primary-hover: rgb(var(--w-bg-primary) / 20%);
+  --w-bg-primary-active: rgb(var(--w-bg-primary) / 35%);
+  --w-bg-primary-tint: rgb(var(--w-bg-primary) / 30%);
+  --w-bg-primary-tint-hover: rgb(var(--w-bg-primary) / 10%);
 
   /* Success / Warning / Error / Info 基础底色:与对应 --w-color-* 同源,随暗色覆盖自动适配 */
   --w-bg-success: var(--w-color-success);
