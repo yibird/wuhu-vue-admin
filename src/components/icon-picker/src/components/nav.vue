@@ -38,42 +38,45 @@
           <span>{{ group.label }}</span>
           <span class="h-1 flex-1 bg-fill-2" />
         </div>
-        <button
-          v-for="category in group.items"
-          :key="category.key"
-          type="button"
-          class="w-icon-category-nav__item group relative mb-3 h-36 w-full min-w-0 flex cursor-pointer items-center gap-7 overflow-hidden rounded-5 border-0 bg-transparent px-8 text-left text-xs text-secondary hover:(bg-hover text-main) focus-visible:(outline-none ring-2 ring-primary/15)"
-          :class="{
-            'bg-selected text-primary font-500 shadow-all-sm':
-              activeKey === category.key,
-          }"
-          :aria-pressed="activeKey === category.key"
-          @click="emits('select', category.key)"
-        >
-          <Transition name="w-icon-category-nav-indicator">
+        <div class="flex flex-col gap-4">
+          <button
+            v-for="category in group.items"
+            :key="category.key"
+            type="button"
+            class="group relative h-36 w-full min-w-0 flex cursor-pointer items-center gap-7 overflow-hidden rounded-5 border-0 px-8 text-left text-xs text-secondary focus-visible:(outline-none ring-2 ring-primary/15)"
+            :class="
+              activeKey === category.key
+                ? 'bg-primary/10 text-primary font-500 shadow-all-sm'
+                : 'hover:(bg-hover text-main)'
+            "
+            :aria-pressed="activeKey === category.key"
+            @click="emits('select', category.key)"
+          >
+            <Transition name="w-icon-category-nav-indicator">
+              <span
+                v-if="activeKey === category.key"
+                class="absolute bottom-7 left-0 top-7 w-2 rounded-r-2 bg-primary"
+              />
+            </Transition>
             <span
-              v-if="activeKey === category.key"
-              class="absolute bottom-7 left-0 top-7 w-2 rounded-r-2 bg-primary"
-            />
-          </Transition>
-          <span
-            class="size-22 shrink-0 flex items-center justify-center rounded-4 bg-container text-muted transition-colors group-hover:(bg-container text-primary)"
-            :class="{
-              'bg-primary/10 text-primary': activeKey === category.key,
-            }"
-          >
-            <Icon :name="category.icon" :size="14" />
-          </span>
-          <span class="min-w-0 flex-1 truncate">{{ category.label }}</span>
-          <span
-            class="hidden min-w-18 shrink-0 rounded-4 bg-fill-2 px-4 text-center text-10px text-muted tabular-nums transition-colors group-hover:bg-container sm:inline-block"
-            :class="{
-              'bg-primary/10 text-primary': activeKey === category.key,
-            }"
-          >
-            {{ category.count }}
-          </span>
-        </button>
+              class="size-22 shrink-0 flex items-center justify-center rounded-4 bg-container text-muted transition-colors group-hover:(bg-container text-primary)"
+              :class="{
+                'bg-primary/10 text-primary': activeKey === category.key,
+              }"
+            >
+              <Icon :name="category.icon" :size="14" />
+            </span>
+            <span class="min-w-0 flex-1 truncate">{{ category.label }}</span>
+            <span
+              class="hidden min-w-18 shrink-0 rounded-4 bg-fill-2 px-4 text-center text-10px text-muted tabular-nums transition-colors group-hover:bg-container sm:inline-block"
+              :class="{
+                'bg-primary/10 text-primary': activeKey === category.key,
+              }"
+            >
+              {{ category.count }}
+            </span>
+          </button>
+        </div>
       </section>
     </nav>
   </aside>

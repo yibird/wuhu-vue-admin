@@ -213,10 +213,9 @@ function handleViewportScroll() {
   }
 
   &-option {
-    /* 选中态:主题色边框 + 浅色底 + 主题色图标文字,外加一圈柔和高光 */
     &[aria-selected='true'] {
       color: rgb(var(--w-color-primary));
-      background-color: rgb(var(--w-bg-selected));
+      background-color: rgb(var(--w-bg-primary) / 10%);
       border-color: rgb(var(--w-color-primary));
       box-shadow: 0 0 0 3px rgb(var(--w-color-primary) / 12%);
     }
