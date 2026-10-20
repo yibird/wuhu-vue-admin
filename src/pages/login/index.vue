@@ -57,15 +57,11 @@
   </div>
 </template>
 <script lang="ts" setup>
-import {
-  Logo,
-  Banner,
-  ActionBar,
-  AccountLogin,
-  MobileLogin,
-  QrcodeLogin,
-  type Placement,
-} from './components'
+import Logo from './components/logo.vue'
+import Banner from './components/banner.vue'
+import ActionBar from './components/action-bar/index.vue'
+import AccountLogin from './components/account-login.vue'
+import type { Placement } from './components/types'
 import { useI18n } from 'vue-i18n'
 import { message, notification } from 'antdv-next'
 import { useRoute } from 'vue-router'
@@ -83,10 +79,18 @@ const { login, loginLoading } = useAuth()
 const placement = ref<Placement>('right')
 const activeLoginType = ref('account')
 
+/**
+ * 手机号 / 扫码登录不在首屏,按需加载:
+ * antd Tabs 首次激活才挂载面板,拆成异步组件后这两块代码也不会进登录首包。
+ */
 const loginComponents = {
   account: markRaw(AccountLogin),
-  mobile: markRaw(MobileLogin),
-  qrcode: markRaw(QrcodeLogin),
+  mobile: markRaw(
+    defineAsyncComponent(() => import('./components/mobile-login.vue'))
+  ),
+  qrcode: markRaw(
+    defineAsyncComponent(() => import('./components/qrcode-login.vue'))
+  ),
 }
 const items = computed(() => [
   {

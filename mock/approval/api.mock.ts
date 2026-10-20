@@ -3,24 +3,18 @@ import { apiErr, apiOk, getPageList } from '#mock/helper'
 import {
   appendCategory,
   appendDefinition,
-  appendGroup,
   categoryDataSource,
   definitionDataSource,
   deleteCategories,
   deleteDefinitions,
-  deleteGroups,
   duplicateDefinition,
-  enrichGroup,
   findCategory,
   findDefinition,
-  findGroup,
   findInstance,
-  groupDataSource,
   instanceDataSource,
   publishDefinition,
   updateCategory,
   updateDefinition,
-  updateGroup,
 } from './data'
 
 import type {
@@ -29,10 +23,8 @@ import type {
   ApprovalMonitorSummary,
   CreateApprovalCategoryReq,
   CreateApprovalDefinitionReq,
-  CreateApprovalGroupReq,
   UpdateApprovalCategoryReq,
   UpdateApprovalDefinitionReq,
-  UpdateApprovalGroupReq,
 } from '@/apis'
 
 type Query = Record<string, unknown>
@@ -127,7 +119,7 @@ export default defineMock([
       const input = body as CreateApprovalDefinitionReq
       if (!input?.name?.trim()) return apiErr('请输入审批流名称')
       if (!input?.categoryId || !findCategory(input.categoryId)) {
-        return apiErr('请选择有效的流程分类')
+        return apiErr('请选择有效的流程分组')
       }
       const definition = appendDefinition({
         ...input,
@@ -144,7 +136,7 @@ export default defineMock([
       if (!input?.id) return apiErr('缺少审批流 id')
       if (!findDefinition(input.id)) return apiErr('审批流不存在')
       if (input.categoryId && !findCategory(input.categoryId)) {
-        return apiErr('请选择有效的流程分类')
+        return apiErr('请选择有效的流程分组')
       }
       const definition = updateDefinition(
         input as Partial<ApprovalDefinitionResp> & { id: string }
@@ -182,7 +174,7 @@ export default defineMock([
   },
 
   // ============================================================
-  // 审批分类
+  // 审批分组
   // ============================================================
   {
     url: '/api/approval/category/getList',
@@ -199,11 +191,11 @@ export default defineMock([
     method: 'POST',
     body: ({ body }: MockRequest) => {
       const input = body as CreateApprovalCategoryReq
-      if (!input?.name?.trim()) return apiErr('请输入分类名称')
+      if (!input?.name?.trim()) return apiErr('请输入分组名称')
       const exists = categoryDataSource.some(
         (item) => item.name === input.name.trim()
       )
-      if (exists) return apiErr('分类名称已存在')
+      if (exists) return apiErr('分组名称已存在')
       return apiOk(appendCategory(input).id)
     },
   },
@@ -212,10 +204,10 @@ export default defineMock([
     method: 'POST',
     body: ({ body }: MockRequest) => {
       const input = body as UpdateApprovalCategoryReq
-      if (!input?.id) return apiErr('缺少分类 id')
-      if (!findCategory(input.id)) return apiErr('分类不存在')
+      if (!input?.id) return apiErr('缺少分组 id')
+      if (!findCategory(input.id)) return apiErr('分组不存在')
       const category = updateCategory(input)
-      return category ? apiOk(category.id) : apiErr('分类不存在')
+      return category ? apiOk(category.id) : apiErr('分组不存在')
     },
   },
   {
@@ -223,87 +215,14 @@ export default defineMock([
     method: 'POST',
     body: ({ body }: MockRequest) => {
       const ids = readIds(body)
-      if (!ids.length) return apiErr('请选择要删除的分类')
+      if (!ids.length) return apiErr('请选择要删除的分组')
       const occupied = definitionDataSource.find((item) =>
         ids.includes(item.categoryId)
       )
       if (occupied) {
-        return apiErr(`分类「${occupied.categoryName}」下仍有审批流，无法删除`)
+        return apiErr(`分组「${occupied.categoryName}」下仍有审批流，无法删除`)
       }
       deleteCategories(ids)
-      return apiOk(ids.length)
-    },
-  },
-
-  // ============================================================
-  // 流程分组
-  // ============================================================
-  {
-    url: '/api/approval/group/getPageList',
-    method: 'GET',
-    body: ({ query }: MockRequest) => {
-      const q = query as Query
-      const keyword = readString(q.keyword).toLowerCase()
-      const enabledRaw = readString(q.enabled)
-      const enabled = enabledRaw === '' ? undefined : enabledRaw === 'true'
-
-      const filtered = groupDataSource
-        .map(enrichGroup)
-        .filter((item) => {
-          if (
-            keyword &&
-            !includesKeyword(item.name, keyword) &&
-            !includesKeyword(item.code, keyword)
-          ) {
-            return false
-          }
-          if (enabled !== undefined && item.enabled !== enabled) return false
-          return true
-        })
-        .sort((left, right) => (left.sort ?? 0) - (right.sort ?? 0))
-
-      return apiOk(getPageList(filtered, normalizePage(q)))
-    },
-  },
-  {
-    url: '/api/approval/group/getRecord',
-    method: 'GET',
-    body: ({ query }: MockRequest) => {
-      const id = readString((query as Query).id)
-      const group = id ? findGroup(id) : undefined
-      return group ? apiOk(enrichGroup(group)) : apiErr('分组不存在')
-    },
-  },
-  {
-    url: '/api/approval/group/create',
-    method: 'POST',
-    body: ({ body }: MockRequest) => {
-      const input = body as CreateApprovalGroupReq
-      if (!input?.name?.trim()) return apiErr('请输入分组名称')
-      const id = appendGroup(input)
-      return id ? apiOk(id) : apiErr('分组编码已存在')
-    },
-  },
-  {
-    url: '/api/approval/group/update',
-    method: 'POST',
-    body: ({ body }: MockRequest) => {
-      const input = body as UpdateApprovalGroupReq
-      if (!findGroup(input?.id ?? '')) return apiErr('分组不存在')
-      if (input.name !== undefined && !input.name.trim()) {
-        return apiErr('请输入分组名称')
-      }
-      const group = updateGroup(input)
-      return group ? apiOk(group.id) : apiErr('分组编码已存在')
-    },
-  },
-  {
-    url: '/api/approval/group/del',
-    method: 'POST',
-    body: ({ body }: MockRequest) => {
-      const ids = readIds(body)
-      if (!ids.length) return apiErr('请选择要删除的分组')
-      deleteGroups(ids)
       return apiOk(ids.length)
     },
   },

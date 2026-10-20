@@ -25,7 +25,6 @@
   }
 }
 
-// Segmented：保证图标与文字垂直居中对齐
 .ant-segmented {
   .ant-segmented-item-label {
     display: inline-flex;
@@ -39,9 +38,6 @@
   }
 }
 
-// Select：下拉底部自定义操作区（popupRender 追加的内容）悬浮时，清除列表里残留的鼠标激活态。
-// rc-select 的 activeIndex 由选项的 mousemove 设置，指针移出列表后不会复位，
-// 于是“悬浮底部按钮”会让最后经过的那个选项一直保持 -active 背景。
 .ant-select-dropdown:has(.select-dropdown-footer:hover)
   .ant-select-item-option-active:not(.ant-select-item-option-selected) {
   background-color: transparent;

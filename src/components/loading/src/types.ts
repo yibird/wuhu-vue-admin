@@ -1,4 +1,4 @@
-import type { LoadingAnimation } from '@/config'
+import type { LoadingAnimation } from '@/constants'
 
 export interface LoadingProps {
   /**

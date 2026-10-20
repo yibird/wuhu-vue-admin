@@ -19,7 +19,7 @@
     <div class="h-280 w-full pt-8 max-md:h-240">
       <Chart
         :option="chartOption"
-        :theme="eChartsThemeName"
+        :theme="EChartsTheme"
         autoresize
         class="full min-h-0"
       />
@@ -41,7 +41,7 @@ const props = defineProps<{
   resources: ResourceMetric[]
 }>()
 
-const { baseChartOption, eChartsThemeName, getEChartsColor } = useEChartsTheme()
+const { baseChartOption, EChartsTheme, getEChartsColor } = useEChartsTheme()
 
 const resourceIds = ['cpu', 'memory', 'disk'] as const
 const toneColorVars: Record<MonitorTone, string> = {

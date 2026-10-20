@@ -4,11 +4,11 @@
     class="w-layout-toolbar-item"
     data-testid="theme-toggle"
     data-motion="spin"
-    @click="changeThemeMode"
+    @click="toggleThemeWithAnimation"
   >
     <Transition name="fade-icon" mode="out-in">
       <Icon
-        v-if="themeMode === ThemeMode.Dark"
+        v-if="themeMode === THEME_MODE.Dark"
         key="light"
         name="i-lucide:sun"
         :size="22"
@@ -19,14 +19,7 @@
 </template>
 <script setup lang="ts">
 import { useTheme } from '@/theme'
-import { ThemeMode } from '@/constants'
+import { THEME_MODE } from '@/constants'
 
-const { themeMode, changeThemeWithAnimation } = useTheme()
-
-const changeThemeMode = (e: Event) => {
-  changeThemeWithAnimation(
-    e,
-    themeMode.value === ThemeMode.Dark ? ThemeMode.Light : ThemeMode.Dark
-  )
-}
+const { themeMode, toggleThemeWithAnimation } = useTheme()
 </script>

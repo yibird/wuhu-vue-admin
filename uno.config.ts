@@ -14,6 +14,9 @@ export default defineConfig({
     'i-lucide:badge-percent',
     'i-lucide:banknote',
     'i-lucide:handshake',
+    'i-lucide:receipt-text',
+    'i-lucide:shopping-cart',
+    'i-lucide:code-xml',
   ],
   content: {
     pipeline: {

@@ -1,9 +1,9 @@
-export const ApiCode = {
+export const HTTP_STATUS = {
   Ok: 200,
   Err: 500,
 } as const
 
-export const RequestMethod = {
+export const REQUEST_METHOD = {
   GET: 'GET',
   POST: 'POST',
   PUT: 'PUT',
@@ -13,15 +13,15 @@ export const RequestMethod = {
   HEAD: 'HEAD',
 } as const
 
-export const HttpHeader = {
-  ContentType: 'Content-Type',
+export const HTTP_HEADER = {
+  CONTENT_TYPE: 'Content-Type',
 } as const
 
-export const ContentType = {
+export const CONTENT_TYPE = {
   Json: 'application/json',
 } as const
 
-export const RespStatusCode = {
+export const API_STATUS = {
   Ok: 200,
   Error: 500,
   Unauthorized: 401,
@@ -41,10 +41,8 @@ export const RespStatusCode = {
   NetworkAuthenticationRequired: 511,
 } as const
 
-export type ApiCodeType = (typeof ApiCode)[keyof typeof ApiCode]
-export type RequestMethodType =
-  (typeof RequestMethod)[keyof typeof RequestMethod]
-export type HttpHeaderType = (typeof HttpHeader)[keyof typeof HttpHeader]
-export type ContentTypeType = (typeof ContentType)[keyof typeof ContentType]
-export type RespStatusCodeType =
-  (typeof RespStatusCode)[keyof typeof RespStatusCode]
+export type HttpStatus = (typeof HTTP_STATUS)[keyof typeof HTTP_STATUS]
+export type RequestMethod = (typeof REQUEST_METHOD)[keyof typeof REQUEST_METHOD]
+export type HttpHeader = (typeof HTTP_HEADER)[keyof typeof HTTP_HEADER]
+export type ContentType = (typeof CONTENT_TYPE)[keyof typeof CONTENT_TYPE]
+export type ApiStatus = (typeof API_STATUS)[keyof typeof API_STATUS]

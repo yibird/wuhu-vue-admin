@@ -22,8 +22,8 @@
 
         <a-form-item label="所属分组" required>
           <a-select
-            v-model:value="groupId"
-            :options="groupOptions"
+            v-model:value="categoryId"
+            :options="categoryOptions"
             placeholder="请选择流程分组"
           />
         </a-form-item>
@@ -51,18 +51,18 @@
 </template>
 
 <script setup lang="ts">
-import type { ApprovalGroupResp } from '@/apis'
+import type { ApprovalCategoryResp } from '@/apis'
 import type { ApprovalWorkflowSchema } from '@/components'
 
 const props = defineProps<{
   schema: ApprovalWorkflowSchema
-  groups: readonly ApprovalGroupResp[]
-  groupId?: string
+  categories: readonly ApprovalCategoryResp[]
+  categoryId?: string
 }>()
 
 const emits = defineEmits<{
   'update:schema': [schema: ApprovalWorkflowSchema]
-  'update:groupId': [id: string | undefined]
+  'update:categoryId': [id: string | undefined]
 }>()
 
 const name = computed({
@@ -77,19 +77,17 @@ const description = computed({
   get: () => props.schema.settings.description,
   set: (value: string) => patchSettings({ description: value }),
 })
-const groupId = computed({
-  get: () => props.groupId,
+const categoryId = computed({
+  get: () => props.categoryId,
   set: (value: string | undefined) => {
-    emits('update:groupId', value)
-    const group = props.groups.find((item) => item.id === value)
-    if (group) patchSettings({ group: group.name })
+    emits('update:categoryId', value)
   },
 })
 
-const groupOptions = computed(() =>
-  props.groups.map((group) => ({
-    label: group.name,
-    value: group.id,
+const categoryOptions = computed(() =>
+  props.categories.map((category) => ({
+    label: category.name,
+    value: category.id,
   }))
 )
 

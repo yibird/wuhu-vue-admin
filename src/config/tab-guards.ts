@@ -7,7 +7,6 @@ import { registerTabGuard } from '@/store/tabs/guard'
  * 页面自身的状态判断(未保存、运行中等)请在页面内用 useTabGuard 就近声明。
  */
 export function setupTabGuards() {
-  // 固定 Tab 不允许被关闭,兜住绕过标签栏 UI 直接调用关闭入口的情况
   registerTabGuard('*', {
     beforeClose: ({ tab }) => !tab.pin,
   })

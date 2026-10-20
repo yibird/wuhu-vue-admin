@@ -1,5 +1,5 @@
 import dayjs from 'dayjs'
-import { ApiCode } from '@/constants'
+import { HTTP_STATUS } from '@/constants'
 import type { PageResult, Result } from '#/http'
 import type {
   ProviderCreateInput,
@@ -127,7 +127,7 @@ export async function getProviderPageListApi(
 
   const start = (query.current - 1) * query.pageSize
   return {
-    code: ApiCode.Ok,
+    code: HTTP_STATUS.Ok,
     message: '请求成功',
     data: {
       list: filtered.slice(start, start + query.pageSize),
@@ -155,5 +155,5 @@ export async function createProviderApi(
   }
   providers = [item, ...providers]
 
-  return { code: ApiCode.Ok, message: '请求成功', data: item }
+  return { code: HTTP_STATUS.Ok, message: '请求成功', data: item }
 }

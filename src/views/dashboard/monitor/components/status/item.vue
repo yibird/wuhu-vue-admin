@@ -20,7 +20,7 @@
       <div class="relative size-132">
         <Chart
           :option="chartOption"
-          :theme="eChartsThemeName"
+          :theme="EChartsTheme"
           autoresize
           class="full min-h-0"
         />
@@ -48,7 +48,7 @@ import { Chart } from '@/components'
 import type { MonitorTone, StatusItemProps } from '../types'
 import type { EChartsCoreOption } from 'echarts/core'
 
-const { eChartsThemeName } = useEChartsTheme()
+const { EChartsTheme } = useEChartsTheme()
 
 const props = defineProps<StatusItemProps>()
 

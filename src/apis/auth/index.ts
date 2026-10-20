@@ -1,12 +1,12 @@
 import { apiRequest } from '@/utils'
-import { RequestMethod } from '@/constants'
+import { REQUEST_METHOD } from '@/constants'
 
 import type { Result } from '#/http'
 import type { AuthSession, LoginRequest, LoginResponse } from './types'
 
 export function loginApi(data: LoginRequest, signal?: AbortSignal) {
   return apiRequest<Result<LoginResponse>>('/v1/auth/login', {
-    method: RequestMethod.POST,
+    method: REQUEST_METHOD.POST,
     json: data,
     signal,
   })
@@ -14,7 +14,7 @@ export function loginApi(data: LoginRequest, signal?: AbortSignal) {
 
 export function getAuthSessionApi(signal?: AbortSignal) {
   return apiRequest<Result<AuthSession>>('/v1/auth/session', {
-    method: RequestMethod.GET,
+    method: REQUEST_METHOD.GET,
     signal,
     dedupe: false,
   })

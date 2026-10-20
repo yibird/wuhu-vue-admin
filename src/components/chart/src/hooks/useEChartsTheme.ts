@@ -1,5 +1,5 @@
 import { createSharedComposable } from '@vueuse/core'
-import { ThemeMode } from '@/constants'
+import { THEME_MODE } from '@/constants'
 import { useTheme } from '@/theme'
 
 export type EChartsPaletteKey =
@@ -12,7 +12,7 @@ export type EChartsPaletteKey =
   | 'tooltipBorder'
   | 'tooltipText'
 
-type EChartsThemeName = typeof ThemeMode.Light | typeof ThemeMode.Dark
+type EChartsTheme = typeof THEME_MODE.Light | typeof THEME_MODE.Dark
 type EChartsTooltipTrigger = 'axis' | 'item'
 
 export interface BaseEChartsTooltipOption {
@@ -39,11 +39,8 @@ export interface BaseEChartsOption {
   tooltip: BaseEChartsTooltipOption
 }
 
-const fallbackTheme: Record<
-  EChartsThemeName,
-  Record<EChartsPaletteKey, string>
-> = {
-  [ThemeMode.Light]: {
+const fallbackTheme: Record<EChartsTheme, Record<EChartsPaletteKey, string>> = {
+  [THEME_MODE.Light]: {
     primaryText: '#21252c',
     secondaryText: '#606773',
     tertiaryText: '#89909d',
@@ -53,7 +50,7 @@ const fallbackTheme: Record<
     tooltipBorder: 'rgba(148, 163, 184, 0.22)',
     tooltipText: '#21252c',
   },
-  [ThemeMode.Dark]: {
+  [THEME_MODE.Dark]: {
     primaryText: '#ffffff',
     secondaryText: '#adadad',
     tertiaryText: '#7e7e7e',
@@ -125,15 +122,15 @@ export function getCssRgbVarAlpha(
 
 export const useEChartsTheme = createSharedComposable(() => {
   const { themeMode, themeColor, fontStack, fontWeight } = useTheme()
-  const eChartsThemeName = computed<EChartsThemeName>(() =>
-    themeMode.value === ThemeMode.Dark ? ThemeMode.Dark : ThemeMode.Light
+  const EChartsTheme = computed<EChartsTheme>(() =>
+    themeMode.value === THEME_MODE.Dark ? THEME_MODE.Dark : THEME_MODE.Light
   )
 
   const colorPalette = computed(() => {
     themeColor.value
     const primary = getCssRgbVar('--w-color-primary', lightPalette[0])
     const palette =
-      eChartsThemeName.value === ThemeMode.Dark
+      EChartsTheme.value === THEME_MODE.Dark
         ? [...darkPalette]
         : [...lightPalette]
 
@@ -144,26 +141,26 @@ export const useEChartsTheme = createSharedComposable(() => {
     if (key === 'axisLine') {
       return getCssRgbVarAlpha(
         '--w-border-color-2',
-        eChartsThemeName.value === ThemeMode.Dark ? 0.34 : 0.44,
-        fallbackTheme[eChartsThemeName.value].axisLine
+        EChartsTheme.value === THEME_MODE.Dark ? 0.34 : 0.44,
+        fallbackTheme[EChartsTheme.value].axisLine
       )
     }
 
     if (key === 'splitLine') {
       return getCssRgbVarAlpha(
         '--w-border-color-2',
-        eChartsThemeName.value === ThemeMode.Dark ? 0.18 : 0.3,
-        fallbackTheme[eChartsThemeName.value].splitLine
+        EChartsTheme.value === THEME_MODE.Dark ? 0.18 : 0.3,
+        fallbackTheme[EChartsTheme.value].splitLine
       )
     }
 
-    return fallbackTheme[eChartsThemeName.value][key]
+    return fallbackTheme[EChartsTheme.value][key]
   }
 
   const baseChartOption = computed<BaseEChartsOption>(() => ({
     backgroundColor: 'transparent',
     color: colorPalette.value,
-    darkMode: eChartsThemeName.value === ThemeMode.Dark,
+    darkMode: EChartsTheme.value === THEME_MODE.Dark,
     textStyle: {
       color: getEChartsColor('secondaryText'),
       fontFamily: fontStack.value,
@@ -186,7 +183,7 @@ export const useEChartsTheme = createSharedComposable(() => {
   return {
     baseChartOption,
     colorPalette,
-    eChartsThemeName,
+    EChartsTheme,
     getEChartsColor,
     themeColor,
   }

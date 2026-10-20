@@ -20,22 +20,22 @@
 <script lang="ts" setup>
 import { useAppStore } from '@/store'
 import { ConfigItem } from '../components'
-import { TabsTheme } from '@/constants'
+import { TAB_THEME } from '@/constants'
 
 const { tabs: tab } = useAppStore()
 
 const themeOptions = [
   {
     label: '块',
-    value: TabsTheme.Block,
+    value: TAB_THEME.Block,
   },
   {
     label: '卡片',
-    value: TabsTheme.Card,
+    value: TAB_THEME.Card,
   },
   {
     label: '谷歌',
-    value: TabsTheme.Google,
+    value: TAB_THEME.Google,
   },
 ]
 </script>

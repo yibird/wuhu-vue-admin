@@ -2,7 +2,7 @@
   <div class="w-full min-w-0" :style="{ height: `${height}px` }">
     <Chart
       :option="chartOption"
-      :theme="eChartsThemeName"
+      :theme="EChartsTheme"
       autoresize
       class="full min-h-0"
     />
@@ -30,7 +30,7 @@ const props = withDefaults(
   { height: 280 }
 )
 
-const { eChartsThemeName } = useEChartsTheme()
+const { EChartsTheme } = useEChartsTheme()
 const toChartOption = useChartAdapter()
 
 const chartOption = computed(() =>

@@ -1,7 +1,7 @@
 <template>
   <Chart
     :option="chartOption"
-    :theme="eChartsThemeName"
+    :theme="EChartsTheme"
     autoresize
     class="full min-h-0"
   />
@@ -15,7 +15,7 @@ import type { EChartsCoreOption } from 'echarts/core'
 
 const props = defineProps<StatisticsChartProps>()
 
-const { baseChartOption, eChartsThemeName, getEChartsColor } = useEChartsTheme()
+const { baseChartOption, EChartsTheme, getEChartsColor } = useEChartsTheme()
 
 const countries = [
   { name: 'China', base: 5200, amplitude: 3800 },

@@ -14,24 +14,23 @@
 </template>
 
 <script setup lang="ts">
-import { Locale } from '@/constants'
-import type { Locale as LocaleValue } from '@/config'
+import { LOCALE, type Locale } from '@/constants'
 import { useLocale } from '@/locales'
 
 const options = [
   {
     label: '中文简体',
-    key: Locale.ZH_CN,
+    key: LOCALE.ZH_CN,
   },
   {
     label: 'English',
-    key: Locale.EN,
+    key: LOCALE.EN,
   },
 ]
 
 const { appLocale, changeLocale } = useLocale()
 
 const onSelect = ({ key }: { key: string }) => {
-  changeLocale(key as LocaleValue)
+  changeLocale(key as Locale)
 }
 </script>

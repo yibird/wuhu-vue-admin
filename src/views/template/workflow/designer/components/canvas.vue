@@ -297,7 +297,7 @@
 import { Background } from '@vue-flow/background'
 import { MiniMap } from '@vue-flow/minimap'
 import { useTheme } from '@/theme'
-import { ThemeMode } from '@/constants'
+import { THEME_MODE } from '@/constants'
 import {
   areWorkflowDataSchemasCompatible,
   getWorkflowNodeDefinition,
@@ -336,7 +336,7 @@ import type {
 const nodes = defineModel<WorkflowNode[]>('nodes', { required: true })
 const edges = defineModel<WorkflowEdge[]>('edges', { required: true })
 const { themeMode } = useTheme()
-const showCanvasGrid = computed(() => themeMode.value !== ThemeMode.Dark)
+const showCanvasGrid = computed(() => themeMode.value !== THEME_MODE.Dark)
 
 const { fitView, zoomIn, zoomOut, zoomTo, viewport } =
   useVueFlow(WORKFLOW_FLOW_ID)

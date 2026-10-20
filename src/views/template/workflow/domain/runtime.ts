@@ -121,15 +121,16 @@ function sleep(ms: number, signal: AbortSignal) {
       reject(new DOMException('Execution cancelled', 'AbortError'))
       return
     }
-    const timer = setTimeout(resolve, ms)
-    signal.addEventListener(
-      'abort',
-      () => {
-        clearTimeout(timer)
-        reject(new DOMException('Execution cancelled', 'AbortError'))
-      },
-      { once: true }
-    )
+    const onAbort = () => {
+      clearTimeout(timer)
+      reject(new DOMException('Execution cancelled', 'AbortError'))
+    }
+    const timer = setTimeout(() => {
+      // 正常结束后主动摘掉 abort 监听,避免信号长期存活时反复累积监听器
+      signal.removeEventListener('abort', onAbort)
+      resolve()
+    }, ms)
+    signal.addEventListener('abort', onAbort, { once: true })
   })
 }
 

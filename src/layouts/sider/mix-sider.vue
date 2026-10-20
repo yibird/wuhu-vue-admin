@@ -19,18 +19,20 @@
 </template>
 <script lang="ts" setup>
 import { useAppStore } from '@/store'
-import { ThemeMode } from '@/constants'
+import { THEME_MODE } from '@/constants'
 import { useTheme } from '@/theme'
 import { useMenu } from '@/layouts/hooks'
 import { Menu, Search } from './components'
 
+const { themeMode } = useTheme()
 const { sider, setCollapsed } = useAppStore()
 const { activeRootMenuChildren: items } = useMenu()
-const { themeMode } = useTheme()
 
-const siderTheme = computed(() =>
-  themeMode.value === ThemeMode.Dark ? 'dark' : 'light'
-)
+const siderTheme = computed(() => {
+  return themeMode.value === THEME_MODE.Dark
+    ? THEME_MODE.Dark
+    : THEME_MODE.Light
+})
 </script>
 <style scoped>
 .layout-sider-mix {

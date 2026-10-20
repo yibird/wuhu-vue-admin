@@ -1,5 +1,5 @@
 import { apiRequest } from '@/utils'
-import { RequestMethod } from '@/constants'
+import { REQUEST_METHOD } from '@/constants'
 import type { PageResult, Result } from '#/http'
 
 function toSearchParams(data?: object) {
@@ -21,31 +21,31 @@ export function getBaseApi<
   return {
     getPageListApi<Q extends object = Record<string, never>>(data?: Q) {
       return apiRequest<Result<PageResult<T>>>(`${apiPrefix}/getPageList`, {
-        method: RequestMethod.GET,
+        method: REQUEST_METHOD.GET,
         searchParams: toSearchParams(data),
       })
     },
     getRecordApi<Q extends object = Record<string, never>>(data?: Q) {
       return apiRequest<Result<R>>(`${apiPrefix}/getRecord`, {
-        method: RequestMethod.GET,
+        method: REQUEST_METHOD.GET,
         searchParams: toSearchParams(data),
       })
     },
     createApi<V = number>(data: C) {
       return apiRequest<Result<V>>(`${apiPrefix}/create`, {
-        method: RequestMethod.POST,
+        method: REQUEST_METHOD.POST,
         json: data,
       })
     },
     updateApi<V = number>(data: U) {
       return apiRequest<Result<V>>(`${apiPrefix}/update`, {
-        method: RequestMethod.POST,
+        method: REQUEST_METHOD.POST,
         json: data,
       })
     },
     deleteApi<V = number>(data: Array<string | number>) {
       return apiRequest<Result<V>>(`${apiPrefix}/del`, {
-        method: RequestMethod.POST,
+        method: REQUEST_METHOD.POST,
         json: data,
       })
     },

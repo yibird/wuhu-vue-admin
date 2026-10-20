@@ -1,35 +1,35 @@
 import { computed } from 'vue'
 import { useAppStore } from '@/store'
-import { HeaderWidget } from '@/constants'
+import { HEADER_WIDGET } from '@/constants'
 
-import type { HeaderWidget as HeaderWidgetValue } from '@/config'
+import type { HeaderWidget as HeaderWidgetValue } from '@/constants'
 
 export function useWidget() {
   const { header } = useAppStore()
 
   const widgetSet = computed(() => new Set(header.value.widgets))
-  const showSearch = computed(() => widgetSet.value.has(HeaderWidget.Search))
+  const showSearch = computed(() => widgetSet.value.has(HEADER_WIDGET.Search))
   const showTaskCenter = computed(() =>
-    widgetSet.value.has(HeaderWidget.TaskCenter)
+    widgetSet.value.has(HEADER_WIDGET.TaskCenter)
   )
   const showDownloadCenter = computed(() =>
-    widgetSet.value.has(HeaderWidget.DownloadCenter)
+    widgetSet.value.has(HEADER_WIDGET.DownloadCenter)
   )
   const showNoteBook = computed(() =>
-    widgetSet.value.has(HeaderWidget.NoteBook)
+    widgetSet.value.has(HEADER_WIDGET.NoteBook)
   )
-  const showTheme = computed(() => widgetSet.value.has(HeaderWidget.Theme))
+  const showTheme = computed(() => widgetSet.value.has(HEADER_WIDGET.Theme))
   const showTranslate = computed(() =>
-    widgetSet.value.has(HeaderWidget.Translate)
+    widgetSet.value.has(HEADER_WIDGET.Translate)
   )
   const showFullScreen = computed(() =>
-    widgetSet.value.has(HeaderWidget.FullScreen)
+    widgetSet.value.has(HEADER_WIDGET.FullScreen)
   )
-  const showNotice = computed(() => widgetSet.value.has(HeaderWidget.Notice))
+  const showNotice = computed(() => widgetSet.value.has(HEADER_WIDGET.Notice))
   const showLockScreen = computed(() =>
-    widgetSet.value.has(HeaderWidget.LockScreen)
+    widgetSet.value.has(HEADER_WIDGET.LockScreen)
   )
-  const showAI = computed(() => widgetSet.value.has(HeaderWidget.AI))
+  const showAI = computed(() => widgetSet.value.has(HEADER_WIDGET.AI))
   const onChange = (checked: boolean, value: HeaderWidgetValue) => {
     if (checked) {
       header.value.widgets.push(value)

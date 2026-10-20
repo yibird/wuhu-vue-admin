@@ -1,4 +1,4 @@
-import { RequestMethod } from '@/constants'
+import { REQUEST_METHOD } from '@/constants'
 import { AUTH_WHITE_LIST, TOKEN_KEY } from './constant'
 import { resetSessionExpiredNotification } from './session-events'
 
@@ -35,15 +35,15 @@ export function parseUrl(url?: string) {
   if (!url || url.trim().length === 0) {
     return {
       url: '',
-      method: RequestMethod.GET,
+      method: REQUEST_METHOD.GET,
     }
   }
   const [m, u] = url.split(' ')
-  const method = Object.values(RequestMethod).find(
+  const method = Object.values(REQUEST_METHOD).find(
     (item) => item === m!.toUpperCase()
   )
   return {
-    method: method || RequestMethod.GET,
+    method: method || REQUEST_METHOD.GET,
     url: u,
   }
 }

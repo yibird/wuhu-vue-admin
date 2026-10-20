@@ -68,7 +68,7 @@
     <Chart
       v-else-if="chartOption"
       :option="chartOption"
-      :theme="eChartsThemeName"
+      :theme="EChartsTheme"
       autoresize
       class="full min-h-160"
     />
@@ -93,7 +93,7 @@ const props = defineProps<{
   widget: ChartWidget
 }>()
 
-const { baseChartOption, eChartsThemeName, getEChartsColor } = useEChartsTheme()
+const { baseChartOption, EChartsTheme, getEChartsColor } = useEChartsTheme()
 
 const aggregatedRows = computed(() =>
   aggregateChartRows(props.source, props.widget)

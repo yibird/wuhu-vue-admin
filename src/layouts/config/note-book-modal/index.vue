@@ -52,7 +52,7 @@
               class="mb-8 w-full rounded-8 border-1 border-solid p-10 text-left transition-colors"
               :class="
                 note.id === activeNote?.id
-                  ? 'border-primary bg-primary-tint'
+                  ? 'border-primary bg-primary/10'
                   : 'border-color-2 bg-container hover:(border-primary bg-hover)'
               "
               @click="selectNote(note.id)"

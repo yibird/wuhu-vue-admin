@@ -12,7 +12,7 @@
     <div class="h-240 w-full pt-8 max-md:h-220">
       <Chart
         :option="chartOption"
-        :theme="eChartsThemeName"
+        :theme="EChartsTheme"
         autoresize
         class="full min-h-0"
       />
@@ -34,7 +34,7 @@ const props = defineProps<{
   processes: ProcessMetric[]
 }>()
 
-const { baseChartOption, eChartsThemeName, getEChartsColor } = useEChartsTheme()
+const { baseChartOption, EChartsTheme, getEChartsColor } = useEChartsTheme()
 
 const chartOption = computed<EChartsCoreOption>(() => {
   const primaryColor = getCssRgbVar('--w-color-primary', '#1677ff')

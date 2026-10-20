@@ -48,7 +48,8 @@
 </template>
 <script lang="ts" setup>
 import { useAppStore } from '@/store'
-import { menuModeOptions, type MenuMode } from '@/config'
+import { menuModeOptions } from '@/config'
+import type { MenuMode } from '@/constants'
 
 const { app } = useAppStore()
 

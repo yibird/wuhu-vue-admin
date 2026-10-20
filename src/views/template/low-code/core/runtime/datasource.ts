@@ -75,8 +75,8 @@ export async function executeQuery(
       throw new Error(`请求失败: ${response.status} ${response.statusText}`)
     }
 
-    const contentType = response.headers.get('content-type') ?? ''
-    if (contentType.includes('application/json')) {
+    const CONTENT_TYPE = response.headers.get('content-type') ?? ''
+    if (CONTENT_TYPE.includes('application/json')) {
       const payload = (await response.json()) as Record<string, unknown>
       // 兼容常见后端包装结构
       if (

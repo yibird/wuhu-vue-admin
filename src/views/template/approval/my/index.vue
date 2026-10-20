@@ -27,7 +27,7 @@
           v-model:value="categoryId"
           allow-clear
           class="w-full sm:w-150"
-          placeholder="全部分类"
+          placeholder="全部分组"
           :options="categoryOptions"
           @change="search"
         />

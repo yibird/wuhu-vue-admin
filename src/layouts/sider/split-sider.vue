@@ -58,7 +58,7 @@
 import { firstLeafPath } from '@zhouchengfeng/okay'
 import { useAppStore, usePermissionStore } from '@/store'
 import { useTabs } from '@/hooks'
-import { ThemeMode } from '@/constants'
+import { THEME_MODE } from '@/constants'
 import { useTheme } from '@/theme'
 import { useMenu } from '@/layouts/hooks'
 import { Menu, Logo, Search } from './components'
@@ -73,7 +73,7 @@ const { themeMode } = useTheme()
 
 const rootId = computed(() => currentTab.value?.rootId)
 const siderTheme = computed(() =>
-  themeMode.value === ThemeMode.Dark ? 'dark' : 'light'
+  themeMode.value === THEME_MODE.Dark ? THEME_MODE.Dark : THEME_MODE.Light
 )
 
 const onClickMenu = (item: IMenu) => {

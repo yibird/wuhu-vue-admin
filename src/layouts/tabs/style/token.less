@@ -73,17 +73,23 @@
     --w-tabs-google-item-close-size: 18px;
     --w-tabs-google-item-close-gap: 7px;
     --w-tabs-google-item-hover-radius: 9px;
-    --w-tabs-google-item-active-radius: 11px;
+    --w-tabs-google-item-active-radius: 12px;
     --w-tabs-google-curve-size: 12px;
     --w-tabs-google-curve-shadow-offset: 6px;
     --w-tabs-google-divider-height: 18px;
     --w-tabs-google-divider-offset-y: 7px;
     --w-tabs-google-bg: #fefefe;
-    --w-tabs-google-item-hover-bg-rgb: var(--w-bg-hover-4);
-    --w-tabs-google-item-active-bg: rgb(var(--w-color-primary));
-    --w-tabs-google-divider-rgb: var(--w-border-color-3);
-    --w-tabs-google-control-hover-bg-rgb: var(--w-bg-hover-3);
-    --w-tabs-google-control-active-bg-rgb: var(--w-bg-active-1);
+    --w-tabs-google-item-hover-bg: rgb(var(--w-bg-hover-4));
+    --w-tabs-google-item-active-bg: color-mix(
+      in srgb,
+      rgb(var(--w-color-primary)) 10%,
+      transparent
+    );
+    --w-tabs-google-divider-color: rgb(var(--w-border-color-3));
+    --w-tabs-google-control-hover-bg: var(--w-bg-hover-3);
+    --w-tabs-google-control-active-bg: var(--w-bg-active-1);
+    // 圆弧
+    --w-tabs-google-arc-size: 10px;
   }
 }
 
@@ -91,14 +97,10 @@
   .layout-tabs {
     --w-tabs-bg: rgb(17 24 39);
     --w-tabs-border-color: rgb(31 41 55);
-
-    // control style
     --w-tabs-control-bg-color: var(--w-tabs-bg);
     --w-tabs-control-border-color: rgb(31 41 55);
     --w-tabs-control-hover-bg-color: rgb(31 41 55);
     --w-tabs-control-active-bg-color: rgb(55 65 81);
-
-    // item style
     --w-tabs-item-bg-color: rgb(17 24 39);
     --w-tabs-item-hover-bg-color: rgb(31 41 55);
     --w-tabs-item-hover-active-color: rgb(55 65 81);
@@ -112,12 +114,12 @@
     }
 
     &-google {
-      --w-tabs-google-bg: 8 13 24;
-      --w-tabs-google-item-hover-bg-rgb: var(--w-bg-hover-1);
-      --w-tabs-google-item-active-bg: var(--w-bg-page);
-      --w-tabs-google-divider-rgb: var(--w-border-color-3);
-      --w-tabs-google-control-hover-bg-rgb: var(--w-bg-hover-1);
-      --w-tabs-google-control-active-bg-rgb: var(--w-bg-active-1);
+      --w-tabs-google-bg: rgb(8 13 24);
+      --w-tabs-google-item-hover-bg: rgb(var(--w-bg-hover-1));
+      --w-tabs-google-item-active-bg: rgb(var(--w-bg-hover-1));
+      --w-tabs-google-divider-color: rgb(var(--w-border-color-3));
+      --w-tabs-google-control-hover-bg: rgb(var(--w-bg-hover-1));
+      --w-tabs-google-control-active-bg: rgb(var(--w-bg-active-1));
     }
   }
 }

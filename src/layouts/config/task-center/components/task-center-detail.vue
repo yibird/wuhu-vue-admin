@@ -31,11 +31,7 @@
             </div>
           </div>
           <div class="flex flex-wrap items-center justify-end gap-8">
-            <a-button
-              v-if="canPause"
-              size="small"
-              @click="emits('pause', task)"
-            >
+            <a-button v-if="canPause" @click="emits('pause', task)">
               <template #icon>
                 <Icon name="i-lucide:pause" />
               </template>
@@ -43,7 +39,6 @@
             </a-button>
             <a-button
               v-if="canResume"
-              size="small"
               type="primary"
               @click="emits('resume', task)"
             >
@@ -54,7 +49,6 @@
             </a-button>
             <a-button
               v-if="canRetry"
-              size="small"
               type="primary"
               @click="emits('retry', task)"
             >
@@ -63,7 +57,7 @@
               </template>
               重试
             </a-button>
-            <a-button size="small" @click="emits('copy', task)">
+            <a-button @click="emits('copy', task)">
               <template #icon>
                 <Icon name="i-lucide:copy" />
               </template>

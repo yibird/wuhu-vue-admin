@@ -60,20 +60,20 @@
 <script setup lang="ts">
 import { Loading } from '@/components/loading'
 import { Icon } from '@/components/icon'
-import { LoadingAnimation } from '@/constants'
-import type { LoadingAnimation as LoadingAnimationValue } from '@/config'
+import { LOADING_ADNIMATION } from '@/constants'
+import type { LoadingAnimation as LoadingAnimationValue } from '@/constants'
 
-const loadingType = shallowRef<LoadingAnimationValue>(LoadingAnimation.Beat)
+const loadingType = shallowRef<LoadingAnimationValue>(LOADING_ADNIMATION.Beat)
 const showDescription = shallowRef(true)
 const fullScreenVisible = shallowRef(false)
 let fullScreenTimer: ReturnType<typeof setTimeout> | undefined
 
 const loadingOptions = [
-  { label: '跳动', value: LoadingAnimation.Beat },
-  { label: '旋转点阵', value: LoadingAnimation.Spinner },
-  { label: '脉冲扩散', value: LoadingAnimation.Pulse },
-  { label: '柱状跳动', value: LoadingAnimation.Bars },
-  { label: '圆环旋转', value: LoadingAnimation.Ring },
+  { label: '跳动', value: LOADING_ADNIMATION.Beat },
+  { label: '旋转点阵', value: LOADING_ADNIMATION.Spinner },
+  { label: '脉冲扩散', value: LOADING_ADNIMATION.Pulse },
+  { label: '柱状跳动', value: LOADING_ADNIMATION.Bars },
+  { label: '圆环旋转', value: LOADING_ADNIMATION.Ring },
 ] satisfies Array<{ label: string; value: LoadingAnimationValue }>
 
 function previewFullScreen() {

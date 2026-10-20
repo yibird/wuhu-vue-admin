@@ -17,7 +17,7 @@
         class="mb-8 w-full rounded-6 border-1 border-solid p-12 text-left transition-colors"
         :class="
           item.id === activeTaskId
-            ? 'border-primary bg-primary-tint'
+            ? 'border-primary bg-primary/10'
             : 'border-color-2 bg-container hover:(border-primary bg-hover)'
         "
         @click="emits('select', item.id)"

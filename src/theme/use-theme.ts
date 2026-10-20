@@ -1,73 +1,61 @@
-import { computed, shallowRef, watch } from 'vue'
-import {
-  createSharedComposable,
-  useColorMode,
-  useEventListener,
-} from '@vueuse/core'
+import { computed, watch } from 'vue'
+import { createSharedComposable, usePreferredDark } from '@vueuse/core'
 import { theme as antTheme } from 'antdv-next'
 import { useAppStore } from '@/store'
 import { fontFamilyOptions } from '@/config'
 import { formatRgbColor, rgbToHex } from '@/utils'
+import { THEME_MODE, type ThemeMode, type FontFamily } from '@/constants'
 import { useThemeTransition } from './use-theme-transition'
-import { ThemeMode } from '@/constants'
-import { useVisualMode } from './use-visual-mode'
-import type { BasicColorMode, BasicColorSchema } from '@vueuse/core'
+import {
+  DEFAULT_PRIMARY_COLOR,
+  GREY_MODE_CLASS_NAME,
+  PRIMARY_COLOR_VAR,
+  THEME_TRANSITION_CLASS,
+  WEALMESS_MODE_CLASS_NAME,
+} from './constant'
 
-const PRIMARY_COLOR_CSS_VAR = '--w-color-primary'
-const DEFAULT_PRIMARY_HEX = '#1677ff'
-const DEFAULT_PRIMARY_RGB = '22 119 255'
-
-type ResolvedThemeMode = typeof ThemeMode.Light | typeof ThemeMode.Dark
-
-function setPrimaryColor(color: string) {
-  document.documentElement.style.setProperty(
-    PRIMARY_COLOR_CSS_VAR,
-    formatRgbColor(color, ' ') ?? DEFAULT_PRIMARY_RGB
-  )
-}
-
-function applyRootTheme(mode: ResolvedThemeMode) {
+function setThemeMode(mode: 'light' | 'dark') {
   const root = document.documentElement
   root.dataset.theme = mode
   root.style.colorScheme = mode
-  root.classList.toggle(ThemeMode.Dark, mode === ThemeMode.Dark)
+  root.classList.toggle(THEME_MODE.Dark, mode === THEME_MODE.Dark)
 }
 
-function getSystemTheme(): ResolvedThemeMode {
-  return window.matchMedia('(prefers-color-scheme: dark)').matches
-    ? ThemeMode.Dark
-    : ThemeMode.Light
+function setPrimaryColor(color: string) {
+  document.documentElement.style.setProperty(
+    PRIMARY_COLOR_VAR,
+    formatRgbColor(color, ' ')
+  )
+}
+
+/** 待执行的解锁帧,连续切换时只保留最后一次 */
+let unlockFrame: number | undefined
+
+function withoutColorTransition(task: () => void) {
+  const root = document.documentElement
+  const alreadyLocked = root.classList.contains(THEME_TRANSITION_CLASS)
+  if (!alreadyLocked) {
+    document.documentElement.classList.toggle(THEME_TRANSITION_CLASS, true)
+  }
+  task()
+
+  if (alreadyLocked) return
+  if (unlockFrame !== undefined) cancelAnimationFrame(unlockFrame)
+  unlockFrame = requestAnimationFrame(() => {
+    unlockFrame = undefined
+    document.documentElement.classList.toggle(THEME_TRANSITION_CLASS, false)
+  })
 }
 
 export const useTheme = createSharedComposable(() => {
   const { app } = useAppStore()
-
-  const colorModeRef = shallowRef<BasicColorSchema>(app.value.themeMode)
-  const colorMode = useColorMode<BasicColorMode>({
-    selector: 'html',
-    attribute: 'data-theme',
-    storageKey: null,
-    storageRef: colorModeRef,
-    disableTransition: true,
-    onChanged(mode) {
-      applyRootTheme(mode)
-    },
-  })
-
+  const systemDark = usePreferredDark()
   const appThemeMode = computed(() => app.value.themeMode)
 
-  /**
-   * 当前实际主题
-   * auto 会解析成 light/dark
-   */
-  const themeMode = computed<ResolvedThemeMode>(() => {
-    if (appThemeMode.value === ThemeMode.Auto) {
-      return colorMode.system.value
-    }
-
-    return appThemeMode.value
+  const themeMode = computed(() => {
+    if (appThemeMode.value !== THEME_MODE.Auto) return appThemeMode.value
+    return systemDark.value ? THEME_MODE.Dark : THEME_MODE.Light
   })
-
   const themeColor = computed(() => app.value.themeColor)
   const fontFamily = computed(() => app.value.fontFamily)
   const fontOption = computed(
@@ -77,80 +65,82 @@ export const useTheme = createSharedComposable(() => {
   )
   const fontStack = computed(() => fontOption.value.stack)
   const fontWeight = computed(() => fontOption.value.fontWeight)
-  const primaryColor = computed(
-    () => rgbToHex(themeColor.value) ?? DEFAULT_PRIMARY_HEX
-  )
+  const primaryColor = computed(() => {
+    return rgbToHex(themeColor.value) ?? DEFAULT_PRIMARY_COLOR
+  })
+  const isDark = computed(() => themeMode.value === THEME_MODE.Dark)
+  const algorithm = computed(() => {
+    return isDark.value ? antTheme.darkAlgorithm : antTheme.defaultAlgorithm
+  })
+
   const themeConfig = computed(() => {
-    const colorPrimary = `rgb(${themeColor.value})`
-    const isDark = themeMode.value === ThemeMode.Dark
     return {
-      algorithm: isDark ? antTheme.darkAlgorithm : antTheme.defaultAlgorithm,
+      algorithm: algorithm.value,
       token: {
-        colorPrimary,
-        colorLink: colorPrimary,
+        colorPrimary: primaryColor.value,
+        colorLink: primaryColor.value,
         borderRadius: app.value.borderRadius,
         fontFamily: fontStack.value,
       },
     }
   })
 
-  useVisualMode()
-
-  function changeThemeMode(mode: (typeof ThemeMode)[keyof typeof ThemeMode]) {
+  const changeThemeMode = (mode: ThemeMode) => {
     if (app.value.themeMode === mode) return
     app.value.themeMode = mode
   }
-
-  function changeThemeColor(color: string) {
+  const changeThemeColor = (color: string) => {
+    if (app.value.themeColor === color) return
     app.value.themeColor = color
   }
 
-  function changeFontFamily(font: (typeof fontFamilyOptions)[number]['value']) {
+  const changeFontFamily = (font: FontFamily) => {
     if (app.value.fontFamily === font) return
     app.value.fontFamily = font
   }
 
-  const { changeThemeWithAnimation } = useThemeTransition({
-    appThemeMode: () => appThemeMode.value,
-    resolvedThemeMode: () => themeMode.value,
-    changeThemeMode,
-  })
-
-  function toggleThemeMode() {
-    changeThemeMode(
-      themeMode.value === ThemeMode.Dark ? ThemeMode.Light : ThemeMode.Dark
-    )
+  const changeColourWeakness = (colourWeakness: boolean) => {
+    app.value.colourWeakness = colourWeakness
+  }
+  const changeGreyMode = (greyMode: boolean) => {
+    app.value.greyMode = greyMode
   }
 
-  watch(
-    () => app.value.themeMode,
-    (mode) => (colorModeRef.value = mode),
-    {
-      immediate: true,
-    }
-  )
+  const toggleColourWeakness = () => {
+    changeColourWeakness(!app.value.colourWeakness)
+  }
 
-  watch(themeColor, (color) => setPrimaryColor(color), {
-    immediate: true,
+  const toggleGreyMode = () => {
+    changeGreyMode(!app.value.greyMode)
+  }
+
+  const { toggleThemeWithAnimation } = useThemeTransition({
+    currentThemeMode: () => themeMode.value,
+    changeThemeMode,
   })
+  setThemeMode(themeMode.value)
 
+  watch(themeMode, (mode) => withoutColorTransition(() => setThemeMode(mode)), {
+    flush: 'sync',
+  })
+  watch(themeColor, setPrimaryColor, { immediate: true })
   watch(
     fontOption,
     (option) => {
       document.documentElement.dataset.font = option.value
     },
-    {
-      immediate: true,
-    }
+    { immediate: true }
   )
 
-  const media = window.matchMedia('(prefers-color-scheme: dark)')
-
-  useEventListener(media, 'change', () => {
-    if (app.value.themeMode === ThemeMode.Auto) {
-      colorModeRef.value = getSystemTheme()
-    }
-  })
+  watch(
+    () => [app.value.colourWeakness, app.value.greyMode],
+    ([colourWeakness, greyMode]) => {
+      const root = document.documentElement
+      root.classList.toggle(WEALMESS_MODE_CLASS_NAME, colourWeakness)
+      root.classList.toggle(GREY_MODE_CLASS_NAME, greyMode)
+    },
+    { immediate: true }
+  )
 
   return {
     themeConfig,
@@ -164,7 +154,10 @@ export const useTheme = createSharedComposable(() => {
     changeThemeMode,
     changeThemeColor,
     changeFontFamily,
-    changeThemeWithAnimation,
-    toggleThemeMode,
+    changeColourWeakness,
+    changeGreyMode,
+    toggleColourWeakness,
+    toggleGreyMode,
+    toggleThemeWithAnimation,
   }
 })

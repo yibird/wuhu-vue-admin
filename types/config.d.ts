@@ -1,16 +1,16 @@
 import type { LocationQueryRaw } from 'vue-router'
 import type {
-  MenuMode,
-  ThemeMode,
-  Locale,
-  FontFamily,
-  SiderTheme,
+  fontFamily,
   HeaderWidget,
-  TabsTheme,
-  PageAnimation,
   LoadingAnimation,
+  Locale,
+  MenuMode,
+  PageAnimation,
   PageAnimationMode,
-} from '@/config'
+  SiderTheme,
+  TabTheme,
+  ThemeMode,
+} from '@/constants'
 
 export type MenuType = 1 | 2 | 3 | 4
 
@@ -276,7 +276,7 @@ export interface HeaderConfig {
   showBreadCrumbIcon: boolean
   /**
    * @desc header右侧部件
-   * @default [HeaderWidget.Search,HeaderWidget.Translate,HeaderWidget.FullScreen,HeaderWidget.LockScreen,HeaderWidget.Setting]
+   * @default [HEADER_WIDGET.Search, HEADER_WIDGET.Translate, HEADER_WIDGET.FullScreen, HEADER_WIDGET.LockScreen, HEADER_WIDGET.Setting]
    */
   widgets: HeaderWidget[]
 }
@@ -294,9 +294,9 @@ export interface TabsConfig {
   showIcon: boolean
   /**
    * @desc 标签页主题
-   * @default TabsTheme.Block
+   * @default TAB_THEME.Block
    */
-  theme: TabsTheme
+  theme: TabTheme
 }
 
 export interface FooterConfig {
@@ -325,18 +325,18 @@ export interface AnimationConfig {
   enablePageLoading?: boolean
   /**
    * @desc 页面切换 Loading 动画
-   * @default LoadingAnimation.Beat
+   * @default LOADING_ADNIMATION.Beat
    */
   loadingAnimation?: LoadingAnimation
   /**
    * @desc 页面切换动画
-   * @default PageAnimation.SlideLeft
+   * @default PAGE_ANIMATION.SlideLeft
    */
   pageAnimation?: PageAnimation
 
   /**
    * @desc 页面动画mode
-   * @default PageAnimation.DEFAULT
+   * @default PAGE_ANIMATION_MODE.DEFAULT
    */
   pageAnimationMode?: PageAnimationMode
 }
@@ -389,7 +389,7 @@ export interface AppConfig {
   logo: string
   /**
    * @desc 主题
-   * @default ThemeMode.Light
+   * @default THEME_MODE.Light
    */
   themeMode: ThemeMode
   /**
@@ -399,14 +399,14 @@ export interface AppConfig {
   themeColor: string
   /**
    * @desc 语言
-   * @default Locale.ZH_CN
+   * @default LOCALE.ZH_CN
    */
   locale: Locale
   /**
    * @desc 字体
-   * @default FontFamily.Outfit
+   * @default FONT_FAMILY.Outfit
    */
-  fontFamily: FontFamily
+  fontFamily: fontFamily
   /**
    * @desc 菜单模式
    */

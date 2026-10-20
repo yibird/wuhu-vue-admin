@@ -75,13 +75,13 @@ export function useApprovalCategories() {
 
   async function createCategory(data: CreateApprovalCategoryReq) {
     await createApprovalCategoryApi(data)
-    message.success('分类已创建')
+    message.success('分组已创建')
     await refreshCategoriesAsync()
   }
 
   async function updateCategory(data: UpdateApprovalCategoryReq) {
     await updateApprovalCategoryApi(data)
-    message.success('分类已更新')
+    message.success('分组已更新')
     await refreshCategoriesAsync()
     await refreshDefinitionsAsync()
   }
@@ -119,7 +119,7 @@ export function useApprovalCategories() {
 
   function removeCategory(category: ApprovalCategoryResp) {
     Modal.confirm({
-      title: '删除分类',
+      title: '删除分组',
       content: `确定删除「${category.name}」吗？`,
       okText: '删除',
       okType: 'danger',

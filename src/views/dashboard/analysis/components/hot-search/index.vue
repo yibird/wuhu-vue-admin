@@ -4,7 +4,7 @@
       <div class="h-380 w-full p-12 max-md:h-280">
         <Chart
           :option="chartOption"
-          :theme="eChartsThemeName"
+          :theme="EChartsTheme"
           autoresize
           class="full min-h-0"
         />
@@ -19,7 +19,7 @@ import { useEChartsTheme } from '@/components/chart'
 import { Card } from '@/components'
 import type { EChartsCoreOption } from 'echarts/core'
 
-const { baseChartOption, eChartsThemeName, getEChartsColor } = useEChartsTheme()
+const { baseChartOption, EChartsTheme, getEChartsColor } = useEChartsTheme()
 
 const data = [
   { type: '智能报表', value: 24 },

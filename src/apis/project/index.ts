@@ -1,6 +1,6 @@
 import { getBaseApi } from '@/apis/util'
 import { apiRequest } from '@/utils'
-import { RequestMethod } from '@/constants'
+import { REQUEST_METHOD } from '@/constants'
 
 import type { Result } from '#/http'
 import type {
@@ -74,7 +74,7 @@ export const {
  */
 export function getProjectSummaryApi() {
   return apiRequest<Result<ProjectSummary>>('/project/project/getSummary', {
-    method: RequestMethod.GET,
+    method: REQUEST_METHOD.GET,
   })
 }
 
@@ -83,7 +83,7 @@ export function getProjectSummaryApi() {
  */
 export function getProjectOptionsApi() {
   return apiRequest<Result<ProjectOption[]>>('/project/project/getOptions', {
-    method: RequestMethod.GET,
+    method: REQUEST_METHOD.GET,
   })
 }
 

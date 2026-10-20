@@ -47,25 +47,21 @@
   --w-text-link: 26 92 255;
 
   /* 主题色 */
-  --w-text-primary: var(--w-color-primary);
+  --w-text-primary: rgb(var(--w-color-primary));
 
   /* 成功颜色 */
-  --w-text-success: var(--w-color-success);
+  --w-text-success: rgb(var(--w-color-success));
 
   /* 警告颜色 */
-  --w-text-warning: var(--w-color-warning);
+  --w-text-warning: rgb(var(--w-color-warning));
 
   /* 错误颜色 */
-  --w-text-error: var(--w-color-error);
+  --w-text-error: rgb(var(--w-color-error));
 
   /* 信息颜色 */
-  --w-text-info: var(--w-color-info);
-
-  /* 字体族、字重与字距由 src/config/fonts.ts 的字体选项产出(见 unocss/presets/fonts.ts),
-     此处不再重复声明,避免与 :root[data-font] 的值互相覆盖 */
+  --w-text-info: rgb(var(--w-color-info));
 
   /* ===================================== 背景颜色 */
-
   --w-bg-page: 245 247 250;
 
   /* 基础画布背景色 */

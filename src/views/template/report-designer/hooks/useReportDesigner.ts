@@ -1,7 +1,7 @@
 import { debounce } from 'es-toolkit'
 import { message } from 'antdv-next'
 import type { IWorkbookData } from '@univerjs/core'
-import { ThemeMode } from '@/constants'
+import { THEME_MODE } from '@/constants'
 import { useTheme } from '@/theme'
 import {
   MAX_COLS,
@@ -85,7 +85,7 @@ export function useReportDesigner() {
   const initial = loadInitialDocument()
   const controller = useUniverWorkbook()
   const { themeMode } = useTheme()
-  const darkMode = computed(() => themeMode.value === ThemeMode.Dark)
+  const darkMode = computed(() => themeMode.value === THEME_MODE.Dark)
 
   const document = shallowRef<ReportDocument>(initial)
   const report = shallowRef<ReportMeta>(initial.report)

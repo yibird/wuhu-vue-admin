@@ -44,6 +44,59 @@ const ganttInstance = shallowRef<Gantt | null>(null)
 let lastTaskSignature = ''
 let lastViewMode = props.viewMode
 
+type DocumentEventListener = [
+  Parameters<typeof document.addEventListener>[0],
+  Parameters<typeof document.addEventListener>[1],
+  Parameters<typeof document.addEventListener>[2],
+]
+
+let documentListeners: DocumentEventListener[] = []
+
+/**
+ * 收集 frappe-gantt 在构造期间挂到 document 上的监听
+ *
+ * frappe-gantt 没有 destroy 方法,构造时会给 document 绑定匿名 mouseup 监听
+ * (dist/frappe-gantt.es.js 的 bind_bar_events),闭包持有实例与容器 DOM。
+ * 不注销的话,反复进出甘特页会让监听器与整个实例单调累积。
+ * 由于监听是匿名的,只能在构造期间临时拦截 document.addEventListener 抄下来,
+ * 卸载时再按引用移除。
+ *
+ * @param run 构造甘特实例的逻辑
+ * @returns 构造结果
+ */
+function captureDocumentListeners<T>(run: () => T): T {
+  const originalAdd = document.addEventListener
+  const captured: DocumentEventListener[] = []
+
+  document.addEventListener = ((
+    type: DocumentEventListener[0],
+    listener: DocumentEventListener[1],
+    options?: DocumentEventListener[2]
+  ) => {
+    captured.push([type, listener, options])
+    originalAdd.call(document, type, listener, options)
+  }) as typeof document.addEventListener
+
+  try {
+    const result = run()
+    documentListeners.push(...captured)
+    return result
+  } finally {
+    document.addEventListener = originalAdd
+  }
+}
+
+function releaseGanttInstance() {
+  if (ganttInstance.value) {
+    ganttInstance.value.hide_popup()
+    ganttInstance.value = null
+  }
+  for (const [type, listener, options] of documentListeners) {
+    document.removeEventListener(type, listener, options)
+  }
+  documentListeners = []
+}
+
 function createGanttOptions(): FrappeGanttOptions {
   return {
     language: 'zh',
@@ -84,12 +137,16 @@ function createGanttOptions(): FrappeGanttOptions {
 }
 
 function initGantt() {
-  if (!ganttRef.value || props.tasks.length === 0) return
+  const container = ganttRef.value
+  if (!container || props.tasks.length === 0) return
 
-  ganttInstance.value = new Gantt(
-    ganttRef.value,
-    normalizeGanttTasks(props.tasks),
-    createGanttOptions()
+  ganttInstance.value = captureDocumentListeners(
+    () =>
+      new Gantt(
+        container,
+        normalizeGanttTasks(props.tasks),
+        createGanttOptions()
+      )
   )
   lastTaskSignature = createGanttTaskSignature(props.tasks)
   lastViewMode = props.viewMode
@@ -133,10 +190,7 @@ watch(
   (newTasks) => {
     if (newTasks.length === 0) {
       lastTaskSignature = ''
-      if (ganttInstance.value) {
-        ganttInstance.value.hide_popup()
-        ganttInstance.value = null
-      }
+      releaseGanttInstance()
       if (ganttRef.value) {
         ganttRef.value.innerHTML = ''
       }
@@ -233,10 +287,7 @@ onDeactivated(() => {
 
 onUnmounted(() => {
   stopObservingSize()
-  if (ganttInstance.value) {
-    ganttInstance.value.hide_popup()
-    ganttInstance.value = null
-  }
+  releaseGanttInstance()
   if (ganttRef.value) ganttRef.value.innerHTML = ''
 })
 </script>

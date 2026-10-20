@@ -127,19 +127,33 @@ export class BundleLoader {
     if (!bridge) return Promise.reject(new Error('物料运行时桥未安装'))
 
     return new Promise<Component>((resolve, reject) => {
+      const script = document.createElement('script')
+      let settled = false
+
+      // 成功、超时、失败都要把 <script> 摘掉,否则 DOM 里会残留已执行完的节点
+      const settle = (action: () => void) => {
+        if (settled) return
+        settled = true
+        window.clearTimeout(timer)
+        script.remove()
+        action()
+      }
+
       const timer = window.setTimeout(() => {
         bridge.pending.delete(type)
-        reject(new Error(`物料加载超时: ${type}`))
+        settle(() => reject(new Error(`物料加载超时: ${type}`)))
       }, 15000)
-      bridge.pending.set(type, { resolve, reject, timer })
+      bridge.pending.set(type, {
+        resolve: (component) => settle(() => resolve(component)),
+        reject: (error) => settle(() => reject(error)),
+        timer,
+      })
 
-      const script = document.createElement('script')
       script.src = bundle.url
       script.async = true
       script.onerror = () => {
-        window.clearTimeout(timer)
         bridge.pending.delete(type)
-        reject(new Error(`Bundle 加载失败: ${bundle.url}`))
+        settle(() => reject(new Error(`Bundle 加载失败: ${bundle.url}`)))
       }
       document.head.appendChild(script)
     })

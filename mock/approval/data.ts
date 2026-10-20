@@ -1,7 +1,6 @@
 import type {
   ApprovalCategoryResp,
   ApprovalDefinitionResp,
-  ApprovalGroupResp,
   ApprovalInstanceResp,
   ApprovalInstanceStep,
 } from '@/apis'
@@ -81,7 +80,7 @@ function createSchema(
     settings: {
       id: '',
       name,
-      group: '默认分类',
+      group: '默认分组',
       version: '1.0.0',
       state: 'draft',
       description,
@@ -187,63 +186,6 @@ export const categoryDataSource: ApprovalCategoryResp[] = [
 ]
 
 const categoryMap = new Map(categoryDataSource.map((item) => [item.id, item]))
-
-export const groupDataSource: ApprovalGroupResp[] = [
-  {
-    ...createBaseFields(0),
-    id: 'group-hr',
-    name: '行政人事流程',
-    code: 'GRP-HR',
-    description: '请假、加班、转正等日常人事审批',
-    color: '#1677ff',
-    enabled: true,
-    definitionIds: ['approval-001', 'approval-002', 'approval-003'],
-    definitionCount: 3,
-  },
-  {
-    ...createBaseFields(1),
-    id: 'group-finance',
-    name: '财务风控流程',
-    code: 'GRP-FINANCE',
-    description: '报销、付款、借款等资金相关审批',
-    color: '#13c2c2',
-    enabled: true,
-    definitionIds: [
-      'approval-004',
-      'approval-005',
-      'approval-006',
-      'approval-007',
-    ],
-    definitionCount: 4,
-  },
-  {
-    ...createBaseFields(2),
-    id: 'group-purchase',
-    name: '采购合同流程',
-    code: 'GRP-PURCHASE',
-    description: '采购申请、合同用印与供应商准入',
-    color: '#fa8c16',
-    enabled: true,
-    definitionIds: [
-      'approval-008',
-      'approval-009',
-      'approval-010',
-      'approval-011',
-    ],
-    definitionCount: 4,
-  },
-  {
-    ...createBaseFields(3),
-    id: 'group-rd',
-    name: '研发变更流程',
-    code: 'GRP-RD',
-    description: '发布、变更与资源申请类审批',
-    color: '#722ed1',
-    enabled: false,
-    definitionIds: ['approval-012', 'approval-013', 'approval-014'],
-    definitionCount: 3,
-  },
-]
 
 interface DefinitionSeed {
   name: string
@@ -414,7 +356,7 @@ export const definitionDataSource: ApprovalDefinitionResp[] =
       name: seed.name,
       code: seed.code,
       categoryId: seed.categoryId,
-      categoryName: categoryMap.get(seed.categoryId)?.name ?? '未分类',
+      categoryName: categoryMap.get(seed.categoryId)?.name ?? '未分组',
       icon: seed.icon,
       description: seed.description,
       state: seed.state,
@@ -424,7 +366,7 @@ export const definitionDataSource: ApprovalDefinitionResp[] =
           ...schema.settings,
           id: `approval-${String(index + 1).padStart(3, '0')}`,
           name: seed.name,
-          group: categoryMap.get(seed.categoryId)?.name ?? '未分类',
+          group: categoryMap.get(seed.categoryId)?.name ?? '未分组',
           state: seed.state === 'published' ? 'published' : 'draft',
           description: seed.description,
         },
@@ -570,7 +512,7 @@ export function appendDefinition(
     name: input.name ?? '未命名审批流',
     code: input.code ?? `APV-${String(index + 1).padStart(3, '0')}`,
     categoryId: input.categoryId ?? 'cat-hr',
-    categoryName: category?.name ?? '未分类',
+    categoryName: category?.name ?? '未分组',
     icon: input.icon ?? 'i-lucide:workflow',
     description: input.description ?? '',
     state: input.state ?? 'draft',
@@ -654,7 +596,6 @@ export function deleteDefinitions(ids: string[]) {
       definitionDataSource.splice(index, 1)
     }
   }
-  ids.forEach((id) => removeDefinitionFromGroups(id))
   syncCategoryCounts()
 }
 
@@ -721,120 +662,4 @@ export function deleteCategories(ids: string[]) {
 
 export function findInstance(id: string) {
   return instanceDataSource.find((item) => item.id === id)
-}
-
-export function findGroup(id: string) {
-  return groupDataSource.find((item) => item.id === id)
-}
-
-function normalizeDefinitionIds(ids: unknown): string[] {
-  if (!Array.isArray(ids)) return []
-  const valid = new Set(definitionDataSource.map((item) => item.id))
-  return [...new Set(ids.map(String))].filter((id) => valid.has(id))
-}
-
-function withDefinitionCount(group: ApprovalGroupResp): ApprovalGroupResp {
-  const definitionIds = normalizeDefinitionIds(group.definitionIds)
-  return {
-    ...group,
-    definitionIds,
-    definitionCount: definitionIds.length,
-  }
-}
-
-export function enrichGroup(group: ApprovalGroupResp) {
-  return withDefinitionCount(group)
-}
-
-function isGroupCodeTaken(code: string, excludeId?: string) {
-  return groupDataSource.some(
-    (item) =>
-      item.code.toLowerCase() === code.toLowerCase() && item.id !== excludeId
-  )
-}
-
-export function appendGroup(input: {
-  name: string
-  code?: string
-  description?: string
-  color?: string
-  enabled?: boolean
-  definitionIds?: unknown
-  sort?: number
-}): string | undefined {
-  const code = input.code?.trim()
-  if (code && isGroupCodeTaken(code)) return undefined
-
-  const definitionIds = normalizeDefinitionIds(input.definitionIds)
-  const assignedIds = new Set(
-    groupDataSource.flatMap((group) => group.definitionIds)
-  )
-  const uniqueIds = definitionIds.filter((id) => !assignedIds.has(id))
-  const index = groupDataSource.length
-  groupDataSource.push({
-    ...createBaseFields(index),
-    id: `group-${Date.now().toString(36)}`,
-    name: input.name.trim(),
-    code: code || `GRP-${String(index + 1).padStart(3, '0')}`,
-    description: input.description?.trim() ?? '',
-    color: input.color ?? '#1677ff',
-    enabled: input.enabled ?? true,
-    definitionIds: uniqueIds,
-    definitionCount: uniqueIds.length,
-    sort: input.sort ?? index,
-  })
-  return groupDataSource[groupDataSource.length - 1].id
-}
-
-export function updateGroup(input: {
-  id: string
-  name?: string
-  code?: string
-  description?: string
-  color?: string
-  enabled?: boolean
-  definitionIds?: unknown
-  sort?: number
-}) {
-  const current = findGroup(input.id)
-  if (!current) return undefined
-  if (input.code && isGroupCodeTaken(input.code, input.id)) return undefined
-
-  if (input.name !== undefined) current.name = input.name.trim()
-  if (input.code !== undefined) current.code = input.code.trim() || current.code
-  if (input.description !== undefined)
-    current.description = input.description.trim()
-  if (input.color !== undefined) current.color = input.color
-  if (input.enabled !== undefined) current.enabled = input.enabled
-  if (input.sort !== undefined) current.sort = input.sort
-  if (input.definitionIds !== undefined) {
-    const otherIds = new Set(
-      groupDataSource
-        .filter((item) => item.id !== input.id)
-        .flatMap((item) => item.definitionIds)
-    )
-    const definitionIds = normalizeDefinitionIds(input.definitionIds)
-    current.definitionIds = definitionIds.filter((id) => !otherIds.has(id))
-    current.definitionCount = current.definitionIds.length
-  }
-  current.updatedAt = new Date().toISOString()
-  return current
-}
-
-export function deleteGroups(ids: string[]) {
-  for (let index = groupDataSource.length - 1; index >= 0; index -= 1) {
-    if (ids.includes(groupDataSource[index].id)) {
-      groupDataSource.splice(index, 1)
-    }
-  }
-}
-
-export function removeDefinitionFromGroups(definitionId: string) {
-  groupDataSource.forEach((group) => {
-    const next = group.definitionIds.filter((id) => id !== definitionId)
-    if (next.length !== group.definitionIds.length) {
-      group.definitionIds = next
-      group.definitionCount = next.length
-    }
-  })
 }

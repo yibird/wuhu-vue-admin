@@ -1,13 +1,13 @@
-import { ApiCode, type ApiCodeType } from '@/constants'
+import { HTTP_STATUS, type HttpStatus } from '@/constants'
 import type { BaseQuery, PageResult, Result } from '#/http'
 
 const API_CODE_MAPPING = {
-  [ApiCode.Ok]: { message: '请求成功' },
-  [ApiCode.Err]: { message: '请求异常' },
+  [HTTP_STATUS.Ok]: { message: '请求成功' },
+  [HTTP_STATUS.Err]: { message: '请求异常' },
 } as const
 
 export function apiResp<T>(
-  code: ApiCodeType,
+  code: HttpStatus,
   data: T | null = null,
   message?: string
 ): Result<T | null> {
@@ -18,8 +18,9 @@ export function apiResp<T>(
   }
 }
 
-export const apiOk = <T>(data: T) => apiResp(ApiCode.Ok, data)
-export const apiErr = (message?: string) => apiResp(ApiCode.Err, null, message)
+export const apiOk = <T>(data: T) => apiResp(HTTP_STATUS.Ok, data)
+export const apiErr = (message?: string) =>
+  apiResp(HTTP_STATUS.Err, null, message)
 
 export function getPageList<T>(data: T[], query: BaseQuery) {
   const { current = 1, pageSize = 10 } = query

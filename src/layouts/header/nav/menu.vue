@@ -10,7 +10,7 @@
 <script lang="ts" setup>
 import { computed, h, ref, watch } from 'vue'
 import { useAppStore, usePermissionStore } from '@/store'
-import { MenuMode } from '@/constants'
+import { MENU_MODE } from '@/constants'
 import { renderIcon, renderMenus } from '@/utils'
 import { useTabs } from '@/hooks'
 import { useMenu } from '@/layouts/hooks'
@@ -24,7 +24,7 @@ const selectedKeys = ref<string[]>([])
 
 const options = computed(() => {
   const items =
-    app.value.menuMode === MenuMode.Horizontal
+    app.value.menuMode === MENU_MODE.Horizontal
       ? menus.value
       : menus.value.map((item) => ({ ...item, children: undefined }))
   return renderMenus(
@@ -48,12 +48,12 @@ const options = computed(() => {
 })
 
 const onClick: MenuProps['onClick'] = ({ key }) => {
-  if (app.value.menuMode === MenuMode.Horizontal) {
+  if (app.value.menuMode === MENU_MODE.Horizontal) {
     openTab(key)
     return
   }
 
-  if (app.value.menuMode === MenuMode.Mix) {
+  if (app.value.menuMode === MENU_MODE.Mix) {
     setPreviewRootMenuId(key)
   }
 }
@@ -62,11 +62,11 @@ watch(
   [() => currentTab.value, () => app.value.menuMode],
   ([val, mode]) => {
     if (!val) return
-    if (mode === MenuMode.Horizontal) {
+    if (mode === MENU_MODE.Horizontal) {
       selectedKeys.value = val.menuId ? [val.menuId] : []
     }
 
-    if (mode === MenuMode.Mix) {
+    if (mode === MENU_MODE.Mix) {
       selectedKeys.value = activeRootMenuId.value
         ? [activeRootMenuId.value]
         : []
@@ -78,7 +78,7 @@ watch(
 watch(
   activeRootMenuId,
   (id) => {
-    if (app.value.menuMode !== MenuMode.Mix) return
+    if (app.value.menuMode !== MENU_MODE.Mix) return
     selectedKeys.value = id ? [id] : []
   },
   { immediate: true }

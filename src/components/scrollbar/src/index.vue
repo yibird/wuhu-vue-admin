@@ -31,6 +31,18 @@ const DEFAULT_OPTIONS = {
     autoHide: 'leave',
     autoHideDelay: 300,
   },
+  update: {
+    // 侧边栏折叠等宽度动画期间,ResizeObserver/MutationObserver 会每帧触发;
+    // 去抖后只在动画结束后更新一次,避免整页滚动容器每帧都做同步样式计算
+    debounce: {
+      mutation: 100,
+      resize: 100,
+      event: 100,
+      env: 100,
+    },
+    // 本项目没有 RTL / 竖排布局,跳过昂贵的「非默认书写方向」样式读取
+    flowDirectionStyles: () => ({}),
+  },
 } satisfies PartialOptions
 
 const props = withDefaults(defineProps<ScrollbarProps>(), {

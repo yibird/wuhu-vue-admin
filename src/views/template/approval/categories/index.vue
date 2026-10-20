@@ -10,14 +10,14 @@
           <Icon name="i-lucide:layers" :size="19" />
         </span>
         <div class="min-w-0 flex-1">
-          <h1 class="m-0 text-base text-main font-700">流程分类</h1>
+          <h1 class="m-0 text-base text-main font-700">流程分组</h1>
           <p class="m-0 mt-2 text-xs text-secondary">
             按业务域管理审批流程，点击卡片进入设计器
           </p>
         </div>
         <a-button type="primary" @click="openCreate">
           <template #icon><Icon name="i-lucide:plus" /></template>
-          新建分类
+          新建分组
         </a-button>
       </header>
 
@@ -27,18 +27,36 @@
         <aside
           class="min-h-0 flex flex-col overflow-hidden rounded-8 border-1 border-color-2 border-solid bg-container"
         >
-          <div class="flex-none flex items-center gap-8 px-12 py-10">
-            <h2 class="m-0 text-sm text-main font-700">分类列表</h2>
-            <span
-              class="rounded-999 bg-fill-secondary px-7 py-1 text-11px text-secondary"
+          <div class="flex-none px-12 pb-8 pt-10">
+            <div class="flex items-center gap-8">
+              <h2 class="m-0 text-sm text-main font-700">分组列表</h2>
+              <span
+                class="rounded-999 bg-fill-secondary px-7 py-1 text-11px text-secondary"
+              >
+                {{ filteredCategories.length }}
+              </span>
+            </div>
+            <a-input
+              v-model:value="categoryKeyword"
+              allow-clear
+              class="mt-8"
+              placeholder="搜索分组名称"
             >
-              {{ categories.length }}
-            </span>
+              <template #prefix>
+                <Icon name="i-lucide:search" :size="14" class="text-muted" />
+              </template>
+            </a-input>
           </div>
           <div class="min-h-0 flex-1 overflow-y-auto px-8 pb-10">
             <a-spin :spinning="categoryLoading">
+              <div
+                v-if="!categoryLoading && filteredCategories.length === 0"
+                class="py-40 text-center text-xs text-secondary"
+              >
+                没有匹配的分组
+              </div>
               <Motion
-                v-for="category in categories"
+                v-for="category in filteredCategories"
                 :key="category.id"
                 as="button"
                 type="button"
@@ -79,7 +97,7 @@
                   "
                 >
                   <span
-                    class="size-22 flex items-center justify-center rounded-4 text-secondary opacity-0 transition-opacity group-hover:opacity-100"
+                    class="size-22 flex items-center justify-center rounded-4 text-secondary opacity-0 transition-[opacity,background-color,color] group-hover:opacity-100 hover:(bg-container text-main)"
                     @click.stop
                   >
                     <Icon name="i-lucide:more-horizontal" :size="14" />
@@ -91,18 +109,6 @@
         </aside>
 
         <section class="min-h-0 flex flex-col overflow-hidden">
-          <div class="flex flex-none flex-wrap items-center gap-10 pb-10">
-            <div class="min-w-0 flex-1">
-              <h2 class="m-0 text-sm text-main font-700">
-                {{ currentCategory?.name ?? '请选择分类' }}
-              </h2>
-              <p class="m-0 mt-2 truncate text-xs text-secondary">
-                {{ currentCategory?.description || '选择一个分类查看审批流程' }}
-              </p>
-            </div>
-            <span class="text-xs text-secondary">共 {{ total }} 个流程</span>
-          </div>
-
           <div class="min-h-0 flex-1 overflow-y-auto p-4">
             <div
               v-if="loading"
@@ -120,7 +126,7 @@
             <a-empty
               v-else-if="list.length === 0"
               class="py-72"
-              description="该分类下还没有审批流程"
+              description="该分组下还没有审批流程"
             />
 
             <div
@@ -153,26 +159,26 @@
       <a-modal
         v-model:open="formOpen"
         :confirm-loading="submitting"
-        :title="editingCategory ? '编辑分类' : '新建分类'"
+        :title="editingCategory ? '编辑分组' : '新建分组'"
         ok-text="保存"
         cancel-text="取消"
         destroy-on-hidden
         @ok="submitCategory"
       >
         <a-form layout="vertical" class="pt-8">
-          <a-form-item label="分类名称" required>
+          <a-form-item label="分组名称" required>
             <a-input
               v-model:value="form.name"
               :maxlength="20"
-              placeholder="请输入分类名称"
+              placeholder="请输入分组名称"
             />
           </a-form-item>
-          <a-form-item label="分类描述">
+          <a-form-item label="分组描述">
             <a-textarea
               v-model:value="form.description"
               :auto-size="{ minRows: 3, maxRows: 5 }"
               :maxlength="80"
-              placeholder="请输入分类描述"
+              placeholder="请输入分组描述"
             />
           </a-form-item>
           <a-form-item label="主题色">
@@ -199,7 +205,6 @@ const {
   categories,
   categoryLoading,
   current,
-  currentCategory,
   list,
   loading,
   pageSize,
@@ -214,7 +219,7 @@ const {
   updateCategory,
 } = useApprovalCategories()
 
-/** 侧边栏分类项悬停/按下的弹簧动画 */
+/** 侧边栏分组项悬停/按下的弹簧动画 */
 const categorySpring = {
   type: 'spring' as const,
   stiffness: 420,
@@ -223,6 +228,19 @@ const categorySpring = {
 
 const formOpen = shallowRef(false)
 const submitting = shallowRef(false)
+const categoryKeyword = shallowRef('')
+
+/** 侧边栏按名称/编码/描述过滤分组 */
+const filteredCategories = computed(() => {
+  const keyword = categoryKeyword.value.trim().toLowerCase()
+  if (!keyword) return categories.value
+
+  return categories.value.filter((item) =>
+    [item.name, item.code, item.description]
+      .filter(Boolean)
+      .some((text) => text!.toLowerCase().includes(keyword))
+  )
+})
 const editingCategory = shallowRef<ApprovalCategoryResp>()
 const form = reactive({
   name: '',
@@ -248,8 +266,8 @@ function openEdit(category: ApprovalCategoryResp) {
 
 function categoryActionItems() {
   return [
-    { key: 'edit', label: '编辑分类' },
-    { key: 'remove', label: '删除分类', danger: true },
+    { key: 'edit', label: '编辑分组' },
+    { key: 'remove', label: '删除分组', danger: true },
   ]
 }
 
@@ -266,7 +284,7 @@ function handleCategoryAction(key: string, category: ApprovalCategoryResp) {
 async function submitCategory() {
   const name = form.name.trim()
   if (!name) {
-    message.warning('请输入分类名称')
+    message.warning('请输入分组名称')
     return
   }
 

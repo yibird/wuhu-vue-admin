@@ -22,7 +22,7 @@
 <script lang="ts" setup>
 import { useDebounceFn } from '@vueuse/core'
 import { useAppStore, usePermissionStore } from '@/store'
-import { ThemeMode } from '@/constants'
+import { THEME_MODE } from '@/constants'
 import { useTheme } from '@/theme'
 import { Menu, Logo, Search, matchesMenuTree } from './components'
 
@@ -42,7 +42,7 @@ const onSearchInput = (value: string) => {
 }
 
 const siderTheme = computed(() =>
-  themeMode.value === ThemeMode.Dark ? 'dark' : 'light'
+  themeMode.value === THEME_MODE.Dark ? THEME_MODE.Dark : THEME_MODE.Light
 )
 
 const items = computed(() => {

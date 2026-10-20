@@ -4,7 +4,7 @@
       <div class="h-380 w-full p-12 max-md:h-260">
         <Chart
           :option="chartOption"
-          :theme="eChartsThemeName"
+          :theme="EChartsTheme"
           autoresize
           class="full min-h-0"
         />
@@ -23,7 +23,7 @@ import {
 } from '@/components/chart'
 import type { EChartsCoreOption } from 'echarts/core'
 
-const { baseChartOption, eChartsThemeName, getEChartsColor } = useEChartsTheme()
+const { baseChartOption, EChartsTheme, getEChartsColor } = useEChartsTheme()
 
 const dataSource = [
   { date: '2024-10-01', value: 3 },

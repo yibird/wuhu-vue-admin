@@ -1,14 +1,12 @@
 import { getBaseApi } from '@/apis/util'
 import { apiRequest } from '@/utils'
-import { RequestMethod } from '@/constants'
+import { REQUEST_METHOD } from '@/constants'
 
 export type {
   ApprovalCategoryResp,
   ApprovalDefinitionQuery,
   ApprovalDefinitionResp,
   ApprovalDefinitionState,
-  ApprovalGroupQuery,
-  ApprovalGroupResp,
   ApprovalInstanceQuery,
   ApprovalInstanceResp,
   ApprovalInstanceStatus,
@@ -17,25 +15,20 @@ export type {
   ApprovalMonitorSummary,
   CreateApprovalCategoryReq,
   CreateApprovalDefinitionReq,
-  CreateApprovalGroupReq,
   UpdateApprovalCategoryReq,
   UpdateApprovalDefinitionReq,
-  UpdateApprovalGroupReq,
 } from './types'
 
 import type { Result } from '#/http'
 import type {
   ApprovalCategoryResp,
   ApprovalDefinitionResp,
-  ApprovalGroupResp,
   ApprovalInstanceResp,
   ApprovalMonitorSummary,
   CreateApprovalCategoryReq,
   CreateApprovalDefinitionReq,
-  CreateApprovalGroupReq,
   UpdateApprovalCategoryReq,
   UpdateApprovalDefinitionReq,
-  UpdateApprovalGroupReq,
 } from './types'
 
 export const {
@@ -58,7 +51,7 @@ export const {
  */
 export function publishApprovalDefinitionApi(id: string) {
   return apiRequest<Result<string>>('/approval/definition/publish', {
-    method: RequestMethod.POST,
+    method: REQUEST_METHOD.POST,
     json: { id },
   })
 }
@@ -70,7 +63,7 @@ export function publishApprovalDefinitionApi(id: string) {
  */
 export function duplicateApprovalDefinitionApi(id: string) {
   return apiRequest<Result<string>>('/approval/definition/duplicate', {
-    method: RequestMethod.POST,
+    method: REQUEST_METHOD.POST,
     json: { id },
   })
 }
@@ -82,7 +75,7 @@ export function duplicateApprovalDefinitionApi(id: string) {
 export function getApprovalCategoryListApi() {
   return apiRequest<Result<ApprovalCategoryResp[]>>(
     '/approval/category/getList',
-    { method: RequestMethod.GET }
+    { method: REQUEST_METHOD.GET }
   )
 }
 
@@ -93,7 +86,7 @@ export function getApprovalCategoryListApi() {
  */
 export function createApprovalCategoryApi(data: CreateApprovalCategoryReq) {
   return apiRequest<Result<string>>('/approval/category/create', {
-    method: RequestMethod.POST,
+    method: REQUEST_METHOD.POST,
     json: data,
   })
 }
@@ -105,7 +98,7 @@ export function createApprovalCategoryApi(data: CreateApprovalCategoryReq) {
  */
 export function updateApprovalCategoryApi(data: UpdateApprovalCategoryReq) {
   return apiRequest<Result<string>>('/approval/category/update', {
-    method: RequestMethod.POST,
+    method: REQUEST_METHOD.POST,
     json: data,
   })
 }
@@ -117,23 +110,10 @@ export function updateApprovalCategoryApi(data: UpdateApprovalCategoryReq) {
  */
 export function deleteApprovalCategoryApi(ids: Array<string | number>) {
   return apiRequest<Result<number>>('/approval/category/del', {
-    method: RequestMethod.POST,
+    method: REQUEST_METHOD.POST,
     json: ids,
   })
 }
-
-export const {
-  getPageListApi: getApprovalGroupPageListApi,
-  getRecordApi: getApprovalGroupRecordApi,
-  createApi: createApprovalGroupApi,
-  updateApi: updateApprovalGroupApi,
-  deleteApi: deleteApprovalGroupApi,
-} = getBaseApi<
-  ApprovalGroupResp,
-  ApprovalGroupResp,
-  CreateApprovalGroupReq,
-  UpdateApprovalGroupReq
->('/approval/group')
 
 export const {
   getPageListApi: getApprovalInstancePageListApi,
@@ -147,6 +127,6 @@ export const {
 export function getApprovalMonitorSummaryApi() {
   return apiRequest<Result<ApprovalMonitorSummary>>(
     '/approval/monitor/getSummary',
-    { method: RequestMethod.GET }
+    { method: REQUEST_METHOD.GET }
   )
 }

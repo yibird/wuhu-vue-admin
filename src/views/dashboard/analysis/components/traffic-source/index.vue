@@ -10,7 +10,7 @@
       <div class="h-200 w-full">
         <Chart
           :option="chartOption"
-          :theme="eChartsThemeName"
+          :theme="EChartsTheme"
           autoresize
           class="full min-h-0"
         />
@@ -61,7 +61,7 @@ import { Card } from '@/components'
 import { getCssRgbVarAlpha, useEChartsTheme } from '@/components/chart'
 import type { EChartsCoreOption } from 'echarts/core'
 
-const { baseChartOption, eChartsThemeName, getEChartsColor } = useEChartsTheme()
+const { baseChartOption, EChartsTheme, getEChartsColor } = useEChartsTheme()
 
 interface TrafficItem {
   /** 来源名称 */

@@ -57,10 +57,10 @@
           <BasicInfoStep
             v-show="step === 0"
             :schema="schema"
-            :group-id="groupId"
-            :groups="groups"
+            :category-id="categoryId"
+            :categories="categories"
             @update:schema="applySchema"
-            @update:group-id="groupId = $event"
+            @update:category-id="categoryId = $event"
           />
 
           <FormDesignStep
@@ -130,12 +130,10 @@ import {
   createApprovalDefinitionApi,
   getApprovalCategoryListApi,
   getApprovalDefinitionRecordApi,
-  getApprovalGroupPageListApi,
   getDeptPageListApi,
   getUserPageListApi,
   publishApprovalDefinitionApi,
   updateApprovalDefinitionApi,
-  updateApprovalGroupApi,
 } from '@/apis'
 import { useRequest } from '@/hooks'
 import { useAuthStore, tabsStore } from '@/store'
@@ -159,7 +157,6 @@ const definition = shallowRef<ApprovalDefinitionResp>()
 const schema = shallowRef<ApprovalWorkflowSchema>(createEmptyApprovalSchema())
 const editingId = shallowRef<string>()
 const categoryId = shallowRef<string>()
-const groupId = shallowRef<string>()
 const loading = shallowRef(false)
 const saveBusy = shallowRef(false)
 const publishBusy = shallowRef(false)
@@ -167,10 +164,10 @@ const schemaOpen = shallowRef(false)
 const templates = approvalDesignerTemplates
 
 const stepItems = [
-  { title: '基础信息', description: '名称与分类' },
-  { title: '表单设计', description: '业务字段' },
-  { title: '流程设计', description: '节点与规则' },
-  { title: '扩展设计', description: '权限与自动化' },
+  { title: '基础信息', content: '名称与分组' },
+  { title: '表单设计', content: '业务字段' },
+  { title: '流程设计', content: '节点与规则' },
+  { title: '扩展设计', content: '权限与自动化' },
 ]
 
 const definitionId = computed(() => {
@@ -185,9 +182,6 @@ const { data: userData } = useRequest(() =>
   getUserPageListApi({ current: 1, pageSize: 300 })
 )
 const { data: categoryData } = useRequest(() => getApprovalCategoryListApi())
-const { data: groupData, refreshAsync: refreshGroupsAsync } = useRequest(() =>
-  getApprovalGroupPageListApi({ current: 1, pageSize: 200 })
-)
 const { data: deptData } = useRequest(() =>
   getDeptPageListApi({ current: 1, pageSize: 500, type: 1 })
 )
@@ -210,12 +204,11 @@ const users = computed<ApprovalUserRef[]>(() =>
 )
 
 const categories = computed(() => categoryData.value?.data ?? [])
-const groups = computed(() => groupData.value?.data?.list ?? [])
 
 const basicErrors = computed(() => {
   const errors: string[] = []
   if (!schema.value.settings.name.trim()) errors.push('请输入审批流名称')
-  if (!groupId.value) errors.push('请选择流程分组')
+  if (!categoryId.value) errors.push('请选择流程分组')
   return errors
 })
 
@@ -250,34 +243,17 @@ watch(
   { immediate: true }
 )
 
+/** 选中的分组变化后同步到 schema.settings.group(画布页脚展示用) */
 watch(
-  [groups, definition],
-  ([value, currentDefinition]) => {
-    if (currentDefinition) {
-      if (groupId.value) return
-      const group =
-        value.find((item) =>
-          item.definitionIds.includes(currentDefinition.id)
-        ) ??
-        value.find(
-          (item) => item.name === currentDefinition.schema.settings.group
-        )
-      if (group) groupId.value = group.id
-      return
-    }
+  [categories, categoryId],
+  ([value, currentId]) => {
+    const category = value.find((item) => item.id === currentId)
+    if (!category || schema.value.settings.group === category.name) return
 
-    if (!groupId.value && value.length) {
-      groupId.value = value[0].id
-      if (
-        !schema.value.settings.group ||
-        schema.value.settings.group === '默认分类'
-      ) {
-        applySchema({
-          ...schema.value,
-          settings: { ...schema.value.settings, group: value[0].name },
-        })
-      }
-    }
+    applySchema({
+      ...schema.value,
+      settings: { ...schema.value.settings, group: category.name },
+    })
   },
   { immediate: true }
 )
@@ -298,7 +274,7 @@ async function loadDefinition() {
       ...empty,
       settings: {
         ...empty.settings,
-        group: groups.value[0]?.name ?? '默认分类',
+        group: categories.value[0]?.name ?? '默认分组',
       },
     }
     return
@@ -358,9 +334,11 @@ async function persist(next: ApprovalWorkflowSchema) {
   const currentCategoryId =
     categoryId.value ?? definition.value?.categoryId ?? categories.value[0]?.id
   if (!currentCategoryId) {
-    throw new Error('请先在「流程分类」中创建分类')
+    throw new Error('请先在「流程分组」中创建分组')
   }
-  const group = groups.value.find((item) => item.id === groupId.value)
+  const currentCategory = categories.value.find(
+    (item) => item.id === currentCategoryId
+  )
   const payload = {
     name: next.settings.name.trim() || '未命名审批流',
     categoryId: currentCategoryId,
@@ -370,7 +348,7 @@ async function persist(next: ApprovalWorkflowSchema) {
       ...next,
       settings: {
         ...next.settings,
-        group: group?.name ?? next.settings.group,
+        group: currentCategory?.name ?? next.settings.group,
       },
     },
     ownerId: user.value?.id ?? '1',
@@ -385,40 +363,6 @@ async function persist(next: ApprovalWorkflowSchema) {
   const response = await createApprovalDefinitionApi<string>(payload)
   editingId.value = response.data
   return { id: response.data, settings: payload.schema.settings }
-}
-
-async function syncGroupMembership(definitionId: string) {
-  const targetGroupId = groupId.value
-  if (!targetGroupId) return
-
-  const updates = groups.value.flatMap((group) => {
-    const contains = group.definitionIds.includes(definitionId)
-    if (group.id === targetGroupId) {
-      return contains
-        ? []
-        : [
-            updateApprovalGroupApi({
-              id: group.id,
-              definitionIds: [...group.definitionIds, definitionId],
-            }),
-          ]
-    }
-    return contains
-      ? [
-          updateApprovalGroupApi({
-            id: group.id,
-            definitionIds: group.definitionIds.filter(
-              (id) => id !== definitionId
-            ),
-          }),
-        ]
-      : []
-  })
-
-  if (updates.length) {
-    await Promise.all(updates)
-    await refreshGroupsAsync()
-  }
 }
 
 function applyPersisted(
@@ -447,7 +391,6 @@ async function handleSave() {
   saveBusy.value = true
   try {
     const result = await persist(schema.value)
-    await syncGroupMembership(result.id)
     applyPersisted(result)
     message.success('审批流已保存')
   } catch (error) {
@@ -483,7 +426,6 @@ async function handlePublish() {
   publishBusy.value = true
   try {
     const result = await persist(schema.value)
-    await syncGroupMembership(result.id)
     await publishApprovalDefinitionApi(result.id)
     applyPersisted(result, 'published')
     message.success('审批流已发布')

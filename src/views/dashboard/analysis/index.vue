@@ -2,113 +2,51 @@
   <WView :full="false" class="overflow-hidden">
     <div class="page-view flex flex-col gap-12">
       <Overview :items="cards" />
-      <LazyContainer root-margin="0px 0px 128px">
-        <template #placeholder>
-          <StatisticsSkeleton />
-        </template>
-        <Suspense>
-          <Statistics />
-          <template #fallback>
-            <StatisticsSkeleton />
-          </template>
-        </Suspense>
-      </LazyContainer>
 
-      <LazyContainer root-margin="0px 0px 96px">
-        <template #placeholder>
-          <GoalProgressSkeleton />
-        </template>
-        <Suspense>
-          <GoalProgress />
-          <template #fallback>
-            <GoalProgressSkeleton />
-          </template>
-        </Suspense>
-      </LazyContainer>
+      <DeferredSection
+        :section="Statistics"
+        :skeleton="StatisticsSkeleton"
+        root-margin="0px 0px 128px"
+      />
+      <DeferredSection
+        :section="GoalProgress"
+        :skeleton="GoalProgressSkeleton"
+      />
 
       <div
         class="grid grid-cols-1 gap-12 xl:grid-cols-[minmax(0,1fr)_360px] 2xl:grid-cols-[minmax(0,1fr)_400px]"
       >
         <main class="min-w-0 flex flex-col gap-12">
-          <LazyContainer root-margin="0px 0px 96px">
-            <template #placeholder>
-              <VisitStatisticsSkeleton />
-            </template>
-            <Suspense>
-              <VisitStatistics />
-              <template #fallback>
-                <VisitStatisticsSkeleton />
-              </template>
-            </Suspense>
-          </LazyContainer>
-          <LazyContainer root-margin="0px 0px 128px">
-            <template #placeholder>
-              <ConversionFunnelSkeleton />
-            </template>
-            <Suspense>
-              <ConversionFunnel />
-              <template #fallback>
-                <ConversionFunnelSkeleton />
-              </template>
-            </Suspense>
-          </LazyContainer>
-          <LazyContainer root-margin="0px 0px 96px">
-            <template #placeholder>
-              <RiskAlertsSkeleton />
-            </template>
-            <Suspense>
-              <RiskAlerts />
-              <template #fallback>
-                <RiskAlertsSkeleton />
-              </template>
-            </Suspense>
-          </LazyContainer>
+          <DeferredSection
+            :section="VisitStatistics"
+            :skeleton="VisitStatisticsSkeleton"
+          />
+          <DeferredSection
+            :section="ConversionFunnel"
+            :skeleton="ConversionFunnelSkeleton"
+            root-margin="0px 0px 128px"
+          />
+          <DeferredSection
+            :section="RiskAlerts"
+            :skeleton="RiskAlertsSkeleton"
+          />
         </main>
         <aside class="min-w-0 flex flex-col gap-12">
-          <LazyContainer root-margin="0px 0px 96px">
-            <template #placeholder>
-              <HotSearchSkeleton />
-            </template>
-            <Suspense>
-              <HotSearch />
-              <template #fallback>
-                <HotSearchSkeleton />
-              </template>
-            </Suspense>
-          </LazyContainer>
-          <LazyContainer root-margin="0px 0px 128px">
-            <template #placeholder>
-              <HotItemsSkeleton />
-            </template>
-            <Suspense>
-              <HotItems />
-              <template #fallback>
-                <HotItemsSkeleton />
-              </template>
-            </Suspense>
-          </LazyContainer>
-          <LazyContainer root-margin="0px 0px 96px">
-            <template #placeholder>
-              <TrafficSourceSkeleton />
-            </template>
-            <Suspense>
-              <TrafficSource />
-              <template #fallback>
-                <TrafficSourceSkeleton />
-              </template>
-            </Suspense>
-          </LazyContainer>
-          <LazyContainer root-margin="0px 0px 128px">
-            <template #placeholder>
-              <SalesRankingSkeleton />
-            </template>
-            <Suspense>
-              <SalesRanking />
-              <template #fallback>
-                <SalesRankingSkeleton />
-              </template>
-            </Suspense>
-          </LazyContainer>
+          <DeferredSection :section="HotSearch" :skeleton="HotSearchSkeleton" />
+          <DeferredSection
+            :section="HotItems"
+            :skeleton="HotItemsSkeleton"
+            root-margin="0px 0px 128px"
+          />
+          <DeferredSection
+            :section="TrafficSource"
+            :skeleton="TrafficSourceSkeleton"
+          />
+          <DeferredSection
+            :section="SalesRanking"
+            :skeleton="SalesRankingSkeleton"
+            root-margin="0px 0px 128px"
+          />
         </aside>
       </div>
     </div>
@@ -116,9 +54,8 @@
 </template>
 
 <script lang="ts" setup>
-import { LazyContainer } from '@/components'
-import Overview from './components/overview/index.vue'
 import {
+  Overview,
   Statistics,
   StatisticsSkeleton,
   GoalProgress,
@@ -138,6 +75,7 @@ import {
   SalesRanking,
   SalesRankingSkeleton,
 } from './components'
+import DeferredSection from './components/deferred-section.vue'
 import { cards } from './config'
 </script>
 

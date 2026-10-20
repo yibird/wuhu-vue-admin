@@ -1,4 +1,4 @@
-import { ApiCode, ContentType, HttpHeader, RespStatusCode } from '@/constants'
+import { HTTP_STATUS, CONTENT_TYPE, HTTP_HEADER, API_STATUS } from '@/constants'
 import { ApiError } from '@/errors'
 import { notifySessionExpired } from '../session-events'
 
@@ -38,7 +38,7 @@ export function getParsedBodyCache(response: Response) {
 const unauthorizedResponseHook: AfterResponseHook = async ({
   response: res,
 }) => {
-  if (res.status === RespStatusCode.Unauthorized) {
+  if (res.status === API_STATUS.Unauthorized) {
     notifySessionExpired()
   }
 }
@@ -46,8 +46,8 @@ const unauthorizedResponseHook: AfterResponseHook = async ({
 const businessResponseHook: AfterResponseHook = async ({ response: res }) => {
   if (!res.ok) return
 
-  const contentType = res.headers.get(HttpHeader.ContentType) ?? ''
-  if (!contentType.toLowerCase().includes(ContentType.Json)) return
+  const contentType = res.headers.get(HTTP_HEADER.CONTENT_TYPE) ?? ''
+  if (!contentType.toLowerCase().includes(CONTENT_TYPE.Json)) return
 
   const payload: unknown = await res
     .clone()
@@ -57,7 +57,7 @@ const businessResponseHook: AfterResponseHook = async ({ response: res }) => {
   // 只有解析成功才缓存,解析失败留给调用方报出可读的错误
   if (payload !== null) parsedBodyCache.set(res, payload)
 
-  if (!isResultEnvelope(payload) || payload.code === ApiCode.Ok) return
+  if (!isResultEnvelope(payload) || payload.code === HTTP_STATUS.Ok) return
 
   throw new ApiError(
     payload.message?.trim() || '请求失败，请稍后重试',

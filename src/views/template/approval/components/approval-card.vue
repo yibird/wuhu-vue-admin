@@ -1,6 +1,6 @@
 <template>
   <article
-    class="group min-w-0 cursor-pointer overflow-hidden rounded-8 border-1 border-color-2 border-solid bg-container shadow-[var(--w-shadow-card)] outline-none transition-[border-color,box-shadow,transform] duration-motion-moderate ease-motion-standard hover:(-translate-y-1 border-primary/40 shadow-[var(--w-shadow-elevated)]) focus-visible:(border-primary shadow-[var(--w-shadow-elevated)]) motion-reduce:(transform-none transition-none)"
+    class="group min-w-0 cursor-pointer overflow-hidden rounded-8 border-1 border-color-2 border-solid bg-container outline-none transition-[border-color,box-shadow,transform] duration-motion-moderate ease-motion-standard hover:(-translate-y-1 border-primary/40 shadow-[var(--w-shadow-card)])"
     role="button"
     tabindex="0"
     @click="emits('open', definition)"
@@ -58,7 +58,7 @@
       class="mx-14 grid grid-cols-3 gap-8 border-t-1 border-color-1 border-t-solid py-10"
     >
       <span class="min-w-0 flex flex-col gap-3">
-        <span class="text-xs text-muted">分类</span>
+        <span class="text-xs text-muted">分组</span>
         <span class="truncate text-xs text-main">
           {{ definition.categoryName }}
         </span>

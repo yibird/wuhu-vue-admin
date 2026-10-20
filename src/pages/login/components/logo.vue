@@ -21,7 +21,7 @@
 </template>
 
 <script setup lang="ts">
-import { ThemeMode } from '@/constants'
+import { THEME_MODE } from '@/constants'
 import { useTheme } from '@/theme'
 import { useAppStore } from '@/store'
 import { GradientText } from '@/components'
@@ -33,7 +33,7 @@ const appLogo = computed(() => app.value.logo)
 const { themeMode } = useTheme()
 
 const logoColors = computed(() =>
-  themeMode.value === ThemeMode.Dark
+  themeMode.value === THEME_MODE.Dark
     ? ['#9b8cff 0%', '#4ca0ff 48%', '#2dd4bf 100%']
     : ['#6d5dfc 0%', '#1677ff 48%', '#00a88f 100%']
 )

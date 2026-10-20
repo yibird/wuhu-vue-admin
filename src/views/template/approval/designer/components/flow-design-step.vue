@@ -33,7 +33,6 @@
     <div class="min-h-0 flex-1 overflow-hidden">
       <ApprovalDesigner
         v-model="schemaModel"
-        class="h-full"
         embedded
         :initial-selected-node-id="'approver'"
         :templates="templates"

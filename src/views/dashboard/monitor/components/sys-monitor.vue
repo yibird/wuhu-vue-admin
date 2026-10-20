@@ -66,7 +66,7 @@
     <div class="h-360 w-full max-md:h-280">
       <Chart
         :option="chartOption"
-        :theme="eChartsThemeName"
+        :theme="EChartsTheme"
         autoresize
         class="full min-h-0"
       />
@@ -87,7 +87,7 @@ import { Chart } from '@/components'
 import type { MonitorMetric, SysMonitorProps } from './types'
 import type { EChartsCoreOption } from 'echarts/core'
 
-const { baseChartOption, eChartsThemeName, getEChartsColor } = useEChartsTheme()
+const { baseChartOption, EChartsTheme, getEChartsColor } = useEChartsTheme()
 
 const props = withDefaults(defineProps<SysMonitorProps>(), {
   data: () => [],

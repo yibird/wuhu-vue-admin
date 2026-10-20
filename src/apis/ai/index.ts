@@ -1,5 +1,5 @@
 import { apiRequest, getToken } from '@/utils'
-import { RequestMethod } from '@/constants'
+import { REQUEST_METHOD } from '@/constants'
 import { resolveLlmConfig } from './config'
 import { readSseContent } from './sse'
 
@@ -18,7 +18,7 @@ export function streamChatCompletionApi(
   const credential = apiKey ?? getToken()
 
   return apiRequest<ReadableStream<Uint8Array>>(url, {
-    method: RequestMethod.POST,
+    method: REQUEST_METHOD.POST,
     json: payload,
     responseType: 'stream',
     // 流式响应会持续很久,必须关闭全局 10s 超时

@@ -162,7 +162,7 @@
                 class="mb-8 w-full rounded-8 border-1 border-solid p-12 text-left transition-colors"
                 :class="
                   item.id === activeDownload?.id
-                    ? 'border-primary bg-primary-tint'
+                    ? 'border-primary bg-primary/10'
                     : 'border-color-2 bg-container hover:(border-primary bg-hover)'
                 "
                 @click="selectDownload(item.id)"

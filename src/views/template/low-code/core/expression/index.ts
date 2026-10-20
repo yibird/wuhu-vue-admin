@@ -33,6 +33,8 @@ export function compileExpression(source: string): ExpressionNode {
     astCache.set(source, ast)
     return ast
   } catch (error) {
+    // 解析失败的源码同样需要限量,否则用户反复输入错误表达式会无限累积
+    if (failedCache.size >= MAX_CACHE_SIZE) failedCache.clear()
     failedCache.add(source)
     throw error
   }

@@ -230,7 +230,7 @@ export function createEmptyApprovalSchema(): ApprovalWorkflowSchema {
     settings: {
       id: '',
       name: '未命名审批流',
-      group: '默认分类',
+      group: '默认分组',
       version: '0.1.0',
       state: 'draft',
       description: '',

@@ -14,7 +14,8 @@
 </template>
 <script lang="ts" setup>
 import { useLocale } from '@/locales'
-import { localeOptions, type Locale } from '@/config'
+import { localeOptions } from '@/config'
+import type { Locale } from '@/constants'
 
 const { appLocale, changeLocale } = useLocale()
 
