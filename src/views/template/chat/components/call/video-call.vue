@@ -25,7 +25,6 @@
         <a-avatar
           :src="conversation?.avatar"
           :size="82"
-          fallback-src="https://i.pravatar.cc/100?img=1"
           class="ring-2 ring-white/18"
         />
         <div class="mt-12 max-w-250 truncate text-base font-700">

@@ -115,7 +115,7 @@
                   <a-input
                     :value="source.config.url ?? ''"
                     class="flex-1"
-                    placeholder="https://api.example.com/users"
+                    :placeholder="REST_URL_PLACEHOLDER"
                     @change="updateDataSourceConfig(index, 'url', $event)"
                   />
                 </div>
@@ -385,6 +385,9 @@ const emits = defineEmits<{ close: [] }>()
 
 const designer = useDesignerContext()
 const activeTab = ref<DataTab>('variables')
+
+/** REST 数据源地址输入框的占位示例 */
+const REST_URL_PLACEHOLDER = 'https://api.example.com/users'
 
 const tabs: { key: DataTab; label: string }[] = [
   { key: 'variables', label: '变量' },

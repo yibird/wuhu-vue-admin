@@ -11,11 +11,7 @@
   >
     <div class="call-stage call-stage-voice">
       <div class="call-avatar-ring">
-        <a-avatar
-          :src="conversation?.avatar"
-          :size="96"
-          fallback-src="https://i.pravatar.cc/100?img=1"
-        />
+        <a-avatar :src="conversation?.avatar" :size="96" />
       </div>
       <div class="mt-16 text-lg text-main font-600">
         {{ conversation?.title }}

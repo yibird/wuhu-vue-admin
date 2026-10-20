@@ -35,7 +35,7 @@
       <a-form-item label="API Endpoint" name="endpoint">
         <a-input
           v-model:value="form.endpoint"
-          placeholder="https://api.example.com/v1"
+          :placeholder="ENDPOINT_PLACEHOLDER"
         />
       </a-form-item>
       <a-form-item label="API Key" name="apiKey">
@@ -66,6 +66,9 @@ import type { FormInstance } from 'antdv-next'
 import type { ProviderCreateInput } from '../types'
 
 const open = defineModel<boolean>('open', { required: true })
+
+/** API Endpoint 输入框的占位示例 */
+const ENDPOINT_PLACEHOLDER = 'https://api.example.com/v1'
 
 const emits = defineEmits<{
   success: []

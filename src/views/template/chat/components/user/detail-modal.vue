@@ -13,11 +13,7 @@
         class="flex flex-wrap items-center gap-16 border-b-1 border-b-solid border-color-1 pb-16"
       >
         <div class="relative size-68 shrink-0">
-          <a-avatar
-            :src="user.avatar || 'https://i.pravatar.cc/100?img=1'"
-            :size="68"
-            round
-          />
+          <a-avatar :src="user.avatar || DEFAULT_AVATAR" :size="68" round />
           <span
             class="absolute bottom-2 right-2 size-13 rounded-full border-2 border-container"
             :class="statusClass"
@@ -164,7 +160,7 @@
 
 <script setup lang="ts">
 import { Icon } from '@/components/icon'
-import { statusText } from '../../utils'
+import { DEFAULT_AVATAR, statusText } from '../../utils'
 import type { UserInfo } from '../types'
 
 interface DetailItem {

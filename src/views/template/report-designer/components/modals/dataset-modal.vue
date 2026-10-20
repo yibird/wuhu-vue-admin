@@ -34,10 +34,7 @@
 
       <template v-else>
         <a-form-item label="REST 地址" required>
-          <a-input
-            v-model:value="url"
-            placeholder="https://api.example.com/orders"
-          />
+          <a-input v-model:value="url" :placeholder="REST_URL_PLACEHOLDER" />
         </a-form-item>
         <p class="m-0 text-xs text-secondary">
           接口需返回 JSON 对象数组；跨域请求受目标服务 CORS 配置限制。
@@ -60,6 +57,9 @@ const emits = defineEmits<{
   'create-json': [payload: { name: string; json: string }]
   'create-rest': [payload: { name: string; url: string }]
 }>()
+
+/** REST 地址输入框的占位示例 */
+const REST_URL_PLACEHOLDER = 'https://api.example.com/orders'
 
 const mode = shallowRef<'json' | 'rest'>('json')
 const modeOptions = [

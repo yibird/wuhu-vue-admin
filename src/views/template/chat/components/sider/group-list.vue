@@ -33,7 +33,6 @@
                       :src="group.avatar"
                       :size="44"
                       round
-                      fallback-src="https://i.pravatar.cc/100?img=5"
                       class="transition-transform duration-motion-base ease-motion-enter group-hover:scale-105 motion-reduce:transform-none"
                     />
                     <span

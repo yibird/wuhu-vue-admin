@@ -27,7 +27,7 @@
           <a-input
             v-model:value="form.endpoint"
             allow-clear
-            placeholder="https://oss.example.com"
+            :placeholder="OSS_ENDPOINT_PLACEHOLDER"
           />
         </a-form-item>
         <a-form-item label="Bucket" name="bucket">
@@ -43,7 +43,7 @@
           <a-input
             v-model:value="form.publicDomain"
             allow-clear
-            placeholder="https://cdn.example.com"
+            :placeholder="CDN_DOMAIN_PLACEHOLDER"
           />
         </a-form-item>
         <a-form-item label="文件路径前缀" name="pathPrefix">
@@ -68,6 +68,10 @@ interface OssConfigForm {
   publicDomain: string
   pathPrefix: string
 }
+
+/** OSS Endpoint 与公开访问域名的占位示例 */
+const OSS_ENDPOINT_PLACEHOLDER = 'https://oss.example.com'
+const CDN_DOMAIN_PLACEHOLDER = 'https://cdn.example.com'
 
 const providerOptions = [
   { label: '阿里云 OSS', value: 'aliyun-oss' },

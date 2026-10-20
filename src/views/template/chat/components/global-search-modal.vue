@@ -181,12 +181,7 @@
                   @click="handleSelectContact(result.contact)"
                 >
                   <span class="relative shrink-0">
-                    <a-avatar
-                      :src="result.contact.avatar"
-                      :size="42"
-                      round
-                      fallback-src="https://i.pravatar.cc/100?img=1"
-                    />
+                    <a-avatar :src="result.contact.avatar" :size="42" round />
                     <span
                       v-if="result.contact.status"
                       class="absolute bottom-0 right-0 size-9 rounded-full border-2 border-container"
@@ -247,12 +242,7 @@
                   @click="handleSelectGroup(group)"
                 >
                   <span class="relative shrink-0">
-                    <a-avatar
-                      :src="group.avatar"
-                      :size="42"
-                      round
-                      fallback-src="https://i.pravatar.cc/100?img=5"
-                    />
+                    <a-avatar :src="group.avatar" :size="42" round />
                     <span
                       class="absolute -bottom-2 -right-2 size-18 flex items-center justify-center rounded-full border-2 border-container bg-success text-white"
                     >

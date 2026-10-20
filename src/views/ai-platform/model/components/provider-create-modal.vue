@@ -18,7 +18,7 @@
         <a-input
           v-model:value="form.endpoint"
           allow-clear
-          placeholder="https://api.example.com/v1"
+          :placeholder="ENDPOINT_PLACEHOLDER"
         />
       </a-form-item>
 
@@ -55,11 +55,14 @@ const emits = defineEmits<{
 }>()
 
 const open = defineModel<boolean>('open', { required: true })
+
+/** API Endpoint 的占位示例，同时作为表单默认值 */
+const ENDPOINT_PLACEHOLDER = 'https://api.example.com/v1'
 const formRef = shallowRef<FormInstance>()
 const form = reactive({
   label: '',
   protocol: 'openai-compatible' as ModelProtocol,
-  endpoint: 'https://api.example.com/v1',
+  endpoint: ENDPOINT_PLACEHOLDER,
 })
 
 const rules = {

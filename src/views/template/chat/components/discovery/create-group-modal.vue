@@ -98,12 +98,7 @@
               class="flex items-center gap-10 rounded-6 px-10 py-8 cursor-pointer transition-colors hover:bg-hover"
             >
               <a-checkbox :value="contact.id" />
-              <a-avatar
-                :src="contact.avatar"
-                :size="36"
-                round
-                fallback-src="https://i.pravatar.cc/100?img=1"
-              />
+              <a-avatar :src="contact.avatar" :size="36" round />
               <span class="min-w-0 flex-1">
                 <span class="block truncate text-sm text-main font-500">
                   {{ contact.name }}

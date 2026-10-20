@@ -19,12 +19,7 @@
         >
           <div class="min-w-0 flex items-center gap-10">
             <div class="relative">
-              <a-avatar
-                :src="conversation.avatar"
-                :size="40"
-                round
-                fallback-src="https://i.pravatar.cc/100?img=1"
-              />
+              <a-avatar :src="conversation.avatar" :size="40" round />
               <span
                 v-if="conversation.userInfo?.status"
                 class="absolute bottom-0 right-0 size-8 rounded-full border-2 border-container"

@@ -123,12 +123,7 @@
             class="flex items-center gap-11 border-b-1 border-color-1 border-b-solid px-4 py-11 last:border-b-0"
           >
             <div class="relative shrink-0">
-              <a-avatar
-                :src="item.avatar"
-                :size="44"
-                round
-                fallback-src="https://i.pravatar.cc/100?img=1"
-              />
+              <a-avatar :src="item.avatar" :size="44" round />
               <span
                 class="absolute -bottom-2 -right-2 size-18 flex items-center justify-center rounded-full border-2 border-container text-white"
                 :class="item.type === 'user' ? 'bg-primary' : 'bg-success'"

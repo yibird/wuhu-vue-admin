@@ -42,11 +42,7 @@
             class="flex items-center gap-10 px-2 py-2"
             aria-live="polite"
           >
-            <a-avatar
-              :size="36"
-              round
-              fallback-src="https://i.pravatar.cc/100?img=1"
-            />
+            <a-avatar :size="36" round />
             <div
               class="typing-bubble rounded-12 rounded-tl-2px bg-fill-quaternary px-13 py-10 shadow-all-sm"
             >

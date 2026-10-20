@@ -29,9 +29,7 @@
           @click.stop="handleUserClick"
         >
           <a-avatar
-            :src="
-              message.senderInfo?.avatar || 'https://i.pravatar.cc/100?img=1'
-            "
+            :src="message.senderInfo?.avatar || DEFAULT_AVATAR"
             :size="36"
             round
           />
@@ -213,6 +211,7 @@ import VoiceContent from './message/voice.vue'
 import FileContent from './message/file.vue'
 import CustomContent from './message/custom.vue'
 import type { Message, MessageItemEmits } from '../../types'
+import { DEFAULT_AVATAR } from '../../../utils'
 
 interface Props {
   favorite?: boolean

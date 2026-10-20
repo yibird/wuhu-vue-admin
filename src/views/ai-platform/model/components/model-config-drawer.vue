@@ -92,7 +92,7 @@
         <a-input
           v-model:value="form.endpoint"
           allow-clear
-          placeholder="https://api.example.com/v1"
+          :placeholder="ENDPOINT_PLACEHOLDER"
         >
           <template #prefix>
             <Icon name="i-lucide:globe-2" class="text-placeholder" />
@@ -217,6 +217,9 @@ const emits = defineEmits<{
 }>()
 
 const open = defineModel<boolean>('open', { required: true })
+
+/** API Endpoint 输入框的占位示例 */
+const ENDPOINT_PLACEHOLDER = 'https://api.example.com/v1'
 const formRef = shallowRef<FormInstance>()
 const submitting = shallowRef(false)
 const providerCreateOpen = shallowRef(false)
