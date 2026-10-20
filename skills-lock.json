@@ -13,59 +13,53 @@
       "skillPath": "skills/frontend-design/SKILL.md",
       "computedHash": "106acf230014cbb43ca34e6410371321b56ca742f9ee0442e8ec05bf02eb0384"
     },
-    "motion": {
-      "source": "onmax/nuxt-skills",
-      "sourceType": "github",
-      "skillPath": "skills/motion/SKILL.md",
-      "computedHash": "88f028610d2a273dd1de1b79c0e4cc70ed041105af86f890520ff9b1c674352e"
-    },
     "performance-optimization": {
       "source": "addyosmani/agent-skills",
       "sourceType": "github",
       "skillPath": "skills/performance-optimization/SKILL.md",
-      "computedHash": "f0a8e3bdb9b7d199434c2a5dd7cbb7d3cf69d802029cde1ef5daa07bffa27efc"
+      "computedHash": "a2cdba94ff8f898183b3d5af736272dc439826083723b17a88782e75d2351530"
     },
     "unocss": {
       "source": "antfu/skills",
       "sourceType": "github",
       "skillPath": "skills/unocss/SKILL.md",
-      "computedHash": "1054e69977e1d2d3b7c8479adf16b4db43191bf775f150ce8a06a0b1c191318b"
+      "computedHash": "88be6c6c1ce60f3d6e9b1468ffe2b474bff4d27e1efcb3433e805e93f143836b"
     },
     "vite": {
       "source": "antfu/skills",
       "sourceType": "github",
       "skillPath": "skills/vite/SKILL.md",
-      "computedHash": "1cdc4bbecaa89544e6ef92566b015db989994bf90c4472683ac64f7a114dc3af"
+      "computedHash": "8a05956b65faa8131826da179f2d09afe73931971466d5640d95388b4182cda5"
     },
     "vue": {
       "source": "antfu/skills",
       "sourceType": "github",
       "skillPath": "skills/vue/SKILL.md",
-      "computedHash": "f72b54618560c53d65740515ded5bb833750c4574dbe961fd21f022bd2b31a74"
+      "computedHash": "2375c65a63ec942f753ad91d7ffde9b4c1ed6e16819c3bd1633a6f5c7b3d3ee1"
     },
     "vue-best-practices": {
-      "source": "antfu/skills",
+      "source": "vuejs-ai/skills",
       "sourceType": "github",
       "skillPath": "skills/vue-best-practices/SKILL.md",
-      "computedHash": "6aebf11b392505e1aa40a6805e714c36095830cc3f0a7a41aebffee2854596b8"
+      "computedHash": "72fedea5fde80eadb11082f1cf3fd284200f40976c1c001a6a1dfe1dcbd2febe"
     },
     "vue-router-best-practices": {
-      "source": "antfu/skills",
+      "source": "vuejs-ai/skills",
       "sourceType": "github",
       "skillPath": "skills/vue-router-best-practices/SKILL.md",
-      "computedHash": "405d377ebeef773b240f31902dfb204095d4bcc945e8a4c2f4b560062c032fbb"
+      "computedHash": "5a8f2f8021fe27cef48d8cf053b4cdb9375c0dc5d5e066330888229d0370f55c"
     },
     "vueuse-functions": {
-      "source": "antfu/skills",
+      "source": "vueuse/skills",
       "sourceType": "github",
       "skillPath": "skills/vueuse-functions/SKILL.md",
-      "computedHash": "0a762ae555673c6a7705749bd58d74e2ae9b07007a2cde8168f1f6c480b8d8d9"
+      "computedHash": "03acb588ce85ed214a33c765735fa0ff56c27f574a2ae5732d55ef7237443977"
     },
     "web-design-guidelines": {
-      "source": "antfu/skills",
+      "source": "vercel-labs/agent-skills",
       "sourceType": "github",
       "skillPath": "skills/web-design-guidelines/SKILL.md",
-      "computedHash": "57cefa41cea390d412000acc24e5526034027ca46d4f7581ba8fa05777a8687f"
+      "computedHash": "d8e7d3afe37dcc8a97b99ffb5afdb4d0919ae0092ea8b68f44eb201f035e33ac"
     }
   }
 }
