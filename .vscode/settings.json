@@ -1,11 +1,15 @@
 {
   "editor.defaultFormatter": "oxc.oxc-vscode",
   "editor.formatOnSave": true,
+  "editor.formatOnSaveMode": "file",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.oxc": "explicit"
+  },
   "json.format.enable": false,
   "typescript.format.enable": false,
   "javascript.format.enable": false,
-  "js/ts.tsdk.path": "node_modules/typescript/lib",
-  "js/ts.tsdk.promptToUseWorkspaceVersion": true,
+  // "js/ts.tsdk.path": "node_modules/typescript/lib",
+  // "js/ts.tsdk.promptToUseWorkspaceVersion": true,
   "[javascript]": {
     "editor.defaultFormatter": "oxc.oxc-vscode"
   },
@@ -21,6 +25,6 @@
   "[jsonc]": {
     "editor.defaultFormatter": "oxc.oxc-vscode"
   },
-  "css.customData": [".vscode/unocss.json"],
-  "less.customData": [".vscode/unocss.json"]
+  "css.customData": [".vscode/unocss.json"]
+  // "less.customData": [".vscode/unocss.json"]
 }

@@ -1,4 +1,4 @@
-import { defineConfig, loadEnv, type ConfigEnv, type UserConfig } from 'vite'
+import { defineConfig, loadEnv, type ConfigEnv } from 'vite'
 import { resolve } from 'node:path'
 import {
   createPlugin,
@@ -7,6 +7,8 @@ import {
   createOptimizeDeps,
   createBuild,
   createCss,
+  lint,
+  fmt,
 } from './build/index.ts'
 
 export default defineConfig(async ({ command, mode }: ConfigEnv) => {
@@ -26,5 +28,7 @@ export default defineConfig(async ({ command, mode }: ConfigEnv) => {
       // bundledDev: true,
     },
     css: createCss(),
-  } satisfies UserConfig
+    lint,
+    fmt,
+  }
 })

@@ -1,6 +1,5 @@
-import { defineConfig } from 'oxlint'
-
-export default defineConfig({
+import type { OxlintConfig } from 'vite-plus/lint'
+export const lint: OxlintConfig = {
   rules: {
     'oxc/no-barrel-file': 'error',
     'import/no-cycle': 'off',
@@ -17,5 +16,5 @@ export default defineConfig({
     'oxc',
   ],
   overrides: [],
-  ignorePatterns: ['node_modules', 'dist'],
-})
+  ignorePatterns: ['node_modules', 'dist', '**/*.mock.ts.*.mjs'],
+}

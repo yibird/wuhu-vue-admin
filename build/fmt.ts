@@ -1,6 +1,6 @@
-import { defineConfig } from 'oxfmt'
+import type { OxfmtConfig } from 'vite-plus/fmt'
 
-export default defineConfig({
+export const fmt: OxfmtConfig = {
   printWidth: 80,
   trailingComma: 'es5',
   tabWidth: 2,
@@ -15,6 +15,7 @@ export default defineConfig({
     'auto-imports.d.ts',
     'components.d.ts',
     '*.timestamp-*.mjs',
+    '**/*.mock.ts.*.mjs',
   ],
   bracketSameLine: false,
-})
+}
