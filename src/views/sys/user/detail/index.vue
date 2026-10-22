@@ -185,7 +185,7 @@ import {
 } from '@/apis'
 import { Icon } from '@/components'
 import { useRequest, useTabs } from '@/hooks'
-import { toRouteTabKey } from '@/store'
+import { toRouteTabKey } from '@/store/tabs/util'
 import {
   educationOptions,
   maritalStatusOptions,

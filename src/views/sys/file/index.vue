@@ -139,7 +139,7 @@ const MAX_FILE_SIZE_TEXT = '10 MB'
 /** 表格纵向滚动高度,扣掉应用头部、标签页与页面自身内容所占空间 */
 const TABLE_SCROLL_Y = 'calc(100vh - 310px)'
 
-const { user } = useAuthStore()
+const { userInfo } = useAuthStore()
 
 const query = shallowRef<SysFileQuery>({ current: 1, pageSize: PAGE_SIZE })
 const selectedRowKeys = shallowRef<(string | number)[]>([])
@@ -271,7 +271,7 @@ const onBeforeUpload: UploadProps['beforeUpload'] = async (file) => {
       mimeType: file.type || 'application/octet-stream',
       size: file.size,
       kind: inferFileKind(file.type, file.name),
-      createdBy: user.value?.name ?? '当前用户',
+      createdBy: userInfo.value?.name ?? '当前用户',
     })
     message.success(`「${file.name}」上传成功`)
     query.value = { ...query.value, current: 1 }

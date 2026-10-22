@@ -1,4 +1,4 @@
-import type { AppState } from '@/store'
+import type { AppState } from '@/store/app/types'
 
 export const APP_CONFIG_VERSION = 1
 

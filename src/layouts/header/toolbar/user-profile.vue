@@ -41,7 +41,7 @@ const options = [
 ]
 
 const { to } = useGo()
-const { logout } = useAuth()
+const { doLogout } = useAuth()
 
 const onSelect = ({ key }: { key: string }) => {
   switch (key) {
@@ -51,7 +51,7 @@ const onSelect = ({ key }: { key: string }) => {
     case 'changePassword':
       break
     case 'logout':
-      logout()
+      doLogout()
       break
   }
 }

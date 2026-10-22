@@ -111,7 +111,7 @@ import {
   type FormPlusModel,
 } from '@/components'
 import { useRequest, useTabs } from '@/hooks'
-import { toRouteTabKey } from '@/store'
+import { toRouteTabKey } from '@/store/tabs/util'
 import { dataScopeMap, schemas } from '../list/config'
 
 const route = useRoute()

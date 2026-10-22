@@ -32,7 +32,7 @@ export function setupGlobalBeforeEachRouteGuard(router: Router) {
       }
     }
 
-    if (!auth.user) {
+    if (!auth.userInfo) {
       const restored = await auth.restoreSession()
       if (!restored) {
         return {

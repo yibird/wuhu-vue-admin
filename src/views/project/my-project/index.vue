@@ -166,7 +166,7 @@ const PAGE_SIZE = 12
 const { hasPermission } = usePermission()
 const { openRouteTab } = useTabs()
 const { refreshProjectOptions } = useProjectOptions()
-const { user } = useAuthStore()
+const { userInfo } = useAuthStore()
 
 const keyword = shallowRef('')
 const formOpen = shallowRef(false)
@@ -176,7 +176,7 @@ const { list, loading, pagination, run, refresh } = usePagination(
   (query: ProjectQuery) => getProjectPageListApi(query),
   {
     defaultPageSize: PAGE_SIZE,
-    defaultParams: user.value?.id ? { memberId: user.value.id } : {},
+    defaultParams: userInfo.value?.id ? { memberId: userInfo.value.id } : {},
   }
 )
 
@@ -185,7 +185,7 @@ const { current, pageSize, total, changePage } = pagination
 function buildQuery(): Partial<ProjectQuery> {
   const name = keyword.value.trim()
   return {
-    ...(user.value?.id ? { memberId: user.value.id } : {}),
+    ...(userInfo.value?.id ? { memberId: userInfo.value.id } : {}),
     ...(name ? { name } : {}),
   }
 }

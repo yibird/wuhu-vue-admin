@@ -9,15 +9,15 @@ import { tabsStore } from '../tabs'
 import type { LoginRequest } from '@/apis'
 import type { AuthState } from './types'
 
-const createInitialState = (): AuthState => ({
-  accessToken: getToken(),
-  userInfo: null,
-  loginLoading: false,
-  isAuthenticated: false,
-})
-
 export const authStore = defineStore('auth', {
-  state: createInitialState,
+  state: () => {
+    return {
+      accessToken: getToken(),
+      userInfo: null,
+      loginLoading: false,
+      isAuthenticated: false,
+    } as AuthState
+  },
   actions: {
     async login(credentials: LoginRequest) {
       this.loginLoading = true

@@ -129,7 +129,7 @@ import {
 import { Icon } from '@/components'
 import type { DeptPickerOption } from '@/features'
 import { useRequest, useTabs } from '@/hooks'
-import { toRouteTabKey } from '@/store'
+import { toRouteTabKey } from '@/store/tabs/util'
 import { PostForm } from '../list/components'
 
 const route = useRoute()
