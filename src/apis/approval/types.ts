@@ -1,4 +1,4 @@
-import type { BaseQuery, BaseResp } from '#/http'
+import type { BaseQuery, BaseModel } from '#/http'
 import type { ApprovalWorkflowSchema } from '@/components/approval-designer'
 
 /**
@@ -26,7 +26,7 @@ export type ApprovalInstanceStepStatus =
   | 'rejected'
   | 'skipped'
 
-export interface ApprovalDefinitionResp extends BaseResp {
+export interface ApprovalDefinitionResp extends BaseModel {
   /**
    * @desc 审批流名称
    */
@@ -138,7 +138,7 @@ export interface UpdateApprovalDefinitionReq extends Partial<CreateApprovalDefin
   id: string
 }
 
-export interface ApprovalCategoryResp extends BaseResp {
+export interface ApprovalCategoryResp extends BaseModel {
   /**
    * @desc 分类名称
    */
@@ -226,7 +226,7 @@ export interface ApprovalInstanceStep {
   handledAt?: string
 }
 
-export interface ApprovalInstanceResp extends BaseResp {
+export interface ApprovalInstanceResp extends BaseModel {
   /**
    * @desc 审批流 id
    */

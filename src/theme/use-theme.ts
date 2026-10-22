@@ -3,11 +3,12 @@ import { createSharedComposable, usePreferredDark } from '@vueuse/core'
 import { theme as antTheme } from 'antdv-next'
 import { useAppStore } from '@/store'
 import { fontFamilyOptions } from '@/config'
-import { formatRgbColor, rgbToHex } from '@/utils'
+import { toRgb, rgbToHex } from '@/utils'
 import { THEME_MODE, type ThemeMode, type FontFamily } from '@/constants'
 import { useThemeTransition } from './use-theme-transition'
 import {
   DEFAULT_PRIMARY_COLOR,
+  DEFAULT_PRIMARY_HEX,
   GREY_MODE_CLASS_NAME,
   PRIMARY_COLOR_VAR,
   THEME_TRANSITION_CLASS,
@@ -22,10 +23,8 @@ function setThemeMode(mode: 'light' | 'dark') {
 }
 
 function setPrimaryColor(color: string) {
-  document.documentElement.style.setProperty(
-    PRIMARY_COLOR_VAR,
-    formatRgbColor(color, ' ')
-  )
+  const rgb = toRgb(color) ?? DEFAULT_PRIMARY_COLOR
+  document.documentElement.style.setProperty(PRIMARY_COLOR_VAR, rgb)
 }
 
 /** 待执行的解锁帧,连续切换时只保留最后一次 */
@@ -66,7 +65,7 @@ export const useTheme = createSharedComposable(() => {
   const fontStack = computed(() => fontOption.value.stack)
   const fontWeight = computed(() => fontOption.value.fontWeight)
   const primaryColor = computed(() => {
-    return rgbToHex(themeColor.value) ?? DEFAULT_PRIMARY_COLOR
+    return rgbToHex(themeColor.value) ?? DEFAULT_PRIMARY_HEX
   })
   const isDark = computed(() => themeMode.value === THEME_MODE.Dark)
   const algorithm = computed(() => {

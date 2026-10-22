@@ -62,9 +62,9 @@
 import {
   getClientLogPageListApi,
   getClientLogRecordApi,
-  type ClientLogDetail,
-  type ClientLogQuery,
-  type ClientLogResp,
+  type SysClientLogDetail,
+  type SysClientLogQuery,
+  type SysClientLog,
 } from '@/apis'
 import { FormPlus } from '@/components'
 import { useRequest } from '@/hooks'
@@ -84,10 +84,10 @@ const PAGE_SIZE = 10
 /** 表格纵向滚动高度,扣掉应用头部、标签页与页面自身内容所占空间 */
 const TABLE_SCROLL_Y = 'calc(100vh - 310px)'
 
-const query = shallowRef<ClientLogQuery>({ current: 1, pageSize: PAGE_SIZE })
+const query = shallowRef<SysClientLogQuery>({ current: 1, pageSize: PAGE_SIZE })
 const detailOpen = shallowRef(false)
 const detailLoading = shallowRef(false)
-const detail = shallowRef<ClientLogDetail>()
+const detail = shallowRef<SysClientLogDetail>()
 
 const schemas = shallowRef<FormPlusProps['schemas']>([
   {
@@ -123,7 +123,7 @@ const schemas = shallowRef<FormPlusProps['schemas']>([
   },
 ])
 
-const columns: TableColumnsType<ClientLogResp> = [
+const columns: TableColumnsType<SysClientLog> = [
   {
     title: '序号',
     key: 'index',
@@ -152,7 +152,7 @@ const columns: TableColumnsType<ClientLogResp> = [
 ]
 
 const { data, loading, run } = useRequest(
-  (params: ClientLogQuery) => getClientLogPageListApi(params),
+  (params: SysClientLogQuery) => getClientLogPageListApi(params),
   { defaultParams: [query.value] }
 )
 
@@ -184,7 +184,7 @@ function onSearch(values: FormPlusModel) {
     current: 1,
     message: (values.message as string)?.trim() || undefined,
     source: (values.source as string)?.trim() || undefined,
-    level: (values.level as ClientLogQuery['level']) ?? undefined,
+    level: (values.level as SysClientLogQuery['level']) ?? undefined,
     ...resolveTimeRange(values.range),
   }
   run(query.value)
@@ -195,7 +195,7 @@ function onReset() {
   run(query.value)
 }
 
-async function openDetail(record: ClientLogResp) {
+async function openDetail(record: SysClientLog) {
   detail.value = undefined
   detailOpen.value = true
   detailLoading.value = true

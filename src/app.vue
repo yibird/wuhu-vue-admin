@@ -1,8 +1,6 @@
 <template>
-  <ConfigProvider :theme="themeConfig" :locale="locale">
-    <div class="full">
-      <RouterView />
-    </div>
+  <ConfigProvider :theme="themeConfig" :locale="locale" class="full">
+    <RouterView />
     <AppWatermark />
   </ConfigProvider>
 </template>

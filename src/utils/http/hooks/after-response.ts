@@ -1,6 +1,6 @@
 import { HTTP_STATUS, CONTENT_TYPE, HTTP_HEADER, API_STATUS } from '@/constants'
 import { ApiError } from '@/errors'
-import { notifySessionExpired } from '../session-events'
+import { notifySessionExpired } from '../sse'
 
 import type { AfterResponseHook } from 'ky'
 

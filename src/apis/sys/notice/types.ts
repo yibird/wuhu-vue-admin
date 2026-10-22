@@ -1,9 +1,9 @@
-import type { BaseResp } from '#/http'
+import type { BaseModel } from '#/http'
 
 export type NoticeType = 1 | 2
 export type NoticeSendMode = 'immediate' | 'scheduled'
 
-export interface NoticeResp extends BaseResp {
+export interface SysNotice extends BaseModel {
   /**
    * @desc 通知标题
    */
@@ -34,7 +34,7 @@ export interface NoticeResp extends BaseResp {
   scheduledAt?: string
 }
 
-export interface CreateNoticeReq {
+export interface SysNoticeCreateReq {
   title: string
   content: string
   type: NoticeType
@@ -45,6 +45,6 @@ export interface CreateNoticeReq {
   remark?: string
 }
 
-export interface UpdateNoticeReq extends Partial<CreateNoticeReq> {
+export interface SysNoticeUpdateReq extends Partial<SysNoticeCreateReq> {
   id: string
 }

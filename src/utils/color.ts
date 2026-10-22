@@ -1,155 +1,74 @@
+import { colord } from 'colord'
+import type { Colord } from 'colord'
+
 export type RgbColor = readonly [red: number, green: number, blue: number]
 export type ColorValue = string | RgbColor
 
-const HEX_COLOR_PATTERN = /^#([\da-f]{3}|[\da-f]{6})$/i
+const REG = /^(#|rgba?\(|hsla?\(|hwb\(|lab\(|lch\(|oklab\(|oklch\(|color\()/i
 
-function isRgbColor(color: ColorValue): color is RgbColor {
-  return typeof color !== 'string'
+/**
+ * 归一化颜色值
+ *
+ * @param value 颜色值
+ * @returns 归一化后的颜色值
+ */
+function normalizeColor(value: string) {
+  const input = value.trim()
+  if (REG.test(input)) return input
+  if (/^[a-z]+$/i.test(input)) return input
+  return `rgb(${input})`
 }
 
-function normalizeRgbChannels(channels: readonly number[]): RgbColor | null {
-  if (
-    channels.length !== 3 ||
-    channels.some(
-      (channel) => !Number.isFinite(channel) || channel < 0 || channel > 255
-    )
-  ) {
-    return null
+/**
+ * 解析颜色值
+ *
+ * @param color 颜色值
+ * @returns 解析后的颜色值
+ */
+function resolveColor(color: ColorValue): Colord | null {
+  if (typeof color === 'string') {
+    if (!color.trim()) return null
+    const parsed = colord(normalizeColor(color))
+    return parsed.isValid() ? parsed : null
   }
-
-  const [red, green, blue] = channels as [number, number, number]
-  return [Math.round(red), Math.round(green), Math.round(blue)]
+  const [r, g, b] = color
+  return [r, g, b].every((c) => Number.isFinite(c) && c >= 0 && c <= 255)
+    ? colord({ r, g, b })
+    : null
 }
 
-function parseRgbChannel(channel: string): number | null {
-  const value = channel.trim()
-  if (!value) return null
-
-  if (value.endsWith('%')) {
-    const percentage = Number(value.slice(0, -1))
-    if (!Number.isFinite(percentage) || percentage < 0 || percentage > 100) {
-      return null
-    }
-    return (percentage / 100) * 255
-  }
-
-  const number = Number(value)
-  return Number.isFinite(number) ? number : null
-}
-
-function resolveColor(color: ColorValue): RgbColor | null {
-  if (isRgbColor(color)) return normalizeRgbChannels(color)
-  return hexToRgb(color) ?? parseRgbColor(color)
-}
-
-export function parseRgbColor(color: string): RgbColor | null {
-  const value = color.trim()
-  const functionMatch = /^rgb\((.*)\)$/i.exec(value)
-  const body = functionMatch?.[1] ?? value
-  const channels = body.includes(',')
-    ? body.split(',')
-    : body.split(/\s+/).filter(Boolean)
-
-  if (channels.length !== 3) return null
-
-  const parsedChannels: number[] = []
-  for (const channel of channels) {
-    const parsedChannel = parseRgbChannel(channel)
-    if (parsedChannel === null) return null
-    parsedChannels.push(parsedChannel)
-  }
-
-  return normalizeRgbChannels(parsedChannels)
-}
-
+/**
+ * 将十六进制颜色值转换为 RGB 元组
+ *
+ * @param color 颜色值
+ * @returns RGB 元组
+ */
 export function hexToRgb(color: string): RgbColor | null {
-  const match = HEX_COLOR_PATTERN.exec(color.trim())
-  if (!match) return null
-
-  const value = match[1]
-  if (!value) return null
-
-  const normalized =
-    value.length === 3
-      ? value
-          .split('')
-          .map((channel) => channel.repeat(2))
-          .join('')
-      : value
-
-  return [
-    Number.parseInt(normalized.slice(0, 2), 16),
-    Number.parseInt(normalized.slice(2, 4), 16),
-    Number.parseInt(normalized.slice(4, 6), 16),
-  ]
+  const parsed = colord(color)
+  if (!parsed.isValid()) return null
+  const { r, g, b } = parsed.toRgb()
+  return [r, g, b]
 }
 
-export function rgbToHex(color: string | RgbColor): string | null {
-  const rgb = isRgbColor(color)
-    ? normalizeRgbChannels(color)
-    : parseRgbColor(color)
-  if (!rgb) return null
-
-  return `#${rgb
-    .map((channel) => channel.toString(16).padStart(2, '0'))
-    .join('')}`
+/**
+ * 将 RGB 元组转换为十六进制颜色值
+ *
+ * @param color 颜色值
+ * @returns 十六进制颜色值
+ */
+export function rgbToHex(color: ColorValue): string | null {
+  return resolveColor(color)?.toHex() ?? null
 }
 
-export function isValidColor(color: string): boolean {
-  return resolveColor(color) !== null
-}
-
-export function formatRgbColor(
-  color: ColorValue,
-  separator = ', '
-): string | null {
-  const rgb = resolveColor(color)
-  return rgb ? rgb.join(separator) : null
-}
-
-export function colorToRgba(color: ColorValue, alpha: number): string | null {
-  const rgb = resolveColor(color)
-  if (!rgb || !Number.isFinite(alpha) || alpha < 0 || alpha > 1) return null
-  return `rgba(${rgb.join(', ')}, ${alpha})`
-}
-
-export function getRelativeLuminance(color: ColorValue): number | null {
-  const rgb = resolveColor(color)
-  if (!rgb) return null
-
-  const [red, green, blue] = rgb.map((channel) => {
-    const value = channel / 255
-    return value <= 0.04045
-      ? value / 12.92
-      : Math.pow((value + 0.055) / 1.055, 2.4)
-  })
-
-  return 0.2126 * red + 0.7152 * green + 0.0722 * blue
-}
-
-export function getContrastColor(
-  background: ColorValue,
-  darkColor: ColorValue = '#111827',
-  lightColor: ColorValue = '#ffffff'
-): string | null {
-  const backgroundLuminance = getRelativeLuminance(background)
-  const darkLuminance = getRelativeLuminance(darkColor)
-  const lightLuminance = getRelativeLuminance(lightColor)
-  if (
-    backgroundLuminance === null ||
-    darkLuminance === null ||
-    lightLuminance === null
-  ) {
-    return null
-  }
-
-  const contrast = (first: number, second: number) =>
-    (Math.max(first, second) + 0.05) / (Math.min(first, second) + 0.05)
-
-  const darkContrast = contrast(backgroundLuminance, darkLuminance)
-  const lightContrast = contrast(backgroundLuminance, lightLuminance)
-  const selectedColor = darkContrast >= lightContrast ? darkColor : lightColor
-
-  if (isRgbColor(selectedColor)) return rgbToHex(selectedColor)
-  return selectedColor
+/**
+ * 将颜色转换为 RGB 字符串
+ *
+ * @param color 颜色值
+ * @returns RGB 字符串
+ */
+export function toRgb(color: string): string | null {
+  const parsed = resolveColor(color)
+  if (!parsed) return null
+  const { r, g, b } = parsed.toRgb()
+  return `${r} ${g} ${b}`
 }

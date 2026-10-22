@@ -1,7 +1,7 @@
 import type { MenuType } from '#/config'
-import type { BaseResp } from '#/http'
+import type { BaseModel } from '#/http'
 
-export interface MenuResp extends BaseResp {
+export interface SysMenu extends BaseModel {
   /**
    * @desc 菜单名称
    */
@@ -46,7 +46,7 @@ export interface MenuResp extends BaseResp {
   status: boolean
 }
 
-export interface CreateMenuReq {
+export interface SysMenuCreateReq {
   name: string
   type: MenuType
   path: string
@@ -60,6 +60,6 @@ export interface CreateMenuReq {
   remark?: string
 }
 
-export interface UpdateMenuReq extends Partial<CreateMenuReq> {
+export interface SysMenuUpdateReq extends Partial<SysMenuCreateReq> {
   id: string
 }

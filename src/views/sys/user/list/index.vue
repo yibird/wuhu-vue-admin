@@ -52,7 +52,7 @@
 
 <script setup lang="ts">
 import { Button, Modal, message } from 'antdv-next'
-import { deleteUserApi, getUserPageListApi, type UserResp } from '@/apis'
+import { deleteUserApi, getUserPageListApi, type SysUser } from '@/apis'
 import { FormPlus, Icon } from '@/components'
 import { useRequest, useTabs } from '@/hooks'
 import { UserForm } from './components'
@@ -105,7 +105,7 @@ const schemas = shallowRef<FormPlusProps['schemas']>([
     componentProps: { allowClear: true, placeholder: '请输入手机号' },
   },
 ])
-const columns: TableColumnsType<UserResp> = [
+const columns: TableColumnsType<SysUser> = [
   {
     title: '序号',
     key: 'index',
@@ -155,7 +155,7 @@ const pagination = computed<TablePaginationConfig>(() => ({
   showTotal: (total: number) => `共 ${total} 条`,
 }))
 
-const rowSelection = computed<TableRowSelection<UserResp>>(() => ({
+const rowSelection = computed<TableRowSelection<SysUser>>(() => ({
   selectedRowKeys: selectedRowKeys.value,
   onChange: (keys) => {
     selectedRowKeys.value = keys
@@ -197,7 +197,7 @@ function openEdit(id: string) {
   formOpen.value = true
 }
 
-function openDetail(record: UserResp) {
+function openDetail(record: SysUser) {
   openRouteTab({
     path: '/sys/user/detail',
     title: `用户详情-${record.nickname || record.username}`,

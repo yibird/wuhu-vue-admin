@@ -12,12 +12,8 @@ import {
   PAGE_ANIMATION_MODE,
 } from '@/constants'
 import logo from '@/assets/svg/logo.svg'
+import { appEnv } from '@/utils'
 import type { AppState } from './types'
-
-/**
- * 应用名默认值,应用名为空时的文案兜底也复用该值
- */
-export const DEFAULT_APP_NAME = 'Wuhu-admin'
 
 const createInitialState = (): AppState => {
   return {
@@ -66,7 +62,7 @@ const createInitialState = (): AppState => {
     },
     lockscreen: {},
     app: {
-      name: DEFAULT_APP_NAME,
+      name: appEnv.appName,
       logo,
       themeMode: THEME_MODE.Light,
       themeColor: '22, 119, 255',

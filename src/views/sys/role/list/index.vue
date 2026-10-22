@@ -45,7 +45,7 @@
 
 <script setup lang="ts">
 import { Button, Tag } from 'antdv-next'
-import { getRolePageListApi, type RoleResp } from '@/apis'
+import { getRolePageListApi, type SysRole } from '@/apis'
 import { FormPlus, Icon } from '@/components'
 import { useRequest, useTabs } from '@/hooks'
 
@@ -74,7 +74,7 @@ const editingRoleId = shallowRef<string>()
 const query = shallowRef<RoleQuery>({ current: 1, pageSize: PAGE_SIZE })
 const selectedRowKeys = shallowRef<(string | number)[]>([])
 
-const columns: TableColumnsType<RoleResp> = [
+const columns: TableColumnsType<SysRole> = [
   {
     title: '序号',
     key: 'index',
@@ -135,7 +135,7 @@ const pagination = computed<TablePaginationConfig>(() => ({
   showTotal: (total: number) => `共 ${total} 条`,
 }))
 
-const rowSelection = computed<TableRowSelection<RoleResp>>(() => ({
+const rowSelection = computed<TableRowSelection<SysRole>>(() => ({
   selectedRowKeys: selectedRowKeys.value,
   onChange: (keys) => {
     selectedRowKeys.value = keys
@@ -177,7 +177,7 @@ function openEdit(id: string) {
 }
 
 /** 跳转角色详情页,详情页按 query.id 拉取角色数据 */
-function openDetail(record: RoleResp) {
+function openDetail(record: SysRole) {
   openRouteTab({
     path: '/sys/role/detail',
     title: `角色详情-${record.roleName}`,

@@ -88,6 +88,7 @@
     "@zhouchengfeng/okay": "^1.0.0",
     "antdv-next": "^1.7.0",
     "codemirror": "^6.0.2",
+    "colord": "^2.10.0",
     "cropperjs": "^2.3.1",
     "dayjs": "^1.11.23",
     "dompurify": "^3.4.17",

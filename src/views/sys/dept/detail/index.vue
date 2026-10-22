@@ -137,7 +137,7 @@ import {
   deleteDeptApi,
   getDeptPageListApi,
   getDeptRecordApi,
-  type DeptResp,
+  type SysDept,
 } from '@/apis'
 import { Icon } from '@/components'
 import { useRequest, useTabs } from '@/hooks'
@@ -164,13 +164,13 @@ const { data: deptData } = useRequest(() =>
 
 const deptNames = computed(() => {
   const names = new Map<string, string>()
-  ;(deptData.value?.data?.list ?? []).forEach((item: DeptResp) => {
+  ;(deptData.value?.data?.list ?? []).forEach((item: SysDept) => {
     names.set(item.id, item.name)
   })
   return names
 })
 
-const dept = computed<DeptResp | undefined>(() => data.value?.data ?? undefined)
+const dept = computed<SysDept | undefined>(() => data.value?.data ?? undefined)
 
 const entityName = computed(() => (dept.value?.type === 2 ? '岗位' : '部门'))
 

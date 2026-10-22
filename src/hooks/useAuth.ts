@@ -2,17 +2,19 @@ import { Modal } from 'antdv-next'
 import { storeToRefs } from 'pinia'
 import { useGo } from '@/router'
 import { authStore } from '@/store'
-
 import type { LoginRequest } from '@/apis'
 
 export function useAuth() {
   const { to } = useGo()
   const store = authStore()
-  const { loginLoading } = storeToRefs(store)
+  const { accessToken, loginLoading, isAuthenticated, userInfo } =
+    storeToRefs(store)
 
-  const login = (credentials: LoginRequest) => store.login(credentials)
+  function login(credentials: LoginRequest) {
+    store.login(credentials)
+  }
 
-  const logout = () => {
+  function logout() {
     Modal.confirm({
       title: '确定要退出系统吗？',
       cancelText: '取消',
@@ -24,9 +26,16 @@ export function useAuth() {
     })
   }
 
+  function getToken() {
+    return accessToken.value
+  }
+
   return {
-    login,
+    isAuthenticated,
     loginLoading,
+    userInfo,
+    login,
     logout,
+    getToken,
   }
 }

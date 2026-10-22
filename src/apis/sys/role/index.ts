@@ -1,10 +1,2 @@
-import { getBaseApi } from '../../util'
-import type { RoleResp, CreateRoleReq, UpdateRoleReq } from './types'
-
-export const {
-  getPageListApi: getRolePageListApi,
-  getRecordApi: getRoleRecordApi,
-  createApi: createRoleApi,
-  updateApi: updateRoleApi,
-  deleteApi: deleteRoleApi,
-} = getBaseApi<RoleResp, RoleResp, CreateRoleReq, UpdateRoleReq>('/sys/role')
+export * from './api'
+export type * from './types'

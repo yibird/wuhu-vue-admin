@@ -1,4 +1,4 @@
-import type { BaseResp } from '#/http'
+import type { BaseModel } from '#/http'
 
 /**
  * 文件分类
@@ -14,7 +14,7 @@ export type FileKind =
 /**
  * 文件记录
  */
-export interface FileResp extends BaseResp {
+export interface SysFile extends BaseModel {
   /**
    * @desc 文件名(含扩展名)
    */
@@ -40,7 +40,7 @@ export interface FileResp extends BaseResp {
 /**
  * 文件列表查询参数
  */
-export interface FileQuery {
+export interface SysFileQuery {
   /**
    * @desc 页码
    */
@@ -70,7 +70,7 @@ export interface FileQuery {
 /**
  * 新增文件请求
  */
-export interface CreateFileReq {
+export interface SysFileCreateReq {
   /**
    * @desc 文件名(含扩展名)
    */
@@ -104,7 +104,7 @@ export interface CreateFileReq {
 /**
  * 更新文件请求
  */
-export interface UpdateFileReq extends Partial<CreateFileReq> {
+export interface SysFileUpdateReq extends Partial<SysFileCreateReq> {
   /**
    * @desc 文件主键
    */

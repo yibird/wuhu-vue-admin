@@ -1,4 +1,4 @@
-import type { MenuResp } from '@/apis'
+import type { SysMenu } from '@/apis'
 
 function createBase(id: string, sort: number) {
   return {
@@ -15,14 +15,14 @@ function createBase(id: string, sort: number) {
 function createMenu(
   id: string,
   name: string,
-  type: MenuResp['type'],
+  type: SysMenu['type'],
   path: string,
   component: string,
   perms: string,
   icon: string,
   sort: number,
   status = true
-): MenuResp {
+): SysMenu {
   return {
     ...createBase(id, sort),
     name,
@@ -35,7 +35,7 @@ function createMenu(
   }
 }
 
-export const menuDataSource: MenuResp[] = [
+export const menuDataSource: SysMenu[] = [
   createMenu(
     '1',
     '仪表盘',

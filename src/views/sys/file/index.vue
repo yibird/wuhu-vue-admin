@@ -109,8 +109,8 @@ import {
   deleteFileApi,
   getFilePageListApi,
   type FileKind,
-  type FileQuery,
-  type FileResp,
+  type SysFileQuery,
+  type SysFile,
 } from '@/apis'
 import { FilePreview, FormPlus, Icon } from '@/components'
 import { useRequest } from '@/hooks'
@@ -141,11 +141,11 @@ const TABLE_SCROLL_Y = 'calc(100vh - 310px)'
 
 const { user } = useAuthStore()
 
-const query = shallowRef<FileQuery>({ current: 1, pageSize: PAGE_SIZE })
+const query = shallowRef<SysFileQuery>({ current: 1, pageSize: PAGE_SIZE })
 const selectedRowKeys = shallowRef<(string | number)[]>([])
 const uploadingCount = shallowRef(0)
 const renameOpen = shallowRef(false)
-const renameFile = shallowRef<FileResp>()
+const renameFile = shallowRef<SysFile>()
 const previewOpen = shallowRef(false)
 const previewFile = shallowRef<FilePreviewSource | null>(null)
 
@@ -182,7 +182,7 @@ const querySchemas = shallowRef<FormPlusProps['schemas']>([
   },
 ])
 
-const columns: TableColumnsType<FileResp> = [
+const columns: TableColumnsType<SysFile> = [
   {
     title: '序号',
     key: 'index',
@@ -204,7 +204,7 @@ const columns: TableColumnsType<FileResp> = [
 ]
 
 const { data, loading, run } = useRequest(
-  (params: FileQuery) => getFilePageListApi(params),
+  (params: SysFileQuery) => getFilePageListApi(params),
   { defaultParams: [query.value] }
 )
 
@@ -218,7 +218,7 @@ const pagination = computed<TablePaginationConfig>(() => ({
   showTotal: (total: number) => `共 ${total} 条`,
 }))
 
-const rowSelection = computed<TableRowSelection<FileResp>>(() => ({
+const rowSelection = computed<TableRowSelection<SysFile>>(() => ({
   selectedRowKeys: selectedRowKeys.value,
   onChange: (keys) => {
     selectedRowKeys.value = keys
@@ -285,7 +285,7 @@ const onBeforeUpload: UploadProps['beforeUpload'] = async (file) => {
   return false
 }
 
-function onDownload(record: FileResp) {
+function onDownload(record: SysFile) {
   const link = document.createElement('a')
   link.href = record.url
   link.download = record.name
@@ -315,7 +315,7 @@ async function toPreviewUrl(url: string) {
   return previewObjectUrl
 }
 
-async function openPreview(record: FileResp) {
+async function openPreview(record: SysFile) {
   releasePreviewUrl()
   previewFile.value = {
     filename: record.name,
@@ -330,12 +330,12 @@ watch(previewOpen, (open) => {
   if (!open) releasePreviewUrl()
 })
 
-function openRename(record: FileResp) {
+function openRename(record: SysFile) {
   renameFile.value = record
   renameOpen.value = true
 }
 
-function onDelete(record: FileResp) {
+function onDelete(record: SysFile) {
   Modal.confirm({
     title: '删除文件',
     content: `确定删除「${record.name}」吗？`,

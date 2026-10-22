@@ -1,18 +1,9 @@
-export { usePermission } from './usePermission'
-export {
-  clearDictCache,
-  getDictLabel,
-  getDictOptions,
-  loadDict,
-  setDictLoader,
-  useDict,
-} from './useDict'
-export type { DictLoader, DictOption } from './useDict'
-export { useTabs } from './useTabs'
-export { useTabGuard } from './useTabGuard'
-export { useSearchHistory } from './useSearchHistory'
-export { useAuth } from './useAuth'
-export { useDeferred } from './useDeferred'
-export { useLoading } from './useLoading'
-export { useRangeSelection } from './useRangeSelection'
+export * from './usePermission'
+export * from './useDict'
+export * from './useTabs'
+export * from './useSearchHistory'
+export * from './useAuth'
+export * from './useDeferred'
+export * from './useLoading'
+export * from './useRangeSelection'
 export * from './http'

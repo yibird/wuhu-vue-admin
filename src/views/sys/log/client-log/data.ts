@@ -1,5 +1,5 @@
 import { formatLogTime } from '../data'
-import type { ClientLogDetail, LogLevel } from '@/apis'
+import type { SysClientLogDetail, LogLevel } from '@/apis'
 import type { LogDetailField, LogDetailGroup } from '../components'
 
 /**
@@ -51,7 +51,7 @@ export function resolveClientLevelMeta(level: LogLevel) {
  * @param detail 日志详情
  */
 export function createClientDetailFields(
-  detail?: ClientLogDetail
+  detail?: SysClientLogDetail
 ): LogDetailField[] {
   if (!detail) return []
 
@@ -77,7 +77,7 @@ export function createClientDetailFields(
  * @param detail 日志详情
  */
 export function createClientDetailGroups(
-  detail?: ClientLogDetail
+  detail?: SysClientLogDetail
 ): LogDetailGroup[] {
   if (!detail) return []
 

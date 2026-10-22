@@ -2,7 +2,7 @@ import { getBaseApi } from '@/apis/util'
 import { apiRequest } from '@/utils'
 import { REQUEST_METHOD } from '@/constants'
 
-import type { Result } from '#/http'
+import type { ApiResult } from '#/http'
 import type {
   CreateMilestoneReq,
   CreateProjectMemberReq,

@@ -19,7 +19,7 @@ export interface BaseQuery {
   pageSize?: number
 }
 
-export interface BaseResp {
+export interface BaseModel {
   /**
    * @desc 主键
    */

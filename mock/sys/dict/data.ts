@@ -1,153 +1,209 @@
 import type {
-  CreateDictItemReq,
-  CreateDictReq,
-  DictItemResp,
-  DictResp,
-  UpdateDictItemReq,
-  UpdateDictReq,
+  SysDictDataCreateReq,
+  SysDictTypeCreateReq,
+  SysDictData,
+  SysDictType,
 } from '@/apis'
 
-function createBase(id: string, sort: number) {
+const NOW = new Date('2026-10-18T09:30:00+08:00')
+
+function isoOffset(days: number) {
+  return new Date(NOW.getTime() + days * 24 * 60 * 60 * 1000).toISOString()
+}
+
+function createBaseFields(index: number) {
   return {
-    id,
     dataStatus: true,
     deleted: false,
     version: 1,
-    sort,
+    sort: index,
+    unionId: 2000 + index,
     createdBy: '系统管理员',
-    createdAt: new Date(Date.now() - sort * 86_400_000).toISOString(),
+    updatedBy: '系统管理员',
+    createdAt: isoOffset(-30 + index),
+    updatedAt: isoOffset(-index),
+    remark: '',
   }
 }
 
-function createDict(
+function createDictType(
   id: string,
   name: string,
   type: string,
   sort: number,
   remark: string
-): DictResp {
+): SysDictType {
   return {
-    ...createBase(id, sort),
+    ...createBaseFields(sort),
+    id,
     name,
     type,
     status: true,
+    sort,
     remark,
   }
 }
 
-export const dictDataSource: DictResp[] = [
-  createDict('1', '用户性别', 'sys_user_sex', 1, '用户基础性别选项'),
-  createDict('2', '通知类型', 'sys_notice_type', 2, '系统通知的内容类型'),
-  createDict('3', '任务状态', 'sys_task_status', 3, '任务流转状态'),
-  createDict('4', '数据权限', 'sys_data_scope', 4, '后台数据访问范围'),
-  createDict('5', '消息优先级', 'sys_message_priority', 5, '消息处理优先级'),
+export const dictTypeDataSource: SysDictType[] = [
+  createDictType('1', '用户性别', 'sys_sex', 1, '用户基础性别选项'),
+  createDictType('2', '用户状态', 'sys_user_status', 2, '用户账号启用状态'),
+  createDictType('3', '通知类型', 'sys_notice_type', 3, '系统通知的内容类型'),
+  createDictType('4', '任务状态', 'sys_task_status', 4, '任务流转状态'),
+  createDictType('5', '数据权限', 'sys_data_scope', 5, '后台数据访问范围'),
+  createDictType(
+    '6',
+    '消息优先级',
+    'sys_message_priority',
+    6,
+    '消息处理优先级'
+  ),
 ]
 
-function createItem(
+function createDictData(
   id: string,
   dictId: string,
   label: string,
   value: string,
   sort: number,
   remark = ''
-): DictItemResp {
+): SysDictData {
   return {
-    ...createBase(id, sort),
+    ...createBaseFields(sort),
+    id,
     dictId,
     label,
     value,
     status: true,
+    sort,
     remark,
   }
 }
 
-export const dictItemDataSource: DictItemResp[] = [
-  createItem('1', '1', '男', '1', 1),
-  createItem('2', '1', '女', '2', 2),
-  createItem('3', '1', '未知', '0', 3),
-  createItem('4', '2', '通知', '1', 1),
-  createItem('5', '2', '公告', '2', 2),
-  createItem('6', '3', '待处理', 'todo', 1),
-  createItem('7', '3', '进行中', 'doing', 2),
-  createItem('8', '3', '已完成', 'done', 3),
-  createItem('9', '3', '已取消', 'cancelled', 4),
-  createItem('10', '4', '全部数据', 'all', 1),
-  createItem('11', '4', '本部门及以下', 'dept_and_children', 2),
-  createItem('12', '4', '本部门', 'dept', 3),
-  createItem('13', '4', '仅本人', 'self', 4),
-  createItem('14', '5', '低', 'low', 1),
-  createItem('15', '5', '普通', 'normal', 2),
-  createItem('16', '5', '高', 'high', 3),
-  createItem('17', '5', '紧急', 'urgent', 4),
+export const dictDataDataSource: SysDictData[] = [
+  createDictData('1', '1', '男', '1', 1),
+  createDictData('2', '1', '女', '0', 2),
+  createDictData('3', '1', '未知', '2', 3),
+  createDictData('4', '2', '正常', '1', 1),
+  createDictData('5', '2', '停用', '0', 2),
+  createDictData('6', '3', '通知', '1', 1),
+  createDictData('7', '3', '公告', '2', 2),
+  createDictData('8', '4', '待处理', 'todo', 1),
+  createDictData('9', '4', '进行中', 'doing', 2),
+  createDictData('10', '4', '已完成', 'done', 3),
+  createDictData('11', '4', '已取消', 'cancelled', 4),
+  createDictData('12', '5', '全部数据', 'all', 1),
+  createDictData('13', '5', '本部门及以下', 'dept_and_children', 2),
+  createDictData('14', '5', '本部门', 'dept', 3),
+  createDictData('15', '5', '仅本人', 'self', 4),
+  createDictData('16', '6', '低', 'low', 1),
+  createDictData('17', '6', '普通', 'normal', 2),
+  createDictData('18', '6', '高', 'high', 3),
+  createDictData('19', '6', '紧急', 'urgent', 4),
 ]
 
-export function appendDict(input: CreateDictReq) {
-  const dict = {
-    ...createBase(String(Date.now()), dictDataSource.length + 1),
-    ...input,
+export function findDictType(id: string) {
+  return dictTypeDataSource.find((item) => item.id === id)
+}
+
+export function findDictTypeByType(type: string, excludeId?: string) {
+  return dictTypeDataSource.find(
+    (item) => item.type === type && item.id !== excludeId
+  )
+}
+
+export function appendDictType(input: SysDictTypeCreateReq): SysDictType {
+  const index = dictTypeDataSource.length
+  const dict: SysDictType = {
+    ...createBaseFields(index),
+    id: `dict-${Date.now().toString(36)}`,
+    name: input.name.trim(),
+    type: input.type.trim(),
+    status: input.status ?? true,
+    sort: index,
+    remark: input.remark?.trim() ?? '',
   }
-  dictDataSource.unshift(dict)
+  dictTypeDataSource.unshift(dict)
   return dict
 }
 
-export function findDict(id: string) {
-  return dictDataSource.find((item) => item.id === id)
+export function updateDictType(
+  input: Partial<SysDictTypeCreateReq> & { id: string }
+) {
+  const current = findDictType(input.id)
+  if (!current) return undefined
+  if (input.name !== undefined) current.name = input.name.trim()
+  if (input.type !== undefined) current.type = input.type.trim()
+  if (input.status !== undefined) current.status = input.status
+  if (input.remark !== undefined) current.remark = input.remark.trim()
+  current.updatedAt = new Date().toISOString()
+  return current
 }
 
-export function updateDict(input: UpdateDictReq) {
-  const dict = findDict(input.id)
-  if (!dict) return false
-  Object.assign(dict, input, {
-    updatedAt: new Date().toISOString(),
-    updatedBy: '系统管理员',
-  })
-  return true
-}
-
-export function deleteDict(ids: Array<string | number>) {
-  const idSet = new Set(ids.map(String))
-  const originalLength = dictDataSource.length
-  for (let index = dictDataSource.length - 1; index >= 0; index -= 1) {
-    if (idSet.has(dictDataSource[index].id)) dictDataSource.splice(index, 1)
-  }
-  for (let index = dictItemDataSource.length - 1; index >= 0; index -= 1) {
-    if (idSet.has(dictItemDataSource[index].dictId)) {
-      dictItemDataSource.splice(index, 1)
+export function deleteDictTypes(ids: Array<string | number>) {
+  const keys = new Set(ids.map(String))
+  for (let index = dictTypeDataSource.length - 1; index >= 0; index -= 1) {
+    if (keys.has(dictTypeDataSource[index].id)) {
+      dictTypeDataSource.splice(index, 1)
     }
   }
-  return originalLength !== dictDataSource.length
-}
-
-export function appendDictItem(input: CreateDictItemReq) {
-  const dictItem: DictItemResp = {
-    ...createBase(String(Date.now()), dictItemDataSource.length + 1),
-    ...input,
-  }
-  dictItemDataSource.unshift(dictItem)
-  return dictItem
-}
-
-export function findDictItem(id: string) {
-  return dictItemDataSource.find((item) => item.id === id)
-}
-
-export function updateDictItem(input: UpdateDictItemReq) {
-  const dictItem = findDictItem(input.id)
-  if (!dictItem) return false
-  Object.assign(dictItem, input, {
-    updatedAt: new Date().toISOString(),
-    updatedBy: '系统管理员',
-  })
-  return true
-}
-
-export function deleteDictItems(ids: Array<string | number>) {
-  const idSet = new Set(ids.map(String))
-  const originalLength = dictItemDataSource.length
-  for (let index = dictItemDataSource.length - 1; index >= 0; index -= 1) {
-    if (idSet.has(dictItemDataSource[index].id)) {
-      dictItemDataSource.splice(index, 1)
+  for (let index = dictDataDataSource.length - 1; index >= 0; index -= 1) {
+    if (keys.has(dictDataDataSource[index].dictId)) {
+      dictDataDataSource.splice(index, 1)
     }
   }
-  return originalLength !== dictItemDataSource.length
+}
+
+export function findDictData(id: string) {
+  return dictDataDataSource.find((item) => item.id === id)
+}
+
+export function findDictDataByValue(
+  dictId: string,
+  value: string,
+  excludeId?: string
+) {
+  return dictDataDataSource.find(
+    (item) =>
+      item.dictId === dictId && item.value === value && item.id !== excludeId
+  )
+}
+
+export function appendDictData(input: SysDictDataCreateReq): SysDictData {
+  const index = dictDataDataSource.length
+  const item: SysDictData = {
+    ...createBaseFields(index),
+    id: `dict-data-${Date.now().toString(36)}`,
+    dictId: input.dictId,
+    label: input.label.trim(),
+    value: input.value.trim(),
+    status: input.status ?? true,
+    sort: input.sort ?? index,
+    remark: input.remark?.trim() ?? '',
+  }
+  dictDataDataSource.push(item)
+  return item
+}
+
+export function updateDictData(
+  input: Partial<SysDictDataCreateReq> & { id: string }
+) {
+  const current = findDictData(input.id)
+  if (!current) return undefined
+  if (input.dictId !== undefined) current.dictId = input.dictId
+  if (input.label !== undefined) current.label = input.label.trim()
+  if (input.value !== undefined) current.value = input.value.trim()
+  if (input.status !== undefined) current.status = input.status
+  if (input.sort !== undefined) current.sort = input.sort
+  if (input.remark !== undefined) current.remark = input.remark.trim()
+  current.updatedAt = new Date().toISOString()
+  return current
+}
+
+export function deleteDictData(ids: Array<string | number>) {
+  const keys = new Set(ids.map(String))
+  for (let index = dictDataDataSource.length - 1; index >= 0; index -= 1) {
+    if (keys.has(dictDataDataSource[index].id)) {
+      dictDataDataSource.splice(index, 1)
+    }
+  }
 }

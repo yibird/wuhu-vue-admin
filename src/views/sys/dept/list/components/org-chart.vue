@@ -169,7 +169,7 @@
 <script setup lang="ts">
 import { Vue3TreeOrg } from 'vue3-tree-org'
 import 'vue3-tree-org/lib/vue3-tree-org.css'
-import { getDeptPageListApi, type DeptResp, type DeptType } from '@/apis'
+import { getDeptPageListApi, type SysDept, type DeptType } from '@/apis'
 import { Icon } from '@/components'
 import { resolveDeptAccent } from '../data'
 import OrgNode from './org-node.vue'
@@ -273,7 +273,7 @@ const emits = defineEmits<{
 }>()
 
 const loading = shallowRef(false)
-const depts = shallowRef<DeptResp[]>([])
+const depts = shallowRef<SysDept[]>([])
 const keyword = shallowRef('')
 const selectedId = shallowRef('')
 const expandedAll = shallowRef(false)
@@ -339,7 +339,7 @@ watch(open, async (value) => {
  * 上级不在结果集内的节点(如跨页取数遗漏)挂到虚拟根节点下,避免整棵子树丢失。
  * 展开态只给根节点,首屏呈现「根 + 各一级部门」;更深的层级由用户按需展开。
  */
-function buildOrgTree(items: DeptResp[]): OrgChartNode {
+function buildOrgTree(items: SysDept[]): OrgChartNode {
   const nodes = new Map<string, OrgChartNode>()
 
   items.forEach((item) => {

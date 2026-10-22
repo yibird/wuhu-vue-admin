@@ -78,7 +78,7 @@
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { Icon } from '@/components'
-import { formatRgbColor, hexToRgb } from '@/utils'
+import { toRgb } from '@/utils'
 import { SchemaRenderer } from '../components'
 import { loadPublished } from '../core/persistence'
 import { createRuntime } from '../core/runtime'
@@ -138,10 +138,9 @@ const accessiblePages = computed(
 
 const themeStyle = computed(() => {
   const color = schema.value?.theme?.primaryColor
-  const rgb = hexToRgb(color ?? '')
+  if (!color) return {}
   return {
-    '--w-color-primary':
-      formatRgbColor(rgb ?? (color || '#1677ff'), ' ') ?? undefined,
+    '--w-color-primary': toRgb(color) ?? undefined,
   }
 })
 

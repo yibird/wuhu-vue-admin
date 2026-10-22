@@ -3,9 +3,9 @@
     <div
       ref="triggerRef"
       :class="[
-        'group h-34 w-full flex items-center justify-center overflow-hidden rounded-5 border-1 border-solid bg-container px-10 text-main outline-none transition-[background-color,border-color,box-shadow,transform] duration-motion-base ease-motion-enter hover:border-color-3 focus-within:border-primary focus-within:shadow-[0_0_0_2px_rgb(var(--w-color-primary)_/_12%)] active:scale-[0.99] motion-reduce:(transform-none transition-none)',
+        'group h-34 flex-center overflow-hidden rounded-5 border-1 border-solid bg-container px-10 text-main outline-none transition-[background-color,border-color,box-shadow,transform] duration-motion-base ease-motion-enter active:scale-[0.99]',
         isCollapsed ? 'cursor-pointer' : '',
-        panelOpen ? 'border-primary bg-primary-tint' : 'border-color-2',
+        panelOpen ? 'border-primary' : 'border-color-3',
       ]"
       role="combobox"
       :aria-expanded="panelOpen"

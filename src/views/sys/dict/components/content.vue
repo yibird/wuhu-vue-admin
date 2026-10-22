@@ -61,8 +61,8 @@ import { watch } from 'vue'
 import {
   deleteDictItemApi,
   getDictItemPageListApi,
-  type DictItemQuery,
-  type DictItemResp,
+  type SysDictDataQuery,
+  type SysDictData,
 } from '@/apis'
 import { useRequest } from '@/hooks'
 import DictItemForm from './dict-item-form.vue'
@@ -83,11 +83,11 @@ const TABLE_SCROLL_Y = 'calc(100vh - 340px)'
 const formOpen = shallowRef(false)
 const editingId = shallowRef<string>()
 const selectedRowKeys = shallowRef<(string | number)[]>([])
-const query = shallowRef<DictItemQuery>(
+const query = shallowRef<SysDictDataQuery>(
   createQuery(props.dictId, props.filters)
 )
 
-const columns: TableColumnsType<DictItemResp> = [
+const columns: TableColumnsType<SysDictData> = [
   { title: '标签', dataIndex: 'label', width: 160, ellipsis: true },
   { title: '值', dataIndex: 'value', width: 160, ellipsis: true },
   { title: '排序', dataIndex: 'sort', width: 90 },
@@ -98,7 +98,7 @@ const columns: TableColumnsType<DictItemResp> = [
 ]
 
 const { data, loading, run } = useRequest(
-  (params: DictItemQuery) => getDictItemPageListApi(params),
+  (params: SysDictDataQuery) => getDictItemPageListApi(params),
   { defaultParams: [query.value] }
 )
 
@@ -113,7 +113,7 @@ const pagination = computed<TablePaginationConfig>(() => ({
   showTotal: (total: number) => `共 ${total} 条`,
 }))
 
-const rowSelection = computed<TableRowSelection<DictItemResp>>(() => ({
+const rowSelection = computed<TableRowSelection<SysDictData>>(() => ({
   selectedRowKeys: selectedRowKeys.value,
   onChange: (keys) => {
     selectedRowKeys.value = keys

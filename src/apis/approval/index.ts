@@ -19,7 +19,7 @@ export type {
   UpdateApprovalDefinitionReq,
 } from './types'
 
-import type { Result } from '#/http'
+import type { ApiResult } from '#/http'
 import type {
   ApprovalCategoryResp,
   ApprovalDefinitionResp,

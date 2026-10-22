@@ -1,5 +1,5 @@
 import { defineMock } from 'vite-plugin-mock-dev-server'
-import type { CreateDeptReq, UpdateDeptReq } from '@/apis'
+import type { SysDeptCreateReq, SysDeptUpdateReq } from '@/apis'
 import { apiErr, apiOk, getPageList } from '#mock/helper'
 import {
   deleteDept,
@@ -47,7 +47,7 @@ export default defineMock([
   {
     url: '/api/sys/dept/create',
     method: 'POST',
-    body: ({ body }: { body: CreateDeptReq }) => {
+    body: ({ body }: { body: SysDeptCreateReq }) => {
       appendDept({
         ...body,
         dataStatus: true,
@@ -61,7 +61,7 @@ export default defineMock([
   {
     url: '/api/sys/dept/update',
     method: 'POST',
-    body: ({ body }: { body: UpdateDeptReq }) => {
+    body: ({ body }: { body: SysDeptUpdateReq }) => {
       return updateDept(body) ? apiOk(1) : apiErr('部门或岗位不存在')
     },
   },

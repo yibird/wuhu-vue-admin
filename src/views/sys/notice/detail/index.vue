@@ -118,7 +118,7 @@
 
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
-import { getNoticeRecordApi, type NoticeResp } from '@/apis'
+import { getNoticeRecordApi, type SysNotice } from '@/apis'
 import { Icon } from '@/components'
 import { useRequest, useTabs } from '@/hooks'
 
@@ -134,7 +134,7 @@ const { data, loading } = useRequest(
   { defaultParams: [{ id: noticeId.value }], manual: !noticeId.value }
 )
 
-const notice = computed<NoticeResp | undefined>(
+const notice = computed<SysNotice | undefined>(
   () => data.value?.data ?? undefined
 )
 

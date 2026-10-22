@@ -113,7 +113,7 @@ import type { Dayjs } from 'dayjs'
 import { message, type FormInstance } from 'antdv-next'
 import {
   createNoticeApi,
-  type CreateNoticeReq,
+  type SysNoticeCreateReq,
   type NoticeSendMode,
 } from '@/apis'
 import type { EditorExpose } from '@/components/editor'
@@ -132,7 +132,7 @@ const emits = defineEmits<{
 const formRef = shallowRef<FormInstance>()
 const contentEditorRef = useTemplateRef<EditorExpose>('contentEditor')
 const submitting = shallowRef(false)
-const form = reactive<CreateNoticeReq>(createDefaultForm())
+const form = reactive<SysNoticeCreateReq>(createDefaultForm())
 
 const sendModeOptions: Array<{ label: string; value: NoticeSendMode }> = [
   { label: '立即发送', value: 'immediate' },
@@ -165,7 +165,7 @@ watch(
   }
 )
 
-function createDefaultForm(): CreateNoticeReq {
+function createDefaultForm(): SysNoticeCreateReq {
   return {
     title: '',
     content: '',

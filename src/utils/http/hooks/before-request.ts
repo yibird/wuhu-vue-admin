@@ -1,6 +1,6 @@
 import { getToken, isWhiteListed } from '../util'
-import { TOKEN_PREFIX } from '../constant'
-import { notifySessionExpired } from '../session-events'
+import { TOKEN_PREFIX } from '@/constants'
+import { notifySessionExpired } from '../sse'
 
 import type { BeforeRequestHook } from 'ky'
 

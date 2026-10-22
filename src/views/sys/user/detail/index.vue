@@ -179,9 +179,9 @@ import {
   getDeptPageListApi,
   getRolePageListApi,
   getUserRecordApi,
-  type DeptResp,
-  type RoleResp,
-  type UserResp,
+  type SysDept,
+  type SysRole,
+  type SysUser,
 } from '@/apis'
 import { Icon } from '@/components'
 import { useRequest, useTabs } from '@/hooks'
@@ -220,20 +220,20 @@ const { data: roleData } = useRequest(() =>
 const organizationMaps = computed(() => {
   const deptNames = new Map<string, string>()
   const postNames = new Map<string, string>()
-  ;(deptData.value?.data?.list ?? []).forEach((item: DeptResp) => {
+  ;(deptData.value?.data?.list ?? []).forEach((item: SysDept) => {
     if (item.type === 2) postNames.set(item.id, item.name)
     else deptNames.set(item.id, item.name)
   })
 
   const roleNames = new Map<string, string>()
-  ;(roleData.value?.data?.list ?? []).forEach((item: RoleResp) => {
+  ;(roleData.value?.data?.list ?? []).forEach((item: SysRole) => {
     roleNames.set(item.id, item.roleName)
   })
 
   return { deptNames, postNames, roleNames }
 })
 
-const user = computed<UserResp | undefined>(() => data.value?.data ?? undefined)
+const user = computed<SysUser | undefined>(() => data.value?.data ?? undefined)
 
 const title = computed(
   () => user.value?.nickname || user.value?.realname || '用户详情'

@@ -1,5 +1,5 @@
 import { defineMock } from 'vite-plugin-mock-dev-server'
-import type { CreateFileReq, FileKind, UpdateFileReq } from '@/apis'
+import type { SysFileCreateReq, FileKind, SysFileUpdateReq } from '@/apis'
 import { apiErr, apiOk, getPageList } from '#mock/helper'
 import {
   appendFile,
@@ -53,12 +53,12 @@ export default defineMock([
   {
     url: '/api/sys/file/create',
     method: 'POST',
-    body: ({ body }: { body: CreateFileReq }) => apiOk(appendFile(body).id),
+    body: ({ body }: { body: SysFileCreateReq }) => apiOk(appendFile(body).id),
   },
   {
     url: '/api/sys/file/update',
     method: 'POST',
-    body: ({ body }: { body: UpdateFileReq }) =>
+    body: ({ body }: { body: SysFileUpdateReq }) =>
       updateFile(body) ? apiOk(1) : apiErr('文件不存在'),
   },
   {

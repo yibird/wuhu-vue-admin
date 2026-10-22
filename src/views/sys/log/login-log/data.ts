@@ -1,5 +1,5 @@
 import { formatLogTime, resolveLogStatusMeta } from '../data'
-import type { LoginLogDetail } from '@/apis'
+import type { SysLoginLogDetail } from '@/apis'
 import type { LogDetailField, LogDetailGroup } from '../components'
 
 /**
@@ -8,7 +8,7 @@ import type { LogDetailField, LogDetailGroup } from '../components'
  * @param detail 日志详情
  */
 export function createLoginDetailFields(
-  detail?: LoginLogDetail
+  detail?: SysLoginLogDetail
 ): LogDetailField[] {
   if (!detail) return []
 
@@ -33,7 +33,7 @@ export function createLoginDetailFields(
  * @param detail 日志详情
  */
 export function createLoginDetailGroups(
-  detail?: LoginLogDetail
+  detail?: SysLoginLogDetail
 ): LogDetailGroup[] {
   if (!detail) return []
 

@@ -1,22 +1,18 @@
-import { formatRgbColor } from '../utils/color.ts'
+import { toRgb } from '../utils'
 
 interface LoadingThemeOptions {
   themeColor?: string
   themeMode?: string
 }
 
-function normalizeThemeColor(themeColor?: string) {
-  return formatRgbColor(themeColor ?? '', ' ') ?? '24 144 255'
-}
-
 export function applyAppLoadingTheme({
-  themeColor,
+  themeColor = '24 144 255',
   themeMode,
 }: LoadingThemeOptions) {
   if (typeof document === 'undefined') return
 
   const root = document.documentElement
-  const primaryColor = normalizeThemeColor(themeColor)
+  const primaryColor = toRgb(themeColor) ?? '22 119 255'
   const isDark =
     themeMode === 'dark' ||
     (themeMode === 'auto' &&

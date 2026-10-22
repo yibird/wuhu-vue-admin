@@ -87,7 +87,7 @@ import {
   createDeptApi,
   getDeptRecordApi,
   updateDeptApi,
-  type CreateDeptReq,
+  type SysDeptCreateReq,
 } from '@/apis'
 import { DeptPicker, type DeptPickerOption } from '@/features'
 
@@ -111,7 +111,7 @@ const emits = defineEmits<{
 const formRef = shallowRef<FormInstance>()
 const submitting = shallowRef(false)
 const detailLoading = shallowRef(false)
-const form = reactive<CreateDeptReq>(createDefaultForm())
+const form = reactive<SysDeptCreateReq>(createDefaultForm())
 const isEdit = computed(() => Boolean(props.id))
 const title = computed(() => (isEdit.value ? '编辑岗位' : '新建岗位'))
 
@@ -132,7 +132,7 @@ watch([open, () => props.id], async ([value]) => {
   formRef.value?.clearValidate()
 })
 
-function createDefaultForm(): CreateDeptReq {
+function createDefaultForm(): SysDeptCreateReq {
   return {
     parentId: '',
     name: '',
@@ -191,7 +191,7 @@ async function handleSubmit() {
 
   submitting.value = true
   try {
-    const payload: CreateDeptReq = {
+    const payload: SysDeptCreateReq = {
       ...form,
       type: 2,
       name: form.name.trim(),

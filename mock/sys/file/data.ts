@@ -1,4 +1,9 @@
-import type { CreateFileReq, FileKind, FileResp, UpdateFileReq } from '@/apis'
+import type {
+  SysFileCreateReq,
+  FileKind,
+  SysFile,
+  SysFileUpdateReq,
+} from '@/apis'
 
 const uploaders = ['管理员', '张伟', '李娜', '王强', '赵敏']
 
@@ -266,7 +271,7 @@ function createBase(id: string, daysAgo: number, createdBy: string) {
   }
 }
 
-export const fileDataSource: FileResp[] = seedFiles.map((seed, index) => ({
+export const fileDataSource: SysFile[] = seedFiles.map((seed, index) => ({
   ...createBase(
     `${index + 1}`,
     seed.daysAgo,
@@ -279,8 +284,8 @@ export const fileDataSource: FileResp[] = seedFiles.map((seed, index) => ({
   kind: seed.kind,
 }))
 
-export function appendFile(input: CreateFileReq) {
-  const file: FileResp = {
+export function appendFile(input: SysFileCreateReq) {
+  const file: SysFile = {
     ...input,
     id: `${fileDataSource.length + 1}`,
     dataStatus: true,
@@ -297,7 +302,7 @@ export function findFile(id: string) {
   return fileDataSource.find((item) => item.id === id)
 }
 
-export function updateFile(input: UpdateFileReq) {
+export function updateFile(input: SysFileUpdateReq) {
   const file = findFile(input.id)
   if (!file) return false
 

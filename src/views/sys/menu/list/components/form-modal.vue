@@ -143,19 +143,19 @@
 
 <script lang="ts" setup>
 import { IconSelector } from '@/components'
-import type { MenuResp } from '@/apis'
+import type { SysMenu } from '@/apis'
 import type { MenuType } from '#/config'
 import type { FormInstance } from 'antdv-next'
 
 const open = ref(false)
 const formRef = shallowRef<FormInstance>()
-const show = (_record?: MenuResp) => {
+const show = (_record?: SysMenu) => {
   open.value = true
 }
 
 defineExpose({ show })
 
-/** 与 MenuResp.type 的语义保持一致:1 目录、2 菜单、3 子菜单、4 权限按钮 */
+/** 与 SysMenu.type 的语义保持一致:1 目录、2 菜单、3 子菜单、4 权限按钮 */
 const menuTypeOptions: Array<{ label: string; value: MenuType }> = [
   {
     label: '目录',
