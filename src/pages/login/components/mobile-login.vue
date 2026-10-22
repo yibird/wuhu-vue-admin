@@ -12,12 +12,11 @@
     <a-form-item class="group" name="mobile" :label="$t('login.mobileLabel')">
       <a-input
         v-model:value="formData.mobile"
-        v-input-tab-out
         autocomplete="tel"
         inputmode="numeric"
         size="large"
-        allow-clear
         :maxlength="11"
+        :allow-clear="{ tabIndex: -1 }"
         :placeholder="$t('login.inputMobile')"
         @clear="formData.mobile = ''"
       >

@@ -24,7 +24,7 @@
         },
       ]"
     >
-      <div class="page-enter page-enter--2 w-full max-w-400">
+      <div class="page-enter page-enter--2 w-full h-600 max-w-400">
         <div class="mb-24">
           <h1 class="m-0 text-2xl font-800 leading-10 text-main">
             {{ $t('login.title') }}
@@ -34,15 +34,10 @@
           </p>
         </div>
         <a-tabs
-          v-model:active-key="activeLoginType"
+          v-model:active-key="loginType"
           size="large"
-          :animated="{ inkBar: true, tabPane: true }"
+          animated
           :items="items"
-          :classes="{
-            header: 'mb-24!',
-            indicator: 'h-3!',
-            tab: 'px-2! pb-12! text-sm!',
-          }"
         >
           <template #contentRender="{ item }">
             <component
@@ -61,7 +56,6 @@ import Logo from './components/logo.vue'
 import Banner from './components/banner.vue'
 import ActionBar from './components/action-bar/index.vue'
 import AccountLogin from './components/account-login.vue'
-import type { Placement } from './components/types'
 import { useI18n } from 'vue-i18n'
 import { message, notification } from 'antdv-next'
 import { useRoute } from 'vue-router'
@@ -69,6 +63,7 @@ import { useAuth } from '@/hooks'
 import { getSafeRedirect, useGo } from '@/router'
 import { isApiError } from '@/utils'
 
+import type { Placement } from './components/types'
 import type { LoginRequest } from '@/apis'
 
 const { t } = useI18n()
@@ -77,36 +72,27 @@ const route = useRoute()
 const { login, loginLoading } = useAuth()
 
 const placement = ref<Placement>('right')
-const activeLoginType = ref('account')
+const loginType = ref('account')
 
-/**
- * 手机号 / 扫码登录不在首屏,按需加载:
- * antd Tabs 首次激活才挂载面板,拆成异步组件后这两块代码也不会进登录首包。
- */
-const loginComponents = {
-  account: markRaw(AccountLogin),
-  mobile: markRaw(
-    defineAsyncComponent(() => import('./components/mobile-login.vue'))
-  ),
-  qrcode: markRaw(
-    defineAsyncComponent(() => import('./components/qrcode-login.vue'))
-  ),
-}
 const items = computed(() => [
   {
     key: 'account',
     label: t('login.accountLogin'),
-    content: loginComponents.account,
+    content: AccountLogin,
   },
   {
     key: 'mobile',
     label: t('login.mobileLogin'),
-    content: loginComponents.mobile,
+    content: defineAsyncComponent(
+      () => import('./components/mobile-login.vue')
+    ),
   },
   {
     key: 'qrcode',
     label: t('login.qrcodeLogin'),
-    content: loginComponents.qrcode,
+    content: defineAsyncComponent(
+      () => import('./components/qrcode-login.vue')
+    ),
   },
 ])
 const changePlacement = (value: Placement) => {
@@ -116,8 +102,6 @@ const onSubmit = async (credentials: LoginRequest) => {
   if (loginLoading.value) return
   try {
     await login(credentials)
-    // 用静态通知:页面级 useNotification 的 ContextHolder 会随登录页卸载一起销毁,
-    // 跳转后提示会立刻消失;静态 API 由 ConfigProvider 的全局 holder 承载,不受路由影响
     notification.info({
       title: t('login.success'),
       placement: 'topRight',

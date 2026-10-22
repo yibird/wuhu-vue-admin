@@ -11,10 +11,9 @@
     <a-form-item name="mobile" :label="t('register.mobile')">
       <a-input
         v-model:value="formData.mobile"
-        v-input-tab-out
         size="large"
-        allow-clear
         :maxlength="11"
+        :allow-clear="{ tabIndex: -1 }"
         :placeholder="$t('register.inputMobile')"
       >
         <template #prefix>
