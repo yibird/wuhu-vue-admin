@@ -14,7 +14,7 @@
       :current-text-color="currentTextColor"
       :current-highlight-color="currentHighlightColor"
       :block-options="blockOptions"
-      :font-family-options="fontOptions"
+      :font-options="fontOptions"
       :font-size-options="fontSizeOptions"
       :text-color-options="textColorOptions"
       :highlight-color-options="highlightColorOptions"

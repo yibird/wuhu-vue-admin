@@ -1,1 +1,2 @@
 pnpm lint:lint-staged
+pnpm typecheck
