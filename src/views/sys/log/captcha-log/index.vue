@@ -65,9 +65,9 @@
 import {
   getCaptchaLogPageListApi,
   getCaptchaLogRecordApi,
-  type CaptchaLogDetail,
-  type CaptchaLogQuery,
-  type CaptchaLogResp,
+  type SysCaptchaLogDetail,
+  type SysCaptchaLogQuery,
+  type SysCaptchaLog,
 } from '@/apis'
 import { FormPlus } from '@/components'
 import { useRequest } from '@/hooks'
@@ -91,10 +91,13 @@ const PAGE_SIZE = 10
 /** 表格纵向滚动高度,扣掉应用头部、标签页与页面自身内容所占空间 */
 const TABLE_SCROLL_Y = 'calc(100vh - 310px)'
 
-const query = shallowRef<CaptchaLogQuery>({ current: 1, pageSize: PAGE_SIZE })
+const query = shallowRef<SysCaptchaLogQuery>({
+  current: 1,
+  pageSize: PAGE_SIZE,
+})
 const detailOpen = shallowRef(false)
 const detailLoading = shallowRef(false)
-const detail = shallowRef<CaptchaLogDetail>()
+const detail = shallowRef<SysCaptchaLogDetail>()
 
 const schemas = shallowRef<FormPlusProps['schemas']>([
   {
@@ -138,7 +141,7 @@ const schemas = shallowRef<FormPlusProps['schemas']>([
   },
 ])
 
-const columns: TableColumnsType<CaptchaLogResp> = [
+const columns: TableColumnsType<SysCaptchaLog> = [
   {
     title: '序号',
     key: 'index',
@@ -168,7 +171,7 @@ const columns: TableColumnsType<CaptchaLogResp> = [
 ]
 
 const { data, loading, run } = useRequest(
-  (params: CaptchaLogQuery) => getCaptchaLogPageListApi(params),
+  (params: SysCaptchaLogQuery) => getCaptchaLogPageListApi(params),
   { defaultParams: [query.value] }
 )
 
@@ -198,9 +201,9 @@ function onSearch(values: FormPlusModel) {
   query.value = {
     ...query.value,
     current: 1,
-    type: (values.type as CaptchaLogQuery['type']) ?? undefined,
-    scene: (values.scene as CaptchaLogQuery['scene']) ?? undefined,
-    status: (values.status as CaptchaLogQuery['status']) ?? undefined,
+    type: (values.type as SysCaptchaLogQuery['type']) ?? undefined,
+    scene: (values.scene as SysCaptchaLogQuery['scene']) ?? undefined,
+    status: (values.status as SysCaptchaLogQuery['status']) ?? undefined,
     ...resolveTimeRange(values.range),
   }
   run(query.value)
@@ -211,7 +214,7 @@ function onReset() {
   run(query.value)
 }
 
-async function openDetail(record: CaptchaLogResp) {
+async function openDetail(record: SysCaptchaLog) {
   detail.value = undefined
   detailOpen.value = true
   detailLoading.value = true

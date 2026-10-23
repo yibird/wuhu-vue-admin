@@ -14,7 +14,7 @@ import {
 export default defineConfig(async ({ command, mode }: ConfigEnv) => {
   const envDir = resolve(process.cwd(), 'env')
   const env = loadEnv(mode, envDir, '')
-  const plugins = await createPlugin({ command })
+  const plugins = await createPlugin({ command, env })
 
   return {
     envDir,

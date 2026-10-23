@@ -14,7 +14,7 @@ import type {
 } from '@/apis'
 
 export function useApprovalList() {
-  const { user } = useAuthStore()
+  const { userInfo } = useAuthStore()
   const keyword = shallowRef('')
   const categoryId = shallowRef<string>()
   const state = shallowRef<ApprovalDefinitionState>()
@@ -26,7 +26,7 @@ export function useApprovalList() {
     (query: ApprovalDefinitionQuery) => getApprovalDefinitionPageListApi(query),
     {
       defaultPageSize: 12,
-      defaultParams: { ownerId: user.value?.id },
+      defaultParams: { ownerId: userInfo.value?.id },
     }
   )
 
@@ -35,7 +35,7 @@ export function useApprovalList() {
   function buildQuery(): Partial<ApprovalDefinitionQuery> {
     const text = keyword.value.trim()
     return {
-      ...(user.value?.id ? { ownerId: user.value.id } : {}),
+      ...(userInfo.value?.id ? { ownerId: userInfo.value.id } : {}),
       ...(text ? { keyword: text } : {}),
       ...(categoryId.value ? { categoryId: categoryId.value } : {}),
       ...(state.value ? { state: state.value } : {}),

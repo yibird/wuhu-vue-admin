@@ -149,7 +149,7 @@ import type { ApprovalDefinitionResp } from '@/apis'
 
 const route = useRoute()
 const router = useRouter()
-const { user } = useAuthStore()
+const { userInfo } = useAuthStore()
 const { tabs, activeKey } = storeToRefs(tabsStore())
 
 const step = shallowRef(0)
@@ -351,8 +351,8 @@ async function persist(next: ApprovalWorkflowSchema) {
         group: currentCategory?.name ?? next.settings.group,
       },
     },
-    ownerId: user.value?.id ?? '1',
-    ownerName: user.value?.name ?? '管理员',
+    ownerId: userInfo.value?.id ?? '1',
+    ownerName: userInfo.value?.name ?? '管理员',
   }
 
   if (editingId.value) {

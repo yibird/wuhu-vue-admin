@@ -81,7 +81,7 @@ Vite loads shared and mode-specific files from the `env` directory. Development 
 | ------------------------------- | ----------------------- | ------------------------------------------- |
 | `VITE_APP_NAME`                 | `Wuhu-admin`            | Brand name rendered by the application      |
 | `VITE_APP_TITLE`                | `Wuhu-admin`            | Browser and application title               |
-| `VITE_PORT`                     | `5555`                  | Development server port                     |
+| `VITE_APP_PORT`                 | `5555`                  | Development server port                     |
 | `VITE_API_BASE_URL`             | `/api`                  | HTTP client base URL                        |
 | `VITE_API_PROXY_URL`            | `http://localhost:8080` | Development proxy target                    |
 | `VITE_CDN`                      | `false`                 | Enable the production CDN import plugin     |

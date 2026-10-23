@@ -12,14 +12,11 @@ import {
   PAGE_ANIMATION_MODE,
 } from '@/constants'
 import logo from '@/assets/svg/logo.svg'
-import type { AppState } from './types'
+import { appEnv } from '@/utils'
+import type { AppStoreState } from './types'
+import { getFontFamilyOption } from '@/config'
 
-/**
- * 应用名默认值,应用名为空时的文案兜底也复用该值
- */
-export const DEFAULT_APP_NAME = 'Wuhu-admin'
-
-const createInitialState = (): AppState => {
+const createInitialState = (): AppStoreState => {
   return {
     sider: {
       show: true,
@@ -66,12 +63,12 @@ const createInitialState = (): AppState => {
     },
     lockscreen: {},
     app: {
-      name: DEFAULT_APP_NAME,
+      name: appEnv.appName,
       logo,
       themeMode: THEME_MODE.Light,
       themeColor: '22, 119, 255',
       locale: LOCALE.ZH_CN,
-      fontFamily: FONT_FAMILY.Outfit,
+      font: getFontFamilyOption(FONT_FAMILY.Outfit),
       menuMode: MENU_MODE.Vertical,
       pageCache: true,
       pageCacheMax: 10,
@@ -98,7 +95,7 @@ const createInitialState = (): AppState => {
   }
 }
 
-export const appStore = defineStore('app', {
+export const appStore = defineStore('wuhu-vue-admin:app', {
   state: createInitialState,
   actions: {
     setCollapsed(collapsed: boolean) {

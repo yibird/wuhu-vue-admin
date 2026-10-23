@@ -1,17 +1,19 @@
-import { REQUEST_METHOD } from '@/constants'
-import { AUTH_WHITE_LIST, TOKEN_KEY } from './constant'
-import { resetSessionExpiredNotification } from './session-events'
+import { REQUEST_METHOD, TOKEN_KEY } from '@/constants'
+import { AUTH_WHITE_LIST } from './constant'
+import { resetSessionExpiredNotification } from './sse'
+import { appEnv } from '../env'
 
 /**
  * 去掉 API 基础前缀，使白名单匹配不依赖部署前缀（/api 等）
  */
 function normalizeApiPath(pathname: string) {
-  const base = import.meta.env.VITE_API_BASE_URL
-  if (!base) return pathname
+  if (!appEnv.apiBaseUrl) return pathname
 
   // 兼容绝对地址与尾斜杠,按路径段边界比较,避免前缀部分匹配
   const basePath = (
-    base.startsWith('http') ? new URL(base).pathname : base
+    appEnv.apiBaseUrl.startsWith('http')
+      ? new URL(appEnv.apiBaseUrl).pathname
+      : appEnv.apiBaseUrl
   ).replace(/\/+$/, '')
   if (!basePath || !pathname.startsWith(`${basePath}/`)) return pathname
 

@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker'
-import type { CreateNoticeReq, NoticeResp, NoticeType } from '@/apis'
+import type { SysNoticeCreateReq, SysNotice, NoticeType } from '@/apis'
 
 const noticeTitleTemplates = [
   '系统版本升级通知',
@@ -47,7 +47,7 @@ function createNotice(
   type: NoticeType,
   sort: number,
   status: boolean
-): NoticeResp {
+): SysNotice {
   const sendMode = type === 2 ? 'immediate' : 'scheduled'
   return {
     ...createBase(id, sort),
@@ -64,7 +64,7 @@ function createNotice(
   }
 }
 
-export const noticeDataSource: NoticeResp[] = Array.from(
+export const noticeDataSource: SysNotice[] = Array.from(
   { length: 46 },
   (_, index) =>
     createNotice(
@@ -76,8 +76,8 @@ export const noticeDataSource: NoticeResp[] = Array.from(
     )
 )
 
-export function appendNotice(input: CreateNoticeReq) {
-  const notice: NoticeResp = {
+export function appendNotice(input: SysNoticeCreateReq) {
+  const notice: SysNotice = {
     ...input,
     id: `${noticeDataSource.length + 1}`,
     dataStatus: true,

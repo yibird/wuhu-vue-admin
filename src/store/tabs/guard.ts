@@ -22,8 +22,7 @@ const guardRegistry = new Map<string, TabGuard[]>()
 /**
  * 登记 Tab 生命周期守卫
  *
- * key 支持 Tab key(精确)、Tab path(精确)与 '*'(全局兜底);
- * 集中登记用于跨页面策略,页面内声明请使用 useTabGuard
+ * key 支持 Tab key(精确)、Tab path(精确)与 '*'(全局兜底)。
  *
  * @param key 匹配 key
  * @param guard 守卫实现

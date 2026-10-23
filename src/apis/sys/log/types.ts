@@ -1,7 +1,7 @@
 /**
  * 日志模块公共类型
  *
- * 日志是只读流水,不分页以外的写操作,因此不继承 BaseResp,只声明各自用到的字段。
+ * 日志是只读流水,不分页以外的写操作,因此不继承 BaseModel,只声明各自用到的字段。
  */
 
 /**
@@ -59,7 +59,7 @@ export interface LogRespBase {
 /**
  * 日志查询公共参数
  */
-export interface LogQueryBase {
+export interface SysLogQueryBase {
   /**
    * @desc 页码
    */
@@ -83,7 +83,7 @@ export interface LogQueryBase {
 /**
  * 登录日志
  */
-export interface LoginLogResp extends LogRespBase {
+export interface SysLoginLog extends LogRespBase {
   /**
    * @desc 登录账号
    */
@@ -113,7 +113,7 @@ export interface LoginLogResp extends LogRespBase {
 /**
  * 登录日志详情
  */
-export interface LoginLogDetail extends LoginLogResp {
+export interface SysLoginLogDetail extends SysLoginLog {
   /**
    * @desc 请求头
    */
@@ -131,7 +131,7 @@ export interface LoginLogDetail extends LoginLogResp {
 /**
  * 登录日志查询参数
  */
-export interface LoginLogQuery extends LogQueryBase {
+export interface SysLoginLogQuery extends SysLogQueryBase {
   /**
    * @desc 登录账号
    */
@@ -151,7 +151,7 @@ export interface LoginLogQuery extends LogQueryBase {
 /**
  * 操作日志
  */
-export interface OperationLogResp extends LogRespBase {
+export interface SysOperationLog extends LogRespBase {
   /**
    * @desc 操作人
    */
@@ -193,7 +193,7 @@ export interface OperationLogResp extends LogRespBase {
 /**
  * 操作日志详情
  */
-export interface OperationLogDetail extends OperationLogResp {
+export interface SysOperationLogDetail extends SysOperationLog {
   /**
    * @desc 请求头
    */
@@ -215,7 +215,7 @@ export interface OperationLogDetail extends OperationLogResp {
 /**
  * 操作日志查询参数
  */
-export interface OperationLogQuery extends LogQueryBase {
+export interface SysOperationLogQuery extends SysLogQueryBase {
   /**
    * @desc 操作人
    */
@@ -241,7 +241,7 @@ export interface OperationLogQuery extends LogQueryBase {
  *
  * 由前端上报,记录浏览器侧的异常与关键链路信息。
  */
-export interface ClientLogResp extends LogRespBase {
+export interface SysClientLog extends LogRespBase {
   /**
    * @desc 日志级别
    */
@@ -275,7 +275,7 @@ export interface ClientLogResp extends LogRespBase {
 /**
  * 客户端日志详情
  */
-export interface ClientLogDetail extends ClientLogResp {
+export interface SysClientLogDetail extends SysClientLog {
   /**
    * @desc 异常信息(名称、描述与调用栈)
    */
@@ -289,7 +289,7 @@ export interface ClientLogDetail extends ClientLogResp {
 /**
  * 客户端日志查询参数
  */
-export interface ClientLogQuery extends LogQueryBase {
+export interface SysClientLogQuery extends SysLogQueryBase {
   /**
    * @desc 日志级别
    */
@@ -319,7 +319,7 @@ export type CaptchaScene = 'login' | 'register' | 'resetPassword' | 'bind'
 /**
  * 验证码日志
  */
-export interface CaptchaLogResp extends LogRespBase {
+export interface SysCaptchaLog extends LogRespBase {
   /**
    * @desc 验证码类型
    */
@@ -357,7 +357,7 @@ export interface CaptchaLogResp extends LogRespBase {
 /**
  * 验证码日志详情
  */
-export interface CaptchaLogDetail extends CaptchaLogResp {
+export interface SysCaptchaLogDetail extends SysCaptchaLog {
   /**
    * @desc 请求参数
    */
@@ -371,7 +371,7 @@ export interface CaptchaLogDetail extends CaptchaLogResp {
 /**
  * 验证码日志查询参数
  */
-export interface CaptchaLogQuery extends LogQueryBase {
+export interface SysCaptchaLogQuery extends SysLogQueryBase {
   /**
    * @desc 验证码类型
    */

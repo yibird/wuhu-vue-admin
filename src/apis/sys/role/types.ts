@@ -1,4 +1,4 @@
-export interface RoleResp {
+export interface SysRole {
   /**
    * @desc 角色ID(主键唯一)
    */
@@ -14,13 +14,13 @@ export interface RoleResp {
   remark?: string
 }
 
-export interface CreateRoleReq {
+export interface SysRoleCreateReq {
   roleName: string
   dataScope: number
   remark?: string
 }
 
-export interface UpdateRoleReq {
+export interface SysRoleUpdateReq {
   id: string
   roleName?: string
   dataScope?: number

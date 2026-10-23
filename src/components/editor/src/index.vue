@@ -14,7 +14,7 @@
       :current-text-color="currentTextColor"
       :current-highlight-color="currentHighlightColor"
       :block-options="blockOptions"
-      :font-family-options="fontFamilyOptions"
+      :font-family-options="fontOptions"
       :font-size-options="fontSizeOptions"
       :text-color-options="textColorOptions"
       :highlight-color-options="highlightColorOptions"
@@ -130,10 +130,8 @@ const rootStyle = computed<CSSProperties>(() => ({
   minHeight: sizeValue(props.minHeight),
 }))
 
-const fontFamilyOptions = computed(() =>
-  props.fontFamilyOptions?.length
-    ? props.fontFamilyOptions
-    : defaultFontFamilyOptions
+const fontOptions = computed(() =>
+  props.fontOptions?.length ? props.fontOptions : defaultFontFamilyOptions
 )
 const blockOptions = computed(() =>
   props.blockOptions?.length ? props.blockOptions : defaultBlockOptions

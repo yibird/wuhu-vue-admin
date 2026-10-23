@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker'
-import type { DeptResp, UpdateDeptReq } from '@/apis'
+import type { SysDept, SysDeptUpdateReq } from '@/apis'
 
-function createDept(_: unknown, index: number): DeptResp {
+function createDept(_: unknown, index: number): SysDept {
   const id = `${index + 1}`
   return {
     id,
@@ -36,7 +36,7 @@ const postNames = [
   '技术支持',
 ]
 
-function createPost(name: string, index: number): DeptResp {
+function createPost(name: string, index: number): SysDept {
   return {
     id: `${25 + index}`,
     parentId: `${(index % 8) + 1}`,
@@ -55,15 +55,15 @@ function createPost(name: string, index: number): DeptResp {
   }
 }
 
-export const dataSource: DeptResp[] = [
+export const dataSource: SysDept[] = [
   ...Array.from({ length: 24 }, createDept),
   ...postNames.map(createPost),
 ]
 
 export function appendDept(
-  input: Omit<DeptResp, keyof Pick<DeptResp, 'id' | 'createdAt'>>
+  input: Omit<SysDept, keyof Pick<SysDept, 'id' | 'createdAt'>>
 ) {
-  const dept: DeptResp = {
+  const dept: SysDept = {
     ...input,
     id: `${dataSource.length + 1}`,
     createdAt: new Date().toISOString(),
@@ -76,7 +76,7 @@ export function findDept(id: string) {
   return dataSource.find((item) => item.id === id)
 }
 
-export function updateDept(input: UpdateDeptReq) {
+export function updateDept(input: SysDeptUpdateReq) {
   const dept = findDept(input.id)
   if (!dept) return false
 

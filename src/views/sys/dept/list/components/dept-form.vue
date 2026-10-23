@@ -89,8 +89,8 @@ import {
   getDeptPageListApi,
   getDeptRecordApi,
   updateDeptApi,
-  type CreateDeptReq,
-  type DeptResp,
+  type SysDeptCreateReq,
+  type SysDept,
 } from '@/apis'
 import { DeptPicker, type DeptPickerOption } from '@/features'
 
@@ -110,7 +110,7 @@ const submitting = shallowRef(false)
 const detailLoading = shallowRef(false)
 const optionsLoading = shallowRef(false)
 const parentOptions = shallowRef<DeptPickerOption[]>([])
-const form = reactive<CreateDeptReq>(createDefaultForm())
+const form = reactive<SysDeptCreateReq>(createDefaultForm())
 const isEdit = computed(() => Boolean(props.id))
 const entityName = computed(() => (form.type === 2 ? '岗位' : '部门'))
 const title = computed(
@@ -137,7 +137,7 @@ watch([open, () => props.id], async ([value]) => {
   formRef.value?.clearValidate()
 })
 
-function createDefaultForm(): CreateDeptReq {
+function createDefaultForm(): SysDeptCreateReq {
   return {
     parentId: '0',
     name: '',
@@ -150,7 +150,7 @@ function createDefaultForm(): CreateDeptReq {
   }
 }
 
-function toTreeOptions(items: DeptResp[]): DeptPickerOption[] {
+function toTreeOptions(items: SysDept[]): DeptPickerOption[] {
   const options = new Map<string, DeptPickerOption>()
   const roots: DeptPickerOption[] = []
 
@@ -231,7 +231,7 @@ async function handleSubmit() {
 
   submitting.value = true
   try {
-    const payload: CreateDeptReq = {
+    const payload: SysDeptCreateReq = {
       ...form,
       name: form.name.trim(),
       code: form.code.trim(),

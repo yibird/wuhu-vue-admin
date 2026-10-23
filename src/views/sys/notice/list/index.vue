@@ -47,7 +47,7 @@
 
 <script setup lang="ts">
 import { Tag } from 'antdv-next'
-import { getNoticePageListApi, type NoticeResp, type NoticeType } from '@/apis'
+import { getNoticePageListApi, type SysNotice, type NoticeType } from '@/apis'
 import { FormPlus, Icon } from '@/components'
 import { useRequest, useTabs } from '@/hooks'
 import { FormModal } from './components'
@@ -117,7 +117,7 @@ const schemas = shallowRef<FormPlusProps['schemas']>([
     },
   },
 ])
-const columns: TableColumnsType<NoticeResp> = [
+const columns: TableColumnsType<SysNotice> = [
   {
     title: '序号',
     key: 'index',
@@ -194,7 +194,7 @@ const pagination = computed<TablePaginationConfig>(() => ({
   showTotal: (total: number) => `共 ${total} 条`,
 }))
 
-const rowSelection = computed<TableRowSelection<NoticeResp>>(() => ({
+const rowSelection = computed<TableRowSelection<SysNotice>>(() => ({
   selectedRowKeys: selectedRowKeys.value,
   onChange: (keys) => {
     selectedRowKeys.value = keys
@@ -226,7 +226,7 @@ function onReset() {
   run(query.value)
 }
 
-function onDetail(record: NoticeResp) {
+function onDetail(record: SysNotice) {
   openRouteTab({
     path: '/sys/notice/detail',
     title: `公告详情-${record.title}`,

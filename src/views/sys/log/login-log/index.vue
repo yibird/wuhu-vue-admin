@@ -54,9 +54,9 @@
 import {
   getLoginLogPageListApi,
   getLoginLogRecordApi,
-  type LoginLogDetail,
-  type LoginLogQuery,
-  type LoginLogResp,
+  type SysLoginLogDetail,
+  type SysLoginLogQuery,
+  type SysLoginLog,
 } from '@/apis'
 import { FormPlus } from '@/components'
 import { useRequest } from '@/hooks'
@@ -76,10 +76,10 @@ const PAGE_SIZE = 10
 /** 表格纵向滚动高度,扣掉应用头部、标签页与页面自身内容所占空间 */
 const TABLE_SCROLL_Y = 'calc(100vh - 310px)'
 
-const query = shallowRef<LoginLogQuery>({ current: 1, pageSize: PAGE_SIZE })
+const query = shallowRef<SysLoginLogQuery>({ current: 1, pageSize: PAGE_SIZE })
 const detailOpen = shallowRef(false)
 const detailLoading = shallowRef(false)
-const detail = shallowRef<LoginLogDetail>()
+const detail = shallowRef<SysLoginLogDetail>()
 
 const schemas = shallowRef<FormPlusProps['schemas']>([
   {
@@ -115,7 +115,7 @@ const schemas = shallowRef<FormPlusProps['schemas']>([
   },
 ])
 
-const columns: TableColumnsType<LoginLogResp> = [
+const columns: TableColumnsType<SysLoginLog> = [
   {
     title: '序号',
     key: 'index',
@@ -144,7 +144,7 @@ const columns: TableColumnsType<LoginLogResp> = [
 ]
 
 const { data, loading, run } = useRequest(
-  (params: LoginLogQuery) => getLoginLogPageListApi(params),
+  (params: SysLoginLogQuery) => getLoginLogPageListApi(params),
   { defaultParams: [query.value] }
 )
 
@@ -176,7 +176,7 @@ function onSearch(values: FormPlusModel) {
     current: 1,
     username: (values.username as string)?.trim() || undefined,
     ip: (values.ip as string)?.trim() || undefined,
-    status: (values.status as LoginLogQuery['status']) ?? undefined,
+    status: (values.status as SysLoginLogQuery['status']) ?? undefined,
     ...resolveTimeRange(values.range),
   }
   run(query.value)
@@ -187,7 +187,7 @@ function onReset() {
   run(query.value)
 }
 
-async function openDetail(record: LoginLogResp) {
+async function openDetail(record: SysLoginLog) {
   detail.value = undefined
   detailOpen.value = true
   detailLoading.value = true

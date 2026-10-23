@@ -1,7 +1,8 @@
 import type { App } from 'vue'
+import { setupGlobalErrorHandler } from './error-handler.ts'
 
 export const plugins = {
-  install(_app: App) {},
+  install(app: App) {
+    setupGlobalErrorHandler(app)
+  },
 }
-
-export { applyAppLoadingTheme, hideAppLoading } from './loading'

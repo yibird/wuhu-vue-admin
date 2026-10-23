@@ -12,8 +12,7 @@
     <a-form-item class="group" name="account" :label="$t('login.accountLabel')">
       <a-input
         v-model:value="formData.account"
-        v-input-tab-out
-        allow-clear
+        :allow-clear="{ tabIndex: -1 }"
         autofocus
         autocomplete="username"
         data-testid="login-account"
@@ -38,7 +37,7 @@
     >
       <a-input-password
         v-model:value="formData.password"
-        v-input-tab-out
+        :allow-clear="{ tabIndex: -1 }"
         autocomplete="current-password"
         data-testid="login-password"
         :maxlength="128"
@@ -55,7 +54,9 @@
         </template>
       </a-input-password>
     </a-form-item>
-    <div class="min-h-32 flex items-center justify-between gap-12 text-sm">
+    <div
+      class="min-h-32 flex items-center justify-between gap-12 text-sm mb-10"
+    >
       <a-checkbox v-model:checked="rememberAccount">
         {{ $t('login.rememberMe') }}
       </a-checkbox>

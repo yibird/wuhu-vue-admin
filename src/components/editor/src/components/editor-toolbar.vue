@@ -15,7 +15,7 @@
         :value="currentFontFamily"
         class="w-140!"
         :disabled="disabled"
-        :options="fontFamilyOptions"
+        :options="fontOptions"
         @change="emits('setFontFamily', toOptionValue($event))"
       >
         <template #optionRender="{ option }">
@@ -190,7 +190,7 @@ defineProps<{
   readonly currentTextColor: string
   readonly currentHighlightColor: string
   readonly blockOptions: readonly EditorSelectOption[]
-  readonly fontFamilyOptions: readonly EditorSelectOption[]
+  readonly fontOptions: readonly EditorSelectOption[]
   readonly fontSizeOptions: readonly EditorSelectOption[]
   readonly textColorOptions: readonly EditorColorOption[]
   readonly highlightColorOptions: readonly EditorColorOption[]

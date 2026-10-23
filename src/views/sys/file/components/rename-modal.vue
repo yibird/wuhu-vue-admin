@@ -24,10 +24,10 @@
 
 <script setup lang="ts">
 import { message, type FormInstance } from 'antdv-next'
-import { updateFileApi, type FileResp } from '@/apis'
+import { updateFileApi, type SysFile } from '@/apis'
 
 const props = defineProps<{
-  file?: FileResp
+  file?: SysFile
 }>()
 
 const emits = defineEmits<{

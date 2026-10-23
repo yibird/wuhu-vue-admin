@@ -1,5 +1,5 @@
 import { defineMock } from 'vite-plugin-mock-dev-server'
-import type { CreateRoleReq, UpdateRoleReq } from '@/apis'
+import type { SysRoleCreateReq, SysRoleUpdateReq } from '@/apis'
 import { apiErr, apiOk, getPageList } from '#mock/helper'
 import {
   deleteRole,
@@ -31,7 +31,7 @@ export default defineMock([
   {
     url: '/api/sys/role/create',
     method: 'POST',
-    body: ({ body }: { body: CreateRoleReq }) => {
+    body: ({ body }: { body: SysRoleCreateReq }) => {
       appendRole(body)
       return apiOk(1)
     },
@@ -39,7 +39,7 @@ export default defineMock([
   {
     url: '/api/sys/role/update',
     method: 'POST',
-    body: ({ body }: { body: UpdateRoleReq }) => {
+    body: ({ body }: { body: SysRoleUpdateReq }) => {
       return updateRole(body) ? apiOk(1) : apiErr('角色不存在')
     },
   },

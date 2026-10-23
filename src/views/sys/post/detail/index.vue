@@ -124,12 +124,12 @@ import {
   deleteDeptApi,
   getDeptPageListApi,
   getDeptRecordApi,
-  type DeptResp,
+  type SysDept,
 } from '@/apis'
 import { Icon } from '@/components'
 import type { DeptPickerOption } from '@/features'
 import { useRequest, useTabs } from '@/hooks'
-import { toRouteTabKey } from '@/store'
+import { toRouteTabKey } from '@/store/tabs/util'
 import { PostForm } from '../list/components'
 
 const route = useRoute()
@@ -160,7 +160,7 @@ const deptOptions = computed<DeptPickerOption[]>(() =>
   toTreeOptions(departmentList.value)
 )
 
-const post = computed<DeptResp | undefined>(() => data.value?.data ?? undefined)
+const post = computed<SysDept | undefined>(() => data.value?.data ?? undefined)
 
 const title = computed(() => post.value?.name || '岗位详情')
 
@@ -170,7 +170,7 @@ const departmentName = computed(() => {
   return deptNames.value.get(parentId) ?? parentId
 })
 
-function toTreeOptions(items: DeptResp[]): DeptPickerOption[] {
+function toTreeOptions(items: SysDept[]): DeptPickerOption[] {
   const options = new Map<string, DeptPickerOption>()
   const roots: DeptPickerOption[] = []
 

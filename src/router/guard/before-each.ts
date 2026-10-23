@@ -32,7 +32,9 @@ export function setupGlobalBeforeEachRouteGuard(router: Router) {
       }
     }
 
-    if (!auth.user) {
+    if (!auth.userInfo) {
+      // 刷新页面后只有 token、没有用户信息,先恢复会话;
+      // 直接跳登录会与「已登录访问 /login 跳回原路由」形成无限重定向。
       const restored = await auth.restoreSession()
       if (!restored) {
         return {

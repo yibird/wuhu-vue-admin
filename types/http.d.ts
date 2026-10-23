@@ -3,7 +3,6 @@ export interface Result<T = unknown> {
   message: string
   data: T
 }
-
 export interface PageResult<T = unknown> {
   list: T[]
   current: number
@@ -19,7 +18,7 @@ export interface BaseQuery {
   pageSize?: number
 }
 
-export interface BaseResp {
+export interface BaseModel {
   /**
    * @desc 主键
    */

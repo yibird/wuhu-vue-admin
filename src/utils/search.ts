@@ -89,7 +89,7 @@ export function getSearchMatch(
 
   // 只有走到这一步才真的需要拼音匹配:未加载时先降级,同时把库拉起来
   if (!pinyinMatch) {
-    void loadPinyinMatch()
+    loadPinyinMatch()
     return null
   }
 

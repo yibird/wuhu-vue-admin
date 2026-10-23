@@ -1,5 +1,5 @@
 import { defineMock } from 'vite-plugin-mock-dev-server'
-import type { CreateNoticeReq } from '@/apis'
+import type { SysNoticeCreateReq } from '@/apis'
 import { apiErr, apiOk, getPageList } from '#mock/helper'
 import { appendNotice, findNotice, noticeDataSource } from './data'
 
@@ -43,6 +43,7 @@ export default defineMock([
   {
     url: '/api/sys/notice/create',
     method: 'POST',
-    body: ({ body }: { body: CreateNoticeReq }) => apiOk(appendNotice(body).id),
+    body: ({ body }: { body: SysNoticeCreateReq }) =>
+      apiOk(appendNotice(body).id),
   },
 ])

@@ -18,7 +18,7 @@ export interface TabNavOption {
   query?: LocationQueryRaw
 }
 
-export interface TabsState {
+export interface TabStoreState {
   /**
    * @desc 打开的标签页列表
    * @default []

@@ -72,7 +72,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { Icon } from '@/components'
-import { formatRgbColor, hexToRgb } from '@/utils'
+import { toRgb } from '@/utils'
 import { SchemaRenderer } from './runtime'
 import { useDesignerContext } from '../hooks'
 import { DEVICE_PRESETS } from '../types'
@@ -123,12 +123,10 @@ const themeColor = computed(() => {
 
 const deviceStyle = computed(() => {
   const size = designer.deviceSize.value
-  const rgb = hexToRgb(themeColor.value)
   return {
     width: `${size.width}px`,
     minHeight: `${Math.min(size.height, 900)}px`,
-    '--w-color-primary':
-      formatRgbColor(rgb ?? themeColor.value, ' ') ?? undefined,
+    '--w-color-primary': toRgb(themeColor.value) ?? undefined,
   }
 })
 

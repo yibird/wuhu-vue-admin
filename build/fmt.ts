@@ -1,6 +1,4 @@
-import type { OxfmtConfig } from 'vite-plus/fmt'
-
-export const fmt: OxfmtConfig = {
+export const fmt = {
   printWidth: 80,
   trailingComma: 'es5',
   tabWidth: 2,

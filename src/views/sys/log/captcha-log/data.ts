@@ -1,6 +1,6 @@
 import { formatLogTime } from '../data'
 import type {
-  CaptchaLogDetail,
+  SysCaptchaLogDetail,
   CaptchaScene,
   CaptchaType,
   LogStatus,
@@ -123,7 +123,7 @@ export function resolveCaptchaStatusMeta(status: LogStatus) {
  * @param detail 日志详情
  */
 export function createCaptchaDetailFields(
-  detail?: CaptchaLogDetail
+  detail?: SysCaptchaLogDetail
 ): LogDetailField[] {
   if (!detail) return []
 
@@ -150,7 +150,7 @@ export function createCaptchaDetailFields(
  * @param detail 日志详情
  */
 export function createCaptchaDetailGroups(
-  detail?: CaptchaLogDetail
+  detail?: SysCaptchaLogDetail
 ): LogDetailGroup[] {
   if (!detail) return []
 

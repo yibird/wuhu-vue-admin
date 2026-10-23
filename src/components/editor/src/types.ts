@@ -266,7 +266,7 @@ export interface EditorProps {
   /**
    * @desc 自定义字体选项
    */
-  fontFamilyOptions?: readonly EditorSelectOption[]
+  fontOptions?: readonly EditorSelectOption[]
   /**
    * @desc 自定义区块选项
    */
@@ -350,7 +350,7 @@ export interface EditorToolbarProps {
   /**
    * @desc 字体族选项
    */
-  readonly fontFamilyOptions: readonly EditorSelectOption[]
+  readonly fontOptions: readonly EditorSelectOption[]
   /**
    * @desc 字体大小选项
    */

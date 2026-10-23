@@ -48,7 +48,7 @@
 
 <script lang="ts" setup>
 import { Button, Tag } from 'antdv-next'
-import { getDeptPageListApi, type DeptResp } from '@/apis'
+import { getDeptPageListApi, type SysDept } from '@/apis'
 import { FormPlus, Icon } from '@/components'
 import { useRequest, useTabs } from '@/hooks'
 import { DeptForm, OrgChart } from './components'
@@ -101,7 +101,7 @@ const schemas = shallowRef<FormPlusProps['schemas']>([
     },
   },
 ])
-const columns: TableColumnsType<DeptResp> = [
+const columns: TableColumnsType<SysDept> = [
   {
     title: '序号',
     key: 'index',
@@ -161,7 +161,7 @@ const pagination = computed<TablePaginationConfig>(() => ({
   showTotal: (total: number) => `共 ${total} 条`,
 }))
 
-const rowSelection = computed<TableRowSelection<DeptResp>>(() => ({
+const rowSelection = computed<TableRowSelection<SysDept>>(() => ({
   selectedRowKeys: selectedRowKeys.value,
   onChange: (keys) => {
     selectedRowKeys.value = keys
@@ -203,7 +203,7 @@ function openEdit(id: string) {
   formOpen.value = true
 }
 
-function openDetail(record: DeptResp) {
+function openDetail(record: SysDept) {
   openRouteTab({
     path: '/sys/dept/detail',
     title: `部门详情-${record.name}`,

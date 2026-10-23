@@ -51,7 +51,7 @@
 
 <script setup lang="ts">
 import { Tag } from 'antdv-next'
-import { getMenuPageListApi, type MenuResp } from '@/apis'
+import { getMenuPageListApi, type SysMenu } from '@/apis'
 import { FormPlus } from '@/components/form-plus'
 import { Icon } from '@/components/icon'
 import { useRequest, useTabs } from '@/hooks'
@@ -99,7 +99,7 @@ const schemas = shallowRef<FormPlusProps['schemas']>([
   },
 ])
 
-const columns: TableColumnsType<MenuResp> = [
+const columns: TableColumnsType<SysMenu> = [
   {
     title: '序号',
     key: 'index',
@@ -167,7 +167,7 @@ const pagination = computed<TablePaginationConfig>(() => ({
   showTotal: (total: number) => `共 ${total} 条`,
 }))
 
-const rowSelection = computed<TableRowSelection<MenuResp>>(() => ({
+const rowSelection = computed<TableRowSelection<SysMenu>>(() => ({
   selectedRowKeys: selectedRowKeys.value,
   onChange: (keys) => {
     selectedRowKeys.value = keys
@@ -202,7 +202,7 @@ const onAdd = () => {
   modalRef.value?.show()
 }
 
-function onDetail(record: MenuResp) {
+function onDetail(record: SysMenu) {
   openRouteTab({
     path: '/sys/menu/detail',
     title: `菜单详情-${record.name}`,
@@ -211,7 +211,7 @@ function onDetail(record: MenuResp) {
   })
 }
 
-const onEdit = (record: MenuResp) => {
+const onEdit = (record: SysMenu) => {
   modalRef.value?.show(record)
 }
 

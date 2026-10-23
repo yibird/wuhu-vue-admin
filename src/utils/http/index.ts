@@ -1,5 +1,6 @@
 import ky, { type Input } from 'ky'
 import { AppError } from '@/errors'
+import { appEnv } from '../env'
 import {
   beforeRequest,
   beforeError,
@@ -14,12 +15,11 @@ import {
 } from './dedupe'
 
 export const kyInstance = ky.create({
-  prefix: import.meta.env.VITE_API_BASE_URL,
-  timeout: 10_000,
+  prefix: appEnv.apiBaseUrl,
+  timeout: appEnv.apiTimeout,
   retry: {
-    limit: 2,
-    // 避免服务端返回超大 Retry-After 时请求长时间挂起
-    maxRetryAfter: 30_000,
+    limit: appEnv.apiRetryLimit,
+    maxRetryAfter: appEnv.apiMaxRetryAfter,
   },
   hooks: {
     beforeRequest,
@@ -73,5 +73,5 @@ export async function parseApiResponse<T>(
 
 export type { ApiRequestOptions, ApiResponseType } from './dedupe'
 export { ApiError, isApiError } from '@/errors'
-export { onSessionExpired } from './session-events'
+export { onSessionExpired } from './sse'
 export { getToken, setToken, removeToken } from './util'

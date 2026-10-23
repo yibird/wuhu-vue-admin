@@ -1,5 +1,5 @@
 import { formatLogTime, resolveLogStatusMeta } from '../data'
-import type { OperationLogDetail } from '@/apis'
+import type { SysOperationLogDetail } from '@/apis'
 import type { LogDetailField, LogDetailGroup } from '../components'
 
 /**
@@ -18,7 +18,7 @@ export const operationMethodOptions = ['GET', 'POST', 'PUT', 'DELETE'].map(
  * @param detail 日志详情
  */
 export function createOperationDetailFields(
-  detail?: OperationLogDetail
+  detail?: SysOperationLogDetail
 ): LogDetailField[] {
   if (!detail) return []
 
@@ -49,7 +49,7 @@ export function createOperationDetailFields(
  * @param detail 日志详情
  */
 export function createOperationDetailGroups(
-  detail?: OperationLogDetail
+  detail?: SysOperationLogDetail
 ): LogDetailGroup[] {
   if (!detail) return []
 

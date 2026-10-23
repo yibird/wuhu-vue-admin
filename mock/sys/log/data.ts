@@ -1,17 +1,17 @@
 import { faker } from '@faker-js/faker'
 import type {
-  CaptchaLogDetail,
-  CaptchaLogResp,
+  SysCaptchaLogDetail,
+  SysCaptchaLog,
   CaptchaScene,
   CaptchaType,
-  ClientLogDetail,
-  ClientLogResp,
-  LoginLogDetail,
-  LoginLogResp,
+  SysClientLogDetail,
+  SysClientLog,
+  SysLoginLogDetail,
+  SysLoginLog,
   LogLevel,
   LogStatus,
-  OperationLogDetail,
-  OperationLogResp,
+  SysOperationLogDetail,
+  SysOperationLog,
 } from '@/apis'
 
 const COUNT = 88
@@ -126,7 +126,7 @@ function createRequestHeaders(traceId: string, host = 'api.wuhu-admin.top') {
 
 /* ---------------- 登录日志 ---------------- */
 
-function createLoginLog(_: unknown, index: number): LoginLogResp {
+function createLoginLog(_: unknown, index: number): SysLoginLog {
   const status: LogStatus = index % 6 === 0 ? 0 : 1
 
   return {
@@ -147,7 +147,7 @@ function createLoginLog(_: unknown, index: number): LoginLogResp {
   }
 }
 
-export const loginLogDataSource: LoginLogResp[] = Array.from(
+export const loginLogDataSource: SysLoginLog[] = Array.from(
   { length: COUNT },
   createLoginLog
 ).sort((a, b) => b.logAt.localeCompare(a.logAt))
@@ -157,7 +157,7 @@ export const loginLogDataSource: LoginLogResp[] = Array.from(
  *
  * @param id 日志主键
  */
-export function findLoginLog(id: string): LoginLogDetail | undefined {
+export function findLoginLog(id: string): SysLoginLogDetail | undefined {
   const row = loginLogDataSource.find((item) => item.id === id)
   if (!row) return undefined
 
@@ -194,7 +194,7 @@ export function findLoginLog(id: string): LoginLogDetail | undefined {
 
 /* ---------------- 操作日志 ---------------- */
 
-function createOperationLog(_: unknown, index: number): OperationLogResp {
+function createOperationLog(_: unknown, index: number): SysOperationLog {
   const module = faker.helpers.arrayElement(modules)
 
   return {
@@ -215,7 +215,7 @@ function createOperationLog(_: unknown, index: number): OperationLogResp {
   }
 }
 
-export const operationLogDataSource: OperationLogResp[] = Array.from(
+export const operationLogDataSource: SysOperationLog[] = Array.from(
   { length: COUNT },
   createOperationLog
 ).sort((a, b) => b.logAt.localeCompare(a.logAt))
@@ -225,7 +225,9 @@ export const operationLogDataSource: OperationLogResp[] = Array.from(
  *
  * @param id 日志主键
  */
-export function findOperationLog(id: string): OperationLogDetail | undefined {
+export function findOperationLog(
+  id: string
+): SysOperationLogDetail | undefined {
   const row = operationLogDataSource.find((item) => item.id === id)
   if (!row) return undefined
 
@@ -273,7 +275,7 @@ export function findOperationLog(id: string): OperationLogDetail | undefined {
 
 /* ---------------- 客户端日志 ---------------- */
 
-function createClientLog(_: unknown, index: number): ClientLogResp {
+function createClientLog(_: unknown, index: number): SysClientLog {
   return {
     id: `8300${String(index + 1).padStart(4, '0')}`,
     traceId: createTraceId(),
@@ -290,7 +292,7 @@ function createClientLog(_: unknown, index: number): ClientLogResp {
   }
 }
 
-export const clientLogDataSource: ClientLogResp[] = Array.from(
+export const clientLogDataSource: SysClientLog[] = Array.from(
   { length: COUNT },
   createClientLog
 ).sort((a, b) => b.logAt.localeCompare(a.logAt))
@@ -300,7 +302,7 @@ export const clientLogDataSource: ClientLogResp[] = Array.from(
  *
  * @param id 日志主键
  */
-export function findClientLog(id: string): ClientLogDetail | undefined {
+export function findClientLog(id: string): SysClientLogDetail | undefined {
   const row = clientLogDataSource.find((item) => item.id === id)
   if (!row) return undefined
 
@@ -340,7 +342,7 @@ function maskCode(code: string) {
   return `${code.slice(0, 1)}${'*'.repeat(code.length - 2)}${code.slice(-1)}`
 }
 
-function createCaptchaLog(_: unknown, index: number): CaptchaLogResp {
+function createCaptchaLog(_: unknown, index: number): SysCaptchaLog {
   const type = captchaTypes[index % captchaTypes.length]
   const status: LogStatus = index % 4 === 0 ? 0 : 1
   const receiver =
@@ -376,7 +378,7 @@ function createCaptchaLog(_: unknown, index: number): CaptchaLogResp {
   }
 }
 
-export const captchaLogDataSource: CaptchaLogResp[] = Array.from(
+export const captchaLogDataSource: SysCaptchaLog[] = Array.from(
   { length: COUNT },
   createCaptchaLog
 ).sort((a, b) => b.logAt.localeCompare(a.logAt))
@@ -386,7 +388,7 @@ export const captchaLogDataSource: CaptchaLogResp[] = Array.from(
  *
  * @param id 日志主键
  */
-export function findCaptchaLog(id: string): CaptchaLogDetail | undefined {
+export function findCaptchaLog(id: string): SysCaptchaLogDetail | undefined {
   const row = captchaLogDataSource.find((item) => item.id === id)
   if (!row) return undefined
 

@@ -1,7 +1,20 @@
 import type { AuthUser } from '@/apis'
 
-export interface AuthState {
+export interface AuthStoreState {
+  /**
+   * 访问令牌
+   */
   accessToken: string | null
-  user: AuthUser | null
-  loginLoading: boolean
+  /**
+   * 用户信息
+   */
+  userInfo: AuthUser | null
+  /**
+   * loading状态
+   */
+  loading: boolean
+  /**
+   * 是否登录
+   */
+  isAuthenticated: boolean
 }

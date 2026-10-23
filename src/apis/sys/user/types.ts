@@ -1,4 +1,4 @@
-import type { BaseResp } from '#/http'
+import type { BaseModel } from '#/http'
 
 export type UserSex = 0 | 1 | 2
 export type UserEducation = 0 | 1 | 2 | 3 | 4
@@ -6,7 +6,7 @@ export type UserWorkExperience = 0 | 1 | 2 | 3 | 4 | 5
 export type UserMaritalStatus = 0 | 1 | 2 | 3
 export type UserSource = 0 | 1 | 2
 
-export interface UserResp extends BaseResp {
+export interface SysUser extends BaseModel {
   /**
    * @desc 所属部门ID
    */
@@ -85,7 +85,7 @@ export interface UserResp extends BaseResp {
   source: UserSource
 }
 
-export interface CreateUserReq {
+export interface SysUserCreateReq {
   username: string
   nickname: string
   realname: string
@@ -108,6 +108,6 @@ export interface CreateUserReq {
   remark?: string
 }
 
-export interface UpdateUserReq extends Partial<CreateUserReq> {
+export interface SysUserUpdateReq extends Partial<SysUserCreateReq> {
   id: string
 }

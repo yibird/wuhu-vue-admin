@@ -1,5 +1,3 @@
-import { getContrastColor } from '@/utils/color'
-
 const iconColors = [
   { background: '#DBEAFE', foreground: '#2563EB' },
   { background: '#E0E7FF', foreground: '#4F46E5' },
@@ -21,6 +19,5 @@ const iconForegroundMap = new Map(
 export function getArticleIconForeground(background: string) {
   const preset = iconForegroundMap.get(background.toLowerCase())
   if (preset) return preset
-
-  return getContrastColor(background, '#334155', '#FFFFFF') ?? 'currentColor'
+  return '#334155'
 }

@@ -4,20 +4,25 @@ import { componentsPlugin } from './components.ts'
 import { vuePlugin } from './vue.ts'
 import { autoImportPlugin } from './auto-import.ts'
 import { pwaPlugin } from './pwa.ts'
+import { loadingPlugin } from './loading.ts'
 import type { PluginOption } from 'vite'
 
 interface CreatePluginOptions {
   command: 'build' | 'serve'
+  env: Record<string, string>
 }
 
-async function getDevPlugins(command: string) {
+async function getDevPlugins({ command }: CreatePluginOptions) {
   const isDev = command === 'serve'
   if (!isDev) return []
   const { mockPlugin } = await import('./mock.ts')
   return [mockPlugin()]
 }
 
-async function getProdPlugins(command: string): Promise<PluginOption[]> {
+async function getProdPlugins({
+  command,
+  env,
+}: CreatePluginOptions): Promise<PluginOption[]> {
   if (command !== 'build') return []
   const [{ compressionPlugin }, { imageOptimizerPlugin }] = await Promise.all([
     import('./compression.ts'),
@@ -25,9 +30,7 @@ async function getProdPlugins(command: string): Promise<PluginOption[]> {
   ])
   const plugins: PluginOption[] = [compressionPlugin(), imageOptimizerPlugin()]
 
-  // 产物分析只在 `pnpm analyze` 时生成 stats.json(供 bundle:check 读取),
-  // 常规构建不再为此额外花一分钟
-  if (process.env.VITE_ANALYZE === 'true') {
+  if (env.VITE_ANALYZE === 'true') {
     const { visualizerPlugin } = await import('./visualizer.ts')
     plugins.unshift(visualizerPlugin({ raw: true }))
   }
@@ -35,8 +38,8 @@ async function getProdPlugins(command: string): Promise<PluginOption[]> {
   return plugins
 }
 
-export async function createPlugin({ command }: CreatePluginOptions) {
-  const isDev = command === 'serve'
+export async function createPlugin(options: CreatePluginOptions) {
+  const isDev = options.command === 'serve'
   const plugins: PluginOption[] = [
     vuePlugin(),
     componentsPlugin(),
@@ -44,8 +47,9 @@ export async function createPlugin({ command }: CreatePluginOptions) {
     fontsPlugin(),
     unocssPlugin(),
     pwaPlugin(),
+    loadingPlugin(),
   ]
-  const devPlugins = await getDevPlugins(command)
-  const prodPlugins = await getProdPlugins(command)
+  const devPlugins = await getDevPlugins(options)
+  const prodPlugins = await getProdPlugins(options)
   return [...plugins, ...devPlugins, ...prodPlugins]
 }

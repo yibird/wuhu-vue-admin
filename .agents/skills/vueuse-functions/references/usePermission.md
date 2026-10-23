@@ -50,7 +50,7 @@ export interface UsePermissionOptions<
   controls?: Controls
 }
 export type UsePermissionReturn = Readonly<
-  ShallowRef<PermissionState | undefined>
+  ShallowRef<PermissionStoreState | undefined>
 >
 export interface UsePermissionReturnWithControls extends Supportable {
   state: UsePermissionReturn

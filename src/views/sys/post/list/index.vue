@@ -44,7 +44,7 @@
 
 <script setup lang="ts">
 import { Button } from 'antdv-next'
-import { getDeptPageListApi, type DeptResp } from '@/apis'
+import { getDeptPageListApi, type SysDept } from '@/apis'
 import { FormPlus, Icon } from '@/components'
 import { useRequest, useTabs } from '@/hooks'
 import type { DeptPickerOption } from '@/features'
@@ -96,7 +96,7 @@ const schemas = shallowRef<FormPlusProps['schemas']>([
     componentProps: { allowClear: true, placeholder: '请输入岗位编码' },
   },
 ])
-const columns: TableColumnsType<DeptResp> = [
+const columns: TableColumnsType<SysDept> = [
   {
     title: '序号',
     key: 'index',
@@ -151,7 +151,7 @@ const pagination = computed<TablePaginationConfig>(() => ({
   showTotal: (total: number) => `共 ${total} 条`,
 }))
 
-const rowSelection = computed<TableRowSelection<DeptResp>>(() => ({
+const rowSelection = computed<TableRowSelection<SysDept>>(() => ({
   selectedRowKeys: selectedRowKeys.value,
   onChange: (keys) => {
     selectedRowKeys.value = keys
@@ -173,7 +173,7 @@ function getText(value: unknown) {
   return typeof value === 'string' ? value.trim() : ''
 }
 
-function toTreeOptions(items: DeptResp[]): DeptPickerOption[] {
+function toTreeOptions(items: SysDept[]): DeptPickerOption[] {
   const options = new Map<string, DeptPickerOption>()
   const roots: DeptPickerOption[] = []
 
@@ -246,7 +246,7 @@ function openEdit(id: string) {
   formOpen.value = true
 }
 
-function openDetail(record: DeptResp) {
+function openDetail(record: SysDept) {
   openRouteTab({
     path: '/sys/post/detail',
     title: `岗位详情-${record.name}`,

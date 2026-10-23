@@ -1,7 +1,7 @@
 import { defineMock, type MockRequest } from 'vite-plugin-mock-dev-server'
 import { apiErr, apiOk } from '#mock/helper'
 
-import type { AuthSession, LoginRequest, LoginResponse } from '@/apis'
+import type { AuthResponse, AuthSession, LoginRequest } from '@/apis'
 
 const accessToken = 'mock-admin-access-token'
 const session: AuthSession = {
@@ -30,7 +30,11 @@ export default defineMock([
     body: ({ body }: MockRequest) => {
       const credentials = body as unknown as LoginRequest
       if (!isValidCredentials(credentials)) return apiErr('账号或凭据不正确')
-      return apiOk<LoginResponse>({ ...session, accessToken })
+      return apiOk<AuthResponse>({
+        accessToken,
+        menus: [],
+        userInfo: session.user,
+      })
     },
   },
   {

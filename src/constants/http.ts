@@ -41,6 +41,9 @@ export const API_STATUS = {
   NetworkAuthenticationRequired: 511,
 } as const
 
+export const TOKEN_KEY = 'token'
+export const TOKEN_PREFIX = 'Bearer '
+
 export type HttpStatus = (typeof HTTP_STATUS)[keyof typeof HTTP_STATUS]
 export type RequestMethod = (typeof REQUEST_METHOD)[keyof typeof REQUEST_METHOD]
 export type HttpHeader = (typeof HTTP_HEADER)[keyof typeof HTTP_HEADER]

@@ -1,5 +1,5 @@
 import { defineMock } from 'vite-plugin-mock-dev-server'
-import type { CreateUserReq, UpdateUserReq } from '@/apis'
+import type { SysUserCreateReq, SysUserUpdateReq } from '@/apis'
 import { apiErr, apiOk, getPageList } from '#mock/helper'
 import {
   deleteUser,
@@ -30,7 +30,7 @@ export default defineMock([
   {
     url: '/api/sys/user/create',
     method: 'POST',
-    body: ({ body }: { body: CreateUserReq }) => {
+    body: ({ body }: { body: SysUserCreateReq }) => {
       appendUser(body)
       return apiOk(1)
     },
@@ -38,7 +38,7 @@ export default defineMock([
   {
     url: '/api/sys/user/update',
     method: 'POST',
-    body: ({ body }: { body: UpdateUserReq }) => {
+    body: ({ body }: { body: SysUserUpdateReq }) => {
       return updateUser(body) ? apiOk(1) : apiErr('用户不存在')
     },
   },

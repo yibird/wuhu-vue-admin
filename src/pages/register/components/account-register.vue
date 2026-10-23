@@ -12,10 +12,9 @@
     <a-form-item name="account" :label="t('register.account')">
       <a-input
         v-model:value="formData.account"
-        v-input-tab-out
         size="large"
         :placeholder="$t('register.inputAccount')"
-        allow-clear
+        :allow-clear="{ tabIndex: -1 }"
         autofocus
       >
         <template #prefix>
@@ -26,8 +25,7 @@
     <a-form-item name="password" :label="t('register.password')">
       <a-input-password
         v-model:value="formData.password"
-        v-input-tab-out
-        allow-clear
+        :allow-clear="{ tabIndex: -1 }"
         autocomplete="new-password"
         size="large"
         :placeholder="$t('register.inputPassword')"
@@ -44,10 +42,9 @@
     <a-form-item name="confirmPassword" :label="t('register.confirmPassword')">
       <a-input-password
         v-model:value="formData.confirmPassword"
-        v-input-tab-out
-        allow-clear
         autocomplete="new-password"
         size="large"
+        :allow-clear="{ tabIndex: -1 }"
         :placeholder="$t('register.inputConfirmPassword')"
         @press-enter.prevent="submitForm"
       >

@@ -1,6 +1,6 @@
 import type { LocationQueryRaw } from 'vue-router'
 import type {
-  fontFamily,
+  FontFamily,
   HeaderWidget,
   LoadingAnimation,
   Locale,
@@ -376,6 +376,13 @@ export interface CopyrightConfig {
   icpUrl: string
 }
 
+export interface Font {
+  family: FontFamily
+  weight: string | number
+  letterSpacing?: string
+  stack?: string
+}
+
 export interface AppConfig {
   /**
    * @desc 应用名称
@@ -406,7 +413,7 @@ export interface AppConfig {
    * @desc 字体
    * @default FONT_FAMILY.Outfit
    */
-  fontFamily: fontFamily
+  font: Font
   /**
    * @desc 菜单模式
    */

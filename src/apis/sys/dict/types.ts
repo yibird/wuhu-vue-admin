@@ -1,6 +1,6 @@
-import type { BaseResp } from '#/http'
+import type { BaseModel } from '#/http'
 
-export interface DictQuery {
+export interface SysDictTypeQuery {
   current?: number
   pageSize?: number
   name?: string
@@ -8,7 +8,7 @@ export interface DictQuery {
   status?: boolean
 }
 
-export interface DictResp extends BaseResp {
+export interface SysDictType extends BaseModel {
   /**
    * @desc 字典名称
    */
@@ -23,18 +23,18 @@ export interface DictResp extends BaseResp {
   status: boolean
 }
 
-export interface CreateDictReq {
+export interface SysDictTypeCreateReq {
   name: string
   type: string
   status: boolean
   remark?: string
 }
 
-export interface UpdateDictReq extends Partial<CreateDictReq> {
+export interface SysDictTypeUpdateReq extends Partial<SysDictTypeCreateReq> {
   id: string
 }
 
-export interface DictItemResp extends BaseResp {
+export interface SysDictData extends BaseModel {
   /**
    * @desc 所属字典ID
    */
@@ -53,7 +53,7 @@ export interface DictItemResp extends BaseResp {
   status: boolean
 }
 
-export interface DictItemQuery {
+export interface SysDictDataQuery {
   current?: number
   pageSize?: number
   dictId?: string
@@ -62,7 +62,7 @@ export interface DictItemQuery {
   status?: boolean
 }
 
-export interface CreateDictItemReq {
+export interface SysDictDataCreateReq {
   dictId: string
   label: string
   value: string
@@ -71,6 +71,6 @@ export interface CreateDictItemReq {
   remark?: string
 }
 
-export interface UpdateDictItemReq extends Partial<CreateDictItemReq> {
+export interface SysDictDataUpdateReq extends Partial<SysDictDataCreateReq> {
   id: string
 }

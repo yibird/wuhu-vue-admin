@@ -1,29 +1,29 @@
-import type { DictItemResp, DictResp } from '@/apis'
+import type { SysDictData, SysDictType } from '@/apis'
 
 export interface DropdownProps {
-  item: DictResp
+  item: SysDictType
 }
 
 export interface DropdownEmits {
-  (e: 'edit', item: DictResp): void
-  (e: 'delete', item: DictResp): void
+  (e: 'edit', item: SysDictType): void
+  (e: 'delete', item: SysDictType): void
 }
 
 export interface SiderProps {
-  data: DictResp[]
+  data: SysDictType[]
   loading?: boolean
   selectedId?: string
 }
 
 export interface SiderEmits {
-  (e: 'select', item: DictResp): void
+  (e: 'select', item: SysDictType): void
   (e: 'create'): void
-  (e: 'edit', item: DictResp): void
-  (e: 'delete', item: DictResp): void
+  (e: 'edit', item: SysDictType): void
+  (e: 'delete', item: SysDictType): void
 }
 
 export interface DictHeaderProps {
-  dictionary?: DictResp
+  dictionary?: SysDictType
   keyword?: string
   status?: boolean
 }
@@ -39,4 +39,4 @@ export interface DictItemFilters {
   status?: boolean
 }
 
-export type DictItem = DictItemResp
+export type DictItem = SysDictData

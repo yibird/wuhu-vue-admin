@@ -1,5 +1,4 @@
-import type { OxlintConfig } from 'vite-plus/lint'
-export const lint: OxlintConfig = {
+export const lint = {
   rules: {
     'oxc/no-barrel-file': 'error',
     'import/no-cycle': 'off',
@@ -15,6 +14,37 @@ export const lint: OxlintConfig = {
     'vue',
     'oxc',
   ],
-  overrides: [],
+  overrides: [
+    {
+      files: ['src/constants/**'],
+      rules: {
+        'oxc/no-barrel-file': 'off',
+      },
+    },
+    {
+      files: ['src/utils/**'],
+      rules: {
+        'oxc/no-barrel-file': 'off',
+      },
+    },
+    {
+      files: ['src/errors/**'],
+      rules: {
+        'oxc/no-barrel-file': 'off',
+      },
+    },
+    {
+      files: ['src/hooks/**'],
+      rules: {
+        'oxc/no-barrel-file': 'off',
+      },
+    },
+    {
+      files: ['src/apis/**'],
+      rules: {
+        'oxc/no-barrel-file': 'off',
+      },
+    },
+  ],
   ignorePatterns: ['node_modules', 'dist', '**/*.mock.ts.*.mjs'],
 }

@@ -1,4 +1,4 @@
-import { fontFamilyOptions, monoFontStack } from '../../src/config/fonts'
+import { fontOptions, monoFontStack } from '../../src/config/fonts'
 import type { Preset } from 'unocss'
 
 /**
@@ -18,13 +18,13 @@ export const fontsPreset: Preset = {
     {
       getCSS: () =>
         [
-          `:root{--w-font-family:${fontFamilyOptions[0].stack};--w-font-weight:${fontFamilyOptions[0].fontWeight};--w-letter-spacing:${fontFamilyOptions[0].letterSpacing};--w-font-family-mono:${monoFontStack}}`,
+          `:root{--w-font-family:${fontOptions[0].stack};--w-font-weight:${fontOptions[0].weight};--w-letter-spacing:${fontOptions[0].letterSpacing};--w-font-family-mono:${monoFontStack}}`,
           // 惰性 CSS 分片会各自重复注入 wind4 的主题默认值(:host,:root{--font-mono:...}),
           // 这些分片后加载时会盖掉本文件的值;提高一级优先级,让结果与加载顺序无关
           ':root:root{--font-mono:var(--w-font-family-mono)}',
-          ...fontFamilyOptions.map(
+          ...fontOptions.map(
             (option) =>
-              `:root[data-font='${option.value}']{--w-font-family:${option.stack};--w-font-weight:${option.fontWeight};--w-letter-spacing:${option.letterSpacing}}`
+              `:root[data-font='${option.family}']{--w-font-family:${option.stack};--w-font-weight:${option.weight};--w-letter-spacing:${option.letterSpacing}}`
           ),
         ].join('\n'),
     },

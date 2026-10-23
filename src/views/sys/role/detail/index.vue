@@ -101,8 +101,8 @@ import {
   deleteRoleApi,
   getRoleRecordApi,
   updateRoleApi,
-  type RoleResp,
-  type UpdateRoleReq,
+  type SysRole,
+  type SysRoleUpdateReq,
 } from '@/apis'
 import {
   FormPlus,
@@ -111,7 +111,7 @@ import {
   type FormPlusModel,
 } from '@/components'
 import { useRequest, useTabs } from '@/hooks'
-import { toRouteTabKey } from '@/store'
+import { toRouteTabKey } from '@/store/tabs/util'
 import { dataScopeMap, schemas } from '../list/config'
 
 const route = useRoute()
@@ -133,7 +133,7 @@ const { data, loading, run } = useRequest(
   { defaultParams: [{ id: roleId.value }], manual: !roleId.value }
 )
 
-const role = computed<RoleResp | undefined>(() => data.value?.data ?? undefined)
+const role = computed<SysRole | undefined>(() => data.value?.data ?? undefined)
 
 const title = computed(() => role.value?.roleName || '角色详情')
 
@@ -164,7 +164,7 @@ async function onSubmit(values: FormPlusModel) {
   const record = role.value
   if (!record) return
 
-  const payload: UpdateRoleReq = { id: record.id }
+  const payload: SysRoleUpdateReq = { id: record.id }
   if (typeof values.roleName === 'string') {
     payload.roleName = values.roleName.trim()
   }

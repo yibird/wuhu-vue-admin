@@ -166,7 +166,7 @@ const items = [
 
 const open = defineModel('open', { default: false })
 const { app } = useAppStore()
-const { user } = useAuthStore()
+const { userInfo } = useAuthStore()
 const { to } = useGo()
 const {
   isSetting,
@@ -221,9 +221,9 @@ const currentTimeLabel = computed(
   () => `${hours.value}:${minutes.value}:${seconds.value}`
 )
 const displayName = computed(
-  () => user.value?.name || user.value?.account || '当前用户'
+  () => userInfo.value?.name || userInfo.value?.account || '当前用户'
 )
-const userAvatar = computed(() => user.value?.avatar)
+const userAvatar = computed(() => userInfo.value?.avatar)
 
 function pinErrorMessage() {
   if (failedAttempts.value === 0) return 'PIN 错误，请重试'

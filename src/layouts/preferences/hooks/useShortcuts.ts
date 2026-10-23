@@ -41,7 +41,7 @@ export function useGlobalShortcuts() {
   const { shortcutKey } = useAppStore()
   const { openSearch, closeSearch } = useGlobalSearch()
   const { isLocked, lock } = useLockScreen()
-  const { logout } = useAuth()
+  const { doLogout } = useAuth()
 
   const canHandle = (event: KeyboardEvent, action: ShortcutAction) => {
     const config = shortcutKey.value
@@ -81,7 +81,7 @@ export function useGlobalShortcuts() {
 
       event.preventDefault()
       closeSearch()
-      logout()
+      doLogout()
     },
     { dedupe: true }
   )

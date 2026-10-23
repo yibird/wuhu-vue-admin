@@ -73,7 +73,7 @@ import {
   createDictApi,
   getDictRecordApi,
   updateDictApi,
-  type CreateDictReq,
+  type SysDictTypeCreateReq,
 } from '@/apis'
 
 interface Props {
@@ -87,7 +87,7 @@ const emits = defineEmits<{ success: [] }>()
 const formRef = shallowRef<FormInstance>()
 const submitting = shallowRef(false)
 const detailLoading = shallowRef(false)
-const form = reactive<CreateDictReq>(createDefaultForm())
+const form = reactive<SysDictTypeCreateReq>(createDefaultForm())
 const isEdit = computed(() => Boolean(props.id))
 const title = computed(() => (isEdit.value ? '编辑字典' : '新建字典'))
 
@@ -110,7 +110,7 @@ watch([open, () => props.id], async ([value]) => {
   formRef.value?.clearValidate()
 })
 
-function createDefaultForm(): CreateDictReq {
+function createDefaultForm(): SysDictTypeCreateReq {
   return {
     name: '',
     type: '',
@@ -155,7 +155,7 @@ async function handleSubmit() {
 
   submitting.value = true
   try {
-    const payload: CreateDictReq = {
+    const payload: SysDictTypeCreateReq = {
       ...form,
       name: form.name.trim(),
       type: form.type.trim(),

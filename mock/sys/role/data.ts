@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker'
-import type { RoleResp, UpdateRoleReq } from '@/apis'
+import type { SysRole, SysRoleUpdateReq } from '@/apis'
 
-function createRole(_: unknown, index: number): RoleResp {
+function createRole(_: unknown, index: number): SysRole {
   return {
     id: `${index + 1}`,
     roleName: faker.person.jobTitle(),
@@ -9,12 +9,12 @@ function createRole(_: unknown, index: number): RoleResp {
   }
 }
 
-export const dataSource: RoleResp[] = Array.from({ length: 1000 }, createRole)
+export const dataSource: SysRole[] = Array.from({ length: 1000 }, createRole)
 
 export function appendRole(
-  input: Pick<RoleResp, 'roleName' | 'dataScope'> & { remark?: string }
+  input: Pick<SysRole, 'roleName' | 'dataScope'> & { remark?: string }
 ) {
-  const role: RoleResp = {
+  const role: SysRole = {
     id: `${dataSource.length + 1}`,
     roleName: input.roleName,
     dataScope: input.dataScope,
@@ -28,7 +28,7 @@ export function findRole(id: string) {
   return dataSource.find((item) => item.id === id)
 }
 
-export function updateRole(input: UpdateRoleReq) {
+export function updateRole(input: SysRoleUpdateReq) {
   const role = findRole(input.id)
   if (!role) return false
 

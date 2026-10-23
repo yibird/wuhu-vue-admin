@@ -1,4 +1,4 @@
-import type { BaseQuery, BaseResp } from '#/http'
+import type { BaseQuery, BaseModel } from '#/http'
 
 /**
  * 项目状态:0 未开始 / 1 进行中 / 2 已完成 / 3 已归档
@@ -25,7 +25,7 @@ export type MilestoneStatus = 0 | 1 | 2
  */
 export type ProjectMemberRole = 'owner' | 'manager' | 'member'
 
-export interface ProjectResp extends BaseResp {
+export interface ProjectResp extends BaseModel {
   /**
    * @desc 项目编码,全局唯一
    */
@@ -199,7 +199,7 @@ export interface ProjectOption {
   code: string
 }
 
-export interface ProjectTaskResp extends BaseResp {
+export interface ProjectTaskResp extends BaseModel {
   /**
    * @desc 所属项目 id
    */
@@ -303,7 +303,7 @@ export interface UpdateProjectTaskReq extends Partial<CreateProjectTaskReq> {
   id: string
 }
 
-export interface MilestoneResp extends BaseResp {
+export interface MilestoneResp extends BaseModel {
   /**
    * @desc 所属项目 id
    */
@@ -383,7 +383,7 @@ export interface UpdateMilestoneReq extends Partial<CreateMilestoneReq> {
   id: string
 }
 
-export interface ProjectMemberResp extends BaseResp {
+export interface ProjectMemberResp extends BaseModel {
   /**
    * @desc 所属项目 id
    */

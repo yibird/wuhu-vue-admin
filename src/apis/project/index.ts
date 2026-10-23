@@ -2,7 +2,7 @@ import { getBaseApi } from '@/apis/util'
 import { apiRequest } from '@/utils'
 import { REQUEST_METHOD } from '@/constants'
 
-import type { Result } from '#/http'
+import type { ApiResult } from '#/http'
 import type {
   CreateMilestoneReq,
   CreateProjectMemberReq,
@@ -73,7 +73,7 @@ export const {
  * 项目概览统计
  */
 export function getProjectSummaryApi() {
-  return apiRequest<Result<ProjectSummary>>('/project/project/getSummary', {
+  return apiRequest<ApiResult<ProjectSummary>>('/project/project/getSummary', {
     method: REQUEST_METHOD.GET,
   })
 }
@@ -82,7 +82,7 @@ export function getProjectSummaryApi() {
  * 项目下拉选项(表单与筛选共用)
  */
 export function getProjectOptionsApi() {
-  return apiRequest<Result<ProjectOption[]>>('/project/project/getOptions', {
+  return apiRequest<ApiResult<ProjectOption[]>>('/project/project/getOptions', {
     method: REQUEST_METHOD.GET,
   })
 }

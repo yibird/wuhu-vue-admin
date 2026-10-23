@@ -193,9 +193,9 @@ import {
   getRolePageListApi,
   getUserRecordApi,
   updateUserApi,
-  type CreateUserReq,
-  type DeptResp,
-  type RoleResp,
+  type SysUserCreateReq,
+  type SysDept,
+  type SysRole,
 } from '@/apis'
 import {
   DeptPicker,
@@ -236,7 +236,7 @@ const optionsLoading = shallowRef(false)
 const deptOptions = shallowRef<DeptPickerOption[]>([])
 const postOptions = shallowRef<PostOption[]>([])
 const roleOptions = shallowRef<RolePickerOption[]>([])
-const form = reactive<CreateUserReq>(createDefaultForm())
+const form = reactive<SysUserCreateReq>(createDefaultForm())
 const isEdit = computed(() => Boolean(props.id))
 const title = computed(() => (isEdit.value ? '编辑用户' : '新建用户'))
 const availablePostOptions = computed(() =>
@@ -269,7 +269,7 @@ watch([open, () => props.id], async ([value]) => {
   formRef.value?.clearValidate()
 })
 
-function createDefaultForm(): CreateUserReq {
+function createDefaultForm(): SysUserCreateReq {
   return {
     username: '',
     nickname: '',
@@ -294,7 +294,7 @@ function createDefaultForm(): CreateUserReq {
   }
 }
 
-function toDeptOptions(items: DeptResp[]): DeptPickerOption[] {
+function toDeptOptions(items: SysDept[]): DeptPickerOption[] {
   const options = new Map<string, DeptPickerOption>()
   const roots: DeptPickerOption[] = []
   items.forEach((item) => {
@@ -324,7 +324,7 @@ async function loadPickerOptions() {
       getDeptPageListApi({ current: 1, pageSize: 1000, type: 2 }),
     ])
     roleOptions.value = (roleResponse.data?.list ?? []).map(
-      (item: RoleResp) => ({
+      (item: SysRole) => ({
         label: item.roleName,
         value: item.id,
         description: item.remark,
@@ -402,7 +402,7 @@ async function handleSubmit() {
 
   submitting.value = true
   try {
-    const payload: CreateUserReq = {
+    const payload: SysUserCreateReq = {
       ...form,
       username: form.username.trim(),
       nickname: form.nickname.trim(),

@@ -1,8 +1,8 @@
-import type { BaseResp } from '#/http'
+import type { BaseModel } from '#/http'
 
 export type DeptType = 1 | 2
 
-export interface DeptResp extends BaseResp {
+export interface SysDept extends BaseModel {
   /**
    * @desc 上级部门ID，0表示根部门
    */
@@ -33,7 +33,7 @@ export interface DeptResp extends BaseResp {
   email: string
 }
 
-export interface CreateDeptReq {
+export interface SysDeptCreateReq {
   parentId: string
   name: string
   code: string
@@ -44,6 +44,6 @@ export interface CreateDeptReq {
   remark?: string
 }
 
-export interface UpdateDeptReq extends Partial<CreateDeptReq> {
+export interface SysDeptUpdateReq extends Partial<SysDeptCreateReq> {
   id: string
 }

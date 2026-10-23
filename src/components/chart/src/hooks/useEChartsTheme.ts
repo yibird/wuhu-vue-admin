@@ -121,19 +121,17 @@ export function getCssRgbVarAlpha(
 }
 
 export const useEChartsTheme = createSharedComposable(() => {
-  const { themeMode, themeColor, fontStack, fontWeight } = useTheme()
+  const { themeMode, themeColor, font } = useTheme()
   const EChartsTheme = computed<EChartsTheme>(() =>
     themeMode.value === THEME_MODE.Dark ? THEME_MODE.Dark : THEME_MODE.Light
   )
 
   const colorPalette = computed(() => {
-    themeColor.value
     const primary = getCssRgbVar('--w-color-primary', lightPalette[0])
     const palette =
       EChartsTheme.value === THEME_MODE.Dark
         ? [...darkPalette]
         : [...lightPalette]
-
     return [primary, ...palette.filter((item) => item !== primary)]
   })
 
@@ -157,28 +155,30 @@ export const useEChartsTheme = createSharedComposable(() => {
     return fallbackTheme[EChartsTheme.value][key]
   }
 
-  const baseChartOption = computed<BaseEChartsOption>(() => ({
-    backgroundColor: 'transparent',
-    color: colorPalette.value,
-    darkMode: EChartsTheme.value === THEME_MODE.Dark,
-    textStyle: {
-      color: getEChartsColor('secondaryText'),
-      fontFamily: fontStack.value,
-      fontWeight: fontWeight.value,
-    },
-    tooltip: {
-      backgroundColor: getEChartsColor('tooltipBg'),
-      borderColor: getEChartsColor('tooltipBorder'),
-      borderWidth: 1,
-      confine: true,
-      extraCssText:
-        'box-shadow: 0 12px 30px rgb(0 0 0 / 18%); border-radius: 8px;',
+  const baseChartOption = computed(() => {
+    return {
+      backgroundColor: 'transparent',
+      color: colorPalette.value,
+      darkMode: EChartsTheme.value === THEME_MODE.Dark,
       textStyle: {
-        color: getEChartsColor('tooltipText'),
+        color: getEChartsColor('secondaryText'),
+        fontFamily: font.value.stack,
+        fontWeight: font.value.weight,
       },
-      trigger: 'axis',
-    },
-  }))
+      tooltip: {
+        backgroundColor: getEChartsColor('tooltipBg'),
+        borderColor: getEChartsColor('tooltipBorder'),
+        borderWidth: 1,
+        confine: true,
+        extraCssText:
+          'box-shadow: 0 12px 30px rgb(0 0 0 / 18%); border-radius: 8px;',
+        textStyle: {
+          color: getEChartsColor('tooltipText'),
+        },
+        trigger: 'axis',
+      },
+    } as BaseEChartsOption
+  })
 
   return {
     baseChartOption,

@@ -81,7 +81,7 @@ Vite 从 `env` 目录加载共享环境文件和模式专属环境文件。开�
 | ------------------------------- | ----------------------- | ----------------------------- |
 | `VITE_APP_NAME`                 | `Wuhu-admin`            | 应用中显示的品牌名称          |
 | `VITE_APP_TITLE`                | `Wuhu-admin`            | 浏览器标题和应用标题          |
-| `VITE_PORT`                     | `5555`                  | 开发服务器端口                |
+| `VITE_APP_PORT`                 | `5555`                  | 开发服务器端口                |
 | `VITE_API_BASE_URL`             | `/api`                  | HTTP 客户端基础路径           |
 | `VITE_API_PROXY_URL`            | `http://localhost:8080` | 开发环境代理目标              |
 | `VITE_CDN`                      | `false`                 | 是否启用生产环境 CDN 导入插件 |

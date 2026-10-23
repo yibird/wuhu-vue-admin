@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker'
-import type { CreateUserReq, UpdateUserReq, UserResp } from '@/apis'
+import type { SysUserCreateReq, SysUserUpdateReq, SysUser } from '@/apis'
 
-function createUser(_: unknown, index: number): UserResp {
+function createUser(_: unknown, index: number): SysUser {
   const gender = faker.helpers.arrayElement([0, 1, 2] as const)
   const dataStatus = faker.datatype.boolean()
   const deptId = faker.number.int({ min: 1, max: 8 })
@@ -12,7 +12,7 @@ function createUser(_: unknown, index: number): UserResp {
   const postIndex = faker.helpers.arrayElement(postIndexes)
 
   return {
-    // BaseResp 字段
+    // BaseModel 字段
     id: `${index + 1}`,
     dataStatus: dataStatus,
     deleted: faker.datatype.boolean(),
@@ -27,7 +27,7 @@ function createUser(_: unknown, index: number): UserResp {
     updatedAt: faker.date.recent().toISOString(),
     deletedAt: dataStatus ? undefined : faker.date.recent().toISOString(),
 
-    // UserResp 字段
+    // SysUser 字段
     username: faker.internet.username(),
     nickname: faker.internet.displayName(),
     realname: faker.person.fullName(),
@@ -53,10 +53,10 @@ function createUser(_: unknown, index: number): UserResp {
   }
 }
 
-export const dataSource: UserResp[] = Array.from({ length: 1000 }, createUser)
+export const dataSource: SysUser[] = Array.from({ length: 1000 }, createUser)
 
-export function appendUser(input: CreateUserReq) {
-  const user: UserResp = {
+export function appendUser(input: SysUserCreateReq) {
+  const user: SysUser = {
     ...input,
     id: `${dataSource.length + 1}`,
     createdAt: new Date().toISOString(),
@@ -73,7 +73,7 @@ export function findUser(id: string) {
   return dataSource.find((item) => item.id === id)
 }
 
-export function updateUser(input: UpdateUserReq) {
+export function updateUser(input: SysUserUpdateReq) {
   const user = findUser(input.id)
   if (!user) return false
 

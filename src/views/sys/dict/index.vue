@@ -61,8 +61,8 @@ import { Modal, message } from 'antdv-next'
 import {
   deleteDictApi,
   getDictPageListApi,
-  type DictQuery,
-  type DictResp,
+  type SysDictTypeQuery,
+  type SysDictType,
 } from '@/apis'
 import { WView } from '@/components'
 import { useRequest } from '@/hooks'
@@ -75,13 +75,13 @@ const selectedId = shallowRef<string>()
 const itemKeyword = shallowRef('')
 const itemStatus = shallowRef<boolean | undefined>(undefined)
 const itemFilters = shallowRef<DictItemFilters>({})
-const dictQuery = shallowRef<DictQuery>({ current: 1, pageSize: 1000 })
+const dictQuery = shallowRef<SysDictTypeQuery>({ current: 1, pageSize: 1000 })
 
 const {
   data: dictData,
   loading: dictLoading,
   run: loadDictionaries,
-} = useRequest((params: DictQuery) => getDictPageListApi(params), {
+} = useRequest((params: SysDictTypeQuery) => getDictPageListApi(params), {
   defaultParams: [dictQuery.value],
 })
 
@@ -114,7 +114,7 @@ watch(selectedId, () => {
   itemFilters.value = {}
 })
 
-function selectDictionary(item: DictResp) {
+function selectDictionary(item: SysDictType) {
   selectedId.value = item.id
 }
 
@@ -123,7 +123,7 @@ function openCreateDict() {
   dictFormOpen.value = true
 }
 
-function openEditDict(item: DictResp) {
+function openEditDict(item: SysDictType) {
   editingDictId.value = item.id
   dictFormOpen.value = true
 }
@@ -145,7 +145,7 @@ function resetItemSearch() {
   itemFilters.value = {}
 }
 
-function deleteDictionary(item: DictResp) {
+function deleteDictionary(item: SysDictType) {
   Modal.confirm({
     title: '删除字典',
     content: `确定删除「${item.name}」及其全部明细吗？`,

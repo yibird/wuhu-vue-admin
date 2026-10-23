@@ -1,32 +1,20 @@
 import { computed, watch } from 'vue'
 import { createSharedComposable, usePreferredDark } from '@vueuse/core'
 import { theme as antTheme } from 'antdv-next'
+import { isEqual } from 'es-toolkit'
 import { useAppStore } from '@/store'
-import { fontFamilyOptions } from '@/config'
-import { formatRgbColor, rgbToHex } from '@/utils'
-import { THEME_MODE, type ThemeMode, type FontFamily } from '@/constants'
+import { rgbToHex, toRgb } from '@/utils'
+import { THEME_MODE, type ThemeMode } from '@/constants'
 import { useThemeTransition } from './use-theme-transition'
 import {
   DEFAULT_PRIMARY_COLOR,
+  DEFAULT_PRIMARY_HEX,
   GREY_MODE_CLASS_NAME,
   PRIMARY_COLOR_VAR,
   THEME_TRANSITION_CLASS,
   WEALMESS_MODE_CLASS_NAME,
 } from './constant'
-
-function setThemeMode(mode: 'light' | 'dark') {
-  const root = document.documentElement
-  root.dataset.theme = mode
-  root.style.colorScheme = mode
-  root.classList.toggle(THEME_MODE.Dark, mode === THEME_MODE.Dark)
-}
-
-function setPrimaryColor(color: string) {
-  document.documentElement.style.setProperty(
-    PRIMARY_COLOR_VAR,
-    formatRgbColor(color, ' ')
-  )
-}
+import type { Font } from '#/config'
 
 /** 待执行的解锁帧,连续切换时只保留最后一次 */
 let unlockFrame: number | undefined
@@ -47,26 +35,48 @@ function withoutColorTransition(task: () => void) {
   })
 }
 
+export function resolveThemeMode(mode: unknown, systemDark: boolean) {
+  return mode === THEME_MODE.Dark || (mode === THEME_MODE.Auto && systemDark)
+    ? THEME_MODE.Dark
+    : THEME_MODE.Light
+}
+
+export function setThemeMode(mode: 'light' | 'dark') {
+  const root = document.documentElement
+  root.dataset.theme = mode
+  root.style.colorScheme = mode
+  root.classList.toggle(THEME_MODE.Dark, mode === THEME_MODE.Dark)
+}
+
+export function setPrimaryColor(color: string) {
+  document.documentElement.style.setProperty(
+    PRIMARY_COLOR_VAR,
+    toRgb(color) ?? DEFAULT_PRIMARY_COLOR
+  )
+}
+
+export function setFont(font: Font) {
+  const root = document.documentElement
+  root.dataset.font = font.family
+
+  root.style.setProperty('--w-font-family', font.stack!)
+  root.style.setProperty('--w-font-weight', font.weight as string)
+  root.style.setProperty('--w-letter-spacing', font.letterSpacing!)
+}
+
 export const useTheme = createSharedComposable(() => {
   const { app } = useAppStore()
   const systemDark = usePreferredDark()
   const appThemeMode = computed(() => app.value.themeMode)
 
-  const themeMode = computed(() => {
-    if (appThemeMode.value !== THEME_MODE.Auto) return appThemeMode.value
-    return systemDark.value ? THEME_MODE.Dark : THEME_MODE.Light
-  })
-  const themeColor = computed(() => app.value.themeColor)
-  const fontFamily = computed(() => app.value.fontFamily)
-  const fontOption = computed(
-    () =>
-      fontFamilyOptions.find((item) => item.value === fontFamily.value) ??
-      fontFamilyOptions[0]
+  const themeMode = computed(() =>
+    resolveThemeMode(appThemeMode.value, systemDark.value)
   )
-  const fontStack = computed(() => fontOption.value.stack)
-  const fontWeight = computed(() => fontOption.value.fontWeight)
+  const themeColor = computed(() => app.value.themeColor)
+  const font = computed(() => app.value.font)
+
   const primaryColor = computed(() => {
-    return rgbToHex(themeColor.value) ?? DEFAULT_PRIMARY_COLOR
+    return rgbToHex(themeColor.value) ?? DEFAULT_PRIMARY_HEX
   })
   const isDark = computed(() => themeMode.value === THEME_MODE.Dark)
   const algorithm = computed(() => {
@@ -80,7 +90,7 @@ export const useTheme = createSharedComposable(() => {
         colorPrimary: primaryColor.value,
         colorLink: primaryColor.value,
         borderRadius: app.value.borderRadius,
-        fontFamily: fontStack.value,
+        fontFamily: font.value?.family,
       },
     }
   })
@@ -94,9 +104,9 @@ export const useTheme = createSharedComposable(() => {
     app.value.themeColor = color
   }
 
-  const changeFontFamily = (font: FontFamily) => {
-    if (app.value.fontFamily === font) return
-    app.value.fontFamily = font
+  const changeFont = (font: Font) => {
+    if (isEqual(app.value.font, font)) return
+    app.value.font = font
   }
 
   const changeColourWeakness = (colourWeakness: boolean) => {
@@ -124,14 +134,7 @@ export const useTheme = createSharedComposable(() => {
     flush: 'sync',
   })
   watch(themeColor, setPrimaryColor, { immediate: true })
-  watch(
-    fontOption,
-    (option) => {
-      document.documentElement.dataset.font = option.value
-    },
-    { immediate: true }
-  )
-
+  watch(font, setFont, { immediate: true })
   watch(
     () => [app.value.colourWeakness, app.value.greyMode],
     ([colourWeakness, greyMode]) => {
@@ -148,12 +151,10 @@ export const useTheme = createSharedComposable(() => {
     themeMode,
     themeColor,
     primaryColor,
-    fontFamily,
-    fontStack,
-    fontWeight,
+    font,
     changeThemeMode,
     changeThemeColor,
-    changeFontFamily,
+    changeFont,
     changeColourWeakness,
     changeGreyMode,
     toggleColourWeakness,

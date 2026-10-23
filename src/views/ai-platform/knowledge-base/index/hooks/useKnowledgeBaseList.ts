@@ -10,7 +10,7 @@ import type {
 export type KnowledgeBaseStatusFilter = KnowledgeBaseStatus | 'all'
 
 export function useKnowledgeBaseList(source: KnowledgeBaseItem[]) {
-  const { user } = useAuthStore()
+  const { userInfo } = useAuthStore()
   const items = shallowRef<KnowledgeBaseItem[]>(source.map(cloneKnowledgeBase))
   const keyword = shallowRef('')
   const statusFilter = shallowRef<KnowledgeBaseStatusFilter>('all')
@@ -79,8 +79,8 @@ export function useKnowledgeBaseList(source: KnowledgeBaseItem[]) {
       description: input.description.trim(),
       tags: normalizeTags(input.tags),
       creator: {
-        name: user.value?.name ?? '当前用户',
-        role: user.value?.roles[0] ?? '知识库管理员',
+        name: userInfo.value?.name ?? '当前用户',
+        role: userInfo.value?.roles[0] ?? '知识库管理员',
       },
       createdAt: now,
       updatedAt: now,

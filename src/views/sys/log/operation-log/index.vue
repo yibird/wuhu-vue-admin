@@ -60,9 +60,9 @@
 import {
   getOperationLogPageListApi,
   getOperationLogRecordApi,
-  type OperationLogDetail,
-  type OperationLogQuery,
-  type OperationLogResp,
+  type SysOperationLogDetail,
+  type SysOperationLogQuery,
+  type SysOperationLog,
 } from '@/apis'
 import { FormPlus } from '@/components'
 import { useRequest } from '@/hooks'
@@ -86,10 +86,13 @@ const PAGE_SIZE = 10
 /** 表格纵向滚动高度,扣掉应用头部、标签页与页面自身内容所占空间 */
 const TABLE_SCROLL_Y = 'calc(100vh - 310px)'
 
-const query = shallowRef<OperationLogQuery>({ current: 1, pageSize: PAGE_SIZE })
+const query = shallowRef<SysOperationLogQuery>({
+  current: 1,
+  pageSize: PAGE_SIZE,
+})
 const detailOpen = shallowRef(false)
 const detailLoading = shallowRef(false)
-const detail = shallowRef<OperationLogDetail>()
+const detail = shallowRef<SysOperationLogDetail>()
 
 const schemas = shallowRef<FormPlusProps['schemas']>([
   {
@@ -135,7 +138,7 @@ const schemas = shallowRef<FormPlusProps['schemas']>([
   },
 ])
 
-const columns: TableColumnsType<OperationLogResp> = [
+const columns: TableColumnsType<SysOperationLog> = [
   {
     title: '序号',
     key: 'index',
@@ -166,7 +169,7 @@ const columns: TableColumnsType<OperationLogResp> = [
 ]
 
 const { data, loading, run } = useRequest(
-  (params: OperationLogQuery) => getOperationLogPageListApi(params),
+  (params: SysOperationLogQuery) => getOperationLogPageListApi(params),
   { defaultParams: [query.value] }
 )
 
@@ -199,7 +202,7 @@ function onSearch(values: FormPlusModel) {
     username: (values.username as string)?.trim() || undefined,
     message: (values.message as string)?.trim() || undefined,
     method: (values.method as string) ?? undefined,
-    status: (values.status as OperationLogQuery['status']) ?? undefined,
+    status: (values.status as SysOperationLogQuery['status']) ?? undefined,
     ...resolveTimeRange(values.range),
   }
   run(query.value)
@@ -210,7 +213,7 @@ function onReset() {
   run(query.value)
 }
 
-async function openDetail(record: OperationLogResp) {
+async function openDetail(record: SysOperationLog) {
   detail.value = undefined
   detailOpen.value = true
   detailLoading.value = true

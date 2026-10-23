@@ -1,10 +1,10 @@
-import type { AppState } from '@/store'
+import type { AppStoreState } from '@/store/app/types'
 
 export const APP_CONFIG_VERSION = 1
 
 export interface AppConfigFile {
   version: typeof APP_CONFIG_VERSION
-  config: AppState
+  config: AppStoreState
 }
 
 const protectedPaths = new Set(['app.logo'])
@@ -75,10 +75,13 @@ function unwrapConfigFile(value: unknown) {
   return value.config
 }
 
-export function parseAppConfig(value: unknown, current: AppState): AppState {
-  return mergeConfigNode(unwrapConfigFile(value), current, '') as AppState
+export function parseAppConfig(
+  value: unknown,
+  current: AppStoreState
+): AppStoreState {
+  return mergeConfigNode(unwrapConfigFile(value), current, '') as AppStoreState
 }
 
-export function createAppConfigFile(config: AppState): AppConfigFile {
+export function createAppConfigFile(config: AppStoreState): AppConfigFile {
   return { version: APP_CONFIG_VERSION, config }
 }

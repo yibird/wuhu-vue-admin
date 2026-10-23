@@ -132,7 +132,7 @@
 
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
-import { getMenuRecordApi, type MenuResp } from '@/apis'
+import { getMenuRecordApi, type SysMenu } from '@/apis'
 import { Icon } from '@/components'
 import { useRequest, useTabs } from '@/hooks'
 import FormModal from '../list/components/form-modal.vue'
@@ -153,9 +153,9 @@ const { data, loading, run } = useRequest(
   { defaultParams: [{ id: menuId.value }], manual: !menuId.value }
 )
 
-const menu = computed<MenuResp | undefined>(() => data.value?.data ?? undefined)
+const menu = computed<SysMenu | undefined>(() => data.value?.data ?? undefined)
 
-/** 菜单类型展示配置,与 MenuResp.type 语义保持一致 */
+/** 菜单类型展示配置,与 SysMenu.type 语义保持一致 */
 const menuTypeMap: Record<MenuType, { label: string; color: string }> = {
   1: { label: '目录', color: 'blue' },
   2: { label: '菜单', color: 'cyan' },
