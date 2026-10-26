@@ -6,7 +6,7 @@
       </p>
       <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-8">
         <input
-          class="h-34 min-w-0 rounded-7 border-1 border-color-2 border-solid bg-fill px-10 text-12px text-primary outline-none"
+          class="h-34 min-w-0 rounded-7 b-1-regular bg-fill px-10 text-12px text-primary outline-none"
           readonly
           :value="url"
         />

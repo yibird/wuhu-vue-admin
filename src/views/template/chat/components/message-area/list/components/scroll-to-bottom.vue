@@ -3,7 +3,7 @@
     <button
       v-if="props.show"
       type="button"
-      class="button fixed bottom-180 right-100 z-10 size-34 rounded-full border-1 border-color-1 border-solid bg-container text-secondary shadow-all-md transition-colors hover:(bg-hover text-primary)"
+      class="button fixed bottom-180 right-100 z-10 size-34 rounded-full b-1-muted bg-container text-secondary shadow-all-md transition-colors hover:(bg-hover text-primary)"
       title="滚动到底部"
       aria-label="滚动到底部"
       @click="emits('click')"

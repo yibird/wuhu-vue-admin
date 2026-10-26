@@ -1,8 +1,6 @@
 <template>
   <section class="min-w-0 space-y-12">
-    <div
-      class="rounded-8 border-1 border-color-2 border-solid bg-container p-14"
-    >
+    <div class="rounded-8 b-1-regular bg-container p-14">
       <div class="flex flex-wrap items-start justify-between gap-12">
         <div class="min-w-0 flex items-start gap-12">
           <span
@@ -37,7 +35,7 @@
       <div
         v-for="metric in props.section.metrics"
         :key="metric.label"
-        class="rounded-8 border-1 border-color-2 border-solid bg-container p-12"
+        class="rounded-8 b-1-regular bg-container p-12"
       >
         <div class="mb-8 flex items-center justify-between gap-8">
           <span class="text-xs text-secondary">{{ metric.label }}</span>
@@ -57,7 +55,7 @@
 
     <div
       v-if="showRecallTester"
-      class="rounded-8 border-1 border-color-2 border-solid bg-container p-14"
+      class="rounded-8 b-1-regular bg-container p-14"
     >
       <div class="mb-12 flex items-center justify-between gap-8">
         <div>
@@ -97,11 +95,9 @@
     </div>
 
     <div class="grid grid-cols-1 gap-12 xl:grid-cols-[minmax(0,1fr)_330px]">
-      <section
-        class="min-w-0 rounded-8 border-1 border-color-2 border-solid bg-container"
-      >
+      <section class="min-w-0 rounded-8 b-1-regular bg-container">
         <div
-          class="flex items-center justify-between border-b-1 border-color-2 border-b-solid px-14 py-12"
+          class="flex items-center justify-between b-b-1-regular px-14 py-12"
         >
           <h2 class="m-0 text-md text-main font-700">工作项</h2>
           <a-button size="small" type="text">
@@ -148,9 +144,7 @@
         </div>
       </section>
 
-      <aside
-        class="min-w-0 rounded-8 border-1 border-color-2 border-solid bg-container p-14"
-      >
+      <aside class="min-w-0 rounded-8 b-1-regular bg-container p-14">
         <div class="mb-12 flex items-center justify-between gap-8">
           <h2 class="m-0 text-md text-main font-700">
             {{ props.section.insightTitle }}
@@ -161,7 +155,7 @@
           <div
             v-for="insight in props.section.insights"
             :key="insight.label"
-            class="rounded-8 border-1 border-color-2 border-solid bg-page p-12"
+            class="rounded-8 b-1-regular bg-page p-12"
           >
             <div class="mb-6 flex items-center justify-between gap-8">
               <span class="text-xs text-secondary">{{ insight.label }}</span>
@@ -192,7 +186,7 @@ function getToneClass(
   tone: KnowledgeSectionWorkspace['metrics'][number]['tone']
 ) {
   const classMap = {
-    default: 'text-main bg-fill-tertiary',
+    default: 'text-main bg-muted',
     primary: 'text-primary bg-primary/10',
     success: 'text-success bg-success/10',
     warning: 'text-warning bg-warning/10',

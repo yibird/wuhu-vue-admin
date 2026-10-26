@@ -113,10 +113,10 @@
           >
             <span
               v-if="index < instance.steps.length - 1"
-              class="absolute left-14 top-28 h-[calc(100%-18px)] w-1 bg-fill-secondary"
+              class="absolute left-14 top-28 h-[calc(100%-18px)] w-1 bg-secondary"
             ></span>
             <span
-              class="relative z-1 size-29 flex flex-none items-center justify-center rounded-full border-1 border-color-2 border-solid bg-container"
+              class="relative z-1 size-29 flex flex-none items-center justify-center rounded-full b-1-regular bg-container"
               :class="[
                 step.status === 'success'
                   ? 'text-success'
@@ -133,9 +133,7 @@
                 :size="14"
               />
             </span>
-            <div
-              class="min-w-0 flex-1 rounded-6 bg-fill-quaternary/50 px-10 py-8"
-            >
+            <div class="min-w-0 flex-1 rounded-6 bg-secondary/50 px-10 py-8">
               <div class="flex flex-wrap items-center justify-between gap-6">
                 <div class="flex min-w-0 items-center gap-6">
                   <strong class="truncate text-xs text-main font-650">
@@ -160,7 +158,7 @@
       <section>
         <h3 class="m-0 mb-9 text-sm text-main font-650">链路信息</h3>
         <div
-          class="flex items-center gap-8 rounded-6 bg-fill-quaternary/60 px-10 py-9"
+          class="flex items-center gap-8 rounded-6 bg-secondary/60 px-10 py-9"
         >
           <Icon name="i-lucide:fingerprint" class="text-secondary" />
           <code class="min-w-0 flex-1 truncate text-xs text-main">

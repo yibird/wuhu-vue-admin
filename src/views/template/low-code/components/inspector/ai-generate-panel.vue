@@ -1,7 +1,7 @@
 <template>
   <div class="min-h-0 flex-1 flex flex-col">
     <header
-      class="shrink-0 flex items-center justify-between gap-8 border-0 border-b-1 border-color-2 border-b-solid px-14 py-9"
+      class="shrink-0 flex items-center justify-between gap-8 border-0 b-b-1-regular px-14 py-9"
     >
       <div class="min-w-0 flex-y-center gap-6">
         <Icon name="i-lucide:sparkles" :size="15" class="text-primary" />
@@ -65,11 +65,9 @@
 
           <section
             v-if="plan"
-            class="mt-2 overflow-hidden rounded-7 border-1 border-primary/30 border-solid"
+            class="mt-2 overflow-hidden rounded-7 b-1-primary/30"
           >
-            <header
-              class="border-b-1 border-b-solid border-primary/20 bg-primary/4 px-10 py-8"
-            >
+            <header class="b-b-1-primary/20 bg-primary/4 px-10 py-8">
               <div class="flex-y-center justify-between gap-8">
                 <div class="min-w-0">
                   <div class="truncate text-xs text-main font-700">
@@ -127,10 +125,10 @@
       </Scrollbar>
     </div>
 
-    <footer class="shrink-0 border-t-1 border-t-solid border-color-2 p-10">
+    <footer class="shrink-0 b-t-1-regular p-10">
       <textarea
         v-model="prompt"
-        class="h-64 w-full resize-none rounded-6 border-1 border-color-2 border-solid bg-fill px-9 py-7 text-xs text-main outline-none focus:border-primary"
+        class="h-64 w-full resize-none rounded-6 b-1-regular bg-fill px-9 py-7 text-xs text-main outline-none focus:border-primary"
         placeholder="例如：生成一个用户管理列表页，包含姓名、角色、状态、创建日期，顶部带搜索筛选"
         @keydown.ctrl.enter.prevent="generate"
         @keydown.meta.enter.prevent="generate"

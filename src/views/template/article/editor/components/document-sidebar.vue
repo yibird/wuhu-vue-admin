@@ -2,7 +2,7 @@
   <div class="flex h-full flex-col">
     <div
       v-if="!compact"
-      class="flex items-center justify-between border-b-1 border-b-solid border-color-1 p-14"
+      class="flex items-center justify-between b-b-1-muted p-14"
     >
       <div>
         <div class="text-lg text-main font-650">文档</div>
@@ -20,7 +20,7 @@
       </button>
     </div>
 
-    <div class="border-b-1 border-b-solid border-color-1 p-12">
+    <div class="b-b-1-muted p-12">
       <a-input
         :value="props.keyword"
         allow-clear
@@ -66,8 +66,8 @@
             class="shrink-0 rounded-full px-7 py-2 text-xs"
             :class="
               doc.status === 'published'
-                ? 'bg-success-tint text-success'
-                : 'bg-fill-quaternary text-secondary'
+                ? 'bg-success/10 text-success'
+                : 'bg-secondary text-secondary'
             "
           >
             {{ doc.status === 'published' ? '发布' : '草稿' }}
@@ -81,7 +81,7 @@
             <span
               v-for="tag in doc.tags"
               :key="tag"
-              class="rounded-4 bg-fill-quaternary px-6 py-2 text-xs text-secondary"
+              class="rounded-4 bg-secondary px-6 py-2 text-xs text-secondary"
             >
               {{ tag }}
             </span>

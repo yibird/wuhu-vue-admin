@@ -21,8 +21,7 @@ const MaterialError = defineComponent({
         'div',
         {
           ...attrs,
-          class:
-            'p-12 text-xs text-error border-1 border-error/40 border-solid rounded-6 bg-error/5',
+          class: 'p-12 text-xs text-error b-1-error/40 rounded-6 bg-error/5',
         },
         '物料加载失败，请检查 Bundle 地址'
       )
@@ -38,7 +37,7 @@ const MaterialLoading = defineComponent({
         'div',
         {
           class:
-            'p-12 text-xs text-muted border-1 border-dashed border-color-2 border-solid rounded-6',
+            'p-12 text-xs text-muted b-dashed-1-regular border-solid rounded-6',
         },
         '物料加载中…'
       )

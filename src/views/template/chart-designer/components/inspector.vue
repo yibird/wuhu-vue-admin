@@ -1,9 +1,9 @@
 <template>
   <section
-    class="min-h-0 min-w-0 grid grid-rows-[auto_minmax(0,1fr)] overflow-hidden rounded-8 border-1 border-color-2 border-solid bg-container shadow-[var(--w-shadow-card)]"
+    class="min-h-0 min-w-0 grid grid-rows-[auto_minmax(0,1fr)] overflow-hidden rounded-8 b-1-regular bg-container shadow-card"
     :data-testid="CHART_DESIGNER_SELECTORS.inspector"
   >
-    <header class="border-b border-color-2 px-12 py-10">
+    <header class="border-b border-regular px-12 py-10">
       <h2 class="m-0 text-14px font-700 text-primary">属性面板</h2>
       <p class="m-0 mt-3 text-12px text-secondary">
         选中控件后编辑图表类型、字段和布局

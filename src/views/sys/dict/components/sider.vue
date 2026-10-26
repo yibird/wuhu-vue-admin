@@ -1,6 +1,6 @@
 <template>
   <div class="h-full flex flex-col overflow-hidden bg-white">
-    <div class="shrink-0 border-b-1 border-color-1 border-b-solid p-12">
+    <div class="shrink-0 b-b-1-muted p-12">
       <div class="flex items-center gap-8">
         <a-input
           v-model:value="keyword"
@@ -52,7 +52,7 @@
                 :class="
                   item.id === selectedId
                     ? 'bg-primary text-white'
-                    : 'bg-fill-quaternary text-secondary'
+                    : 'bg-secondary text-secondary'
                 "
               >
                 <Icon name="i-lucide:book-type" :size="16" />

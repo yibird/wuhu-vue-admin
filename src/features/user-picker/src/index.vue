@@ -76,7 +76,7 @@ function getInitial(label?: string) {
 }
 
 function getAvatarClass(option?: UserPickerOption) {
-  return option?.avatarClass ?? 'bg-fill-secondary text-secondary'
+  return option?.avatarClass ?? 'bg-secondary text-secondary'
 }
 
 function filterOption(inputValue: string, option?: UserPickerOption) {

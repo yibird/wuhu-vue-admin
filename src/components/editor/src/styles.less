@@ -81,7 +81,7 @@
   padding: 8px 14px;
   margin: 0;
   color: rgb(var(--w-text-regular));
-  background: rgb(var(--w-fill-quaternary));
+  background: rgb(var(--w-bg-secondary));
   border-left: 3px solid rgb(var(--w-color-primary));
   border-radius: 0 6px 6px 0;
 }
@@ -90,8 +90,8 @@
   padding: 14px 16px;
   overflow-x: auto;
   color: rgb(var(--w-text-main));
-  background: rgb(var(--w-bg-container-secondary));
-  border: 1px solid rgb(var(--w-border-color-2));
+  background: rgb(var(--w-bg-secondary));
+  border: 1px solid rgb(var(--w-border-regular));
   border-radius: 8px;
 }
 
@@ -130,7 +130,7 @@
 :deep(.w-editor-content__body hr) {
   height: 1px;
   margin: 18px 0;
-  background: rgb(var(--w-border-color-2));
+  background: rgb(var(--w-border-regular));
   border: 0;
 }
 
@@ -152,7 +152,7 @@
   overflow: hidden;
   table-layout: fixed;
   border-collapse: collapse;
-  border: 1px solid rgb(var(--w-border-color-2));
+  border: 1px solid rgb(var(--w-border-regular));
   border-radius: 6px;
 }
 
@@ -178,7 +178,7 @@
   min-width: 90px;
   padding: 9px 10px;
   vertical-align: top;
-  border: 1px solid rgb(var(--w-border-color-2));
+  border: 1px solid rgb(var(--w-border-regular));
 }
 
 /* 选中图片等原子节点时的反馈(此前完全没有任何提示) */
@@ -189,7 +189,7 @@
 
 :deep(.w-editor-content__body th) {
   font-weight: 600;
-  background: rgb(var(--w-fill-quaternary));
+  background: rgb(var(--w-bg-secondary));
 }
 
 :deep(.w-editor-content__body .selectedCell::after) {

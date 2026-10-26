@@ -1,11 +1,11 @@
 <template>
   <section class="h-full min-h-0 flex flex-col">
-    <header class="shrink-0 border-b-1 border-b-solid border-color-2">
+    <header class="shrink-0 b-b-1-regular">
       <div
         class="mx-auto max-w-960 flex items-center gap-12 px-20 py-16 sm:px-10"
       >
         <span
-          class="size-42 flex shrink-0 items-center justify-center rounded-8 bg-primary-tint text-primary"
+          class="size-42 flex shrink-0 items-center justify-center rounded-8 bg-primary/10 text-primary"
         >
           <Icon :name="icon" :size="20" />
         </span>

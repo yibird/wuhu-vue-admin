@@ -25,9 +25,7 @@
 
       <a-tabs v-model:active-key="activeTab">
         <a-tab-pane key="form" tab="表单 Schema">
-          <div
-            class="h-460 overflow-hidden rounded-8 border-1 border-color-2 border-solid"
-          >
+          <div class="h-460 overflow-hidden rounded-8 b-1-regular">
             <CodeEditor
               :model-value="formSchemaText"
               language="json"
@@ -36,9 +34,7 @@
           </div>
         </a-tab-pane>
         <a-tab-pane key="workflow" tab="流程 Schema">
-          <div
-            class="h-460 overflow-hidden rounded-8 border-1 border-color-2 border-solid"
-          >
+          <div class="h-460 overflow-hidden rounded-8 b-1-regular">
             <CodeEditor
               :model-value="workflowSchemaText"
               language="json"

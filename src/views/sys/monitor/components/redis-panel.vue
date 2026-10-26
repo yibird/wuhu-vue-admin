@@ -17,7 +17,7 @@
       <div
         v-for="node in redis.nodes"
         :key="node.id"
-        class="rounded-8 border-1 border-solid border-color-2 bg-container-secondary p-12"
+        class="rounded-8 b-1-regular bg-secondary p-12"
       >
         <div class="flex items-start justify-between gap-10">
           <div class="min-w-0">
@@ -31,8 +31,7 @@
               {{ node.role }} · {{ node.memory }}
             </div>
           </div>
-          <span
-            class="rounded-999 bg-success-tint px-7 py-3 text-xs text-success"
+          <span class="rounded-999 bg-success/10 px-7 py-3 text-xs text-success"
             >运行正常</span
           >
         </div>

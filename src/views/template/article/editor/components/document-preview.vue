@@ -89,7 +89,7 @@ const safeHtml = computed(() => sanitizeHtml(props.html))
   padding: 10px 14px;
   margin: 0 0 1em;
   color: rgb(var(--w-text-regular));
-  background: rgb(var(--w-fill-quaternary));
+  background: rgb(var(--w-bg-secondary));
   border-left: 3px solid rgb(var(--w-color-primary));
   border-radius: 0 6px 6px 0;
 }
@@ -137,7 +137,7 @@ const safeHtml = computed(() => sanitizeHtml(props.html))
 .editor-preview :deep(hr) {
   height: 1px;
   margin: 18px 0;
-  background: rgb(var(--w-border-color-2));
+  background: rgb(var(--w-border-regular));
   border: 0;
 }
 
@@ -146,7 +146,7 @@ const safeHtml = computed(() => sanitizeHtml(props.html))
   margin: 12px 0 1em;
   overflow: hidden;
   border-collapse: collapse;
-  border: 1px solid rgb(var(--w-border-color-2));
+  border: 1px solid rgb(var(--w-border-regular));
   border-radius: 6px;
 }
 
@@ -155,11 +155,11 @@ const safeHtml = computed(() => sanitizeHtml(props.html))
   min-width: 90px;
   padding: 9px 10px;
   vertical-align: top;
-  border: 1px solid rgb(var(--w-border-color-2));
+  border: 1px solid rgb(var(--w-border-regular));
 }
 
 .editor-preview :deep(th) {
   font-weight: 600;
-  background: rgb(var(--w-fill-quaternary));
+  background: rgb(var(--w-bg-secondary));
 }
 </style>

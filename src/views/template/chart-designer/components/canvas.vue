@@ -1,6 +1,6 @@
 <template>
   <section
-    class="min-h-0 min-w-0 grid grid-rows-[auto_minmax(0,1fr)] overflow-hidden rounded-8 border-1 border-color-2 border-solid bg-container shadow-[var(--w-shadow-elevated)]"
+    class="min-h-0 min-w-0 grid grid-rows-[auto_minmax(0,1fr)] overflow-hidden rounded-8 b-1-regular bg-container shadow-overlay"
   >
     <CanvasHeader
       :active-source-id="activeSourceId"
@@ -18,7 +18,7 @@
     >
       <div
         ref="screenRef"
-        class="chart-screen relative mx-auto min-w-860 overflow-hidden rounded-8 border-1 border-white/12 border-solid p-18 shadow-[0_32px_90px_rgb(0_0_0_/_35%)]"
+        class="chart-screen relative mx-auto min-w-860 overflow-hidden rounded-8 b-1-white/12 p-18 shadow-[0_32px_90px_rgb(0_0_0_/_35%)]"
         :class="[
           `chart-screen--${screenConfig.theme}`,
           `chart-screen-preview--${screenConfig.previewMode}`,
@@ -66,14 +66,14 @@
 
           <div
             v-if="isDraggingWidget"
-            class="chart-widget-placeholder rounded-8 border-1 border-dashed border-primary bg-primary/12"
+            class="chart-widget-placeholder rounded-8 b-dashed-1-primary bg-primary/12"
             :style="placeholderStyle"
           ></div>
         </div>
 
         <div
           v-if="isMarqueeSelecting"
-          class="pointer-events-none absolute left-0 top-0 z-30 rounded-6 border-1 border-primary border-solid bg-primary/14"
+          class="pointer-events-none absolute left-0 top-0 z-30 rounded-6 b-1-primary bg-primary/14"
           :style="marqueeStyle"
         ></div>
 
@@ -83,7 +83,7 @@
           :style="dragOverlayStyle"
         >
           <div
-            class="h-full min-h-0 min-w-0 grid grid-rows-[auto_minmax(0,1fr)] overflow-hidden rounded-8 border-1 border-primary border-solid bg-[rgb(9_18_36_/_92%)] p-12 shadow-[0_18px_44px_rgb(0_0_0_/_35%)]"
+            class="h-full min-h-0 min-w-0 grid grid-rows-[auto_minmax(0,1fr)] overflow-hidden rounded-8 b-1-primary bg-[rgb(9_18_36_/_92%)] p-12 shadow-[0_18px_44px_rgb(0_0_0_/_35%)]"
           >
             <h4 class="m-0 truncate text-14px font-700 text-white">
               {{ draggingWidget.title }}

@@ -1,6 +1,6 @@
 <template>
   <header
-    class="flex-y-center gap-12 shrink-0 border-0 border-b-1 border-color-2 border-b-solid bg-container px-14 py-10"
+    class="flex-y-center gap-12 shrink-0 border-0 b-b-1-regular bg-container px-14 py-10"
   >
     <div class="flex-y-center gap-10">
       <span
@@ -14,7 +14,7 @@
             {{ designer.schema.app.name }}
           </span>
           <span
-            class="rounded-4 border-1 border-primary/25 border-solid bg-primary/8 px-4 text-10px text-primary"
+            class="rounded-4 b-1-primary/25 bg-primary/8 px-4 text-10px text-primary"
           >
             Schema Driven
           </span>
@@ -58,7 +58,7 @@
         </button>
       </a-tooltip>
 
-      <span class="mx-4 h-16px w-1px bg-border-color-2" />
+      <span class="mx-4 h-16px w-1px bg-border-regular" />
 
       <a-tooltip title="AI 生成页面（自然语言描述即可生成 Schema）">
         <a-button @click="emits('open-ai')">
@@ -92,7 +92,7 @@
         </button>
       </a-tooltip>
 
-      <span class="mx-4 h-16px w-1px bg-border-color-2" />
+      <span class="mx-4 h-16px w-1px bg-border-regular" />
 
       <a-tooltip :title="saveTip">
         <button class="lc-header-btn" type="button" @click="saveDraft">
@@ -110,7 +110,7 @@
         </button>
       </a-tooltip>
 
-      <span class="mx-4 h-16px w-1px bg-border-color-2" />
+      <span class="mx-4 h-16px w-1px bg-border-regular" />
 
       <a-button @click="emits('open-preview')">
         <Icon name="i-lucide:play" :size="13" class="mr-4" />
@@ -198,7 +198,7 @@ async function share() {
 
   &:hover:not(:disabled) {
     color: rgb(var(--w-color-primary));
-    background: rgb(var(--w-bg-primary) / 8%);
+    background: rgb(var(--w-color-primary) / 8%);
   }
 
   &:disabled {

@@ -310,7 +310,7 @@ export function useEditor() {
   function getSelectedDocumentClass(documentId: string) {
     return activeDocumentId.value === documentId
       ? 'border-primary bg-selected'
-      : 'border-color-1 bg-container-secondary'
+      : 'border-muted bg-secondary'
   }
 
   function saveDocument() {

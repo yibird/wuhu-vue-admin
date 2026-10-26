@@ -10,37 +10,37 @@ export const projectLogoOptions: ProjectLogoOption[] = [
     label: '业务中台',
     icon: 'i-lucide:building-2',
     tone: 'primary',
-    class: 'border-primary/30 bg-primary-tint text-primary',
+    class: 'border-primary/30 bg-primary/10 text-primary',
   },
   {
     label: '产品体验',
     icon: 'i-lucide:panels-top-left',
     tone: 'info',
-    class: 'border-info/30 bg-info-tint text-info',
+    class: 'border-info/30 bg-info/10 text-info',
   },
   {
     label: '流程自动化',
     icon: 'i-lucide:workflow',
     tone: 'success',
-    class: 'border-success/30 bg-success-tint text-success',
+    class: 'border-success/30 bg-success/10 text-success',
   },
   {
     label: '安全治理',
     icon: 'i-lucide:shield-check',
     tone: 'warning',
-    class: 'border-warning/30 bg-warning-tint text-warning',
+    class: 'border-warning/30 bg-warning/10 text-warning',
   },
   {
     label: '创新项目',
     icon: 'i-lucide:rocket',
     tone: 'error',
-    class: 'border-error/30 bg-error-tint text-error',
+    class: 'border-error/30 bg-error/10 text-error',
   },
   {
     label: '数据洞察',
     icon: 'i-lucide:chart-spline',
     tone: 'neutral',
-    class: 'border-color-2 bg-fill-tertiary text-main',
+    class: 'border-regular bg-muted text-main',
   },
 ]
 
@@ -65,13 +65,13 @@ export const workbenchMembers: WorkbenchMember[] = [
 
 /** 项目状态标签与样式类的映射,供初始数据与工作台设置面板共用 */
 export const projectStatusPresentation: Record<string, string> = {
-  有风险: 'bg-error-tint text-error',
-  收尾中: 'bg-success-tint text-success',
-  重点推进: 'bg-warning-tint text-warning',
-  计划中: 'bg-info-tint text-info',
-  推进中: 'bg-primary-tint text-primary',
-  待联调: 'bg-warning-tint text-warning',
-  设计中: 'bg-info-tint text-info',
+  有风险: 'bg-error/10 text-error',
+  收尾中: 'bg-success/10 text-success',
+  重点推进: 'bg-warning/10 text-warning',
+  计划中: 'bg-info/10 text-info',
+  推进中: 'bg-primary/10 text-primary',
+  待联调: 'bg-warning/10 text-warning',
+  设计中: 'bg-info/10 text-info',
 }
 
 /**

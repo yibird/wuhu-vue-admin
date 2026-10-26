@@ -22,7 +22,7 @@
         </div>
 
         <div
-          class="shrink-0 flex items-center gap-4 rounded-6 bg-success-tint px-8 py-4 text-xs text-success font-700"
+          class="shrink-0 flex items-center gap-4 rounded-6 bg-success/10 px-8 py-4 text-xs text-success font-700"
         >
           <Icon name="i-lucide:trending-up" :size="13" />
           {{ goal.compare }} 较上月
@@ -30,7 +30,7 @@
       </div>
 
       <div
-        class="mt-14 h-9 overflow-hidden rounded-999 bg-fill-tertiary"
+        class="mt-14 h-9 overflow-hidden rounded-999 bg-muted"
         role="progressbar"
         :aria-valuenow="goal.percent"
         aria-valuemin="0"
@@ -47,7 +47,7 @@
         <div
           v-for="stage in stages"
           :key="stage.label"
-          class="rounded-8 bg-fill-1 px-10 py-9 transition-colors duration-motion-base hover:bg-hover motion-reduce:transition-none"
+          class="rounded-8 bg-secondary px-10 py-9 transition-colors duration-motion-base hover:bg-hover motion-reduce:transition-none"
         >
           <div class="flex items-center justify-between gap-8">
             <span class="text-xs text-secondary">{{ stage.label }}</span>
@@ -55,7 +55,7 @@
               {{ stage.percent }}%
             </span>
           </div>
-          <div class="mt-7 h-5 overflow-hidden rounded-999 bg-fill-tertiary">
+          <div class="mt-7 h-5 overflow-hidden rounded-999 bg-muted">
             <div
               class="h-full origin-left rounded-999 transition-[width] duration-motion-moderate ease-motion-standard motion-reduce:transition-none"
               :class="stage.bar"

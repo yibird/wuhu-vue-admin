@@ -19,7 +19,7 @@
             v-for="item in items"
             :key="item.id"
             type="button"
-            class="group min-w-0 rounded-8 border-1 border-color-2 border-solid bg-container p-12 text-left outline-none transition-[border-color,background-color,box-shadow,transform] duration-motion-base hover:(-translate-y-1 border-primary bg-primary/5 shadow-all-sm) focus-visible:(border-primary shadow-[0_0_0_2px_rgb(var(--w-color-primary)/12%)]) active:translate-y-0"
+            class="group min-w-0 rounded-8 b-1-regular bg-container p-12 text-left outline-none transition-[border-color,background-color,box-shadow,transform] duration-motion-base hover:(-translate-y-1 border-primary bg-primary/5 shadow-all-sm) focus-visible:(border-primary shadow-[0_0_0_2px_rgb(var(--w-color-primary)/12%)]) active:translate-y-0"
             @click="handleActionClick(item)"
           >
             <span
@@ -38,11 +38,11 @@
 
           <button
             type="button"
-            class="group min-w-0 rounded-8 border-1 border-color-2 border-dashed bg-container p-12 text-left outline-none transition-[border-color,background-color,box-shadow,transform] duration-motion-base hover:(-translate-y-1 border-primary bg-hover shadow-all-sm) focus-visible:(border-primary shadow-[0_0_0_2px_rgb(var(--w-color-primary)/12%)]) active:translate-y-0"
+            class="group min-w-0 rounded-8 b-dashed-1-regular bg-container p-12 text-left outline-none transition-[border-color,background-color,box-shadow,transform] duration-motion-base hover:(-translate-y-1 border-primary bg-hover shadow-all-sm) focus-visible:(border-primary shadow-[0_0_0_2px_rgb(var(--w-color-primary)/12%)]) active:translate-y-0"
             @click="managerOpen = true"
           >
             <span
-              class="size-34 flex items-center justify-center rounded-8 bg-fill-tertiary text-secondary transition-transform duration-motion-base group-hover:rotate-90 group-hover:scale-108"
+              class="size-34 flex items-center justify-center rounded-8 bg-muted text-secondary transition-transform duration-motion-base group-hover:rotate-90 group-hover:scale-108"
             >
               <Icon name="i-lucide:plus" :size="18" />
             </span>

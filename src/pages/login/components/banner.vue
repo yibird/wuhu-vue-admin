@@ -1,10 +1,10 @@
 <template>
   <div
     v-if="show"
-    class="login-banner page-enter page-enter--1 relative min-w-0 flex-1 overflow-hidden max-xl:hidden"
+    class="page-enter page-enter--1 relative min-w-0 flex-1 overflow-hidden max-xl:hidden"
   >
     <div
-      class="absolute inset-0 box-border full flex flex-col items-center justify-center overflow-hidden px-48 py-64 text-center [background:radial-gradient(circle_at_18%_10%,rgb(var(--w-color-primary)_/_10%),transparent_34%),radial-gradient(circle_at_82%_86%,rgb(var(--w-color-primary)_/_7%),transparent_40%)]"
+      class="absolute inset-0 full flex flex-col items-center justify-center overflow-hidden px-48 py-64 text-center [background:radial-gradient(circle_at_18%_10%,rgb(var(--w-color-primary)_/_10%),transparent_34%),radial-gradient(circle_at_82%_86%,rgb(var(--w-color-primary)_/_7%),transparent_40%)]"
     >
       <img
         aria-hidden="true"

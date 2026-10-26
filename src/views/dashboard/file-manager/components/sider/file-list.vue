@@ -41,7 +41,7 @@
             :while-press="categoryPress"
             :transition="categoryItemTransition"
             :class="[
-              'file-list__item group relative w-full min-w-0 flex cursor-pointer items-center overflow-hidden rounded-6 border-0 bg-transparent px-10 py-9 text-left text-regular outline-none transition-[background-color,color,box-shadow] duration-motion-base ease-motion-standard focus-visible:shadow-[0_0_0_2px_rgb(var(--w-color-primary)_/_18%)] motion-reduce:transition-none max-[1199px]:(min-w-132 bg-fill-quaternary px-12 py-9) max-[575px]:min-w-112',
+              'file-list__item group relative w-full min-w-0 flex cursor-pointer items-center overflow-hidden rounded-6 border-0 bg-transparent px-10 py-9 text-left text-regular outline-none transition-[background-color,color,box-shadow] duration-motion-base ease-motion-standard focus-visible:shadow-[0_0_0_2px_rgb(var(--w-color-primary)_/_18%)] motion-reduce:transition-none max-[1199px]:(min-w-132 bg-secondary px-12 py-9) max-[575px]:min-w-112',
               activeCategory === item.value
                 ? 'file-list__item--active text-primary font-medium dark:text-main'
                 : 'hover:bg-hover hover:text-main',

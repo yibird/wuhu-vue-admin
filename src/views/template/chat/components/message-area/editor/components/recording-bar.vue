@@ -1,5 +1,5 @@
 <template>
-  <div class="mb-10 rounded-6 bg-fill-quaternary p-15">
+  <div class="mb-10 rounded-6 bg-secondary p-15">
     <div class="flex items-center justify-between">
       <div class="flex items-center gap-10">
         <div class="size-8 rounded-full bg-error animate-pulse" />
@@ -15,7 +15,7 @@
         </button>
         <button
           type="button"
-          class="button rounded-4 bg-error px-15 py-6 text-sm text-white transition-colors hover:bg-error-2"
+          class="button rounded-4 bg-error px-15 py-6 text-sm text-white transition-colors hover:bg-error/80"
           @click="emits('stop')"
         >
           停止

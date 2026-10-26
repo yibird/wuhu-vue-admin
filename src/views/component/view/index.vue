@@ -4,10 +4,10 @@
       class="h-full min-h-full w-full p-16 md:p-20 overflow-x-hidden overflow-y-auto"
     >
       <section
-        class="mx-auto max-w-1280 rounded-8 border-1 border-color-1 border-solid bg-container p-16 shadow-all-sm md:p-20"
+        class="mx-auto max-w-1280 rounded-8 b-1-muted bg-container p-16 shadow-all-sm md:p-20"
       >
         <header
-          class="mb-16 flex flex-wrap items-start justify-between gap-12 border-b-1 border-color-1 border-b-solid pb-14"
+          class="mb-16 flex flex-wrap items-start justify-between gap-12 b-b-1-muted pb-14"
         >
           <div class="min-w-0">
             <h1 class="m-0 text-xl text-main font-600">WView</h1>
@@ -27,7 +27,7 @@
         </div>
 
         <div
-          class="min-h-420 overflow-hidden rounded-6 border-1 border-color-2 border-solid bg-fill-quaternary p-12"
+          class="min-h-420 overflow-hidden rounded-6 b-1-regular bg-secondary p-12"
         >
           <WView
             :full="false"
@@ -38,7 +38,7 @@
             <WView.Header
               v-model:collapsed="headerCollapsed"
               collapsible
-              class="rounded-6 border-1 border-color-1 border-solid bg-container p-12 shadow-b-sm"
+              class="rounded-6 b-1-muted bg-container p-12 shadow-b-sm"
             >
               <div class="flex min-h-48 items-center gap-10">
                 <div
@@ -68,7 +68,7 @@
                 v-model:collapsed="siderCollapsed"
                 collapsible
                 width="min(240px, 100%)"
-                class="min-h-180 rounded-6 border-1 border-color-1 border-solid bg-container"
+                class="min-h-180 rounded-6 b-1-muted bg-container"
               >
                 <template #default="{ collapsed }">
                   <nav class="h-full p-8" aria-label="示例侧栏">
@@ -93,7 +93,7 @@
               </WView.Sider>
 
               <WView.Content
-                class="min-h-180 rounded-6 border-1 border-color-1 border-solid bg-container p-16"
+                class="min-h-180 rounded-6 b-1-muted bg-container p-16"
               >
                 <div class="h-full min-h-148">
                   <div class="flex items-center justify-between gap-8">
@@ -113,7 +113,7 @@
                     <div
                       v-for="index in 3"
                       :key="index"
-                      class="rounded-4 border-1 border-color-1 border-solid bg-fill-quaternary p-12 text-secondary"
+                      class="rounded-4 b-1-muted bg-secondary p-12 text-secondary"
                     >
                       内容块 {{ index }}
                     </div>
@@ -123,7 +123,7 @@
             </WView>
 
             <WView.Footer
-              class="flex items-center justify-between gap-8 rounded-6 border-1 border-color-1 border-solid bg-container px-12 py-10 text-xs text-secondary"
+              class="flex items-center justify-between gap-8 rounded-6 b-1-muted bg-container px-12 py-10 text-xs text-secondary"
             >
               <span>WView.Footer</span>
               <span>底部区域不会参与内容收缩</span>

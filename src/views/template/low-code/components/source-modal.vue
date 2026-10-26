@@ -19,9 +19,7 @@
           <a-button type="primary" @click="apply">应用到设计器</a-button>
         </div>
       </div>
-      <div
-        class="h-560px overflow-hidden rounded-8 border-1 border-color-2 border-solid"
-      >
+      <div class="h-560px overflow-hidden rounded-8 b-1-regular">
         <CodeEditor v-model="code" language="json" />
       </div>
       <div v-if="error" class="text-xs text-error">{{ error }}</div>

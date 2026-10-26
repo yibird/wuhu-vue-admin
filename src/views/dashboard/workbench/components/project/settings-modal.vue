@@ -18,7 +18,7 @@
           <div class="flex flex-wrap items-center gap-8">
             <div class="text-lg text-main font-700">{{ modalTitle }}</div>
             <span
-              class="rounded-full bg-fill-tertiary px-8 py-2 text-xs text-secondary font-500"
+              class="rounded-full bg-muted px-8 py-2 text-xs text-secondary font-500"
             >
               {{ props.mode === 'create' ? '创建模式' : '编辑模式' }}
             </span>
@@ -71,9 +71,7 @@
         class="min-w-0 space-y-16"
         layout="vertical"
       >
-        <div
-          class="border-b-1 border-b-solid border-color-2 pb-16 last:border-b-0 last:pb-0"
-        >
+        <div class="b-b-1-regular pb-16 last:border-b-0 last:pb-0">
           <div class="mb-12 flex items-start justify-between gap-12">
             <div>
               <div class="flex items-center gap-7 text-sm text-main font-700">
@@ -96,7 +94,7 @@
               :class="
                 form.logo.icon === item.icon
                   ? 'border-primary bg-primary/5 shadow-all-sm'
-                  : 'border-color-2'
+                  : 'border-regular'
               "
               :aria-label="`选择${item.label}标识`"
               :aria-pressed="form.logo.icon === item.icon"
@@ -121,9 +119,7 @@
           </div>
         </div>
 
-        <div
-          class="border-b-1 border-b-solid border-color-2 pb-16 last:border-b-0 last:pb-0"
-        >
+        <div class="b-b-1-regular pb-16 last:border-b-0 last:pb-0">
           <div class="mb-12 flex items-start justify-between gap-12">
             <div>
               <div class="flex items-center gap-7 text-sm text-main font-700">
@@ -180,9 +176,7 @@
           </div>
         </div>
 
-        <div
-          class="border-b-1 border-b-solid border-color-2 pb-16 last:border-b-0 last:pb-0"
-        >
+        <div class="b-b-1-regular pb-16 last:border-b-0 last:pb-0">
           <div class="mb-12 flex items-start justify-between gap-12">
             <div>
               <div class="flex items-center gap-7 text-sm text-main font-700">
@@ -206,7 +200,7 @@
                 :class="
                   form.priority === item.value
                     ? 'border-primary shadow-all-sm'
-                    : 'border-color-2'
+                    : 'border-regular'
                 "
                 :aria-pressed="form.priority === item.value"
                 @click="updatePriority(item.value)"
@@ -221,7 +215,7 @@
               </button>
             </div>
 
-            <div class="rounded-8 bg-fill-quaternary p-12">
+            <div class="rounded-8 bg-secondary p-12">
               <div class="mb-8 flex items-center justify-between text-xs">
                 <span class="text-secondary font-600">完成进度</span>
                 <span class="text-main font-700">{{ form.progress }}%</span>
@@ -231,9 +225,7 @@
           </div>
         </div>
 
-        <div
-          class="border-b-1 border-b-solid border-color-2 pb-16 last:border-b-0 last:pb-0"
-        >
+        <div class="b-b-1-regular pb-16 last:border-b-0 last:pb-0">
           <div class="mb-12 flex items-start justify-between gap-12">
             <div>
               <div class="flex items-center gap-7 text-sm text-main font-700">
@@ -258,14 +250,14 @@
               :class="
                 form[item.key]
                   ? '-translate-y-1 border-primary/36 bg-primary/8 shadow-all-sm'
-                  : 'border-color-2'
+                  : 'border-regular'
               "
               :aria-pressed="form[item.key]"
               @click="updateSwitch(item.key, !form[item.key])"
             >
               <span class="flex items-start justify-between gap-8">
                 <span
-                  class="size-30 flex items-center justify-center rounded-7 bg-fill-tertiary text-secondary"
+                  class="size-30 flex items-center justify-center rounded-7 bg-muted text-secondary"
                 >
                   <Icon :name="item.icon" :size="15" />
                 </span>
@@ -289,7 +281,7 @@
 
       <aside class="min-w-0">
         <div
-          class="sticky top-0 overflow-hidden rounded-8 border-1 border-color-1 border-solid bg-container p-14 shadow-[0_14px_34px_rgb(var(--w-shadow-color-rgb)_/_12%)]"
+          class="sticky top-0 overflow-hidden rounded-8 b-1-muted bg-container p-14 shadow-[0_14px_34px_rgb(15 23 42_/_12%)]"
         >
           <div class="mb-12 flex items-center gap-6 text-xs text-secondary">
             <Icon name="i-lucide:scan-eye" :size="14" />
@@ -353,13 +345,13 @@
 
           <div class="mt-14 grid grid-cols-2 gap-8 text-xs">
             <div
-              class="min-w-0 flex items-center gap-5 rounded-6 bg-fill-1 p-8 text-secondary"
+              class="min-w-0 flex items-center gap-5 rounded-6 bg-secondary p-8 text-secondary"
             >
               <Icon name="i-lucide:calendar-clock" :size="14" />
               {{ form.dueAt || '待定' }}
             </div>
             <div
-              class="min-w-0 flex items-center gap-5 rounded-6 bg-fill-1 p-8 text-secondary"
+              class="min-w-0 flex items-center gap-5 rounded-6 bg-secondary p-8 text-secondary"
             >
               <Icon name="i-lucide:bell-ring" :size="14" />
               {{ form.notify ? '已提醒' : '不提醒' }}
@@ -367,7 +359,7 @@
           </div>
         </div>
 
-        <div class="mt-12 border-t-1 border-color-2 border-t-solid pt-12">
+        <div class="mt-12 b-t-1-regular pt-12">
           <div class="flex items-center gap-7 text-sm text-main font-700">
             <Icon name="i-lucide:badge-check" :size="15" class="text-primary" />
             设置影响
@@ -454,25 +446,25 @@ const priorityOptions = [
     label: '常规',
     value: 'low',
     icon: 'i-lucide:circle',
-    class: 'bg-fill-tertiary text-secondary',
+    class: 'bg-muted text-secondary',
   },
   {
     label: '重点',
     value: 'medium',
     icon: 'i-lucide:circle-dot',
-    class: 'bg-info-tint text-info',
+    class: 'bg-info/10 text-info',
   },
   {
     label: '高优',
     value: 'high',
     icon: 'i-lucide:flame',
-    class: 'bg-warning-tint text-warning',
+    class: 'bg-warning/10 text-warning',
   },
   {
     label: '紧急',
     value: 'urgent',
     icon: 'i-lucide:siren',
-    class: 'bg-error-tint text-error',
+    class: 'bg-error/10 text-error',
   },
 ] as const
 

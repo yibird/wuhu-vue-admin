@@ -6,9 +6,7 @@
     :rules="rules"
     class="pt-8"
   >
-    <div
-      class="mb-14 rounded-6 border-1 border-color-2 border-solid bg-container-secondary p-12"
-    >
+    <div class="mb-14 rounded-6 b-1-regular bg-secondary p-12">
       <div class="flex items-center gap-8 text-sm text-main font-600">
         <Icon name="i-lucide:clipboard-list" :size="16" />
         基础信息
@@ -73,7 +71,7 @@
           <button
             v-for="item in dueDateQuickOptions"
             :key="item.value"
-            class="h-24 rounded-4 border-1 border-color-2 border-solid bg-container px-8 text-xs text-secondary transition-colors hover:(border-primary text-primary)"
+            class="h-24 rounded-4 b-1-regular bg-container px-8 text-xs text-secondary transition-colors hover:(border-primary text-primary)"
             type="button"
             @click="setDueDate(item.value)"
           >
@@ -154,7 +152,7 @@
     </a-form-item>
 
     <div
-      class="mt-4 flex flex-wrap items-center gap-8 rounded-6 border-1 border-color-2 border-solid bg-main px-12 py-10 text-xs text-secondary"
+      class="mt-4 flex flex-wrap items-center gap-8 rounded-6 b-1-regular bg-container px-12 py-10 text-xs text-secondary"
     >
       <span class="inline-flex items-center gap-4">
         <Icon name="i-lucide:user-round" :size="13" />

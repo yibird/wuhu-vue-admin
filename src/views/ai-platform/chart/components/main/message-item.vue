@@ -10,7 +10,7 @@
   >
     <div
       v-if="!isUser"
-      class="size-32 inline-flex items-center justify-center rounded-full border-1 border-color-main border-solid bg-[rgb(var(--w-text-main))] text-white text-xs font-600 max-md:size-28"
+      class="size-32 inline-flex items-center justify-center rounded-full b-1-main bg-[rgb(var(--w-text-main))] text-white text-xs font-600 max-md:size-28"
     >
       <Icon
         :name="
@@ -32,7 +32,7 @@
         :class="
           isUser
             ? 'bg-primary text-white shadow-[0_8px_20px_rgb(var(--w-color-primary)_/_18%)]'
-            : 'border-1 border-color-2 border-solid bg-main'
+            : 'border-1 border-regular border-solid bg-container'
         "
       >
         <div
@@ -56,9 +56,9 @@
             :pending="segment.pending"
             @ask="emits('ask', $event)"
           />
-          <div v-else class="border-0 border-t-1 border-color-2 border-solid">
+          <div v-else class="border-0 b-t-1-regular">
             <div
-              class="flex items-center justify-between gap-8 bg-container-secondary px-12 py-7 text-12px text-secondary"
+              class="flex items-center justify-between gap-8 bg-secondary px-12 py-7 text-12px text-secondary"
             >
               <span class="truncate">{{ segment.lang || 'code' }}</span>
               <button
@@ -86,7 +86,7 @@
         <span
           v-for="attachment in item.attachments"
           :key="attachment.id"
-          class="inline-flex max-w-220 items-center gap-6 rounded-full bg-fill-tertiary px-8 py-4 text-xs text-secondary"
+          class="inline-flex max-w-220 items-center gap-6 rounded-full bg-muted px-8 py-4 text-xs text-secondary"
           :aria-label="`附件：${attachment.name}`"
         >
           <Icon name="i-lucide:file" :size="13" />
@@ -113,9 +113,9 @@
           v-for="action in actions"
           :key="action.key"
           type="button"
-          class="size-28 inline-flex items-center justify-center rounded-7 border-1 border-color-muted border-solid bg-container text-muted cursor-pointer transition-colors hover:bg-hover hover:text-main focus-visible:border-primary focus-visible:text-primary focus-visible:outline-none"
+          class="size-28 inline-flex items-center justify-center rounded-7 b-1-muted bg-container text-muted cursor-pointer transition-colors hover:bg-hover hover:text-main focus-visible:border-primary focus-visible:text-primary focus-visible:outline-none"
           :class="[
-            action.danger ? 'hover:bg-error-tint hover:text-error' : '',
+            action.danger ? 'hover:bg-error/10 hover:text-error' : '',
             action.active ? 'border-primary text-primary' : '',
           ]"
           :title="action.label"
@@ -128,7 +128,7 @@
 
     <div
       v-if="isUser"
-      class="col-start-2 row-start-1 size-32 inline-flex items-center justify-center rounded-full border-1 border-color-muted border-solid bg-fill-tertiary text-xs text-main font-600 max-md:size-28"
+      class="col-start-2 row-start-1 size-32 inline-flex items-center justify-center rounded-full b-1-muted bg-muted text-xs text-main font-600 max-md:size-28"
     >
       你
     </div>

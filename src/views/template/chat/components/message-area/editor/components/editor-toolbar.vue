@@ -64,7 +64,7 @@
       class="button size-36 rounded-6 transition-colors hover:bg-hover"
       :class="
         recording
-          ? 'bg-error-tint text-error'
+          ? 'bg-error/10 text-error'
           : 'text-secondary hover:text-primary'
       "
       title="语音"

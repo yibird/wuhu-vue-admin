@@ -119,28 +119,28 @@ export function useTaskCenter(open: Readonly<Ref<boolean>>) {
       label: '全部任务',
       value: tasks.value.length,
       icon: 'i-lucide:list-checks',
-      class: 'text-primary bg-primary-tint',
+      class: 'text-primary bg-primary/10',
     },
     {
       key: 'running',
       label: '进行中',
       value: runningCount.value,
       icon: 'i-lucide:loader-circle',
-      class: 'text-primary bg-primary-tint',
+      class: 'text-primary bg-primary/10',
     },
     {
       key: 'waiting',
       label: '等待中',
       value: waitingCount.value,
       icon: 'i-lucide:clock-3',
-      class: 'text-warning bg-warning-tint',
+      class: 'text-warning bg-warning/10',
     },
     {
       key: 'failed',
       label: '异常任务',
       value: failedCount.value,
       icon: 'i-lucide:circle-alert',
-      class: 'text-error bg-error-tint',
+      class: 'text-error bg-error/10',
     },
   ])
 

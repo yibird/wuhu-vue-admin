@@ -38,11 +38,11 @@
             />
 
             <section
-              class="overflow-hidden rounded-16 border-1 border-color-1 border-solid bg-container shadow-[0_10px_30px_rgb(15_23_42_/_5%)]"
+              class="overflow-hidden rounded-16 b-1-muted bg-container shadow-[0_10px_30px_rgb(15_23_42_/_5%)]"
               aria-label="扩展能力"
             >
               <div
-                class="flex items-center justify-between gap-12 border-b-1 border-color-1 border-b-solid p-20"
+                class="flex items-center justify-between gap-12 b-b-1-muted p-20"
               >
                 <div>
                   <span
@@ -66,7 +66,7 @@
                 <article
                   v-for="addon in pricingAddons"
                   :key="addon.name"
-                  class="group relative grid min-w-0 grid-cols-[48px_minmax(0,1fr)] items-start gap-14 overflow-hidden rounded-12 border-1 border-color-1 border-solid bg-fill-tertiary/40 p-16 transition-[border-color,box-shadow,transform] duration-motion-base ease-motion-standard hover:(-translate-y-2 border-primary/30 shadow-[0_16px_36px_rgb(var(--w-color-primary)_/_10%)]) motion-reduce:transition-none"
+                  class="group relative grid min-w-0 grid-cols-[48px_minmax(0,1fr)] items-start gap-14 overflow-hidden rounded-12 b-1-muted bg-muted/40 p-16 transition-[border-color,box-shadow,transform] duration-motion-base ease-motion-standard hover:(-translate-y-2 border-primary/30 shadow-[0_16px_36px_rgb(var(--w-color-primary)_/_10%)]) motion-reduce:transition-none"
                 >
                   <span
                     class="size-48 inline-flex items-center justify-center rounded-12 bg-primary/8 text-primary transition-[background-color,transform] duration-motion-moderate ease-motion-standard group-hover:(scale-110 bg-primary/15) motion-reduce:transition-none"
@@ -92,7 +92,7 @@
           </div>
 
           <aside
-            class="sticky top-12 self-start overflow-hidden rounded-16 border-1 border-primary border-solid bg-container/80 p-20 shadow-[0_20px_50px_rgb(15_23_42_/_10%)] backdrop-blur-xl max-[1180px]:(relative top-auto)"
+            class="sticky top-12 self-start overflow-hidden rounded-16 b-1-primary bg-container/80 p-20 shadow-[0_20px_50px_rgb(15_23_42_/_10%)] backdrop-blur-xl max-[1180px]:(relative top-auto)"
             aria-label="当前选择"
           >
             <div class="flex items-center justify-between gap-12">
@@ -118,7 +118,7 @@
             </div>
 
             <div
-              class="relative mt-16 overflow-hidden rounded-12 border-1 border-primary/20 border-solid bg-gradient-to-br from-primary/10 via-primary/5 to-transparent p-16"
+              class="relative mt-16 overflow-hidden rounded-12 b-1-primary/20 bg-gradient-to-br from-primary/10 via-primary/5 to-transparent p-16"
             >
               <div
                 class="pointer-events-none absolute -top-20 -right-20 size-40 rounded-full bg-primary/20 blur-3xl"
@@ -143,11 +143,9 @@
               </Transition>
             </div>
 
-            <div
-              class="my-16 grid overflow-hidden rounded-10 border-1 border-color-1 border-solid"
-            >
+            <div class="my-16 grid overflow-hidden rounded-10 b-1-muted">
               <div
-                class="flex items-center justify-between gap-12 border-b-1 border-color-1 border-b-solid px-14 py-11"
+                class="flex items-center justify-between gap-12 b-b-1-muted px-14 py-11"
               >
                 <span class="text-[13px] text-secondary">适用团队</span>
                 <strong class="text-right text-[13px] text-main">
@@ -155,7 +153,7 @@
                 </strong>
               </div>
               <div
-                class="flex items-center justify-between gap-12 border-b-1 border-color-1 border-b-solid px-14 py-11"
+                class="flex items-center justify-between gap-12 b-b-1-muted px-14 py-11"
               >
                 <span class="text-[13px] text-secondary">计费周期</span>
                 <strong class="text-right text-[13px] text-main">

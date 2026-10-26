@@ -1,8 +1,8 @@
 <template>
   <aside
-    class="h-full w-260 flex flex-none flex-col border-r-1 border-color-2 border-r-solid bg-container"
+    class="h-full w-260 flex flex-none flex-col b-r-1-regular bg-container"
   >
-    <div class="flex-none border-b-1 border-color-2 border-b-solid p-14">
+    <div class="flex-none b-b-1-regular p-14">
       <div class="mb-10 flex items-center gap-10">
         <span
           class="size-40 flex flex-none items-center justify-center rounded-8 bg-primary/10 text-primary"
@@ -18,14 +18,12 @@
           </p>
         </div>
       </div>
-      <div
-        class="rounded-8 border-1 border-color-2 border-solid bg-page px-10 py-8"
-      >
+      <div class="rounded-8 b-1-regular bg-page px-10 py-8">
         <div class="flex items-center justify-between text-xs">
           <span class="text-secondary">索引健康度</span>
           <strong class="text-success">96%</strong>
         </div>
-        <div class="mt-6 h-6 overflow-hidden rounded-full bg-fill-tertiary">
+        <div class="mt-6 h-6 overflow-hidden rounded-full bg-muted">
           <div class="h-full w-[96%] rounded-full bg-success" />
         </div>
       </div>
@@ -50,7 +48,7 @@
               'size-30 flex flex-none items-center justify-center rounded-7',
               section.key === props.activeKey
                 ? 'bg-primary text-white'
-                : 'bg-fill-tertiary text-secondary',
+                : 'bg-muted text-secondary',
             ]"
           >
             <Icon :name="section.icon" :size="16" />

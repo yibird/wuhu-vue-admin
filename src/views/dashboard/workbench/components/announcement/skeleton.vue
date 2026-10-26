@@ -24,9 +24,7 @@
           </div>
         </div>
       </div>
-      <div
-        class="border-color-2 border-t-1 border-t-solid px-12 py-10 text-center"
-      >
+      <div class="b-t-1-regular px-12 py-10 text-center">
         <a-skeleton-input active size="small" class="!w-120" />
       </div>
     </a-card>

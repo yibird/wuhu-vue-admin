@@ -7,6 +7,7 @@ import { wind4Preset } from './wind4'
 import { iconsPreset } from './icons'
 import { extraPreset } from './extra'
 import { fontsPreset } from './fonts'
+import { borderColorTokens } from '../token'
 
 export const presets = [
   wind4Preset,
@@ -22,10 +23,13 @@ export const presets = [
       'icon',
       ':icon',
       'v-bind:icon',
+      'avatar',
     ],
   }),
   iconsPreset,
   extraPreset,
   fontsPreset,
-  presetUnocss,
+  presetUnocss({
+    borderColors: borderColorTokens,
+  }),
 ]

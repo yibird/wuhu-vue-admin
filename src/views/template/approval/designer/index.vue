@@ -2,7 +2,7 @@
   <WView :full="true" :padding="0">
     <div class="h-full min-h-0 flex flex-col overflow-hidden bg-page">
       <header
-        class="flex flex-none flex-wrap items-center gap-12 border-b-1 border-color-2 border-b-solid bg-container px-14 py-10"
+        class="flex flex-none flex-wrap items-center gap-12 b-b-1-regular bg-container px-14 py-10"
       >
         <a-button type="text" title="返回我的审批" @click="goBack">
           <template #icon><Icon name="i-lucide:arrow-left" /></template>
@@ -38,9 +38,7 @@
         </a-button>
       </header>
 
-      <div
-        class="flex-none border-b-1 border-color-2 border-b-solid bg-container px-14 py-10"
-      >
+      <div class="flex-none b-b-1-regular bg-container px-14 py-10">
         <a-steps
           :current="step"
           :items="stepItems"
@@ -87,7 +85,7 @@
       </main>
 
       <footer
-        class="flex flex-none items-center justify-end gap-10 border-t-1 border-color-2 border-t-solid bg-container px-14 py-10"
+        class="flex flex-none items-center justify-end gap-10 b-t-1-regular bg-container px-14 py-10"
       >
         <div class="flex items-center gap-8">
           <a-button :disabled="step === 0" @click="goPrev">上一步</a-button>

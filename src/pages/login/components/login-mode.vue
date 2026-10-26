@@ -11,11 +11,9 @@
           :title="item.label"
           placement="bottom"
         >
-          <a-button
-            shape="circle"
-            html-type="button"
+          <button
             :aria-label="item.label"
-            class="size-38! border-color-2! bg-container! outline-none! transition-[background-color,transform,box-shadow,border-color] duration-motion-base hover:(-translate-y-1 border-primary! bg-hover! shadow-all-sm) focus-visible:shadow-[0_0_0_2px_rgb(var(--w-color-primary)_/_24%)] active:translate-y-0 motion-reduce:(transform-none transition-none)"
+            class="button size-38 bg-container b-1-secondary rounded-4 transition-all duration-motion-base hover:(-translate-y-1 border-primary bg-hover shadow-all-sm)"
           >
             <img
               :src="item.icon"
@@ -23,7 +21,7 @@
               class="size-20"
               :class="{ 'dark:invert': item.value === 'github' }"
             />
-          </a-button>
+          </button>
         </a-tooltip>
       </div>
     </div>

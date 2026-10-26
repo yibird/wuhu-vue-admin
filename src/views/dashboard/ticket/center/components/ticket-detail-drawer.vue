@@ -10,7 +10,7 @@
     </template>
 
     <template v-if="ticket">
-      <header class="border-b-1 border-color-2 border-b-solid pb-16">
+      <header class="b-b-1-regular pb-16">
         <div class="flex flex-wrap items-center gap-8">
           <span class="text-xs text-secondary">{{ ticket.id }}</span>
           <a-tag
@@ -26,7 +26,7 @@
       </header>
 
       <section
-        class="grid grid-cols-2 gap-x-16 gap-y-14 border-b-1 border-color-2 border-b-solid py-16 sm:grid-cols-3"
+        class="grid grid-cols-2 gap-x-16 gap-y-14 b-b-1-regular py-16 sm:grid-cols-3"
       >
         <div>
           <div class="text-xs text-muted">问题类型</div>
@@ -62,7 +62,7 @@
         </div>
       </section>
 
-      <section class="border-b-1 border-color-2 border-b-solid py-16">
+      <section class="b-b-1-regular py-16">
         <h3 class="mb-8 text-sm text-main font-600">问题描述</h3>
         <p class="mb-0 whitespace-pre-wrap text-sm text-regular leading-7">
           {{ ticket.description }}
@@ -91,9 +91,7 @@
         </a-timeline>
       </section>
 
-      <section
-        class="border-t-1 border-color-2 border-t-solid bg-main px-12 pb-10 pt-12"
-      >
+      <section class="b-t-1-regular bg-container px-12 pb-10 pt-12">
         <a-textarea
           v-model:value="reply"
           :auto-size="{ minRows: 3, maxRows: 6 }"

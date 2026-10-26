@@ -1,8 +1,8 @@
 <template>
   <section
-    class="min-h-0 min-w-0 grid grid-rows-[auto_minmax(0,1fr)] overflow-hidden rounded-8 border-1 border-color-2 border-solid bg-container shadow-[var(--w-shadow-card)]"
+    class="min-h-0 min-w-0 grid grid-rows-[auto_minmax(0,1fr)] overflow-hidden rounded-8 b-1-regular bg-container shadow-card"
   >
-    <header class="border-b border-color-2 px-12 py-10">
+    <header class="border-b border-regular px-12 py-10">
       <div class="flex items-center justify-between gap-8">
         <div class="min-w-0">
           <h2 class="m-0 text-14px font-700 text-primary">组件素材</h2>

@@ -5,9 +5,9 @@
     <div
       v-for="(height, index) in SKELETON_HEIGHTS"
       :key="index"
-      class="mb-16 break-inside-avoid overflow-hidden rounded-8 border-1 border-color-1 border-solid bg-container"
+      class="mb-16 break-inside-avoid overflow-hidden rounded-8 b-1-muted bg-container"
     >
-      <div class="bg-fill-tertiary" :style="{ height: `${height}px` }" />
+      <div class="bg-muted" :style="{ height: `${height}px` }" />
       <div class="p-12">
         <a-skeleton
           active

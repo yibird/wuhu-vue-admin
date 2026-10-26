@@ -76,6 +76,6 @@ const headerStyle = computed(() => ({
 .approval-node-header {
   position: relative;
   background-size: 100% 100%;
-  border-bottom: 1px solid rgb(var(--w-border-color-2) / 52%);
+  border-bottom: 1px solid rgb(var(--w-border-regular) / 52%);
 }
 </style>

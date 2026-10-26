@@ -27,7 +27,7 @@
         <div
           v-for="(actionId, index) in actionsOf(event.name)"
           :key="`${actionId}-${index}`"
-          class="rounded-6 border-1 border-color-2 border-solid bg-fill-quaternary p-10"
+          class="rounded-6 b-1-regular bg-secondary p-10"
         >
           <div class="flex-between-center gap-6">
             <span class="inline-flex-y-center gap-6 text-xs text-main">
@@ -63,7 +63,7 @@
 
           <div
             v-if="actionParams(actionId).length"
-            class="mt-10 grid gap-10 border-0 border-t-1 border-color-2 border-t-solid pt-10"
+            class="mt-10 grid gap-10 border-0 b-t-1-regular pt-10"
           >
             <ActionValueControl
               v-for="param in actionParams(actionId)"

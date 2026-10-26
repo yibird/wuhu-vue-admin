@@ -47,7 +47,7 @@ const activeTab = ref<SidebarTab>('palette')
   font-size: 12px;
   color: rgb(var(--w-text-secondary));
   cursor: pointer;
-  background: rgb(var(--w-bg-fill-quaternary));
+  background: rgb(var(--w-bg-secondary));
   border: 1px solid transparent;
   border-radius: 7px;
 
@@ -57,7 +57,7 @@ const activeTab = ref<SidebarTab>('palette')
 
   &.is-active {
     color: rgb(var(--w-color-primary));
-    background: rgb(var(--w-bg-primary) / 8%);
+    background: rgb(var(--w-color-primary) / 8%);
     border-color: rgb(var(--w-color-primary) / 30%);
   }
 }

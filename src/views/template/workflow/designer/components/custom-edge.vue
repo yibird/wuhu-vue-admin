@@ -9,7 +9,7 @@
   <EdgeLabelRenderer>
     <div
       v-if="label"
-      class="nodrag nopan inline-flex items-center rounded-full border-1 border-color-secondary border-solid bg-main px-8 py-4 shadow-floating"
+      class="nodrag nopan inline-flex items-center rounded-full b-1-secondary bg-container px-8 py-4 shadow-overlay"
       :style="{
         pointerEvents: 'all',
         position: 'absolute',

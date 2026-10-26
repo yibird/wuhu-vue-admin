@@ -14,7 +14,7 @@
           'block-button group relative  h-80 flex-center flex-col cursor-pointer gap-4 rounded-8 border-1 border-solid px-8 outline-none transition-all   hover:(-translate-y-1 border-primary bg-primary/10)',
           font.family === item.family
             ? 'bg-primary/10 border-primary'
-            : 'bg-container border-color-1',
+            : 'bg-container border-muted',
         ]"
         @click="changeFont(item)"
       >

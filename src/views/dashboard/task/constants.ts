@@ -94,7 +94,7 @@ export const taskAssigneeList: TaskAssigneeMeta[] = [
     role: '前端开发',
     department: '研发中心',
     email: 'lingengxin@example.com',
-    avatarClass: 'bg-success-tint text-success',
+    avatarClass: 'bg-success/10 text-success',
   },
   {
     label: '高圆圆',
@@ -102,7 +102,7 @@ export const taskAssigneeList: TaskAssigneeMeta[] = [
     role: '体验设计',
     department: '设计中心',
     email: 'gaoyuanyuan@example.com',
-    avatarClass: 'bg-warning-tint text-warning',
+    avatarClass: 'bg-warning/10 text-warning',
   },
   {
     label: '周星驰',
@@ -110,7 +110,7 @@ export const taskAssigneeList: TaskAssigneeMeta[] = [
     role: '测试负责人',
     department: '质量保障部',
     email: 'zhouxingchi@example.com',
-    avatarClass: 'bg-info-tint text-info',
+    avatarClass: 'bg-info/10 text-info',
   },
 ]
 

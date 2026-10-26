@@ -18,7 +18,7 @@
     <div class="dept-org flex gap-12">
       <section
         ref="chartHostRef"
-        class="dept-org-chart relative h-[calc(100vh-260px)] min-w-0 flex-1 overflow-hidden rounded-12 border-1 border-color-1 border-solid bg-fill-quaternary"
+        class="dept-org-chart relative h-[calc(100vh-260px)] min-w-0 flex-1 overflow-hidden rounded-12 b-1-muted bg-secondary"
       >
         <div
           class="pointer-events-none absolute inset-x-0 top-0 z-20 flex items-center gap-8 p-12"
@@ -115,7 +115,7 @@
       <Transition name="fade-slide-right">
         <aside
           v-if="selectedDept"
-          class="flex w-236 flex-none flex-col border-1 border-color-1 border-solid rounded-12 bg-container p-14 shadow-card"
+          class="flex w-236 flex-none flex-col b-1-muted rounded-12 bg-container p-14 shadow-card"
         >
           <header class="flex items-start gap-8">
             <span
@@ -507,14 +507,14 @@ function resolveTreeElement(value: TreeOrgExpose['treeRef']) {
   .tree-org-node:not(:last-child)::after,
   .tree-org-node__children::before,
   .collapsable .tree-org-node.collapsed .tree-org-node__content::after {
-    border-color: rgb(var(--w-border-color-2));
+    border-color: rgb(var(--w-border-regular));
   }
 
   .tree-org-node__expand {
     color: rgb(var(--w-text-secondary));
-    background-color: rgb(var(--w-bg-elevated));
-    border-color: rgb(var(--w-border-color-2));
-    box-shadow: var(--w-shadow-sm);
+    background-color: rgb(var(--w-bg-overlay));
+    border-color: rgb(var(--w-border-regular));
+    box-shadow: var(--w-shadow-button);
   }
 
   // 悬浮时填充主色渐变,与节点强调色块同一套语言
@@ -551,8 +551,8 @@ function resolveTreeElement(value: TreeOrgExpose['treeRef']) {
     margin-bottom: 8px;
     line-height: 28px;
     color: rgb(var(--w-text-secondary));
-    background-color: rgb(var(--w-bg-elevated));
-    border: 1px solid rgb(var(--w-border-color-2));
+    background-color: rgb(var(--w-bg-overlay));
+    border: 1px solid rgb(var(--w-border-regular));
     border-radius: 8px;
   }
 

@@ -1,6 +1,6 @@
 <template>
   <div
-    class="page-enter page-enter--2 absolute right-16 top-16 z-10 flex items-center gap-2 rounded-8 border-1 border-color-2 border-solid bg-container px-6 py-4 shadow-all-sm sm:right-20 sm:top-20"
+    class="absolute right-16 top-16 page-enter page-enter--2 z-10 flex items-center gap-2 rounded-8 border border-secondary bg-container px-6 py-4 shadow-all-sm sm:right-20 sm:top-20"
   >
     <Layout @change="changePlacement" />
     <Theme />

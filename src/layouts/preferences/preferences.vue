@@ -10,7 +10,7 @@
     <template #title>
       <div class="min-w-0 flex items-center gap-10">
         <span
-          class="size-36 shrink-0 flex items-center justify-center rounded-8 border-1 border-primary/15 border-solid bg-primary/10 text-primary transition-colors duration-motion-base"
+          class="size-36 shrink-0 flex items-center justify-center rounded-8 b-1-primary/15 bg-primary/10 text-primary transition-colors duration-motion-base"
         >
           <Icon name="i-lucide:settings-2" :size="19" />
         </span>
@@ -18,7 +18,7 @@
           <div class="flex items-center gap-8">
             <span class="truncate text-base text-main font-700">项目设置</span>
             <span
-              class="inline-flex items-center gap-5 whitespace-nowrap rounded-full bg-success-tint px-7 py-3 text-10px text-success font-600"
+              class="inline-flex items-center gap-5 whitespace-nowrap rounded-full bg-success/10 px-7 py-3 text-10px text-success font-600"
             >
               <i
                 class="size-6 rounded-full bg-success shadow-[0_0_0_3px_rgb(var(--w-color-success)_/_12%)]"
@@ -104,7 +104,7 @@ const importInput = useTemplateRef<HTMLInputElement>('importInput')
 const drawerStyles = {
   header: {
     padding: '16px',
-    borderBottom: '1px solid rgb(var(--w-border-color-1))',
+    borderBottom: '1px solid rgb(var(--w-border-muted))',
     backgroundColor: 'rgb(var(--w-bg-container))',
   },
   body: {
@@ -113,7 +113,7 @@ const drawerStyles = {
   },
   footer: {
     padding: '10px 16px',
-    borderTop: '1px solid rgb(var(--w-border-color-1))',
+    borderTop: '1px solid rgb(var(--w-border-muted))',
     backgroundColor: 'rgb(var(--w-bg-container))',
   },
 }

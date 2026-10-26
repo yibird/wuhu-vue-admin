@@ -45,7 +45,7 @@
             :class="
               item.current
                 ? 'border-primary/40 bg-primary/4'
-                : 'border-color-2 bg-container'
+                : 'border-regular bg-container'
             "
           >
             <div class="flex-between-center gap-10">
@@ -95,7 +95,7 @@
         </div>
         <div
           v-else
-          class="rounded-8 bg-fill-quaternary p-20 text-center text-xs text-muted"
+          class="rounded-8 bg-secondary p-20 text-center text-xs text-muted"
         >
           还没有发布记录，点击右上角「发布」生成第一个版本
         </div>

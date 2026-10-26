@@ -3,12 +3,12 @@
     <div
       v-for="(img, index) in images"
       :key="img"
-      class="group relative size-64 overflow-hidden rounded-8 border-1 border-solid border-color-1 bg-fill-quaternary"
+      class="group relative size-64 overflow-hidden rounded-8 b-1-muted bg-secondary"
     >
       <img :src="img" alt="待发送图片" class="full object-cover" />
       <button
         type="button"
-        class="button absolute right-4 top-4 size-18 rounded-full bg-mask text-white opacity-0 transition-[opacity,colors] group-hover:opacity-100 hover:bg-mask-2"
+        class="button absolute right-4 top-4 size-18 rounded-full bg-black/30 text-white opacity-0 transition-[opacity,colors] group-hover:opacity-100 hover:bg-black/15"
         aria-label="移除待发送图片"
         @click="emits('remove', index)"
       >
@@ -19,7 +19,7 @@
     <button
       v-if="remainingCount > 0"
       type="button"
-      class="button size-64 flex-col gap-4 rounded-8 border-1 border-dashed border-color-2 bg-fill-quaternary text-secondary transition-colors hover:(border-primary bg-primary/8 text-primary)"
+      class="button size-64 flex-col gap-4 rounded-8 b-dashed-1-regular bg-secondary text-secondary transition-colors hover:(border-primary bg-primary/8 text-primary)"
       title="继续添加图片"
       aria-label="继续添加图片"
       @click="emits('add')"

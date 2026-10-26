@@ -1,9 +1,9 @@
 <template>
   <section
-    class="min-h-0 min-w-0 grid grid-rows-[auto_minmax(0,1fr)] overflow-hidden rounded-8 border-1 border-color-2 border-solid bg-page shadow-[var(--w-shadow-elevated)]"
+    class="min-h-0 min-w-0 grid grid-rows-[auto_minmax(0,1fr)] overflow-hidden rounded-8 b-1-regular bg-page shadow-overlay"
   >
     <header
-      class="flex items-center justify-between gap-12 border-b border-color-2 bg-container px-14 py-11"
+      class="flex items-center justify-between gap-12 border-b border-regular bg-container px-14 py-11"
     >
       <div class="min-w-0">
         <div class="flex items-center gap-8">
@@ -22,7 +22,7 @@
       <div class="hidden items-center gap-7 text-11px text-secondary xl:flex">
         <div
           v-if="activeSelectedCount > 1"
-          class="mr-4 flex items-center gap-6 rounded-7 border-1 border-primary/25 border-solid bg-primary/8 px-7 py-4 text-primary"
+          class="mr-4 flex items-center gap-6 rounded-7 b-1-primary/25 bg-primary/8 px-7 py-4 text-primary"
         >
           <span>{{ activeSelectedCount }} 已选</span>
           <a-button
@@ -48,7 +48,7 @@
           >电子签 {{ settings.enableSignature ? 'ON' : 'OFF' }}</span
         >
         <div
-          class="ml-4 inline-flex items-center overflow-hidden rounded-6 border-1 border-color-2 border-solid bg-container"
+          class="ml-4 inline-flex items-center overflow-hidden rounded-6 b-1-regular bg-container"
         >
           <a-button
             class="border-0 rounded-none"
@@ -80,7 +80,7 @@
 
     <div
       ref="canvas"
-      class="relative min-h-0 overflow-hidden select-none bg-page outline-none [background-image:linear-gradient(90deg,rgb(var(--w-border-color-1)/55%)_1px,transparent_1px),linear-gradient(0deg,rgb(var(--w-border-color-1)/55%)_1px,transparent_1px)] [background-size:36px_36px]"
+      class="relative min-h-0 overflow-hidden select-none bg-page outline-none [background-image:linear-gradient(90deg,rgb(var(--w-border-muted)/55%)_1px,transparent_1px),linear-gradient(0deg,rgb(var(--w-border-muted)/55%)_1px,transparent_1px)] [background-size:36px_36px]"
       :data-testid="APPROVAL_WORKFLOW_SELECTORS.canvas"
       tabindex="0"
       @wheel="handleWheel"
@@ -108,12 +108,12 @@
         </div>
         <div
           v-if="selecting"
-          class="approval-selection-rect pointer-events-none absolute left-0 top-0 z-60 rounded-8 border-2 border-primary/85 border-dashed bg-primary/10 shadow-[0_0_0_1px_rgb(var(--w-color-primary)/24%),0_14px_32px_rgb(var(--w-color-primary)/12%)]"
+          class="approval-selection-rect pointer-events-none absolute left-0 top-0 z-60 rounded-8 b-dashed-2-primary/85 bg-primary/10 shadow-[0_0_0_1px_rgb(var(--w-color-primary)/24%),0_14px_32px_rgb(var(--w-color-primary)/12%)]"
           :style="selectionRect"
         >
           <span
             v-if="marqueeSelectedIds.length > 0"
-            class="approval-selection-count absolute left-8 top-8 z-1 inline-flex items-center gap-5 rounded-6 border-1 border-primary/25 border-solid bg-container/96 px-8 py-4 text-11px font-700 text-primary shadow-[var(--w-shadow-card)] backdrop-blur-8"
+            class="approval-selection-count absolute left-8 top-8 z-1 inline-flex items-center gap-5 rounded-6 b-1-primary/25 bg-container/96 px-8 py-4 text-11px font-700 text-primary shadow-card backdrop-blur-8"
           >
             <Icon name="i-lucide:mouse-pointer-2" :size="12" />
             已框选 {{ marqueeSelectedIds.length }} 个

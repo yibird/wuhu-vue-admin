@@ -1,10 +1,7 @@
 <template>
-  <div
-    v-if="pending"
-    class="rounded-12 border-1 border-color-2 border-solid bg-container p-14"
-  >
-    <div class="h-16 w-120 animate-pulse rounded-4 bg-fill-tertiary" />
-    <div class="mt-10 h-160 w-full animate-pulse rounded-8 bg-fill-tertiary" />
+  <div v-if="pending" class="rounded-12 b-1-regular bg-container p-14">
+    <div class="h-16 w-120 animate-pulse rounded-4 bg-muted" />
+    <div class="mt-10 h-160 w-full animate-pulse rounded-8 bg-muted" />
   </div>
 
   <JSONUIProvider
@@ -15,10 +12,7 @@
     <Renderer :spec="result.spec" :registry="registry" />
   </JSONUIProvider>
 
-  <div
-    v-else
-    class="rounded-12 border-1 border-color-2 border-solid bg-container overflow-hidden"
-  >
+  <div v-else class="rounded-12 b-1-regular bg-container overflow-hidden">
     <div class="px-12 py-7 text-12px text-error">
       {{ result.error || '视图内容为空' }}
     </div>

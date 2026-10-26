@@ -1,10 +1,8 @@
 <template>
   <div
-    class="h-full min-h-0 flex flex-col overflow-hidden rounded-6 border-1 border-color-2 border-solid bg-container"
+    class="h-full min-h-0 flex flex-col overflow-hidden rounded-6 b-1-regular bg-container"
   >
-    <div
-      class="flex items-center justify-between border-b-1 border-b-solid border-color-1 px-14 py-12"
-    >
+    <div class="flex items-center justify-between b-b-1-muted px-14 py-12">
       <span class="text-sm text-main font-700">任务列表</span>
       <a-tag>{{ items.length }} 项</a-tag>
     </div>
@@ -18,7 +16,7 @@
         :class="
           item.id === activeTaskId
             ? 'border-primary bg-primary/10'
-            : 'border-color-2 bg-container hover:(border-primary bg-hover)'
+            : 'border-regular bg-container hover:(border-primary bg-hover)'
         "
         @click="emits('select', item.id)"
       >

@@ -1,8 +1,8 @@
 .layout-tabs {
   --w-tabs-height: 40px;
   --w-tabs-bg: #fff;
-  --w-tabs-border-color: rgb(var(--w-border-color-secondary));
-  --w-tabs-shadow: var(--w-shadow-elevated);
+  --w-tabs-border-color: rgb(var(--w-border-secondary));
+  --w-tabs-shadow: var(--w-shadow-overlay);
 
   // control style
   --w-tabs-control-size: 40px;
@@ -15,7 +15,7 @@
   --w-tabs-item-hover-bg-color: #f5f5f5c7;
   --w-tabs-item-hover-active-color: #f1f1f1;
   --w-tabs-item-color: rgb(var(--w-text-main));
-  --w-tabs-item-border-color: rgb(var(--w-border-color-secondary));
+  --w-tabs-item-border-color: rgb(var(--w-border-secondary));
   --w-tabs-item-active-bg-color: #fff;
   --w-tabs-item-active-line-color: rgb(var(--w-text-main));
   --w-tabs-item-close-color: rgb(var(--w-text-placeholder));
@@ -23,7 +23,7 @@
   --w-tabs-item-title-max-width: 200px;
   --w-tabs-control-bg-color: var(--w-tabs-bg);
   --w-tabs-control-color: rgb(var(--w-text-main));
-  --w-tabs-control-border-color: rgb(var(--w-border-color-secondary));
+  --w-tabs-control-border-color: rgb(var(--w-border-secondary));
   --w-tabs-control-hover-color: rgb(var(--w-text-main));
   --w-tabs-control-hover-bg-color: rgb(245 245 245 / 76%);
   --w-tabs-control-active-color: rgb(var(--w-color-primary));
@@ -51,8 +51,8 @@
     --w-tabs-card-item-radius: 4px;
     --w-tabs-card-active-dot-size: 8px;
     --w-tabs-card-active-dot-left: 10px;
-    --w-tabs-card-shadow: var(--w-shadow-elevated);
-    --w-tabs-card-control-shadow: 0 1px 4px var(--w-shadow-color);
+    --w-tabs-card-shadow: var(--w-shadow-overlay);
+    --w-tabs-card-control-shadow: 0 1px 4px rgb(15 23 42 / 20%);
   }
 
   &-google {
@@ -79,15 +79,15 @@
     --w-tabs-google-divider-height: 18px;
     --w-tabs-google-divider-offset-y: 7px;
     --w-tabs-google-bg: #fefefe;
-    --w-tabs-google-item-hover-bg: rgb(var(--w-bg-hover-4));
+    --w-tabs-google-item-hover-bg: rgb(var(--w-bg-hover));
     --w-tabs-google-item-active-bg: color-mix(
       in srgb,
       rgb(var(--w-color-primary)) 10%,
       transparent
     );
-    --w-tabs-google-divider-color: rgb(var(--w-border-color-3));
-    --w-tabs-google-control-hover-bg: var(--w-bg-hover-3);
-    --w-tabs-google-control-active-bg: var(--w-bg-active-1);
+    --w-tabs-google-divider-color: rgb(var(--w-border-main));
+    --w-tabs-google-control-hover-bg: var(--w-bg-hover);
+    --w-tabs-google-control-active-bg: var(--w-bg-active);
     // 圆弧
     --w-tabs-google-arc-size: 10px;
   }
@@ -115,11 +115,11 @@
 
     &-google {
       --w-tabs-google-bg: rgb(8 13 24);
-      --w-tabs-google-item-hover-bg: rgb(var(--w-bg-hover-1));
-      --w-tabs-google-item-active-bg: rgb(var(--w-bg-hover-1));
-      --w-tabs-google-divider-color: rgb(var(--w-border-color-3));
-      --w-tabs-google-control-hover-bg: rgb(var(--w-bg-hover-1));
-      --w-tabs-google-control-active-bg: rgb(var(--w-bg-active-1));
+      --w-tabs-google-item-hover-bg: rgb(var(--w-bg-hover));
+      --w-tabs-google-item-active-bg: rgb(var(--w-bg-hover));
+      --w-tabs-google-divider-color: rgb(var(--w-border-main));
+      --w-tabs-google-control-hover-bg: rgb(var(--w-bg-hover));
+      --w-tabs-google-control-active-bg: rgb(var(--w-bg-active));
     }
   }
 }

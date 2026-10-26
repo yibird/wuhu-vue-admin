@@ -1,6 +1,6 @@
 <template>
   <div
-    class="h-120 flex flex-col items-center justify-center gap-8 rounded-6 border-1 border-success border-solid bg-success/5"
+    class="h-120 flex flex-col items-center justify-center gap-8 rounded-6 b-1-success bg-success/5"
   >
     <Icon name="i-lucide:circle-check" :size="24" class="text-success" />
     <span class="text-sm text-main">{{ status }}</span>

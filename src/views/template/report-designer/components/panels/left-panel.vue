@@ -1,6 +1,6 @@
 <template>
   <aside
-    class="report-left-panel min-h-0 flex w-280 flex-none flex-col border-r-1 border-color-2 border-r-solid bg-container"
+    class="report-left-panel min-h-0 flex w-280 flex-none flex-col b-r-1-regular bg-container"
   >
     <div class="flex-none p-10">
       <a-segmented v-model:value="activeTab" block :options="tabOptions" />
@@ -25,11 +25,9 @@
           <section
             v-for="dataset in datasets"
             :key="dataset.id"
-            class="rounded-7 border-1 border-color-2 border-solid bg-container"
+            class="rounded-7 b-1-regular bg-container"
           >
-            <header
-              class="flex items-center gap-6 border-b-1 border-color-1 border-b-solid px-8 py-6"
-            >
+            <header class="flex items-center gap-6 b-b-1-muted px-8 py-6">
               <Icon name="i-lucide:database" :size="14" class="text-primary" />
               <span class="min-w-0 flex-1 truncate text-xs text-main font-600">
                 {{ dataset.name }}
@@ -110,7 +108,7 @@
             :class="
               region.id === selectedRegionId
                 ? 'border-primary/40 bg-primary/6'
-                : 'border-color-2 bg-container-secondary hover:bg-hover'
+                : 'border-regular bg-secondary hover:bg-hover'
             "
             @click="emits('select-region', region.id)"
             @keydown.enter.prevent="emits('select-region', region.id)"
@@ -162,7 +160,7 @@
           <div
             v-for="parameter in parameters"
             :key="parameter.key"
-            class="rounded-7 border-1 border-color-2 border-solid p-8"
+            class="rounded-7 b-1-regular p-8"
           >
             <div class="flex items-center gap-6">
               <code class="min-w-0 flex-1 truncate text-11px text-primary">

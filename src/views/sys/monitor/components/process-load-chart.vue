@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="mt-12 overflow-hidden rounded-8 border-1 border-solid border-color-2 bg-container-secondary p-12"
-  >
+  <div class="mt-12 overflow-hidden rounded-8 b-1-regular bg-secondary p-12">
     <div class="flex flex-wrap items-start justify-between gap-10">
       <div class="min-w-0">
         <div class="text-sm text-main font-700">进程负载对比</div>
@@ -68,7 +66,7 @@ const chartOption = computed<EChartsCoreOption>(() => {
       splitLine: {
         lineStyle: {
           color: getCssRgbVarAlpha(
-            '--w-border-color-2',
+            '--w-border-regular',
             0.62,
             'rgba(148, 163, 184, 0.18)'
           ),

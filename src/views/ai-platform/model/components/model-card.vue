@@ -1,6 +1,6 @@
 <template>
   <article
-    class="group min-w-0 overflow-hidden rounded-8 border-1 border-color-2 border-solid bg-container shadow-[var(--w-shadow-card)] transition-[border-color,box-shadow,transform] duration-motion-base hover:-translate-y-2 hover:border-primary hover:shadow-[var(--w-shadow-elevated)] motion-reduce:transform-none"
+    class="group min-w-0 overflow-hidden rounded-8 b-1-regular bg-container shadow-card transition-[border-color,box-shadow,transform] duration-motion-base hover:-translate-y-2 hover:border-primary hover:shadow-overlay motion-reduce:transform-none"
   >
     <header class="flex min-w-0 items-start gap-10 p-14 pb-12">
       <span
@@ -97,16 +97,14 @@
         <span
           v-for="capability in props.item.capabilities"
           :key="capability"
-          class="rounded-5 bg-fill-tertiary px-7 py-3 text-xs text-secondary"
+          class="rounded-5 bg-muted px-7 py-3 text-xs text-secondary"
         >
           {{ getCapabilityLabel(capability) }}
         </span>
       </div>
     </div>
 
-    <footer
-      class="flex min-w-0 items-center gap-8 border-t-1 border-color-2 border-t-solid px-14 py-10"
-    >
+    <footer class="flex min-w-0 items-center gap-8 b-t-1-regular px-14 py-10">
       <span
         class="inline-flex min-w-0 flex-1 items-center gap-6 text-xs"
         :class="props.item.apiKeyConfigured ? 'text-success' : 'text-warning'"
@@ -178,7 +176,7 @@ const statusMeta = computed(() => {
     },
     offline: {
       color: 'default',
-      class: 'bg-fill-tertiary text-secondary',
+      class: 'bg-muted text-secondary',
       icon: 'i-lucide:circle-pause',
     },
   } as const

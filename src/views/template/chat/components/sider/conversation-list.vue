@@ -30,7 +30,7 @@
                   >
                     <button
                       type="button"
-                      class="group relative block-button p-10 press-spring transition-all hover:translate-x-1"
+                      class="group relative block-button p-10 motion-press transition-all hover:translate-x-1"
                       :class="
                         activeConversationId === conv.id
                           ? 'bg-transparent'
@@ -67,7 +67,7 @@
                           />
                           <span
                             v-if="conv.userInfo?.status"
-                            class="absolute bottom-0 right-0 size-10 rounded-full border-2 border-container"
+                            class="absolute bottom-0 right-0 size-10 rounded-full b-2-[var(--w-bg-container)]"
                             :class="{
                               'bg-success': conv.userInfo.status === 'online',
                               'bg-fill': conv.userInfo.status === 'offline',
@@ -81,7 +81,7 @@
                           <div class="min-w-0 flex items-center gap-6">
                             <span
                               v-if="conv.mentioned"
-                              class="rounded-4 bg-error-tint px-5 py-1 text-10px text-error leading-14px"
+                              class="rounded-4 bg-error/10 px-5 py-1 text-10px text-error leading-14px"
                             >
                               @我
                             </span>

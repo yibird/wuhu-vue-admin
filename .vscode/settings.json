@@ -7,11 +7,9 @@
   "editor.codeActionsOnSave": {
     "source.fixAll.oxc": "explicit"
   },
-  "json.format.enable": false,
-  "typescript.format.enable": false,
-  "javascript.format.enable": false,
-  // "js/ts.tsdk.path": "node_modules/typescript/lib",
-  // "js/ts.tsdk.promptToUseWorkspaceVersion": true,
+  "json.format.enable": true,
+  "typescript.format.enable": true,
+  "javascript.format.enable": true,
   "[javascript]": {
     "editor.defaultFormatter": "oxc.oxc-vscode"
   },

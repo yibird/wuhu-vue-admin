@@ -11,7 +11,7 @@
     <template #title>
       <div class="flex items-center gap-8">
         <span
-          class="size-30 flex items-center justify-center rounded-6 bg-primary-tint text-primary"
+          class="size-30 flex items-center justify-center rounded-6 bg-primary/10 text-primary"
         >
           <Icon name="i-lucide:bell-ring" :size="16" />
         </span>
@@ -25,7 +25,7 @@
       :class="fullscreen ? 'h-[calc(100vh-132px)]' : 'h-[min(68vh,620px)]'"
     >
       <div
-        class="grid shrink-0 gap-10 border-b-1 border-b-solid border-color-1 pb-12 md:grid-cols-[240px_minmax(0,1fr)_auto]"
+        class="grid shrink-0 gap-10 b-b-1-muted pb-12 md:grid-cols-[240px_minmax(0,1fr)_auto]"
       >
         <a-segmented
           v-model:value="category"
@@ -70,7 +70,7 @@
       </div>
 
       <div
-        class="shrink-0 flex items-center justify-between border-b-1 border-b-solid border-color-1 px-2 py-10 text-xs"
+        class="shrink-0 flex items-center justify-between b-b-1-muted px-2 py-10 text-xs"
       >
         <span class="text-secondary">
           共 {{ filteredNotifications.length }} 条通知
@@ -98,7 +98,7 @@
         <template #default="{ item: notice }">
           <div class="px-4 py-4">
             <article
-              class="flex gap-12 rounded-6 border-1 border-color-1 border-solid bg-container p-12 transition-[border-color,background-color,box-shadow] duration-motion-base hover:(border-primary bg-hover shadow-all-sm)"
+              class="flex gap-12 rounded-6 b-1-muted bg-container p-12 transition-[border-color,background-color,box-shadow] duration-motion-base hover:(border-primary bg-hover shadow-all-sm)"
             >
               <a-badge dot :count="notice.unread ? 1 : 0">
                 <a-avatar

@@ -4,10 +4,10 @@
       class="h-full min-h-full w-full p-16 md:p-20 overflow-x-hidden overflow-y-auto"
     >
       <section
-        class="mx-auto max-w-1280 rounded-8 border-1 border-color-1 border-solid bg-container p-16 shadow-all-sm md:p-20"
+        class="mx-auto max-w-1280 rounded-8 b-1-muted bg-container p-16 shadow-all-sm md:p-20"
       >
         <header
-          class="mb-16 flex flex-wrap items-start justify-between gap-12 border-b-1 border-color-1 border-b-solid pb-14"
+          class="mb-16 flex flex-wrap items-start justify-between gap-12 b-b-1-muted pb-14"
         >
           <div class="min-w-0">
             <div class="mb-8 flex items-center gap-8">
@@ -26,9 +26,7 @@
         </header>
 
         <div class="grid gap-14 lg:grid-cols-2">
-          <article
-            class="rounded-8 border-1 border-color-1 border-solid bg-fill-1 p-16"
-          >
+          <article class="rounded-8 b-1-muted bg-secondary p-16">
             <div class="flex items-start justify-between gap-12">
               <div>
                 <h2 class="m-0 text-lg text-main font-600">基础用法</h2>
@@ -55,9 +53,7 @@
             </Modal>
           </article>
 
-          <article
-            class="rounded-8 border-1 border-color-1 border-solid bg-fill-1 p-16"
-          >
+          <article class="rounded-8 b-1-muted bg-secondary p-16">
             <div class="flex items-start justify-between gap-12">
               <div>
                 <h2 class="m-0 text-lg text-main font-600">增强交互</h2>
@@ -110,9 +106,7 @@
             </Modal>
           </article>
 
-          <article
-            class="rounded-8 border-1 border-color-1 border-solid bg-fill-1 p-16 lg:col-span-2"
-          >
+          <article class="rounded-8 b-1-muted bg-secondary p-16 lg:col-span-2">
             <div class="flex flex-wrap items-start justify-between gap-12">
               <div>
                 <h2 class="m-0 text-lg text-main font-600">受控全屏状态</h2>

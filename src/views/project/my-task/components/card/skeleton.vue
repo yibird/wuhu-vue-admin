@@ -21,7 +21,7 @@
             <div
               v-for="item in group === 4 ? 2 : 3"
               :key="item"
-              class="min-h-176 p-10 rounded-6 border-1 border-color-muted border-solid"
+              class="min-h-176 p-10 rounded-6 b-1-muted"
             >
               <div class="flex justify-between gap-8">
                 <a-skeleton-input active size="small" class="!w-136" />

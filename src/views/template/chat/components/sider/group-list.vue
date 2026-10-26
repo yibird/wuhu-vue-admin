@@ -23,7 +23,7 @@
             <div>
               <button
                 type="button"
-                class="group block-button p-10 cursor-pointer press-spring transition-[background-color,box-shadow,transform] duration-motion-base ease-motion-enter hover:(translate-x-1 bg-hover shadow-all-sm) active:scale-99 focus-visible:(outline-none bg-hover shadow-[0_0_0_2px_rgb(var(--w-color-primary)/24%)]) motion-reduce:(transform-none transition-none)"
+                class="group block-button p-10 cursor-pointer motion-press transition-[background-color,box-shadow,transform] duration-motion-base ease-motion-enter hover:(translate-x-1 bg-hover shadow-all-sm) active:scale-99 focus-visible:(outline-none bg-hover shadow-[0_0_0_2px_rgb(var(--w-color-primary)/24%)]) motion-reduce:(transform-none transition-none)"
                 :aria-label="`打开群聊${group.title}`"
                 @click="handleSelect(group)"
               >
@@ -37,7 +37,7 @@
                     />
                     <span
                       v-if="group.groupInfo?.memberCount"
-                      class="absolute -bottom-4 -right-4 rounded-full bg-fill-quaternary px-6 py-2 text-xs text-secondary"
+                      class="absolute -bottom-4 -right-4 rounded-full bg-secondary px-6 py-2 text-xs text-secondary"
                     >
                       {{ group.groupInfo.memberCount }}人
                     </span>

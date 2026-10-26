@@ -13,11 +13,11 @@
       <div
         v-for="row in 7"
         :key="row"
-        class="h-48 flex items-center gap-12 border-b-1 border-color-2 border-b-solid"
+        class="h-48 flex items-center gap-12 b-b-1-regular"
       >
         <a-skeleton-input active size="small" class="!w-120" />
         <div
-          class="h-16 rounded-4 bg-fill-tertiary"
+          class="h-16 rounded-4 bg-muted"
           :style="{ width: `${28 + row * 7}%` }"
         />
       </div>

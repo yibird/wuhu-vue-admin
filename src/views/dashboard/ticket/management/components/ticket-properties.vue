@@ -1,17 +1,15 @@
 <template>
   <aside
-    class="min-h-0 flex flex-col border-l-1 border-color-2 border-l-solid bg-container max-xl:border-l-0 max-xl:border-t-1 max-xl:border-t-solid"
+    class="min-h-0 flex flex-col b-l-1-regular bg-container max-xl:border-l-0 max-xl:border-t-1 max-xl:border-t-solid"
   >
-    <header
-      class="flex-none border-b-1 border-color-2 border-b-solid px-12 py-11"
-    >
+    <header class="flex-none b-b-1-regular px-12 py-11">
       <h3 class="mb-0 text-sm text-main font-700">处理属性</h3>
     </header>
 
     <a-empty v-if="!ticket" class="my-auto" description="暂无工单属性" />
 
     <div v-else class="min-h-0 flex-1 overflow-y-auto">
-      <section class="border-b-1 border-color-2 border-b-solid px-12 py-12">
+      <section class="b-b-1-regular px-12 py-12">
         <div class="flex items-center justify-between gap-8">
           <span class="text-xs text-secondary">当前状态</span>
           <a-tag
@@ -34,10 +32,7 @@
         <div class="mt-7 text-right text-xs text-secondary">
           {{ slaStatusMeta[ticket.slaStatus].label }}
         </div>
-        <div
-          v-if="ticket.waitingReason"
-          class="mt-9 border-t-1 border-color-2 border-t-solid pt-8"
-        >
+        <div v-if="ticket.waitingReason" class="mt-9 b-t-1-regular pt-8">
           <div class="text-xs text-secondary">当前等待原因</div>
           <p class="mb-0 mt-4 text-xs text-main leading-5">
             {{ ticket.waitingReason }}
@@ -45,7 +40,7 @@
         </div>
       </section>
 
-      <section class="border-b-1 border-color-2 border-b-solid px-12 py-12">
+      <section class="b-b-1-regular px-12 py-12">
         <div class="mb-9 flex items-center justify-between gap-8">
           <h4 class="mb-0 text-xs text-main font-700">分配</h4>
           <a-button
@@ -81,7 +76,7 @@
         </a-button>
       </section>
 
-      <section class="border-b-1 border-color-2 border-b-solid px-12 py-12">
+      <section class="b-b-1-regular px-12 py-12">
         <h4 class="mb-8 text-xs text-main font-700">优先级</h4>
         <a-select
           :value="ticket.priority"
@@ -102,7 +97,7 @@
         </a-select>
       </section>
 
-      <section class="border-b-1 border-color-2 border-b-solid px-12 py-12">
+      <section class="b-b-1-regular px-12 py-12">
         <h4 class="mb-9 text-xs text-main font-700">处理时间</h4>
         <dl
           class="mb-0 grid grid-cols-[76px_minmax(0,1fr)] gap-x-8 gap-y-7 text-xs"
@@ -168,7 +163,7 @@
             转为等待用户
           </a-button>
 
-          <div class="my-12 border-t-1 border-color-2 border-t-solid" />
+          <div class="my-12 b-t-1-regular" />
 
           <label class="mb-4 block text-xs text-secondary">解决原因</label>
           <a-select

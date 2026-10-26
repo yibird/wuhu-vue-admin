@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="h-60 flex items-center justify-between gap-10 border-b-1 border-b-solid border-color-1 px-10"
-  >
+  <div class="h-60 flex items-center justify-between gap-10 b-b-1-muted px-10">
     <div class="min-w-0 flex flex-1 items-center gap-8">
       <a-input
         v-model:value="searchValue"
@@ -19,7 +17,7 @@
       <button
         v-if="showGlobalSearch"
         type="button"
-        class="button size-34 shrink-0 rounded-6 bg-fill-quaternary text-secondary transition-colors hover:(bg-hover text-primary)"
+        class="button size-34 shrink-0 rounded-6 bg-secondary text-secondary transition-colors hover:(bg-hover text-primary)"
         title="全局搜索"
         aria-label="打开全局搜索"
         @click="emits('openGlobalSearch')"
@@ -40,7 +38,7 @@
         :class="
           menuOpen
             ? 'bg-primary/10 text-primary'
-            : 'bg-fill-quaternary text-secondary'
+            : 'bg-secondary text-secondary'
         "
         title="创建或添加"
         aria-label="打开创建菜单"

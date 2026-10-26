@@ -1,8 +1,8 @@
 <template>
   <section
-    class="min-h-0 min-w-0 grid grid-rows-[auto_minmax(0,1fr)_auto] overflow-hidden rounded-8 border-1 border-color-2 border-solid bg-container shadow-[var(--w-shadow-card)]"
+    class="min-h-0 min-w-0 grid grid-rows-[auto_minmax(0,1fr)_auto] overflow-hidden rounded-8 b-1-regular bg-container shadow-card"
   >
-    <header class="border-b border-color-2 px-12 py-10">
+    <header class="border-b border-regular px-12 py-10">
       <div class="flex items-center justify-between gap-8">
         <div class="min-w-0 flex items-center gap-7">
           <Icon name="i-lucide:sparkles" :size="17" class="text-primary" />
@@ -58,10 +58,10 @@
       </div>
     </div>
 
-    <footer class="border-t border-color-2 p-10">
+    <footer class="border-t border-regular p-10">
       <textarea
         v-model="prompt"
-        class="h-68 w-full resize-none rounded-7 border-1 border-color-2 border-solid bg-fill px-10 py-8 text-13px text-primary outline-none focus:border-primary"
+        class="h-68 w-full resize-none rounded-7 b-1-regular bg-fill px-10 py-8 text-13px text-primary outline-none focus:border-primary"
         placeholder="例如：生成一个销售经营大屏，包含 GMV、区域排行、渠道占比和趋势分析"
         @keydown.ctrl.enter.prevent="emits('generate')"
         @keydown.meta.enter.prevent="emits('generate')"

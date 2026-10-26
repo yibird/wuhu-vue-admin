@@ -1,7 +1,7 @@
 <template>
   <div
     class="relative min-h-0 overflow-hidden rounded-8"
-    :class="{ 'border-1 border-color-2 border-solid': props.bordered }"
+    :class="{ 'border-1 border-regular border-solid': props.bordered }"
     :style="{ height: editorHeight }"
   >
     <a-tooltip v-if="props.showCopy" title="复制 JSON">

@@ -9,7 +9,7 @@
     <template #title>
       <div class="min-w-0 flex items-center gap-10">
         <span
-          class="size-32 flex flex-none items-center justify-center rounded-8 bg-primary-tint text-primary"
+          class="size-32 flex flex-none items-center justify-center rounded-8 bg-primary/10 text-primary"
         >
           <Icon name="i-lucide:scroll-text" :size="17" />
         </span>

@@ -51,7 +51,7 @@
             :class="
               isSelected(item.id)
                 ? 'border-primary/35 bg-primary/6'
-                : 'border-color-2 bg-container'
+                : 'border-regular bg-container'
             "
           >
             <span

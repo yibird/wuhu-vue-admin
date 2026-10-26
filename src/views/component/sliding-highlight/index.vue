@@ -4,10 +4,10 @@
       class="h-full min-h-full w-full p-16 md:p-20 overflow-x-hidden overflow-y-auto"
     >
       <section
-        class="mx-auto max-w-1280 rounded-8 border-1 border-color-1 border-solid bg-container p-16 shadow-all-sm md:p-20"
+        class="mx-auto max-w-1280 rounded-8 b-1-muted bg-container p-16 shadow-all-sm md:p-20"
       >
         <header
-          class="mb-16 flex flex-wrap items-start justify-between gap-12 border-b-1 border-color-1 border-b-solid pb-14"
+          class="mb-16 flex flex-wrap items-start justify-between gap-12 b-b-1-muted pb-14"
         >
           <div class="min-w-0">
             <h1 class="m-0 text-xl text-main font-600">SlidingHighlight</h1>
@@ -19,7 +19,7 @@
         </header>
 
         <div class="mb-24 grid gap-10 sm:grid-cols-3">
-          <div class="rounded-6 bg-fill-1 p-14">
+          <div class="rounded-6 bg-secondary p-14">
             <p class="m-0 flex items-center gap-7 text-sm text-main font-500">
               <Icon name="i-lucide:gift" :size="15" class="text-primary" />
               一个组件包裹
@@ -28,7 +28,7 @@
               包裹子项即可，无需额外状态与事件绑定。
             </p>
           </div>
-          <div class="rounded-6 bg-fill-1 p-14">
+          <div class="rounded-6 bg-secondary p-14">
             <p class="m-0 flex items-center gap-7 text-sm text-main font-500">
               <Icon name="i-lucide:list" :size="15" class="text-primary" />
               语义标签可切换
@@ -37,7 +37,7 @@
               as 支持 div / ul，列表场景自动渲染为合法结构。
             </p>
           </div>
-          <div class="rounded-6 bg-fill-1 p-14">
+          <div class="rounded-6 bg-secondary p-14">
             <p class="m-0 flex items-center gap-7 text-sm text-main font-500">
               <Icon name="i-lucide:palette" :size="15" class="text-primary" />
               样式可定制
@@ -60,7 +60,7 @@
                 </p>
               </div>
               <code
-                class="rounded-4 bg-fill-2 px-7 py-4 text-xs text-secondary"
+                class="rounded-4 bg-secondary px-7 py-4 text-xs text-secondary"
               >
                 as="div"
               </code>
@@ -69,7 +69,7 @@
             <SlidingHighlight
               :inset="8"
               pill-class-name="rounded-6 bg-primary/10"
-              class="flex flex-col gap-2 rounded-8 border-1 border-color-1 border-solid bg-container p-8"
+              class="flex flex-col gap-2 rounded-8 b-1-muted bg-container p-8"
             >
               <button
                 v-for="item in navItems"
@@ -100,7 +100,7 @@
                 </p>
               </div>
               <code
-                class="rounded-4 bg-fill-2 px-7 py-4 text-xs text-secondary"
+                class="rounded-4 bg-secondary px-7 py-4 text-xs text-secondary"
               >
                 as="ul"
               </code>
@@ -110,7 +110,7 @@
               as="ul"
               :inset="8"
               pill-class-name="rounded-6 bg-primary/10"
-              class="m-0 flex list-none flex-col gap-2 rounded-8 border-1 border-color-1 border-solid bg-container p-8"
+              class="m-0 flex list-none flex-col gap-2 rounded-8 b-1-muted bg-container p-8"
             >
               <li v-for="item in navItems.slice(0, 5)" :key="item.label">
                 <button
@@ -124,7 +124,7 @@
             </SlidingHighlight>
 
             <p
-              class="mb-0 mt-12 rounded-6 border-1 border-color-1 border-solid bg-fill-1 p-14 text-sm leading-22 text-secondary"
+              class="mb-0 mt-12 rounded-6 b-1-muted bg-secondary p-14 text-sm leading-22 text-secondary"
             >
               高亮块只表达悬浮位置，选中态请由业务自行维护（例如 a-tabs 或自定义
               active 样式）。
@@ -132,7 +132,7 @@
           </article>
         </div>
 
-        <article class="mt-24 border-t-1 border-color-1 border-t-solid pt-24">
+        <article class="mt-24 b-t-1-muted pt-24">
           <div class="mb-12 flex flex-wrap items-start justify-between gap-10">
             <div>
               <h2 class="m-0 text-lg text-main font-600">换行与自定义</h2>
@@ -141,16 +141,18 @@
                 pill-container-class-name 可覆盖定位层样式。
               </p>
             </div>
-            <code class="rounded-4 bg-fill-2 px-7 py-4 text-xs text-secondary">
+            <code
+              class="rounded-4 bg-secondary px-7 py-4 text-xs text-secondary"
+            >
               inset / pill-class-name
             </code>
           </div>
 
           <SlidingHighlight
             :inset="4"
-            pill-class-name="rounded-full bg-fill-4"
+            pill-class-name="rounded-full bg-muted"
             pill-container-class-name="rounded-full"
-            class="flex flex-wrap gap-8 rounded-8 border-1 border-color-1 border-solid bg-container p-12"
+            class="flex flex-wrap gap-8 rounded-8 b-1-muted bg-container p-12"
           >
             <button
               v-for="tag in tagItems"

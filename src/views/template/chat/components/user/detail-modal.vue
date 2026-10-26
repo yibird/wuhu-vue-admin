@@ -9,13 +9,11 @@
     @cancel="emits('close')"
   >
     <div v-if="user" class="flex flex-col gap-18 py-4">
-      <div
-        class="flex flex-wrap items-center gap-16 border-b-1 border-b-solid border-color-1 pb-16"
-      >
+      <div class="flex flex-wrap items-center gap-16 b-b-1-muted pb-16">
         <div class="relative size-68 shrink-0">
           <a-avatar :src="user.avatar || DEFAULT_AVATAR" :size="68" round />
           <span
-            class="absolute bottom-2 right-2 size-13 rounded-full border-2 border-container"
+            class="absolute bottom-2 right-2 size-13 rounded-full b-2-[var(--w-bg-container)]"
             :class="statusClass"
           />
         </div>
@@ -56,7 +54,7 @@
         <div
           v-for="item in summaryItems"
           :key="item.label"
-          class="min-w-0 rounded-8 border-1 border-color-1 border-solid bg-fill-quaternary px-12 py-10"
+          class="min-w-0 rounded-8 b-1-muted bg-secondary px-12 py-10"
         >
           <div class="flex items-center gap-6 text-xs text-secondary">
             <Icon :name="item.icon" :size="13" />
@@ -115,7 +113,7 @@
           <div
             v-for="item in profileItems"
             :key="item.label"
-            class="flex gap-10 rounded-8 bg-fill-quaternary p-12"
+            class="flex gap-10 rounded-8 bg-secondary p-12"
           >
             <Icon :name="item.icon" :size="16" class="mt-1 text-secondary" />
             <div class="min-w-0 flex-1">
@@ -132,13 +130,13 @@
 
       <div
         v-if="!contactItems.length && !workItems.length && !profileItems.length"
-        class="rounded-8 bg-fill-quaternary px-14 py-18 text-center text-sm text-regular"
+        class="rounded-8 bg-secondary px-14 py-18 text-center text-sm text-regular"
       >
         暂无更多用户资料
       </div>
 
       <div
-        class="grid grid-cols-[88px_minmax(0,1fr)] gap-x-12 gap-y-12 rounded-8 border-1 border-color-1 border-solid bg-fill-quaternary p-14 text-sm"
+        class="grid grid-cols-[88px_minmax(0,1fr)] gap-x-12 gap-y-12 rounded-8 b-1-muted bg-secondary p-14 text-sm"
       >
         <span class="text-secondary">用户名称</span>
         <span class="truncate text-main">{{ displayName }}</span>
@@ -317,7 +315,7 @@ function compactItems(items: DetailItem[]) {
   align-items: flex-start;
   min-width: 0;
   padding: 12px;
-  background-color: rgb(var(--w-bg-fill-4));
+  background-color: rgb(var(--w-bg-muted));
   border-radius: 8px;
 }
 </style>

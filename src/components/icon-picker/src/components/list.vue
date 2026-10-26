@@ -19,7 +19,7 @@
           v-for="(option, columnIndex) in getRowItems(virtualRow.index)"
           :key="option.value"
           type="button"
-          class="w-icon-selector-option group relative box-border h-64 min-w-0 flex cursor-pointer flex-col items-center justify-center gap-5 rounded-6 border-1 border-color-1 border-solid bg-container px-5 text-main transition-[border-color,background-color,color,box-shadow] hover:(border-primary bg-hover) focus-visible:(border-primary outline-none ring-2 ring-primary/15) disabled:(cursor-not-allowed bg-disabled text-disabled)"
+          class="w-icon-selector-option group relative box-border h-64 min-w-0 flex cursor-pointer flex-col items-center justify-center gap-5 rounded-6 b-1-muted bg-container px-5 text-main transition-[border-color,background-color,color,box-shadow] hover:(border-primary bg-hover) focus-visible:(border-primary outline-none ring-2 ring-primary/15) disabled:(cursor-not-allowed bg-disabled text-disabled)"
           :class="{
             'w-icon-selector-option--motion': motion,
           }"
@@ -208,14 +208,14 @@ function handleViewportScroll() {
 .w-icon-selector {
   &-viewport {
     overscroll-behavior: contain;
-    scrollbar-color: rgb(var(--w-border-color-3)) transparent;
+    scrollbar-color: rgb(var(--w-border-main)) transparent;
     scrollbar-width: thin;
   }
 
   &-option {
     &[aria-selected='true'] {
       color: rgb(var(--w-color-primary));
-      background-color: rgb(var(--w-bg-primary) / 10%);
+      background-color: rgb(var(--w-color-primary) / 10%);
       border-color: rgb(var(--w-color-primary));
       box-shadow: 0 0 0 3px rgb(var(--w-color-primary) / 12%);
     }

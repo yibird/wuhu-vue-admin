@@ -1,6 +1,6 @@
 <template>
   <aside
-    class="h-full overflow-y-auto rounded-8 border-1 border-color-2 border-solid bg-container max-[1100px]:order--1"
+    class="h-full overflow-y-auto rounded-8 b-1-regular bg-container max-[1100px]:order--1"
   >
     <div
       v-if="loading"

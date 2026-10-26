@@ -2,7 +2,7 @@
   <OverviewSkeleton v-if="loading" />
   <a-border-beam v-else :duration="6" :line-width="3">
     <section
-      class="workbench-hero relative overflow-hidden rounded-4 border-1 border-color-2 border-solid bg-container transition-[border-color,box-shadow] duration-motion-base hover:(border-color-1 shadow-all-sm)"
+      class="workbench-hero relative overflow-hidden rounded-4 b-1-regular bg-container transition-[border-color,box-shadow] duration-motion-base hover:(border-muted shadow-all-sm)"
     >
       <div class="grid gap-0 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)]">
         <div class="min-w-0 p-16 sm:p-20">
@@ -46,12 +46,12 @@
         </div>
 
         <div
-          class="grid grid-cols-2 border-t-1 border-t-solid border-t-[rgb(var(--w-border-color-2))] sm:grid-cols-4 lg:grid-cols-2 lg:border-l-1 lg:border-l-solid lg:border-l-[rgb(var(--w-border-color-2))] lg:border-t-0"
+          class="grid grid-cols-2 b-t-1-[rgb(var(--w-border-regular))] sm:grid-cols-4 lg:grid-cols-2 lg:b-l-1-[rgb(var(--w-border-regular))] lg:border-t-0"
         >
           <div
             v-for="item in metrics"
             :key="item.title"
-            class="group min-w-0 border-r-1 border-r-solid border-b-1 border-b-solid border-r-[rgb(var(--w-border-color-2))] border-b-[rgb(var(--w-border-color-2))] p-14 transition-colors duration-motion-base hover:bg-hover last:border-r-0 sm:last:border-r-0 lg:nth-2:border-r-0 lg:nth-last-2:border-b-0 lg:last:border-b-0"
+            class="group min-w-0 b-r-1-[rgb(var(--w-border-regular))] b-b-1-[rgb(var(--w-border-regular))] p-14 transition-colors duration-motion-base hover:bg-hover last:border-r-0 sm:last:border-r-0 lg:nth-2:border-r-0 lg:nth-last-2:border-b-0 lg:last:border-b-0"
           >
             <div class="flex items-center justify-between gap-10">
               <span class="truncate text-sm text-secondary">{{
@@ -99,21 +99,21 @@ const metrics: OverviewMetric[] = [
     value: 42,
     desc: '今日需完成 8 项',
     icon: 'i-lucide:badge-check',
-    iconClass: 'bg-warning-tint text-warning',
+    iconClass: 'bg-warning/10 text-warning',
   },
   {
     title: '团队在线',
     value: 26,
     desc: '覆盖 5 个小组',
     icon: 'i-lucide:users-round',
-    iconClass: 'bg-success-tint text-success',
+    iconClass: 'bg-success/10 text-success',
   },
   {
     title: '风险提醒',
     value: 5,
     desc: '2 项需要升级',
     icon: 'i-lucide:triangle-alert',
-    iconClass: 'bg-error-tint text-error',
+    iconClass: 'bg-error/10 text-error',
   },
 ]
 </script>

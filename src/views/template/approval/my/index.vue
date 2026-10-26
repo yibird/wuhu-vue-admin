@@ -2,7 +2,7 @@
   <WView :full="true" :padding="0">
     <div class="h-full min-h-0 flex flex-col overflow-hidden bg-page">
       <header
-        class="page-enter page-enter--1 flex flex-none flex-wrap items-center gap-10 border-b-1 border-color-2 border-b-solid bg-container px-12 py-10 sm:px-16"
+        class="page-enter page-enter--1 flex flex-none flex-wrap items-center gap-10 b-b-1-regular bg-container px-12 py-10 sm:px-16"
       >
         <span
           class="size-38 flex flex-none items-center justify-center rounded-8 bg-primary/12 text-primary"
@@ -56,7 +56,7 @@
           <div
             v-for="index in 10"
             :key="index"
-            class="h-252 rounded-8 border-1 border-color-2 border-solid bg-container p-14"
+            class="h-252 rounded-8 b-1-regular bg-container p-14"
           >
             <a-skeleton active :paragraph="{ rows: 5 }" />
           </div>
@@ -89,7 +89,7 @@
 
       <footer
         v-if="total > 0"
-        class="page-enter page-enter--3 flex flex-none justify-center border-t-1 border-color-2 border-t-solid bg-container px-12 py-10"
+        class="page-enter page-enter--3 flex flex-none justify-center b-t-1-regular bg-container px-12 py-10"
       >
         <a-pagination
           :current="current"

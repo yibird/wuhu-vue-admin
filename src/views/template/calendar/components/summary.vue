@@ -4,7 +4,7 @@
       <article
         v-for="item in 4"
         :key="item"
-        class="min-h-108 rounded-8 border-1 border-color-2 border-solid bg-container p-14"
+        class="min-h-108 rounded-8 b-1-regular bg-container p-14"
         aria-hidden="true"
       >
         <a-skeleton-avatar active shape="square" size="small" />
@@ -16,7 +16,7 @@
       <article
         v-for="item in items"
         :key="item.label"
-        class="group min-w-0 overflow-hidden rounded-8 border-1 border-color-2 border-solid bg-container p-14 text-main transition-[transform,border-color] duration-motion-moderate hover:(-translate-y-1 border-primary/40) motion-reduce:transition-none motion-reduce:hover:translate-y-0"
+        class="group min-w-0 overflow-hidden rounded-8 b-1-regular bg-container p-14 text-main transition-[transform,border-color] duration-motion-moderate hover:(-translate-y-1 border-primary/40) motion-reduce:transition-none motion-reduce:hover:translate-y-0"
       >
         <div class="flex items-start justify-between gap-10">
           <div class="min-w-0">

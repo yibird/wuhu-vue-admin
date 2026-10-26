@@ -3,7 +3,7 @@ import { defineRegistry } from '@json-render/vue'
 import ChartBlock from '../components/main/chart-block.vue'
 import { catalog } from './catalog'
 
-const BORDER = 'border-1 border-color-2 border-solid'
+const BORDER = 'b-1-regular'
 const SURFACE = 'rounded-12 bg-container'
 
 /**
@@ -81,7 +81,7 @@ export const { registry } = defineRegistry(catalog, {
             null,
             h(
               'tr',
-              { class: 'border-0 border-b-1 border-color-2 border-solid' },
+              { class: 'border-0 b-b-1-regular' },
               props.columns.map((column) =>
                 h(
                   'th',
@@ -103,7 +103,7 @@ export const { registry } = defineRegistry(catalog, {
                 'tr',
                 {
                   key: rowIndex,
-                  class: 'border-0 border-b-1 border-color-1 border-solid',
+                  class: 'border-0 b-b-1-muted',
                 },
                 row.map((cell, cellIndex) =>
                   h(
@@ -132,7 +132,7 @@ export const { registry } = defineRegistry(catalog, {
         {
           type: 'button',
           class:
-            'h-32 inline-flex items-center justify-center rounded-8 border-1 border-color-2 border-solid bg-container px-12 text-13px text-main cursor-pointer transition-colors hover:(bg-hover border-primary)',
+            'h-32 inline-flex items-center justify-center rounded-8 b-1-regular bg-container px-12 text-13px text-main cursor-pointer transition-colors hover:(bg-hover border-primary)',
           onClick: () => emit('press'),
         },
         props.label

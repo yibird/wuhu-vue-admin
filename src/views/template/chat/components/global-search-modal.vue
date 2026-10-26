@@ -40,7 +40,7 @@
       <div class="mt-10 flex items-center justify-between gap-12 text-xs">
         <span class="text-secondary">{{ resultSummary }}</span>
         <span
-          class="hidden shrink-0 items-center gap-4 rounded-4 bg-fill-quaternary px-7 py-3 text-placeholder sm:flex"
+          class="hidden shrink-0 items-center gap-4 rounded-4 bg-secondary px-7 py-3 text-placeholder sm:flex"
         >
           <Icon name="i-lucide:command" :size="12" />
           Ctrl / Cmd + K
@@ -92,7 +92,7 @@
             <span
               v-for="record in visibleRecords"
               :key="record"
-              class="group h-30 flex items-center rounded-5 bg-fill-quaternary pl-9 text-xs text-secondary transition-colors hover:(bg-hover text-main)"
+              class="group h-30 flex items-center rounded-5 bg-secondary pl-9 text-xs text-secondary transition-colors hover:(bg-hover text-main)"
             >
               <button
                 type="button"
@@ -184,7 +184,7 @@
                     <a-avatar :src="result.contact.avatar" :size="42" round />
                     <span
                       v-if="result.contact.status"
-                      class="absolute bottom-0 right-0 size-9 rounded-full border-2 border-container"
+                      class="absolute bottom-0 right-0 size-9 rounded-full b-2-[var(--w-bg-container)]"
                       :class="{
                         'bg-success': result.contact.status === 'online',
                         'bg-fill': result.contact.status === 'offline',
@@ -213,7 +213,7 @@
                       <span
                         v-for="tag in result.tags"
                         :key="tag"
-                        class="rounded-4 bg-fill-quaternary px-5 py-1 text-10px text-secondary"
+                        class="rounded-4 bg-secondary px-5 py-1 text-10px text-secondary"
                       >
                         {{ tag }}
                       </span>
@@ -244,7 +244,7 @@
                   <span class="relative shrink-0">
                     <a-avatar :src="group.avatar" :size="42" round />
                     <span
-                      class="absolute -bottom-2 -right-2 size-18 flex items-center justify-center rounded-full border-2 border-container bg-success text-white"
+                      class="absolute -bottom-2 -right-2 size-18 flex items-center justify-center rounded-full b-2-[var(--w-bg-container)] bg-success text-white"
                     >
                       <Icon name="i-lucide:users-round" :size="10" />
                     </span>
@@ -286,7 +286,7 @@
                   @click="handleSelectMessage(result)"
                 >
                   <span
-                    class="size-42 flex shrink-0 items-center justify-center rounded-8 bg-fill-quaternary text-secondary"
+                    class="size-42 flex shrink-0 items-center justify-center rounded-8 bg-secondary text-secondary"
                   >
                     <Icon name="i-lucide:message-square-text" :size="18" />
                   </span>
@@ -465,8 +465,8 @@ function handleSelectMessage(result: MessageSearchResult) {
   padding: 10px;
   text-align: left;
   cursor: pointer;
-  background: rgb(var(--w-bg-fill-1) / 44%);
-  border: 1px solid rgb(var(--w-border-color-1));
+  background: rgb(var(--w-bg-secondary) / 44%);
+  border: 1px solid rgb(var(--w-border-muted));
   border-radius: 8px;
   transition:
     background-color var(--w-motion-duration-base) var(--w-motion-ease-standard),

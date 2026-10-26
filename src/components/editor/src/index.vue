@@ -1,6 +1,6 @@
 <template>
   <div
-    class="min-h-0 min-w-0 flex flex-1 flex-col overflow-hidden rounded-8 border-1 border-solid border-color-2 bg-container shadow-[var(--w-shadow-card)]"
+    class="min-h-0 min-w-0 flex flex-1 flex-col overflow-hidden rounded-8 b-1-regular bg-container shadow-card"
     data-testid="rich-editor"
     :class="{ 'opacity-76': disabled }"
     :style="rootStyle"

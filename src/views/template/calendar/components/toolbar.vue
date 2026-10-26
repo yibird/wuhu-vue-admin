@@ -1,6 +1,6 @@
 <template>
   <header
-    class="relative overflow-hidden rounded-8 border-1 border-color-2 border-solid bg-container px-18 py-16"
+    class="relative overflow-hidden rounded-8 b-1-regular bg-container px-18 py-16"
   >
     <div
       v-if="loading"
@@ -20,7 +20,7 @@
     </div>
     <template v-else>
       <div
-        class="pointer-events-none absolute inset-0 opacity-80 [background:radial-gradient(circle_at_12%_0,rgb(var(--w-color-primary)_/_12%),transparent_32%),linear-gradient(135deg,rgb(var(--w-bg-container)),rgb(var(--w-fill-quaternary)_/_48%))]"
+        class="pointer-events-none absolute inset-0 opacity-80 [background:radial-gradient(circle_at_12%_0,rgb(var(--w-color-primary)_/_12%),transparent_32%),linear-gradient(135deg,rgb(var(--w-bg-container)),rgb(var(--w-bg-secondary)_/_48%))]"
       ></div>
       <div
         class="relative flex items-center justify-between gap-14 max-lg:flex-col max-lg:items-start"
@@ -28,7 +28,7 @@
         <div class="min-w-0">
           <div class="flex flex-wrap items-center gap-8">
             <span
-              class="inline-flex items-center gap-6 rounded-4 border-1 border-primary/30 border-solid bg-primary/8 px-8 py-4 text-xs text-primary font-700"
+              class="inline-flex items-center gap-6 rounded-4 b-1-primary/30 bg-primary/8 px-8 py-4 text-xs text-primary font-700"
             >
               <Icon name="i-lucide:calendar-range" :size="14" />
               团队日历

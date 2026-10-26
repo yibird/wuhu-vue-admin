@@ -24,7 +24,7 @@
           <div
             v-for="index in 12"
             :key="index"
-            class="h-292 rounded-8 border-1 border-color-2 border-solid bg-container p-14"
+            class="h-292 rounded-8 b-1-regular bg-container p-14"
           >
             <a-skeleton active :paragraph="{ rows: 6 }" />
           </div>
@@ -56,7 +56,7 @@
 
       <footer
         v-if="!isLoading && filteredWorkflows.length > 0"
-        class="page-enter page-enter--3 flex flex-none justify-center border-t-1 border-color-2 border-t-solid px-12 py-10 sm:px-16"
+        class="page-enter page-enter--3 flex flex-none justify-center b-t-1-regular px-12 py-10 sm:px-16"
       >
         <a-pagination
           v-model:current="currentPage"

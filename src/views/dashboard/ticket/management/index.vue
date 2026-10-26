@@ -2,7 +2,7 @@
   <WView :full="true" :padding="0">
     <div class="h-full min-h-0 flex flex-col overflow-hidden bg-page">
       <header
-        class="flex flex-none flex-wrap items-center justify-between gap-12 border-b-1 border-color-2 border-b-solid bg-container px-14 py-11 sm:px-18"
+        class="flex flex-none flex-wrap items-center justify-between gap-12 b-b-1-regular bg-container px-14 py-11 sm:px-18"
       >
         <div class="min-w-0">
           <div class="flex items-center gap-7">
@@ -32,7 +32,7 @@
       </header>
 
       <section
-        class="flex flex-none flex-wrap items-center gap-8 border-b-1 border-color-2 border-b-solid bg-container px-10 py-9 sm:px-14"
+        class="flex flex-none flex-wrap items-center gap-8 b-b-1-regular bg-container px-10 py-9 sm:px-14"
       >
         <a-input
           v-model:value="filters.keyword"

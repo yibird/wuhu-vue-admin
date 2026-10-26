@@ -34,8 +34,8 @@
                       index === 0
                         ? 'border-primary bg-primary text-white'
                         : index === stages.length - 1
-                          ? 'border-warning bg-warning-tint text-warning'
-                          : 'border-color-2 bg-container text-secondary',
+                          ? 'border-warning bg-warning/10 text-warning'
+                          : 'border-regular bg-container text-secondary',
                     ]"
                   >
                     {{ String(index + 1).padStart(2, '0') }}
@@ -58,9 +58,7 @@
                   </div>
                 </div>
               </div>
-              <div
-                class="relative h-22 overflow-hidden rounded-6 bg-fill-tertiary"
-              >
+              <div class="relative h-22 overflow-hidden rounded-6 bg-muted">
                 <div
                   class="relative mx-auto h-full bg-gradient-to-r [clip-path:polygon(0_0,100%_0,94%_100%,6%_100%)] transition-[filter,transform,width] duration-motion-moderate ease-motion-standard group-hover:(scale-y-110 [filter:saturate(1.2)]) group-focus-visible:(scale-y-110 [filter:saturate(1.2)]) motion-reduce:(transform-none transition-none)"
                   :class="stage.fillClass"
@@ -77,7 +75,7 @@
 
         <aside class="analysis-funnel-aside min-w-0">
           <div
-            class="analysis-funnel-summary overflow-hidden rounded-10 bg-primary-tint p-12"
+            class="analysis-funnel-summary overflow-hidden rounded-10 bg-primary/10 p-12"
           >
             <div class="flex items-center justify-between gap-8">
               <span class="text-xs text-primary font-700">最终成交</span>
@@ -194,7 +192,7 @@ const insights = [
     value: '64.2%',
     description: '较上周提升 4.8%',
     icon: 'i-lucide:repeat-2',
-    iconClass: 'bg-success-tint text-success',
+    iconClass: 'bg-success/10 text-success',
   },
   {
     id: 'response',
@@ -202,7 +200,7 @@ const insights = [
     value: '1.8h',
     description: '客服承接更快',
     icon: 'i-lucide:timer',
-    iconClass: 'bg-info-tint text-info',
+    iconClass: 'bg-info/10 text-info',
   },
   {
     id: 'risk',
@@ -210,7 +208,7 @@ const insights = [
     value: '3',
     description: '需关注渠道',
     icon: 'i-lucide:radar',
-    iconClass: 'bg-warning-tint text-warning',
+    iconClass: 'bg-warning/10 text-warning',
   },
 ]
 </script>

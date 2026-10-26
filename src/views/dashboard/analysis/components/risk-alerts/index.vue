@@ -144,16 +144,16 @@ function levelTone(level: AlertLevel) {
   switch (level) {
     case 'critical':
       return {
-        badge: 'bg-error-tint text-error',
-        tag: 'bg-error-tint text-error',
+        badge: 'bg-error/10 text-error',
+        tag: 'bg-error/10 text-error',
       }
     case 'high':
       return {
-        badge: 'bg-warning-tint text-warning',
-        tag: 'bg-warning-tint text-warning',
+        badge: 'bg-warning/10 text-warning',
+        tag: 'bg-warning/10 text-warning',
       }
     default:
-      return { badge: 'bg-info-tint text-info', tag: 'bg-info-tint text-info' }
+      return { badge: 'bg-info/10 text-info', tag: 'bg-info/10 text-info' }
   }
 }
 

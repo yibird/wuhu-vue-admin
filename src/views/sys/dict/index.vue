@@ -7,7 +7,7 @@
     direction="horizontal"
   >
     <WView.Sider
-      class="h-full overflow-hidden rounded-6 border-1 border-color-1 border-solid"
+      class="h-full overflow-hidden rounded-6 b-1-muted"
       width="260px"
     >
       <Sider
@@ -23,7 +23,7 @@
 
     <WView :full="false" :gap="10" :padding="false" class="min-w-0 flex-1">
       <WView.Header
-        class="shrink-0 rounded-6 border-1 border-color-1 border-solid bg-container px-14 py-10"
+        class="shrink-0 rounded-6 b-1-muted bg-container px-14 py-10"
       >
         <DictHeader
           v-model:keyword="itemKeyword"
@@ -35,7 +35,7 @@
       </WView.Header>
 
       <WView.Content
-        class="min-h-0 overflow-hidden rounded-6 border-1 border-color-1 border-solid bg-container"
+        class="min-h-0 overflow-hidden rounded-6 b-1-muted bg-container"
       >
         <Content
           v-if="selectedDictionary"

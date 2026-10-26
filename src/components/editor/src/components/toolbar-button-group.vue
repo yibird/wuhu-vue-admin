@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="flex items-center gap-2 rounded-8 border-1 border-solid border-color-2 bg-container p-3"
-  >
+  <div class="flex items-center gap-2 rounded-8 b-1-regular bg-container p-3">
     <a-tooltip
       v-for="item in items"
       :key="item.key"

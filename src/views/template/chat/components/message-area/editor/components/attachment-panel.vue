@@ -6,7 +6,7 @@
       :class="[
         dragging
           ? 'border-primary bg-primary/10 text-primary'
-          : 'border-color-2 bg-fill-quaternary hover:(border-primary bg-primary/8 text-primary)',
+          : 'border-regular bg-secondary hover:(border-primary bg-primary/8 text-primary)',
       ]"
       @dragover.prevent
       @dragenter.prevent="dragging = true"
@@ -30,7 +30,7 @@
         v-for="action in actions"
         :key="action.key"
         type="button"
-        class="button min-h-62 justify-start gap-10 rounded-8 border-1 border-solid border-color-1 bg-container px-10 py-9 text-left transition-colors hover:(border-primary bg-hover)"
+        class="button min-h-62 justify-start gap-10 rounded-8 b-1-muted bg-container px-10 py-9 text-left transition-colors hover:(border-primary bg-hover)"
         @click="emits('pick', action.key)"
       >
         <span
@@ -48,7 +48,7 @@
 
     <div
       v-if="remainingCount <= 0"
-      class="mt-8 rounded-6 bg-warning-tint px-10 py-7 text-xs text-warning"
+      class="mt-8 rounded-6 bg-warning/10 px-10 py-7 text-xs text-warning"
     >
       已达到最多 {{ MAX_IMAGE_COUNT }} 张图片
     </div>

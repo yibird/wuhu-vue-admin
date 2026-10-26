@@ -8,7 +8,7 @@
         class="content-auto-60 w-full flex gap-10 rounded-6 border-0 bg-transparent px-10 py-8 text-left cursor-pointer transition-colors hover:bg-hover"
       >
         <span
-          class="size-36 flex shrink-0 items-center justify-center rounded-6 bg-primary-tint text-primary"
+          class="size-36 flex shrink-0 items-center justify-center rounded-6 bg-primary/10 text-primary"
         >
           <Icon name="i-lucide:at-sign" :size="18" />
         </span>

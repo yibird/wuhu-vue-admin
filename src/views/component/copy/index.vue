@@ -4,10 +4,10 @@
       class="h-full min-h-full w-full p-16 md:p-20 overflow-x-hidden overflow-y-auto"
     >
       <section
-        class="mx-auto max-w-1280 rounded-8 border-1 border-color-1 border-solid bg-container p-16 shadow-all-sm md:p-20"
+        class="mx-auto max-w-1280 rounded-8 b-1-muted bg-container p-16 shadow-all-sm md:p-20"
       >
         <header
-          class="mb-16 flex flex-wrap items-start justify-between gap-12 border-b-1 border-color-1 border-b-solid pb-14"
+          class="mb-16 flex flex-wrap items-start justify-between gap-12 b-b-1-muted pb-14"
         >
           <div class="min-w-0">
             <h1 class="m-0 text-xl text-main font-600">Copy</h1>
@@ -19,12 +19,12 @@
         </header>
 
         <div class="grid gap-18">
-          <div class="rounded-6 bg-fill-1 p-18">
+          <div class="rounded-6 bg-secondary p-18">
             <p class="m-0 text-xs text-muted">默认用法</p>
             <Copy class="mt-8 text-sm text-main"> 需要复制的文本内容 </Copy>
           </div>
 
-          <div class="rounded-6 bg-fill-1 p-18">
+          <div class="rounded-6 bg-secondary p-18">
             <p class="m-0 text-xs text-muted">带前缀图标</p>
             <Copy class="mt-8 text-sm text-main">
               <template #prefix>
@@ -34,7 +34,7 @@
             </Copy>
           </div>
 
-          <div class="rounded-6 bg-fill-1 p-18">
+          <div class="rounded-6 bg-secondary p-18">
             <p class="m-0 text-xs text-muted">自定义后缀</p>
             <Copy class="mt-8 text-sm text-main">
               <template #prefix>任务编号：</template>

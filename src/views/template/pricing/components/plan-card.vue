@@ -4,7 +4,7 @@
     class="pricing-card group relative flex cursor-pointer flex-col overflow-hidden rounded-16 border-1 border-solid p-20 outline-none transition-[box-shadow,transform] duration-motion-moderate ease-motion-enter hover:-translate-y-3 focus-visible:outline-2 focus-visible:outline-primary/60 focus-visible:outline-offset-2 motion-reduce:transition-none max-sm:p-16"
     :class="{
       // 普通卡
-      'border-color-1 pricing-card--normal shadow-[0_10px_30px_rgb(15_23_42_/_5%)] hover:shadow-[0_20px_50px_rgb(var(--w-color-primary)_/_10%)]':
+      'border-muted pricing-card--normal shadow-[0_10px_30px_rgb(15_23_42_/_5%)] hover:shadow-[0_20px_50px_rgb(var(--w-color-primary)_/_10%)]':
         !isRecommended,
       // 推荐卡：渐变边框 + 发光
       'pricing-card--featured border-transparent shadow-[0_24px_60px_rgb(var(--w-color-primary)_/_18%)] hover:shadow-[0_32px_80px_rgb(var(--w-color-primary)_/_25%)]':
@@ -38,7 +38,7 @@
           :class="{
             'bg-gradient-to-br from-primary/20 to-primary/5 text-primary shadow-[0_8px_24px_rgb(var(--w-color-primary)_/_20%)]':
               isRecommended,
-            'bg-fill-tertiary text-secondary': !isRecommended,
+            'bg-muted text-secondary': !isRecommended,
           }"
         >
           <Icon :name="props.plan.icon" :size="22" />
@@ -96,7 +96,7 @@
         :class="
           isRecommended
             ? 'border-primary/20 bg-gradient-to-br from-primary/10 to-primary/5'
-            : 'border-color-1 bg-fill-tertiary/50'
+            : 'border-muted bg-muted/50'
         "
       >
         <div
@@ -108,7 +108,7 @@
             i < props.plan.metrics.length - 1
               ? isRecommended
                 ? 'border-primary/15'
-                : 'border-color-1'
+                : 'border-muted'
               : 'border-r-0',
           ]"
         >

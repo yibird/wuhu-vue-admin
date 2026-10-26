@@ -2,7 +2,7 @@
   <WView :full="true" :padding="0">
     <div class="h-full min-h-0 flex flex-col overflow-hidden bg-page">
       <header
-        class="page-enter page-enter--1 flex flex-none flex-wrap items-center gap-10 border-b-1 border-color-2 border-b-solid bg-container px-12 py-10 sm:px-16"
+        class="page-enter page-enter--1 flex flex-none flex-wrap items-center gap-10 b-b-1-regular bg-container px-12 py-10 sm:px-16"
       >
         <span
           class="size-38 flex flex-none items-center justify-center rounded-8 bg-primary/12 text-primary"
@@ -30,7 +30,7 @@
           <div
             v-for="item in statCards"
             :key="item.key"
-            class="relative overflow-hidden rounded-8 border-1 border-color-2 border-solid bg-container px-14 py-12"
+            class="relative overflow-hidden rounded-8 b-1-regular bg-container px-14 py-12"
           >
             <div class="text-xs text-secondary">{{ item.label }}</div>
             <div class="mt-4 text-2xl text-main font-700 tabular-nums">
@@ -46,7 +46,7 @@
         </div>
 
         <div
-          class="mb-12 flex flex-wrap items-center gap-10 rounded-8 border-1 border-color-2 border-solid bg-container p-12"
+          class="mb-12 flex flex-wrap items-center gap-10 rounded-8 b-1-regular bg-container p-12"
         >
           <a-input-search
             v-model:value="keyword"

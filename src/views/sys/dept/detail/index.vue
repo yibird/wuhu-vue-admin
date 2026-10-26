@@ -8,7 +8,7 @@
       </a-button>
 
       <span
-        class="size-42 flex-none flex-center rounded-4 bg-primary-tint text-primary"
+        class="size-42 flex-none flex-center rounded-4 bg-primary/10 text-primary"
       >
         <Icon :name="iconName" />
       </span>

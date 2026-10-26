@@ -1,11 +1,9 @@
 <template>
   <section
-    class="page-enter page-enter--5 mt-16 overflow-hidden rounded-16 border-1 border-color-1 border-solid bg-container shadow-[0_10px_30px_rgb(15_23_42_/_5%)]"
+    class="page-enter page-enter--5 mt-16 overflow-hidden rounded-16 b-1-muted bg-container shadow-[0_10px_30px_rgb(15_23_42_/_5%)]"
     aria-label="常见问题"
   >
-    <div
-      class="flex items-center justify-between gap-12 border-b-1 border-color-1 border-b-solid p-20"
-    >
+    <div class="flex items-center justify-between gap-12 b-b-1-muted p-20">
       <div>
         <span
           class="inline-flex items-center gap-8 rounded-full bg-primary/10 px-10 py-4 text-xs text-primary font-800 uppercase tracking-wider"
@@ -22,7 +20,7 @@
         v-for="(faq, index) in props.faqs"
         :key="faq.question"
         type="button"
-        class="group w-full cursor-pointer overflow-hidden border-0 border-b-1 border-color-1 border-b-solid bg-transparent p-0 text-left outline-none transition-colors duration-motion-base ease-motion-standard last:border-b-0 hover:bg-primary/[0.03] focus-visible:outline-2 focus-visible:outline-primary/60 focus-visible:outline-offset-2 motion-reduce:transition-none"
+        class="group w-full cursor-pointer overflow-hidden border-0 b-b-1-muted bg-transparent p-0 text-left outline-none transition-colors duration-motion-base ease-motion-standard last:border-b-0 hover:bg-primary/[0.03] focus-visible:outline-2 focus-visible:outline-primary/60 focus-visible:outline-offset-2 motion-reduce:transition-none"
         :aria-expanded="props.openIndex === index"
         @click="emits('toggle', index)"
       >
@@ -37,7 +35,7 @@
             :class="
               props.openIndex === index
                 ? 'rotate-180 bg-primary text-white shadow-[0_4px_14px_rgb(var(--w-color-primary)_/_35%)]'
-                : 'bg-fill-tertiary text-secondary group-hover:bg-primary/10 group-hover:text-primary'
+                : 'bg-muted text-secondary group-hover:bg-primary/10 group-hover:text-primary'
             "
           >
             <Icon

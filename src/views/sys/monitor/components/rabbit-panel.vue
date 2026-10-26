@@ -16,7 +16,7 @@
     <div class="mt-14 overflow-x-auto">
       <div class="min-w-850">
         <div
-          class="grid grid-cols-[minmax(210px,1.7fr)_120px_90px_90px_90px_110px_110px] gap-10 border-b-1 border-b-solid border-color-2 px-10 pb-9 text-xs text-secondary"
+          class="grid grid-cols-[minmax(210px,1.7fr)_120px_90px_90px_90px_110px_110px] gap-10 b-b-1-regular px-10 pb-9 text-xs text-secondary"
         >
           <span>队列</span>
           <span>状态</span>
@@ -31,7 +31,7 @@
             v-for="item in rabbitmq.queues"
             :key="item.id"
             type="button"
-            class="grid grid-cols-[minmax(210px,1.7fr)_120px_90px_90px_90px_110px_110px] items-center gap-10 border-b-1 border-b-solid border-color-1 px-10 py-11 text-left transition-[background-color,transform] duration-motion-base hover:bg-hover-2 active:scale-[0.998] motion-reduce:transition-none"
+            class="grid grid-cols-[minmax(210px,1.7fr)_120px_90px_90px_90px_110px_110px] items-center gap-10 b-b-1-muted px-10 py-11 text-left transition-[background-color,transform] duration-motion-base hover:bg-hover active:scale-[0.998] motion-reduce:transition-none"
             @click="emits('selectQueue', item)"
           >
             <span class="min-w-0">
@@ -83,9 +83,9 @@ const props = defineProps<{
 const emits = defineEmits<SystemMonitorActions>()
 
 const statusMeta = {
-  healthy: { label: '运行正常', class: 'bg-success-tint text-success' },
-  warning: { label: '有积压', class: 'bg-warning-tint text-warning' },
-  offline: { label: '已停止', class: 'bg-error-tint text-error' },
+  healthy: { label: '运行正常', class: 'bg-success/10 text-success' },
+  warning: { label: '有积压', class: 'bg-warning/10 text-warning' },
+  offline: { label: '已停止', class: 'bg-error/10 text-error' },
 } as const
 
 const summaryItems = computed<SummaryMetricItem[]>(() => [

@@ -3,7 +3,7 @@
     <label class="block text-12px text-secondary">
       大屏标题
       <input
-        class="mt-5 h-32 w-full rounded-6 border-1 border-color-2 border-solid bg-fill px-8 text-13px text-primary outline-none focus:border-primary"
+        class="mt-5 h-32 w-full rounded-6 b-1-regular bg-fill px-8 text-13px text-primary outline-none focus:border-primary"
         :value="screenConfig.title"
         @input="updateText('title')"
       />
@@ -11,7 +11,7 @@
     <label class="block text-12px text-secondary">
       说明
       <input
-        class="mt-5 h-32 w-full rounded-6 border-1 border-color-2 border-solid bg-fill px-8 text-13px text-primary outline-none focus:border-primary"
+        class="mt-5 h-32 w-full rounded-6 b-1-regular bg-fill px-8 text-13px text-primary outline-none focus:border-primary"
         :value="screenConfig.subtitle"
         @input="updateText('subtitle')"
       />

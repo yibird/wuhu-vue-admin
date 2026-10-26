@@ -3,7 +3,7 @@
     <div
       v-for="item in stats"
       :key="item.key"
-      class="min-w-0 rounded-6 border-1 border-color-2 border-solid bg-container p-12"
+      class="min-w-0 rounded-6 b-1-regular bg-container p-12"
     >
       <div class="flex items-start justify-between gap-10">
         <div class="min-w-0">

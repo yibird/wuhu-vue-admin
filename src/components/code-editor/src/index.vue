@@ -1,7 +1,7 @@
 <template>
   <div
     ref="editorRef"
-    class="h-full min-h-0 overflow-hidden bg-container border-1 border-solid border-color-2 rounded-8"
+    class="h-full min-h-0 overflow-hidden bg-container b-1-regular rounded-8"
   />
 </template>
 
@@ -51,7 +51,7 @@ const editorTheme = EditorView.theme({
     minWidth: '46px',
     backgroundColor: 'rgb(var(--w-bg-fill))',
     color: 'rgb(var(--w-text-muted))',
-    borderRight: '1px solid rgb(var(--w-border-color-2))',
+    borderRight: '1px solid rgb(var(--w-border-regular))',
   },
   '.cm-lineNumbers .cm-gutterElement': {
     minWidth: '46px',
@@ -79,14 +79,14 @@ const editorTheme = EditorView.theme({
     backgroundColor: 'rgb(var(--w-color-primary) / 20%) !important',
   },
   '.cm-foldPlaceholder': {
-    border: '1px solid rgb(var(--w-border-color-2))',
+    border: '1px solid rgb(var(--w-border-regular))',
     borderRadius: '4px',
     backgroundColor: 'rgb(var(--w-bg-fill))',
     color: 'rgb(var(--w-text-muted))',
     padding: '0 4px',
   },
   '.cm-tooltip': {
-    border: '1px solid rgb(var(--w-border-color-2))',
+    border: '1px solid rgb(var(--w-border-regular))',
     borderRadius: '6px',
     backgroundColor: 'rgb(var(--w-bg-container))',
     color: 'rgb(var(--w-text-main))',

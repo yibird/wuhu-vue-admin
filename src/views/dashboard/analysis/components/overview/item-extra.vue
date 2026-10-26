@@ -1,6 +1,6 @@
 <template>
   <div
-    class="inline-flex shrink-0 rounded-999 bg-fill-secondary p-2 text-xs text-secondary"
+    class="inline-flex shrink-0 rounded-999 bg-secondary p-2 text-xs text-secondary"
   >
     <a-segmented :options="items" :value="period" @change="handleChange" />
   </div>

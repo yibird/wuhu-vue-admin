@@ -6,7 +6,7 @@
     description="CPU、内存、负载与磁盘水位"
   >
     <div class="grid grid-cols-1 gap-12 sm:grid-cols-2 xl:grid-cols-4">
-      <div v-for="item in 4" :key="item" class="rounded-8 bg-fill-1 p-12">
+      <div v-for="item in 4" :key="item" class="rounded-8 bg-secondary p-12">
         <a-skeleton active :title="{ width: '52%' }" :paragraph="{ rows: 2 }" />
         <a-skeleton-input active class="!mt-12 !h-6 !w-full" />
       </div>

@@ -1,11 +1,9 @@
 <template>
   <div
-    class="h-full min-h-0 flex flex-col overflow-hidden rounded-6 border-1 border-color-2 border-solid bg-container"
+    class="h-full min-h-0 flex flex-col overflow-hidden rounded-6 b-1-regular bg-container"
   >
     <template v-if="task">
-      <div
-        class="border-b-1 border-b-solid border-color-1 bg-container-secondary px-16 py-14"
-      >
+      <div class="b-b-1-muted bg-secondary px-16 py-14">
         <div class="flex flex-wrap items-start justify-between gap-12">
           <div class="min-w-0">
             <div class="flex min-w-0 items-center gap-10">
@@ -70,7 +68,7 @@
       <Scrollbar class="min-h-0 flex-1" content-class="p-16">
         <p class="m-0 text-sm text-regular">{{ task.description }}</p>
 
-        <div class="mt-16 rounded-6 border-1 border-color-2 border-solid p-14">
+        <div class="mt-16 rounded-6 b-1-regular p-14">
           <div class="flex items-center justify-between gap-12 text-sm">
             <span class="text-secondary">执行进度</span>
             <span class="text-main font-700">{{ task.progress }}%</span>
@@ -93,23 +91,23 @@
         </div>
 
         <div class="mt-14 grid grid-cols-2 gap-10 max-sm:grid-cols-1">
-          <div class="rounded-6 bg-container-secondary p-12">
+          <div class="rounded-6 bg-secondary p-12">
             <div class="text-xs text-secondary">来源</div>
             <div class="mt-6 break-all text-sm text-main">
               {{ task.source }}
             </div>
           </div>
-          <div class="rounded-6 bg-container-secondary p-12">
+          <div class="rounded-6 bg-secondary p-12">
             <div class="text-xs text-secondary">目标</div>
             <div class="mt-6 break-all text-sm text-main">
               {{ task.target }}
             </div>
           </div>
-          <div class="rounded-6 bg-container-secondary p-12">
+          <div class="rounded-6 bg-secondary p-12">
             <div class="text-xs text-secondary">负责人</div>
             <div class="mt-6 text-sm text-main">{{ task.owner }}</div>
           </div>
-          <div class="rounded-6 bg-container-secondary p-12">
+          <div class="rounded-6 bg-secondary p-12">
             <div class="text-xs text-secondary">更新时间</div>
             <div class="mt-6 text-sm text-main">{{ task.updatedAt }}</div>
           </div>
@@ -122,7 +120,7 @@
               >创建于 {{ task.createdAt }}</span
             >
           </div>
-          <div class="rounded-6 bg-fill-quaternary p-12">
+          <div class="rounded-6 bg-secondary p-12">
             <div
               v-for="(log, index) in task.logs"
               :key="`${task.id}-${index}`"

@@ -1,12 +1,10 @@
 <template>
   <section
-    class="form-designer h-full min-h-560 grid grid-cols-[250px_minmax(0,1fr)_300px] overflow-hidden rounded-10 border-1 border-color-2 border-solid bg-container max-[1200px]:grid-cols-[220px_minmax(0,1fr)_260px]"
+    class="form-designer h-full min-h-560 grid grid-cols-[250px_minmax(0,1fr)_300px] overflow-hidden rounded-10 b-1-regular bg-container max-[1200px]:grid-cols-[220px_minmax(0,1fr)_260px]"
   >
     <!-- 左侧组件面板 -->
-    <aside
-      class="min-h-0 flex flex-col border-r-1 border-color-2 border-r-solid bg-container"
-    >
-      <div class="flex-none border-b-1 border-color-2 border-b-solid p-10">
+    <aside class="min-h-0 flex flex-col b-r-1-regular bg-container">
+      <div class="flex-none b-b-1-regular p-10">
         <a-input-search
           v-model:value="search"
           allow-clear
@@ -26,7 +24,7 @@
               :key="`${group.key}-${item.label}`"
               type="button"
               draggable="true"
-              class="h-34 flex cursor-grab items-center gap-6 rounded-5 border-1 border-color-1 border-solid bg-container px-7 text-left text-xs text-regular transition-colors hover:(border-primary/40 bg-primary/6 text-primary) active:cursor-grabbing"
+              class="h-34 flex cursor-grab items-center gap-6 rounded-5 b-1-muted bg-container px-7 text-left text-xs text-regular transition-colors hover:(border-primary/40 bg-primary/6 text-primary) active:cursor-grabbing"
               @click="addFromPalette(item)"
               @dragstart="onPaletteDragStart(item)"
               @dragend="endDrag"
@@ -46,9 +44,7 @@
 
     <!-- 中间画布 -->
     <div class="min-h-0 flex flex-col overflow-hidden">
-      <div
-        class="flex flex-none items-center gap-7 border-b-1 border-color-2 border-b-solid px-10 py-6"
-      >
+      <div class="flex flex-none items-center gap-7 b-b-1-regular px-10 py-6">
         <span class="text-xs text-secondary">表单</span>
         <Icon name="i-lucide:chevron-right" :size="12" class="text-tertiary" />
         <span class="text-xs text-main">
@@ -145,7 +141,7 @@
           @click.self="selectField(-1)"
         >
           <div
-            class="rounded-8 border-1 border-color-2 border-solid bg-container p-20 shadow-[var(--w-shadow-card)]"
+            class="rounded-8 b-1-regular bg-container p-20 shadow-card"
             @click.self="selectField(-1)"
           >
             <div
@@ -181,7 +177,7 @@
               >
                 <div
                   v-if="selectedIndex === index"
-                  class="absolute -top-32 left-0 z-20 flex items-center gap-2 rounded-6 border-1 border-primary border-solid bg-container px-4 py-3 shadow-[var(--w-shadow-card)]"
+                  class="absolute -top-32 left-0 z-20 flex items-center gap-2 rounded-6 b-1-primary bg-container px-4 py-3 shadow-card"
                 >
                   <span
                     class="flex cursor-grab items-center px-6 text-secondary active:cursor-grabbing"
@@ -321,7 +317,7 @@
                       <a-slider v-else-if="field.type === 'slider'" disabled />
                       <span
                         v-else-if="field.type === 'color'"
-                        class="size-28 inline-block rounded-4 border-1 border-color-2 border-solid"
+                        class="size-28 inline-block rounded-4 b-1-regular"
                         :style="{
                           backgroundColor: field.defaultValue || '#1677ff',
                         }"
@@ -331,7 +327,7 @@
                           field.type === 'uploadFile' ||
                           field.type === 'uploadImage'
                         "
-                        class="h-76 flex flex-col items-center justify-center gap-4 rounded-6 border-1 border-color-2 border-dashed bg-fill/50 text-secondary"
+                        class="h-76 flex flex-col items-center justify-center gap-4 rounded-6 b-dashed-1-regular bg-fill/50 text-secondary"
                       >
                         <Icon name="i-lucide:upload-cloud" :size="18" />
                         <span class="text-11px">
@@ -353,12 +349,8 @@
     </div>
 
     <!-- 右侧属性面板 -->
-    <aside
-      class="min-h-0 flex flex-col border-l-1 border-color-2 border-l-solid bg-container"
-    >
-      <div
-        class="flex-none border-b-1 border-color-2 border-b-solid px-12 py-10"
-      >
+    <aside class="min-h-0 flex flex-col b-l-1-regular bg-container">
+      <div class="flex-none b-b-1-regular px-12 py-10">
         <h3 class="m-0 text-sm text-main font-700">
           {{ selectedField ? fieldTypeLabels[selectedField.type] : '表单属性' }}
         </h3>
@@ -1078,7 +1070,7 @@ function onCanvasDrop() {
 .form-designer-canvas {
   background-color: rgb(var(--w-bg-page));
   background-image: radial-gradient(
-    rgb(var(--w-border-color-2) / 70%) 1px,
+    rgb(var(--w-border-regular) / 70%) 1px,
     transparent 1px
   );
   background-size: 16px 16px;
@@ -1099,7 +1091,7 @@ function onCanvasDrop() {
   justify-content: center;
   min-height: 320px;
   background: rgb(var(--w-bg-fill) / 45%);
-  border: 1px dashed rgb(var(--w-border-color-3));
+  border: 1px dashed rgb(var(--w-border-main));
   border-radius: 10px;
   transition:
     border-color 0.16s ease,

@@ -1,8 +1,6 @@
 <template>
   <div class="min-h-0 min-w-0 h-full w-full flex flex-col overflow-hidden">
-    <div
-      class="shrink-0 flex border-0 border-b-1 border-color-2 border-b-solid"
-    >
+    <div class="shrink-0 flex border-0 b-b-1-regular">
       <button
         class="lc-inspector-tab"
         :class="{ 'is-active': mode === 'settings' }"
@@ -25,9 +23,7 @@
     <template v-if="mode === 'settings'">
       <!-- 无选中：页面设置 -->
       <template v-if="!nodes.length">
-        <div
-          class="shrink-0 border-0 border-b-1 border-color-2 border-b-solid px-14 py-10"
-        >
+        <div class="shrink-0 border-0 b-b-1-regular px-14 py-10">
           <div class="text-base text-main font-700">页面设置</div>
           <div class="mt-4 text-sm text-secondary">
             选择画布组件后编辑其属性、事件与样式
@@ -44,9 +40,7 @@
 
       <!-- 多选 -->
       <template v-else-if="nodes.length > 1">
-        <div
-          class="shrink-0 border-0 border-b-1 border-color-2 border-b-solid px-14 py-10"
-        >
+        <div class="shrink-0 border-0 b-b-1-regular px-14 py-10">
           <div class="text-base text-main font-700">
             已选中 {{ nodes.length }} 个组件
           </div>
@@ -76,9 +70,7 @@
 
       <!-- 单选 -->
       <template v-else>
-        <div
-          class="shrink-0 border-0 border-b-1 border-color-2 border-b-solid px-14 py-10"
-        >
+        <div class="shrink-0 border-0 b-b-1-regular px-14 py-10">
           <div class="flex-y-center gap-10">
             <span
               class="size-30 inline-flex shrink-0 items-center justify-center rounded-7 primary-tinted"
@@ -187,7 +179,7 @@
                       <div
                         v-for="[key, expression] in bindingEntries"
                         :key="key"
-                        class="rounded-6 border-1 border-color-2 border-solid bg-fill-quaternary p-10"
+                        class="rounded-6 b-1-regular bg-secondary p-10"
                       >
                         <div class="flex-between-center">
                           <span class="text-xs text-main">{{ key }}</span>

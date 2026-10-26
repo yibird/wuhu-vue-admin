@@ -1,6 +1,6 @@
 <template>
   <article
-    class="org-node w-172 cursor-pointer rounded-10 border-1 border-color-2 border-solid bg-container px-10 py-9 text-left shadow-all-sm motion-interactive hover:(-translate-y-1 shadow-all-md)"
+    class="org-node w-172 cursor-pointer rounded-10 b-1-regular bg-container px-10 py-9 text-left shadow-all-sm motion-interactive hover:(-translate-y-1 shadow-all-md)"
     :class="{
       'org-node--accent': root,
       'org-node--selected': selected,
@@ -19,9 +19,7 @@
       </div>
     </div>
 
-    <div
-      class="mt-8 flex min-w-0 items-center gap-6 border-t-1 border-color-1 border-t-solid pt-8"
-    >
+    <div class="mt-8 flex min-w-0 items-center gap-6 b-t-1-muted pt-8">
       <span
         v-if="initial"
         class="dept-org-accent-soft org-node__avatar size-20 flex flex-none items-center justify-center rounded-full text-xs font-600"

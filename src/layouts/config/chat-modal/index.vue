@@ -11,9 +11,7 @@
       <div
         class="h-full min-h-0 grid grid-cols-[260px_minmax(0,1fr)] max-md:grid-cols-1"
       >
-        <aside
-          class="min-h-0 border-r-1 border-r-solid border-color-1 bg-container p-14 max-md:hidden"
-        >
+        <aside class="min-h-0 b-r-1-muted bg-container p-14 max-md:hidden">
           <div class="mb-14">
             <div class="text-sm text-main font-700">工作模式</div>
             <div class="mt-10 grid grid-cols-2 gap-8">
@@ -21,10 +19,10 @@
                 v-for="mode in modes"
                 :key="mode"
                 type="button"
-                class="button h-34 rounded-6 border-1 border-color-2 border-solid text-sm transition-colors"
+                class="button h-34 rounded-6 b-1-regular text-sm transition-colors"
                 :class="
                   activeMode === mode
-                    ? 'border-primary bg-primary-tint text-primary'
+                    ? 'border-primary bg-primary/10 text-primary'
                     : 'bg-container text-secondary hover:bg-hover'
                 "
                 @click="activeMode = mode"
@@ -40,7 +38,7 @@
               v-for="action in promptActions"
               :key="action.key"
               type="button"
-              class="button min-h-54 justify-start gap-10 rounded-8 border-1 border-color-1 border-solid bg-container px-10 text-left transition-colors hover:(border-primary bg-hover)"
+              class="button min-h-54 justify-start gap-10 rounded-8 b-1-muted bg-container px-10 text-left transition-colors hover:(border-primary bg-hover)"
               @click="usePromptAction(action)"
             >
               <span
@@ -55,7 +53,7 @@
 
         <section class="min-h-0 flex flex-col">
           <div
-            class="h-58 shrink-0 flex items-center justify-between border-b-1 border-b-solid border-color-1 bg-container px-14"
+            class="h-58 shrink-0 flex items-center justify-between b-b-1-muted bg-container px-14"
           >
             <div>
               <div class="text-sm text-main font-700">智能工作台</div>
@@ -120,13 +118,11 @@
             </div>
           </Scrollbar>
 
-          <div
-            class="shrink-0 border-t-1 border-t-solid border-color-1 bg-container p-14"
-          >
+          <div class="shrink-0 b-t-1-muted bg-container p-14">
             <div class="mx-auto max-w-680">
               <textarea
                 v-model="inputText"
-                class="box-border block max-h-120 min-h-74 w-full resize-none rounded-10 border-1 border-color-2 border-solid bg-container px-12 py-10 text-sm text-main outline-none transition-[border-color,box-shadow] placeholder:text-placeholder focus:(border-primary shadow-[0_0_0_2px_rgb(var(--w-color-primary)/10%)])"
+                class="box-border block max-h-120 min-h-74 w-full resize-none rounded-10 b-1-regular bg-container px-12 py-10 text-sm text-main outline-none transition-[border-color,box-shadow] placeholder:text-placeholder focus:(border-primary shadow-[0_0_0_2px_rgb(var(--w-color-primary)/10%)])"
                 placeholder="输入问题或选择快捷能力"
                 @keydown.enter="handleEnter"
               />
@@ -136,7 +132,7 @@
                     v-for="action in promptActions.slice(0, 2)"
                     :key="action.key"
                     type="button"
-                    class="button rounded-6 bg-fill-quaternary px-8 py-5 text-xs text-secondary"
+                    class="button rounded-6 bg-secondary px-8 py-5 text-xs text-secondary"
                     @click="usePromptAction(action)"
                   >
                     {{ action.title }}

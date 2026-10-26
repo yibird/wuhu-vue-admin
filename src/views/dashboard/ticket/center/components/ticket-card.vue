@@ -1,6 +1,6 @@
 <template>
   <article
-    class="group min-w-0 cursor-pointer overflow-hidden rounded-8 border-1 border-color-2 border-solid bg-container outline-none transition-[border-color,box-shadow,transform] duration-motion-base hover:(-translate-y-2 border-primary shadow-[var(--w-shadow-card)])"
+    class="group min-w-0 cursor-pointer overflow-hidden rounded-8 b-1-regular bg-container outline-none transition-[border-color,box-shadow,transform] duration-motion-base hover:(-translate-y-2 border-primary shadow-card)"
     :aria-label="`查看工单：${props.ticket.subject}`"
     role="button"
     tabindex="0"
@@ -65,9 +65,7 @@
       </div>
     </div>
 
-    <footer
-      class="flex min-w-0 items-center gap-10 border-t-1 border-color-2 border-t-solid px-14 py-11"
-    >
+    <footer class="flex min-w-0 items-center gap-10 b-t-1-regular px-14 py-11">
       <span
         class="size-30 flex flex-none items-center justify-center rounded-full bg-fill text-xs text-main font-700"
       >

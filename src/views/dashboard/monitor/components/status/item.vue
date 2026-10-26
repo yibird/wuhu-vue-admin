@@ -1,6 +1,6 @@
 <template>
   <div
-    class="min-w-0 overflow-hidden rounded-8 border-1 border-solid border-color-2 bg-container-secondary p-12 transition-[border-color,background-color,box-shadow,transform] duration-motion-base ease-motion-enter hover:(-translate-y-2 shadow-[0_6px_16px_rgb(var(--w-color-primary)_/_10%)]) active:(translate-y-0 scale-[0.995]) motion-reduce:transition-none motion-reduce:hover:translate-y-0 motion-reduce:active:scale-100"
+    class="min-w-0 overflow-hidden rounded-8 b-1-regular bg-secondary p-12 transition-[border-color,background-color,box-shadow,transform] duration-motion-base ease-motion-enter hover:(-translate-y-2 shadow-[0_6px_16px_rgb(var(--w-color-primary)_/_10%)]) active:(translate-y-0 scale-[0.995]) motion-reduce:transition-none motion-reduce:hover:translate-y-0 motion-reduce:active:scale-100"
   >
     <div class="flex items-center justify-between gap-10">
       <div class="min-w-0">
@@ -54,10 +54,10 @@ const props = defineProps<StatusItemProps>()
 
 const toneClassMap: Record<MonitorTone, string> = {
   primary: 'primary-tinted',
-  success: 'bg-success-tint text-success',
-  warning: 'bg-warning-tint text-warning',
-  error: 'bg-error-tint text-error',
-  info: 'bg-info-tint text-info',
+  success: 'bg-success/10 text-success',
+  warning: 'bg-warning/10 text-warning',
+  error: 'bg-error/10 text-error',
+  info: 'bg-info/10 text-info',
 }
 
 const chartOption = computed<EChartsCoreOption>(() => ({

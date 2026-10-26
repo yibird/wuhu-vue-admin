@@ -13,10 +13,10 @@
       >
         <span
           :class="[
-            'relative box-border block h-80 w-full overflow-hidden rounded-7 border-2 border-solid bg-container shadow-[0_4px_12px_var(--w-shadow-color-1)] transition-[transform,box-shadow] duration-motion-base ease-motion-enter group-hover:(-translate-y-1 shadow-[0_8px_20px_var(--w-shadow-color-1)]) group-focus-visible:shadow-[0_0_0_2px_rgb(var(--w-color-primary)_/_24%)] group-active:translate-y-0 motion-reduce:(transform-none transition-none)',
+            'relative box-border block h-80 w-full overflow-hidden rounded-7 border-2 border-solid bg-container shadow-[0_4px_12px_rgb(15_23_42_/_20%)] transition-[transform,box-shadow] duration-motion-base ease-motion-enter group-hover:(-translate-y-1 shadow-[0_8px_20px_rgb(15_23_42_/_20%)]) group-focus-visible:shadow-[0_0_0_2px_rgb(var(--w-color-primary)_/_24%)] group-active:translate-y-0 motion-reduce:(transform-none transition-none)',
             appThemeMode === item.value
               ? 'border-primary shadow-[0_6px_18px_rgb(var(--w-color-primary)_/_15%)]'
-              : 'border-color-1',
+              : 'border-muted',
           ]"
         >
           <img

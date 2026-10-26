@@ -32,31 +32,31 @@ export const statusMeta: Record<DownloadStatus, DownloadMeta> = {
     label: '下载中',
     icon: 'i-lucide:loader-circle',
     color: 'processing',
-    class: 'text-primary bg-primary-tint border-primary',
+    class: 'text-primary bg-primary/10 border-primary',
   },
   waiting: {
     label: '等待中',
     icon: 'i-lucide:clock-3',
     color: 'default',
-    class: 'text-secondary bg-secondary border-color-2',
+    class: 'text-secondary bg-secondary border-regular',
   },
   paused: {
     label: '已暂停',
     icon: 'i-lucide:pause',
     color: 'warning',
-    class: 'text-warning bg-warning-tint border-warning',
+    class: 'text-warning bg-warning/10 border-warning',
   },
   success: {
     label: '已完成',
     icon: 'i-lucide:circle-check',
     color: 'success',
-    class: 'text-success bg-success-tint border-success',
+    class: 'text-success bg-success/10 border-success',
   },
   failed: {
     label: '失败',
     icon: 'i-lucide:circle-alert',
     color: 'error',
-    class: 'text-error bg-error-tint border-error',
+    class: 'text-error bg-error/10 border-error',
   },
 }
 
@@ -65,31 +65,31 @@ export const categoryMeta: Record<DownloadCategory, DownloadMeta> = {
     label: '报表',
     icon: 'i-lucide:file-spreadsheet',
     color: 'blue',
-    class: 'text-primary bg-primary-tint border-primary',
+    class: 'text-primary bg-primary/10 border-primary',
   },
   asset: {
     label: '素材',
     icon: 'i-lucide:image-down',
     color: 'cyan',
-    class: 'text-info bg-info-tint border-info',
+    class: 'text-info bg-info/10 border-info',
   },
   backup: {
     label: '备份',
     icon: 'i-lucide:database-backup',
     color: 'orange',
-    class: 'text-warning bg-warning-tint border-warning',
+    class: 'text-warning bg-warning/10 border-warning',
   },
   invoice: {
     label: '票据',
     icon: 'i-lucide:receipt',
     color: 'green',
-    class: 'text-success bg-success-tint border-success',
+    class: 'text-success bg-success/10 border-success',
   },
   other: {
     label: '其他',
     icon: 'i-lucide:file-down',
     color: 'default',
-    class: 'text-secondary bg-fill-quaternary border-color-2',
+    class: 'text-secondary bg-secondary border-regular',
   },
 }
 

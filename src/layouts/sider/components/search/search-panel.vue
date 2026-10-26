@@ -2,10 +2,10 @@
   <section
     id="layout-sider-search-panel"
     aria-label="菜单搜索面板"
-    class="w-full max-w-[calc(100vw-24px)] overflow-hidden rounded-8 border-1 border-color-2 border-solid bg-elevated shadow-[0_20px_60px_rgb(var(--w-bg-mask-rgb)_/_36%)]"
+    class="w-full max-w-[calc(100vw-24px)] overflow-hidden rounded-8 b-1-regular bg-overlay shadow-[0_20px_60px_rgb(15 23 42_/_36%)]"
   >
     <header
-      class="flex items-center justify-between gap-12 border-b-1 border-color-1 border-b-solid bg-fill-1 px-14 py-12"
+      class="flex items-center justify-between gap-12 b-b-1-muted bg-secondary px-14 py-12"
     >
       <div class="min-w-0 flex items-center gap-10">
         <span
@@ -21,7 +21,7 @@
         </div>
       </div>
       <kbd
-        class="shrink-0 rounded-4 border-1 border-color-2 border-solid bg-container px-6 py-3 text-11px text-muted leading-14px"
+        class="shrink-0 rounded-4 b-1-regular bg-container px-6 py-3 text-11px text-muted leading-14px"
       >
         ↑↓
       </kbd>
@@ -53,9 +53,9 @@
             role="option"
             :aria-selected="activeIndex === index"
             :class="[
-              'content-auto-52 group w-full min-w-0 flex cursor-pointer items-center gap-10 rounded-7 border-1 border-transparent border-solid bg-transparent px-8 py-8 text-left outline-none transition-[background-color,border-color,transform,box-shadow] duration-motion-base hover:(translate-x-1 border-color-2 bg-hover) focus-visible:border-primary focus-visible:shadow-[0_0_0_2px_rgb(var(--w-color-primary)_/_16%)] active:translate-x-0 motion-reduce:(transform-none transition-none)',
+              'content-auto-52 group w-full min-w-0 flex cursor-pointer items-center gap-10 rounded-7 b-1-transparent bg-transparent px-8 py-8 text-left outline-none transition-[background-color,border-color,transform,box-shadow] duration-motion-base hover:(translate-x-1 border-regular bg-hover) focus-visible:border-primary focus-visible:shadow-[0_0_0_2px_rgb(var(--w-color-primary)_/_16%)] active:translate-x-0 motion-reduce:(transform-none transition-none)',
               activeIndex === index
-                ? 'border-primary bg-primary-tint shadow-[0_4px_12px_rgb(var(--w-color-primary)_/_10%)]'
+                ? 'border-primary bg-primary/10 shadow-[0_4px_12px_rgb(var(--w-color-primary)_/_10%)]'
                 : '',
             ]"
             @mouseenter="emits('active-change', index)"
@@ -96,10 +96,10 @@
 
         <div
           v-else-if="keyword"
-          class="flex flex-col items-center justify-center rounded-7 bg-fill-1 px-12 py-24 text-center"
+          class="flex flex-col items-center justify-center rounded-7 bg-secondary px-12 py-24 text-center"
         >
           <span
-            class="size-42 flex items-center justify-center rounded-full bg-fill-4 text-muted"
+            class="size-42 flex items-center justify-center rounded-full bg-muted text-muted"
           >
             <Icon name="i-lucide:search-x" :size="19" />
           </span>
@@ -111,14 +111,14 @@
 
         <div
           v-else
-          class="flex items-center gap-10 rounded-7 bg-fill-1 px-12 py-12 text-xs text-muted"
+          class="flex items-center gap-10 rounded-7 bg-secondary px-12 py-12 text-xs text-muted"
         >
           <Icon name="i-lucide:sparkles" :size="16" class="text-primary" />
           <span>支持页面名称、拼音、菜单路径和所属目录</span>
         </div>
       </section>
 
-      <section class="border-t-1 border-color-1 border-t-solid px-10 py-10">
+      <section class="b-t-1-muted px-10 py-10">
         <div class="mb-6 flex items-center justify-between px-4">
           <span class="flex items-center gap-6 text-xs text-muted font-500">
             <Icon name="i-lucide:history" :size="14" />
@@ -161,7 +161,7 @@
             <button
               type="button"
               :aria-label="`删除搜索记录 ${record}`"
-              class="pointer-events-none mr-4 size-26 flex shrink-0 cursor-pointer items-center justify-center rounded-5 border-0 bg-transparent p-0 text-muted opacity-0 outline-none transition-[background-color,color,opacity] duration-motion-fast group-hover:(pointer-events-auto opacity-100) hover:(bg-fill-4 text-main) focus-visible:(pointer-events-auto bg-fill-4 text-primary opacity-100)"
+              class="pointer-events-none mr-4 size-26 flex shrink-0 cursor-pointer items-center justify-center rounded-5 border-0 bg-transparent p-0 text-muted opacity-0 outline-none transition-[background-color,color,opacity] duration-motion-fast group-hover:(pointer-events-auto opacity-100) hover:(bg-muted text-main) focus-visible:(pointer-events-auto bg-muted text-primary opacity-100)"
               @click="emits('remove-history', record)"
             >
               <Icon name="i-lucide:x" :size="14" />

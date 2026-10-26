@@ -1,7 +1,7 @@
 <template>
   <a-drawer v-model:open="open" destroy-on-hidden :size="700" :title="title">
     <div
-      class="mb-16 flex min-w-0 items-center gap-12 rounded-8 border-1 border-color-2 border-solid bg-page p-12"
+      class="mb-16 flex min-w-0 items-center gap-12 rounded-8 b-1-regular bg-page p-12"
     >
       <span
         class="size-48 flex flex-none items-center justify-center rounded-10"
@@ -35,9 +35,7 @@
           >
             <template #popupRender="menu">
               <component :is="menu" />
-              <div
-                class="select-dropdown-footer border-t-1 border-color-2 border-t-solid p-6"
-              >
+              <div class="select-dropdown-footer b-t-1-regular p-6">
                 <button
                   type="button"
                   class="h-34 w-full flex items-center gap-8 rounded-6 border-0 bg-transparent px-8 text-sm text-primary cursor-pointer transition-colors duration-motion-base hover:bg-hover focus-visible:bg-hover focus-visible:outline-none"

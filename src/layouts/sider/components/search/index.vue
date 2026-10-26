@@ -5,7 +5,7 @@
       :class="[
         'group h-34 flex-center overflow-hidden rounded-5 border-1 border-solid bg-container px-10 text-main outline-none transition-[background-color,border-color,box-shadow,transform] duration-motion-base ease-motion-enter active:scale-[0.99]',
         isCollapsed ? 'cursor-pointer' : '',
-        panelOpen ? 'border-primary' : 'border-color-3',
+        panelOpen ? 'border-primary' : 'border-main',
       ]"
       role="combobox"
       :aria-expanded="panelOpen"
@@ -55,7 +55,7 @@
         v-if="panelOpen"
         ref="panelRef"
         :style="panelStyle"
-        class="fixed z-[100000] overflow-hidden rounded-10 drop-shadow-[0_24px_48px_rgb(var(--w-bg-mask-rgb)_/_18%)]"
+        class="fixed z-[100000] overflow-hidden rounded-10 drop-shadow-[0_24px_48px_rgb(15 23 42_/_18%)]"
         role="dialog"
         aria-label="菜单搜索面板"
       >

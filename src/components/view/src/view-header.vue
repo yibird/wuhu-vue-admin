@@ -135,7 +135,7 @@ function toggle() {
       color: rgb(var(--w-text-secondary));
       cursor: pointer;
       background: rgb(var(--w-bg-container));
-      border: 1px solid rgb(var(--w-border-color-2));
+      border: 1px solid rgb(var(--w-border-regular));
       border-radius: 6px;
       box-shadow: 0 4px 12px rgb(0 0 0 / 10%);
 

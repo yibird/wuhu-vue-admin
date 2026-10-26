@@ -12,7 +12,7 @@
     >
       <div class="min-h-0 p-16 w-full h-full overflow-x-hidden overflow-y-auto">
         <section
-          class="mx-auto min-w-860 rounded-8 border-1 border-white/12 border-solid bg-[rgb(4_13_28)] p-18 shadow-[0_24px_72px_rgb(0_0_0_/_28%)]"
+          class="mx-auto min-w-860 rounded-8 b-1-white/12 bg-[rgb(4_13_28)] p-18 shadow-[0_24px_72px_rgb(0_0_0_/_28%)]"
           :style="{
             aspectRatio: `${screenConfig.width} / ${screenConfig.height}`,
           }"
@@ -34,7 +34,7 @@
             <article
               v-for="widget in widgets"
               :key="widget.id"
-              class="min-h-0 overflow-hidden rounded-8 border-1 border-white/10 border-solid bg-white/7 p-12"
+              class="min-h-0 overflow-hidden rounded-8 b-1-white/10 bg-white/7 p-12"
               :style="{
                 gridColumn: `span ${widget.colSpan}`,
                 gridRow: `span ${widget.rowSpan}`,

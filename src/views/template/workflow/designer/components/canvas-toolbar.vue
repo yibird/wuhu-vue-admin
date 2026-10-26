@@ -2,14 +2,14 @@
   <div
     role="toolbar"
     aria-label="画布导航"
-    class="workflow-canvas-controls absolute bottom-14 left-1/2 z-5 flex -translate-x-1/2 items-center gap-4 rounded-12 border-1 border-color-2 border-solid bg-main p-5 shadow-floating backdrop-blur-10"
+    class="workflow-canvas-controls absolute bottom-14 left-1/2 z-5 flex -translate-x-1/2 items-center gap-4 rounded-12 b-1-regular bg-container p-5 shadow-overlay backdrop-blur-10"
   >
     <a-tooltip title="选择模式">
       <a-button
         type="text"
         class="!h-32 !w-32 !p-0 text-regular hover:text-primary"
         :class="{
-          'bg-fill-tertiary text-primary': interactionMode === 'select',
+          'bg-muted text-primary': interactionMode === 'select',
         }"
         title="选择模式"
         aria-label="选择模式"
@@ -27,10 +27,7 @@
       </a-button>
     </a-tooltip>
 
-    <span
-      aria-hidden="true"
-      class="mx-1 h-18 border-l-1 border-color-2 border-l-solid"
-    />
+    <span aria-hidden="true" class="mx-1 h-18 b-l-1-regular" />
     <a-tooltip title="撤销">
       <a-button
         type="text"
@@ -57,10 +54,7 @@
       </a-button>
     </a-tooltip>
 
-    <span
-      aria-hidden="true"
-      class="mx-1 h-18 border-l-1 border-color-2 border-l-solid"
-    />
+    <span aria-hidden="true" class="mx-1 h-18 b-l-1-regular" />
     <a-tooltip title="放大">
       <a-button
         type="text"
@@ -117,7 +111,7 @@
       <a-button
         type="text"
         class="!h-32 !w-32 !p-0 text-regular hover:text-primary"
-        :class="{ 'bg-fill-tertiary text-primary': nodesLocked }"
+        :class="{ 'bg-muted text-primary': nodesLocked }"
         :title="nodesLocked ? '解锁节点拖拽' : '锁定节点拖拽'"
         :aria-pressed="nodesLocked"
         @click="emits('toggle-nodes-locked')"
@@ -129,10 +123,7 @@
       </a-button>
     </a-tooltip>
 
-    <span
-      aria-hidden="true"
-      class="mx-1 h-18 border-l-1 border-color-2 border-l-solid"
-    />
+    <span aria-hidden="true" class="mx-1 h-18 b-l-1-regular" />
     <a-tooltip>
       <a-button
         type="text"

@@ -1,13 +1,13 @@
 <template>
   <section
-    class="overflow-hidden rounded-8 border-1 border-solid border-color-2 bg-container shadow-[var(--w-shadow-card)]"
+    class="overflow-hidden rounded-8 b-1-regular bg-container shadow-card"
   >
     <header
-      class="flex flex-wrap items-center justify-between gap-12 border-b-1 border-b-solid border-color-2 px-14 py-13 sm:px-16"
+      class="flex flex-wrap items-center justify-between gap-12 b-b-1-regular px-14 py-13 sm:px-16"
     >
       <div class="min-w-0 flex items-center gap-10">
         <span
-          class="size-32 shrink-0 flex-center rounded-8 bg-primary-tint text-primary"
+          class="size-32 shrink-0 flex-center rounded-8 bg-primary/10 text-primary"
         >
           <Icon :name="icon" :size="16" />
         </span>

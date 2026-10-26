@@ -214,7 +214,7 @@ const gridStyle = computed<CSSProperties>(() => {
   const size = 20 * view.zoom.value
   return {
     backgroundImage:
-      'radial-gradient(rgb(var(--w-border-color-2)) 1px, transparent 1px)',
+      'radial-gradient(rgb(var(--w-border-regular)) 1px, transparent 1px)',
     backgroundSize: `${size}px ${size}px`,
     backgroundPosition: `${view.panX.value}px ${view.panY.value}px`,
   }
@@ -355,7 +355,7 @@ onBeforeUnmount(() => {
 <style scoped lang="less">
 .lc-canvas__bar {
   background: rgb(var(--w-bg-container));
-  border-bottom: 1px solid rgb(var(--w-border-color-2));
+  border-bottom: 1px solid rgb(var(--w-border-regular));
 }
 
 .lc-canvas__body {

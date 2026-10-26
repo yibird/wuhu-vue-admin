@@ -11,7 +11,7 @@
         <article
           v-for="item in 4"
           :key="item"
-          class="min-h-190 min-w-0 rounded-8 border-1 border-color-2 border-solid p-14"
+          class="min-h-190 min-w-0 rounded-8 b-1-regular p-14"
         >
           <div class="flex items-start gap-10">
             <a-skeleton-avatar active :size="46" class="shrink-0" />

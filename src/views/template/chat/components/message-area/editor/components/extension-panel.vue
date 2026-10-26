@@ -20,7 +20,7 @@
         v-for="action in actions"
         :key="action.key"
         type="button"
-        class="button min-h-66 justify-start gap-10 rounded-8 border-1 border-solid border-color-1 bg-container px-10 py-9 text-left transition-colors hover:(border-primary bg-hover)"
+        class="button min-h-66 justify-start gap-10 rounded-8 b-1-muted bg-container px-10 py-9 text-left transition-colors hover:(border-primary bg-hover)"
         @click="emits('select', action)"
       >
         <span

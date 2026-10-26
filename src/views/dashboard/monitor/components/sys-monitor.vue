@@ -6,7 +6,7 @@
     description="关键资源使用率趋势"
     body-class="p-0"
   >
-    <div class="grid grid-cols-3 border-b-1 border-b-solid border-color-2">
+    <div class="grid grid-cols-3 b-b-1-regular">
       <div v-for="item in 3" :key="item" class="px-16 py-12">
         <a-skeleton-input active size="small" class="!w-46" />
         <a-skeleton-input active class="!mt-6 !w-72" />
@@ -17,7 +17,7 @@
         <div
           v-for="height in chartBars"
           :key="height"
-          class="flex-1 rounded-t-6 bg-fill-tertiary"
+          class="flex-1 rounded-t-6 bg-muted"
           :style="{ height: `${height}%` }"
         />
       </div>
@@ -41,16 +41,14 @@
       </div>
     </template>
 
-    <div
-      class="grid grid-cols-3 gap-0 border-b-1 border-b-solid border-color-2"
-    >
+    <div class="grid grid-cols-3 gap-0 b-b-1-regular">
       <div class="min-w-0 px-16 py-12">
         <div class="text-xs text-secondary">当前</div>
         <div class="mt-4 text-lg text-main font-700">
           <NumberTicker :value="latestValue" :duration="750" suffix="%" />
         </div>
       </div>
-      <div class="min-w-0 border-x-1 border-x-solid border-color-2 px-16 py-12">
+      <div class="min-w-0 b-x-1-regular px-16 py-12">
         <div class="text-xs text-secondary">峰值</div>
         <div class="mt-4 text-lg text-main font-700">
           <NumberTicker :value="peakValue" :duration="750" suffix="%" />
@@ -153,7 +151,7 @@ const chartOption = computed<EChartsCoreOption>(() => {
       splitLine: {
         lineStyle: {
           color: getCssRgbVarAlpha(
-            '--w-border-color-2',
+            '--w-border-regular',
             0.62,
             'rgba(148, 163, 184, 0.18)'
           ),

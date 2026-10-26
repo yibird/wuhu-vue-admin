@@ -17,7 +17,7 @@
     </Teleport>
 
     <div
-      class="approval-node group relative w-250 overflow-visible rounded-10 border-1 border-color-2 border-solid bg-container p-0 text-left shadow-[var(--w-shadow-card)] transition-[transform,border-color,box-shadow,background-color] duration-motion-base ease-motion-enter hover:(-translate-y-1 border-primary/60 shadow-[0_12px_28px_var(--w-shadow-color-1)]) motion-reduce:transition-none motion-reduce:hover:translate-y-0"
+      class="approval-node group relative w-250 overflow-visible rounded-10 b-1-regular bg-container p-0 text-left shadow-card transition-[transform,border-color,box-shadow,background-color] duration-motion-base ease-motion-enter hover:(-translate-y-1 border-primary/60 shadow-[0_12px_28px_rgb(15_23_42_/_20%)]) motion-reduce:transition-none motion-reduce:hover:translate-y-0"
       :aria-selected="selected"
       :data-approval-node-id="node.id"
       :data-required="node.required ? 'true' : undefined"
@@ -34,7 +34,7 @@
 
       <div
         v-if="!node.required && !readonly"
-        class="absolute right-7 top-7 z-40 hidden gap-5 rounded-10 border-1 border-color-1 border-solid bg-container/88 p-5 shadow-[var(--w-shadow-card)] backdrop-blur-[6px] group-hover:flex"
+        class="absolute right-7 top-7 z-40 hidden gap-5 rounded-10 b-1-muted bg-container/88 p-5 shadow-card backdrop-blur-[6px] group-hover:flex"
       >
         <a-button
           class="approval-node-action approval-node-action--copy size-30 rounded-7 p-0 text-secondary"
@@ -62,7 +62,7 @@
       @click="emits('addAfter', node.id, 'approver')"
     >
       <span
-        class="approval-add-icon mt-0 inline-grid size-28 place-items-center rounded-full border-1 border-color-2 border-solid bg-container shadow-[0_6px_16px_rgb(15_23_42_/_10%)] transition"
+        class="approval-add-icon mt-0 inline-grid size-28 place-items-center rounded-full b-1-regular bg-container shadow-[0_6px_16px_rgb(15_23_42_/_10%)] transition"
       >
         <Icon name="i-lucide:plus" :size="15" />
       </span>
@@ -72,7 +72,7 @@
       <div
         v-for="branch in node.branches"
         :key="branch.id"
-        class="approval-branch min-w-250 rounded-10 border-1 border-color-2 border-solid bg-fill p-10"
+        class="approval-branch min-w-250 rounded-10 b-1-regular bg-fill p-10"
       >
         <div class="mb-10 flex items-start justify-between gap-8">
           <div class="min-w-0">
@@ -112,7 +112,7 @@
       @click="emits('addAfter', node.id, 'approver')"
     >
       <span
-        class="approval-add-icon mt-0 inline-grid size-28 place-items-center rounded-full border-1 border-color-2 border-solid bg-container shadow-[0_6px_16px_rgb(15_23_42_/_10%)] transition"
+        class="approval-add-icon mt-0 inline-grid size-28 place-items-center rounded-full b-1-regular bg-container shadow-[0_6px_16px_rgb(15_23_42_/_10%)] transition"
       >
         <Icon name="i-lucide:plus" :size="15" />
       </span>
@@ -236,7 +236,7 @@ function handleChildAddAfter(id: string, type: ApprovalNodeType) {
   height: 18px;
   margin: 0 auto;
   content: '';
-  background: rgb(var(--w-border-color-3));
+  background: rgb(var(--w-border-main));
   border-radius: 999px;
 }
 
@@ -247,7 +247,7 @@ function handleChildAddAfter(id: string, type: ApprovalNodeType) {
   height: 12px;
   margin: 0 auto;
   content: '';
-  background: rgb(var(--w-border-color-3));
+  background: rgb(var(--w-border-main));
   border-radius: 999px;
 }
 
@@ -283,7 +283,7 @@ function handleChildAddAfter(id: string, type: ApprovalNodeType) {
   width: 2px;
   height: 9px;
   content: '';
-  background: rgb(var(--w-border-color-3));
+  background: rgb(var(--w-border-main));
   border-radius: 999px;
   transform: translateX(-50%);
 }
@@ -295,7 +295,7 @@ function handleChildAddAfter(id: string, type: ApprovalNodeType) {
   left: 12%;
   height: 2px;
   content: '';
-  background: rgb(var(--w-border-color-3));
+  background: rgb(var(--w-border-main));
   border-radius: 999px;
 }
 
@@ -309,7 +309,7 @@ function handleChildAddAfter(id: string, type: ApprovalNodeType) {
   border-color: color-mix(
     in srgb,
     var(--node-accent) 22%,
-    rgb(var(--w-border-color-2))
+    rgb(var(--w-border-regular))
   );
 }
 
@@ -320,7 +320,7 @@ function handleChildAddAfter(id: string, type: ApprovalNodeType) {
   width: 2px;
   height: 9px;
   content: '';
-  background: rgb(var(--w-border-color-3));
+  background: rgb(var(--w-border-main));
   border-radius: 999px;
   transform: translateX(-50%);
 }

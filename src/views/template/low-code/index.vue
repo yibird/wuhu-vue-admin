@@ -21,13 +21,13 @@
       >
         <aside
           v-show="!fullscreen"
-          class="min-h-0 overflow-hidden rounded-8 border-1 border-color-2 border-solid bg-container shadow-elevated"
+          class="min-h-0 overflow-hidden rounded-8 b-1-regular bg-container shadow-overlay"
         >
           <SidebarPanel />
         </aside>
 
         <CanvasStage
-          class="min-h-0 rounded-8 border-1 border-color-2 border-solid bg-container shadow-elevated"
+          class="min-h-0 rounded-8 b-1-regular bg-container shadow-overlay"
           :space-pressed="spacePressed"
           :fullscreen="fullscreen"
           @toggle-fullscreen="fullscreen = !fullscreen"
@@ -36,7 +36,7 @@
 
         <aside
           v-show="!fullscreen"
-          class="min-h-0 overflow-hidden rounded-8 border-1 border-color-2 border-solid bg-container shadow-elevated"
+          class="min-h-0 overflow-hidden rounded-8 b-1-regular bg-container shadow-overlay"
         >
           <InspectorPanel v-model:mode="inspectorMode" />
         </aside>

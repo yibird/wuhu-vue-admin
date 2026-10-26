@@ -72,7 +72,7 @@ const {
   &:hover {
     color: rgb(var(--w-text-main));
     background: rgb(var(--w-bg-hover));
-    box-shadow: var(--w-shadow-sm);
+    box-shadow: var(--w-shadow-button);
 
     .w-icon {
       transform: scale(1.08);

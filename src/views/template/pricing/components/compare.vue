@@ -1,11 +1,9 @@
 <template>
   <section
-    class="overflow-hidden rounded-16 border-1 border-color-1 border-solid bg-container shadow-[0_10px_30px_rgb(15_23_42_/_5%)]"
+    class="overflow-hidden rounded-16 b-1-muted bg-container shadow-[0_10px_30px_rgb(15_23_42_/_5%)]"
     aria-label="功能对比"
   >
-    <div
-      class="flex items-center justify-between gap-12 border-b-1 border-color-1 border-b-solid p-20"
-    >
+    <div class="flex items-center justify-between gap-12 b-b-1-muted p-20">
       <div>
         <span
           class="inline-flex items-center gap-8 rounded-full bg-primary/10 px-10 py-4 text-xs text-primary font-800 uppercase tracking-wider"
@@ -24,19 +22,18 @@
           class="grid grid-cols-[minmax(210px,1.35fr)_repeat(3,minmax(150px,1fr))]"
         >
           <div
-            class="min-w-0 bg-fill-tertiary/60 px-20 py-14 text-left text-sm text-main font-800"
+            class="min-w-0 bg-muted/60 px-20 py-14 text-left text-sm text-main font-800"
           >
             能力模块
           </div>
           <div
             v-for="column in planColumns"
             :key="column.key"
-            class="min-w-0 border-l-1 border-color-1 border-l-solid px-16 py-14 text-center text-sm font-900 transition-colors duration-motion-base ease-motion-standard motion-reduce:transition-none"
+            class="min-w-0 b-l-1-muted px-16 py-14 text-center text-sm font-900 transition-colors duration-motion-base ease-motion-standard motion-reduce:transition-none"
             :class="{
               'bg-gradient-to-b from-primary/12 to-primary/5 text-primary':
                 props.activePlanKey === column.key,
-              'bg-fill-tertiary/60 text-main':
-                props.activePlanKey !== column.key,
+              'bg-muted/60 text-main': props.activePlanKey !== column.key,
             }"
           >
             {{ column.label }}
@@ -47,7 +44,7 @@
         <div
           v-for="item in props.features"
           :key="`${item.group}-${item.name}`"
-          class="group grid grid-cols-[minmax(210px,1.35fr)_repeat(3,minmax(150px,1fr))] border-t-1 border-color-1 border-t-solid transition-colors duration-motion-base ease-motion-standard hover:bg-primary/[0.025] motion-reduce:transition-none"
+          class="group grid grid-cols-[minmax(210px,1.35fr)_repeat(3,minmax(150px,1fr))] b-t-1-muted transition-colors duration-motion-base ease-motion-standard hover:bg-primary/[0.025] motion-reduce:transition-none"
         >
           <div class="min-w-0 px-20 py-13 text-left">
             <small
@@ -62,7 +59,7 @@
           <div
             v-for="column in planColumns"
             :key="column.key"
-            class="min-w-0 border-l-1 border-color-1 border-l-solid px-16 py-13 text-center text-sm transition-[background-color,color] duration-motion-moderate ease-motion-standard motion-reduce:transition-none"
+            class="min-w-0 b-l-1-muted px-16 py-13 text-center text-sm transition-[background-color,color] duration-motion-moderate ease-motion-standard motion-reduce:transition-none"
             :class="{
               'bg-primary/[0.06] text-primary font-700':
                 props.activePlanKey === column.key,

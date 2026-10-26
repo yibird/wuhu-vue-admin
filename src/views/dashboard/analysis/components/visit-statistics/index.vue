@@ -57,7 +57,7 @@ const chartOption = computed<EChartsCoreOption>(() => ({
     splitLine: {
       lineStyle: {
         color: getCssRgbVarAlpha(
-          '--w-border-color-2',
+          '--w-border-regular',
           0.64,
           'rgba(148, 163, 184, 0.18)'
         ),

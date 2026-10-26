@@ -7,7 +7,7 @@
         </p>
         <details
           v-if="props.showDetails"
-          class="mt-14 rounded-8 border border-color-2 bg-fill-1 p-16 text-left dark:bg-fill-2"
+          class="mt-14 rounded-8 border border-regular bg-secondary p-16 text-left dark:bg-secondary"
         >
           <summary class="cursor-pointer text-sm text-main font-500">
             查看错误详情
@@ -25,7 +25,7 @@
             </div>
             <pre
               v-if="stack"
-              class="m-0 max-h-220 overflow-auto whitespace-pre-wrap break-words rounded-6 bg-fill-3 p-12 text-xs leading-5 text-secondary"
+              class="m-0 max-h-220 overflow-auto whitespace-pre-wrap break-words rounded-6 bg-secondary p-12 text-xs leading-5 text-secondary"
               >{{ stack }}</pre>
           </div>
         </details>

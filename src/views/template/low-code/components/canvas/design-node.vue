@@ -330,7 +330,7 @@ function onLeave(event: PointerEvent) {
   line-height: 17px;
   color: rgb(var(--w-color-primary));
   pointer-events: none;
-  background: rgb(var(--w-bg-elevated));
+  background: rgb(var(--w-bg-overlay));
   border: 1px solid rgb(var(--w-color-primary));
   border-radius: 4px;
   transform: translateY(-100%);

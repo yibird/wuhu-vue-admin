@@ -8,7 +8,7 @@
       @open-global-search="emits('openGlobalSearch')"
     />
 
-    <section class="border-b-1 border-b-solid border-color-1 px-10 py-10">
+    <section class="b-b-1-muted px-10 py-10">
       <div class="mb-8 flex items-center justify-between">
         <span class="text-xs text-main font-600">通知</span>
         <span class="text-xs text-placeholder">
@@ -22,12 +22,12 @@
       <div class="grid grid-cols-2 gap-8">
         <button
           type="button"
-          class="group min-w-0 flex items-center gap-8 rounded-6 border-1 border-color-1 border-solid bg-container p-8 text-left transition-[border-color,background-color,box-shadow,transform] duration-motion-base hover:(translate-y--1 border-primary bg-hover shadow-all-sm) focus-visible:(outline-none border-primary shadow-[0_0_0_2px_rgb(var(--w-color-primary)/24%)]) motion-reduce:(transform-none transition-none)"
+          class="group min-w-0 flex items-center gap-8 rounded-6 b-1-muted bg-container p-8 text-left transition-[border-color,background-color,box-shadow,transform] duration-motion-base hover:(translate-y--1 border-primary bg-hover shadow-all-sm) focus-visible:(outline-none border-primary shadow-[0_0_0_2px_rgb(var(--w-color-primary)/24%)]) motion-reduce:(transform-none transition-none)"
           aria-label="打开好友通知"
           @click="openNotification('friend')"
         >
           <span
-            class="size-30 shrink-0 flex items-center justify-center rounded-5 bg-primary-tint text-primary transition-transform duration-motion-base group-hover:scale-105 motion-reduce:transform-none"
+            class="size-30 shrink-0 flex items-center justify-center rounded-5 bg-primary/10 text-primary transition-transform duration-motion-base group-hover:scale-105 motion-reduce:transform-none"
           >
             <Icon name="i-lucide:user-round-plus" :size="15" />
           </span>
@@ -47,12 +47,12 @@
         </button>
         <button
           type="button"
-          class="group min-w-0 flex items-center gap-8 rounded-6 border-1 border-color-1 border-solid bg-container p-8 text-left transition-[border-color,background-color,box-shadow,transform] duration-motion-base hover:(translate-y--1 border-primary bg-hover shadow-all-sm) focus-visible:(outline-none border-primary shadow-[0_0_0_2px_rgb(var(--w-color-primary)/24%)]) motion-reduce:(transform-none transition-none)"
+          class="group min-w-0 flex items-center gap-8 rounded-6 b-1-muted bg-container p-8 text-left transition-[border-color,background-color,box-shadow,transform] duration-motion-base hover:(translate-y--1 border-primary bg-hover shadow-all-sm) focus-visible:(outline-none border-primary shadow-[0_0_0_2px_rgb(var(--w-color-primary)/24%)]) motion-reduce:(transform-none transition-none)"
           aria-label="打开群聊通知"
           @click="openNotification('group')"
         >
           <span
-            class="size-30 shrink-0 flex items-center justify-center rounded-5 bg-primary-tint text-primary transition-transform duration-motion-base group-hover:scale-105 motion-reduce:transform-none"
+            class="size-30 shrink-0 flex items-center justify-center rounded-5 bg-primary/10 text-primary transition-transform duration-motion-base group-hover:scale-105 motion-reduce:transform-none"
           >
             <Icon name="i-lucide:messages-square" :size="15" />
           </span>
@@ -73,7 +73,7 @@
       </div>
     </section>
 
-    <div class="border-b-1 border-b-solid border-color-1 px-10 py-9">
+    <div class="b-b-1-muted px-10 py-9">
       <a-segmented
         v-model:value="activeSegment"
         block

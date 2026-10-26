@@ -5,7 +5,7 @@
         class="flex flex-wrap items-center gap-12 rounded-4 bg-container px-16 py-12"
       >
         <span
-          class="size-42 flex-none flex-center rounded-4 bg-primary-tint text-primary"
+          class="size-42 flex-none flex-center rounded-4 bg-primary/10 text-primary"
         >
           <Icon name="i-lucide:user-round-check" />
         </span>
@@ -47,7 +47,7 @@
             >
               <div class="flex items-start gap-10">
                 <span
-                  class="size-40 flex-none flex-center rounded-4 bg-primary-tint text-primary"
+                  class="size-40 flex-none flex-center rounded-4 bg-primary/10 text-primary"
                 >
                   <Icon name="i-lucide:folder-kanban" :size="20" />
                 </span>
@@ -105,7 +105,7 @@
               </div>
 
               <div
-                class="mt-auto flex items-center justify-between border-t-1 border-color-2 border-t-solid pt-10"
+                class="mt-auto flex items-center justify-between b-t-1-regular pt-10"
               >
                 <a-tag :color="priorityMeta[item.priority].color">
                   {{ priorityMeta[item.priority].label }}优先级

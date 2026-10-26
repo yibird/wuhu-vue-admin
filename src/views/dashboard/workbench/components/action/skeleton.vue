@@ -11,7 +11,7 @@
         <div
           v-for="item in 6"
           :key="item"
-          class="min-h-105 min-w-0 rounded-8 border-1 border-color-2 border-solid p-12"
+          class="min-h-105 min-w-0 rounded-8 b-1-regular p-12"
         >
           <a-skeleton-avatar active :size="34" />
           <a-skeleton-input active class="mt-10 !w-84" />

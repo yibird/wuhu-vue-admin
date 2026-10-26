@@ -7,7 +7,7 @@
       :initial="{ opacity: 0, y: 8 }"
       :animate="{ opacity: 1, y: 0 }"
       :transition="{ duration: 0.24, delay: index * 0.035, ease: 'easeOut' }"
-      class="min-w-0 rounded-8 border-1 border-color-2 border-solid bg-container p-13 shadow-[var(--w-shadow-card)]"
+      class="min-w-0 rounded-8 b-1-regular bg-container p-13 shadow-card"
     >
       <a-skeleton v-if="loading" active :paragraph="{ rows: 1 }" />
       <div v-else class="flex items-start gap-11">
@@ -55,21 +55,21 @@ const metrics = computed(() => [
     value: `${props.successRate}%`,
     hint: '已完成实例',
     icon: 'i-lucide:circle-check',
-    tone: 'text-success bg-success-tint',
+    tone: 'text-success bg-success/10',
   },
   {
     label: '失败实例',
     value: String(props.failureCount),
     hint: '需要检查或重试',
     icon: 'i-lucide:circle-x',
-    tone: 'text-error bg-error-tint',
+    tone: 'text-error bg-error/10',
   },
   {
     label: '未处理告警',
     value: String(props.unresolvedAlertCount),
     hint: '严重与警告事件',
     icon: 'i-lucide:triangle-alert',
-    tone: 'text-warning bg-warning-tint',
+    tone: 'text-warning bg-warning/10',
   },
 ])
 </script>

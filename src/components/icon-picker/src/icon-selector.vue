@@ -56,7 +56,7 @@
 
         <section class="min-h-0 min-w-0 flex flex-col">
           <div
-            class="h-36 shrink-0 flex items-center justify-between gap-8 border-b-1 border-color-1 border-b-solid px-10 text-xs text-muted"
+            class="h-36 shrink-0 flex items-center justify-between gap-8 b-b-1-muted px-10 text-xs text-muted"
           >
             <span class="truncate">{{ title }}</span>
             <span class="shrink-0">{{ visibleOptions.length }} 个</span>

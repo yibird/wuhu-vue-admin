@@ -7,7 +7,7 @@
         class="min-h-220 flex flex-col items-center justify-center gap-8 p-24 text-center text-secondary"
       >
         <span
-          class="size-48 flex items-center justify-center rounded-full bg-fill-tertiary text-muted"
+          class="size-48 flex items-center justify-center rounded-full bg-muted text-muted"
         >
           <Icon name="i-lucide:messages-square" :size="24" />
         </span>
@@ -30,7 +30,7 @@
           class="conversation-list-item min-w-0"
         >
           <article
-            class="group conversation-card relative min-h-48 w-full min-w-0 overflow-hidden rounded-8 border-1 border-transparent border-solid bg-container text-regular hover:(border-color-3 shadow-all-sm) focus-within:(border-primary/35 bg-hover shadow-[0_0_0_2px_rgb(var(--w-color-primary)_/_8%)])"
+            class="group conversation-card relative min-h-48 w-full min-w-0 overflow-hidden rounded-8 b-1-transparent bg-container text-regular hover:(border-main shadow-all-sm) focus-within:(border-primary/35 bg-hover shadow-[0_0_0_2px_rgb(var(--w-color-primary)_/_8%)])"
             :class="
               item.id === activeId
                 ? 'border-primary/25! bg-selected! text-main'
@@ -54,7 +54,7 @@
                 "
               >
                 <span
-                  class="size-28 flex shrink-0 items-center justify-center rounded-7 bg-fill-tertiary text-muted transition-[background-color,color,transform] duration-motion-fast ease-motion-enter group-hover:scale-105 motion-reduce:transform-none"
+                  class="size-28 flex shrink-0 items-center justify-center rounded-7 bg-muted text-muted transition-[background-color,color,transform] duration-motion-fast ease-motion-enter group-hover:scale-105 motion-reduce:transform-none"
                   :class="
                     item.id === activeId ? 'bg-primary/12 text-primary' : ''
                   "
@@ -87,7 +87,7 @@
                     </strong>
                     <span
                       v-if="item.tag"
-                      class="shrink-0 rounded-4 bg-fill-tertiary px-5 text-10px text-secondary leading-16px"
+                      class="shrink-0 rounded-4 bg-muted px-5 text-10px text-secondary leading-16px"
                     >
                       {{ item.tag }}
                     </span>

@@ -1,9 +1,9 @@
 <template>
   <aside
-    class="w-icon-category-nav-panel min-h-0 min-w-0 flex flex-col border-r-1 border-color-1 border-r-solid bg-fill-1"
+    class="w-icon-category-nav-panel min-h-0 min-w-0 flex flex-col b-r-1-muted bg-secondary"
   >
     <div
-      class="h-48 shrink-0 flex items-center justify-between gap-6 border-b-1 border-color-1 border-b-solid bg-fill-1 px-10 text-xs text-secondary font-500"
+      class="h-48 shrink-0 flex items-center justify-between gap-6 b-b-1-muted bg-secondary px-10 text-xs text-secondary font-500"
     >
       <div class="min-w-0 flex items-center gap-6">
         <Icon
@@ -14,7 +14,7 @@
         <span class="truncate">图标库</span>
       </div>
       <span
-        class="shrink-0 rounded-4 bg-fill-2 px-5 py-2 text-10px text-muted tabular-nums"
+        class="shrink-0 rounded-4 bg-secondary px-5 py-2 text-10px text-muted tabular-nums"
       >
         {{ totalCount }}
       </span>
@@ -26,17 +26,13 @@
       <section
         v-for="(group, groupIndex) in categoryGroups"
         :key="group.key"
-        :class="
-          groupIndex > 0
-            ? 'mt-12 border-t-1 border-color-1 border-t-solid pt-10'
-            : ''
-        "
+        :class="groupIndex > 0 ? 'mt-12 b-t-1-muted pt-10' : ''"
       >
         <div
           class="mb-5 flex items-center gap-6 px-8 text-10px text-muted font-600"
         >
           <span>{{ group.label }}</span>
-          <span class="h-1 flex-1 bg-fill-2" />
+          <span class="h-1 flex-1 bg-secondary" />
         </div>
         <div class="flex flex-col gap-4">
           <button
@@ -68,7 +64,7 @@
             </span>
             <span class="min-w-0 flex-1 truncate">{{ category.label }}</span>
             <span
-              class="hidden min-w-18 shrink-0 rounded-4 bg-fill-2 px-4 text-center text-10px text-muted tabular-nums transition-colors group-hover:bg-container sm:inline-block"
+              class="hidden min-w-18 shrink-0 rounded-4 bg-secondary px-4 text-center text-10px text-muted tabular-nums transition-colors group-hover:bg-container sm:inline-block"
               :class="{
                 'bg-primary/10 text-primary': activeKey === category.key,
               }"
@@ -133,7 +129,7 @@ const totalCount = computed(
 <style scoped lang="less">
 .w-icon-category-nav {
   overscroll-behavior: contain;
-  scrollbar-color: rgb(var(--w-border-color-3)) transparent;
+  scrollbar-color: rgb(var(--w-border-main)) transparent;
   scrollbar-width: thin;
 
   &__item {

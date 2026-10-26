@@ -40,15 +40,12 @@
         <a-switch v-model:checked="setCurrent" />
       </div>
 
-      <div class="rounded-8 bg-fill-quaternary p-10 text-xs text-muted">
+      <div class="rounded-8 bg-secondary p-10 text-xs text-muted">
         发布记录会保留完整 Schema
         快照，可在「版本管理」中切换当前线上版本、将历史版本载入设计器或下载导出。
       </div>
 
-      <div
-        v-if="published"
-        class="grid gap-8 rounded-8 border-1 border-success/40 border-solid p-10"
-      >
+      <div v-if="published" class="grid gap-8 rounded-8 b-1-success/40 p-10">
         <div class="inline-flex-y-center gap-6 text-sm text-success font-600">
           <Icon name="i-lucide:circle-check" :size="15" />
           已发布 v{{ published.version }}

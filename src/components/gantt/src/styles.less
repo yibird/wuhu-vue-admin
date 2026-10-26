@@ -1,11 +1,11 @@
 .w-gantt {
   --g-bar-color: rgb(var(--w-color-primary) / 82%);
   --g-bar-progress-color: rgb(var(--w-color-primary));
-  --g-arrow-color: rgb(var(--w-border-color-3));
+  --g-arrow-color: rgb(var(--w-border-main));
   --g-weekend-highlight-color: rgb(var(--w-text-muted) / 8%);
-  --g-tick-color-thick: rgb(var(--w-border-color-3));
-  --g-tick-color: rgb(var(--w-border-color-2));
-  --g-grid-line-color: rgb(var(--w-border-color-2));
+  --g-tick-color-thick: rgb(var(--w-border-main));
+  --g-tick-color: rgb(var(--w-border-regular));
+  --g-grid-line-color: rgb(var(--w-border-regular));
   --g-container-border-color: transparent;
   --g-text-muted: rgb(var(--w-text-secondary));
   --g-bar-label-color: 255 255 255;
@@ -38,7 +38,7 @@
 }
 
 .w-gantt :deep(.grid-header) {
-  fill: rgb(var(--w-fill-quaternary));
+  fill: rgb(var(--w-bg-secondary));
 }
 
 .w-gantt :deep(.lower-text),

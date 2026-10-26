@@ -1,6 +1,6 @@
 <template>
   <aside
-    class="relative min-w-240 max-w-450 h-full shrink-0 border-r-1 border-r-solid border-color-1 bg-container max-lg:min-w-260 max-lg:min-w-260"
+    class="relative min-w-240 max-w-450 h-full shrink-0 b-r-1-muted bg-container max-lg:min-w-260 max-lg:min-w-260"
     :class="{ 'is-resizing': resizing }"
   >
     <Transition name="fade-slide-swap" mode="out-in">

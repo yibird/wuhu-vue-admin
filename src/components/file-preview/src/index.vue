@@ -45,7 +45,7 @@
 
     <div
       v-if="file"
-      class="w-file-preview-shell overflow-hidden rounded-6 border-1 border-color-1 border-solid bg-fill-quaternary"
+      class="w-file-preview-shell overflow-hidden rounded-6 b-1-muted bg-secondary"
     >
       <div
         v-if="previewKind === 'image' && safeUrl"

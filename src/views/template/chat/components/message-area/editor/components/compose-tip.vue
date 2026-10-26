@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="activeMessage"
-    class="mb-10 rounded-6 border-1 border-color-2 bg-primary-tint p-10"
+    class="mb-10 rounded-6 b-1-regular bg-primary/10 p-10"
   >
     <div class="flex items-center justify-between">
       <div class="min-w-0">

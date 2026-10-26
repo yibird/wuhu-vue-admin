@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="overflow-hidden rounded-8 border-1 border-solid border-color-2 bg-container-secondary p-12"
-  >
+  <div class="overflow-hidden rounded-8 b-1-regular bg-secondary p-12">
     <div class="flex flex-wrap items-start justify-between gap-10">
       <div class="min-w-0">
         <div class="text-sm text-main font-700">资源使用趋势</div>
@@ -10,7 +8,7 @@
         </div>
       </div>
       <span
-        class="inline-flex shrink-0 items-center gap-5 rounded-999 bg-primary-tint px-7 py-3 text-xs text-primary"
+        class="inline-flex shrink-0 items-center gap-5 rounded-999 bg-primary/10 px-7 py-3 text-xs text-primary"
       >
         <Icon name="i-lucide:activity" :size="13" />
         实时采样
@@ -134,7 +132,7 @@ const chartOption = computed<EChartsCoreOption>(() => ({
     splitLine: {
       lineStyle: {
         color: getCssRgbVarAlpha(
-          '--w-border-color-2',
+          '--w-border-regular',
           0.62,
           'rgba(148, 163, 184, 0.18)'
         ),

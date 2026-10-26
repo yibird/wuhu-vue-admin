@@ -8,7 +8,7 @@
       </a-button>
 
       <div
-        class="size-42 flex-none flex-center rounded-4 bg-primary-tint text-primary"
+        class="size-42 flex-none flex-center rounded-4 bg-primary/10 text-primary"
       >
         <Icon :name="menu?.icon || 'i-lucide:menu'" :size="20" />
       </div>

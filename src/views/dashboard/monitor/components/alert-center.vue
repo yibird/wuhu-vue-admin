@@ -6,11 +6,7 @@
     description="待处理事件与风险提示"
   >
     <div class="flex flex-col gap-10">
-      <div
-        v-for="item in 3"
-        :key="item"
-        class="rounded-8 border-1 border-solid border-color-2 p-12"
-      >
+      <div v-for="item in 3" :key="item" class="rounded-8 b-1-regular p-12">
         <a-skeleton active avatar :paragraph="{ rows: 2 }" />
         <div class="mt-10 flex justify-between gap-10">
           <a-skeleton-input active size="small" class="!w-90" />
@@ -41,7 +37,7 @@
       <div
         v-for="item in filteredItems"
         :key="item.id"
-        class="rounded-8 border-1 border-solid border-color-2 bg-container-secondary p-12 transition-[border-color,background-color,box-shadow,transform] duration-motion-base ease-motion-enter hover:(-translate-y-2 shadow-[0_6px_16px_rgb(var(--w-color-primary)_/_10%)]) active:(translate-y-0 scale-[0.995]) motion-reduce:transition-none motion-reduce:hover:translate-y-0 motion-reduce:active:scale-100"
+        class="rounded-8 b-1-regular bg-secondary p-12 transition-[border-color,background-color,box-shadow,transform] duration-motion-base ease-motion-enter hover:(-translate-y-2 shadow-[0_6px_16px_rgb(var(--w-color-primary)_/_10%)]) active:(translate-y-0 scale-[0.995]) motion-reduce:transition-none motion-reduce:hover:translate-y-0 motion-reduce:active:scale-100"
       >
         <div class="flex items-start gap-10">
           <span
@@ -110,17 +106,17 @@ const severityMeta: Record<
   critical: {
     label: '严重',
     icon: 'i-lucide:octagon-alert',
-    class: 'bg-error-tint text-error',
+    class: 'bg-error/10 text-error',
   },
   warning: {
     label: '警告',
     icon: 'i-lucide:triangle-alert',
-    class: 'bg-warning-tint text-warning',
+    class: 'bg-warning/10 text-warning',
   },
   info: {
     label: '通知',
     icon: 'i-lucide:info',
-    class: 'bg-info-tint text-info',
+    class: 'bg-info/10 text-info',
   },
 }
 

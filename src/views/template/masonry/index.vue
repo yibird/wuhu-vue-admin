@@ -54,7 +54,7 @@
     >
       <div v-if="activeCard" class="flex flex-col gap-16 sm:flex-row">
         <div
-          class="h-220 w-full flex-none overflow-hidden rounded-6 bg-fill-tertiary sm:h-280 sm:w-240"
+          class="h-220 w-full flex-none overflow-hidden rounded-6 bg-muted sm:h-280 sm:w-240"
         >
           <img
             :src="activeCard.image"

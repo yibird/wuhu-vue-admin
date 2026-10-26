@@ -1,6 +1,6 @@
 <template>
   <section
-    class="pricing-hero page-enter page-enter--1 relative overflow-hidden rounded-16 border-1 border-color-2 border-solid bg-container px-24 py-32 shadow-[0_24px_70px_rgb(var(--w-color-primary)_/_10%)] max-sm:px-16 max-sm:py-24"
+    class="pricing-hero page-enter page-enter--1 relative overflow-hidden rounded-16 b-1-regular bg-container px-24 py-32 shadow-[0_24px_70px_rgb(var(--w-color-primary)_/_10%)] max-sm:px-16 max-sm:py-24"
   >
     <!-- 背景动态光晕 -->
     <div class="pricing-hero__glow pricing-hero__glow--1" aria-hidden="true" />
@@ -14,7 +14,7 @@
     >
       <div class="min-w-0 flex-1">
         <div
-          class="inline-flex items-center gap-8 rounded-full border-1 border-primary/25 border-solid bg-primary/10 px-12 py-6 text-xs text-primary font-800 backdrop-blur-sm"
+          class="inline-flex items-center gap-8 rounded-full b-1-primary/25 bg-primary/10 px-12 py-6 text-xs text-primary font-800 backdrop-blur-sm"
         >
           <Icon name="i-lucide:sparkles" :size="14" class="animate-pulse" />
           灵活定价 · 随时升级
@@ -33,7 +33,7 @@
       <!-- 计费周期切换 pill -->
       <div class="shrink-0">
         <div
-          class="inline-flex items-center rounded-full border-1 border-color-2 border-solid bg-fill-tertiary/80 p-4 backdrop-blur-sm"
+          class="inline-flex items-center rounded-full b-1-regular bg-muted/80 p-4 backdrop-blur-sm"
           role="tablist"
           aria-label="计费周期"
         >

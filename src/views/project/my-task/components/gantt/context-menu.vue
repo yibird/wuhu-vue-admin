@@ -2,13 +2,13 @@
   <Teleport to="body">
     <div
       v-if="open && task"
-      class="fixed left-0 top-0 z-3000 w-188 overflow-hidden rounded-8 border-1 border-color-2 border-solid bg-container p-5 shadow-[0_18px_50px_rgb(15_23_42_/_22%)] will-change-transform"
+      class="fixed left-0 top-0 z-3000 w-188 overflow-hidden rounded-8 b-1-regular bg-container p-5 shadow-[0_18px_50px_rgb(15_23_42_/_22%)] will-change-transform"
       :style="menuStyle"
       role="menu"
       @click.stop
       @contextmenu.prevent
     >
-      <div class="border-b-1 border-b-color-1 border-b-solid px-8 py-7">
+      <div class="b-b-1-muted px-8 py-7">
         <div class="truncate text-sm font-600 text-main">
           {{ task.title }}
         </div>
@@ -45,9 +45,9 @@
         <Icon name="i-lucide:circle-check" :size="15" />
         标记完成
       </button>
-      <div class="my-4 h-1px bg-fill-tertiary" />
+      <div class="my-4 h-1px bg-muted" />
       <button
-        class="h-34 w-full flex items-center gap-8 rounded-6 border-0 bg-transparent px-9 text-left text-13px text-error cursor-pointer transition-colors hover:bg-error-tint"
+        class="h-34 w-full flex items-center gap-8 rounded-6 border-0 bg-transparent px-9 text-left text-13px text-error cursor-pointer transition-colors hover:bg-error/10"
         type="button"
         role="menuitem"
         @click="emits('delete')"

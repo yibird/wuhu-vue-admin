@@ -4,7 +4,7 @@
       <div
         v-show="open"
         data-testid="search-modal"
-        class="fixed inset-0 z-[var(--w-global-search-z-index)] full bg-mask-5 backdrop-blur-3"
+        class="fixed inset-0 z-[var(--w-global-search-z-index)] full bg-black/40 backdrop-blur-3"
         role="dialog"
         aria-label="全局搜索"
         aria-modal="true"
@@ -20,7 +20,7 @@
           <Transition name="fade-zoom" appear>
             <div
               v-show="open"
-              class="w-full origin-top translate-y-0 scale-100 transform-gpu overflow-hidden rounded-8 border-1 border-color-2 border-solid bg-elevated shadow-[0_28px_80px_rgb(var(--w-bg-mask-rgb)_/_28%)] will-change-[transform,opacity]"
+              class="w-full origin-top translate-y-0 scale-100 transform-gpu overflow-hidden rounded-8 b-1-regular bg-overlay shadow-[0_28px_80px_rgb(15 23 42_/_28%)] will-change-[transform,opacity]"
             >
               <Search ref="searchRef" v-model.lazy="searchValue" />
               <List
@@ -29,11 +29,11 @@
                 @select="onSelect"
               />
               <div
-                class="flex items-center justify-end gap-6 border-t-1 border-color-2 border-t-solid px-14 py-8 text-xs text-muted"
+                class="flex items-center justify-end gap-6 b-t-1-regular px-14 py-8 text-xs text-muted"
               >
                 <span>按</span>
                 <kbd
-                  class="rounded-4 border-1 border-color-2 border-solid bg-fill-3 px-6 py-2 font-500 text-main leading-16px"
+                  class="rounded-4 b-1-regular bg-secondary px-6 py-2 font-500 text-main leading-16px"
                 >
                   Esc
                 </kbd>

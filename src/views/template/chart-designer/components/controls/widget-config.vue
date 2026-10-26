@@ -29,7 +29,7 @@
       <label class="block text-12px text-secondary">
         标题
         <input
-          class="mt-5 h-32 w-full rounded-6 border-1 border-color-2 border-solid bg-fill px-8 text-13px text-primary outline-none focus:border-primary"
+          class="mt-5 h-32 w-full rounded-6 b-1-regular bg-fill px-8 text-13px text-primary outline-none focus:border-primary"
           :value="widget.title"
           @input="updateText('title')"
         />
@@ -94,7 +94,7 @@
         <label class="block text-12px text-secondary">
           列宽
           <input
-            class="mt-5 h-32 w-full rounded-6 border-1 border-color-2 border-solid bg-fill px-8 text-13px text-primary outline-none focus:border-primary"
+            class="mt-5 h-32 w-full rounded-6 b-1-regular bg-fill px-8 text-13px text-primary outline-none focus:border-primary"
             max="12"
             min="2"
             type="number"
@@ -105,7 +105,7 @@
         <label class="block text-12px text-secondary">
           行高
           <input
-            class="mt-5 h-32 w-full rounded-6 border-1 border-color-2 border-solid bg-fill px-8 text-13px text-primary outline-none focus:border-primary"
+            class="mt-5 h-32 w-full rounded-6 b-1-regular bg-fill px-8 text-13px text-primary outline-none focus:border-primary"
             max="4"
             min="1"
             type="number"
@@ -123,7 +123,7 @@
       <label class="block text-12px text-secondary">
         洞察说明
         <textarea
-          class="mt-5 h-96 w-full resize-none rounded-6 border-1 border-color-2 border-solid bg-fill px-8 py-7 text-13px text-primary outline-none focus:border-primary"
+          class="mt-5 h-96 w-full resize-none rounded-6 b-1-regular bg-fill px-8 py-7 text-13px text-primary outline-none focus:border-primary"
           :value="widget.insight"
           @input="updateText('insight')"
         ></textarea>

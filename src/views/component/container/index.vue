@@ -4,10 +4,10 @@
       class="h-full min-h-full w-full p-16 md:p-20 overflow-x-hidden overflow-y-auto"
     >
       <section
-        class="mx-auto max-w-1280 rounded-8 border-1 border-color-1 border-solid bg-container p-16 shadow-all-sm md:p-20"
+        class="mx-auto max-w-1280 rounded-8 b-1-muted bg-container p-16 shadow-all-sm md:p-20"
       >
         <header
-          class="mb-20 flex flex-wrap items-start justify-between gap-12 border-b-1 border-color-1 border-b-solid pb-14"
+          class="mb-20 flex flex-wrap items-start justify-between gap-12 b-b-1-muted pb-14"
         >
           <div class="min-w-0">
             <h1 class="m-0 text-xl text-main font-600">Container</h1>
@@ -44,7 +44,7 @@
 
             <div
               ref="lazyViewportRef"
-              class="h-300 overflow-y-auto rounded-6 border-1 border-color-1 border-solid bg-fill-1"
+              class="h-300 overflow-y-auto rounded-6 b-1-muted bg-secondary"
             >
               <div
                 class="h-360 flex flex-col items-center justify-center gap-8 text-secondary"
@@ -63,17 +63,17 @@
               >
                 <template #placeholder>
                   <div
-                    class="h-180 animate-pulse rounded-6 border-1 border-color-1 border-solid bg-container p-16 motion-reduce:animate-none"
+                    class="h-180 animate-pulse rounded-6 b-1-muted bg-container p-16 motion-reduce:animate-none"
                     aria-hidden="true"
                   >
-                    <div class="mb-12 h-14 w-2/5 rounded-3 bg-fill-5" />
-                    <div class="mb-8 h-10 w-full rounded-3 bg-fill-4" />
-                    <div class="h-10 w-3/4 rounded-3 bg-fill-4" />
+                    <div class="mb-12 h-14 w-2/5 rounded-3 bg-active" />
+                    <div class="mb-8 h-10 w-full rounded-3 bg-muted" />
+                    <div class="h-10 w-3/4 rounded-3 bg-muted" />
                   </div>
                 </template>
 
                 <div
-                  class="min-h-180 flex items-center gap-14 rounded-6 border-1 border-primary/30 border-solid bg-primary/5 p-18"
+                  class="min-h-180 flex items-center gap-14 rounded-6 b-1-primary/30 bg-primary/5 p-18"
                 >
                   <div
                     class="size-42 flex shrink-0 items-center justify-center rounded-6 bg-primary/10 text-primary"
@@ -93,7 +93,7 @@
             </div>
           </article>
 
-          <article class="border-t-1 border-color-1 border-t-solid pt-24">
+          <article class="b-t-1-muted pt-24">
             <div
               class="mb-12 flex flex-wrap items-start justify-between gap-10"
             >
@@ -105,7 +105,7 @@
               </div>
               <div class="flex items-center gap-6 text-xs text-secondary">
                 <span>事件值</span>
-                <code class="rounded-4 bg-fill-2 px-7 py-4 text-main">
+                <code class="rounded-4 bg-secondary px-7 py-4 text-main">
                   {{ Math.round(measuredSize.width) }} ×
                   {{ Math.round(measuredSize.height) }} px
                 </code>
@@ -122,7 +122,7 @@
             <div class="overflow-x-auto pb-4">
               <ResizeContainer
                 box="border-box"
-                class="max-w-full rounded-6 border-1 border-color-1 border-solid bg-fill-1 p-16 transition-[width]"
+                class="max-w-full rounded-6 b-1-muted bg-secondary p-16 transition-[width]"
                 :style="{ width: `${panelWidth}px` }"
                 @resize="onResize"
               >
@@ -153,7 +153,7 @@
 
                   <div
                     v-if="expanded"
-                    class="mt-14 grid gap-8 border-t-1 border-color-1 border-t-solid pt-14 sm:grid-cols-3"
+                    class="mt-14 grid gap-8 b-t-1-muted pt-14 sm:grid-cols-3"
                   >
                     <div
                       class="rounded-5 bg-container p-10 text-sm text-secondary"

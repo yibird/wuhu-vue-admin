@@ -14,15 +14,13 @@
       </div>
 
       <template v-else>
-        <div
-          class="h-60 flex items-center justify-between border-b-1 border-b-solid border-color-1 px-15"
-        >
+        <div class="h-60 flex items-center justify-between b-b-1-muted px-15">
           <div class="min-w-0 flex items-center gap-10">
             <div class="relative">
               <a-avatar :src="conversation.avatar" :size="40" round />
               <span
                 v-if="conversation.userInfo?.status"
-                class="absolute bottom-0 right-0 size-8 rounded-full border-2 border-container"
+                class="absolute bottom-0 right-0 size-8 rounded-full b-2-[var(--w-bg-container)]"
                 :class="{
                   'bg-success': conversation.userInfo.status === 'online',
                   'bg-fill': conversation.userInfo.status === 'offline',
@@ -141,7 +139,7 @@
           </div>
         </Transition>
 
-        <div class="border-t-1 border-t-solid border-color-1">
+        <div class="b-t-1-muted">
           <MessageEditor
             ref="editorRef"
             :reply-message="replyMessage"
@@ -327,7 +325,7 @@ function handleHeaderAction({ key }: { key: string }) {
   align-items: center;
   padding: 1px 5px;
   color: rgb(var(--w-text-secondary));
-  background-color: rgb(var(--w-bg-fill-1));
+  background-color: rgb(var(--w-bg-secondary));
   border-radius: 4px;
 }
 </style>

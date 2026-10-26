@@ -3,10 +3,10 @@
     class="grid min-w-0 grid-cols-[minmax(0,1.45fr)_minmax(300px,0.75fr)] gap-10 max-xl:grid-cols-1"
   >
     <section
-      class="min-w-0 overflow-hidden rounded-8 border-1 border-color-2 border-solid bg-container shadow-[var(--w-shadow-card)]"
+      class="min-w-0 overflow-hidden rounded-8 b-1-regular bg-container shadow-card"
     >
       <div
-        class="flex items-center justify-between gap-10 border-b-1 border-color-2 border-b-solid px-14 py-11"
+        class="flex items-center justify-between gap-10 b-b-1-regular px-14 py-11"
       >
         <div>
           <h2 class="m-0 text-sm text-main font-650">执行吞吐与慢节点</h2>
@@ -26,7 +26,7 @@
         class="grid grid-cols-[minmax(0,1fr)_260px] gap-0 max-lg:grid-cols-1"
       >
         <div
-          class="min-w-0 border-r-1 border-color-2 border-r-solid p-14 max-lg:border-b-1 max-lg:border-r-0 max-lg:border-b-solid"
+          class="min-w-0 b-r-1-regular p-14 max-lg:border-b-1 max-lg:border-r-0 max-lg:border-b-solid"
         >
           <div class="h-176 flex items-end gap-8" aria-label="流程执行吞吐图">
             <div
@@ -79,7 +79,7 @@
                   {{ item.duration }}{{ item.unit }}
                 </strong>
               </div>
-              <div class="h-5 overflow-hidden rounded-full bg-fill-secondary">
+              <div class="h-5 overflow-hidden rounded-full bg-secondary">
                 <div
                   class="h-full origin-left rounded-full bg-primary transition-transform duration-motion-slower"
                   :style="{ width: latencyPercent(item) }"
@@ -95,10 +95,10 @@
     </section>
 
     <section
-      class="min-w-0 overflow-hidden rounded-8 border-1 border-color-2 border-solid bg-container shadow-[var(--w-shadow-card)]"
+      class="min-w-0 overflow-hidden rounded-8 b-1-regular bg-container shadow-card"
     >
       <div
-        class="flex items-center justify-between gap-8 border-b-1 border-color-2 border-b-solid px-14 py-11"
+        class="flex items-center justify-between gap-8 b-b-1-regular px-14 py-11"
       >
         <div>
           <h2 class="m-0 text-sm text-main font-650">告警中心</h2>
@@ -122,10 +122,10 @@
             class="mt-1 size-28 flex flex-none items-center justify-center rounded-6"
             :class="[
               alert.severity === 'critical'
-                ? 'bg-error-tint text-error'
+                ? 'bg-error/10 text-error'
                 : alert.severity === 'warning'
-                  ? 'bg-warning-tint text-warning'
-                  : 'bg-info-tint text-info',
+                  ? 'bg-warning/10 text-warning'
+                  : 'bg-info/10 text-info',
             ]"
           >
             <Icon

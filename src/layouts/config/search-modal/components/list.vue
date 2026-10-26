@@ -4,7 +4,7 @@
     class="h-360 flex flex-col overflow-hidden"
   >
     <div
-      class="h-38 flex items-center justify-between border-b-1 border-color-1 border-b-solid bg-fill-1 px-14 text-xs text-muted"
+      class="h-38 flex items-center justify-between b-b-1-muted bg-secondary px-14 text-xs text-muted"
     >
       <span>菜单</span>
       <span>{{ renderItems.length }} 个结果</span>
@@ -19,7 +19,7 @@
       <SlidingHighlight
         @mouseleave="clearHoveredIndex"
         :inset="4"
-        pill-class-name="rounded-6 bg-primary-tint"
+        pill-class-name="rounded-6 bg-primary/10"
         class="flex flex-col gap-4"
         role="presentation"
       >
@@ -35,7 +35,7 @@
           "
           :class="[
             'content-auto-52 relative min-h-52 w-full min-w-0 flex cursor-pointer items-center gap-10 overflow-hidden rounded-6 bg-transparent px-9 py-7 text-left text-main transition-colors duration-motion-base',
-            activeIndex === index && hoveredIndex !== index && 'bg-fill-4',
+            activeIndex === index && hoveredIndex !== index && 'bg-muted',
           ]"
           :title="`${item.title} · ${item.path}`"
           @mouseenter="onItemPointerMove(index)"
@@ -48,8 +48,8 @@
               hoveredIndex === index
                 ? 'bg-primary [color:#fff]'
                 : activeIndex === index
-                  ? 'bg-primary-tint text-primary'
-                  : 'bg-fill-4 text-secondary'
+                  ? 'bg-primary/10 text-primary'
+                  : 'bg-muted text-secondary'
             "
           >
             <Icon :name="item.icon || 'i-lucide:search'" :size="20" />
@@ -83,7 +83,7 @@
     class="h-260 flex flex-col items-center justify-center overflow-hidden px-24 text-center"
   >
     <div
-      class="size-44 flex items-center justify-center rounded-full bg-fill-4 text-muted"
+      class="size-44 flex items-center justify-center rounded-full bg-muted text-muted"
     >
       <Icon name="i-lucide:search-x" :size="20" />
     </div>

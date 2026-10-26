@@ -1,6 +1,6 @@
 <template>
   <header
-    class="flex flex-wrap items-center justify-between gap-12 rounded-8 border-1 border-color-2 border-solid bg-container px-14 py-12 shadow-[var(--w-shadow-card)]"
+    class="flex flex-wrap items-center justify-between gap-12 rounded-8 b-1-regular bg-container px-14 py-12 shadow-card"
   >
     <div class="min-w-0">
       <div class="flex items-center gap-9">

@@ -1,11 +1,9 @@
 <template>
   <aside
-    class="min-h-0 min-w-0 overflow-hidden rounded-8 border-1 border-color-2 border-solid bg-container shadow-floating"
+    class="min-h-0 min-w-0 overflow-hidden rounded-8 b-1-regular bg-container shadow-overlay"
   >
     <div v-if="selectedNodeData" class="h-full min-h-0 flex flex-col">
-      <div
-        class="flex flex-none items-center gap-10 border-b-1 border-color-2 border-b-solid px-14 py-12"
-      >
+      <div class="flex flex-none items-center gap-10 b-b-1-regular px-14 py-12">
         <span
           class="size-38 inline-flex shrink-0 items-center justify-center rounded-10"
           :style="{
@@ -123,7 +121,7 @@
             <div
               v-for="input in selectedNodeData.inputs"
               :key="input.name"
-              class="min-h-32 flex items-center justify-between gap-6 rounded-6 border-1 border-color-secondary border-solid bg-fill-quaternary px-8 py-6"
+              class="min-h-32 flex items-center justify-between gap-6 rounded-6 b-1-secondary bg-secondary px-8 py-6"
             >
               <span class="min-w-0 truncate text-xs text-main">{{
                 input.name
@@ -145,7 +143,7 @@
             <div
               v-for="output in selectedNodeData.outputs"
               :key="output.name"
-              class="min-h-32 flex items-center justify-between gap-6 rounded-6 border-1 border-color-secondary border-solid bg-fill-quaternary px-8 py-6"
+              class="min-h-32 flex items-center justify-between gap-6 rounded-6 b-1-secondary bg-secondary px-8 py-6"
             >
               <span class="min-w-0 truncate text-xs text-main">{{
                 output.name

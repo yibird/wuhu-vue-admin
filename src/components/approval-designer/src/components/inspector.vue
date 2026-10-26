@@ -1,9 +1,9 @@
 <template>
   <section
-    class="min-h-0 min-w-0 grid grid-rows-[auto_minmax(0,1fr)] overflow-hidden rounded-8 border-1 border-color-2 border-solid bg-container shadow-[var(--w-shadow-card)]"
+    class="min-h-0 min-w-0 grid grid-rows-[auto_minmax(0,1fr)] overflow-hidden rounded-8 b-1-regular bg-container shadow-card"
     :data-testid="APPROVAL_WORKFLOW_SELECTORS.inspector"
   >
-    <header class="border-b border-color-2 px-12 py-10">
+    <header class="border-b border-regular px-12 py-10">
       <h2 class="m-0 text-14px font-800 text-primary">节点属性</h2>
       <p class="m-0 mt-3 text-12px text-secondary">
         审批人、字段权限、动作、超时和异常策略
@@ -183,7 +183,7 @@
           <div
             v-for="branch in node.branches ?? []"
             :key="branch.id"
-            class="mb-10 rounded-6 border-1 border-color-2 border-solid bg-container p-10"
+            class="mb-10 rounded-6 b-1-regular bg-container p-10"
           >
             <label class="block text-12px text-secondary">
               分支名称

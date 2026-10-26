@@ -2,7 +2,7 @@
   <div class="flex w-full items-center justify-between gap-10">
     <div class="flex-y-center gap-8">
       <div
-        class="flex-y-center gap-4 rounded-8 border-1 border-color-2 border-solid bg-elevated px-6 py-4 shadow-elevated"
+        class="flex-y-center gap-4 rounded-8 b-1-regular bg-overlay px-6 py-4 shadow-overlay"
       >
         <a-select
           :value="designer.previewDevice.value"
@@ -46,7 +46,7 @@
     </div>
 
     <div
-      class="flex-y-center gap-4 rounded-8 border-1 border-color-2 border-solid bg-elevated px-6 py-4 shadow-elevated"
+      class="flex-y-center gap-4 rounded-8 b-1-regular bg-overlay px-6 py-4 shadow-overlay"
     >
       <a-tooltip title="缩小 (Ctrl+滚轮)">
         <button class="lc-toolbar-btn" type="button" @click="view.zoomOut()">
@@ -150,12 +150,12 @@ function onSizeChange(patch: { width?: number; height?: number }) {
 
   &:hover {
     color: rgb(var(--w-color-primary));
-    background: rgb(var(--w-bg-primary) / 8%);
+    background: rgb(var(--w-color-primary) / 8%);
   }
 
   &.is-active {
     color: rgb(var(--w-color-primary));
-    background: rgb(var(--w-bg-primary) / 10%);
+    background: rgb(var(--w-color-primary) / 10%);
   }
 }
 
@@ -163,6 +163,6 @@ function onSizeChange(patch: { width?: number; height?: number }) {
   width: 1px;
   height: 16px;
   margin: 0 4px;
-  background: rgb(var(--w-border-color-2));
+  background: rgb(var(--w-border-regular));
 }
 </style>

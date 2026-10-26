@@ -1,6 +1,6 @@
 <template>
   <main
-    class="h-full min-h-0 min-w-0 grid grid-rows-[auto_minmax(0,1fr)] overflow-hidden rounded-12 border-1 border-color-2 border-solid bg-main shadow-card max-[900px]:min-h-620 max-[900px]:mt-10 max-[900px]:ml-0"
+    class="h-full min-h-0 min-w-0 grid grid-rows-[auto_minmax(0,1fr)] overflow-hidden rounded-12 b-1-regular bg-container shadow-card max-[900px]:min-h-620 max-[900px]:mt-10 max-[900px]:ml-0"
   >
     <CanvasHeader
       v-model:active-tab="activeTab"
@@ -23,7 +23,7 @@
       :id="WORKFLOW_FLOW_ID"
       v-model:nodes="nodes"
       v-model:edges="edges"
-      class="min-h-0 min-w-0 [background:var(--w-workflow-canvas-background)] [&_.vue-flow\_\_pane.dragging]:cursor-grabbing [&_.vue-flow\_\_selection]:bg-primary/12 [&_.vue-flow\_\_selection]:border-1 [&_.vue-flow\_\_selection]:border-primary [&_.vue-flow\_\_selection]:border-solid [&_.vue-flow\_\_selection]:shadow-focus [&_.vue-flow\_\_node]:rounded-12 [&_.vue-flow\_\_node.selected]:shadow-none [&_.vue-flow\_\_node.dragging]:!z-30 [&_.vue-flow\_\_node.dragging]:!transition-none [&_.vue-flow\_\_node.dragging]:will-change-transform [&_.vue-flow\_\_edge-path]:[stroke-linecap:round] [&_.vue-flow\_\_edge-path]:[stroke-linejoin:round] [&_.vue-flow\_\_handle.valid]:shadow-focus-strong [&.canvas-mode-pan_.vue-flow\_\_pane]:cursor-grab [&.canvas-mode-select_.vue-flow\_\_pane]:cursor-crosshair"
+      class="min-h-0 min-w-0 [background:var(--w-workflow-canvas-background)] [&_.vue-flow\_\_pane.dragging]:cursor-grabbing [&_.vue-flow\_\_selection]:bg-primary/12 [&_.vue-flow\_\_selection]:border-1 [&_.vue-flow\_\_selection]:border-primary [&_.vue-flow\_\_selection]:border-solid [&_.vue-flow\_\_selection]:shadow-focus [&_.vue-flow\_\_node]:rounded-12 [&_.vue-flow\_\_node.selected]:shadow-none [&_.vue-flow\_\_node.dragging]:!z-30 [&_.vue-flow\_\_node.dragging]:!transition-none [&_.vue-flow\_\_node.dragging]:will-change-transform [&_.vue-flow\_\_edge-path]:[stroke-linecap:round] [&_.vue-flow\_\_edge-path]:[stroke-linejoin:round] [&_.vue-flow\_\_handle.valid]:shadow-focus [&.canvas-mode-pan_.vue-flow\_\_pane]:cursor-grab [&.canvas-mode-select_.vue-flow\_\_pane]:cursor-crosshair"
       :class="{
         'canvas-mode-pan': interactionMode === 'pan',
         'canvas-mode-select': interactionMode === 'select',
@@ -69,7 +69,7 @@
       <MiniMap
         pannable
         zoomable
-        class="workflow-minimap !overflow-hidden !rounded-12 !border-1 !border-color-secondary !border-solid !bg-main !shadow-minimap"
+        class="workflow-minimap !overflow-hidden !rounded-12 !border-1 !border-secondary !border-solid !bg-container !shadow-[var(--w-shadow-minimap)]"
         node-color="rgb(var(--w-workflow-minimap-node-color))"
         mask-color="var(--w-workflow-minimap-mask)"
       />
@@ -101,11 +101,9 @@
       class="min-h-0 bg-page p-14 w-full h-full overflow-x-hidden overflow-y-auto"
     >
       <div class="grid gap-12 xl:grid-cols-[minmax(0,1fr)_320px]">
-        <section
-          class="min-w-0 rounded-10 border-1 border-color-2 border-solid bg-main"
-        >
+        <section class="min-w-0 rounded-10 b-1-regular bg-container">
           <div
-            class="flex items-center justify-between gap-12 border-b-1 border-b-solid border-color-2 px-14 py-12"
+            class="flex items-center justify-between gap-12 b-b-1-regular px-14 py-12"
           >
             <div class="min-w-0">
               <div class="truncate text-15px text-main font-700">测试用例</div>
@@ -151,7 +149,7 @@
           </div>
           <div
             v-if="validationIssues.length"
-            class="m-10 flex items-start gap-8 rounded-4 bg-warning-tint px-10 py-9 text-xs text-warning"
+            class="m-10 flex items-start gap-8 rounded-4 bg-warning/10 px-10 py-9 text-xs text-warning"
           >
             <Icon
               name="i-lucide:triangle-alert"
@@ -170,7 +168,7 @@
               :class="
                 item.id === selectedTestCaseId
                   ? '!border-primary'
-                  : '!border-color-2'
+                  : '!border-regular'
               "
               @click="$emit('select-test-case', item.id)"
             >
@@ -197,7 +195,7 @@
                 </span>
               </span>
               <span
-                class="mt-10 grid w-full gap-8 rounded-7 bg-fill-quaternary p-10 text-xs text-secondary"
+                class="mt-10 grid w-full gap-8 rounded-7 bg-secondary p-10 text-xs text-secondary"
               >
                 <span class="block">
                   <span class="text-muted">输入：</span>{{ item.input }}
@@ -210,11 +208,9 @@
           </div>
         </section>
 
-        <aside
-          class="rounded-10 border-1 border-color-2 border-solid bg-main p-14"
-        >
+        <aside class="rounded-10 b-1-regular bg-container p-14">
           <div class="text-15px text-main font-700">当前测试</div>
-          <div class="mt-10 rounded-8 bg-fill-quaternary p-12">
+          <div class="mt-10 rounded-8 bg-secondary p-12">
             <div class="text-sm text-main font-700">
               {{ selectedTestCase?.title }}
             </div>
@@ -222,7 +218,7 @@
               {{ selectedTestCase?.description }}
             </div>
             <div class="mt-12 grid grid-cols-2 gap-8">
-              <div class="rounded-7 bg-main p-10">
+              <div class="rounded-7 bg-container p-10">
                 <div class="text-xs text-muted">状态</div>
                 <div class="mt-5 text-sm text-main font-700">
                   {{
@@ -234,7 +230,7 @@
                   }}
                 </div>
               </div>
-              <div class="rounded-7 bg-main p-10">
+              <div class="rounded-7 bg-container p-10">
                 <div class="text-xs text-muted">耗时</div>
                 <div class="mt-5 text-sm text-main font-700">
                   {{ selectedTestCase?.duration }}
@@ -250,11 +246,9 @@
       v-else
       class="min-h-0 bg-page p-14 w-full h-full overflow-x-hidden overflow-y-auto"
     >
-      <section
-        class="min-h-full rounded-10 border-1 border-color-2 border-solid bg-main"
-      >
+      <section class="min-h-full rounded-10 b-1-regular bg-container">
         <div
-          class="flex items-center justify-between border-b-1 border-b-solid border-color-2 px-14 py-12"
+          class="flex items-center justify-between b-b-1-regular px-14 py-12"
         >
           <div>
             <div class="text-15px text-main font-700">运行日志</div>
@@ -269,7 +263,7 @@
           <div
             v-for="log in runLogs"
             :key="log.id"
-            class="flex items-center gap-10 border-b-1 border-b-solid border-color-1 px-4 py-10 last:border-b-0 max-sm:grid-cols-1"
+            class="flex items-center gap-10 b-b-1-muted px-4 py-10 last:border-b-0 max-sm:grid-cols-1"
           >
             <span class="w-100 text-xs text-muted">{{ log.time }}</span>
             <div class="w-100">
@@ -403,9 +397,9 @@ const connectionLineOptions: ConnectionLineOptions = {
 }
 
 const testStatusClass: Record<WorkflowTestCase['status'], string> = {
-  ready: 'bg-fill-quaternary text-secondary',
-  passed: 'bg-success-tint text-success',
-  warning: 'bg-warning-tint text-warning',
+  ready: 'bg-secondary text-secondary',
+  passed: 'bg-success/10 text-success',
+  warning: 'bg-warning/10 text-warning',
 }
 
 const selectedTestCase = computed(() => {

@@ -33,10 +33,7 @@
         @search="handleSearch"
       />
 
-      <section
-        v-if="records.length"
-        class="border-b-1 border-color-1 border-b-solid py-14"
-      >
+      <section v-if="records.length" class="b-b-1-muted py-14">
         <div class="mb-9 flex items-center justify-between gap-10">
           <span class="text-sm text-main font-500">搜索记录</span>
           <div class="flex items-center gap-4">
@@ -76,7 +73,7 @@
           <span
             v-for="record in visibleRecords"
             :key="record"
-            class="group h-30 flex items-center rounded-5 bg-fill-quaternary pl-9 text-xs text-secondary transition-colors hover:(bg-hover text-main)"
+            class="group h-30 flex items-center rounded-5 bg-secondary pl-9 text-xs text-secondary transition-colors hover:(bg-hover text-main)"
           >
             <button
               type="button"
@@ -120,12 +117,12 @@
           <div
             v-for="item in filteredResults"
             :key="`${item.type}:${item.id}`"
-            class="flex items-center gap-11 border-b-1 border-color-1 border-b-solid px-4 py-11 last:border-b-0"
+            class="flex items-center gap-11 b-b-1-muted px-4 py-11 last:border-b-0"
           >
             <div class="relative shrink-0">
               <a-avatar :src="item.avatar" :size="44" round />
               <span
-                class="absolute -bottom-2 -right-2 size-18 flex items-center justify-center rounded-full border-2 border-container text-white"
+                class="absolute -bottom-2 -right-2 size-18 flex items-center justify-center rounded-full b-2-[var(--w-bg-container)] text-white"
                 :class="item.type === 'user' ? 'bg-primary' : 'bg-success'"
               >
                 <Icon
@@ -145,7 +142,7 @@
                   {{ item.name }}
                 </span>
                 <span
-                  class="shrink-0 rounded-4 bg-fill-quaternary px-5 py-1 text-10px text-secondary"
+                  class="shrink-0 rounded-4 bg-secondary px-5 py-1 text-10px text-secondary"
                 >
                   {{ item.type === 'user' ? '用户' : '群聊' }}
                 </span>

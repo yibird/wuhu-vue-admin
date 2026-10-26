@@ -12,7 +12,7 @@
   >
     <div
       v-if="dragSelection"
-      class="pointer-events-none absolute left-0 top-0 z-20 rounded-4 border-1 border-primary border-solid bg-primary/12 will-change-transform"
+      class="pointer-events-none absolute left-0 top-0 z-20 rounded-4 b-1-primary bg-primary/12 will-change-transform"
       :style="dragSelectionStyle"
     ></div>
 
@@ -39,10 +39,10 @@
           :while-press="itemPress"
           :data-file-manager-item-id="item.id"
           :class="[
-            'file-grid__card group relative min-w-0 cursor-pointer rounded-6 border-1 border-solid bg-container-secondary p-10 text-left outline-none transition-[background-color,border-color,box-shadow] duration-motion-base hover:(border-primary bg-primary-tint shadow-all-sm) focus-visible:border-primary',
+            'file-grid__card group relative min-w-0 cursor-pointer rounded-6 border-1 border-solid bg-secondary p-10 text-left outline-none transition-[background-color,border-color,box-shadow] duration-motion-base hover:(border-primary bg-primary/10 shadow-all-sm) focus-visible:border-primary',
             isSelected(item)
-              ? 'border-primary bg-primary-tint text-primary'
-              : 'border-color-1 text-main',
+              ? 'border-primary bg-primary/10 text-primary'
+              : 'border-muted text-main',
           ]"
           @click="handleGridItemClick(item, $event)"
           @keydown.enter.prevent="handleDoubleClick(item)"
@@ -120,10 +120,8 @@
           :while-press="itemPress"
           :data-file-manager-item-id="item.id"
           :class="[
-            'group min-w-0 flex cursor-pointer items-center gap-12 rounded-6 border-1 border-solid bg-container-secondary px-12 py-10 transition-colors hover:(border-primary bg-primary-tint) max-[575px]:(items-start gap-10)',
-            isSelected(item)
-              ? 'border-primary bg-primary-tint'
-              : 'border-color-1',
+            'group min-w-0 flex cursor-pointer items-center gap-12 rounded-6 border-1 border-solid bg-secondary px-12 py-10 transition-colors hover:(border-primary bg-primary/10) max-[575px]:(items-start gap-10)',
+            isSelected(item) ? 'border-primary bg-primary/10' : 'border-muted',
           ]"
           @click="handleItemClick(item, $event)"
           @dblclick="handleDoubleClick(item)"

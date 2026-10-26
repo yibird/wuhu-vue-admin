@@ -41,7 +41,7 @@
             @click="openDetail(item)"
           >
             <span
-              class="size-32 shrink-0 grid place-items-center rounded-8 bg-fill-tertiary text-secondary transition-[background-color,color,transform] duration-motion-base group-hover:(scale-105 bg-container text-primary)"
+              class="size-32 shrink-0 grid place-items-center rounded-8 bg-muted text-secondary transition-[background-color,color,transform] duration-motion-base group-hover:(scale-105 bg-container text-primary)"
             >
               <Icon :name="item.icon" :size="16" />
             </span>
@@ -92,7 +92,7 @@
 
         <button
           type="button"
-          class="w-full flex-center gap-5 border-0 border-color-2 border-t-1 border-t-solid bg-transparent px-12 py-10 text-sm text-secondary outline-none cursor-pointer transition-[background-color,color] hover:(bg-hover text-primary) focus-visible:(bg-hover text-primary)"
+          class="w-full flex-center gap-5 border-0 b-t-1-regular bg-transparent px-12 py-10 text-sm text-secondary outline-none cursor-pointer transition-[background-color,color] hover:(bg-hover text-primary) focus-visible:(bg-hover text-primary)"
           @click="openNoticeCenter"
         >
           查看全部公告
@@ -113,7 +113,7 @@
     <article v-if="selectedAnnouncement" class="py-4">
       <div class="flex items-start gap-12">
         <span
-          class="size-38 shrink-0 grid place-items-center rounded-8 bg-fill-tertiary text-primary"
+          class="size-38 shrink-0 grid place-items-center rounded-8 bg-muted text-primary"
         >
           <Icon :name="selectedAnnouncement.icon" :size="19" />
         </span>
@@ -137,7 +137,7 @@
       </div>
 
       <p
-        class="mb-0 mt-18 whitespace-pre-line rounded-8 bg-fill-tertiary p-14 text-sm text-regular leading-24px"
+        class="mb-0 mt-18 whitespace-pre-line rounded-8 bg-muted p-14 text-sm text-regular leading-24px"
       >
         {{ selectedAnnouncement.content }}
       </p>
@@ -174,7 +174,7 @@ const announcements: WorkbenchAnnouncement[] = [
     content:
       '第三季度重点项目评审将于 8 月 24 日开始。请项目负责人于本周五 18:00 前提交阶段成果、风险清单和下一阶段计划，评审日程将在材料收齐后统一发布。',
     category: '重要',
-    categoryClass: 'bg-error-tint text-error',
+    categoryClass: 'bg-error/10 text-error',
     icon: 'i-lucide:badge-alert',
     publisher: '项目管理办公室',
     publishedAt: '08-17 09:30',
@@ -186,7 +186,7 @@ const announcements: WorkbenchAnnouncement[] = [
     content:
       '平台计划于 8 月 22 日 01:00 至 03:00 进行数据库升级和缓存节点切换。维护期间部分统计数据可能延迟更新，核心业务操作不受影响。',
     category: '系统',
-    categoryClass: 'bg-info-tint text-info',
+    categoryClass: 'bg-info/10 text-info',
     icon: 'i-lucide:server-cog',
     publisher: '平台运维组',
     publishedAt: '08-16 16:20',
@@ -198,7 +198,7 @@ const announcements: WorkbenchAnnouncement[] = [
     content:
       '新版需求评审规范已生效。涉及权限、支付和敏感数据的需求需增加安全会签；高风险需求上线后一周内需完成效果回溯，并在项目空间归档结论。',
     category: '制度',
-    categoryClass: 'bg-warning-tint text-warning',
+    categoryClass: 'bg-warning/10 text-warning',
     icon: 'i-lucide:file-check-2',
     publisher: '产品委员会',
     publishedAt: '08-15 11:40',
@@ -210,7 +210,7 @@ const announcements: WorkbenchAnnouncement[] = [
     content:
       '八月技术分享将围绕前端性能治理、异常监控和构建产物分析展开。欢迎提交案例或问题，报名截止时间为 8 月 21 日 17:00。',
     category: '活动',
-    categoryClass: 'bg-success-tint text-success',
+    categoryClass: 'bg-success/10 text-success',
     icon: 'i-lucide:presentation',
     publisher: '技术委员会',
     publishedAt: '08-14 14:10',

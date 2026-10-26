@@ -21,7 +21,7 @@
             class="content-auto-86 group flex gap-20 px-8 py-12 rounded-4"
           >
             <span
-              class="size-34 grid place-items-center rounded-full bg-fill-tertiary text-secondary transition-[background-color,color] duration-motion-base group-hover:(bg-primary-tint text-primary)"
+              class="size-34 grid place-items-center rounded-full bg-muted text-secondary transition-[background-color,color] duration-motion-base group-hover:(bg-primary/10 text-primary)"
             >
               <Icon :name="item.icon" :size="16" />
             </span>

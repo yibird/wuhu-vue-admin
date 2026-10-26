@@ -11,10 +11,8 @@
       <div
         class="h-full min-h-0 grid grid-cols-[280px_minmax(0,1fr)] max-md:grid-cols-1"
       >
-        <aside
-          class="min-h-0 flex flex-col border-r-1 border-r-solid border-color-1 bg-container"
-        >
-          <div class="border-b-1 border-b-solid border-color-1 p-12">
+        <aside class="min-h-0 flex flex-col b-r-1-muted bg-container">
+          <div class="b-b-1-muted p-12">
             <div class="mb-10 flex items-center justify-between gap-8">
               <div class="min-w-0">
                 <div class="text-sm text-main font-800">便签列表</div>
@@ -53,7 +51,7 @@
               :class="
                 note.id === activeNote?.id
                   ? 'border-primary bg-primary/10'
-                  : 'border-color-2 bg-container hover:(border-primary bg-hover)'
+                  : 'border-regular bg-container hover:(border-primary bg-hover)'
               "
               @click="selectNote(note.id)"
             >
@@ -62,8 +60,8 @@
                   class="mt-1 size-28 shrink-0 flex items-center justify-center rounded-7"
                   :class="
                     note.pinned
-                      ? 'bg-warning-tint text-warning'
-                      : 'bg-fill-quaternary text-secondary'
+                      ? 'bg-warning/10 text-warning'
+                      : 'bg-secondary text-secondary'
                   "
                 >
                   <Icon
@@ -99,7 +97,7 @@
         <section class="min-h-0 flex flex-col bg-page">
           <template v-if="activeNote">
             <header
-              class="flex flex-wrap items-center justify-between gap-10 border-b-1 border-b-solid border-color-1 bg-container px-16 py-12"
+              class="flex flex-wrap items-center justify-between gap-10 b-b-1-muted bg-container px-16 py-12"
             >
               <div class="min-w-0">
                 <div class="text-sm text-main font-800">编辑笔记</div>
@@ -143,7 +141,7 @@
 
             <div class="min-h-0 flex-1 p-16">
               <div
-                class="h-full min-h-0 flex flex-col rounded-8 border-1 border-color-2 border-solid bg-container p-14"
+                class="h-full min-h-0 flex flex-col rounded-8 b-1-regular bg-container p-14"
               >
                 <a-input
                   :value="activeNote.title"

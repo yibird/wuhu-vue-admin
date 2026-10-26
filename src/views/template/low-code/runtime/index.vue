@@ -5,7 +5,7 @@
   >
     <template v-if="schema && runtime">
       <header
-        class="flex-y-center gap-10 border-0 border-b-1 border-color-2 border-b-solid bg-container px-16 py-10"
+        class="flex-y-center gap-10 border-0 b-b-1-regular bg-container px-16 py-10"
       >
         <span class="size-28 flex-center rounded-7 bg-primary text-white">
           <Icon name="i-lucide:blocks" :size="15" />
@@ -44,14 +44,14 @@
       <div class="min-h-0 flex-1 overflow-auto p-16">
         <div
           v-if="!runtime.canAccessPage(activePageId)"
-          class="mx-auto mt-80px flex max-w-520px flex-col items-center gap-10 rounded-10 border-1 border-color-2 border-solid bg-container p-40"
+          class="mx-auto mt-80px flex max-w-520px flex-col items-center gap-10 rounded-10 b-1-regular bg-container p-40"
         >
           <Icon name="i-lucide:shield-x" :size="32" class="text-error" />
           <div class="text-sm text-main font-600">当前角色无权访问该页面</div>
         </div>
         <div
           v-else
-          class="mx-auto w-full overflow-hidden rounded-8 border-1 border-color-2 border-solid bg-main shadow-elevated"
+          class="mx-auto w-full overflow-hidden rounded-8 b-1-regular bg-container shadow-overlay"
           :style="{ maxWidth: '1440px' }"
         >
           <SchemaRenderer

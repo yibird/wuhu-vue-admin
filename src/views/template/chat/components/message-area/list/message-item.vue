@@ -49,7 +49,7 @@
             :class="[
               isMine
                 ? 'bg-primary text-white rounded-tr-2px'
-                : 'bg-fill-quaternary text-main rounded-tl-2px',
+                : 'bg-secondary text-main rounded-tl-2px',
             ]"
           >
             <TextContent
@@ -82,7 +82,7 @@
 
           <div
             v-if="message.replyInfo"
-            class="max-w-full rounded-6 border-1 border-color-2 bg-primary-tint px-8 py-6 text-left text-xs text-secondary"
+            class="max-w-full rounded-6 b-1-regular bg-primary/10 px-8 py-6 text-left text-xs text-secondary"
           >
             <div class="mb-2 text-primary">
               {{ message.replyInfo.senderName }}
@@ -98,7 +98,7 @@
               type="button"
               v-for="reaction in message.reactions"
               :key="reaction.emoji"
-              class="flex items-center gap-2 rounded-full border-1 border-color-2 border-solid bg-container px-6 py-2 cursor-pointer transition-colors hover:bg-hover focus-visible:(outline-2 outline-primary outline-offset-2)"
+              class="flex items-center gap-2 rounded-full b-1-regular bg-container px-6 py-2 cursor-pointer transition-colors hover:bg-hover focus-visible:(outline-2 outline-primary outline-offset-2)"
               :aria-label="`${reaction.emoji} ${reaction.count} 个反应`"
               @click="$emit('reaction', reaction.emoji)"
             >
@@ -121,10 +121,10 @@
             </span>
             <button
               type="button"
-              class="button relative size-22 rounded-full transition-[background-color,box-shadow,opacity,transform,color] duration-motion-base hover:(-translate-y-1 bg-warning-tint text-warning shadow-all-sm) focus-visible:(outline-2 outline-warning outline-offset-2) active:(translate-y-0 scale-92)"
+              class="button relative size-22 rounded-full transition-[background-color,box-shadow,opacity,transform,color] duration-motion-base hover:(-translate-y-1 bg-warning/10 text-warning shadow-all-sm) focus-visible:(outline-2 outline-warning outline-offset-2) active:(translate-y-0 scale-92)"
               :class="[
                 favorite
-                  ? 'bg-warning-tint text-warning opacity-100'
+                  ? 'bg-warning/10 text-warning opacity-100'
                   : 'text-secondary opacity-0 group-hover:opacity-100 focus-visible:opacity-100',
               ]"
               :title="favorite ? '取消收藏' : '收藏消息'"
@@ -139,7 +139,7 @@
               <Transition name="fade-pop">
                 <span
                   v-if="favoritePulse"
-                  class="pointer-events-none absolute -top-22 left-0 whitespace-nowrap rounded-full bg-warning-tint px-7 py-2 text-11px text-warning shadow-all-sm"
+                  class="pointer-events-none absolute -top-22 left-0 whitespace-nowrap rounded-full bg-warning/10 px-7 py-2 text-11px text-warning shadow-all-sm"
                 >
                   {{ favoritePulseText }}
                 </span>
@@ -179,7 +179,7 @@
 
           <div
             v-if="showEmojiPicker"
-            class="absolute -top-72 z-3 rounded-8 border-1 border-color-2 border-solid bg-container p-8 shadow-all-md"
+            class="absolute -top-72 z-3 rounded-8 b-1-regular bg-container p-8 shadow-all-md"
             :class="isMine ? 'right-0' : 'left-0'"
           >
             <div class="grid grid-cols-8 gap-4">

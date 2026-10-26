@@ -18,7 +18,7 @@
     <div class="mt-14 overflow-x-auto">
       <div class="min-w-900">
         <div
-          class="grid grid-cols-[minmax(180px,1.6fr)_80px_100px_100px_100px_100px_90px] gap-10 border-b-1 border-b-solid border-color-2 px-10 pb-9 text-xs text-secondary"
+          class="grid grid-cols-[minmax(180px,1.6fr)_80px_100px_100px_100px_100px_90px] gap-10 b-b-1-regular px-10 pb-9 text-xs text-secondary"
         >
           <span>进程</span>
           <span>PID</span>
@@ -33,7 +33,7 @@
             v-for="item in processes"
             :key="item.id"
             type="button"
-            class="grid grid-cols-[minmax(180px,1.6fr)_80px_100px_100px_100px_100px_90px] gap-10 border-b-1 border-b-solid border-color-1 px-10 py-11 text-left transition-[background-color,transform] duration-motion-base hover:(bg-hover-2) active:scale-[0.998] motion-reduce:transition-none"
+            class="grid grid-cols-[minmax(180px,1.6fr)_80px_100px_100px_100px_100px_90px] gap-10 b-b-1-muted px-10 py-11 text-left transition-[background-color,transform] duration-motion-base hover:(bg-hover) active:scale-[0.998] motion-reduce:transition-none"
             @click="emits('selectProcess', item)"
           >
             <span class="min-w-0">
@@ -52,7 +52,7 @@
             <span class="self-center">
               <span class="text-sm text-main">{{ item.heap }}%</span>
               <span
-                class="mt-4 block h-4 w-70 overflow-hidden rounded-full bg-fill-tertiary"
+                class="mt-4 block h-4 w-70 overflow-hidden rounded-full bg-muted"
               >
                 <span
                   class="block h-full rounded-full bg-primary transition-[width] duration-motion-base"
@@ -95,9 +95,9 @@ const props = defineProps<{
 const emits = defineEmits<SystemMonitorActions>()
 
 const statusMeta = {
-  healthy: { label: '运行中', class: 'bg-success-tint text-success' },
-  warning: { label: '需关注', class: 'bg-warning-tint text-warning' },
-  offline: { label: '已停止', class: 'bg-error-tint text-error' },
+  healthy: { label: '运行中', class: 'bg-success/10 text-success' },
+  warning: { label: '需关注', class: 'bg-warning/10 text-warning' },
+  offline: { label: '已停止', class: 'bg-error/10 text-error' },
 } as const
 
 const summaryItems = computed<SummaryMetricItem[]>(() => [

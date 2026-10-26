@@ -1,10 +1,8 @@
 <template>
   <a-modal v-model:open="open" :footer="null" title="数据源管理" width="860px">
     <div class="h-[68vh] min-h-0 grid grid-cols-[280px_minmax(0,1fr)] gap-12">
-      <section
-        class="min-h-0 overflow-hidden rounded-8 border-1 border-color-2 border-solid"
-      >
-        <header class="border-b border-color-2 px-12 py-10">
+      <section class="min-h-0 overflow-hidden rounded-8 b-1-regular">
+        <header class="border-b border-regular px-12 py-10">
           <h3 class="m-0 text-14px font-700 text-primary">数据源列表</h3>
           <p class="m-0 mt-3 text-12px text-secondary">
             REST / SQL / JSON / 样例数据
@@ -51,7 +49,7 @@
       </section>
 
       <section
-        class="min-h-0 grid grid-rows-[minmax(0,1fr)_auto] overflow-hidden rounded-8 border-1 border-color-2 border-solid"
+        class="min-h-0 grid grid-rows-[minmax(0,1fr)_auto] overflow-hidden rounded-8 b-1-regular"
       >
         <div
           class="min-h-0 p-14 w-full h-full overflow-x-hidden overflow-y-auto"
@@ -90,7 +88,7 @@
             <label class="block text-12px text-secondary">
               刷新间隔
               <input
-                class="mt-5 h-32 w-full rounded-6 border-1 border-color-2 border-solid bg-fill px-8 text-13px text-primary outline-none focus:border-primary"
+                class="mt-5 h-32 w-full rounded-6 b-1-regular bg-fill px-8 text-13px text-primary outline-none focus:border-primary"
                 min="0"
                 type="number"
                 :value="activeSource.refreshInterval"
@@ -119,7 +117,7 @@
           </div>
         </div>
 
-        <footer class="border-t border-color-2 p-12">
+        <footer class="border-t border-regular p-12">
           <div class="flex items-center justify-between gap-8">
             <strong class="text-13px text-primary">快速导入 JSON 数据源</strong>
             <a-button type="primary" @click="emits('importJson')">
@@ -131,7 +129,7 @@
           </div>
           <textarea
             v-model="jsonDraft"
-            class="mt-8 h-92 w-full resize-none rounded-6 border-1 border-color-2 border-solid bg-fill px-8 py-7 font-mono text-12px text-primary outline-none focus:border-primary"
+            class="mt-8 h-92 w-full resize-none rounded-6 b-1-regular bg-fill px-8 py-7 font-mono text-12px text-primary outline-none focus:border-primary"
             spellcheck="false"
           ></textarea>
         </footer>

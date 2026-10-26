@@ -25,7 +25,7 @@
     <Transition name="fade-slide-right">
       <div
         v-if="preview"
-        class="message-preview absolute top-1/2 right-[calc(100%+10px)] w-210 grid gap-4 px-10 py-9 pointer-events-none bg-[rgb(var(--w-bg-container)/96%)] border-1 border-solid border-color-1 rounded-6 shadow-elevated backdrop-blur-12"
+        class="message-preview absolute top-1/2 right-[calc(100%+10px)] w-210 grid gap-4 px-10 py-9 pointer-events-none bg-[rgb(var(--w-bg-container)/96%)] b-1-muted rounded-6 shadow-overlay backdrop-blur-12"
         :style="previewStyle"
       >
         <span class="text-11px text-primary font-600">

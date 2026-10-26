@@ -20,7 +20,7 @@
     <template #optionRender="{ option }">
       <div class="flex items-center gap-8">
         <span
-          class="size-26 shrink-0 flex-center rounded-4 bg-primary-tint text-primary"
+          class="size-26 shrink-0 flex-center rounded-4 bg-primary/10 text-primary"
         >
           <Icon name="i-lucide:shield-check" :size="14" />
         </span>

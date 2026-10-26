@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex gap-8 flex-wrap p-10 border-b-1 border-b-solid border-color-1"
+    class="flex gap-8 flex-wrap p-10 b-b-1-muted"
     role="tablist"
     :aria-label="ariaLabel"
   >

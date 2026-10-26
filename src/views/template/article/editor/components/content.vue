@@ -1,7 +1,7 @@
 <template>
   <section class="min-w-0 flex flex-1 flex-col">
     <div
-      class="mb-10 flex flex-wrap items-center justify-between gap-10 rounded-6 border-1 border-solid border-color-1 bg-container px-12 py-10"
+      class="mb-10 flex flex-wrap items-center justify-between gap-10 rounded-6 b-1-muted bg-container px-12 py-10"
     >
       <div class="flex flex-wrap items-center gap-8">
         <a-button size="small" @click="emits('insert-template', 'meeting')">
@@ -62,14 +62,14 @@
 
         <div
           v-else-if="props.activeMode === 'preview'"
-          class="h-full rounded-8 border-1 border-solid border-color-1 bg-container p-34 max-sm:p-18 w-full overflow-x-hidden overflow-y-auto"
+          class="h-full rounded-8 b-1-muted bg-container p-34 max-sm:p-18 w-full overflow-x-hidden overflow-y-auto"
         >
           <DocumentPreview :html="props.safeContent" />
         </div>
 
         <div
           v-else
-          class="h-full overflow-hidden rounded-8 border-1 border-solid border-color-1 bg-container"
+          class="h-full overflow-hidden rounded-8 b-1-muted bg-container"
         >
           <textarea
             :value="props.sourceContent"

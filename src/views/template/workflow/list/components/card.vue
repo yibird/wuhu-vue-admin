@@ -7,7 +7,7 @@
     :while-hover="{ y: -3 }"
     :while-press="{ scale: 0.995 }"
     :transition="{ type: 'spring', stiffness: 380, damping: 30, mass: 0.7 }"
-    class="group min-w-0 cursor-pointer overflow-hidden rounded-8 border-1 border-color-2 border-solid bg-container shadow-[var(--w-shadow-card)] outline-none transition-[border-color,box-shadow] duration-motion-base hover:border-primary hover:shadow-[var(--w-shadow-elevated)] focus-visible:border-primary"
+    class="group min-w-0 cursor-pointer overflow-hidden rounded-8 b-1-regular bg-container shadow-card outline-none transition-[border-color,box-shadow] duration-motion-base hover:border-primary hover:shadow-overlay focus-visible:border-primary"
     @click="emits('open', workflow)"
   >
     <div class="flex items-start gap-12 px-14 pb-12 pt-14">
@@ -57,7 +57,7 @@
 
     <div class="flex items-center gap-10 px-14 py-11">
       <span
-        class="size-28 flex flex-none items-center justify-center rounded-full bg-fill-secondary text-xs text-main font-700"
+        class="size-28 flex flex-none items-center justify-center rounded-full bg-secondary text-xs text-main font-700"
       >
         {{ workflow.owner.name.slice(-1) }}
       </span>

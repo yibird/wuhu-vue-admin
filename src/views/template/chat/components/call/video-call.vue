@@ -41,7 +41,7 @@
         </div>
       </div>
       <div
-        class="absolute bottom-12 right-12 z-2 h-90 w-124 overflow-hidden rounded-8 border-1 border-white/24 border-solid bg-[rgb(15_23_42_/_82%)] shadow-[0_16px_40px_rgb(0_0_0_/_26%)]"
+        class="absolute bottom-12 right-12 z-2 h-90 w-124 overflow-hidden rounded-8 b-1-white/24 bg-[rgb(15_23_42_/_82%)] shadow-[0_16px_40px_rgb(0_0_0_/_26%)]"
       >
         <video
           v-show="cameraEnabled && hasLocalVideo"

@@ -1,5 +1,5 @@
-export { presets } from './presets'
+export { presets } from './preset'
 export { shortcuts } from './shortcuts'
-export { rules } from './rules'
+export { rules } from './rule'
 export { transformers } from './transformers'
 export { postprocess } from './postprocess'

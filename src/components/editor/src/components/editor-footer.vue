@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex items-center justify-between border-t-1 border-t-solid border-color-2 bg-fill-quaternary px-12 py-8 text-xs text-secondary"
+    class="flex items-center justify-between b-t-1-regular bg-secondary px-12 py-8 text-xs text-secondary"
   >
     <span>
       {{ characterCount }} {{ locale.characterUnit }} / {{ wordCount }}

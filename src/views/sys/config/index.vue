@@ -3,15 +3,15 @@
     <div class="h-full min-h-0 bg-page p-10">
       <div class="h-full min-h-0 flex overflow-hidden bg-container">
         <div
-          class="w-300 shrink-0 overflow-y-auto px-10 py-20 flex flex-col gap-10 border-r-1 border-r-solid border-color-1 max-sm:w-72 max-sm:px-6"
+          class="w-300 shrink-0 overflow-y-auto px-10 py-20 flex flex-col gap-10 b-r-1-muted max-sm:w-72 max-sm:px-6"
         >
           <button
             v-for="item in items"
             :key="item.key"
             type="button"
             :class="[
-              'group reset-button px-12 py-10 flex items-center rounded-6 press-spring hover:bg-hover-3 max-sm:(flex justify-center)',
-              { 'bg-hover-3 text-primary': item.key === activeKey },
+              'group reset-button px-12 py-10 flex items-center rounded-6 motion-press hover:bg-hover max-sm:(flex justify-center)',
+              { 'bg-hover text-primary': item.key === activeKey },
             ]"
             :aria-pressed="item.key === activeKey"
             :title="item.label"

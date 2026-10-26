@@ -5,7 +5,7 @@
   >
     <div
       v-if="showHeader"
-      class="h-60 shrink-0 flex items-center justify-between border-b-1 border-b-solid border-color-1 px-14"
+      class="h-60 shrink-0 flex items-center justify-between b-b-1-muted px-14"
     >
       <div class="text-main font-600">设置</div>
       <Icon
@@ -81,7 +81,7 @@
 
         <section class="setting-section">
           <div class="setting-section__title">会话管理</div>
-          <div class="rounded-8 border-1 border-color-1 border-solid p-12">
+          <div class="rounded-8 b-1-muted p-12">
             <div class="mb-10 flex items-center justify-between gap-12">
               <div class="min-w-0">
                 <div class="text-sm text-main font-500">自动归档静默会话</div>
@@ -90,7 +90,7 @@
                 </div>
               </div>
               <span
-                class="min-w-44 rounded-6 bg-fill-quaternary px-8 py-4 text-center text-xs text-main"
+                class="min-w-44 rounded-6 bg-secondary px-8 py-4 text-center text-xs text-main"
               >
                 {{ settings.autoArchiveDays }} 天
               </span>
@@ -154,7 +154,7 @@ const { settings, updateSetting, updateSoundVolume, updateArchiveDays } =
   align-items: center;
   padding: 10px;
   cursor: pointer;
-  border: 1px solid rgb(var(--w-border-color-1));
+  border: 1px solid rgb(var(--w-border-muted));
   border-radius: 8px;
   transition:
     background-color var(--w-motion-duration-base) var(--w-motion-ease-standard),
@@ -163,7 +163,7 @@ const { settings, updateSetting, updateSoundVolume, updateArchiveDays } =
 
 .setting-row:hover {
   background-color: rgb(var(--w-bg-hover));
-  border-color: rgb(var(--w-border-color-2));
+  border-color: rgb(var(--w-border-regular));
 }
 
 .setting-row__icon {
@@ -178,7 +178,7 @@ const { settings, updateSetting, updateSoundVolume, updateArchiveDays } =
 
 .setting-volume {
   padding: 10px 10px 4px;
-  border: 1px solid rgb(var(--w-border-color-1));
+  border: 1px solid rgb(var(--w-border-muted));
   border-radius: 8px;
 }
 </style>

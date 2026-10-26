@@ -1,7 +1,7 @@
 <template>
   <a-border-beam :duration="6" :line-width="3">
     <Card
-      class="page-enter page-enter--3 overflow-hidden rounded-8 border-1 border-solid border-color-2 shadow-[var(--w-shadow-card)]"
+      class="page-enter page-enter--3 overflow-hidden rounded-8 b-1-regular shadow-card"
       variant="borderless"
       :styles="{
         body: {
@@ -10,7 +10,7 @@
       }"
     >
       <div
-        class="flex flex-wrap items-center justify-between gap-12 border-b-1 border-b-solid border-color-2 bg-container px-14 py-12 sm:px-18"
+        class="flex flex-wrap items-center justify-between gap-12 b-b-1-regular bg-container px-14 py-12 sm:px-18"
       >
         <div class="min-w-0">
           <div class="text-sm text-main font-700">经营趋势</div>

@@ -1,14 +1,11 @@
 <template>
   <div
-    class="relative flex h-full overflow-visible shadow-[var(--w-sider-shadow)] border-r-1 border-solid border-r-[rgb(var(--w-sider-border-color))] z-[var(--w-sider-z-index)]"
+    class="relative flex h-full overflow-visible shadow-[var(--w-sider-shadow)] b-r-1-[rgb(var(--w-sider-border-color))] z-[var(--w-sider-z-index)]"
   >
     <div
-      class="flex flex-col w-78 overflow-hidden bg-[rgb(var(--w-sider-bg))] border-r-1 border-solid border-r-[rgb(var(--w-border-color-2))]"
+      class="flex flex-col w-78 overflow-hidden bg-[rgb(var(--w-sider-bg))] b-r-1-[rgb(var(--w-border-regular))]"
     >
-      <Logo
-        collapsed
-        class="border-b-1 border-solid border-b-[rgb(var(--w-border-color-2))]"
-      />
+      <Logo collapsed class="b-b-1-[rgb(var(--w-border-regular))]" />
       <div class="flex-1 py-10 flex flex-col gap-10">
         <div
           v-for="item in menus"
@@ -46,7 +43,7 @@
     >
       <div
         v-if="sider.showSearch"
-        class="h-50 flex items-center justify-center border-b-1 border-solid border-b-[rgb(var(--w-sider-border-color))]"
+        class="h-50 flex items-center justify-center b-b-1-[rgb(var(--w-sider-border-color))]"
       >
         <Search />
       </div>

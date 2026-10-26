@@ -8,13 +8,13 @@
     <button
       type="button"
       data-agent-tool-trigger
-      class="h-34 inline-flex items-center gap-6 rounded-full border-1 border-transparent border-solid bg-transparent px-10 text-regular cursor-pointer transition-colors hover:border-color-muted hover:bg-hover hover:text-main disabled:cursor-not-allowed disabled:text-disabled max-sm:w-34 max-sm:justify-center max-sm:px-0"
+      class="h-34 inline-flex items-center gap-6 rounded-full b-1-transparent bg-transparent px-10 text-regular cursor-pointer transition-colors hover:border-muted hover:bg-hover hover:text-main disabled:cursor-not-allowed disabled:text-disabled max-sm:w-34 max-sm:justify-center max-sm:px-0"
       :disabled="disabled"
     >
       <Icon name="i-lucide:wrench" :size="16" />
       <span>工具</span>
       <span
-        class="h-18 min-w-18 inline-flex items-center justify-center rounded-full bg-fill-tertiary px-5 text-11px text-secondary"
+        class="h-18 min-w-18 inline-flex items-center justify-center rounded-full bg-muted px-5 text-11px text-secondary"
       >
         {{ enabledTools.length }}
       </span>

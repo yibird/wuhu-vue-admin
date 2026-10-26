@@ -38,7 +38,7 @@
                 >
                   <button
                     type="button"
-                    class="block-button p-10 pr-72 text-left press-spring focus-visible:(outline-none bg-hover shadow-[0_0_0_2px_rgb(var(--w-color-primary)/24%)])"
+                    class="block-button p-10 pr-72 text-left motion-press focus-visible:(outline-none bg-hover shadow-[0_0_0_2px_rgb(var(--w-color-primary)/24%)])"
                     :aria-label="`查看${contact.name}资料`"
                     @click="handleSelect(contact)"
                   >
@@ -52,7 +52,7 @@
                         />
                         <span
                           v-if="contact.status"
-                          class="absolute bottom-0 right-0 size-10 rounded-full border-2 border-container"
+                          class="absolute bottom-0 right-0 size-10 rounded-full b-2-[var(--w-bg-container)]"
                           :class="{
                             'bg-success': contact.status === 'online',
                             'bg-fill': contact.status === 'offline',
@@ -86,7 +86,7 @@
                       <span
                         v-for="tag in contact.tags"
                         :key="tag"
-                        class="rounded-4 bg-fill-quaternary px-6 py-2 text-xs text-secondary"
+                        class="rounded-4 bg-secondary px-6 py-2 text-xs text-secondary"
                       >
                         {{ tag }}
                       </span>
@@ -204,7 +204,7 @@ function renderGroupHeader(groupKey: string, items: Contact[]) {
     'div',
     {
       class:
-        'h-38 flex items-center gap-7 border-b-1 border-b-solid border-color-1 px-8 text-sm text-main font-600',
+        'h-38 flex items-center gap-7 b-b-1-muted px-8 text-sm text-main font-600',
     },
     [
       group?.icon

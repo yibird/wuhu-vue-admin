@@ -41,9 +41,7 @@
                   {{ formatValue(item) }}
                 </span>
               </div>
-              <div
-                class="mt-7 h-5 overflow-hidden rounded-999 bg-fill-secondary"
-              >
+              <div class="mt-7 h-5 overflow-hidden rounded-999 bg-secondary">
                 <div
                   class="h-full origin-left rounded-999 bg-primary transition-[width] duration-motion-moderate ease-motion-standard motion-reduce:transition-none"
                   :style="{ width: `${barWidth(item)}%` }"
@@ -164,10 +162,10 @@ const maxValue = computed(() => rankedItems.value[0]?.[metric.value] ?? 1)
  * @param index 名次下标
  */
 function rankClass(index: number) {
-  if (index === 0) return 'bg-primary-tint text-primary'
-  if (index === 1) return 'bg-info-tint text-info'
-  if (index === 2) return 'bg-warning-tint text-warning'
-  return 'bg-fill-tertiary text-secondary'
+  if (index === 0) return 'bg-primary/10 text-primary'
+  if (index === 1) return 'bg-info/10 text-info'
+  if (index === 2) return 'bg-warning/10 text-warning'
+  return 'bg-muted text-secondary'
 }
 
 /**

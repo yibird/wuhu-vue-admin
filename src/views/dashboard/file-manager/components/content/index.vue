@@ -3,7 +3,7 @@
     class="file-manager-content h-full min-h-0 flex flex-col gap-10 overflow-hidden rounded-4 bg-container"
   >
     <div
-      class="file-manager-content__header min-w-0 border-b-1 border-b-solid border-color-1 px-16 pt-14 transition-[background-color,border-color] duration-motion-base ease-motion-standard motion-reduce:transition-none max-[575px]:(px-12 pt-12)"
+      class="file-manager-content__header min-w-0 b-b-1-muted px-16 pt-14 transition-[background-color,border-color] duration-motion-base ease-motion-standard motion-reduce:transition-none max-[575px]:(px-12 pt-12)"
     >
       <Breadcrumb
         v-if="viewMode === 'grid'"

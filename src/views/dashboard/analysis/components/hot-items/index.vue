@@ -2,7 +2,7 @@
   <a-border-beam :duration="8" :line-width="2" :size="140">
     <Card class="page-enter page-enter--5" title="热门榜单">
       <div
-        class="relative overflow-hidden rounded-10 bg-warning-tint px-12 py-12 sm:px-14"
+        class="relative overflow-hidden rounded-10 bg-warning/10 px-12 py-12 sm:px-14"
       >
         <span
           class="pointer-events-none absolute right-[-28px] top-[-42px] size-112 rounded-999 border-warning/12 border-solid [border-width:18px]"
@@ -64,10 +64,10 @@
               :class="[
                 'size-26 flex shrink-0 items-center justify-center rounded-8 text-xs font-800 transition-shadow duration-motion-base ease-motion-standard group-hover:shadow-[0_4px_10px_rgb(var(--w-color-primary)_/_18%)] group-focus-visible:shadow-[0_4px_10px_rgb(var(--w-color-primary)_/_18%)] motion-reduce:transition-none',
                 index === 0
-                  ? 'bg-primary-tint text-primary'
+                  ? 'bg-primary/10 text-primary'
                   : index === 1
-                    ? 'bg-info-tint text-info'
-                    : 'bg-fill-tertiary text-secondary',
+                    ? 'bg-info/10 text-info'
+                    : 'bg-muted text-secondary',
               ]"
             >
               {{ String(index + 2).padStart(2, '0') }}
@@ -81,9 +81,7 @@
                   {{ item.value }}%
                 </span>
               </div>
-              <div
-                class="mt-7 h-5 overflow-hidden rounded-999 bg-fill-secondary"
-              >
+              <div class="mt-7 h-5 overflow-hidden rounded-999 bg-secondary">
                 <div
                   class="h-full origin-left rounded-999 bg-primary transition-[filter,transform,width] duration-motion-moderate ease-motion-standard group-hover:(scale-y-122 [filter:saturate(1.18)]) group-focus-visible:(scale-y-122 [filter:saturate(1.18)]) motion-reduce:(transform-none transition-none)"
                   :style="{ width: `${item.value}%` }"

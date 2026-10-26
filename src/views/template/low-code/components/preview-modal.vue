@@ -7,9 +7,7 @@
     title="运行预览"
     @cancel="emits('close')"
   >
-    <div
-      class="flex-y-center gap-10 border-0 border-b-1 border-color-2 border-b-solid px-16 py-12"
-    >
+    <div class="flex-y-center gap-10 border-0 b-b-1-regular px-16 py-12">
       <span class="text-xs text-muted">
         使用真实 Runtime 解析 Schema，Mock 数据与表达式均按运行时执行
       </span>
@@ -43,7 +41,7 @@
     <div class="max-h-[76vh] min-h-[320px] overflow-auto bg-page p-20">
       <div
         v-if="!allowed"
-        class="mx-auto flex max-w-520px flex-col items-center gap-10 rounded-10 border-1 border-color-2 border-solid bg-container p-40"
+        class="mx-auto flex max-w-520px flex-col items-center gap-10 rounded-10 b-1-regular bg-container p-40"
       >
         <Icon name="i-lucide:shield-x" :size="32" class="text-error" />
         <div class="text-sm text-main font-600">当前角色无权访问该页面</div>
@@ -56,7 +54,7 @@
         :theme="{ token: { colorPrimary: themeColor, fontSize: 15 } }"
       >
         <div
-          class="mx-auto overflow-hidden rounded-10 border-1 border-color-2 border-solid bg-main shadow-elevated"
+          class="mx-auto overflow-hidden rounded-10 b-1-regular bg-container shadow-overlay"
           :style="deviceStyle"
         >
           <SchemaRenderer

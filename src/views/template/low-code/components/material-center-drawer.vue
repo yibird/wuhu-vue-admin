@@ -7,9 +7,7 @@
     @close="emits('close')"
   >
     <div class="grid h-full grid-rows-[auto_minmax(0,1fr)]">
-      <div
-        class="flex gap-4 border-0 border-b-1 border-color-2 border-b-solid px-14 py-10"
-      >
+      <div class="flex gap-4 border-0 b-b-1-regular px-14 py-10">
         <button
           class="lc-material-tab"
           :class="{ 'is-active': activeTab === 'list' }"
@@ -356,7 +354,7 @@ function unregister(type: string) {
 
   &.is-active {
     color: rgb(var(--w-color-primary));
-    background: rgb(var(--w-bg-primary) / 8%);
+    background: rgb(var(--w-color-primary) / 8%);
   }
 
   &__count {
@@ -371,7 +369,7 @@ function unregister(type: string) {
   align-items: center;
   padding: 10px;
   background: rgb(var(--w-bg-container));
-  border: 1px solid rgb(var(--w-border-color-2));
+  border: 1px solid rgb(var(--w-border-regular));
   border-radius: 8px;
 }
 

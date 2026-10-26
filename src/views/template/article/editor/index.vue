@@ -3,7 +3,7 @@
     <div class="full min-w-0 flex bg-page">
       <!-- Desktop document list -->
       <aside
-        class="h-full w-300 shrink-0 border-r-1 border-r-solid border-color-1 bg-container max-xl:w-260 max-lg:hidden"
+        class="h-full w-300 shrink-0 b-r-1-muted bg-container max-xl:w-260 max-lg:hidden"
       >
         <DocumentSidebar
           :documents="filteredDocuments"
@@ -108,7 +108,7 @@
     >
       <textarea
         v-model="importContent"
-        class="box-border h-320 w-full resize-none rounded-6 border-1 border-solid border-color-1 bg-container p-12 font-mono text-sm text-main outline-none focus:border-primary"
+        class="box-border h-320 w-full resize-none rounded-6 b-1-muted bg-container p-12 font-mono text-sm text-main outline-none focus:border-primary"
       />
     </a-modal>
 

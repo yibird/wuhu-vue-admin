@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex flex-wrap items-center gap-8 border-b-1 border-b-solid border-color-2 bg-fill-quaternary px-10 py-9"
+    class="flex flex-wrap items-center gap-8 b-b-1-regular bg-secondary px-10 py-9"
   >
     <template v-if="showSelectControls">
       <a-select
@@ -43,7 +43,7 @@
         <template #optionRender="{ option }">
           <span class="inline-flex items-center gap-6">
             <span
-              class="size-12 rounded-3 border-1 border-solid border-color-1"
+              class="size-12 rounded-3 b-1-muted"
               :style="{ backgroundColor: option.data.color }"
             />
             <span>{{ option.data.label }}</span>
@@ -61,7 +61,7 @@
         <template #optionRender="{ option }">
           <span class="inline-flex items-center gap-6">
             <span
-              class="size-12 rounded-3 border-1 border-solid border-color-1"
+              class="size-12 rounded-3 b-1-muted"
               :style="{ backgroundColor: option.data.color }"
             />
             <span>{{ option.data.label }}</span>
@@ -90,7 +90,7 @@
     />
 
     <div
-      class="ml-auto flex items-center gap-2 rounded-8 border-1 border-solid border-color-2 bg-container p-3 max-lg:ml-0"
+      class="ml-auto flex items-center gap-2 rounded-8 b-1-regular bg-container p-3 max-lg:ml-0"
     >
       <a-tooltip :title="locale.link">
         <button

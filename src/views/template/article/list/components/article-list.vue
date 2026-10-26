@@ -20,7 +20,7 @@
         <div
           v-for="index in 10"
           :key="index"
-          class="h-286 rounded-8 border-1 border-color-2 border-solid bg-container p-14"
+          class="h-286 rounded-8 b-1-regular bg-container p-14"
         >
           <a-skeleton active :paragraph="{ rows: 6 }" />
         </div>
@@ -53,7 +53,7 @@
     </main>
 
     <footer
-      class="flex flex-none justify-center border-t-1 border-color-2 border-t-solid bg-container px-12 py-10 sm:px-16"
+      class="flex flex-none justify-center b-t-1-regular bg-container px-12 py-10 sm:px-16"
     >
       <a-pagination
         v-if="!isLoading && filteredItems.length > 0"

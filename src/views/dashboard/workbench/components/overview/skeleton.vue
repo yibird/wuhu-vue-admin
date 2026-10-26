@@ -1,6 +1,6 @@
 <template>
   <section
-    class="overflow-hidden rounded-4 border-1 border-color-2 border-solid bg-container"
+    class="overflow-hidden rounded-4 b-1-regular bg-container"
     aria-label="工作台概览加载中"
     aria-busy="true"
   >
@@ -18,12 +18,12 @@
       </div>
 
       <div
-        class="grid grid-cols-2 border-t-1 border-t-solid border-t-[rgb(var(--w-border-color-2))] sm:grid-cols-4 lg:grid-cols-2 lg:border-l-1 lg:border-l-solid lg:border-l-[rgb(var(--w-border-color-2))] lg:border-t-0"
+        class="grid grid-cols-2 b-t-1-[rgb(var(--w-border-regular))] sm:grid-cols-4 lg:grid-cols-2 lg:b-l-1-[rgb(var(--w-border-regular))] lg:border-t-0"
       >
         <div
           v-for="item in 4"
           :key="item"
-          class="min-w-0 border-r-1 border-b-1 border-r-solid border-b-solid border-r-[rgb(var(--w-border-color-2))] border-b-[rgb(var(--w-border-color-2))] p-14"
+          class="min-w-0 b-r-1-[rgb(var(--w-border-regular))] b-b-1-[rgb(var(--w-border-regular))] p-14"
         >
           <div class="flex items-center justify-between gap-10">
             <a-skeleton-input active size="small" class="!w-72" />

@@ -13,11 +13,11 @@
       class="grid h-[70vh] min-h-[480px] max-h-[760px] grid-rows-[auto_minmax(0,1fr)_auto] gap-12"
     >
       <header
-        class="flex items-center justify-between gap-14 rounded-10 border-1 border-color-2 border-solid bg-fill-quaternary px-14 py-12"
+        class="flex items-center justify-between gap-14 rounded-10 b-1-regular bg-secondary px-14 py-12"
       >
         <div class="min-w-0 flex items-center gap-10">
           <span
-            class="size-40 inline-flex shrink-0 items-center justify-center rounded-10 bg-primary-tint text-primary"
+            class="size-40 inline-flex shrink-0 items-center justify-center rounded-10 bg-primary/10 text-primary"
           >
             <Icon name="i-lucide:file-code-2" :size="19" />
           </span>
@@ -52,10 +52,10 @@
       </header>
 
       <section
-        class="workflow-source-editor min-h-0 flex flex-col overflow-hidden rounded-10 border-1 border-color-2 border-solid bg-container shadow-card"
+        class="workflow-source-editor min-h-0 flex flex-col overflow-hidden rounded-10 b-1-regular bg-container shadow-card"
       >
         <div
-          class="flex flex-none items-center justify-between gap-10 border-b-1 border-color-2 border-b-solid bg-fill-quaternary px-12 py-8"
+          class="flex flex-none items-center justify-between gap-10 b-b-1-regular bg-secondary px-12 py-8"
         >
           <div class="min-w-0 flex items-center gap-7 text-xs text-secondary">
             <Icon name="i-lucide:braces" :size="14" class="text-primary" />
@@ -75,7 +75,7 @@
       </section>
 
       <footer
-        class="flex flex-wrap items-center justify-between gap-10 border-t-1 border-t-solid border-color-2 pt-12"
+        class="flex flex-wrap items-center justify-between gap-10 b-t-1-regular pt-12"
       >
         <div
           class="min-w-0 flex-1 break-words text-xs leading-18px"
@@ -154,8 +154,8 @@ const statusLabel = computed(() => {
 })
 
 const statusClass = computed(() => {
-  if (props.error) return 'bg-error-tint text-error'
-  if (props.sourceStatus === 'formatted') return 'bg-warning-tint text-warning'
-  return 'bg-success-tint text-success'
+  if (props.error) return 'bg-error/10 text-error'
+  if (props.sourceStatus === 'formatted') return 'bg-warning/10 text-warning'
+  return 'bg-success/10 text-success'
 })
 </script>

@@ -1,9 +1,7 @@
 <template>
   <section class="grid gap-12 xl:grid-cols-2">
     <!-- 表单权限 -->
-    <article
-      class="rounded-10 border-1 border-color-2 border-solid bg-container p-14"
-    >
+    <article class="rounded-10 b-1-regular bg-container p-14">
       <header class="mb-12 flex flex-wrap items-center gap-8">
         <div class="min-w-0 flex-1">
           <h2 class="m-0 text-sm text-main font-700">表单权限</h2>
@@ -58,9 +56,7 @@
     </article>
 
     <!-- 消息通知 -->
-    <article
-      class="rounded-10 border-1 border-color-2 border-solid bg-container p-14"
-    >
+    <article class="rounded-10 b-1-regular bg-container p-14">
       <header class="mb-12">
         <h2 class="m-0 text-sm text-main font-700">消息通知</h2>
         <p class="m-0 mt-2 text-xs text-secondary">
@@ -102,9 +98,7 @@
     </article>
 
     <!-- 时限与超时 -->
-    <article
-      class="rounded-10 border-1 border-color-2 border-solid bg-container p-14"
-    >
+    <article class="rounded-10 b-1-regular bg-container p-14">
       <header class="mb-12 flex items-center justify-between gap-8">
         <div>
           <h2 class="m-0 text-sm text-main font-700">时限与超时处理</h2>
@@ -164,9 +158,7 @@
     </article>
 
     <!-- 异常处理 -->
-    <article
-      class="rounded-10 border-1 border-color-2 border-solid bg-container p-14"
-    >
+    <article class="rounded-10 b-1-regular bg-container p-14">
       <header class="mb-12">
         <h2 class="m-0 text-sm text-main font-700">异常处理</h2>
         <p class="m-0 mt-2 text-xs text-secondary">
@@ -223,9 +215,7 @@
     </article>
 
     <!-- 发起与流转规则 -->
-    <article
-      class="rounded-10 border-1 border-color-2 border-solid bg-container p-14"
-    >
+    <article class="rounded-10 b-1-regular bg-container p-14">
       <header class="mb-12">
         <h2 class="m-0 text-sm text-main font-700">发起与流转规则</h2>
         <p class="m-0 mt-2 text-xs text-secondary">
@@ -265,9 +255,7 @@
     </article>
 
     <!-- 数据权限 -->
-    <article
-      class="rounded-10 border-1 border-color-2 border-solid bg-container p-14"
-    >
+    <article class="rounded-10 b-1-regular bg-container p-14">
       <header class="mb-12">
         <h2 class="m-0 text-sm text-main font-700">数据权限</h2>
         <p class="m-0 mt-2 text-xs text-secondary">
@@ -307,9 +295,7 @@
     </article>
 
     <!-- 自动化动作 -->
-    <article
-      class="rounded-10 border-1 border-color-2 border-solid bg-container p-14 xl:col-span-2"
-    >
+    <article class="rounded-10 b-1-regular bg-container p-14 xl:col-span-2">
       <header class="mb-12 flex flex-wrap items-center gap-8">
         <div class="min-w-0 flex-1">
           <h2 class="m-0 text-sm text-main font-700">自动化动作</h2>
@@ -333,7 +319,7 @@
         <div
           v-for="(action, index) in extensions.automation"
           :key="action.id"
-          class="grid gap-8 rounded-7 border-1 border-color-2 border-solid bg-fill p-10 md:grid-cols-[minmax(0,1fr)_120px_110px_minmax(0,1fr)_80px_32px]"
+          class="grid gap-8 rounded-7 b-1-regular bg-fill p-10 md:grid-cols-[minmax(0,1fr)_120px_110px_minmax(0,1fr)_80px_32px]"
         >
           <a-input
             size="small"

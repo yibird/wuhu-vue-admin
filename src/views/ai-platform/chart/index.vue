@@ -2,7 +2,7 @@
   <WView full :padding="false" class="bg-page">
     <div class="box-border h-full min-h-full min-w-0 bg-page p-10 max-md:p-8">
       <div
-        class="h-full min-h-0 min-w-0 flex overflow-hidden rounded-8 border-1 border-color-1 border-solid bg-container shadow-b-sm max-xl:flex-col"
+        class="h-full min-h-0 min-w-0 flex overflow-hidden rounded-8 b-1-muted bg-container shadow-b-sm max-xl:flex-col"
       >
         <Sider
           class="page-enter page-enter--1"

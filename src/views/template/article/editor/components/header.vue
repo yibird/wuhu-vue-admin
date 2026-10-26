@@ -1,6 +1,6 @@
 <template>
   <header
-    class="h-82 flex flex-wrap items-center justify-between gap-12 border-b-1 border-b-solid border-color-1 bg-container px-18 py-12"
+    class="h-82 flex flex-wrap items-center justify-between gap-12 b-b-1-muted bg-container px-18 py-12"
   >
     <div class="min-w-0 flex-1">
       <div class="flex items-center gap-8">
@@ -16,7 +16,7 @@
           v-if="props.isRenaming"
           :value="props.renameValue"
           data-editor-title-input
-          class="h-34 min-w-0 max-w-520 flex-1 rounded-6 border-1 border-solid border-primary bg-container px-10 text-lg text-main outline-none"
+          class="h-34 min-w-0 max-w-520 flex-1 rounded-6 b-1-primary bg-container px-10 text-lg text-main outline-none"
           @update:value="(v: string) => emits('update:renameValue', v)"
           @keyup.enter="emits('confirm-rename')"
           @keyup.esc="emits('cancel-rename')"

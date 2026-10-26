@@ -3,7 +3,7 @@
     class="agent-main min-h-0 min-w-0 flex-1 grid grid-rows-[auto_minmax(0,1fr)_auto] overflow-hidden bg-container"
   >
     <header
-      class="h-56 min-w-0 flex items-center justify-between gap-10 border-0 border-b-1 border-color-1 border-solid px-20 max-md:px-14"
+      class="h-56 min-w-0 flex items-center justify-between gap-10 border-0 b-b-1-muted px-20 max-md:px-14"
     >
       <a-popover
         v-model:open="chatInfoOpen"
@@ -26,12 +26,12 @@
             </p>
             <div class="mt-10 flex flex-wrap items-center gap-6">
               <span
-                class="rounded-full bg-fill-tertiary px-8 py-3 text-11px text-secondary"
+                class="rounded-full bg-muted px-8 py-3 text-11px text-secondary"
               >
                 {{ statusLabel }}
               </span>
               <span
-                class="rounded-full bg-primary-tint px-8 py-3 text-11px text-primary"
+                class="rounded-full bg-primary/10 px-8 py-3 text-11px text-primary"
               >
                 {{ model?.name ?? '默认模型' }}
               </span>
@@ -50,7 +50,7 @@
           <button
             type="button"
             data-agent-config-trigger
-            class="size-36 inline-flex items-center justify-center rounded-8 border-1 border-color-muted border-solid bg-transparent text-regular cursor-pointer transition-colors hover:bg-hover hover:text-main"
+            class="size-36 inline-flex items-center justify-center rounded-8 b-1-muted bg-transparent text-regular cursor-pointer transition-colors hover:bg-hover hover:text-main"
             :disabled="isRunning"
             title="生成参数"
           >
@@ -126,7 +126,7 @@
 
         <button
           type="button"
-          class="h-36 inline-flex items-center justify-center gap-6 rounded-8 border-1 border-color-muted border-solid bg-transparent px-12 text-13px text-regular cursor-pointer transition-colors hover:bg-hover hover:text-main max-md:w-36 max-md:px-0 max-md:text-[0]"
+          class="h-36 inline-flex items-center justify-center gap-6 rounded-8 b-1-muted bg-transparent px-12 text-13px text-regular cursor-pointer transition-colors hover:bg-hover hover:text-main max-md:w-36 max-md:px-0 max-md:text-[0]"
           @click="emits('copy-share')"
         >
           <Icon name="i-lucide:share" :size="16" />
@@ -142,7 +142,7 @@
           <button
             type="button"
             data-agent-actions-trigger
-            class="size-36 inline-flex items-center justify-center rounded-8 border-1 border-color-muted border-solid bg-transparent text-regular cursor-pointer transition-colors hover:bg-hover hover:text-main"
+            class="size-36 inline-flex items-center justify-center rounded-8 b-1-muted bg-transparent text-regular cursor-pointer transition-colors hover:bg-hover hover:text-main"
             title="更多操作"
           >
             <Icon name="i-lucide:ellipsis" :size="18" />
@@ -156,7 +156,7 @@
                 :data-agent-header-action="action.key"
                 class="h-34 w-full flex items-center gap-8 rounded-7 border-0 bg-transparent px-8 text-left text-13px text-regular cursor-pointer transition-colors hover:bg-hover hover:text-main disabled:cursor-not-allowed disabled:text-disabled"
                 :class="
-                  action.danger ? 'hover:bg-error-tint hover:text-error' : ''
+                  action.danger ? 'hover:bg-error/10 hover:text-error' : ''
                 "
                 :disabled="action.disabled"
                 @click="handleHeaderAction(action.key)"
@@ -180,7 +180,7 @@
           class="mx-auto mb-28 max-w-680 text-center"
         >
           <span
-            class="size-52 inline-flex items-center justify-center rounded-14 border-1 border-color-muted border-solid bg-fill-tertiary text-main"
+            class="size-52 inline-flex items-center justify-center rounded-14 b-1-muted bg-muted text-main"
           >
             <Icon name="i-lucide:bot" :size="28" />
           </span>
@@ -205,7 +205,7 @@
             v-for="suggestion in suggestions"
             :key="suggestion.id"
             type="button"
-            class="min-w-0 flex items-start gap-10 rounded-12 border-1 border-color-muted border-solid bg-container p-12 text-left text-regular cursor-pointer transition-[background-color,border-color,transform] duration-motion-fast hover:-translate-y-1 hover:border-color-3 hover:bg-hover"
+            class="min-w-0 flex items-start gap-10 rounded-12 b-1-muted bg-container p-12 text-left text-regular cursor-pointer transition-[background-color,border-color,transform] duration-motion-fast hover:-translate-y-1 hover:border-main hover:bg-hover"
             @click="useSuggestion(suggestion.prompt)"
           >
             <Icon
@@ -249,7 +249,7 @@
           <div v-if="canContinue" class="flex justify-center pt-2">
             <button
               type="button"
-              class="h-34 inline-flex items-center gap-6 rounded-8 border-1 border-color-2 border-solid bg-container px-12 text-13px text-main cursor-pointer transition-colors hover:bg-hover"
+              class="h-34 inline-flex items-center gap-6 rounded-8 b-1-regular bg-container px-12 text-13px text-main cursor-pointer transition-colors hover:bg-hover"
               @click="emits('continue-generation')"
             >
               <Icon name="i-lucide:corner-down-right" :size="15" />
@@ -273,14 +273,14 @@
       class="box-border mx-auto min-w-0 w-full max-w-1320 px-40 pb-18 max-2xl:max-w-1180 max-xl:px-28 max-md:px-16 max-sm:px-10 max-sm:pb-10"
     >
       <div
-        class="box-border min-w-0 w-full rounded-18 border-1 border-color-2 border-solid bg-container p-12 shadow-[var(--w-shadow-elevated)]"
+        class="box-border min-w-0 w-full rounded-18 b-1-regular bg-container p-12 shadow-overlay"
       >
         <div v-if="attachments.length" class="mb-8 flex flex-wrap gap-6">
           <button
             v-for="attachment in attachments"
             :key="attachment.id"
             type="button"
-            class="max-w-220 inline-flex items-center gap-6 rounded-full border-1 border-color-2 border-solid bg-main px-9 py-5 text-xs text-regular cursor-pointer transition-colors hover:bg-hover"
+            class="max-w-220 inline-flex items-center gap-6 rounded-full b-1-regular bg-container px-9 py-5 text-xs text-regular cursor-pointer transition-colors hover:bg-hover"
             :aria-label="`移除附件：${attachment.name}`"
             :title="attachment.name"
             @click="emits('remove-attachment', attachment.id)"
@@ -299,7 +299,7 @@
             v-for="suggestion in suggestions"
             :key="suggestion.id"
             type="button"
-            class="shrink-0 inline-flex items-center gap-6 rounded-full border-1 border-color-2 border-solid bg-main px-10 py-6 text-xs text-regular cursor-pointer transition-colors hover:(border-primary bg-hover text-main)"
+            class="shrink-0 inline-flex items-center gap-6 rounded-full b-1-regular bg-container px-10 py-6 text-xs text-regular cursor-pointer transition-colors hover:(border-primary bg-hover text-main)"
             @click="useSuggestion(suggestion.prompt)"
           >
             <Icon :name="suggestion.icon" :size="14" />

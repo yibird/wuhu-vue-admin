@@ -1,13 +1,11 @@
 <template>
   <section
     v-if="props.loading"
-    class="mb-12 overflow-hidden rounded-8 border-1 border-solid border-color-2 bg-container shadow-[var(--w-shadow-card)]"
+    class="mb-12 overflow-hidden rounded-8 b-1-regular bg-container shadow-card"
     aria-label="监控摘要加载中"
     aria-busy="true"
   >
-    <div
-      class="border-b-1 border-b-solid border-color-2 px-14 py-14 sm:px-18 sm:py-16"
-    >
+    <div class="b-b-1-regular px-14 py-14 sm:px-18 sm:py-16">
       <div class="flex items-center justify-between gap-12">
         <div class="min-w-0">
           <a-skeleton-input active class="!w-118" />
@@ -29,10 +27,10 @@
 
   <a-border-beam v-else :duration="6" :line-width="3">
     <section
-      class="monitor-hero page-enter page-enter--1 relative mb-12 overflow-hidden rounded-8 border-1 border-solid border-color-2 bg-container shadow-[var(--w-shadow-card)]"
+      class="monitor-hero page-enter page-enter--1 relative mb-12 overflow-hidden rounded-8 b-1-regular bg-container shadow-card"
     >
       <div
-        class="flex flex-wrap items-center justify-between gap-12 border-b-1 border-b-solid border-color-2 px-14 py-14 sm:px-18 sm:py-16"
+        class="flex flex-wrap items-center justify-between gap-12 b-b-1-regular px-14 py-14 sm:px-18 sm:py-16"
       >
         <div class="min-w-0">
           <div class="flex flex-wrap items-center gap-10">
@@ -43,8 +41,8 @@
               class="inline-flex items-center gap-5 rounded-999 px-9 py-4 text-xs"
               :class="
                 props.criticalAlertCount > 0
-                  ? 'bg-error-tint text-error'
-                  : 'bg-success-tint text-success'
+                  ? 'bg-error/10 text-error'
+                  : 'bg-success/10 text-success'
               "
             >
               <Icon
@@ -97,7 +95,7 @@
           </div>
         </div>
         <div
-          class="border-y-1 border-y-solid border-color-2 px-14 py-12 sm:border-x-1 sm:border-y-0 sm:border-x-solid sm:px-18 sm:py-14"
+          class="b-y-1-regular px-14 py-12 sm:border-x-1 sm:border-y-0 sm:border-x-solid sm:px-18 sm:py-14"
         >
           <div class="text-xs text-secondary">运行服务</div>
           <div class="mt-6 text-xl text-main font-800 sm:text-2xl">

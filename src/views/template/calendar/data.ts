@@ -114,7 +114,7 @@ const statusClassMap: Record<CalendarEventStatus, string> = {
 const priorityClassMap: Record<CalendarEventPriority, string> = {
   high: 'text-error bg-error/10 border-error/30',
   medium: 'text-info bg-info/10 border-info/30',
-  low: 'text-secondary bg-fill border-color-2',
+  low: 'text-secondary bg-fill border-regular',
 }
 
 export function getStatusClass(status: CalendarEventStatus) {

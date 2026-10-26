@@ -1,7 +1,5 @@
 <template>
-  <header
-    class="flex-none border-b-1 border-color-2 border-b-solid bg-container px-16 py-16"
-  >
+  <header class="flex-none b-b-1-regular bg-container px-16 py-16">
     <div class="flex flex-wrap items-center justify-between gap-14">
       <div class="flex min-w-0 items-center gap-10">
         <span

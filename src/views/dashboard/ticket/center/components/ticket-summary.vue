@@ -1,13 +1,11 @@
 <template>
-  <section
-    class="grid grid-cols-2 border-b-1 border-color-2 border-b-solid bg-container lg:grid-cols-4"
-  >
+  <section class="grid grid-cols-2 b-b-1-regular bg-container lg:grid-cols-4">
     <div
       v-for="(item, index) in items"
       :key="item.key"
       class="min-w-0 flex items-center gap-10 px-14 py-12 lg:px-18"
       :class="{
-        'border-r-1 border-color-2 border-r-solid': index < items.length - 1,
+        'b-r-1-regular': index < items.length - 1,
       }"
     >
       <span

@@ -1,6 +1,6 @@
 <template>
   <article
-    class="group min-w-0 flex flex-col cursor-pointer overflow-hidden rounded-8 border-1 border-color-2 border-solid bg-container shadow-[var(--w-shadow-card)] outline-none transition-[border-color,box-shadow,transform] duration-motion-base hover:(-translate-y-2) hover:border-primary hover:shadow-[var(--w-shadow-elevated)] focus-visible:border-primary"
+    class="group min-w-0 flex flex-col cursor-pointer overflow-hidden rounded-8 b-1-regular bg-container shadow-card outline-none transition-[border-color,box-shadow,transform] duration-motion-base hover:(-translate-y-2) hover:border-primary hover:shadow-overlay focus-visible:border-primary"
     :aria-label="`${props.subject}：${props.item.name}`"
     role="button"
     tabindex="0"
@@ -93,7 +93,7 @@
     </div>
 
     <footer
-      class="mt-auto flex min-w-0 items-center gap-10 border-t-1 border-color-2 border-t-solid px-14 py-12"
+      class="mt-auto flex min-w-0 items-center gap-10 b-t-1-regular px-14 py-12"
     >
       <span
         class="size-30 flex flex-none items-center justify-center rounded-full text-xs text-white font-700"
@@ -156,7 +156,7 @@ const statusMeta = computed(() => {
     offline: {
       label: props.statusLabels.offline,
       color: 'default',
-      class: 'bg-fill-tertiary text-secondary',
+      class: 'bg-muted text-secondary',
     },
   } as const
 

@@ -20,7 +20,7 @@
         <span>主题色</span>
         <span class="flex-y-center gap-6">
           <input
-            class="size-24 shrink-0 cursor-pointer rounded-4 border-1 border-color-2 border-solid bg-transparent p-0"
+            class="size-24 shrink-0 cursor-pointer rounded-4 b-1-regular bg-transparent p-0"
             type="color"
             :value="themeColor"
             @input="updateTheme('primaryColor', $event)"
@@ -95,7 +95,7 @@
           :class="
             page.id === designer.activePageId.value
               ? 'border-primary/40 bg-primary/6 text-primary'
-              : 'border-color-2 bg-container text-regular'
+              : 'border-regular bg-container text-regular'
           "
         >
           <button
@@ -233,7 +233,7 @@ function confirmAddPage() {
   gap: 4px;
   padding: 10px;
   text-align: center;
-  background: rgb(var(--w-bg-fill-quaternary));
+  background: rgb(var(--w-bg-secondary));
   border-radius: 6px;
 
   &__value {

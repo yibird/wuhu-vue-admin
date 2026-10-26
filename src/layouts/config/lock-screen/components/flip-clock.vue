@@ -7,7 +7,7 @@
     <template v-for="(unit, index) in timeUnits" :key="unit.key">
       <div class="w-72 sm:w-96">
         <div
-          class="flip-clock-card relative h-76 overflow-hidden rounded-8 border-1 border-color-2 border-solid bg-container shadow-all-sm sm:h-104"
+          class="flip-clock-card relative h-76 overflow-hidden rounded-8 b-1-regular bg-container shadow-all-sm sm:h-104"
         >
           <div class="flip-clock-half flip-clock-half--top" aria-hidden="true">
             <span
@@ -209,7 +209,7 @@ onScopeDispose(() => {
   z-index: 5;
   height: 1px;
   pointer-events: none;
-  background: rgb(var(--w-border-color-2) / 60%);
+  background: rgb(var(--w-border-regular) / 60%);
   box-shadow:
     0 -1px 0 rgb(255 255 255 / 12%),
     0 1px 0 rgb(0 0 0 / 14%);

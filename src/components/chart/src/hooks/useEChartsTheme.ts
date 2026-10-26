@@ -138,7 +138,7 @@ export const useEChartsTheme = createSharedComposable(() => {
   const getEChartsColor = (key: EChartsPaletteKey) => {
     if (key === 'axisLine') {
       return getCssRgbVarAlpha(
-        '--w-border-color-2',
+        '--w-border-regular',
         EChartsTheme.value === THEME_MODE.Dark ? 0.34 : 0.44,
         fallbackTheme[EChartsTheme.value].axisLine
       )
@@ -146,7 +146,7 @@ export const useEChartsTheme = createSharedComposable(() => {
 
     if (key === 'splitLine') {
       return getCssRgbVarAlpha(
-        '--w-border-color-2',
+        '--w-border-regular',
         EChartsTheme.value === THEME_MODE.Dark ? 0.18 : 0.3,
         fallbackTheme[EChartsTheme.value].splitLine
       )

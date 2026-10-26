@@ -1,6 +1,6 @@
 <template>
   <article
-    class="group relative min-w-0 cursor-pointer overflow-hidden rounded-8 border-1 border-color-2 border-solid bg-container shadow-[var(--w-shadow-card)] outline-none transition-[border-color,box-shadow,transform] duration-motion-base hover:-translate-y-2 hover:border-primary hover:shadow-[var(--w-shadow-elevated)] focus-visible:border-primary"
+    class="group relative min-w-0 cursor-pointer overflow-hidden rounded-8 b-1-regular bg-container shadow-card outline-none transition-[border-color,box-shadow,transform] duration-motion-base hover:-translate-y-2 hover:border-primary hover:shadow-overlay focus-visible:border-primary"
     :aria-label="'文章：' + props.item.title"
     role="button"
     tabindex="0"
@@ -107,9 +107,7 @@
       </div>
     </div>
 
-    <footer
-      class="flex min-w-0 items-center gap-10 border-t-1 border-color-2 border-t-solid px-14 py-12"
-    >
+    <footer class="flex min-w-0 items-center gap-10 b-t-1-regular px-14 py-12">
       <span
         class="size-30 flex flex-none items-center justify-center rounded-full bg-primary/10 text-xs text-primary font-700"
       >

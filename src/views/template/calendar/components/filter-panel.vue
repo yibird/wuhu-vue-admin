@@ -1,7 +1,5 @@
 <template>
-  <section
-    class="rounded-8 border-1 border-color-2 border-solid bg-container p-12"
-  >
+  <section class="rounded-8 b-1-regular bg-container p-12">
     <div class="mb-10 flex items-center justify-between gap-10">
       <div class="flex items-center gap-8 text-sm text-main font-700">
         <Icon name="i-lucide:sliders-horizontal" :size="15" />

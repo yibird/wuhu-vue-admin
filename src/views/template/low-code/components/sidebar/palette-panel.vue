@@ -159,7 +159,7 @@ function addToCanvas(type: string) {
   overflow: hidden;
   cursor: grab;
   background: rgb(var(--w-bg-container));
-  border: 1px solid rgb(var(--w-border-color-2));
+  border: 1px solid rgb(var(--w-border-regular));
   border-radius: 8px;
   transition:
     border-color var(--w-motion-duration-fast, 0.15s) ease,
@@ -168,7 +168,7 @@ function addToCanvas(type: string) {
 
   &:hover {
     border-color: rgb(var(--w-color-primary) / 50%);
-    box-shadow: var(--w-shadow-elevated);
+    box-shadow: var(--w-shadow-overlay);
     transform: translateY(-1px);
   }
 
@@ -184,7 +184,7 @@ function addToCanvas(type: string) {
   width: 26px;
   height: 26px;
   color: rgb(var(--w-color-primary));
-  background: rgb(var(--w-bg-primary) / 8%);
+  background: rgb(var(--w-color-primary) / 8%);
   border-radius: 6px;
 }
 
@@ -205,7 +205,7 @@ function addToCanvas(type: string) {
   font-size: 10px;
   line-height: 14px;
   color: rgb(var(--w-color-warning));
-  background: rgb(var(--w-bg-warning) / 12%);
+  background: rgb(var(--w-color-warning) / 12%);
   border-radius: 3px;
 }
 

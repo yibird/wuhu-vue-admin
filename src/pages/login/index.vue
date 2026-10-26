@@ -1,7 +1,7 @@
 <template>
   <div
     :class="[
-      'relative isolate min-h-screen min-h-[100dvh] w-full flex overflow-hidden bg-page text-main transition-colors duration-motion-slow max-xl:items-stretch max-xl:justify-center motion-reduce:transition-none',
+      'relative min-h-screen min-h-[100dvh] w-full flex overflow-hidden bg-page text-main transition-colors duration-motion-slow max-xl:(items-stretch justify-center)',
       { 'flex-row': placement === 'right' },
       { 'flex-row-reverse': placement === 'left' },
     ]"
@@ -15,11 +15,11 @@
     />
     <div
       :class="[
-        'relative z-1 box-border min-h-screen min-h-[100dvh] w-full shrink-0 overflow-y-auto border-color-1 bg-container px-24 pb-40 pt-104 flex items-center justify-center sm:px-48 xl:w-520 xl:px-60 xl:py-48',
-        placement === 'right' && 'xl:border-l-1 xl:border-l-solid',
-        placement === 'left' && 'xl:border-r-1 xl:border-r-solid',
+        'relative z-1 min-h-screen min-h-[100vh] w-full shrink-0 overflow-y-auto  bg-container px-24 pb-40 pt-104 flex items-center justify-center sm:px-48 xl:(w-520 xl:px-60 py-48)',
+        placement === 'right' && 'xl:b-l-1-[border-secondary]',
+        placement === 'left' && 'xl:b-r-1-[border-secondary]',
         {
-          'xl:m-auto xl:min-h-0 xl:max-h-[calc(100vh-64px)] xl:rounded-8 xl:border-1 xl:border-solid xl:shadow-all-lg':
+          'xl:(m-auto xl:min-h-0 xl:max-h-[calc(100vh-64px)] xl:rounded-8 border border-secondary)':
             placement === 'center',
         },
       ]"

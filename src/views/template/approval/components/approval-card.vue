@@ -1,6 +1,6 @@
 <template>
   <article
-    class="group min-w-0 cursor-pointer overflow-hidden rounded-8 border-1 border-color-2 border-solid bg-container outline-none transition-[border-color,box-shadow,transform] duration-motion-moderate ease-motion-standard hover:(-translate-y-1 border-primary/40 shadow-[var(--w-shadow-card)])"
+    class="group min-w-0 cursor-pointer overflow-hidden rounded-8 b-1-regular bg-container outline-none transition-[border-color,box-shadow,transform] duration-motion-moderate ease-motion-standard hover:(-translate-y-1 border-primary/40 shadow-card)"
     role="button"
     tabindex="0"
     @click="emits('open', definition)"
@@ -54,9 +54,7 @@
       </div>
     </div>
 
-    <div
-      class="mx-14 grid grid-cols-3 gap-8 border-t-1 border-color-1 border-t-solid py-10"
-    >
+    <div class="mx-14 grid grid-cols-3 gap-8 b-t-1-muted py-10">
       <span class="min-w-0 flex flex-col gap-3">
         <span class="text-xs text-muted">分组</span>
         <span class="truncate text-xs text-main">
@@ -75,7 +73,7 @@
 
     <div class="flex items-center gap-10 px-14 pb-12 pt-2">
       <span
-        class="size-28 flex flex-none items-center justify-center rounded-full bg-fill-secondary text-xs text-main font-700"
+        class="size-28 flex flex-none items-center justify-center rounded-full bg-secondary text-xs text-main font-700"
       >
         {{ definition.ownerName.slice(-1) }}
       </span>

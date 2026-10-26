@@ -184,12 +184,12 @@ function confirmDeleteEvent(event: CalendarEventDetail) {
  */
 html:root {
   --df-color-background: rgb(var(--w-bg-container));
-  --df-color-border: rgb(var(--w-border-color-2));
+  --df-color-border: rgb(var(--w-border-regular));
   --df-color-card: rgb(var(--w-bg-container));
   --df-color-card-foreground: rgb(var(--w-text-main));
   --df-color-foreground: rgb(var(--w-text-main));
   --df-color-hover: rgb(var(--w-bg-hover));
-  --df-color-muted: rgb(var(--w-fill-quaternary));
+  --df-color-muted: rgb(var(--w-bg-secondary));
   --df-color-muted-foreground: rgb(var(--w-text-muted));
   --df-color-primary: rgb(var(--w-color-primary));
   --df-color-secondary: rgb(var(--w-text-muted));

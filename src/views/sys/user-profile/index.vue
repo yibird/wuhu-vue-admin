@@ -6,7 +6,7 @@
           title="基本信息"
           :classes="{
             header:
-              'bg-gradient-to-b! from-[var(--w-bg-primary-tint)] to-transparent',
+              'bg-gradient-to-b! from-[var(--w-color-primary-tint)] to-transparent',
             body: 'p-0!',
           }"
           variant="borderless"
@@ -15,7 +15,7 @@
           <div class="py-50">
             <div class="flex justify-center">
               <div
-                class="relative size-80 rounded-full bg-fill-tertiary cursor-pointer overflow-hidden group"
+                class="relative size-80 rounded-full bg-muted cursor-pointer overflow-hidden group"
                 @click="openAvatarModal"
               >
                 <img
@@ -49,9 +49,7 @@
               <div class="flex-1">{{ item.value }}</div>
             </div>
           </div>
-          <div
-            class="py-15 border-t-1 border-solid border-color-secondary text-center text-xs text-secondary"
-          >
+          <div class="py-15 b-t-1-secondary text-center text-xs text-secondary">
             注册于：2023-01-01 09:00:00
           </div>
         </a-card>
@@ -62,7 +60,7 @@
             title="安全设置"
             :classes="{
               header:
-                'bg-gradient-to-b! from-[var(--w-bg-primary-tint)] to-transparent',
+                'bg-gradient-to-b! from-[var(--w-color-primary-tint)] to-transparent',
             }"
             variant="borderless"
             class="rounded-6"
@@ -73,7 +71,7 @@
                 :key="index"
                 class="flex"
               >
-                <div class="size-45 rounded-full bg-fill-tertiary"></div>
+                <div class="size-45 rounded-full bg-muted"></div>
                 <div class="flex-1 px-10">
                   <div class="flex items-center gap-10">
                     <span class="text-primary">{{ item.title }}</span>
@@ -106,7 +104,7 @@
             title="第三方账号"
             :classes="{
               header:
-                'bg-gradient-to-b! from-[var(--w-bg-primary-tint)] to-transparent',
+                'bg-gradient-to-b! from-[var(--w-color-primary-tint)] to-transparent',
             }"
             variant="borderless"
             class="rounded-6"
@@ -117,7 +115,7 @@
                 :key="index"
                 class="flex"
               >
-                <div class="size-45 rounded-full bg-fill-tertiary"></div>
+                <div class="size-45 rounded-full bg-muted"></div>
                 <div class="flex-1 px-10">
                   <div class="flex items-center gap-10">
                     <span class="text-primary">{{ item.title }}</span>

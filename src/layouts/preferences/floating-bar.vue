@@ -1,7 +1,7 @@
 <template>
   <aside
     v-show="!preferencesOpen"
-    class="preferences-floating-bar fixed z-900 flex rounded-8 border-1 border-color-2 border-solid bg-container p-3 shadow-all-lg sm:hidden"
+    class="preferences-floating-bar fixed z-900 flex rounded-8 b-1-regular bg-container p-3 shadow-all-lg sm:hidden"
     aria-label="快捷工具"
   >
     <button

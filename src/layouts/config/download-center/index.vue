@@ -20,9 +20,7 @@
 
     <div class="h-full min-h-0 overflow-hidden bg-page">
       <div class="h-full min-h-0 flex flex-col gap-12 p-14 max-sm:p-10">
-        <section
-          class="rounded-8 border-1 border-color-2 border-solid bg-container p-14"
-        >
+        <section class="rounded-8 b-1-regular bg-container p-14">
           <div
             class="grid grid-cols-[minmax(0,1fr)_260px] items-center gap-16 max-lg:grid-cols-1"
           >
@@ -63,7 +61,7 @@
             v-for="stat in stats"
             :key="stat.key"
             type="button"
-            class="min-w-0 rounded-8 border-1 border-color-2 border-solid bg-container p-12 text-left transition-colors hover:(border-primary bg-hover)"
+            class="min-w-0 rounded-8 b-1-regular bg-container p-12 text-left transition-colors hover:(border-primary bg-hover)"
           >
             <div class="flex items-center justify-between gap-10">
               <div class="min-w-0">
@@ -82,9 +80,7 @@
           </button>
         </div>
 
-        <section
-          class="rounded-8 border-1 border-color-2 border-solid bg-container p-12"
-        >
+        <section class="rounded-8 b-1-regular bg-container p-12">
           <div
             class="grid grid-cols-[minmax(190px,1fr)_150px_150px_auto_auto] gap-10 max-lg:grid-cols-2 max-sm:grid-cols-1"
           >
@@ -135,10 +131,10 @@
           content-class="min-h-full grid grid-cols-[380px_minmax(0,1fr)] gap-12 max-lg:grid-cols-1 max-lg:grid-rows-[minmax(320px,42vh)_minmax(440px,1fr)]"
         >
           <section
-            class="h-full min-h-0 flex flex-col overflow-hidden rounded-8 border-1 border-color-2 border-solid bg-container"
+            class="h-full min-h-0 flex flex-col overflow-hidden rounded-8 b-1-regular bg-container"
           >
             <div
-              class="flex items-center justify-between border-b-1 border-b-solid border-color-1 px-14 py-12"
+              class="flex items-center justify-between b-b-1-muted px-14 py-12"
             >
               <div class="min-w-0">
                 <span class="text-sm text-main font-800">下载列表</span>
@@ -163,7 +159,7 @@
                 :class="
                   item.id === activeDownload?.id
                     ? 'border-primary bg-primary/10'
-                    : 'border-color-2 bg-container hover:(border-primary bg-hover)'
+                    : 'border-regular bg-container hover:(border-primary bg-hover)'
                 "
                 @click="selectDownload(item.id)"
               >
@@ -219,12 +215,10 @@
           </section>
 
           <section
-            class="h-full min-h-0 flex flex-col overflow-hidden rounded-8 border-1 border-color-2 border-solid bg-container"
+            class="h-full min-h-0 flex flex-col overflow-hidden rounded-8 b-1-regular bg-container"
           >
             <template v-if="activeDownload">
-              <div
-                class="border-b-1 border-b-solid border-color-1 bg-container-secondary px-16 py-14"
-              >
+              <div class="b-b-1-muted bg-secondary px-16 py-14">
                 <div class="flex items-start justify-between gap-12">
                   <div class="min-w-0">
                     <div class="truncate text-base text-main font-800">
@@ -259,25 +253,25 @@
                 </div>
 
                 <div class="mt-12 grid grid-cols-2 gap-10 max-sm:grid-cols-1">
-                  <div class="rounded-8 bg-container-secondary p-12">
+                  <div class="rounded-8 bg-secondary p-12">
                     <div class="text-xs text-secondary">来源</div>
                     <div class="mt-5 break-words text-sm text-main">
                       {{ activeDownload.source }}
                     </div>
                   </div>
-                  <div class="rounded-8 bg-container-secondary p-12">
+                  <div class="rounded-8 bg-secondary p-12">
                     <div class="text-xs text-secondary">保存位置</div>
                     <div class="mt-5 break-words text-sm text-main">
                       {{ activeDownload.savePath }}
                     </div>
                   </div>
-                  <div class="rounded-8 bg-container-secondary p-12">
+                  <div class="rounded-8 bg-secondary p-12">
                     <div class="text-xs text-secondary">文件大小</div>
                     <div class="mt-5 text-sm text-main">
                       {{ activeDownload.size }}
                     </div>
                   </div>
-                  <div class="rounded-8 bg-container-secondary p-12">
+                  <div class="rounded-8 bg-secondary p-12">
                     <div class="text-xs text-secondary">当前速度</div>
                     <div class="mt-5 text-sm text-main">
                       {{ activeDownload.speed }}
@@ -285,9 +279,7 @@
                   </div>
                 </div>
 
-                <div
-                  class="mt-12 rounded-8 border-1 border-color-2 border-solid p-12"
-                >
+                <div class="mt-12 rounded-8 b-1-regular p-12">
                   <div class="flex items-center gap-7 text-xs text-secondary">
                     <Icon name="i-lucide:shield-check" :size="15" />
                     <span>校验信息</span>
@@ -303,7 +295,7 @@
               </Scrollbar>
 
               <div
-                class="flex flex-wrap items-center justify-end gap-8 border-t-1 border-t-solid border-color-1 p-12"
+                class="flex flex-wrap items-center justify-end gap-8 b-t-1-muted p-12"
               >
                 <a-button
                   v-if="activeDownload.status === 'downloading'"

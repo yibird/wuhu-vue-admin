@@ -1,6 +1,6 @@
 <template>
   <div
-    class="workflow-node relative w-292 select-none rounded-12 border-1 border-color-2 border-solid bg-main p-14 text-main shadow-node transition-[border-color,box-shadow,transform] duration-motion-base ease-motion-standard motion-reduce:transition-none"
+    class="workflow-node relative w-292 select-none rounded-12 b-1-regular bg-container p-14 text-main shadow-[var(--w-shadow-node)] transition-[border-color,box-shadow,transform] duration-motion-base ease-motion-standard motion-reduce:transition-none"
     :class="{ 'scale-[1.01] !transition-none will-change-transform': dragging }"
     :style="rootStyle"
     data-workflow-node
@@ -32,14 +32,14 @@
         </span>
       </div>
       <span
-        class="inline-flex shrink-0 items-center gap-5 rounded-full bg-fill-quaternary px-7 py-3 text-xs text-regular"
+        class="inline-flex shrink-0 items-center gap-5 rounded-full bg-secondary px-7 py-3 text-xs text-regular"
       >
         <i class="size-6 rounded-full" :class="statusDotClass" />
         {{ statusLabel }}
       </span>
       <span
         v-if="data.breakpoint"
-        class="absolute -right-5 -top-5 size-12 rounded-full border-2 border-solid border-color-main bg-error"
+        class="absolute -right-5 -top-5 size-12 rounded-full b-2-main bg-error"
         title="已设置断点"
       />
     </div>
@@ -54,7 +54,7 @@
       <span
         v-for="item in metadata"
         :key="item"
-        class="max-w-130 truncate rounded-6 border-1 border-color-secondary border-solid bg-fill-quaternary px-7 py-4 text-xs text-regular leading-16px"
+        class="max-w-130 truncate rounded-6 b-1-secondary bg-secondary px-7 py-4 text-xs text-regular leading-16px"
       >
         {{ item }}
       </span>
@@ -69,7 +69,7 @@
         <div
           v-for="input in visibleInputs"
           :key="input.name"
-          class="min-h-26 min-w-0 flex items-center justify-between gap-6 rounded-6 border-1 border-color-secondary border-solid bg-fill-quaternary px-7 py-4"
+          class="min-h-26 min-w-0 flex items-center justify-between gap-6 rounded-6 b-1-secondary bg-secondary px-7 py-4"
         >
           <strong class="min-w-0 truncate text-xs text-main">
             {{ input.name }}
@@ -85,7 +85,7 @@
         <div
           v-for="output in visibleOutputs"
           :key="output.name"
-          class="min-h-26 min-w-0 flex items-center justify-between gap-6 rounded-6 border-1 border-color-secondary border-solid bg-fill-quaternary px-7 py-4"
+          class="min-h-26 min-w-0 flex items-center justify-between gap-6 rounded-6 b-1-secondary bg-secondary px-7 py-4"
         >
           <strong class="min-w-0 truncate text-xs text-main">
             {{ output.name }}

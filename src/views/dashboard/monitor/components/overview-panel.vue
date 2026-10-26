@@ -6,11 +6,7 @@
     description="核心资源、任务与应用概况"
   >
     <div class="grid grid-cols-1 gap-12 sm:grid-cols-2 2xl:grid-cols-4">
-      <div
-        v-for="item in 4"
-        :key="item"
-        class="rounded-8 border-1 border-solid border-color-2 p-14"
-      >
+      <div v-for="item in 4" :key="item" class="rounded-8 b-1-regular p-14">
         <a-skeleton-input active size="small" class="!w-86" />
         <a-skeleton-input active class="!mt-8 !w-92" />
         <a-skeleton-input active size="small" class="!mt-12 !w-full" />
@@ -27,7 +23,7 @@
       <div
         v-for="item in items"
         :key="item.id"
-        class="group min-w-0 rounded-8 border-1 border-solid border-color-2 bg-container-secondary p-14 transition-[border-color,background-color,box-shadow,transform] duration-motion-base ease-motion-enter hover:(-translate-y-2 border-primary bg-hover shadow-[0_6px_16px_rgb(var(--w-color-primary)_/_10%)]) active:(translate-y-0 scale-[0.995]) motion-reduce:transition-none motion-reduce:hover:translate-y-0 motion-reduce:active:scale-100"
+        class="group min-w-0 rounded-8 b-1-regular bg-secondary p-14 transition-[border-color,background-color,box-shadow,transform] duration-motion-base ease-motion-enter hover:(-translate-y-2 border-primary bg-hover shadow-[0_6px_16px_rgb(var(--w-color-primary)_/_10%)]) active:(translate-y-0 scale-[0.995]) motion-reduce:transition-none motion-reduce:hover:translate-y-0 motion-reduce:active:scale-100"
       >
         <div class="flex items-start justify-between gap-12">
           <div class="min-w-0">
@@ -75,9 +71,9 @@ const { items = [], loading = false } = defineProps<OverviewProps>()
 
 const toneClassMap: Record<MonitorTone, string> = {
   primary: 'primary-tinted',
-  success: 'bg-success-tint text-success',
-  warning: 'bg-warning-tint text-warning',
-  error: 'bg-error-tint text-error',
-  info: 'bg-info-tint text-info',
+  success: 'bg-success/10 text-success',
+  warning: 'bg-warning/10 text-warning',
+  error: 'bg-error/10 text-error',
+  info: 'bg-info/10 text-info',
 }
 </script>

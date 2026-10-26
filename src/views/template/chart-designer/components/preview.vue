@@ -2,7 +2,7 @@
   <div class="full min-h-0" :class="`chart-preview--${previewMode}`">
     <div
       v-if="widget.kind === 'kpi'"
-      class="chart-preview-surface h-full flex flex-col justify-between rounded-6 border-1 border-white/9 border-solid bg-white/7 p-14"
+      class="chart-preview-surface h-full flex flex-col justify-between rounded-6 b-1-white/9 bg-white/7 p-14"
     >
       <div class="flex items-start justify-between gap-10">
         <div class="min-w-0">
@@ -60,7 +60,7 @@
 
     <div
       v-else-if="widget.kind === 'note'"
-      class="chart-preview-surface h-full rounded-6 border-1 border-white/9 border-solid bg-white/7 p-14 text-13px text-white/76 leading-22px"
+      class="chart-preview-surface h-full rounded-6 b-1-white/9 bg-white/7 p-14 text-13px text-white/76 leading-22px"
     >
       {{ widget.insight }}
     </div>

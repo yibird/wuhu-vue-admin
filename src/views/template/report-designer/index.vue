@@ -3,7 +3,7 @@
     <div class="h-full min-h-0 flex flex-col overflow-hidden bg-page">
       <!-- 菜单栏 -->
       <header
-        class="flex flex-none flex-wrap items-center gap-8 border-b-1 border-color-2 border-b-solid bg-container px-10 py-7"
+        class="flex flex-none flex-wrap items-center gap-8 b-b-1-regular bg-container px-10 py-7"
       >
         <span
           class="size-32 flex flex-none items-center justify-center rounded-7 bg-primary/12 text-primary"
@@ -108,7 +108,7 @@
       <!-- 预览参数栏 -->
       <div
         v-if="previewMode && parameters.length > 0"
-        class="flex flex-none flex-wrap items-center gap-10 border-b-1 border-color-2 border-b-solid bg-container px-10 py-6"
+        class="flex flex-none flex-wrap items-center gap-10 b-b-1-regular bg-container px-10 py-6"
       >
         <span class="text-xs text-secondary">报表参数</span>
         <span v-if="previewResult" class="text-11px text-tertiary">

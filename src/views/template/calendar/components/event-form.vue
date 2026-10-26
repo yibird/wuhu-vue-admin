@@ -6,9 +6,7 @@
     class="calendar-event-form"
     layout="vertical"
   >
-    <section
-      class="mb-14 rounded-8 border-1 border-color-2 border-solid bg-page p-12"
-    >
+    <section class="mb-14 rounded-8 b-1-regular bg-page p-12">
       <div class="flex items-center gap-8 text-sm text-main font-700">
         <Icon name="i-lucide:calendar-plus" :size="16" />
         基础信息
@@ -76,9 +74,7 @@
       </a-form-item>
     </div>
 
-    <div
-      class="mb-10 rounded-8 border-1 border-color-2 border-solid bg-page p-12"
-    >
+    <div class="mb-10 rounded-8 b-1-regular bg-page p-12">
       <div class="mb-12 flex items-center justify-between gap-10">
         <div>
           <div class="text-sm text-main font-700">时间设置</div>

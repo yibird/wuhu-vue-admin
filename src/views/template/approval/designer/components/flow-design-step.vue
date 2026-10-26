@@ -1,7 +1,7 @@
 <template>
   <section class="h-full min-h-0 flex flex-col gap-10 overflow-hidden">
     <div
-      class="flex flex-none flex-wrap items-center gap-8 rounded-8 border-1 border-color-2 border-solid bg-container px-12 py-9"
+      class="flex flex-none flex-wrap items-center gap-8 rounded-8 b-1-regular bg-container px-12 py-9"
     >
       <div class="min-w-0 flex-1">
         <h2 class="m-0 text-sm text-main font-700">流程设计</h2>
@@ -20,7 +20,7 @@
 
     <div
       v-if="errors.length"
-      class="max-h-160 flex-none overflow-y-auto rounded-8 border-1 border-error/25 border-solid bg-error/6 px-12 py-10"
+      class="max-h-160 flex-none overflow-y-auto rounded-8 b-1-error/25 bg-error/6 px-12 py-10"
     >
       <strong class="text-xs text-error">设计校验未通过</strong>
       <ul class="mb-0 mt-6 grid gap-4 pl-16 text-xs text-secondary">
@@ -52,7 +52,7 @@
           <div
             v-for="item in previewItems"
             :key="item.id"
-            class="rounded-7 border-1 border-color-2 border-solid bg-container-secondary px-10 py-8"
+            class="rounded-7 b-1-regular bg-secondary px-10 py-8"
             :style="{ marginLeft: `${item.depth * 18}px` }"
           >
             <div class="flex items-center gap-7">

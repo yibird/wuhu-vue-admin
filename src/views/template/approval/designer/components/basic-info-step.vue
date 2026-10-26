@@ -1,8 +1,6 @@
 <template>
   <section class="mx-auto w-full max-w-760">
-    <div
-      class="rounded-10 border-1 border-color-2 border-solid bg-container p-20"
-    >
+    <div class="rounded-10 b-1-regular bg-container p-20">
       <header class="mb-20">
         <h2 class="m-0 text-lg text-main font-700">基础信息</h2>
         <p class="m-0 mt-6 text-sm text-secondary">

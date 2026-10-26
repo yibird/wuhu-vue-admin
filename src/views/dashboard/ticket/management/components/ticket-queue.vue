@@ -1,10 +1,8 @@
 <template>
   <aside
-    class="min-h-0 flex flex-col border-r-1 border-color-2 border-r-solid bg-container max-lg:border-b-1 max-lg:border-b-solid max-lg:border-r-0"
+    class="min-h-0 flex flex-col b-r-1-regular bg-container max-lg:border-b-1 max-lg:border-b-solid max-lg:border-r-0"
   >
-    <header
-      class="flex flex-none items-center gap-8 border-b-1 border-color-2 border-b-solid px-10 py-9"
-    >
+    <header class="flex flex-none items-center gap-8 b-b-1-regular px-10 py-9">
       <a-select
         :value="activeQueue"
         class="min-w-0 flex-1"
@@ -25,7 +23,7 @@
         v-for="ticket in items"
         :key="ticket.id"
         type="button"
-        class="content-auto-110 w-full border-b-1 border-color-2 border-b-solid bg-transparent px-11 py-10 text-left transition-colors duration-motion-fast hover:bg-hover motion-reduce:transition-none"
+        class="content-auto-110 w-full b-b-1-regular bg-transparent px-11 py-10 text-left transition-colors duration-motion-fast hover:bg-hover motion-reduce:transition-none"
         :class="{
           'bg-selected': ticket.id === selectedId,
         }"

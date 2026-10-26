@@ -5,7 +5,7 @@
     <button
       ref="triggerRef"
       type="button"
-      class="w-icon-picker-trigger__button box-border inline-flex w-full min-w-0 cursor-pointer items-center justify-between gap-8 rounded-6 border-1 border-color-2 border-solid bg-container px-11 text-left text-sm text-main transition-colors hover:border-primary disabled:cursor-not-allowed"
+      class="w-icon-picker-trigger__button box-border inline-flex w-full min-w-0 cursor-pointer items-center justify-between gap-8 rounded-6 b-1-regular bg-container px-11 text-left text-sm text-main transition-colors hover:border-primary disabled:cursor-not-allowed"
       :class="{
         'h-24 text-xs': size === 'small',
         'h-32': size === 'middle',
@@ -87,7 +87,7 @@
       </div>
 
       <div
-        class="grid min-w-0 overflow-hidden rounded-6 border-1 border-color-1 border-solid bg-container"
+        class="grid min-w-0 overflow-hidden rounded-6 b-1-muted bg-container"
         :class="
           showCategories
             ? 'grid-cols-[120px_minmax(0,1fr)] sm:grid-cols-[152px_minmax(0,1fr)]'
@@ -104,9 +104,7 @@
         />
 
         <section ref="gridPanelRef" class="min-h-0 min-w-0 flex flex-col">
-          <header
-            class="h-40 shrink-0 flex items-center border-b-1 border-color-1 border-b-solid px-12"
-          >
+          <header class="h-40 shrink-0 flex items-center b-b-1-muted px-12">
             <div class="relative h-full min-w-0 flex-1">
               <Transition name="w-icon-picker-header">
                 <div

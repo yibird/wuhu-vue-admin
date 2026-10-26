@@ -14,7 +14,7 @@ export const attachmentActions: EditorAction[] = [
     label: '文件',
     description: '文档附件',
     icon: 'i-lucide:file-up',
-    iconClass: 'bg-info-tint text-info',
+    iconClass: 'bg-info/10 text-info',
   },
 ]
 
@@ -25,7 +25,7 @@ export const extensionActions: EditorAction[] = [
     label: '位置',
     description: '发送定位',
     icon: 'i-lucide:map-pin',
-    iconClass: 'bg-success-tint text-success',
+    iconClass: 'bg-success/10 text-success',
     preset: '[位置] 公司总部 18F 会议室',
   },
   {
@@ -41,7 +41,7 @@ export const extensionActions: EditorAction[] = [
     label: '代码',
     description: '代码片段',
     icon: 'i-lucide:code-2',
-    iconClass: 'bg-warning-tint text-warning',
+    iconClass: 'bg-warning/10 text-warning',
     preset: '```ts\nconst message = "hello"\n```',
   },
   {
@@ -49,7 +49,7 @@ export const extensionActions: EditorAction[] = [
     label: '待办',
     description: '快速任务',
     icon: 'i-lucide:list-checks',
-    iconClass: 'bg-info-tint text-info',
+    iconClass: 'bg-info/10 text-info',
     preset: '[待办] 请在今天 18:00 前确认评审结论',
   },
 ]

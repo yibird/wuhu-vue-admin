@@ -13,7 +13,7 @@
         aria-multiselectable="true"
       >
         <div
-          class="sticky top-0 z-2 h-36 min-w-0 flex items-center gap-12 border-b-1 border-color-1 border-b-solid bg-container px-8 text-xs text-secondary font-500 select-none"
+          class="sticky top-0 z-2 h-36 min-w-0 flex items-center gap-12 b-b-1-muted bg-container px-8 text-xs text-secondary font-500 select-none"
           role="presentation"
         >
           <span class="min-w-0 flex-1 truncate">名称</span>
@@ -36,9 +36,9 @@
             >
               <div
                 :class="[
-                  'group h-52 min-w-0 flex cursor-pointer items-center gap-12 rounded-4 px-8 text-secondary outline-none transition-[background-color,transform] duration-motion-moderate ease-motion-spring hover:bg-hover-2 focus-visible:bg-primary-tint active:scale-99 motion-reduce:(transform-none transition-none)',
+                  'group h-52 min-w-0 flex cursor-pointer items-center gap-12 rounded-4 px-8 text-secondary outline-none transition-[background-color,transform] duration-motion-moderate ease-motion-spring hover:bg-hover focus-visible:bg-primary/10 active:scale-99 motion-reduce:(transform-none transition-none)',
                   selectedKeySet.has(row.key)
-                    ? 'bg-primary-tint hover:bg-primary-tint-hover'
+                    ? 'bg-primary/10 hover:bg-primary/20'
                     : '',
                 ]"
                 :data-file-manager-item-id="row.key"
@@ -63,7 +63,7 @@
                   <button
                     v-if="row.hasChildren"
                     type="button"
-                    class="button size-26 shrink-0 rounded-4 text-muted transition-[background-color,color,transform] duration-motion-base ease-motion-standard hover:(bg-hover text-primary) focus-visible:(bg-primary-tint text-primary shadow-[0_0_0_2px_rgb(var(--w-color-primary)_/_16%)]) motion-reduce:transition-none"
+                    class="button size-26 shrink-0 rounded-4 text-muted transition-[background-color,color,transform] duration-motion-base ease-motion-standard hover:(bg-hover text-primary) focus-visible:(bg-primary/10 text-primary shadow-[0_0_0_2px_rgb(var(--w-color-primary)_/_16%)]) motion-reduce:transition-none"
                     :class="{
                       'rotate-90 text-primary': expandedKeySet.has(row.key),
                     }"
@@ -142,7 +142,7 @@
                     <button
                       type="button"
                       data-file-manager-action
-                      class="button size-30 translate-x-4 rounded-4 text-secondary opacity-0 transition-[background-color,color,opacity,transform] duration-motion-base ease-motion-standard group-focus-within:(translate-x-0 opacity-100) group-hover:(translate-x-0 opacity-100) hover:(bg-fill-tertiary text-primary) focus-visible:(translate-x-0 bg-fill-tertiary text-primary opacity-100) motion-reduce:transition-none"
+                      class="button size-30 translate-x-4 rounded-4 text-secondary opacity-0 transition-[background-color,color,opacity,transform] duration-motion-base ease-motion-standard group-focus-within:(translate-x-0 opacity-100) group-hover:(translate-x-0 opacity-100) hover:(bg-muted text-primary) focus-visible:(translate-x-0 bg-muted text-primary opacity-100) motion-reduce:transition-none"
                       aria-label="更多操作"
                       @click.stop
                       @dblclick.stop

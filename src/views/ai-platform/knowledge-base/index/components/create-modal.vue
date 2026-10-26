@@ -6,7 +6,7 @@
     title="新建知识库"
   >
     <div
-      class="mb-16 flex min-w-0 items-center gap-12 rounded-8 border-1 border-color-2 border-solid bg-page p-12"
+      class="mb-16 flex min-w-0 items-center gap-12 rounded-8 b-1-regular bg-page p-12"
     >
       <span
         class="size-48 flex flex-none items-center justify-center rounded-8 shadow-[inset_0_0_0_1px_rgb(15_23_42_/_6%)]"
@@ -67,7 +67,7 @@
               :class="
                 form.iconBackground === color
                   ? 'border-primary shadow-[0_0_0_2px_rgb(var(--w-color-primary)_/_16%)]'
-                  : 'border-color-2'
+                  : 'border-regular'
               "
               :style="{ backgroundColor: color }"
               type="button"

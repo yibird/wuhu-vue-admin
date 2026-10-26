@@ -3,13 +3,13 @@
     role="button"
     tabindex="0"
     aria-label="查看作品详情"
-    class="group min-w-0 cursor-pointer overflow-hidden rounded-8 border-1 border-color-1 border-solid bg-container shadow-[var(--w-shadow-card)] outline-none transition-[border-color,box-shadow,transform] duration-motion-moderate ease-motion-standard hover:(-translate-y-2 border-primary/25 shadow-[var(--w-shadow-elevated)]) focus-visible:(border-primary shadow-[var(--w-shadow-elevated)]) active:translate-y-0 motion-reduce:(transform-none transition-none)"
+    class="group min-w-0 cursor-pointer overflow-hidden rounded-8 b-1-muted bg-container shadow-card outline-none transition-[border-color,box-shadow,transform] duration-motion-moderate ease-motion-standard hover:(-translate-y-2 border-primary/25 shadow-overlay) focus-visible:(border-primary shadow-overlay) active:translate-y-0 motion-reduce:(transform-none transition-none)"
     @click="emits('select', card)"
     @keydown.enter.prevent="emits('select', card)"
     @keydown.space.prevent="emits('select', card)"
   >
     <div
-      class="relative w-full overflow-hidden bg-fill-tertiary"
+      class="relative w-full overflow-hidden bg-muted"
       :style="{ height: `${card.height}px` }"
     >
       <div

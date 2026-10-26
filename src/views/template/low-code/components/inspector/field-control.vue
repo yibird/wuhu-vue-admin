@@ -100,7 +100,7 @@
 
       <div v-else-if="field.type === 'color'" class="flex-y-center gap-6">
         <input
-          class="size-26 shrink-0 cursor-pointer rounded-4 border-1 border-color-2 border-solid bg-transparent p-0"
+          class="size-26 shrink-0 cursor-pointer rounded-4 b-1-regular bg-transparent p-0"
           type="color"
           :value="colorValue"
           @input="onColorInput"
@@ -114,7 +114,7 @@
 
       <div v-else-if="field.type === 'icon'" class="flex-y-center gap-6">
         <span
-          class="size-26 inline-flex shrink-0 items-center justify-center rounded-4 bg-fill-quaternary text-primary"
+          class="size-26 inline-flex shrink-0 items-center justify-center rounded-4 bg-secondary text-primary"
         >
           <Icon :name="stringValue || 'i-lucide:box'" :size="15" />
         </span>

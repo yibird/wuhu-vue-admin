@@ -9,7 +9,7 @@
       <div
         v-for="item in 6"
         :key="item"
-        class="flex gap-12 rounded-6 bg-fill-1 px-10 py-9"
+        class="flex gap-12 rounded-6 bg-secondary px-10 py-9"
       >
         <a-skeleton-input active size="small" class="!w-68" />
         <a-skeleton-input active size="small" class="!w-160" />
@@ -35,7 +35,7 @@
       <div
         v-for="item in items"
         :key="item.id"
-        class="group min-w-0 flex items-center rounded-6 bg-container-secondary px-10 py-9 transition-[border-color,background-color,box-shadow,transform] duration-motion-base ease-motion-enter hover:(-translate-y-2 shadow-[0_6px_16px_rgb(var(--w-color-primary)_/_10%)]) active:(translate-y-0 scale-[0.995]) motion-reduce:transition-none motion-reduce:hover:translate-y-0 motion-reduce:active:scale-100"
+        class="group min-w-0 flex items-center rounded-6 bg-secondary px-10 py-9 transition-[border-color,background-color,box-shadow,transform] duration-motion-base ease-motion-enter hover:(-translate-y-2 shadow-[0_6px_16px_rgb(var(--w-color-primary)_/_10%)]) active:(translate-y-0 scale-[0.995]) motion-reduce:transition-none motion-reduce:hover:translate-y-0 motion-reduce:active:scale-100"
       >
         <span class="w-76 shrink-0 text-xs text-secondary">{{
           item.title

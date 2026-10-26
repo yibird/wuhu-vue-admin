@@ -12,7 +12,7 @@
       :data-testid="APPROVAL_WORKFLOW_SELECTORS.source"
     >
       <header
-        class="flex items-start justify-between gap-12 rounded-8 border-1 border-color-2 border-solid bg-fill px-12 py-10"
+        class="flex items-start justify-between gap-12 rounded-8 b-1-regular bg-fill px-12 py-10"
       >
         <div class="min-w-0 flex items-start gap-10">
           <span

@@ -1,11 +1,11 @@
 <template>
   <main
     ref="calendarRoot"
-    class="calendar min-h-0 flex flex-col overflow-hidden rounded-8 border-1 border-color-2 border-solid bg-container"
+    class="calendar min-h-0 flex flex-col overflow-hidden rounded-8 b-1-regular bg-container"
   >
     <template v-if="loading">
       <div
-        class="flex items-center justify-between gap-12 border-b-1 border-color-2 border-b-solid px-14 py-12"
+        class="flex items-center justify-between gap-12 b-b-1-regular px-14 py-12"
       >
         <div>
           <a-skeleton-input active class="!w-112" />
@@ -19,7 +19,7 @@
     </template>
     <template v-else>
       <div
-        class="flex items-center justify-between gap-12 border-b-1 border-color-2 border-b-solid px-14 py-12 max-md:flex-col max-md:items-start"
+        class="flex items-center justify-between gap-12 b-b-1-regular px-14 py-12 max-md:flex-col max-md:items-start"
       >
         <div>
           <div class="flex items-center gap-8 text-sm text-main font-700">
@@ -47,7 +47,7 @@
         <DayFlowCalendar :calendar="calendar" />
         <div
           v-if="hasActiveFilters && visibleEventCount === 0"
-          class="pointer-events-auto absolute inset-x-18 top-72 z-2 rounded-8 border-1 border-color-2 border-dashed bg-container/92 p-18 text-center shadow-[var(--w-shadow-elevated)] backdrop-blur-8"
+          class="pointer-events-auto absolute inset-x-18 top-72 z-2 rounded-8 b-dashed-1-regular bg-container/92 p-18 text-center shadow-overlay backdrop-blur-8"
         >
           <a-empty description="当前筛选下暂无日程">
             <template #image>
@@ -125,12 +125,12 @@ onUnmounted(() => {
 .calendar {
   --df-calendar-height: calc(var(--calendar-content-height) - 62px);
   --df-color-background: rgb(var(--w-bg-container));
-  --df-color-border: rgb(var(--w-border-color-2));
+  --df-color-border: rgb(var(--w-border-regular));
   --df-color-foreground: rgb(var(--w-text-main));
   --df-color-card: rgb(var(--w-bg-container));
   --df-color-card-foreground: rgb(var(--w-text-main));
   --df-color-hover: rgb(var(--w-bg-hover));
-  --df-color-muted: rgb(var(--w-fill-quaternary));
+  --df-color-muted: rgb(var(--w-bg-secondary));
   --df-color-muted-foreground: rgb(var(--w-text-muted));
   --df-color-primary: rgb(var(--w-color-primary));
   --df-color-primary-foreground: #fff;

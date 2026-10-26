@@ -9,7 +9,7 @@
     <button
       type="button"
       data-agent-model-trigger
-      class="h-34 max-w-220 inline-flex items-center gap-6 rounded-full border-1 border-transparent border-solid bg-transparent px-10 text-regular cursor-pointer transition-colors hover:border-color-muted hover:bg-hover hover:text-main max-sm:w-34 max-sm:px-0 max-sm:justify-center"
+      class="h-34 max-w-220 inline-flex items-center gap-6 rounded-full b-1-transparent bg-transparent px-10 text-regular cursor-pointer transition-colors hover:border-muted hover:bg-hover hover:text-main max-sm:w-34 max-sm:px-0 max-sm:justify-center"
       :class="!selectedModel ? 'cursor-not-allowed text-disabled' : ''"
       :disabled="disabled || !selectedModel"
     >
@@ -19,7 +19,7 @@
       </span>
       <span
         v-if="selectedModel"
-        class="shrink-0 rounded-full bg-fill-tertiary px-5 py-1 text-11px text-secondary max-sm:hidden"
+        class="shrink-0 rounded-full bg-muted px-5 py-1 text-11px text-secondary max-sm:hidden"
       >
         {{ selectedModel.type }}
       </span>
@@ -55,13 +55,13 @@
                 <span class="mt-5 flex flex-wrap items-center gap-5">
                   <span
                     v-if="item.context"
-                    class="rounded-full bg-fill-tertiary px-6 py-2 text-11px text-secondary"
+                    class="rounded-full bg-muted px-6 py-2 text-11px text-secondary"
                   >
                     {{ item.context }}
                   </span>
                   <span
                     v-if="item.speed"
-                    class="rounded-full bg-fill-tertiary px-6 py-2 text-11px text-secondary"
+                    class="rounded-full bg-muted px-6 py-2 text-11px text-secondary"
                   >
                     {{ item.speed }}
                   </span>

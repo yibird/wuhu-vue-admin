@@ -42,7 +42,7 @@
           v-model="inputText"
           aria-label="输入消息"
           autocomplete="off"
-          class="box-border block max-h-100 min-h-38 w-full resize-none overflow-y-auto rounded-12 border-1 border-solid border-color-2 bg-container px-12 py-8 text-sm text-main leading-20px outline-none transition-[border-color,box-shadow] placeholder:text-placeholder focus:(border-primary shadow-[0_0_0_2px_rgb(var(--w-color-primary)/10%)]) disabled:(cursor-not-allowed bg-fill-quaternary text-disabled)"
+          class="box-border block max-h-100 min-h-38 w-full resize-none overflow-y-auto rounded-12 b-1-regular bg-container px-12 py-8 text-sm text-main leading-20px outline-none transition-[border-color,box-shadow] placeholder:text-placeholder focus:(border-primary shadow-[0_0_0_2px_rgb(var(--w-color-primary)/10%)]) disabled:(cursor-not-allowed bg-secondary text-disabled)"
           :placeholder="placeholder"
           :disabled="disabled"
           name="chat-message"

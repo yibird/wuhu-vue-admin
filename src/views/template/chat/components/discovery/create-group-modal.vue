@@ -79,9 +79,7 @@
           </template>
         </a-input>
 
-        <div
-          class="mt-10 max-h-260 overflow-y-auto border-y-1 border-color-1 border-y-solid py-4"
-        >
+        <div class="mt-10 max-h-260 overflow-y-auto b-y-1-muted py-4">
           <a-empty
             v-if="filteredContacts.length === 0"
             class="py-24"

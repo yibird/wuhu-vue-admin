@@ -1,7 +1,7 @@
 <template>
   <div class="h-full min-h-0 flex flex-col gap-10 p-10">
     <a-form
-      class="rounded-8 border-1 border-color-2 border-solid bg-container p-16"
+      class="rounded-8 b-1-regular bg-container p-16"
       :label-col="{ style: { width: '80px' } }"
       :wrapper-col="{ flex: '1' }"
     >

@@ -135,10 +135,10 @@ function onMoreClick({ key }: { key: string | number }) {
   gap: 3px;
   align-items: center;
   padding: 4px;
-  background: rgb(var(--w-bg-elevated));
+  background: rgb(var(--w-bg-overlay));
   border-radius: 10px;
   box-shadow:
-    var(--w-shadow-elevated),
+    var(--w-shadow-overlay),
     0 2px 6px rgb(15 23 42 / 12%);
   transform: translateY(-100%);
 
@@ -166,7 +166,7 @@ function onMoreClick({ key }: { key: string | number }) {
 
   &:hover:not(:disabled) {
     color: rgb(var(--w-color-primary));
-    background: rgb(var(--w-bg-primary) / 10%);
+    background: rgb(var(--w-color-primary) / 10%);
   }
 
   &:disabled {

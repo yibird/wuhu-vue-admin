@@ -19,7 +19,7 @@ const handles = ['nw', 'n', 'ne', 'e', 'se', 's', 'sw', 'w'] as const
   z-index: 19;
   width: 8px;
   height: 8px;
-  background: rgb(var(--w-bg-elevated));
+  background: rgb(var(--w-bg-overlay));
   border: 1px solid rgb(var(--w-color-primary));
   border-radius: 2px;
 

@@ -1,10 +1,8 @@
 <template>
   <aside
-    class="ml-12 w-300 shrink-0 rounded-8 border-1 border-solid border-color-1 bg-container max-xl:w-260 max-lg:ml-0 max-lg:mt-12 max-lg:w-full"
+    class="ml-12 w-300 shrink-0 rounded-8 b-1-muted bg-container max-xl:w-260 max-lg:ml-0 max-lg:mt-12 max-lg:w-full"
   >
-    <div
-      class="flex items-center justify-between border-b-1 border-b-solid border-color-1 px-14 py-12"
-    >
+    <div class="flex items-center justify-between b-b-1-muted px-14 py-12">
       <div class="text-sm text-main font-600">文档信息</div>
       <button
         type="button"
@@ -22,19 +20,19 @@
     </div>
     <div class="space-y-12 p-14">
       <div class="grid grid-cols-3 gap-8">
-        <div class="rounded-6 bg-fill-quaternary p-10">
+        <div class="rounded-6 bg-secondary p-10">
           <div class="text-xs text-secondary">字数</div>
           <div class="mt-6 text-lg text-main font-650">
             {{ props.wordCount }}
           </div>
         </div>
-        <div class="rounded-6 bg-fill-quaternary p-10">
+        <div class="rounded-6 bg-secondary p-10">
           <div class="text-xs text-secondary">段落</div>
           <div class="mt-6 text-lg text-main font-650">
             {{ props.paragraphCount }}
           </div>
         </div>
-        <div class="rounded-6 bg-fill-quaternary p-10">
+        <div class="rounded-6 bg-secondary p-10">
           <div class="text-xs text-secondary">阅读</div>
           <div class="mt-6 text-lg text-main font-650">
             {{ props.readingMinutes }}m
@@ -79,10 +77,8 @@
       </div>
 
       <!-- 版本历史 -->
-      <div class="rounded-6 border-1 border-solid border-color-1">
-        <div
-          class="flex items-center justify-between border-b-1 border-b-solid border-color-1 px-10 py-8"
-        >
+      <div class="rounded-6 b-1-muted">
+        <div class="flex items-center justify-between b-b-1-muted px-10 py-8">
           <div class="text-sm text-main font-600">版本历史</div>
           <a-button size="small" type="link" @click="emits('save-version')">
             保存版本
@@ -96,7 +92,7 @@
             v-for="version in props.activeVersions"
             :key="version.id"
             type="button"
-            class="mb-7 w-full rounded-6 border-1 border-solid border-color-1 bg-container-secondary p-8 text-left transition-colors hover:(border-primary bg-hover)"
+            class="mb-7 w-full rounded-6 b-1-muted bg-secondary p-8 text-left transition-colors hover:(border-primary bg-hover)"
             @click="emits('restore-version', version)"
           >
             <span class="block truncate text-sm text-main font-600">
@@ -111,10 +107,8 @@
       </div>
 
       <!-- 协作评论 -->
-      <div class="rounded-6 border-1 border-solid border-color-1">
-        <div
-          class="flex items-center justify-between border-b-1 border-b-solid border-color-1 px-10 py-8"
-        >
+      <div class="rounded-6 b-1-muted">
+        <div class="flex items-center justify-between b-b-1-muted px-10 py-8">
           <div class="text-sm text-main font-600">协作评论</div>
           <span class="text-xs text-secondary">
             {{ props.unresolvedCommentCount }} 未解决
@@ -134,7 +128,7 @@
             v-for="comment in props.activeComments"
             :key="comment.id"
             type="button"
-            class="rounded-6 border-1 border-solid border-color-1 bg-container-secondary p-8 text-left transition-colors hover:(border-primary bg-hover)"
+            class="rounded-6 b-1-muted bg-secondary p-8 text-left transition-colors hover:(border-primary bg-hover)"
             @click="emits('toggle-comment-resolved', comment.id)"
           >
             <span class="flex items-center justify-between gap-8">
@@ -183,13 +177,8 @@
       </a-button>
 
       <!-- 大纲 -->
-      <div
-        v-if="props.outlineOpen"
-        class="rounded-6 border-1 border-solid border-color-1"
-      >
-        <div
-          class="border-b-1 border-b-solid border-color-1 px-10 py-8 text-sm text-main font-600"
-        >
+      <div v-if="props.outlineOpen" class="rounded-6 b-1-muted">
+        <div class="b-b-1-muted px-10 py-8 text-sm text-main font-600">
           大纲
         </div>
         <div v-if="props.outline.length" class="p-8">

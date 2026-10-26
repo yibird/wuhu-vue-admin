@@ -2,7 +2,7 @@
   <WView :full="true" :padding="0">
     <div class="h-full min-h-0 flex flex-col overflow-hidden bg-page">
       <header
-        class="page-enter page-enter--1 flex flex-none flex-wrap items-center gap-10 border-b-1 border-color-2 border-b-solid bg-container px-12 py-10 sm:px-16"
+        class="page-enter page-enter--1 flex flex-none flex-wrap items-center gap-10 b-b-1-regular bg-container px-12 py-10 sm:px-16"
       >
         <span
           class="size-38 flex flex-none items-center justify-center rounded-8 bg-primary/12 text-primary"
@@ -25,13 +25,13 @@
         class="page-enter page-enter--2 min-h-0 flex-1 grid grid-cols-1 gap-12 overflow-hidden p-12 lg:grid-cols-[260px_minmax(0,1fr)] sm:p-16"
       >
         <aside
-          class="min-h-0 flex flex-col overflow-hidden rounded-8 border-1 border-color-2 border-solid bg-container"
+          class="min-h-0 flex flex-col overflow-hidden rounded-8 b-1-regular bg-container"
         >
           <div class="flex-none px-12 pb-8 pt-10">
             <div class="flex items-center gap-8">
               <h2 class="m-0 text-sm text-main font-700">分组列表</h2>
               <span
-                class="rounded-999 bg-fill-secondary px-7 py-1 text-11px text-secondary"
+                class="rounded-999 bg-secondary px-7 py-1 text-11px text-secondary"
               >
                 {{ filteredCategories.length }}
               </span>
@@ -60,7 +60,7 @@
                 :key="category.id"
                 as="button"
                 type="button"
-                class="group mb-6 w-full flex items-center gap-8 rounded-7 border-1 border-transparent border-solid px-10 py-9 text-left transition-colors"
+                class="group mb-6 w-full flex items-center gap-8 rounded-7 b-1-transparent px-10 py-9 text-left transition-colors"
                 :class="
                   category.id === selectedCategoryId
                     ? 'border-primary/20 bg-primary/8 text-primary'
@@ -117,7 +117,7 @@
               <div
                 v-for="index in 8"
                 :key="index"
-                class="h-252 rounded-8 border-1 border-color-2 border-solid bg-container p-14"
+                class="h-252 rounded-8 b-1-regular bg-container p-14"
               >
                 <a-skeleton active :paragraph="{ rows: 5 }" />
               </div>

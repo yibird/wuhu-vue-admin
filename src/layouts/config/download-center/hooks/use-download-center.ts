@@ -91,28 +91,28 @@ export const useDownloadCenter = createGlobalState(() => {
       label: '全部下载',
       value: totalDownloadCount.value,
       icon: 'i-lucide:files',
-      class: 'text-main bg-fill-quaternary',
+      class: 'text-main bg-secondary',
     },
     {
       key: 'active',
       label: '队列中',
       value: activeDownloadCount.value,
       icon: 'i-lucide:download-cloud',
-      class: 'text-primary bg-primary-tint',
+      class: 'text-primary bg-primary/10',
     },
     {
       key: 'success',
       label: '已完成',
       value: finishedDownloadCount.value,
       icon: 'i-lucide:circle-check',
-      class: 'text-success bg-success-tint',
+      class: 'text-success bg-success/10',
     },
     {
       key: 'failed',
       label: '失败',
       value: failedDownloadCount.value,
       icon: 'i-lucide:circle-alert',
-      class: 'text-error bg-error-tint',
+      class: 'text-error bg-error/10',
     },
   ])
 

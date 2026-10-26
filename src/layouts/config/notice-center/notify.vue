@@ -53,19 +53,19 @@ const items = [
 
 const mapping: Record<number, { className: string; icon: string }> = {
   1: {
-    className: 'bg-info-tint text-info',
+    className: 'bg-info/10 text-info',
     icon: 'i-lucide:bell',
   },
   2: {
-    className: 'bg-success-tint text-success',
+    className: 'bg-success/10 text-success',
     icon: 'i-lucide:volume-2',
   },
   3: {
-    className: 'bg-error-tint text-error',
+    className: 'bg-error/10 text-error',
     icon: 'i-lucide:heart',
   },
   4: {
-    className: 'bg-warning-tint text-warning',
+    className: 'bg-warning/10 text-warning',
     icon: 'i-lucide:mail',
   },
 }

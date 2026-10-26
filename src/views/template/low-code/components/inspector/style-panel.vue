@@ -154,7 +154,7 @@
           <span>背景</span>
           <span class="flex-y-center gap-4">
             <input
-              class="size-24 shrink-0 cursor-pointer rounded-4 border-1 border-color-2 border-solid bg-transparent p-0"
+              class="size-24 shrink-0 cursor-pointer rounded-4 b-1-regular bg-transparent p-0"
               type="color"
               :value="colorOf('background')"
               @input="setColor('background', $event)"
@@ -169,7 +169,7 @@
           <span>文字颜色</span>
           <span class="flex-y-center gap-4">
             <input
-              class="size-24 shrink-0 cursor-pointer rounded-4 border-1 border-color-2 border-solid bg-transparent p-0"
+              class="size-24 shrink-0 cursor-pointer rounded-4 b-1-regular bg-transparent p-0"
               type="color"
               :value="colorOf('color')"
               @input="setColor('color', $event)"

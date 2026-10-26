@@ -225,7 +225,7 @@ export function useEditorToolbar(
 
   function getToolbarButtonClass(active?: boolean) {
     return active
-      ? 'bg-primary-tint text-primary'
+      ? 'bg-primary/10 text-primary'
       : 'text-secondary hover:(bg-hover text-primary)'
   }
 

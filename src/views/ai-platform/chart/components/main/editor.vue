@@ -1,7 +1,7 @@
 <template>
   <div
     class="min-w-0 rounded-12 transition-colors"
-    :class="isDragging ? 'bg-primary-tint' : ''"
+    :class="isDragging ? 'bg-primary/10' : ''"
     @dragenter.prevent="handleDragEnter"
     @dragover.prevent="isDragging = true"
     @dragleave.prevent="handleDragLeave"

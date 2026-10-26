@@ -261,7 +261,7 @@ onBeforeUnmount(() => {
   display: block;
   width: 100%;
   height: 100%;
-  background-color: var(--w-sliding-highlight-bg, rgb(var(--w-bg-fill-4)));
+  background-color: var(--w-sliding-highlight-bg, rgb(var(--w-bg-muted)));
   border-radius: var(--w-sliding-highlight-radius, 8px);
 }
 

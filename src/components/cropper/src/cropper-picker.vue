@@ -75,7 +75,7 @@
       </div>
 
       <div
-        class="w-drag-upload-area h-400 overflow-hidden rounded-4 border bg-fill-quaternary transition-colors"
+        class="w-drag-upload-area h-400 overflow-hidden rounded-4 border bg-secondary transition-colors"
         :class="isDragging ? 'w-drag-upload-area--dragging bg-primary/5' : ''"
         @dragover.prevent="handleDragOver"
         @dragleave.prevent="handleDragLeave"

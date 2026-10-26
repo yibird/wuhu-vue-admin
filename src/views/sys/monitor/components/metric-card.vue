@@ -1,6 +1,6 @@
 <template>
   <div
-    class="group min-w-0 rounded-8 border-1 border-solid border-color-2 bg-container-secondary p-12 transition-[background-color,border-color,box-shadow,transform] duration-motion-base ease-motion-enter hover:(-translate-y-1 border-primary bg-hover shadow-all-sm) motion-reduce:transition-none motion-reduce:hover:translate-y-0"
+    class="group min-w-0 rounded-8 b-1-regular bg-secondary p-12 transition-[background-color,border-color,box-shadow,transform] duration-motion-base ease-motion-enter hover:(-translate-y-1 border-primary bg-hover shadow-all-sm) motion-reduce:transition-none motion-reduce:hover:translate-y-0"
   >
     <div class="flex items-start justify-between gap-10">
       <div class="min-w-0">
@@ -47,11 +47,11 @@ const props = defineProps<{
 }>()
 
 const toneClassMap = {
-  primary: 'bg-primary-tint text-primary',
-  success: 'bg-success-tint text-success',
-  warning: 'bg-warning-tint text-warning',
-  error: 'bg-error-tint text-error',
-  info: 'bg-info-tint text-info',
+  primary: 'bg-primary/10 text-primary',
+  success: 'bg-success/10 text-success',
+  warning: 'bg-warning/10 text-warning',
+  error: 'bg-error/10 text-error',
+  info: 'bg-info/10 text-info',
 } as const
 
 const barClassMap = {

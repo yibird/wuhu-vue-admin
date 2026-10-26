@@ -6,10 +6,8 @@
       <div
         v-for="item in items"
         :key="item.id"
-        class="grid grid-cols-[240px_minmax(260px,1fr)_130px_190px_120px] items-center gap-12 rounded-4 border-1 border-color-2 border-solid bg-main px-12 py-10 transition-colors"
-        :class="
-          item.id === selectedTaskId ? 'border-primary bg-selected-1' : ''
-        "
+        class="grid grid-cols-[240px_minmax(260px,1fr)_130px_190px_120px] items-center gap-12 rounded-4 b-1-regular bg-container px-12 py-10 transition-colors"
+        :class="item.id === selectedTaskId ? 'border-primary bg-selected' : ''"
         @click="emits('select', item.id)"
       >
         <div class="min-w-0">
@@ -30,7 +28,7 @@
               </span>
             </a-tag>
           </div>
-          <div class="h-10 overflow-hidden rounded-full bg-fill-tertiary">
+          <div class="h-10 overflow-hidden rounded-full bg-muted">
             <div
               class="h-full rounded-full"
               :class="statusBarClass(item.status)"

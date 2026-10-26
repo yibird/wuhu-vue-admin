@@ -245,11 +245,11 @@ onBeforeUnmount(() => {
   z-index: 3000;
   min-width: 188px;
   padding: 4px;
-  background: rgb(var(--w-bg-elevated));
-  border: 1px solid rgb(var(--w-border-color-2));
+  background: rgb(var(--w-bg-overlay));
+  border: 1px solid rgb(var(--w-border-regular));
   border-radius: 8px;
   box-shadow:
-    var(--w-shadow-elevated),
+    var(--w-shadow-overlay),
     0 2px 6px rgb(15 23 42 / 12%);
 }
 
@@ -268,7 +268,7 @@ onBeforeUnmount(() => {
 
   &:hover:not(:disabled) {
     color: rgb(var(--w-color-primary));
-    background: rgb(var(--w-bg-primary) / 8%);
+    background: rgb(var(--w-color-primary) / 8%);
   }
 
   &:disabled {
@@ -291,6 +291,6 @@ onBeforeUnmount(() => {
 .lc-context-menu__divider {
   height: 1px;
   margin: 4px 2px;
-  background: rgb(var(--w-border-color-2));
+  background: rgb(var(--w-border-regular));
 }
 </style>

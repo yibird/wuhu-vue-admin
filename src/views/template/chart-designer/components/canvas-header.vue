@@ -1,6 +1,6 @@
 <template>
   <header
-    class="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-12 border-b border-color-2 px-14 py-12"
+    class="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-12 border-b border-regular px-14 py-12"
   >
     <div class="min-w-0">
       <div class="flex items-center gap-8">

@@ -22,7 +22,7 @@
     </template>
 
     <div class="h-full min-h-0 flex flex-col bg-container">
-      <div class="shrink-0 border-b-1 border-b-solid border-color-1 p-12">
+      <div class="shrink-0 b-b-1-muted p-12">
         <a-segmented v-model:value="activeTab" block :options="tabOptions" />
       </div>
 
@@ -68,7 +68,7 @@
             </a-button>
           </div>
           <div
-            class="whitespace-pre-wrap break-words border-y-1 border-color-1 border-y-solid bg-fill-quaternary px-14 py-16 text-sm text-main leading-7"
+            class="whitespace-pre-wrap break-words b-y-1-muted bg-secondary px-14 py-16 text-sm text-main leading-7"
           >
             {{ announcement.content }}
           </div>
@@ -84,7 +84,7 @@
           class="h-full min-h-320 flex flex-col items-center justify-center text-center"
         >
           <span
-            class="size-52 flex items-center justify-center rounded-full bg-fill-quaternary text-secondary"
+            class="size-52 flex items-center justify-center rounded-full bg-secondary text-secondary"
           >
             <Icon name="i-lucide:megaphone" :size="24" />
           </span>
@@ -96,7 +96,7 @@
       </div>
 
       <div v-else class="min-h-0 flex flex-1 flex-col">
-        <div class="shrink-0 border-b-1 border-b-solid border-color-1 p-12">
+        <div class="shrink-0 b-b-1-muted p-12">
           <a-input
             v-model:value="memberKeyword"
             allow-clear
@@ -138,7 +138,7 @@
                     {{ getMemberInitial(member) }}
                   </a-avatar>
                   <span
-                    class="absolute bottom-0 right-0 size-9 rounded-full border-2 border-container"
+                    class="absolute bottom-0 right-0 size-9 rounded-full b-2-[var(--w-bg-container)]"
                     :class="{
                       'bg-success': member.status === 'online',
                       'bg-fill': member.status === 'offline',

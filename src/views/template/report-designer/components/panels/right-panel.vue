@@ -1,6 +1,6 @@
 <template>
   <aside
-    class="report-right-panel min-h-0 flex w-340 flex-none flex-col border-l-1 border-color-2 border-l-solid bg-container"
+    class="report-right-panel min-h-0 flex w-340 flex-none flex-col b-l-1-regular bg-container"
   >
     <div class="flex-none p-10">
       <a-segmented v-model:value="activeTab" block :options="tabOptions" />

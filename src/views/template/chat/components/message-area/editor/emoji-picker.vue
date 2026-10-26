@@ -10,9 +10,7 @@
     </div>
 
     <!-- Tabs -->
-    <div
-      class="mb-10 flex gap-5 border-b-1 border-b-solid border-color-1 pb-10"
-    >
+    <div class="mb-10 flex gap-5 b-b-1-muted pb-10">
       <button
         v-for="tab in tabs"
         :key="tab.key"

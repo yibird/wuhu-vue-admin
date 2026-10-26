@@ -9,7 +9,7 @@
     </div>
     <ResourceTrendChart :resources="resources" class="mt-12" />
     <div
-      class="mt-12 grid grid-cols-1 gap-10 rounded-8 border-1 border-solid border-color-2 bg-container-secondary p-12 sm:grid-cols-2 xl:grid-cols-4"
+      class="mt-12 grid grid-cols-1 gap-10 rounded-8 b-1-regular bg-secondary p-12 sm:grid-cols-2 xl:grid-cols-4"
     >
       <div v-for="item in serverDetails" :key="item.label" class="min-w-0">
         <div class="text-xs text-secondary">{{ item.label }}</div>

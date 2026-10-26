@@ -1,6 +1,6 @@
 <template>
   <article
-    class="chart-widget-card group min-h-0 min-w-0 grid grid-rows-[auto_minmax(0,1fr)] overflow-hidden rounded-8 border-1 border-white/10 border-solid bg-[rgb(9_18_36_/_78%)] p-12 backdrop-blur transition hover:border-white/24"
+    class="chart-widget-card group min-h-0 min-w-0 grid grid-rows-[auto_minmax(0,1fr)] overflow-hidden rounded-8 b-1-white/10 bg-[rgb(9_18_36_/_78%)] p-12 backdrop-blur transition hover:border-white/24"
     :class="{
       'opacity-35': isDragging,
       'ring-2 ring-primary': isSelected,

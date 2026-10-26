@@ -1,7 +1,5 @@
 <template>
-  <nav
-    class="h-full w-84 shrink-0 flex flex-col border-r-1 border-r-solid border-color-1 bg-container"
-  >
+  <nav class="h-full w-84 shrink-0 flex flex-col b-r-1-muted bg-container">
     <!-- Header -->
     <Header />
     <!-- Nav Tabs -->
