@@ -5,7 +5,7 @@
   >
     <button
       type="button"
-      class="voice-message__play button size-30 shrink-0 flex-center rounded-full transition-[background-color,transform] duration-motion-base hover:scale-105 active:scale-95 focus-visible:(outline-2 outline-primary outline-offset-2)"
+      class="voice-message__play button size-30 shrink-0 flex-center rounded-full transition-[background-color,transform] duration-200 hover:scale-105 active:scale-95 focus-visible:(outline-2 outline-primary outline-offset-2)"
       :class="
         isMine
           ? 'bg-white/22 text-white hover:bg-white/32'
@@ -96,7 +96,7 @@ const waveform = computed(() => {
 <style scoped>
 .voice-message__wave.is-playing .voice-message__bar {
   transform-origin: center;
-  animation: voice-wave 900ms var(--w-motion-ease-standard) infinite;
+  animation: voice-wave 900ms var(--w-motion-ease) infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {

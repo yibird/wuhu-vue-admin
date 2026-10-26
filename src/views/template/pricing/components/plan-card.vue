@@ -1,13 +1,13 @@
 <template>
   <article
     ref="cardRef"
-    class="pricing-card group relative flex cursor-pointer flex-col overflow-hidden rounded-16 border-1 border-solid p-20 outline-none transition-[box-shadow,transform] duration-motion-moderate ease-motion-enter hover:-translate-y-3 focus-visible:outline-2 focus-visible:outline-primary/60 focus-visible:outline-offset-2 motion-reduce:transition-none max-sm:p-16"
+    class="pricing-card group relative flex cursor-pointer flex-col overflow-hidden rounded-16 border-1 border-solid p-20 outline-none transition-[box-shadow,transform] duration-300 ease-[var(--w-motion-ease-enter)] hover:-translate-y-3 focus-visible:(outline-2 outline-primary/60 outline-offset-2) motion-reduce:transition-none max-sm:p-16"
     :class="{
       // 普通卡
-      'border-muted pricing-card--normal shadow-[0_10px_30px_rgb(15_23_42_/_5%)] hover:shadow-[0_20px_50px_rgb(var(--w-color-primary)_/_10%)]':
+      'border-muted pricing-card--normal shadow-xl shadow-ink/5 hover:(shadow-2xl shadow-primary/10)':
         !isRecommended,
       // 推荐卡：渐变边框 + 发光
-      'pricing-card--featured border-transparent shadow-[0_24px_60px_rgb(var(--w-color-primary)_/_18%)] hover:shadow-[0_32px_80px_rgb(var(--w-color-primary)_/_25%)]':
+      'pricing-card--featured border-transparent shadow-2xl shadow-primary/18 hover:(shadow-2xl shadow-primary/25)':
         isRecommended,
       // 选中态
       '-translate-y-3': props.active,
@@ -34,9 +34,9 @@
       <!-- 头部：图标 + 徽章 -->
       <div class="flex items-start justify-between gap-12">
         <span
-          class="pricing-card__icon size-46 inline-flex items-center justify-center rounded-12 transition-transform duration-motion-moderate ease-motion-standard group-hover:scale-110 group-hover:-rotate-3"
+          class="pricing-card__icon size-46 inline-flex items-center justify-center rounded-12 transition-transform duration-300 ease-[var(--w-motion-ease)] group-hover:(scale-110 -rotate-3)"
           :class="{
-            'bg-gradient-to-br from-primary/20 to-primary/5 text-primary shadow-[0_8px_24px_rgb(var(--w-color-primary)_/_20%)]':
+            'bg-gradient-to-br from-primary/20 to-primary/5 text-primary shadow-xl shadow-primary/20':
               isRecommended,
             'bg-muted text-secondary': !isRecommended,
           }"
@@ -45,7 +45,7 @@
         </span>
         <span
           v-if="props.plan.badge"
-          class="inline-flex items-center gap-4 rounded-full bg-primary px-12 py-5 text-xs text-white font-800 shadow-[0_4px_16px_rgb(var(--w-color-primary)_/_40%)]"
+          class="inline-flex items-center gap-4 rounded-full bg-primary px-12 py-5 text-xs text-white font-800 shadow-lg shadow-primary/40"
         >
           <Icon name="i-lucide:crown" :size="12" />
           {{ props.plan.badge }}
@@ -143,10 +143,10 @@
           class="flex items-center gap-10 text-[13px] text-regular leading-20"
         >
           <span
-            class="size-18 flex shrink-0 items-center justify-center rounded-full transition-transform duration-motion-base ease-motion-standard group-hover:scale-110"
+            class="size-18 flex shrink-0 items-center justify-center rounded-full transition-transform duration-200 ease-[var(--w-motion-ease)] group-hover:scale-110"
             :class="
               isRecommended
-                ? 'bg-primary text-white shadow-[0_2px_8px_rgb(var(--w-color-primary)_/_40%)]'
+                ? 'bg-primary text-white shadow-sm shadow-primary/40'
                 : 'bg-success/12 text-success'
             "
           >
@@ -256,8 +256,8 @@ function handlePointerLeave() {
   transform: perspective(1200px) rotateX(calc(var(--pricing-rx, 0) * 1deg))
     rotateY(calc(var(--pricing-ry, 0) * 1deg));
   transition:
-    transform var(--w-motion-duration-slower) var(--w-motion-ease-spring),
-    box-shadow var(--w-motion-duration-moderate) var(--w-motion-ease-standard);
+    transform 500ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 300ms var(--w-motion-ease);
   will-change: transform;
 }
 
@@ -265,7 +265,7 @@ function handlePointerLeave() {
 .pricing-card--tilting {
   transition:
     transform 90ms ease-out,
-    box-shadow var(--w-motion-duration-moderate) var(--w-motion-ease-standard);
+    box-shadow 300ms var(--w-motion-ease);
 }
 
 .pricing-card__content {
@@ -295,8 +295,7 @@ function handlePointerLeave() {
     transparent 62%
   );
   opacity: 0;
-  transition: opacity var(--w-motion-duration-moderate)
-    var(--w-motion-ease-standard);
+  transition: opacity 300ms var(--w-motion-ease);
 }
 
 .pricing-card:hover .pricing-card__glare {

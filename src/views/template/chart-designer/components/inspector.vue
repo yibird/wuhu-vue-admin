@@ -1,6 +1,6 @@
 <template>
   <section
-    class="min-h-0 min-w-0 grid grid-rows-[auto_minmax(0,1fr)] overflow-hidden rounded-8 b-1-regular bg-container shadow-card"
+    class="min-h-0 min-w-0 grid grid-rows-[auto_minmax(0,1fr)] overflow-hidden rounded-8 b-1-regular bg-container shadow-sm"
     :data-testid="CHART_DESIGNER_SELECTORS.inspector"
   >
     <header class="border-b border-regular px-12 py-10">

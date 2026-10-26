@@ -34,11 +34,11 @@
             <template #itemRender="contact">
               <div>
                 <div
-                  class="group relative rounded-6 transition-[background-color,box-shadow,transform] duration-motion-base ease-motion-enter hover:(translate-x-1 bg-hover shadow-all-sm) active:scale-99 motion-reduce:(transform-none transition-none)"
+                  class="group relative rounded-6 transition-[background-color,box-shadow,transform] duration-200 ease-[var(--w-motion-ease-enter)] hover:(translate-x-1 bg-hover shadow-sm) active:scale-99 motion-reduce:(transform-none transition-none)"
                 >
                   <button
                     type="button"
-                    class="block-button p-10 pr-72 text-left motion-press focus-visible:(outline-none bg-hover shadow-[0_0_0_2px_rgb(var(--w-color-primary)/24%)])"
+                    class="block-button p-10 pr-72 text-left motion-press focus-visible:(outline-none bg-hover ring-2 ring-primary/24)"
                     :aria-label="`查看${contact.name}资料`"
                     @click="handleSelect(contact)"
                   >
@@ -48,7 +48,7 @@
                           :src="contact.avatar"
                           :size="44"
                           round
-                          class="transition-transform duration-motion-base ease-motion-enter group-hover:scale-105 motion-reduce:transform-none"
+                          class="transition-transform duration-200 ease-[var(--w-motion-ease-enter)] group-hover:scale-105 motion-reduce:transform-none"
                         />
                         <span
                           v-if="contact.status"
@@ -94,7 +94,7 @@
                   </button>
 
                   <div
-                    class="absolute right-8 top-16 flex items-center opacity-75 transition-[opacity,transform] duration-motion-base ease-motion-enter group-focus-within:(translate-x-0 opacity-100) group-hover:(translate-x-0 opacity-100)"
+                    class="absolute right-8 top-16 flex items-center opacity-75 transition-[opacity,transform] duration-200 ease-[var(--w-motion-ease-enter)] group-focus-within:(translate-x-0 opacity-100) group-hover:(translate-x-0 opacity-100)"
                   >
                     <button
                       type="button"
@@ -146,7 +146,7 @@
 </template>
 
 <script setup lang="ts">
-import { Scrollbar } from '@/components'
+import { Scrollbar } from '@/components/scrollbar'
 import { Icon } from '@/components/icon'
 import Search from './search.vue'
 import Tabs from './tabs.vue'

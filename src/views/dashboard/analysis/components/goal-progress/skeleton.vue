@@ -54,5 +54,5 @@
 </template>
 
 <script setup lang="ts">
-import { Card } from '@/components'
+import { Card } from '@/components/card'
 </script>

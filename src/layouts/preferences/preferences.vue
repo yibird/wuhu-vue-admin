@@ -10,7 +10,7 @@
     <template #title>
       <div class="min-w-0 flex items-center gap-10">
         <span
-          class="size-36 shrink-0 flex items-center justify-center rounded-8 b-1-primary/15 bg-primary/10 text-primary transition-colors duration-motion-base"
+          class="size-36 shrink-0 flex items-center justify-center rounded-8 b-1-primary/15 bg-primary/10 text-primary transition-colors duration-200"
         >
           <Icon name="i-lucide:settings-2" :size="19" />
         </span>
@@ -21,7 +21,7 @@
               class="inline-flex items-center gap-5 whitespace-nowrap rounded-full bg-success/10 px-7 py-3 text-10px text-success font-600"
             >
               <i
-                class="size-6 rounded-full bg-success shadow-[0_0_0_3px_rgb(var(--w-color-success)_/_12%)]"
+                class="size-6 rounded-full bg-success ring-3 ring-success/12"
                 aria-hidden="true"
               />
               实时生效

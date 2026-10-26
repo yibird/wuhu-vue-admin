@@ -157,8 +157,8 @@ const { settings, updateSetting, updateSoundVolume, updateArchiveDays } =
   border: 1px solid rgb(var(--w-border-muted));
   border-radius: 8px;
   transition:
-    background-color var(--w-motion-duration-base) var(--w-motion-ease-standard),
-    border-color var(--w-motion-duration-base) var(--w-motion-ease-standard);
+    background-color 200ms var(--w-motion-ease),
+    border-color 200ms var(--w-motion-ease);
 }
 
 .setting-row:hover {

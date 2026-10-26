@@ -34,7 +34,7 @@
             (hoveredIndex < 0 && activeIndex === index)
           "
           :class="[
-            'content-auto-52 relative min-h-52 w-full min-w-0 flex cursor-pointer items-center gap-10 overflow-hidden rounded-6 bg-transparent px-9 py-7 text-left text-main transition-colors duration-motion-base',
+            'content-auto-52 relative min-h-52 w-full min-w-0 flex cursor-pointer items-center gap-10 overflow-hidden rounded-6 bg-transparent px-9 py-7 text-left text-main transition-colors duration-200',
             activeIndex === index && hoveredIndex !== index && 'bg-muted',
           ]"
           :title="`${item.title} · ${item.path}`"
@@ -43,7 +43,7 @@
           @click="onSelect(item, index)"
         >
           <span
-            class="size-32 flex shrink-0 items-center justify-center rounded-6 transition-colors duration-motion-base"
+            class="size-32 flex shrink-0 items-center justify-center rounded-6 transition-colors duration-200"
             :class="
               hoveredIndex === index
                 ? 'bg-primary [color:#fff]'

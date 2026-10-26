@@ -38,7 +38,7 @@
             />
 
             <section
-              class="overflow-hidden rounded-16 b-1-muted bg-container shadow-[0_10px_30px_rgb(15_23_42_/_5%)]"
+              class="overflow-hidden rounded-16 b-1-muted bg-container shadow-xl shadow-ink/5"
               aria-label="扩展能力"
             >
               <div
@@ -56,7 +56,7 @@
                   </h2>
                 </div>
                 <span
-                  class="size-44 inline-flex items-center justify-center rounded-12 bg-gradient-to-br from-primary/20 to-primary/5 text-primary shadow-[0_8px_24px_rgb(var(--w-color-primary)_/_15%)]"
+                  class="size-44 inline-flex items-center justify-center rounded-12 bg-gradient-to-br from-primary/20 to-primary/5 text-primary shadow-xl shadow-primary/15"
                 >
                   <Icon name="i-lucide:package-plus" :size="20" />
                 </span>
@@ -66,10 +66,10 @@
                 <article
                   v-for="addon in pricingAddons"
                   :key="addon.name"
-                  class="group relative grid min-w-0 grid-cols-[48px_minmax(0,1fr)] items-start gap-14 overflow-hidden rounded-12 b-1-muted bg-muted/40 p-16 transition-[border-color,box-shadow,transform] duration-motion-base ease-motion-standard hover:(-translate-y-2 border-primary/30 shadow-[0_16px_36px_rgb(var(--w-color-primary)_/_10%)]) motion-reduce:transition-none"
+                  class="group relative grid min-w-0 grid-cols-[48px_minmax(0,1fr)] items-start gap-14 overflow-hidden rounded-12 b-1-muted bg-muted/40 p-16 transition-[border-color,box-shadow,transform] duration-200 ease-[var(--w-motion-ease)] hover:(-translate-y-2 border-primary/30 shadow-2xl shadow-primary/10) motion-reduce:transition-none"
                 >
                   <span
-                    class="size-48 inline-flex items-center justify-center rounded-12 bg-primary/8 text-primary transition-[background-color,transform] duration-motion-moderate ease-motion-standard group-hover:(scale-110 bg-primary/15) motion-reduce:transition-none"
+                    class="size-48 inline-flex items-center justify-center rounded-12 bg-primary/8 text-primary transition-[background-color,transform] duration-300 ease-[var(--w-motion-ease)] group-hover:(scale-110 bg-primary/15) motion-reduce:transition-none"
                   >
                     <Icon :name="addon.icon" :size="22" />
                   </span>
@@ -92,7 +92,7 @@
           </div>
 
           <aside
-            class="sticky top-12 self-start overflow-hidden rounded-16 b-1-primary bg-container/80 p-20 shadow-[0_20px_50px_rgb(15_23_42_/_10%)] backdrop-blur-xl max-[1180px]:(relative top-auto)"
+            class="sticky top-12 self-start overflow-hidden rounded-16 b-1-primary bg-container/80 p-20 shadow-2xl shadow-ink/10 backdrop-blur-xl max-[1180px]:(relative top-auto)"
             aria-label="当前选择"
           >
             <div class="flex items-center justify-between gap-12">
@@ -110,7 +110,7 @@
               <Transition name="fade-pop" mode="out-in">
                 <span
                   :key="activePlan.key"
-                  class="size-48 inline-flex items-center justify-center rounded-12 bg-gradient-to-br from-primary/20 to-primary/5 text-primary shadow-[0_8px_24px_rgb(var(--w-color-primary)_/_20%)]"
+                  class="size-48 inline-flex items-center justify-center rounded-12 bg-gradient-to-br from-primary/20 to-primary/5 text-primary shadow-xl shadow-primary/20"
                 >
                   <Icon :name="activePlan.icon" :size="22" />
                 </span>

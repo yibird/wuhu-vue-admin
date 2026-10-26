@@ -116,14 +116,17 @@
 import { message } from 'antdv-next'
 import { storeToRefs } from 'pinia'
 import { useRoute, useRouter } from 'vue-router'
-import { Icon } from '@/components'
+import { Icon } from '@/components/icon'
 import {
   collectNodes,
   createDefaultApprovalExtensions,
   createEmptyApprovalSchema,
   validateApprovalWorkflow,
-} from '@/components'
-import type { ApprovalUserRef, ApprovalWorkflowSchema } from '@/components'
+} from '@/components/approval-designer'
+import type {
+  ApprovalUserRef,
+  ApprovalWorkflowSchema,
+} from '@/components/approval-designer'
 import {
   createApprovalDefinitionApi,
   getApprovalCategoryListApi,

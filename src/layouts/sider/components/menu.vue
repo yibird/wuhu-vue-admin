@@ -15,7 +15,7 @@
 </template>
 <script lang="ts" setup>
 import { useTabs } from '@/hooks'
-import { Scrollbar } from '@/components'
+import { Scrollbar } from '@/components/scrollbar'
 import { renderIcon, renderMenus } from '@/utils'
 import type { MenuProps } from './types'
 import type { IMenu } from '#/config'

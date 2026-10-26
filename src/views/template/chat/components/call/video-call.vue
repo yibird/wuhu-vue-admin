@@ -11,7 +11,7 @@
     @update:open="emits('update:open', $event)"
   >
     <div
-      class="relative min-h-260 overflow-hidden rounded-8 bg-[rgb(15_23_42)] text-white shadow-[inset_0_0_0_1px_rgb(255_255_255_/_8%)]"
+      class="relative min-h-260 overflow-hidden rounded-8 bg-[rgb(15_23_42)] text-white inset-ring-1 inset-ring-white/8"
     >
       <div
         class="pointer-events-none absolute inset-0 opacity-90 [background:radial-gradient(circle_at_22%_14%,rgb(34_197_94_/_30%),transparent_30%),radial-gradient(circle_at_82%_16%,rgb(var(--w-color-primary)_/_30%),transparent_34%),linear-gradient(135deg,rgb(15_23_42),rgb(30_41_59))]"
@@ -41,7 +41,7 @@
         </div>
       </div>
       <div
-        class="absolute bottom-12 right-12 z-2 h-90 w-124 overflow-hidden rounded-8 b-1-white/24 bg-[rgb(15_23_42_/_82%)] shadow-[0_16px_40px_rgb(0_0_0_/_26%)]"
+        class="absolute bottom-12 right-12 z-2 h-90 w-124 overflow-hidden rounded-8 b-1-white/24 bg-[rgb(15_23_42_/_82%)] shadow-2xl shadow-black/26"
       >
         <video
           v-show="cameraEnabled && hasLocalVideo"

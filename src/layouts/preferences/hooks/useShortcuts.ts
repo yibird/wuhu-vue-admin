@@ -40,7 +40,7 @@ export function useShortcutConfig() {
 export function useGlobalShortcuts() {
   const { shortcutKey } = useAppStore()
   const { openSearch, closeSearch } = useGlobalSearch()
-  const { isLocked, lock } = useLockScreen()
+  const { lockOpen, lock } = useLockScreen()
   const { doLogout } = useAuth()
 
   const canHandle = (event: KeyboardEvent, action: ShortcutAction) => {
@@ -61,7 +61,7 @@ export function useGlobalShortcuts() {
       !event.shiftKey &&
       isKey(event, 'k'),
     (event) => {
-      if (!canHandle(event, 'search') || isLocked.value) return
+      if (!canHandle(event, 'search') || lockOpen.value) return
 
       event.preventDefault()
       openSearch()
@@ -77,7 +77,7 @@ export function useGlobalShortcuts() {
       !event.shiftKey &&
       isKey(event, 'q'),
     (event) => {
-      if (!canHandle(event, 'logout') || isLocked.value) return
+      if (!canHandle(event, 'logout') || lockOpen.value) return
 
       event.preventDefault()
       closeSearch()
@@ -94,7 +94,7 @@ export function useGlobalShortcuts() {
       !event.shiftKey &&
       isKey(event, 'l'),
     (event) => {
-      if (!canHandle(event, 'lockScreen') || isLocked.value) return
+      if (!canHandle(event, 'lockScreen') || lockOpen.value) return
 
       event.preventDefault()
       closeSearch()

@@ -33,7 +33,7 @@
             v-for="item in processes"
             :key="item.id"
             type="button"
-            class="grid grid-cols-[minmax(180px,1.6fr)_80px_100px_100px_100px_100px_90px] gap-10 b-b-1-muted px-10 py-11 text-left transition-[background-color,transform] duration-motion-base hover:(bg-hover) active:scale-[0.998] motion-reduce:transition-none"
+            class="grid grid-cols-[minmax(180px,1.6fr)_80px_100px_100px_100px_100px_90px] gap-10 b-b-1-muted px-10 py-11 text-left transition-[background-color,transform] duration-200 hover:(bg-hover) active:scale-[0.998] motion-reduce:transition-none"
             @click="emits('selectProcess', item)"
           >
             <span class="min-w-0">
@@ -55,7 +55,7 @@
                 class="mt-4 block h-4 w-70 overflow-hidden rounded-full bg-muted"
               >
                 <span
-                  class="block h-full rounded-full bg-primary transition-[width] duration-motion-base"
+                  class="block h-full rounded-full bg-primary transition-[width] duration-200"
                   :style="{ width: `${item.heap}%` }"
                 />
               </span>

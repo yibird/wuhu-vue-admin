@@ -49,7 +49,8 @@
 <script lang="ts" setup>
 import { Button, Tag } from 'antdv-next'
 import { getDeptPageListApi, type SysDept } from '@/apis'
-import { FormPlus, Icon } from '@/components'
+import { FormPlus } from '@/components/form-plus'
+import { Icon } from '@/components/icon'
 import { useRequest, useTabs } from '@/hooks'
 import { DeptForm, OrgChart } from './components'
 

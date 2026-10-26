@@ -49,7 +49,7 @@
       />
       <a-select
         v-model:value="sort"
-        class="ml-auto w-128 max-sm:ml-0 max-sm:flex-1"
+        class="ml-auto w-128 max-sm:(ml-0 flex-1)"
         :options="sortOptions"
       />
     </div>

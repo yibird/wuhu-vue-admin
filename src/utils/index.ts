@@ -1,7 +1,6 @@
 export * from './http'
 export * from './url'
 export * from './antdv'
-export * from './color'
 export * from './validator'
 export * from './search'
 export * from './env'

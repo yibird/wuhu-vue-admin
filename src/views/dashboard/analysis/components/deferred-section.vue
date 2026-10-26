@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { LazyContainer } from '@/components'
+import { LazyContainer } from '@/components/container'
 import type { Component } from 'vue'
 
 withDefaults(

@@ -1,6 +1,6 @@
 <template>
   <article
-    class="org-node w-172 cursor-pointer rounded-10 b-1-regular bg-container px-10 py-9 text-left shadow-all-sm motion-interactive hover:(-translate-y-1 shadow-all-md)"
+    class="org-node w-172 cursor-pointer rounded-10 b-1-regular bg-container px-10 py-9 text-left shadow-sm motion-interactive hover:(-translate-y-1 shadow-md)"
     :class="{
       'org-node--accent': root,
       'org-node--selected': selected,
@@ -36,7 +36,7 @@
 
 <script setup lang="ts">
 import { resolveDeptAccent } from '../data'
-import { Icon } from '@/components'
+import { Icon } from '@/components/icon'
 import type { DeptType } from '@/apis'
 
 interface Props {

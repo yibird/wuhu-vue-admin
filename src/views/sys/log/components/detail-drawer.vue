@@ -68,7 +68,8 @@
 
 <script setup lang="ts">
 import { useMediaQuery } from '@vueuse/core'
-import { Icon, JsonView } from '@/components'
+import { Icon } from '@/components/icon'
+import { JsonView } from '@/components/json-view'
 import type { LogDetailField, LogDetailGroup } from './types'
 
 interface Props {

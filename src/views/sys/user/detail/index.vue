@@ -183,7 +183,7 @@ import {
   type SysRole,
   type SysUser,
 } from '@/apis'
-import { Icon } from '@/components'
+import { Icon } from '@/components/icon'
 import { useRequest, useTabs } from '@/hooks'
 import { toRouteTabKey } from '@/store/tabs/util'
 import {

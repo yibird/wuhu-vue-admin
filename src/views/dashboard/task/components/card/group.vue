@@ -2,7 +2,10 @@
   <div
     class="task-group max-h-full flex flex-col overflow-hidden rounded-4 bg-container"
   >
-    <div class="flex justify-between items-center p-10">
+    <div
+      class="task-group-drag-handle flex justify-between items-center p-10 select-none active:cursor-grabbing cursor-grab"
+      title="拖拽调整分组顺序"
+    >
       <a-tag variant="solid" :color="color" class="cursor-pointer">
         {{ text }}
       </a-tag>
@@ -66,6 +69,20 @@ useDroppable({
 </script>
 
 <style scoped>
+.task-group[data-w-draggable-drag-source='true'] {
+  opacity: 0.55;
+}
+
+.task-group[data-w-draggable-dragging='true'] {
+  z-index: 10000 !important;
+  cursor: grabbing;
+}
+
+.task-group[data-w-draggable-drop-target='true'] {
+  outline: 1px dashed rgb(var(--w-color-primary));
+  outline-offset: -1px;
+}
+
 .task-card-item[data-w-draggable-drag-source='true'] {
   position: relative;
   z-index: 10000;

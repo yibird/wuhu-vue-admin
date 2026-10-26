@@ -12,7 +12,7 @@
     >
       <div class="min-h-0 p-16 w-full h-full overflow-x-hidden overflow-y-auto">
         <section
-          class="mx-auto min-w-860 rounded-8 b-1-white/12 bg-[rgb(4_13_28)] p-18 shadow-[0_24px_72px_rgb(0_0_0_/_28%)]"
+          class="mx-auto min-w-860 rounded-8 b-1-white/12 bg-[rgb(4_13_28)] p-18 shadow-2xl shadow-black/28"
           :style="{
             aspectRatio: `${screenConfig.width} / ${screenConfig.height}`,
           }"

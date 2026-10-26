@@ -128,7 +128,7 @@ import {
   watch,
 } from 'vue'
 import type { CSSProperties } from 'vue'
-import { Icon } from '@/components'
+import { Icon } from '@/components/icon'
 import { RuntimeProvider } from '../runtime'
 import DesignNode from './design-node.vue'
 import DeviceFrame from './device-frame.vue'

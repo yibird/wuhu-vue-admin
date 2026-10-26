@@ -1,5 +1,5 @@
 .call-window {
-  --call-transition: var(--w-motion-duration-base) var(--w-motion-ease-standard);
+  --call-transition: 200ms var(--w-motion-ease);
 
   position: fixed;
   top: 0;
@@ -137,12 +137,11 @@
     content: '';
     border: 1px solid rgb(var(--w-color-primary) / 24%);
     border-radius: 999px;
-    animation: callPulse var(--w-motion-duration-loop) var(--w-motion-ease-exit)
-      infinite;
+    animation: callPulse 2000ms var(--w-motion-ease-exit) infinite;
   }
 
   &::after {
-    animation-delay: var(--w-motion-delay-loop-phase);
+    animation-delay: 1000ms;
   }
 }
 

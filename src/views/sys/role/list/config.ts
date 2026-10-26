@@ -1,4 +1,4 @@
-import type { FormPlusProps } from '@/components'
+import type { FormPlusProps } from '@/components/form-plus'
 
 export interface DataScopeOption {
   label: string

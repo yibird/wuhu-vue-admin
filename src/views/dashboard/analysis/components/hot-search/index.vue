@@ -14,9 +14,9 @@
 </template>
 
 <script lang="ts" setup>
-import { Chart } from '@/components'
+import { Chart } from '@/components/chart'
 import { useEChartsTheme } from '@/components/chart'
-import { Card } from '@/components'
+import { Card } from '@/components/card'
 import type { EChartsCoreOption } from 'echarts/core'
 
 const { baseChartOption, EChartsTheme, getEChartsColor } = useEChartsTheme()

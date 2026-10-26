@@ -17,7 +17,7 @@
         <div
           v-for="(item, index) in rankedItems"
           :key="item.id"
-          class="relative min-w-0 rounded-8 px-4 py-9 focus-visible:(outline-none shadow-[inset_0_0_0_1px_rgb(var(--w-color-primary)_/_42%)]) sm:px-6"
+          class="relative min-w-0 rounded-8 px-4 py-9 focus-visible:(outline-none inset-ring-1 inset-ring-primary/42) sm:px-6"
           tabindex="0"
           role="listitem"
           @focus="handleItemFocus"
@@ -43,7 +43,7 @@
               </div>
               <div class="mt-7 h-5 overflow-hidden rounded-999 bg-secondary">
                 <div
-                  class="h-full origin-left rounded-999 bg-primary transition-[width] duration-motion-moderate ease-motion-standard motion-reduce:transition-none"
+                  class="h-full origin-left rounded-999 bg-primary transition-[width] duration-300 ease-[var(--w-motion-ease)] motion-reduce:transition-none"
                   :style="{ width: `${barWidth(item)}%` }"
                 ></div>
               </div>
@@ -72,11 +72,9 @@
 </template>
 
 <script lang="ts" setup>
-import {
-  SlidingHighlight,
-  type SlidingHighlightInstance,
-  Card,
-} from '@/components'
+import { SlidingHighlight } from '@/components/sliding-highlight'
+import type { SlidingHighlightInstance } from '@/components/sliding-highlight'
+import { Card } from '@/components/card'
 
 type RankMetric = 'amount' | 'order'
 

@@ -8,7 +8,7 @@
     <button
       type="button"
       data-agent-tool-trigger
-      class="h-34 inline-flex items-center gap-6 rounded-full b-1-transparent bg-transparent px-10 text-regular cursor-pointer transition-colors hover:border-muted hover:bg-hover hover:text-main disabled:cursor-not-allowed disabled:text-disabled max-sm:w-34 max-sm:justify-center max-sm:px-0"
+      class="h-34 inline-flex items-center gap-6 rounded-full b-1-transparent bg-transparent px-10 text-regular cursor-pointer transition-colors hover:(border-muted bg-hover text-main) disabled:(cursor-not-allowed text-disabled) max-sm:(w-34 justify-center px-0)"
       :disabled="disabled"
     >
       <Icon name="i-lucide:wrench" :size="16" />

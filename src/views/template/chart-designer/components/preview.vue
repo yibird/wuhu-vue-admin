@@ -76,7 +76,7 @@
 </template>
 
 <script setup lang="ts">
-import { Chart } from '@/components'
+import { Chart } from '@/components/chart'
 import { useEChartsTheme } from '@/components/chart'
 import {
   aggregateChartRows,

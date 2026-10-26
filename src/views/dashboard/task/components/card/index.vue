@@ -6,14 +6,20 @@
     @drag-end="handleDragEnd"
     @drag-start="clearDropPlaceholder"
   >
-    <AnimatedGroup
-      reduced-motion="user"
-      :items="visibleTaskStatus"
-      :get-key="(item: CardTaskStatus) => item.status"
+    <div
       class="relative grid h-full min-h-0 grid-cols-1 gap-10 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6 overflow-x-auto"
-      motion-class="min-h-0 min-w-0 xl:max-h-full xl:overflow-hidden"
     >
-      <template #default="{ item }">
+      <DraggableItem
+        v-for="(item, index) in visibleTaskStatus"
+        :id="getStageId(item.status)"
+        :key="item.status"
+        :index="index"
+        accept="task-stage"
+        class="min-h-0 min-w-0 xl:(max-h-full overflow-hidden)"
+        :group="stageSortableGroup"
+        handle-selector=".task-group-drag-handle"
+        type="task-stage"
+      >
         <Group
           v-bind="item"
           :items="groupItems[getTaskGroupId(item.status)] ?? []"
@@ -22,13 +28,14 @@
           @edit="emits('edit', $event)"
           @mark-done="emits('markDone', $event)"
         />
-      </template>
-    </AnimatedGroup>
+      </DraggableItem>
+    </div>
   </DragDropProvider>
 </template>
 <script lang="ts" setup>
 import { DragDropProvider } from '@dnd-kit/vue'
-import { AnimatedGroup } from '@/components'
+import { arrayMove } from '@dnd-kit/helpers'
+import { DraggableItem } from '@/components/draggable'
 import Group from './group.vue'
 import CardSkeleton from './skeleton.vue'
 import { taskStatusList } from '../../constants'
@@ -48,11 +55,15 @@ const { loading = false, status = 'all' } = defineProps<{
   status?: TaskFilterStatus
 }>()
 const taskStatus = taskStatusList
+/** 分组拖拽排序使用的 sortable 分组标识 */
+const stageSortableGroup = 'task-stage-order'
+/** 分组的展示顺序,可拖拽调整 */
+const groupOrder = shallowRef<CardTaskStatus[]>([...taskStatus])
 
 const visibleTaskStatus = computed(() =>
   status === 'all'
-    ? taskStatus
-    : taskStatus.filter((item) => item.status === status)
+    ? groupOrder.value
+    : groupOrder.value.filter((item) => item.status === status)
 )
 // 拖拽结果通过 move 事件交回页面处理,这里只读取列表
 const items = defineModel<Task[]>('items', { default: () => [] })
@@ -67,6 +78,10 @@ const groupItems = computed<Record<string, Task[]>>(() =>
 
 function getTaskGroupId(status: TaskStatusValue) {
   return `task-group:${status}`
+}
+
+function getStageId(status: TaskStatusValue) {
+  return `task-stage:${status}`
 }
 
 /**
@@ -87,6 +102,29 @@ function resolveGroupStatus(group: unknown) {
   return typeof group === 'string' && group.startsWith('task-group:')
     ? toTaskStatus(Number(group.slice('task-group:'.length)))
     : undefined
+}
+
+/**
+ * 调整任务分组顺序
+ *
+ * 分组可能被状态筛选隐藏,因此在完整顺序上按状态值定位后再移动,
+ * 避免筛选状态下拖动时丢失未显示的分组。
+ *
+ * @param from 拖拽前的可视下标
+ * @param to 拖拽后的可视下标
+ */
+function moveStage(from: number, to: number) {
+  const fromStatus = visibleTaskStatus.value[from]?.status
+  const toStatus = visibleTaskStatus.value[to]?.status
+  if (fromStatus === undefined || toStatus === undefined) return
+  if (fromStatus === toStatus) return
+
+  const order = groupOrder.value
+  const fromIndex = order.findIndex((item) => item.status === fromStatus)
+  const toIndex = order.findIndex((item) => item.status === toStatus)
+  if (fromIndex === -1 || toIndex === -1) return
+
+  groupOrder.value = arrayMove(order, fromIndex, toIndex)
 }
 
 /**
@@ -204,9 +242,14 @@ function clearGroupPlaceholder() {
  * @param event 拖拽中事件
  */
 function markDropPlaceholder(event: DragMoveEvent) {
+  const { source } = event.operation
+  // 分组拖拽不涉及卡片落位占位
+  if (source?.type === 'task-stage') {
+    clearDropPlaceholder()
+    return
+  }
   if (placeholderFrame) return
 
-  const { source } = event.operation
   // dnd-kit 在派发 dragmove 之后才应用本次移动,延后一帧读取才是最新位置
   placeholderFrame = requestAnimationFrame(() => {
     placeholderFrame = 0
@@ -257,7 +300,20 @@ onBeforeUnmount(clearDropPlaceholder)
 function handleDragEnd(event: DragEndEvent) {
   const source = event.operation.source
   const id = source?.id
-  if (event.canceled || typeof id !== 'number') {
+  if (event.canceled) {
+    clearDropPlaceholder()
+    return
+  }
+
+  // 分组拖拽:按 sortable 的首尾下标调整分组顺序
+  if (source?.type === 'task-stage') {
+    clearDropPlaceholder()
+    const placement = toSortablePlacement(source)
+    if (placement) moveStage(placement.initialIndex, placement.index)
+    return
+  }
+
+  if (typeof id !== 'number') {
     clearDropPlaceholder()
     return
   }

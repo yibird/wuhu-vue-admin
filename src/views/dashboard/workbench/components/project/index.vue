@@ -21,12 +21,12 @@
           <article
             v-for="item in projectItems"
             :key="item.id"
-            class="group min-w-0 rounded-8 b-1-regular bg-container p-14 transition-[border-color,background-color,box-shadow,transform] duration-motion-base hover:(-translate-y-1 border-primary bg-primary/5 shadow-all-sm)"
+            class="group min-w-0 rounded-8 b-1-regular bg-container p-14 transition-[border-color,background-color,box-shadow,transform] duration-200 hover:(-translate-y-1 border-primary bg-primary/5 shadow-sm)"
           >
             <div class="min-w-0 flex items-start justify-between gap-12">
               <div class="min-w-0 flex items-center gap-10">
                 <span
-                  class="size-46 flex shrink-0 items-center justify-center rounded-10 border-1 border-solid shadow-all-sm transition-transform duration-motion-base group-hover:(-translate-y-1 scale-105)"
+                  class="size-46 flex shrink-0 items-center justify-center rounded-10 border-1 border-solid shadow-sm transition-transform duration-200 group-hover:(-translate-y-1 scale-105)"
                   :class="item.logoClass"
                 >
                   <Icon :name="item.logo.icon" :size="21" />
@@ -82,7 +82,7 @@
             </div>
 
             <div
-              class="mt-14 flex flex-col gap-10 text-xs text-secondary sm:flex-row sm:items-center sm:justify-between"
+              class="mt-14 flex flex-col gap-10 text-xs text-secondary sm:(flex-row items-center justify-between)"
             >
               <div class="min-w-0 flex items-center gap-7">
                 <Icon name="i-lucide:user-round" :size="14" />
@@ -120,7 +120,7 @@
 </template>
 
 <script lang="ts" setup>
-import { Card } from '@/components'
+import { Card } from '@/components/card'
 import { getProjectLogoOption } from './data.ts'
 import ProjectSkeleton from './skeleton.vue'
 import type { Project } from './types.ts'

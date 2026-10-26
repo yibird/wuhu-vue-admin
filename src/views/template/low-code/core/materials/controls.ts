@@ -14,7 +14,7 @@ import {
 } from 'antdv-next'
 import { defineAsyncComponent, defineComponent, h } from 'vue'
 import type { Component } from 'vue'
-import { Icon } from '@/components'
+import { Icon } from '@/components/icon'
 import {
   controlStyle,
   nameField,

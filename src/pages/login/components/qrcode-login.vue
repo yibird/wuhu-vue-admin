@@ -1,18 +1,13 @@
 <template>
-  <div class="flex flex-col items-center gap-22 py-12">
+  <div class="py-30 flex flex-col items-center gap-22">
     <a-spin size="large" :spinning="refreshing || loading" :delay="120">
       <div
-        class="rounded-8 b-1-regular bg-secondary p-16 shadow-all-sm transition-[border-color,box-shadow,transform] duration-motion-base hover:(-translate-y-1 border-primary/50 shadow-all-md) motion-reduce:(transform-none transition-none)"
+        class="rounded-8 b-1-[border-regular] bg-secondary p-16 shadow-sm transition-all hover:(-translate-y-1 border-primary/50 shadow-md)"
       >
         <QRCode :value="text" :size="200" />
       </div>
     </a-spin>
-    <a-button
-      type="text"
-      :disabled="refreshing || loading"
-      class="text-regular! hover:text-primary!"
-      @click="onRefresh"
-    >
+    <a-button type="text" :disabled="refreshing || loading" @click="onRefresh">
       <template #icon>
         <Icon
           name="i-lucide:refresh-cw"

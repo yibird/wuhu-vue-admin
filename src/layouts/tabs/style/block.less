@@ -13,8 +13,7 @@
       background-color: rgb(var(--w-color-primary));
       transform: scaleX(0);
       transform-origin: left center;
-      transition: transform var(--w-motion-duration-base)
-        var(--w-motion-ease-standard);
+      transition: transform 200ms var(--w-motion-ease);
     }
 
     &:hover::before,
@@ -86,8 +85,7 @@
 
     &__pin {
       color: rgb(var(--w-color-primary));
-      transition: color var(--w-motion-duration-base)
-        var(--w-motion-ease-standard);
+      transition: color 200ms var(--w-motion-ease);
     }
 
     &__close {
@@ -105,9 +103,8 @@
       border: none;
       border-radius: 50%;
       transition:
-        color var(--w-motion-duration-base) var(--w-motion-ease-standard),
-        background-color var(--w-motion-duration-base)
-          var(--w-motion-ease-standard);
+        color 200ms var(--w-motion-ease),
+        background-color 200ms var(--w-motion-ease);
 
       &:hover {
         color: rgb(var(--w-sider-item-active-color));

@@ -50,7 +50,7 @@
 
 <script setup lang="ts">
 import type { ApprovalCategoryResp } from '@/apis'
-import type { ApprovalWorkflowSchema } from '@/components'
+import type { ApprovalWorkflowSchema } from '@/components/approval-designer'
 
 const props = defineProps<{
   schema: ApprovalWorkflowSchema

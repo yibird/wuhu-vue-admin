@@ -3,7 +3,7 @@
     class="file-manager-content h-full min-h-0 flex flex-col gap-10 overflow-hidden rounded-4 bg-container"
   >
     <div
-      class="file-manager-content__header min-w-0 b-b-1-muted px-16 pt-14 transition-[background-color,border-color] duration-motion-base ease-motion-standard motion-reduce:transition-none max-[575px]:(px-12 pt-12)"
+      class="file-manager-content__header min-w-0 b-b-1-muted px-16 pt-14 transition-[background-color,border-color] duration-200 ease-[var(--w-motion-ease)] motion-reduce:transition-none max-[575px]:(px-12 pt-12)"
     >
       <Breadcrumb
         v-if="viewMode === 'grid'"
@@ -68,7 +68,7 @@
     </div>
 
     <div
-      class="file-manager-content__toolbar flex flex-wrap items-center justify-between gap-10 px-16 transition-[background-color,border-color] duration-motion-base ease-motion-standard motion-reduce:transition-none max-[575px]:px-12"
+      class="file-manager-content__toolbar flex flex-wrap items-center justify-between gap-10 px-16 transition-[background-color,border-color] duration-200 ease-[var(--w-motion-ease)] motion-reduce:transition-none max-[575px]:px-12"
     >
       <div class="flex flex-1 flex-wrap items-center gap-8">
         <a-select
@@ -80,7 +80,7 @@
         <a-input
           v-model:value="keyword"
           allow-clear
-          class="file-manager-search w-280 [&_.ant-input-prefix]:(transition-transform duration-motion-base ease-motion-standard) focus-within:[&_.ant-input-prefix]:(scale-108 text-primary) motion-reduce:[&_.ant-input-prefix]:transition-none max-[575px]:w-full"
+          class="file-manager-search w-280 [&_.ant-input-prefix]:(transition-transform duration-200 ease-[var(--w-motion-ease)]) focus-within:[&_.ant-input-prefix]:(scale-108 text-primary) motion-reduce:[&_.ant-input-prefix]:transition-none max-[575px]:w-full"
           placeholder="搜索文件名、创建人、更新人、扩展名"
         >
           <template #prefix>

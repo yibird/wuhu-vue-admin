@@ -90,7 +90,7 @@
 
 <script setup lang="ts">
 import { message } from 'antdv-next'
-import { AnimatedGroup } from '@/components'
+import { AnimatedGroup } from '@/components/animated'
 import { useLoading } from '@/hooks'
 import {
   TicketCreateDrawer,

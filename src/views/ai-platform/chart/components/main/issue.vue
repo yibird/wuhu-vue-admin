@@ -1,7 +1,7 @@
 <template>
   <button
     type="button"
-    class="size-34 inline-flex items-center justify-center rounded-full b-1-transparent bg-transparent text-regular cursor-pointer transition-colors hover:border-muted hover:bg-hover hover:text-main disabled:cursor-not-allowed disabled:text-disabled"
+    class="size-34 inline-flex items-center justify-center rounded-full b-1-transparent bg-transparent text-regular cursor-pointer transition-colors hover:(border-muted bg-hover text-main) disabled:(cursor-not-allowed text-disabled)"
     title="优化提示词"
     :disabled="disabled"
     @click="emits('optimize', prompt)"

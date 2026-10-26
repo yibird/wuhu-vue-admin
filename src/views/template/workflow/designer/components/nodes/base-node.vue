@@ -1,6 +1,6 @@
 <template>
   <div
-    class="workflow-node relative w-292 select-none rounded-12 b-1-regular bg-container p-14 text-main shadow-[var(--w-shadow-node)] transition-[border-color,box-shadow,transform] duration-motion-base ease-motion-standard motion-reduce:transition-none"
+    class="workflow-node relative w-292 select-none rounded-12 b-1-regular bg-container p-14 text-main shadow-[var(--w-shadow-node)] transition-[border-color,box-shadow,transform] duration-200 ease-[var(--w-motion-ease)] motion-reduce:transition-none"
     :class="{ 'scale-[1.01] !transition-none will-change-transform': dragging }"
     :style="rootStyle"
     data-workflow-node

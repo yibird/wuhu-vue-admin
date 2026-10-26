@@ -33,7 +33,7 @@ function readStoredHash(): string | null {
 
 export const useLockScreen = createGlobalState(() => {
   const pinHash = shallowRef<string | null>(readStoredHash())
-  const isLocked = shallowRef(Boolean(pinHash.value))
+  const lockOpen = shallowRef(Boolean(pinHash.value))
   const isSetting = shallowRef(false)
   const failedAttempts = shallowRef(0)
 
@@ -49,7 +49,7 @@ export const useLockScreen = createGlobalState(() => {
 
   const lock = () => {
     isSetting.value = !pinHash.value
-    isLocked.value = true
+    lockOpen.value = true
     failedAttempts.value = 0
   }
 
@@ -68,7 +68,7 @@ export const useLockScreen = createGlobalState(() => {
   function cancelSetting() {
     isSetting.value = false
     if (!pinHash.value) {
-      isLocked.value = false
+      lockOpen.value = false
     }
   }
 
@@ -77,13 +77,13 @@ export const useLockScreen = createGlobalState(() => {
   ): Promise<'unlocked' | 'failed' | 'exceeded'> {
     if (!pinHash.value) {
       clearPin()
-      isLocked.value = false
+      lockOpen.value = false
       return 'unlocked'
     }
     const candidate = await hashPin(pin)
     if (candidate === pinHash.value) {
       clearPin()
-      isLocked.value = false
+      lockOpen.value = false
       return 'unlocked'
     }
     failedAttempts.value += 1
@@ -91,7 +91,7 @@ export const useLockScreen = createGlobalState(() => {
   }
 
   return {
-    isLocked,
+    lockOpen,
     isSetting,
     failedAttempts,
     maxAttempts: MAX_UNLOCK_ATTEMPTS,

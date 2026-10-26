@@ -64,7 +64,7 @@ import {
   type SysOperationLogQuery,
   type SysOperationLog,
 } from '@/apis'
-import { FormPlus } from '@/components'
+import { FormPlus } from '@/components/form-plus'
 import { useRequest } from '@/hooks'
 import { LogDetailDrawer } from '../components'
 import {

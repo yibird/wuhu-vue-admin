@@ -2,7 +2,7 @@
   <Teleport to="body">
     <div
       v-if="open && task"
-      class="fixed left-0 top-0 z-3000 w-188 overflow-hidden rounded-8 b-1-regular bg-container p-5 shadow-[0_18px_50px_rgb(15_23_42_/_22%)] will-change-transform"
+      class="fixed left-0 top-0 z-3000 w-188 overflow-hidden rounded-8 b-1-regular bg-container p-5 shadow-2xl shadow-ink/22 will-change-transform"
       :style="menuStyle"
       role="menu"
       @click.stop

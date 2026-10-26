@@ -31,7 +31,7 @@
         class="overflow-hidden rounded-16"
         :class="
           isUser
-            ? 'bg-primary text-white shadow-[0_8px_20px_rgb(var(--w-color-primary)_/_18%)]'
+            ? 'bg-primary text-white shadow-xl shadow-primary/18'
             : 'border-1 border-regular border-solid bg-container'
         "
       >
@@ -64,7 +64,7 @@
               <button
                 type="button"
                 aria-label="复制代码"
-                class="h-24 inline-flex items-center gap-4 rounded-6 border-0 bg-transparent px-7 text-xs text-secondary cursor-pointer transition-colors hover:bg-hover hover:text-main"
+                class="h-24 inline-flex items-center gap-4 rounded-6 border-0 bg-transparent px-7 text-xs text-secondary cursor-pointer transition-colors hover:(bg-hover text-main)"
                 @click="emits('copy-code', segment.content)"
               >
                 <Icon name="i-lucide:copy" :size="13" />
@@ -106,16 +106,16 @@
 
       <div
         v-if="actions.length"
-        class="mt-5 flex items-center gap-4 opacity-0 transition-opacity duration-motion-fast group-focus-within:opacity-100 group-hover:opacity-100"
+        class="mt-5 flex items-center gap-4 opacity-0 transition-opacity duration-100 group-focus-within:opacity-100 group-hover:opacity-100"
         :class="isUser ? 'justify-end' : ''"
       >
         <button
           v-for="action in actions"
           :key="action.key"
           type="button"
-          class="size-28 inline-flex items-center justify-center rounded-7 b-1-muted bg-container text-muted cursor-pointer transition-colors hover:bg-hover hover:text-main focus-visible:border-primary focus-visible:text-primary focus-visible:outline-none"
+          class="size-28 inline-flex items-center justify-center rounded-7 b-1-muted bg-container text-muted cursor-pointer transition-colors hover:(bg-hover text-main) focus-visible:(border-primary text-primary outline-none)"
           :class="[
-            action.danger ? 'hover:bg-error/10 hover:text-error' : '',
+            action.danger ? 'hover:(bg-error/10 text-error)' : '',
             action.active ? 'border-primary text-primary' : '',
           ]"
           :title="action.label"

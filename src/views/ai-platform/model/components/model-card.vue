@@ -1,10 +1,10 @@
 <template>
   <article
-    class="group min-w-0 overflow-hidden rounded-8 b-1-regular bg-container shadow-card transition-[border-color,box-shadow,transform] duration-motion-base hover:-translate-y-2 hover:border-primary hover:shadow-overlay motion-reduce:transform-none"
+    class="group min-w-0 overflow-hidden rounded-8 b-1-regular bg-container shadow-sm transition-[border-color,box-shadow,transform] duration-200 hover:(-translate-y-2 border-primary shadow-lg) motion-reduce:transform-none"
   >
     <header class="flex min-w-0 items-start gap-10 p-14 pb-12">
       <span
-        class="size-42 flex flex-none items-center justify-center rounded-9 transition-transform duration-motion-base group-hover:rotate-3 group-hover:scale-105"
+        class="size-42 flex flex-none items-center justify-center rounded-9 transition-transform duration-200 group-hover:(rotate-3 scale-105)"
         :style="{
           backgroundColor: providerMeta.softBackground,
           color: providerMeta.accent,

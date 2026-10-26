@@ -112,7 +112,9 @@ import {
   type SysFileQuery,
   type SysFile,
 } from '@/apis'
-import { FilePreview, FormPlus, Icon } from '@/components'
+import { FilePreview } from '@/components/file-preview'
+import { FormPlus } from '@/components/form-plus'
+import { Icon } from '@/components/icon'
 import { useRequest } from '@/hooks'
 import { useAuthStore } from '@/store'
 import { FileRenameModal } from './components'

@@ -1,6 +1,6 @@
 <template>
   <header
-    class="min-w-0 flex justify-between items-center gap-10 b-b-1-regular p-10 max-md:flex max-md:flex-wrap max-md:justify-center"
+    class="min-w-0 flex justify-between items-center gap-10 b-b-1-regular p-10 max-md:(flex flex-wrap justify-center)"
   >
     <a-segmented
       v-model:value="activeTab"
@@ -16,7 +16,7 @@
     </a-segmented>
 
     <div
-      class="workflow-canvas-actions min-w-0 flex flex-nowrap items-center justify-end gap-6 justify-self-end max-md:order-3 max-md:w-full max-md:flex-wrap max-md:justify-end max-sm:justify-start"
+      class="workflow-canvas-actions min-w-0 flex flex-nowrap items-center justify-end gap-6 justify-self-end max-md:(order-3 w-full flex-wrap justify-end) max-sm:justify-start"
     >
       <a-button
         size="small"
@@ -98,7 +98,7 @@
 <script setup lang="ts">
 import { h } from 'vue'
 import type { MenuProps } from 'antdv-next'
-import { Icon } from '@/components'
+import { Icon } from '@/components/icon'
 import type { WorkflowCanvasTab } from '../types'
 
 const activeTab = defineModel<WorkflowCanvasTab>('activeTab', {

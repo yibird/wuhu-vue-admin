@@ -19,7 +19,7 @@
     </template>
     <template v-else>
       <div
-        class="flex items-center justify-between gap-12 b-b-1-regular px-14 py-12 max-md:flex-col max-md:items-start"
+        class="flex items-center justify-between gap-12 b-b-1-regular px-14 py-12 max-md:(flex-col items-start)"
       >
         <div>
           <div class="flex items-center gap-8 text-sm text-main font-700">
@@ -47,7 +47,7 @@
         <DayFlowCalendar :calendar="calendar" />
         <div
           v-if="hasActiveFilters && visibleEventCount === 0"
-          class="pointer-events-auto absolute inset-x-18 top-72 z-2 rounded-8 b-dashed-1-regular bg-container/92 p-18 text-center shadow-overlay backdrop-blur-8"
+          class="pointer-events-auto absolute inset-x-18 top-72 z-2 rounded-8 b-dashed-1-regular bg-container/92 p-18 text-center shadow-lg backdrop-blur-8"
         >
           <a-empty description="当前筛选下暂无日程">
             <template #image>
@@ -148,8 +148,8 @@ onUnmounted(() => {
 
   :deep(.df-event) {
     transition:
-      transform var(--w-motion-duration-base) var(--w-motion-ease-standard),
-      filter var(--w-motion-duration-base) var(--w-motion-ease-standard);
+      transform 200ms var(--w-motion-ease),
+      filter 200ms var(--w-motion-ease);
   }
 
   :deep(.df-event:hover) {

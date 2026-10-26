@@ -1,6 +1,6 @@
 <template>
   <section
-    class="page-enter page-enter--5 mt-16 overflow-hidden rounded-16 b-1-muted bg-container shadow-[0_10px_30px_rgb(15_23_42_/_5%)]"
+    class="page-enter page-enter--5 mt-16 overflow-hidden rounded-16 b-1-muted bg-container shadow-xl shadow-ink/5"
     aria-label="常见问题"
   >
     <div class="flex items-center justify-between gap-12 b-b-1-muted p-20">
@@ -20,22 +20,22 @@
         v-for="(faq, index) in props.faqs"
         :key="faq.question"
         type="button"
-        class="group w-full cursor-pointer overflow-hidden border-0 b-b-1-muted bg-transparent p-0 text-left outline-none transition-colors duration-motion-base ease-motion-standard last:border-b-0 hover:bg-primary/[0.03] focus-visible:outline-2 focus-visible:outline-primary/60 focus-visible:outline-offset-2 motion-reduce:transition-none"
+        class="group w-full cursor-pointer overflow-hidden border-0 b-b-1-muted bg-transparent p-0 text-left outline-none transition-colors duration-200 ease-[var(--w-motion-ease)] last:border-b-0 hover:bg-primary/[0.03] focus-visible:(outline-2 outline-primary/60 outline-offset-2) motion-reduce:transition-none"
         :aria-expanded="props.openIndex === index"
         @click="emits('toggle', index)"
       >
         <span class="flex items-center justify-between gap-16 px-20 py-16">
           <span
-            class="text-[15px] text-main font-700 transition-colors duration-motion-base group-hover:text-primary"
+            class="text-[15px] text-main font-700 transition-colors duration-200 group-hover:text-primary"
           >
             {{ faq.question }}
           </span>
           <span
-            class="size-32 inline-flex shrink-0 items-center justify-center rounded-full transition-all duration-motion-moderate ease-motion-standard"
+            class="size-32 inline-flex shrink-0 items-center justify-center rounded-full transition-all duration-300 ease-[var(--w-motion-ease)]"
             :class="
               props.openIndex === index
-                ? 'rotate-180 bg-primary text-white shadow-[0_4px_14px_rgb(var(--w-color-primary)_/_35%)]'
-                : 'bg-muted text-secondary group-hover:bg-primary/10 group-hover:text-primary'
+                ? 'rotate-180 bg-primary text-white shadow-lg shadow-primary/35'
+                : 'bg-muted text-secondary group-hover:(bg-primary/10 text-primary)'
             "
           >
             <Icon
@@ -47,7 +47,7 @@
           </span>
         </span>
         <span
-          class="grid overflow-hidden transition-[grid-template-rows,opacity] duration-motion-slow ease-motion-enter motion-reduce:transition-none"
+          class="grid overflow-hidden transition-[grid-template-rows,opacity] duration-300 ease-[var(--w-motion-ease-enter)] motion-reduce:transition-none"
           :class="
             props.openIndex === index
               ? 'grid-rows-[1fr] opacity-100'

@@ -14,8 +14,8 @@
 </template>
 
 <script lang="ts" setup>
-import { Chart } from '@/components'
-import { Card } from '@/components'
+import { Chart } from '@/components/chart'
+import { Card } from '@/components/card'
 import {
   getCssRgbVar,
   getCssRgbVarAlpha,

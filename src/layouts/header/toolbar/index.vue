@@ -64,10 +64,10 @@ const {
   background: transparent;
   border-radius: 4px;
   transition:
-    background-color var(--w-motion-duration-base) var(--w-motion-ease-standard),
-    color var(--w-motion-duration-base) var(--w-motion-ease-standard),
-    box-shadow var(--w-motion-duration-base) var(--w-motion-ease-standard),
-    transform var(--w-motion-duration-base) var(--w-motion-ease-enter);
+    background-color 200ms var(--w-motion-ease),
+    color 200ms var(--w-motion-ease),
+    box-shadow 200ms var(--w-motion-ease),
+    transform 200ms var(--w-motion-ease-enter);
 
   &:hover {
     color: rgb(var(--w-text-main));

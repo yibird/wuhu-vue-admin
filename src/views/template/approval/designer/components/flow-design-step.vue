@@ -79,19 +79,19 @@
 </template>
 
 <script setup lang="ts">
-import { Icon } from '@/components'
+import { Icon } from '@/components/icon'
 import {
   ApprovalDesigner,
   collectNodes,
   validateApprovalWorkflow,
-} from '@/components'
+} from '@/components/approval-designer'
 import type {
   ApprovalBranch,
   ApprovalNode,
   ApprovalTemplateItem,
   ApprovalUserRef,
   ApprovalWorkflowSchema,
-} from '@/components'
+} from '@/components/approval-designer'
 
 const props = defineProps<{
   schema: ApprovalWorkflowSchema

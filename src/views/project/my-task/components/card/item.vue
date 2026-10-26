@@ -1,6 +1,6 @@
 <template>
   <div
-    class="task-card-panel rounded-6 b-1-muted bg-container transition-[border-color,box-shadow] hover:shadow-all-md"
+    class="task-card-panel rounded-6 b-1-muted bg-container transition-[border-color,box-shadow] hover:shadow-md"
   >
     <div class="p-10 pb-6">
       <div class="flex items-start justify-between gap-8">

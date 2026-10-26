@@ -7,12 +7,12 @@
     :while-hover="{ y: -3 }"
     :while-press="{ scale: 0.995 }"
     :transition="{ type: 'spring', stiffness: 380, damping: 30, mass: 0.7 }"
-    class="group min-w-0 cursor-pointer overflow-hidden rounded-8 b-1-regular bg-container shadow-card outline-none transition-[border-color,box-shadow] duration-motion-base hover:border-primary hover:shadow-overlay focus-visible:border-primary"
+    class="group min-w-0 cursor-pointer overflow-hidden rounded-8 b-1-regular bg-container shadow-sm outline-none transition-[border-color,box-shadow] duration-200 hover:(border-primary shadow-lg) focus-visible:border-primary"
     @click="emits('open', workflow)"
   >
     <div class="flex items-start gap-12 px-14 pb-12 pt-14">
       <span
-        class="size-42 flex flex-none items-center justify-center rounded-7 bg-primary/10 text-primary transition-transform duration-motion-base group-hover:scale-105"
+        class="size-42 flex flex-none items-center justify-center rounded-7 bg-primary/10 text-primary transition-transform duration-200 group-hover:scale-105"
       >
         <Icon :name="workflow.icon" :size="21" />
       </span>

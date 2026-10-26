@@ -23,7 +23,7 @@
             <div>
               <button
                 type="button"
-                class="group block-button p-10 cursor-pointer motion-press transition-[background-color,box-shadow,transform] duration-motion-base ease-motion-enter hover:(translate-x-1 bg-hover shadow-all-sm) active:scale-99 focus-visible:(outline-none bg-hover shadow-[0_0_0_2px_rgb(var(--w-color-primary)/24%)]) motion-reduce:(transform-none transition-none)"
+                class="group block-button p-10 cursor-pointer motion-press transition-[background-color,box-shadow,transform] duration-200 ease-[var(--w-motion-ease-enter)] hover:(translate-x-1 bg-hover shadow-sm) active:scale-99 focus-visible:(outline-none bg-hover ring-2 ring-primary/24) motion-reduce:(transform-none transition-none)"
                 :aria-label="`打开群聊${group.title}`"
                 @click="handleSelect(group)"
               >
@@ -33,7 +33,7 @@
                       :src="group.avatar"
                       :size="44"
                       round
-                      class="transition-transform duration-motion-base ease-motion-enter group-hover:scale-105 motion-reduce:transform-none"
+                      class="transition-transform duration-200 ease-[var(--w-motion-ease-enter)] group-hover:scale-105 motion-reduce:transform-none"
                     />
                     <span
                       v-if="group.groupInfo?.memberCount"
@@ -72,7 +72,7 @@
                     <Icon
                       name="i-lucide:chevron-right"
                       :size="15"
-                      class="text-placeholder opacity-0 transition-[opacity,transform] duration-motion-base group-hover:(translate-x-1 opacity-100)"
+                      class="text-placeholder opacity-0 transition-[opacity,transform] duration-200 group-hover:(translate-x-1 opacity-100)"
                     />
                   </span>
                 </span>
@@ -93,7 +93,7 @@
 </template>
 
 <script setup lang="ts">
-import { Scrollbar } from '@/components'
+import { Scrollbar } from '@/components/scrollbar'
 import { Icon } from '@/components/icon'
 import Search from './search.vue'
 import type { Conversation } from '../types'

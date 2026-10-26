@@ -323,7 +323,7 @@
 </template>
 
 <script setup lang="ts">
-import { Icon } from '@/components'
+import { Icon } from '@/components/icon'
 import {
   useChatGlobalSearch,
   useSearchHistory,
@@ -469,10 +469,10 @@ function handleSelectMessage(result: MessageSearchResult) {
   border: 1px solid rgb(var(--w-border-muted));
   border-radius: 8px;
   transition:
-    background-color var(--w-motion-duration-base) var(--w-motion-ease-standard),
-    border-color var(--w-motion-duration-base) var(--w-motion-ease-standard),
-    box-shadow var(--w-motion-duration-base) var(--w-motion-ease-standard),
-    transform var(--w-motion-duration-base) var(--w-motion-ease-standard);
+    background-color 200ms var(--w-motion-ease),
+    border-color 200ms var(--w-motion-ease),
+    box-shadow 200ms var(--w-motion-ease),
+    transform 200ms var(--w-motion-ease);
 }
 
 .global-search-scope:hover,

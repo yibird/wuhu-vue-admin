@@ -1,7 +1,7 @@
 <template>
   <div
     :class="[
-      'login relative isolate min-h-screen min-h-[100dvh] w-full flex overflow-hidden bg-page text-main transition-colors duration-motion-slow max-xl:(items-stretch justify-center)',
+      'login relative isolate min-h-screen min-h-[100dvh] w-full flex overflow-hidden bg-page text-main transition-colors duration-300 max-xl:(items-stretch justify-center)',
       { 'flex-row': placement === 'right' },
       { 'flex-row-reverse': placement === 'left' },
     ]"
@@ -15,7 +15,7 @@
     />
     <div
       :class="[
-        'relative z-1 min-h-screen min-h-[100vh] w-full shrink-0 overflow-y-auto  bg-container px-24 pb-40 pt-104 flex items-center justify-center sm:px-48 xl:(w-520 xl:px-60 py-48)',
+        'page-container flex-center min-h-screen min-h-[100vh] w-full shrink-0 bg-container px-24 sm:px-48 xl:(w-520 xl:px-60 py-48)',
         placement === 'right' && 'xl:b-l-1-[border-secondary]',
         placement === 'left' && 'xl:b-r-1-[border-secondary]',
         {
@@ -27,11 +27,11 @@
       <div class="page-enter page-enter--2 w-full max-w-400">
         <div class="mb-24">
           <h1
-            class="m-0 text-2xl font-semibold leading-10 text-main transition-colors duration-motion-base"
+            class="m-0 text-2xl font-semibold leading-10 text-main transition-colors duration-200"
           >
             {{ $t('register.title') }}
           </h1>
-          <p class="mb-0 mt-8 text-sm leading-6 text-regular">
+          <p class="mt-8 text-base leading-6 text-placeholder">
             {{ $t('register.description') }}
           </p>
         </div>
@@ -94,3 +94,18 @@ const onSuccess = async () => {
   }
 }
 </script>
+<style scoped>
+.page-container {
+  background-image:
+    radial-gradient(
+      circle at 18% 10%,
+      rgb(var(--w-color-primary) / 10%),
+      transparent 34%
+    ),
+    radial-gradient(
+      circle at 82% 86%,
+      rgb(var(--w-color-primary) / 7%),
+      transparent 40%
+    );
+}
+</style>

@@ -1,6 +1,6 @@
 <template>
   <article
-    class="group min-w-0 cursor-pointer overflow-hidden rounded-8 b-1-regular bg-container outline-none transition-[border-color,box-shadow,transform] duration-motion-moderate ease-motion-standard hover:(-translate-y-1 border-primary/40 shadow-card)"
+    class="group min-w-0 cursor-pointer overflow-hidden rounded-8 b-1-regular bg-container outline-none transition-[border-color,box-shadow,transform] duration-300 ease-[var(--w-motion-ease)] hover:(-translate-y-1 border-primary/40 shadow-sm)"
     role="button"
     tabindex="0"
     @click="emits('open', definition)"
@@ -9,7 +9,7 @@
   >
     <div class="flex items-start gap-12 px-14 pb-12 pt-14">
       <span
-        class="size-42 flex flex-none items-center justify-center rounded-7 bg-primary/10 text-primary transition-transform duration-motion-base group-hover:scale-105"
+        class="size-42 flex flex-none items-center justify-center rounded-7 bg-primary/10 text-primary transition-transform duration-200 group-hover:scale-105"
       >
         <Icon :name="definition.icon || 'i-lucide:workflow'" :size="21" />
       </span>
@@ -89,7 +89,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { Icon } from '@/components'
+import { Icon } from '@/components/icon'
 import { renderIcon } from '@/utils'
 import { definitionStateMeta, formatDateTime } from '../shared'
 import type { ApprovalDefinitionResp } from '@/apis'

@@ -153,7 +153,7 @@
 </template>
 <script lang="ts" setup>
 import { message } from 'antdv-next'
-import { CropperPicker } from '@/components'
+import { CropperPicker } from '@/components/cropper'
 
 const avatarUrl = ref('')
 const cropperOpen = ref(false)

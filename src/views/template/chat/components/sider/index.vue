@@ -1,6 +1,6 @@
 <template>
   <aside
-    class="relative min-w-240 max-w-450 h-full shrink-0 b-r-1-muted bg-container max-lg:min-w-260 max-lg:min-w-260"
+    class="relative min-w-240 max-w-450 h-full shrink-0 b-r-1-muted bg-container max-lg:(min-w-260 min-w-260)"
     :class="{ 'is-resizing': resizing }"
   >
     <Transition name="fade-slide-swap" mode="out-in">
@@ -149,8 +149,8 @@ function handleContactChat(contact: Contact) {
   content: '';
   background: transparent;
   transition:
-    background-color var(--w-motion-duration-base) var(--w-motion-ease-standard),
-    box-shadow var(--w-motion-duration-base) var(--w-motion-ease-standard);
+    background-color 200ms var(--w-motion-ease),
+    box-shadow 200ms var(--w-motion-ease);
 }
 
 .chat-sidebar-resize-handle:hover::before,

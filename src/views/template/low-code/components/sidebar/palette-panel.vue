@@ -85,7 +85,8 @@
 <script setup lang="ts">
 import { Empty } from 'antdv-next'
 import { computed, ref } from 'vue'
-import { Icon, Scrollbar } from '@/components'
+import { Icon } from '@/components/icon'
+import { Scrollbar } from '@/components/scrollbar'
 import { MATERIAL_CATEGORY_ORDER } from '../../core/materials'
 import { componentRegistry, registryVersion } from '../../core/registry'
 import type { RegisteredComponent } from '../../core/registry'
@@ -162,9 +163,9 @@ function addToCanvas(type: string) {
   border: 1px solid rgb(var(--w-border-regular));
   border-radius: 8px;
   transition:
-    border-color var(--w-motion-duration-fast, 0.15s) ease,
-    box-shadow var(--w-motion-duration-fast, 0.15s) ease,
-    transform var(--w-motion-duration-fast, 0.15s) ease;
+    border-color 100ms ease,
+    box-shadow 100ms ease,
+    transform 100ms ease;
 
   &:hover {
     border-color: rgb(var(--w-color-primary) / 50%);
@@ -215,10 +216,8 @@ function addToCanvas(type: string) {
   grid-template-rows: 1fr;
   opacity: 1;
   transition:
-    grid-template-rows var(--w-motion-duration-base, 0.2s)
-      var(--w-motion-ease-standard, ease),
-    opacity var(--w-motion-duration-base, 0.2s)
-      var(--w-motion-ease-standard, ease);
+    grid-template-rows 200ms var(--w-motion-ease),
+    opacity 200ms var(--w-motion-ease);
 
   &.is-collapsed {
     grid-template-rows: 0fr;

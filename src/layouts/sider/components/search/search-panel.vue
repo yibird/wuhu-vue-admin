@@ -1,11 +1,9 @@
 <template>
   <section
-    id="layout-sider-search-panel"
-    aria-label="菜单搜索面板"
-    class="w-full max-w-[calc(100vw-24px)] overflow-hidden rounded-8 b-1-regular bg-overlay shadow-[0_20px_60px_rgb(15 23 42_/_36%)]"
+    class="w-full min-h-0 flex flex-1 flex-col overflow-hidden rounded-8 b-1-regular bg-overlay shadow-md"
   >
     <header
-      class="flex items-center justify-between gap-12 b-b-1-muted bg-secondary px-14 py-12"
+      class="shrink-0 flex items-center justify-between gap-12 b-b-1-muted bg-secondary px-14 py-12"
     >
       <div class="min-w-0 flex items-center gap-10">
         <span
@@ -14,8 +12,8 @@
           <Icon name="i-lucide:search" :size="17" />
         </span>
         <div class="min-w-0">
-          <p class="m-0 truncate text-sm text-main font-600">菜单搜索</p>
-          <p class="m-0 mt-2 truncate text-xs text-muted">
+          <p class="truncate text-sm text-main font-600">菜单搜索</p>
+          <p class="mt-2 truncate text-xs text-muted">
             {{ keyword ? '按回车打开当前选中项' : '输入关键词查找页面' }}
           </p>
         </div>
@@ -27,7 +25,7 @@
       </kbd>
     </header>
 
-    <div class="max-h-[calc(100vh-148px)] overflow-y-auto">
+    <div class="min-h-0 flex-1 overflow-y-auto">
       <section class="px-10 py-10">
         <div class="mb-6 flex items-center justify-between px-4">
           <span class="text-xs text-muted font-500">
@@ -44,7 +42,7 @@
           tag="div"
           role="listbox"
           aria-label="菜单搜索结果"
-          class="list-group flex flex-col gap-3"
+          class="list-group flex flex-col gap-4"
         >
           <button
             v-for="(result, index) in results"
@@ -53,20 +51,18 @@
             role="option"
             :aria-selected="activeIndex === index"
             :class="[
-              'content-auto-52 group w-full min-w-0 flex cursor-pointer items-center gap-10 rounded-7 b-1-transparent bg-transparent px-8 py-8 text-left outline-none transition-[background-color,border-color,transform,box-shadow] duration-motion-base hover:(translate-x-1 border-regular bg-hover) focus-visible:border-primary focus-visible:shadow-[0_0_0_2px_rgb(var(--w-color-primary)_/_16%)] active:translate-x-0 motion-reduce:(transform-none transition-none)',
+              'group w-full min-w-0 flex cursor-pointer items-center gap-10 text-left rounded-8 bg-transparent px-8 py-8  transition-all hover:(translate-x-1 b-1-[border-primary] bg-white) active:translate-x-0',
               activeIndex === index
-                ? 'border-primary bg-primary/10 shadow-[0_4px_12px_rgb(var(--w-color-primary)_/_10%)]'
-                : '',
+                ? 'bg-primary/20 border-1 border-primary shadow-md shadow-primary/10'
+                : 'b-1-transparent',
             ]"
             @mouseenter="emits('active-change', index)"
             @click="emits('select', result.item)"
           >
             <span
-              class="size-34 flex shrink-0 items-center justify-center rounded-7 bg-primary [color:#fff] shadow-[0_4px_10px_rgb(var(--w-color-primary)_/_22%)] transition-[box-shadow,transform] duration-motion-base group-hover:scale-105 motion-reduce:transition-none"
+              class="size-34 flex-center shrink-0 rounded-8 bg-primary text-white shadow-md shadow-primary/22 transition-all group-hover:scale-105"
               :class="
-                activeIndex === index
-                  ? 'shadow-[0_6px_14px_rgb(var(--w-color-primary)_/_34%)]'
-                  : ''
+                activeIndex === index ? 'shadow-lg shadow-primary/34' : ''
               "
             >
               <Icon
@@ -80,7 +76,7 @@
               </span>
               <span
                 v-if="result.breadcrumb"
-                class="mt-3 block truncate text-xs text-muted"
+                class="mt-4 block truncate text-xs text-muted"
               >
                 {{ result.breadcrumb }}
               </span>
@@ -88,25 +84,29 @@
             <Icon
               name="i-lucide:arrow-up-right"
               :size="16"
-              class="shrink-0 text-muted opacity-0 transition-[color,opacity,transform] duration-motion-base group-hover:(translate-x-1 -translate-y-1 text-primary opacity-100)"
-              :class="activeIndex === index ? 'text-primary opacity-100' : ''"
+              class="shrink-0 opacity-0 transition-all group-hover:(translate-x-1 -translate-y-1 text-primary opacity-100)"
+              :class="
+                activeIndex === index
+                  ? 'text-primary opacity-100'
+                  : 'text-muted'
+              "
             />
           </button>
         </TransitionGroup>
 
         <div
           v-else-if="keyword"
-          class="flex flex-col items-center justify-center rounded-7 bg-secondary px-12 py-24 text-center"
+          class="flex flex-col items-center justify-center rounded-7 bg-container px-12 py-24 text-center"
         >
           <span
             class="size-42 flex items-center justify-center rounded-full bg-muted text-muted"
           >
             <Icon name="i-lucide:search-x" :size="19" />
           </span>
-          <p class="m-0 mt-10 text-sm text-main font-500">没有找到匹配页面</p>
-          <p class="m-0 mt-5 text-xs text-muted">
+          <div class="mt-10 text-sm text-main font-500">没有找到匹配页面</div>
+          <div class="mt-5 text-xs text-muted">
             尝试更换关键词或搜索页面名称
-          </p>
+          </div>
         </div>
 
         <div
@@ -130,8 +130,7 @@
             class="inline-flex cursor-pointer items-center gap-4 border-0 bg-transparent px-4 py-3 text-xs text-muted outline-none transition-colors hover:text-primary focus-visible:text-primary"
             @click="emits('clear-history')"
           >
-            <Icon name="i-lucide:trash-2" :size="13" />
-            清空
+            <Icon name="i-lucide:trash-2" :size="14" />
           </button>
         </div>
 
@@ -161,7 +160,7 @@
             <button
               type="button"
               :aria-label="`删除搜索记录 ${record}`"
-              class="pointer-events-none mr-4 size-26 flex shrink-0 cursor-pointer items-center justify-center rounded-5 border-0 bg-transparent p-0 text-muted opacity-0 outline-none transition-[background-color,color,opacity] duration-motion-fast group-hover:(pointer-events-auto opacity-100) hover:(bg-muted text-main) focus-visible:(pointer-events-auto bg-muted text-primary opacity-100)"
+              class="pointer-events-none mr-4 size-26 flex shrink-0 cursor-pointer items-center justify-center rounded-5 border-0 bg-transparent p-0 text-muted opacity-0 outline-none transition-[background-color,color,opacity] duration-100 group-hover:(pointer-events-auto opacity-100) hover:(bg-muted text-main) focus-visible:(pointer-events-auto bg-muted text-primary opacity-100)"
               @click="emits('remove-history', record)"
             >
               <Icon name="i-lucide:x" :size="14" />
@@ -182,7 +181,6 @@
               historyExpanded ? 'i-lucide:chevron-up' : 'i-lucide:chevron-down'
             "
             :size="14"
-            class="ml-3 align-[-2px]"
           />
         </button>
       </section>
@@ -196,12 +194,6 @@ import type { SearchPanelEmits, SearchPanelProps } from '../types'
 const props = defineProps<SearchPanelProps>()
 const emits = defineEmits<SearchPanelEmits>()
 
-/**
- * 结果提示文案
- *
- * 列表只渲染前 N 条,命中更多时需同时展示总数与实际渲染条数,
- * 避免用户误以为结果只有这几条或结果丢失。
- */
 const resultSummary = computed(() =>
   props.resultCount > props.results.length
     ? `仅显示前 ${props.results.length} 条 / 共 ${props.resultCount} 条`

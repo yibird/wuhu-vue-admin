@@ -46,7 +46,8 @@
 <script setup lang="ts">
 import { Button, Tag } from 'antdv-next'
 import { getRolePageListApi, type SysRole } from '@/apis'
-import { FormPlus, Icon } from '@/components'
+import { FormPlus } from '@/components/form-plus'
+import { Icon } from '@/components/icon'
 import { useRequest, useTabs } from '@/hooks'
 
 import type {

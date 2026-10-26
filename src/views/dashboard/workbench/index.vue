@@ -12,7 +12,7 @@
               <h1 class="m-0 text-2md text-main font-700">工作台</h1>
               <span
                 v-if="dragEnabled"
-                class="rounded-full bg-primary/10 px-8 py-3 text-xs text-primary transition-colors duration-motion-base"
+                class="rounded-full bg-primary/10 px-8 py-3 text-xs text-primary transition-colors duration-200"
               >
                 布局编辑中
               </span>
@@ -39,7 +39,7 @@
             >
               <button
                 type="button"
-                class="size-34 flex-center rounded-6 b-1-regular bg-container text-regular cursor-pointer transition-[border-color,background-color,box-shadow,transform,color] duration-motion-base hover:(border-primary bg-primary/10 shadow-all -translate-y-1) active:translate-y-0"
+                class="size-34 flex-center rounded-6 b-1-regular bg-container text-regular cursor-pointer transition-[border-color,background-color,box-shadow,transform,color] duration-200 hover:(border-primary bg-primary/10 shadow-all -translate-y-1) active:translate-y-0"
                 :class="{
                   'border-primary bg-primary/10 text-primary shadow-all':
                     dragEnabled,

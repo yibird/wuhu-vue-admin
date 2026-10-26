@@ -4,7 +4,7 @@
   >
     <div class="flex-y-center gap-10">
       <span
-        class="size-32 flex-center rounded-8 bg-primary text-white shadow-[0_6px_16px_rgb(22_119_255_/_35%)]"
+        class="size-32 flex-center rounded-8 bg-primary text-white shadow-lg shadow-primary/35"
       >
         <Icon name="i-lucide:blocks" :size="17" />
       </span>
@@ -131,7 +131,7 @@
 <script setup lang="ts">
 import { message } from 'antdv-next'
 import { computed } from 'vue'
-import { Icon } from '@/components'
+import { Icon } from '@/components/icon'
 import { useDesignerContext } from '../hooks'
 
 const emits = defineEmits<{

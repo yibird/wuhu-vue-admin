@@ -159,7 +159,7 @@
 
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import { Icon } from '@/components'
+import { Icon } from '@/components/icon'
 import { validateExpression } from '../../core/expression'
 import { useDesignerContext } from '../../hooks'
 import JsonFieldEditor from './json-field-editor.vue'

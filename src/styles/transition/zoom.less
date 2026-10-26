@@ -18,8 +18,8 @@
   &-enter-active,
   &-leave-active {
     transition:
-      transform var(--w-motion-duration-moderate) var(--w-motion-ease-spring),
-      opacity var(--w-motion-duration-moderate) var(--w-motion-ease-standard);
+      transform 300ms cubic-bezier(0.34, 1.56, 0.64, 1),
+      opacity 300ms var(--w-motion-ease);
     will-change: transform, opacity;
   }
 }

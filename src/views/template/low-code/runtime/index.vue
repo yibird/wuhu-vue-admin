@@ -51,7 +51,7 @@
         </div>
         <div
           v-else
-          class="mx-auto w-full overflow-hidden rounded-8 b-1-regular bg-container shadow-overlay"
+          class="mx-auto w-full overflow-hidden rounded-8 b-1-regular bg-container shadow-lg"
           :style="{ maxWidth: '1440px' }"
         >
           <SchemaRenderer
@@ -77,8 +77,7 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { Icon } from '@/components'
-import { toRgb } from '@/utils'
+import { Icon } from '@/components/icon'
 import { SchemaRenderer } from '../components'
 import { loadPublished } from '../core/persistence'
 import { createRuntime } from '../core/runtime'
@@ -140,7 +139,7 @@ const themeStyle = computed(() => {
   const color = schema.value?.theme?.primaryColor
   if (!color) return {}
   return {
-    '--w-color-primary': toRgb(color) ?? undefined,
+    '--w-color-primary': color,
   }
 })
 

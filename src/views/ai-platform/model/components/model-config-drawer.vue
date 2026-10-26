@@ -38,7 +38,7 @@
               <div class="select-dropdown-footer b-t-1-regular p-6">
                 <button
                   type="button"
-                  class="h-34 w-full flex items-center gap-8 rounded-6 border-0 bg-transparent px-8 text-sm text-primary cursor-pointer transition-colors duration-motion-base hover:bg-hover focus-visible:bg-hover focus-visible:outline-none"
+                  class="h-34 w-full flex items-center gap-8 rounded-6 border-0 bg-transparent px-8 text-sm text-primary cursor-pointer transition-colors duration-200 hover:bg-hover focus-visible:(bg-hover outline-none)"
                   @mousedown.prevent
                   @click="openProviderCreate"
                 >

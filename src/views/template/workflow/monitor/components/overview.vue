@@ -7,7 +7,7 @@
       :initial="{ opacity: 0, y: 8 }"
       :animate="{ opacity: 1, y: 0 }"
       :transition="{ duration: 0.24, delay: index * 0.035, ease: 'easeOut' }"
-      class="min-w-0 rounded-8 b-1-regular bg-container p-13 shadow-card"
+      class="min-w-0 rounded-8 b-1-regular bg-container p-13 shadow-sm"
     >
       <a-skeleton v-if="loading" active :paragraph="{ rows: 1 }" />
       <div v-else class="flex items-start gap-11">

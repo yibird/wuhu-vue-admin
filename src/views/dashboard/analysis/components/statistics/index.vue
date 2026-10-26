@@ -1,7 +1,7 @@
 <template>
   <a-border-beam :duration="6" :line-width="3">
     <Card
-      class="page-enter page-enter--3 overflow-hidden rounded-8 b-1-regular shadow-card"
+      class="page-enter page-enter--3 overflow-hidden rounded-8 shadow-sm"
       variant="borderless"
       :styles="{
         body: {
@@ -63,7 +63,8 @@
 </template>
 
 <script lang="ts" setup>
-import { DateRangePicker, Card } from '@/components'
+import { DateRangePicker } from '@/components/date-picker'
+import { Card } from '@/components/card'
 import SalesRevenue from './sales-revenue.vue'
 import VisitCount from './visit-count.vue'
 import { rangeOptions, resolveRange } from './data'

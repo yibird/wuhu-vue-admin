@@ -3,7 +3,7 @@
     <div
       ref="triggerRef"
       :class="[
-        'group h-34 flex-center overflow-hidden rounded-5 border-1 border-solid bg-container px-10 text-main outline-none transition-[background-color,border-color,box-shadow,transform] duration-motion-base ease-motion-enter active:scale-[0.99]',
+        'group h-34 flex-center overflow-hidden rounded-5 border-1 border-regular px-10 text-main outline-none transition-all duration-200 ease-[var(--w-motion-ease-enter)] active:scale-[0.99]',
         isCollapsed ? 'cursor-pointer' : '',
         panelOpen ? 'border-primary' : 'border-main',
       ]"
@@ -16,7 +16,7 @@
       <Icon
         name="i-lucide:search"
         :size="16"
-        class="shrink-0 transition-[color,transform] duration-motion-base group-hover:text-primary"
+        class="shrink-0 transition-[color,transform] duration-200 group-hover:text-primary"
         :class="panelOpen ? 'text-primary' : 'text-main'"
       />
       <div
@@ -55,7 +55,7 @@
         v-if="panelOpen"
         ref="panelRef"
         :style="panelStyle"
-        class="fixed z-[100000] overflow-hidden rounded-10 drop-shadow-[0_24px_48px_rgb(15 23 42_/_18%)]"
+        class="fixed z-10000 flex flex-col"
         role="dialog"
         aria-label="菜单搜索面板"
       >

@@ -1,6 +1,6 @@
 <template>
   <aside
-    class="min-h-0 grid grid-rows-[auto_minmax(0,1fr)] overflow-hidden rounded-8 b-1-regular bg-container shadow-card"
+    class="min-h-0 grid grid-rows-[auto_minmax(0,1fr)] overflow-hidden rounded-8 b-1-regular bg-container shadow-sm"
   >
     <header class="border-b border-regular px-12 py-10">
       <h2 class="m-0 text-14px font-700 text-primary">审批组件</h2>

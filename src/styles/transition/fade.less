@@ -7,7 +7,7 @@
 .fade {
   &-enter-active,
   &-leave-active {
-    transition: opacity var(--w-motion-duration-slow) var(--w-motion-ease-enter);
+    transition: opacity 300ms var(--w-motion-ease-enter);
   }
 
   &-enter-from,
@@ -29,8 +29,8 @@
   &-enter-active,
   &-leave-active {
     transition:
-      transform var(--w-motion-duration-slow) var(--w-motion-ease-standard),
-      opacity var(--w-motion-duration-slow) var(--w-motion-ease-standard);
+      transform 300ms var(--w-motion-ease),
+      opacity 300ms var(--w-motion-ease);
   }
 
   &-enter-from,
@@ -54,8 +54,8 @@
   &-enter-active,
   &-leave-active {
     transition:
-      opacity var(--w-motion-duration-moderate) var(--w-motion-ease-standard),
-      transform var(--w-motion-duration-moderate) var(--w-motion-ease-enter);
+      opacity 300ms var(--w-motion-ease),
+      transform 300ms var(--w-motion-ease-enter);
     will-change: opacity, transform;
   }
 

@@ -111,7 +111,7 @@
           <article
             v-for="item in props.section.items"
             :key="item.title"
-            class="p-14 transition-colors duration-motion-base hover:bg-hover"
+            class="p-14 transition-colors duration-200 hover:bg-hover"
           >
             <div class="flex items-start gap-12">
               <span

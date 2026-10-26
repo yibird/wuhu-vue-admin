@@ -27,7 +27,7 @@
         <span
           :style="fontStyle(item)"
           :class="[
-            'max-w-full truncate text-xs transition-colors duration-motion-base motion-reduce:transition-none',
+            'max-w-full truncate text-xs transition-colors duration-200 motion-reduce:transition-none',
             font.family === item.family
               ? 'text-primary'
               : 'text-secondary group-hover:text-main',

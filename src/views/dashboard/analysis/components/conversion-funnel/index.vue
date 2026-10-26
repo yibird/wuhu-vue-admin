@@ -60,12 +60,12 @@
               </div>
               <div class="relative h-22 overflow-hidden rounded-6 bg-muted">
                 <div
-                  class="relative mx-auto h-full bg-gradient-to-r [clip-path:polygon(0_0,100%_0,94%_100%,6%_100%)] transition-[filter,transform,width] duration-motion-moderate ease-motion-standard group-hover:(scale-y-110 [filter:saturate(1.2)]) group-focus-visible:(scale-y-110 [filter:saturate(1.2)]) motion-reduce:(transform-none transition-none)"
+                  class="relative mx-auto h-full bg-gradient-to-r [clip-path:polygon(0_0,100%_0,94%_100%,6%_100%)] transition-[filter,transform,width] duration-300 ease-[var(--w-motion-ease)] group-hover:(scale-y-110 [filter:saturate(1.2)]) group-focus-visible:(scale-y-110 [filter:saturate(1.2)]) motion-reduce:(transform-none transition-none)"
                   :class="stage.fillClass"
                   :style="{ width: `${stage.rate}%` }"
                 >
                   <span
-                    class="absolute inset-0 -translate-x-full bg-[linear-gradient(110deg,transparent_18%,rgb(255_255_255_/_24%)_48%,transparent_72%)] opacity-70 transition-transform duration-motion-slower ease-motion-standard group-hover:translate-x-full group-focus-visible:translate-x-full motion-reduce:(transform-none transition-none)"
+                    class="absolute inset-0 -translate-x-full bg-[linear-gradient(110deg,transparent_18%,rgb(255_255_255_/_24%)_48%,transparent_72%)] opacity-70 transition-transform duration-500 ease-[var(--w-motion-ease)] group-hover:translate-x-full group-focus-visible:translate-x-full motion-reduce:(transform-none transition-none)"
                   ></span>
                 </div>
               </div>
@@ -144,7 +144,7 @@
   </a-border-beam>
 </template>
 <script lang="ts" setup>
-import { Card } from '@/components'
+import { Card } from '@/components/card'
 
 const stages = [
   {

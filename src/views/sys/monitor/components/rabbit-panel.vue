@@ -31,7 +31,7 @@
             v-for="item in rabbitmq.queues"
             :key="item.id"
             type="button"
-            class="grid grid-cols-[minmax(210px,1.7fr)_120px_90px_90px_90px_110px_110px] items-center gap-10 b-b-1-muted px-10 py-11 text-left transition-[background-color,transform] duration-motion-base hover:bg-hover active:scale-[0.998] motion-reduce:transition-none"
+            class="grid grid-cols-[minmax(210px,1.7fr)_120px_90px_90px_90px_110px_110px] items-center gap-10 b-b-1-muted px-10 py-11 text-left transition-[background-color,transform] duration-200 hover:bg-hover active:scale-[0.998] motion-reduce:transition-none"
             @click="emits('selectQueue', item)"
           >
             <span class="min-w-0">

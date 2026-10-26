@@ -390,8 +390,8 @@
 </template>
 
 <script setup lang="ts">
-import { Icon } from '@/components'
-import { createDefaultApprovalExtensions } from '@/components'
+import { Icon } from '@/components/icon'
+import { createDefaultApprovalExtensions } from '@/components/approval-designer'
 import type {
   ApprovalAutomationAction,
   ApprovalAutomationTrigger,
@@ -406,7 +406,7 @@ import type {
   ApprovalWorkflowExtensions,
   ApprovalWorkflowSchema,
   FieldPermissionMode,
-} from '@/components'
+} from '@/components/approval-designer'
 
 const props = defineProps<{
   schema: ApprovalWorkflowSchema

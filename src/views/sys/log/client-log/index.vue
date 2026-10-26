@@ -66,7 +66,7 @@ import {
   type SysClientLogQuery,
   type SysClientLog,
 } from '@/apis'
-import { FormPlus } from '@/components'
+import { FormPlus } from '@/components/form-plus'
 import { useRequest } from '@/hooks'
 import { LogDetailDrawer } from '../components'
 import { formatLogTime, resolveTimeRange } from '../data'

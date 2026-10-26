@@ -52,7 +52,7 @@
       </header>
 
       <section
-        class="workflow-source-editor min-h-0 flex flex-col overflow-hidden rounded-10 b-1-regular bg-container shadow-card"
+        class="workflow-source-editor min-h-0 flex flex-col overflow-hidden rounded-10 b-1-regular bg-container shadow-sm"
       >
         <div
           class="flex flex-none items-center justify-between gap-10 b-b-1-regular bg-secondary px-12 py-8"

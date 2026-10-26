@@ -74,7 +74,7 @@
       </section>
 
       <main
-        class="min-h-0 flex-1 grid grid-cols-[310px_minmax(0,1fr)_300px] overflow-hidden max-xl:grid-cols-[300px_minmax(0,1fr)] max-lg:grid-cols-1 max-lg:overflow-y-auto"
+        class="min-h-0 flex-1 grid grid-cols-[310px_minmax(0,1fr)_300px] overflow-hidden max-xl:grid-cols-[300px_minmax(0,1fr)] max-lg:(grid-cols-1 overflow-y-auto)"
       >
         <TicketQueue
           :active-queue="queue"
@@ -93,7 +93,7 @@
           @public-reply="handlePublicReply"
         />
         <TicketProperties
-          class="max-h-full max-xl:col-span-2 max-xl:max-h-480 max-lg:col-span-1 max-lg:max-h-none"
+          class="max-h-full max-xl:(col-span-2 max-h-480) max-lg:(col-span-1 max-h-none)"
           :ticket="selectedTicket"
           @accept="handleAccept"
           @assignment-change="handleAssignment"

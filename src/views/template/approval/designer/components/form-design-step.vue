@@ -136,12 +136,12 @@
         </div>
 
         <div
-          class="mx-auto w-full max-w-860 origin-top transition-transform duration-motion-base"
+          class="mx-auto w-full max-w-860 origin-top transition-transform duration-200"
           :style="{ transform: `scale(${zoom})` }"
           @click.self="selectField(-1)"
         >
           <div
-            class="rounded-8 b-1-regular bg-container p-20 shadow-card"
+            class="rounded-8 b-1-regular bg-container p-20 shadow-sm"
             @click.self="selectField(-1)"
           >
             <div
@@ -177,7 +177,7 @@
               >
                 <div
                   v-if="selectedIndex === index"
-                  class="absolute -top-32 left-0 z-20 flex items-center gap-2 rounded-6 b-1-primary bg-container px-4 py-3 shadow-card"
+                  class="absolute -top-32 left-0 z-20 flex items-center gap-2 rounded-6 b-1-primary bg-container px-4 py-3 shadow-sm"
                 >
                   <span
                     class="flex cursor-grab items-center px-6 text-secondary active:cursor-grabbing"
@@ -578,12 +578,12 @@
 </template>
 
 <script setup lang="ts">
-import { Icon } from '@/components'
+import { Icon } from '@/components/icon'
 import type {
   ApprovalFormField,
   ApprovalFormFieldType,
   ApprovalWorkflowSchema,
-} from '@/components'
+} from '@/components/approval-designer'
 
 interface PaletteItem {
   type: ApprovalFormFieldType

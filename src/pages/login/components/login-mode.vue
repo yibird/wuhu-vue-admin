@@ -13,7 +13,7 @@
         >
           <button
             :aria-label="item.label"
-            class="button size-38 bg-container b-1-secondary rounded-4 transition-all duration-motion-base hover:(-translate-y-1 border-primary bg-hover shadow-all-sm)"
+            class="button size-38 bg-container b-1-secondary rounded-4 transition-all duration-200 hover:(-translate-y-1 border-primary bg-hover shadow-sm)"
           >
             <img
               :src="item.icon"
@@ -30,14 +30,12 @@
       class="mt-15 flex items-center justify-center gap-4 text-sm text-regular"
     >
       <span>{{ $t('login.noAccount') }}</span>
-      <a-button
-        type="link"
-        html-type="button"
-        class="h-auto! px-4! transition-[color,transform] duration-motion-base hover:(translate-x-1 text-primary!) active:translate-x-0 motion-reduce:(transform-none transition-none)"
+      <button
+        class="px-4 text-primary cursor-pointer transition-all hover:(translate-x-1) active:translate-x-0"
         @click="to('/register')"
       >
         {{ $t('login.toRegister') }}
-      </a-button>
+      </button>
     </div>
   </div>
 </template>

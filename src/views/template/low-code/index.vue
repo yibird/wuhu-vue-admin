@@ -21,13 +21,13 @@
       >
         <aside
           v-show="!fullscreen"
-          class="min-h-0 overflow-hidden rounded-8 b-1-regular bg-container shadow-overlay"
+          class="min-h-0 overflow-hidden rounded-8 b-1-regular bg-container shadow-lg"
         >
           <SidebarPanel />
         </aside>
 
         <CanvasStage
-          class="min-h-0 rounded-8 b-1-regular bg-container shadow-overlay"
+          class="min-h-0 rounded-8 b-1-regular bg-container shadow-lg"
           :space-pressed="spacePressed"
           :fullscreen="fullscreen"
           @toggle-fullscreen="fullscreen = !fullscreen"
@@ -36,7 +36,7 @@
 
         <aside
           v-show="!fullscreen"
-          class="min-h-0 overflow-hidden rounded-8 b-1-regular bg-container shadow-overlay"
+          class="min-h-0 overflow-hidden rounded-8 b-1-regular bg-container shadow-lg"
         >
           <InspectorPanel v-model:mode="inspectorMode" />
         </aside>
@@ -57,7 +57,7 @@
 
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
-import { WView } from '@/components'
+import { WView } from '@/components/view'
 import {
   CanvasStage,
   DataDrawer,

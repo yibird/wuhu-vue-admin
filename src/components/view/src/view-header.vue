@@ -91,24 +91,22 @@ function toggle() {
   box-sizing: border-box;
   min-width: 0;
   overflow: visible;
-  transition: margin-block-end var(--w-motion-duration-slow)
-    var(--w-motion-ease-standard);
+  transition: margin-block-end 300ms var(--w-motion-ease);
 
   &__body {
     display: grid;
     grid-template-rows: 1fr;
     min-width: 0;
     overflow: hidden;
-    transition: grid-template-rows var(--w-motion-duration-slow)
-      var(--w-motion-ease-standard);
+    transition: grid-template-rows 300ms var(--w-motion-ease);
   }
 
   &__collapse {
     min-height: 0;
     overflow: hidden;
     transition:
-      opacity var(--w-motion-duration-moderate) var(--w-motion-ease-enter),
-      transform var(--w-motion-duration-moderate) var(--w-motion-ease-enter);
+      opacity 300ms var(--w-motion-ease-enter),
+      transform 300ms var(--w-motion-ease-enter);
   }
 
   &__content {
@@ -156,7 +154,7 @@ function toggle() {
     &-icon {
       display: grid;
       place-items: center;
-      transition: scale var(--w-motion-duration-base) var(--w-motion-ease-enter);
+      transition: scale 200ms var(--w-motion-ease-enter);
     }
   }
 

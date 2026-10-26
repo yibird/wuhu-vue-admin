@@ -9,7 +9,7 @@
     <button
       type="button"
       data-agent-model-trigger
-      class="h-34 max-w-220 inline-flex items-center gap-6 rounded-full b-1-transparent bg-transparent px-10 text-regular cursor-pointer transition-colors hover:border-muted hover:bg-hover hover:text-main max-sm:w-34 max-sm:px-0 max-sm:justify-center"
+      class="h-34 max-w-220 inline-flex items-center gap-6 rounded-full b-1-transparent bg-transparent px-10 text-regular cursor-pointer transition-colors hover:(border-muted bg-hover text-main) max-sm:(w-34 px-0 justify-center)"
       :class="!selectedModel ? 'cursor-not-allowed text-disabled' : ''"
       :disabled="disabled || !selectedModel"
     >

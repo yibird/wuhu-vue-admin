@@ -25,7 +25,7 @@
     <Transition name="fade-slide-right">
       <div
         v-if="preview"
-        class="message-preview absolute top-1/2 right-[calc(100%+10px)] w-210 grid gap-4 px-10 py-9 pointer-events-none bg-[rgb(var(--w-bg-container)/96%)] b-1-muted rounded-6 shadow-overlay backdrop-blur-12"
+        class="message-preview absolute top-1/2 right-[calc(100%+10px)] w-210 grid gap-4 px-10 py-9 pointer-events-none bg-[rgb(var(--w-bg-container)/96%)] b-1-muted rounded-6 shadow-lg backdrop-blur-12"
         :style="previewStyle"
       >
         <span class="text-11px text-primary font-600">
@@ -171,10 +171,10 @@ onBeforeUnmount(() => cancelAnimationFrame(scrollFrame))
   transform: translate3d(var(--message-marker-offset-x), 0, 0)
     scaleX(var(--message-marker-scale-x)) scaleY(var(--message-marker-scale-y));
   transition:
-    transform var(--w-motion-duration-slow) var(--w-motion-ease-enter),
-    opacity var(--w-motion-duration-base) var(--w-motion-ease-enter),
-    background-color var(--w-motion-duration-base) var(--w-motion-ease-standard),
-    box-shadow var(--w-motion-duration-moderate) var(--w-motion-ease-standard);
+    transform 300ms var(--w-motion-ease-enter),
+    opacity 200ms var(--w-motion-ease-enter),
+    background-color 200ms var(--w-motion-ease),
+    box-shadow 300ms var(--w-motion-ease);
   will-change: transform, opacity;
 }
 
@@ -209,7 +209,7 @@ onBeforeUnmount(() => cancelAnimationFrame(scrollFrame))
   --message-preview-offset-y: 0px;
 
   transform: translate3d(0, calc(-50% + var(--message-preview-offset-y)), 0);
-  transition: transform var(--w-motion-duration-slow) var(--w-motion-ease-enter);
+  transition: transform 300ms var(--w-motion-ease-enter);
   will-change: transform, opacity;
 }
 

@@ -11,7 +11,7 @@
       :items="visibleTaskStatus"
       :get-key="(item: CardTaskStatus) => item.status"
       class="relative grid h-full min-h-0 grid-cols-1 gap-10 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6 overflow-x-auto"
-      motion-class="min-h-0 min-w-0 xl:max-h-full xl:overflow-hidden"
+      motion-class="min-h-0 min-w-0 xl:(max-h-full overflow-hidden)"
     >
       <template #default="{ item }">
         <Group
@@ -28,7 +28,7 @@
 </template>
 <script lang="ts" setup>
 import { DragDropProvider } from '@dnd-kit/vue'
-import { AnimatedGroup } from '@/components'
+import { AnimatedGroup } from '@/components/animated'
 import Group from './group.vue'
 import CardSkeleton from './skeleton.vue'
 import { taskStatusList } from '../../constants'

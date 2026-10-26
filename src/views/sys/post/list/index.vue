@@ -45,7 +45,8 @@
 <script setup lang="ts">
 import { Button } from 'antdv-next'
 import { getDeptPageListApi, type SysDept } from '@/apis'
-import { FormPlus, Icon } from '@/components'
+import { FormPlus } from '@/components/form-plus'
+import { Icon } from '@/components/icon'
 import { useRequest, useTabs } from '@/hooks'
 import type { DeptPickerOption } from '@/features'
 import { PostForm } from './components'

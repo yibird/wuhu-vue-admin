@@ -43,7 +43,7 @@
             <article
               v-for="item in list"
               :key="item.id"
-              class="flex flex-col gap-12 rounded-4 bg-container p-16 transition-[transform,box-shadow] duration-300 ease-out hover:(-translate-y-1 shadow-all-md)"
+              class="flex flex-col gap-12 rounded-4 bg-container p-16 transition-[transform,box-shadow] duration-300 ease-out hover:(-translate-y-1 shadow-md)"
             >
               <div class="flex items-start gap-10">
                 <span
@@ -152,7 +152,8 @@
 
 <script setup lang="ts">
 import { getProjectPageListApi } from '@/apis'
-import { Icon, WView } from '@/components'
+import { Icon } from '@/components/icon'
+import { WView } from '@/components/view'
 import { usePagination, usePermission, useTabs } from '@/hooks'
 import { useAuthStore } from '@/store'
 import { ProjectForm } from '../list/components'

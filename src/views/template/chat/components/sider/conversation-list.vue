@@ -63,7 +63,7 @@
                             :src="conv.avatar"
                             :size="44"
                             round
-                            class="transition-transform duration-motion-base ease-motion-enter group-hover:scale-105 motion-reduce:transform-none"
+                            class="transition-transform duration-200 ease-[var(--w-motion-ease-enter)] group-hover:scale-105 motion-reduce:transform-none"
                           />
                           <span
                             v-if="conv.userInfo?.status"
@@ -180,7 +180,7 @@
 
 <script setup lang="ts">
 import { LayoutGroup, Motion } from 'motion-v'
-import { Scrollbar } from '@/components'
+import { Scrollbar } from '@/components/scrollbar'
 import { Icon } from '@/components/icon'
 import Search from './search.vue'
 import Tabs from './tabs.vue'

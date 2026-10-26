@@ -362,7 +362,7 @@
 
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import { Icon } from '@/components'
+import { Icon } from '@/components/icon'
 import { actionRegistry } from '../core/runtime'
 import { createNodeId } from '../core/schema'
 import { useDesignerContext } from '../hooks'

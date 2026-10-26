@@ -35,13 +35,13 @@
             v-for="item in announcements"
             :key="item.id"
             type="button"
-            class="group w-full min-w-0 flex gap-10 rounded-6 border-0 bg-transparent px-8 py-10 text-left outline-none transition-[background-color,box-shadow] duration-motion-base focus-visible:(bg-hover shadow-[0_0_0_2px_rgb(var(--w-color-primary)/18%)])"
+            class="group w-full min-w-0 flex gap-10 rounded-6 border-0 bg-transparent px-8 py-10 text-left outline-none transition-[background-color,box-shadow] duration-200 focus-visible:(bg-hover ring-2 ring-primary/18)"
             :class="{ 'bg-primary/3': !isRead(item.id) }"
             :aria-label="`查看公告：${item.title}`"
             @click="openDetail(item)"
           >
             <span
-              class="size-32 shrink-0 grid place-items-center rounded-8 bg-muted text-secondary transition-[background-color,color,transform] duration-motion-base group-hover:(scale-105 bg-container text-primary)"
+              class="size-32 shrink-0 grid place-items-center rounded-8 bg-muted text-secondary transition-[background-color,color,transform] duration-200 group-hover:(scale-105 bg-container text-primary)"
             >
               <Icon :name="item.icon" :size="16" />
             </span>
@@ -79,7 +79,7 @@
             <Icon
               name="i-lucide:chevron-right"
               :size="20"
-              class="self-center shrink-0 text-placeholder opacity-0 transition-[opacity,transform,color] duration-motion-base group-hover:(translate-x-1 text-primary opacity-100)"
+              class="self-center shrink-0 text-placeholder opacity-0 transition-[opacity,transform,color] duration-200 group-hover:(translate-x-1 text-primary opacity-100)"
             />
           </button>
         </SlidingHighlight>
@@ -92,7 +92,7 @@
 
         <button
           type="button"
-          class="w-full flex-center gap-5 border-0 b-t-1-regular bg-transparent px-12 py-10 text-sm text-secondary outline-none cursor-pointer transition-[background-color,color] hover:(bg-hover text-primary) focus-visible:(bg-hover text-primary)"
+          class="mt-10 w-full flex-center gap-5 bg-white px-12 py-10 text-sm text-secondary rounded-6 outline-none cursor-pointer transition-all hover:(bg-primary/5 text-primary)"
           @click="openNoticeCenter"
         >
           查看全部公告
@@ -153,7 +153,8 @@
 </template>
 
 <script lang="ts" setup>
-import { SlidingHighlight, Card } from '@/components'
+import { SlidingHighlight } from '@/components/sliding-highlight'
+import { Card } from '@/components/card'
 import { useTabs } from '@/hooks'
 import AnnouncementSkeleton from './skeleton.vue'
 import type { WorkbenchAnnouncement } from './types'

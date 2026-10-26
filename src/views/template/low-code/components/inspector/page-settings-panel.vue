@@ -136,7 +136,7 @@
 
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import { Icon } from '@/components'
+import { Icon } from '@/components/icon'
 import { useDesignerContext } from '../../hooks'
 
 const designer = useDesignerContext()

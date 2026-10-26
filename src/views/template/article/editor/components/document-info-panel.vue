@@ -1,6 +1,6 @@
 <template>
   <aside
-    class="ml-12 w-300 shrink-0 rounded-8 b-1-muted bg-container max-xl:w-260 max-lg:ml-0 max-lg:mt-12 max-lg:w-full"
+    class="ml-12 w-300 shrink-0 rounded-8 b-1-muted bg-container max-xl:w-260 max-lg:(ml-0 mt-12 w-full)"
   >
     <div class="flex items-center justify-between b-b-1-muted px-14 py-12">
       <div class="text-sm text-main font-600">文档信息</div>

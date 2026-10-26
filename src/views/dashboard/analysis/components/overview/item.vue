@@ -3,7 +3,7 @@
     <Card
       variant="outlined"
       size="small"
-      class="page-enter analysis-overview-card group overflow-hidden rounded-8 shadow-card transition-[box-shadow,transform] duration-motion-base ease-motion-standard hover:(-translate-y-2 shadow-overlay) focus-visible:(-translate-y-2 shadow-overlay outline-2 outline-primary/48 outline-offset-2) motion-reduce:(transform-none transition-none)"
+      class="page-enter analysis-overview-card group overflow-hidden rounded-8 shadow-sm transition-[box-shadow,transform] duration-200 ease-[var(--w-motion-ease)] hover:(-translate-y-2 shadow-lg) focus-visible:(-translate-y-2 shadow-lg outline-2 outline-primary/48 outline-offset-2) motion-reduce:(transform-none transition-none)"
       tabindex="0"
       :styles="{ body: { padding: '14px' } }"
     >
@@ -32,7 +32,7 @@
           </div>
         </div>
         <div
-          class="analysis-overview-icon size-44 flex shrink-0 items-center justify-center rounded-10 b-1-primary/15 transition-[transform] duration-motion-base ease-motion-standard group-hover:(-translate-y-1 scale-104) group-focus-visible:(-translate-y-1 scale-104) motion-reduce:transition-none motion-reduce:group-hover:transform-none motion-reduce:group-focus-visible:transform-none"
+          class="analysis-overview-icon size-44 flex shrink-0 items-center justify-center rounded-10 b-1-primary/15 transition-[transform] duration-200 ease-[var(--w-motion-ease)] group-hover:(-translate-y-1 scale-104) group-focus-visible:(-translate-y-1 scale-104) motion-reduce:transition-none motion-reduce:group-hover:transform-none motion-reduce:group-focus-visible:transform-none"
         >
           <img :src="item.icon" alt="" class="size-26" />
         </div>
@@ -42,7 +42,7 @@
 </template>
 
 <script lang="ts" setup>
-import { Card } from '@/components'
+import { Card } from '@/components/card'
 import { NumberTicker } from '@/components/number-ticker'
 import ItemExtra from './item-extra.vue'
 import type { CardItemProps, StatPeriod } from './types.ts'

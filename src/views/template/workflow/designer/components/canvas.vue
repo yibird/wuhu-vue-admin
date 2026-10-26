@@ -1,6 +1,6 @@
 <template>
   <main
-    class="h-full min-h-0 min-w-0 grid grid-rows-[auto_minmax(0,1fr)] overflow-hidden rounded-12 b-1-regular bg-container shadow-card max-[900px]:min-h-620 max-[900px]:mt-10 max-[900px]:ml-0"
+    class="h-full min-h-0 min-w-0 grid grid-rows-[auto_minmax(0,1fr)] overflow-hidden rounded-12 b-1-regular bg-container shadow-sm max-[900px]:min-h-620 max-[900px]:mt-10 max-[900px]:ml-0"
   >
     <CanvasHeader
       v-model:active-tab="activeTab"
@@ -317,7 +317,7 @@ import CanvasToolbar from './canvas-toolbar.vue'
 import CustomEdge from './custom-edge.vue'
 import { workflowNodeTypes } from './nodes'
 import { WORKFLOW_FLOW_ID } from '../constants'
-import { Icon } from '@/components'
+import { Icon } from '@/components/icon'
 import type {
   WorkflowCanvasTab,
   WorkflowEdge,

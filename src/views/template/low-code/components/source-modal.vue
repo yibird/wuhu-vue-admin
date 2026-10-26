@@ -30,7 +30,7 @@
 <script setup lang="ts">
 import { message } from 'antdv-next'
 import { ref, watch } from 'vue'
-import { CodeEditor } from '@/components'
+import { CodeEditor } from '@/components/code-editor'
 import { useDesignerContext } from '../hooks'
 import type { ApplicationSchema } from '../core/schema/types'
 

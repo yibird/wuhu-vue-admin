@@ -50,7 +50,7 @@
           <button
             type="button"
             data-agent-config-trigger
-            class="size-36 inline-flex items-center justify-center rounded-8 b-1-muted bg-transparent text-regular cursor-pointer transition-colors hover:bg-hover hover:text-main"
+            class="size-36 inline-flex items-center justify-center rounded-8 b-1-muted bg-transparent text-regular cursor-pointer transition-colors hover:(bg-hover text-main)"
             :disabled="isRunning"
             title="生成参数"
           >
@@ -63,7 +63,7 @@
                 <button
                   type="button"
                   data-agent-config-reset
-                  class="h-26 inline-flex items-center justify-center rounded-6 border-0 bg-transparent px-8 text-xs text-secondary cursor-pointer transition-colors hover:bg-hover hover:text-main"
+                  class="h-26 inline-flex items-center justify-center rounded-6 border-0 bg-transparent px-8 text-xs text-secondary cursor-pointer transition-colors hover:(bg-hover text-main)"
                   @click="resetConfig"
                 >
                   重置
@@ -126,7 +126,7 @@
 
         <button
           type="button"
-          class="h-36 inline-flex items-center justify-center gap-6 rounded-8 b-1-muted bg-transparent px-12 text-13px text-regular cursor-pointer transition-colors hover:bg-hover hover:text-main max-md:w-36 max-md:px-0 max-md:text-[0]"
+          class="h-36 inline-flex items-center justify-center gap-6 rounded-8 b-1-muted bg-transparent px-12 text-13px text-regular cursor-pointer transition-colors hover:(bg-hover text-main) max-md:(w-36 px-0) max-md:text-[0]"
           @click="emits('copy-share')"
         >
           <Icon name="i-lucide:share" :size="16" />
@@ -142,7 +142,7 @@
           <button
             type="button"
             data-agent-actions-trigger
-            class="size-36 inline-flex items-center justify-center rounded-8 b-1-muted bg-transparent text-regular cursor-pointer transition-colors hover:bg-hover hover:text-main"
+            class="size-36 inline-flex items-center justify-center rounded-8 b-1-muted bg-transparent text-regular cursor-pointer transition-colors hover:(bg-hover text-main)"
             title="更多操作"
           >
             <Icon name="i-lucide:ellipsis" :size="18" />
@@ -154,10 +154,8 @@
                 :key="action.key"
                 type="button"
                 :data-agent-header-action="action.key"
-                class="h-34 w-full flex items-center gap-8 rounded-7 border-0 bg-transparent px-8 text-left text-13px text-regular cursor-pointer transition-colors hover:bg-hover hover:text-main disabled:cursor-not-allowed disabled:text-disabled"
-                :class="
-                  action.danger ? 'hover:bg-error/10 hover:text-error' : ''
-                "
+                class="h-34 w-full flex items-center gap-8 rounded-7 border-0 bg-transparent px-8 text-left text-13px text-regular cursor-pointer transition-colors hover:(bg-hover text-main) disabled:(cursor-not-allowed text-disabled)"
+                :class="action.danger ? 'hover:(bg-error/10 text-error)' : ''"
                 :disabled="action.disabled"
                 @click="handleHeaderAction(action.key)"
               >
@@ -173,7 +171,7 @@
     <div class="agent-message-panel relative min-h-0 min-w-0">
       <div
         ref="messagePanelRef"
-        class="box-border mx-auto min-h-0 min-w-0 w-full h-full max-w-1680 overflow-x-hidden overflow-y-auto px-40 pb-28 pt-38 max-2xl:max-w-1480 max-xl:max-w-none max-xl:px-28 max-md:px-16 max-md:pb-24 max-md:pt-24"
+        class="box-border mx-auto min-h-0 min-w-0 w-full h-full max-w-1680 overflow-x-hidden overflow-y-auto px-40 pb-28 pt-38 max-2xl:max-w-1480 max-xl:(max-w-none px-28) max-md:(px-16 pb-24 pt-24)"
       >
         <div
           v-if="messages.length === 0"
@@ -185,7 +183,7 @@
             <Icon name="i-lucide:bot" :size="28" />
           </span>
           <h1
-            class="mb-0 mt-18 text-28px text-main font-[650] leading-36px max-md:text-24px max-md:leading-32px"
+            class="mb-0 mt-18 text-28px text-main font-[650] leading-36px max-md:(text-24px leading-32px)"
           >
             今天想让 Agent 帮你做什么？
           </h1>
@@ -205,7 +203,7 @@
             v-for="suggestion in suggestions"
             :key="suggestion.id"
             type="button"
-            class="min-w-0 flex items-start gap-10 rounded-12 b-1-muted bg-container p-12 text-left text-regular cursor-pointer transition-[background-color,border-color,transform] duration-motion-fast hover:-translate-y-1 hover:border-main hover:bg-hover"
+            class="min-w-0 flex items-start gap-10 rounded-12 b-1-muted bg-container p-12 text-left text-regular cursor-pointer transition-[background-color,border-color,transform] duration-100 hover:(-translate-y-1 border-main bg-hover)"
             @click="useSuggestion(suggestion.prompt)"
           >
             <Icon
@@ -270,10 +268,10 @@
     </div>
 
     <section
-      class="box-border mx-auto min-w-0 w-full max-w-1320 px-40 pb-18 max-2xl:max-w-1180 max-xl:px-28 max-md:px-16 max-sm:px-10 max-sm:pb-10"
+      class="box-border mx-auto min-w-0 w-full max-w-1320 px-40 pb-18 max-2xl:max-w-1180 max-xl:px-28 max-md:px-16 max-sm:(px-10 pb-10)"
     >
       <div
-        class="box-border min-w-0 w-full rounded-18 b-1-regular bg-container p-12 shadow-overlay"
+        class="box-border min-w-0 w-full rounded-18 b-1-regular bg-container p-12 shadow-lg"
       >
         <div v-if="attachments.length" class="mb-8 flex flex-wrap gap-6">
           <button
@@ -336,7 +334,7 @@
             />
           </div>
           <div
-            class="min-w-0 flex flex-wrap items-center gap-8 max-sm:w-full max-sm:justify-end"
+            class="min-w-0 flex flex-wrap items-center gap-8 max-sm:(w-full justify-end)"
           >
             <Issue
               :disabled="isRunning"
@@ -591,8 +589,8 @@ function saveEditingMessage() {
 .agent-message-anchor {
   border-radius: 8px;
   transition:
-    background-color var(--w-motion-duration-slow) var(--w-motion-ease-standard),
-    box-shadow var(--w-motion-duration-slow) var(--w-motion-ease-standard);
+    background-color 300ms var(--w-motion-ease),
+    box-shadow 300ms var(--w-motion-ease);
 }
 
 .agent-message-anchor.is-minimap-target {

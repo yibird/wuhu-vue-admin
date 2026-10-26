@@ -3,7 +3,7 @@
     <button
       v-if="show"
       type="button"
-      class="button absolute right-16 top-10 z-10 flex items-center gap-4 rounded-full b-1-muted bg-container py-4 pl-8 pr-11 text-xs text-primary shadow-all-md transition-colors hover:bg-hover"
+      class="button absolute right-16 top-10 z-10 flex items-center gap-4 rounded-full b-1-muted bg-container py-4 pl-8 pr-11 text-xs text-primary shadow-md transition-colors hover:bg-hover"
       title="定位到第一条未读消息"
       aria-label="定位到第一条未读消息"
       @click="emits('locate')"

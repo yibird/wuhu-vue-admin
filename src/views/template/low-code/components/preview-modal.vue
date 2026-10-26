@@ -54,7 +54,7 @@
         :theme="{ token: { colorPrimary: themeColor, fontSize: 15 } }"
       >
         <div
-          class="mx-auto overflow-hidden rounded-10 b-1-regular bg-container shadow-overlay"
+          class="mx-auto overflow-hidden rounded-10 b-1-regular bg-container shadow-lg"
           :style="deviceStyle"
         >
           <SchemaRenderer
@@ -69,8 +69,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { Icon } from '@/components'
-import { toRgb } from '@/utils'
+import { Icon } from '@/components/icon'
 import { SchemaRenderer } from './runtime'
 import { useDesignerContext } from '../hooks'
 import { DEVICE_PRESETS } from '../types'
@@ -124,7 +123,6 @@ const deviceStyle = computed(() => {
   return {
     width: `${size.width}px`,
     minHeight: `${Math.min(size.height, 900)}px`,
-    '--w-color-primary': toRgb(themeColor.value) ?? undefined,
   }
 })
 

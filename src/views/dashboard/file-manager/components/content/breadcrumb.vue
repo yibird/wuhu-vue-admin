@@ -13,7 +13,7 @@
         <Icon
           name="i-lucide:folder-open"
           :size="18"
-          class="shrink-0 transition-transform duration-motion-base group-hover:scale-108"
+          class="shrink-0 transition-transform duration-200 group-hover:scale-108"
         />
         <span class="text-sm">文件管理</span>
       </button>
@@ -32,7 +32,7 @@
         <Icon
           name="i-lucide:folder"
           :size="18"
-          class="shrink-0 transition-transform duration-motion-base group-hover:-translate-y-1"
+          class="shrink-0 transition-transform duration-200 group-hover:-translate-y-1"
         />
         <span class="text-sm">{{ item.fileName }}</span>
       </button>

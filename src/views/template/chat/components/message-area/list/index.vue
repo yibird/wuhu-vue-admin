@@ -44,7 +44,7 @@
           >
             <a-avatar :size="36" round />
             <div
-              class="typing-bubble rounded-12 rounded-tl-2px bg-secondary px-13 py-10 shadow-all-sm"
+              class="typing-bubble rounded-12 rounded-tl-2px bg-secondary px-13 py-10 shadow-sm"
             >
               <span />
               <span />
@@ -145,16 +145,15 @@ defineExpose({
   height: 5px;
   background-color: rgb(var(--w-text-secondary));
   border-radius: 50%;
-  animation: typing-bounce var(--w-motion-duration-loop-fast)
-    var(--w-motion-ease-standard) infinite;
+  animation: typing-bounce 1200ms var(--w-motion-ease) infinite;
 }
 
 .typing-bubble span:nth-child(2) {
-  animation-delay: var(--w-motion-delay-stagger);
+  animation-delay: 160ms;
 }
 
 .typing-bubble span:nth-child(3) {
-  animation-delay: var(--w-motion-delay-stagger-long);
+  animation-delay: 320ms;
 }
 
 @keyframes typing-bounce {

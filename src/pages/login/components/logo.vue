@@ -1,6 +1,6 @@
 <template>
   <div
-    class="page-enter page-enter--2 absolute left-16 top-16 z-10 min-w-0 flex items-center gap-10 sm:left-20 sm:top-20"
+    class="page-enter page-enter--2 absolute left-16 top-16 z-10 min-w-0 flex items-center gap-10 sm:(left-20 top-20)"
   >
     <img
       v-if="appLogo"
@@ -24,7 +24,7 @@
 import { THEME_MODE } from '@/constants'
 import { useTheme } from '@/theme'
 import { useAppStore } from '@/store'
-import { GradientText } from '@/components'
+import { GradientText } from '@/components/gradient-text'
 
 const { app } = useAppStore()
 const appName = computed(() => app.value.name)

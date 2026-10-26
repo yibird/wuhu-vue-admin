@@ -13,8 +13,8 @@ import {
 } from '@/constants'
 import logo from '@/assets/svg/logo.svg'
 import { appEnv } from '@/utils'
-import type { AppStoreState } from './types'
 import { getFontFamilyOption } from '@/config'
+import type { AppStoreState } from './types'
 
 const createInitialState = (): AppStoreState => {
   return {
@@ -66,7 +66,7 @@ const createInitialState = (): AppStoreState => {
       name: appEnv.appName,
       logo,
       themeMode: THEME_MODE.Light,
-      themeColor: '22, 119, 255',
+      themeColor: '22 119 255',
       locale: LOCALE.ZH_CN,
       font: getFontFamilyOption(FONT_FAMILY.Outfit),
       menuMode: MENU_MODE.Vertical,

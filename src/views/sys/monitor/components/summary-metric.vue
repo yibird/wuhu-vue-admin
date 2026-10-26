@@ -1,6 +1,6 @@
 <template>
   <div
-    class="min-w-0 rounded-6 bg-secondary px-10 py-9 transition-colors duration-motion-base hover:bg-hover"
+    class="min-w-0 rounded-6 bg-secondary px-10 py-9 transition-colors duration-200 hover:bg-hover"
   >
     <div class="truncate text-xs text-secondary">{{ label }}</div>
     <div :class="['mt-4 truncate text-lg font-700', valueClass]">

@@ -24,7 +24,7 @@
       <div
         v-for="item in items"
         :key="item.id"
-        class="rounded-8 b-1-regular bg-secondary p-12 transition-[border-color,background-color,box-shadow,transform] duration-motion-base ease-motion-enter hover:(-translate-y-2 shadow-[0_6px_16px_rgb(var(--w-color-primary)_/_10%)]) active:(translate-y-0 scale-[0.995]) motion-reduce:transition-none motion-reduce:hover:translate-y-0 motion-reduce:active:scale-100"
+        class="rounded-8 b-1-regular bg-secondary p-12 transition-[border-color,background-color,box-shadow,transform] duration-200 ease-[var(--w-motion-ease-enter)] hover:(-translate-y-2 shadow-lg shadow-primary/10) active:(translate-y-0 scale-[0.995]) motion-reduce:transition-none motion-reduce:hover:translate-y-0 motion-reduce:active:scale-100"
       >
         <div class="flex items-start justify-between gap-10">
           <div class="min-w-0">

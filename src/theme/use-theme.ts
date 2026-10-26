@@ -3,12 +3,10 @@ import { createSharedComposable, usePreferredDark } from '@vueuse/core'
 import { theme as antTheme } from 'antdv-next'
 import { isEqual } from 'es-toolkit'
 import { useAppStore } from '@/store'
-import { rgbToHex, toRgb } from '@/utils'
 import { THEME_MODE, type ThemeMode } from '@/constants'
 import { useThemeTransition } from './use-theme-transition'
 import {
   DEFAULT_PRIMARY_COLOR,
-  DEFAULT_PRIMARY_HEX,
   GREY_MODE_CLASS_NAME,
   PRIMARY_COLOR_VAR,
   THEME_TRANSITION_CLASS,
@@ -16,7 +14,6 @@ import {
 } from './constant'
 import type { Font } from '#/config'
 
-/** 待执行的解锁帧,连续切换时只保留最后一次 */
 let unlockFrame: number | undefined
 
 function withoutColorTransition(task: () => void) {
@@ -48,10 +45,10 @@ export function setThemeMode(mode: 'light' | 'dark') {
   root.classList.toggle(THEME_MODE.Dark, mode === THEME_MODE.Dark)
 }
 
-export function setPrimaryColor(color: string) {
+export function setPrimaryColor(primaryColor: string) {
   document.documentElement.style.setProperty(
     PRIMARY_COLOR_VAR,
-    toRgb(color) ?? DEFAULT_PRIMARY_COLOR
+    primaryColor || DEFAULT_PRIMARY_COLOR
   )
 }
 
@@ -72,12 +69,12 @@ export const useTheme = createSharedComposable(() => {
   const themeMode = computed(() =>
     resolveThemeMode(appThemeMode.value, systemDark.value)
   )
-  const themeColor = computed(() => app.value.themeColor)
+  const themeColor = computed(
+    () => app.value.themeColor || DEFAULT_PRIMARY_COLOR
+  )
   const font = computed(() => app.value.font)
 
-  const primaryColor = computed(() => {
-    return rgbToHex(themeColor.value) ?? DEFAULT_PRIMARY_HEX
-  })
+  const primaryColor = computed(() => `rgb(${themeColor.value})`)
   const isDark = computed(() => themeMode.value === THEME_MODE.Dark)
   const algorithm = computed(() => {
     return isDark.value ? antTheme.darkAlgorithm : antTheme.defaultAlgorithm
@@ -99,9 +96,9 @@ export const useTheme = createSharedComposable(() => {
     if (app.value.themeMode === mode) return
     app.value.themeMode = mode
   }
-  const changeThemeColor = (color: string) => {
-    if (app.value.themeColor === color) return
-    app.value.themeColor = color
+  const changeThemeColor = (primaryColor: string) => {
+    if (app.value.themeColor === primaryColor) return
+    app.value.themeColor = primaryColor
   }
 
   const changeFont = (font: Font) => {

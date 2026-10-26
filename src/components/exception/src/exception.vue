@@ -1,6 +1,6 @@
 <template>
   <div
-    class="full flex flex-col items-center justify-center gap-24 overflow-auto px-24 py-36 text-center md:flex-row md:gap-40 md:text-left"
+    class="full flex flex-col items-center justify-center gap-24 overflow-auto px-24 py-36 text-center md:(flex-row gap-40 text-left)"
   >
     <img
       v-if="props.image"

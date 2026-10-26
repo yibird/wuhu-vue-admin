@@ -48,7 +48,8 @@
 <script setup lang="ts">
 import { Tag } from 'antdv-next'
 import { getNoticePageListApi, type SysNotice, type NoticeType } from '@/apis'
-import { FormPlus, Icon } from '@/components'
+import { FormPlus } from '@/components/form-plus'
+import { Icon } from '@/components/icon'
 import { useRequest, useTabs } from '@/hooks'
 import { FormModal } from './components'
 

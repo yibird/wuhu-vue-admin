@@ -133,7 +133,7 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
 import { getMenuRecordApi, type SysMenu } from '@/apis'
-import { Icon } from '@/components'
+import { Icon } from '@/components/icon'
 import { useRequest, useTabs } from '@/hooks'
 import FormModal from '../list/components/form-modal.vue'
 

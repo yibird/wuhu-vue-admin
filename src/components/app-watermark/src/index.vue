@@ -25,7 +25,7 @@ const show = computed(() => app.value.showWatermark)
 const content = computed(() => app.value.name)
 
 const font = computed(() => ({
-  color: `rgba(${app.value.themeColor}, 0.12)`,
+  color: `rgb(${app.value.themeColor} / 12%)`,
   fontSize: 18,
   fontWeight: 600,
 }))

@@ -64,7 +64,7 @@ import {
   type SysDictTypeQuery,
   type SysDictType,
 } from '@/apis'
-import { WView } from '@/components'
+import { WView } from '@/components/view'
 import { useRequest } from '@/hooks'
 import { Content, DictForm, Header as DictHeader, Sider } from './components'
 import type { DictItemFilters } from './components'

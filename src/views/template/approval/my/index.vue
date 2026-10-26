@@ -106,7 +106,7 @@
 </template>
 
 <script setup lang="ts">
-import { Icon } from '@/components'
+import { Icon } from '@/components/icon'
 import { useTabs } from '@/hooks'
 import { ApprovalCard } from '../components'
 import { definitionStateOptions } from '../shared'

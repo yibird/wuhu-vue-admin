@@ -15,7 +15,7 @@
       @click="emits('pick', 'image')"
     >
       <span
-        class="size-42 flex items-center justify-center rounded-full bg-container text-primary shadow-all-sm"
+        class="size-42 flex items-center justify-center rounded-full bg-container text-primary shadow-sm"
       >
         <Icon name="i-lucide:image-up" :size="22" />
       </span>

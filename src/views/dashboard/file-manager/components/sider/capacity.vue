@@ -1,6 +1,6 @@
 <template>
   <div
-    class="b-t-1-muted px-16 py-14 transition-colors duration-motion-base ease-motion-standard motion-reduce:transition-none max-[1199px]:(border-t-0 b-l-1-muted px-16 py-12) max-[767px]:(border-l-0 b-t-1-muted px-12 py-12)"
+    class="b-t-1-muted px-16 py-14 transition-colors duration-200 ease-[var(--w-motion-ease)] motion-reduce:transition-none max-[1199px]:(border-t-0 b-l-1-muted px-16 py-12) max-[767px]:(border-l-0 b-t-1-muted px-12 py-12)"
   >
     <div class="flex items-center justify-between gap-8">
       <div class="flex min-w-0 items-center gap-8">
@@ -20,7 +20,7 @@
     </div>
     <div class="mt-10 h-6 overflow-hidden rounded-full bg-secondary">
       <div
-        class="h-full rounded-full transition-[width,background-color] duration-motion-slower ease-motion-enter"
+        class="h-full rounded-full transition-[width,background-color] duration-500 ease-[var(--w-motion-ease-enter)]"
         :style="{
           width: `${percent * 100}%`,
           backgroundColor: progressColor,

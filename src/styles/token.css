@@ -25,78 +25,78 @@
 
   /* ===================================== 文字颜色 */
 
-  /* 标题/重度强调（接近纯黑，但融入了微量蓝黑，极具分量感） */
-  --w-text-main: 17 24 39;
+  /* 标题/重度强调 */
+  --w-text-main: 17 24 39; /* #111827 */
 
-  /* 常规正文/标签（大幅加深！确保长文本、表格、常规文字绝对清晰，看久了不累） */
-  --w-text-regular: 55 65 81;
+  /* 常规正文/标签 */
+  --w-text-regular: 55 65 81; /* #374151 */
 
-  /* 次要正文/时间/副标题（原先的 156 太淡了，拉深到 107，兼顾层级与可读性） */
-  --w-text-secondary: 107 114 128;
+  /* 次要正文/时间/副标题 */
+  --w-text-secondary: 107 114 128; /* #6B7280 */
 
   /* 弱化/提示/脚注（用来代替你原先的 secondary，适合非常边缘的辅助提示） */
-  --w-text-muted: 148 163 184;
+  --w-text-muted: 148 163 184; /* #94A3B8 */
 
-  /* 占位符颜色（比 muted 略淡一点点，既能看清，又不会干扰用户输入） */
-  --w-text-placeholder: 186 195 207;
+  /* 占位符颜色 */
+  --w-text-placeholder: 186 195 207; /* #BAC3CF */
 
-  /* 禁用状态文字（保持足够的低对比度，同时确保在暗色/灰色底色上不消失） */
-  --w-text-disabled: 203 213 225;
+  /* 禁用状态文字 */
+  --w-text-disabled: 203 213 225; /* #CBD5E1 */
 
-  /* 链接/高亮颜色（微调了原先的纯蓝，融入了一丝丝靛蓝，视觉上更稳重，更符合现代审美） */
-  --w-text-link: 26 92 255;
+  /* 链接/高亮颜色 */
+  --w-text-link: 26 92 255; /* #1A5CFF */
 
   /* ===================================== 背景颜色 */
 
   /* 页面背景 */
-  --w-bg-page: 245 247 250;
+  --w-bg-page: 245 247 250; /* #F5F7FA */
 
   /* 容器背景 */
-  --w-bg-container: 255 255 255;
+  --w-bg-container: 255 255 255; /* #FFFFFF */
 
   /* 次级内容背景 */
-  --w-bg-secondary: 250 250 250;
+  --w-bg-secondary: 250 250 250; /* #FAFAFA */
 
   /* 组件内部的弱化背景 */
-  --w-bg-muted: 245 245 245;
+  --w-bg-muted: 245 245 245; /* #F5F5F5 */
 
   /* 浮层背景 */
-  --w-bg-overlay: 255 255 255;
+  --w-bg-overlay: 255 255 255; /* #FFFFFF */
 
   /* 悬浮状态 */
-  --w-bg-hover: 245 245 245;
+  --w-bg-hover: 245 245 245; /* #F5F5F5 */
 
   /* 激活状态 */
-  --w-bg-active: 238 240 242;
+  --w-bg-active: 238 240 242; /* #EEF0F2 */
 
   /* 选中状态 */
-  --w-bg-selected: 240 246 252;
+  --w-bg-selected: 240 246 252; /* #F0F6FC */
 
   /* 禁用状态背景 */
-  --w-bg-disabled: 240 240 240;
+  --w-bg-disabled: 240 240 240; /* #F0F0F0 */
 
   /* 普通填充背景 */
-  --w-bg-fill: 245 245 245;
+  --w-bg-fill: 245 245 245; /* #F5F5F5 */
 
   /* ===================================== 边框颜色 */
 
   /* 主要边框 */
-  --w-border-main: 191 198 208; /* #BFC6D0 */
+  --w-border-main: 199 205 214; /* #C7CDD6 */
 
   /* 常规边框 */
-  --w-border-regular: 218 223 230; /* #DADFE6 */
+  --w-border-regular: 224 228 234; /* #E0E4EA */
 
   /* 次要边框 */
-  --w-border-secondary: 230 233 238; /* #E6E9EE */
+  --w-border-secondary: 234 237 242; /* #EAEDF2 */
 
   /* 弱化边框：分割线 */
-  --w-border-muted: 237 240 244; /* #EDF0F4 */
+  --w-border-muted: 241 243 246; /* #F1F3F6 */
 
   /* 占位区域边框 */
-  --w-border-placeholder: 222 227 234; /* #DEE3EA */
+  --w-border-placeholder: 229 233 239; /* #E5E9EF */
 
   /* 禁用边框 */
-  --w-border-disabled: 233 236 241; /* #E9ECF1 */
+  --w-border-disabled: 239 242 246; /* #EFF2F6 */
 
   /* ===================================== 阴影 */
 
@@ -117,59 +117,10 @@
 
   /* ===================================== 动效 */
 
-  /* 动效时长：交互影响范围越大，持续时间越长；离场动画通常比入场动画短一级。 */
-  --w-motion-duration-none: 0ms; /* 关闭动画或处理 reduced-motion 场景 */
-  --w-motion-duration-fast: 120ms; /* 按压、开关、图标等即时反馈 */
-  --w-motion-duration-base: 180ms; /* hover、颜色、边框等常规状态变化 */
-  --w-motion-duration-moderate: 240ms; /* 下拉菜单、气泡、局部内容切换 */
-  --w-motion-duration-slow: 320ms; /* 抽屉、侧栏、布局尺寸变化 */
-  --w-motion-duration-slower: 480ms; /* 页面入场、复杂内容编排 */
-
-  /* 默认动效时长 */
-  --w-motion-duration: var(--w-motion-duration-base);
-
-  /* 缓动曲线：进入强调减速，离开强调加速，减少界面拖沓感。 */
-  --w-motion-ease-linear: linear; /* 进度、持续旋转等匀速动画 */
-  --w-motion-ease-standard: cubic-bezier(
-    0.2,
-    0,
-    0,
-    1
-  ); /* 状态和位置的常规过渡 */
-
-  --w-motion-ease-enter: cubic-bezier(0.16, 1, 0.3, 1); /* 元素进入或展开 */
-  --w-motion-ease-exit: cubic-bezier(0.4, 0, 1, 1); /* 元素离开或收起 */
-  --w-motion-ease-emphasized: cubic-bezier(
-    0.2,
-    0.8,
-    0.2,
-    1
-  ); /* 页面和大范围布局变化 */
-
-  --w-motion-ease-spring: cubic-bezier(
-    0.34,
-    1.56,
-    0.64,
-    1
-  ); /* 小型元素的轻微回弹 */
-
-  /* 默认缓动曲线 */
-  --w-motion-ease: var(--w-motion-ease-standard);
-
-  /* 动效幅度：限制位移和缩放范围，保持后台界面的稳定与可扫描性。 */
-  --w-motion-distance-sm: 4px; /* hover、按压等微位移 */
-  --w-motion-distance-base: 8px; /* 卡片、局部内容入场 */
-  --w-motion-distance-lg: 16px; /* 浮层、面板入场 */
-  --w-motion-distance-xl: 32px; /* 抽屉等大范围移动 */
-  --w-motion-scale-pressed: 0.96; /* 控件按压反馈 */
-  --w-motion-scale-enter: 0.98; /* 弹层或卡片入场起始比例 */
-  --w-motion-scale-emphasized: 1.04; /* 图标或紧凑控件的强调反馈 */
-
-  /* 动画延迟：用于列表或分段内容的轻量错峰，避免长时间级联等待。 */
-  --w-motion-delay-none: 0ms;
-  --w-motion-delay-short: 40ms;
-  --w-motion-delay-base: 80ms;
-  --w-motion-delay-long: 120ms;
+  /* 缓动曲线 */
+  --w-motion-ease: cubic-bezier(0.2, 0, 0, 1);
+  --w-motion-ease-enter: cubic-bezier(0.16, 1, 0.3, 1);
+  --w-motion-ease-exit: cubic-bezier(0.4, 0, 1, 1);
 
   /* ===================================== sider token */
 
@@ -191,9 +142,6 @@
   --w-header-height: 50px;
   --w-header-bg: rgb(255 255 255 / 75%);
   --w-header-border-color: 226 232 240;
-
-  /* --w-header-shadow: 0 1px 2px rgba(0, 0, 0, 0.08); */
-
   --w-header-filter: saturate(180%) blur(20px);
 }
 
@@ -205,48 +153,46 @@
 
   /* ===================================== 文字颜色 */
 
-  /* 对齐 antdv-next dark：主文字 #fff，其余为透明白叠加在 #141414 上的等效实色 */
-  --w-text-main: 255 255 255;
-  --w-text-regular: 220 220 220;
-  --w-text-secondary: 173 173 173;
-  --w-text-muted: 126 126 126;
-  --w-text-placeholder: 79 79 79;
-  --w-text-disabled: 64 64 64;
-  --w-text-link: 96 165 250;
+  --w-text-main: 255 255 255; /* #FFFFFF */
+  --w-text-regular: 220 220 220; /* #DCDCDC */
+  --w-text-secondary: 173 173 173; /* #ADADAD */
+  --w-text-muted: 126 126 126; /* #7E7E7E */
+  --w-text-placeholder: 79 79 79; /* #4F4F4F */
+  --w-text-disabled: 64 64 64; /* #404040 */
+  --w-text-link: 96 165 250; /* #60A5FA */
 
   /* ===================================== 背景颜色 */
 
-  /* 对齐 antdv-next dark：page #000 < container #141414 < elevated #1f1f1f */
-  --w-bg-page: 0 0 0;
-  --w-bg-container: 20 20 20;
-  --w-bg-secondary: 31 31 31;
-  --w-bg-muted: 31 31 31;
-  --w-bg-overlay: 31 31 31;
-  --w-bg-hover: 39 39 39;
-  --w-bg-active: 48 48 48;
-  --w-bg-selected: 23 37 84;
-  --w-bg-disabled: 31 31 31;
-  --w-bg-fill: 31 31 31;
+  --w-bg-page: 0 0 0; /* #000000 */
+  --w-bg-container: 20 20 20; /* #141414 */
+  --w-bg-secondary: 31 31 31; /* #1F1F1F */
+  --w-bg-muted: 31 31 31; /* #1F1F1F */
+  --w-bg-overlay: 31 31 31; /* #1F1F1F */
+  --w-bg-hover: 39 39 39; /* #272727 */
+  --w-bg-active: 48 48 48; /* #303030 */
+  --w-bg-selected: 23 37 84; /* #172554 */
+  --w-bg-disabled: 31 31 31; /* #1F1F1F */
+  --w-bg-fill: 31 31 31; /* #1F1F1F */
 
   /* ===================================== 边框颜色 */
 
-  /* 对齐 antdv-next dark：colorBorder #424242 / colorBorderSecondary #303030 */
-  --w-border-main: 66 66 66;
-  --w-border-regular: 66 66 66;
-  --w-border-secondary: 48 48 48;
-  --w-border-muted: 31 31 31;
-  --w-border-placeholder: 48 48 48;
-  --w-border-disabled: 31 31 31;
+  --w-border-main: 66 66 66; /* #424242 */
+  --w-border-regular: 66 66 66; /* #424242 */
+  --w-border-secondary: 48 48 48; /* #303030 */
+  --w-border-muted: 31 31 31; /* #1F1F1F */
+  --w-border-placeholder: 48 48 48; /* #303030 */
+  --w-border-disabled: 31 31 31; /* #1F1F1F */
 
   /* ===================================== 阴影 */
 
   --w-shadow-button: 0 1px 2px rgb(0 0 0 / 45%);
   --w-shadow-card: 0 1px 2px rgb(0 0 0 / 45%), 0 6px 16px rgb(0 0 0 / 40%);
   --w-shadow-overlay: 0 12px 32px rgb(0 0 0 / 80%);
-  --w-shadow-sider:
-    12px 0 28px -10px rgb(0 0 0 / 85%), 1px 0 0 rgb(148 163 184 / 18%);
 
-  /* 焦点环 */
+  /* 暗色页面接近纯黑,纯黑阴影不可见,改用浅色描边 + 冷色光晕 */
+  --w-shadow-sider:
+    12px 0 28px -10px rgb(0 0 0 / 60%), 1px 0 0 rgb(255 255 255 / 14%),
+    8px 0 24px -8px rgb(148 163 184 / 30%);
   --w-shadow-focus: 0 0 0 3px rgb(var(--w-color-primary) / 22%);
 
   /* ===================================== app token */

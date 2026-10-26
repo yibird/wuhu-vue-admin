@@ -4,7 +4,7 @@
   >
     <div
       v-if="loading"
-      class="min-h-84 flex items-center justify-between gap-14 max-lg:flex-col max-lg:items-start"
+      class="min-h-84 flex items-center justify-between gap-14 max-lg:(flex-col items-start)"
       aria-label="日历工具栏加载中"
       aria-busy="true"
     >
@@ -23,7 +23,7 @@
         class="pointer-events-none absolute inset-0 opacity-80 [background:radial-gradient(circle_at_12%_0,rgb(var(--w-color-primary)_/_12%),transparent_32%),linear-gradient(135deg,rgb(var(--w-bg-container)),rgb(var(--w-bg-secondary)_/_48%))]"
       ></div>
       <div
-        class="relative flex items-center justify-between gap-14 max-lg:flex-col max-lg:items-start"
+        class="relative flex items-center justify-between gap-14 max-lg:(flex-col items-start)"
       >
         <div class="min-w-0">
           <div class="flex flex-wrap items-center gap-8">
@@ -44,7 +44,7 @@
         </div>
 
         <div
-          class="flex flex-none flex-wrap items-center justify-end gap-8 max-lg:w-full max-lg:justify-start [&_.ant-segmented]:max-w-full max-sm:[&_.ant-segmented]:w-full"
+          class="flex flex-none flex-wrap items-center justify-end gap-8 max-lg:(w-full justify-start) [&_.ant-segmented]:max-w-full max-sm:[&_.ant-segmented]:w-full"
         >
           <a-segmented
             :options="viewOptions"

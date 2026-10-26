@@ -180,7 +180,7 @@
 <script setup lang="ts">
 import { message } from 'antdv-next'
 import { computed, reactive, ref } from 'vue'
-import { Icon } from '@/components'
+import { Icon } from '@/components/icon'
 import { saveMaterials } from '../core/persistence'
 import { componentRegistry } from '../core/registry'
 import { useDesignerContext } from '../hooks'

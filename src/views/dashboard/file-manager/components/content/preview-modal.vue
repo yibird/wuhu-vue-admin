@@ -3,11 +3,11 @@
 </template>
 
 <script setup lang="ts">
-import {
-  FilePreview,
-  type FilePreviewKind,
-  type FilePreviewSource,
-} from '@/components'
+import { FilePreview } from '@/components/file-preview'
+import type {
+  FilePreviewKind,
+  FilePreviewSource,
+} from '@/components/file-preview'
 import type { IFile } from '../types'
 import { getFileCategoryByType, getFileExtension } from '../utils'
 

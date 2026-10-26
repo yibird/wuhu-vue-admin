@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, shallowRef, useAttrs, useTemplateRef } from 'vue'
 import { useIntersectionObserver } from '@vueuse/core'
-import { Card } from '@/components'
+import { Card } from '@/components/card'
 import type { VNodeChild } from 'vue'
 
 defineOptions({ inheritAttrs: false })
@@ -77,10 +77,3 @@ const cardAttrs = computed(() => ({ ...attrs, class: cardClass.value }))
     </Card>
   </a-border-beam>
 </template>
-
-<style lang="less" scoped>
-/* 光束节点由 BorderBeam teleport 到卡片内部,离屏时暂停其无限动画 */
-.w-beam-card--idle :deep(.ant-border-beam)::before {
-  animation-play-state: paused;
-}
-</style>

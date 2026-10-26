@@ -193,7 +193,7 @@
 <script setup lang="ts">
 import { message } from 'antdv-next'
 import { Motion } from 'motion-v'
-import { Icon } from '@/components'
+import { Icon } from '@/components/icon'
 import { useTabs } from '@/hooks'
 import { ApprovalCard } from '../components'
 import { useApprovalCategories } from './hooks'

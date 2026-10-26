@@ -60,7 +60,8 @@
 <script setup lang="ts">
 import { Button, Modal, Tag, message } from 'antdv-next'
 import { deleteProjectMemberApi, getProjectMemberPageListApi } from '@/apis'
-import { FormPlus, Icon } from '@/components'
+import { FormPlus } from '@/components/form-plus'
+import { Icon } from '@/components/icon'
 import { usePermission, useRequest } from '@/hooks'
 import { MemberForm } from './components'
 import { formatDate, memberRoleMeta, memberRoleOptions } from '../data'

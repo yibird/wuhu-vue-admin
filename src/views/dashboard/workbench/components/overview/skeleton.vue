@@ -6,7 +6,7 @@
   >
     <div class="grid gap-0 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)]">
       <div class="min-w-0 p-16 sm:p-20">
-        <div class="flex flex-col gap-14 sm:flex-row sm:items-center">
+        <div class="flex flex-col gap-14 sm:(flex-row items-center)">
           <a-skeleton-avatar active :size="54" class="shrink-0" />
           <div class="min-w-0 flex-1">
             <a-skeleton active :title="false" :paragraph="{ rows: 2 }" />
@@ -18,12 +18,12 @@
       </div>
 
       <div
-        class="grid grid-cols-2 b-t-1-[rgb(var(--w-border-regular))] sm:grid-cols-4 lg:grid-cols-2 lg:b-l-1-[rgb(var(--w-border-regular))] lg:border-t-0"
+        class="grid grid-cols-2 b-t-1-[border-secondary] sm:grid-cols-4 lg:grid-cols-2 lg:b-l-1-[border-secondary] lg:border-t-0"
       >
         <div
           v-for="item in 4"
           :key="item"
-          class="min-w-0 b-r-1-[rgb(var(--w-border-regular))] b-b-1-[rgb(var(--w-border-regular))] p-14"
+          class="min-w-0 b-r-1-[border-secondary] b-b-1-[border-secondary] p-14"
         >
           <div class="flex items-center justify-between gap-10">
             <a-skeleton-input active size="small" class="!w-72" />

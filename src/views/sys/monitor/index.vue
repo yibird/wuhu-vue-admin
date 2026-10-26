@@ -3,10 +3,10 @@
     <div class="w-full h-full overflow-x-hidden overflow-y-auto">
       <div class="min-h-full bg-page p-10 sm:p-12">
         <header
-          class="mb-12 overflow-hidden rounded-8 b-1-regular bg-container shadow-card"
+          class="mb-12 overflow-hidden rounded-8 b-1-regular bg-container shadow-sm"
         >
           <div
-            class="flex flex-wrap items-start justify-between gap-14 b-b-1-regular px-14 py-14 sm:px-18 sm:py-16"
+            class="flex flex-wrap items-start justify-between gap-14 b-b-1-regular px-14 py-14 sm:(px-18 py-16)"
           >
             <div class="min-w-0">
               <div class="flex flex-wrap items-center gap-10">
@@ -58,7 +58,7 @@
           </div>
 
           <div class="grid grid-cols-2 gap-0 sm:grid-cols-4">
-            <div class="px-14 py-12 sm:px-18 sm:py-14">
+            <div class="px-14 py-12 sm:(px-18 py-14)">
               <div class="text-xs text-secondary">健康评分</div>
               <div class="mt-6 flex items-baseline gap-5">
                 <strong :class="['text-2xl font-800', healthScoreClass]">{{
@@ -67,21 +67,21 @@
                 <span class="text-xs text-secondary">/ 100</span>
               </div>
             </div>
-            <div class="b-l-1-regular px-14 py-12 sm:px-18 sm:py-14">
+            <div class="b-l-1-regular px-14 py-12 sm:(px-18 py-14)">
               <div class="text-xs text-secondary">应用进程</div>
               <div class="mt-6 text-2xl text-primary font-800">
                 {{ snapshot.processes.length }}
               </div>
             </div>
             <div
-              class="b-t-1-regular px-14 py-12 sm:border-l-1 sm:border-t-0 sm:px-18 sm:py-14"
+              class="b-t-1-regular px-14 py-12 sm:(border-l-1 border-t-0 px-18 py-14)"
             >
               <div class="text-xs text-secondary">数据库实例</div>
               <div class="mt-6 text-2xl text-info font-800">
                 {{ snapshot.database.instances.length }}
               </div>
             </div>
-            <div class="b-l-1-regular px-14 py-12 sm:px-18 sm:py-14">
+            <div class="b-l-1-regular px-14 py-12 sm:(px-18 py-14)">
               <div class="text-xs text-secondary">待处理风险</div>
               <div
                 :class="[

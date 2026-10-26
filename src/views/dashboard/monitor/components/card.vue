@@ -1,7 +1,7 @@
 <template>
   <a-border-beam :duration="6" :line-width="3">
     <Card
-      class="overflow-hidden rounded-8 b-1-regular shadow-card transition-[border-color,box-shadow,transform] duration-motion-moderate ease-motion-enter hover:(-translate-y-2 shadow-overlay) motion-reduce:transition-none motion-reduce:hover:translate-y-0"
+      class="overflow-hidden rounded-8 shadow-sm transition-[border-color,box-shadow,transform] duration-300 ease-[var(--w-motion-ease-enter)] hover:(-translate-y-2 shadow-lg) motion-reduce:transition-none motion-reduce:hover:translate-y-0"
       variant="borderless"
       :body-class="bodyClass"
       :styles="cardStyles"
@@ -40,7 +40,7 @@
 
 <script setup lang="ts">
 import type { CSSProperties } from 'vue'
-import { Card } from '@/components'
+import { Card } from '@/components/card'
 
 const props = withDefaults(
   defineProps<{

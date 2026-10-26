@@ -38,7 +38,7 @@
         :aria-label="`销售目标已完成 ${goal.percent}%`"
       >
         <div
-          class="h-full origin-left rounded-999 bg-primary transition-[width] duration-motion-moderate ease-motion-standard motion-reduce:transition-none"
+          class="h-full origin-left rounded-999 bg-primary transition-[width] duration-300 ease-[var(--w-motion-ease)] motion-reduce:transition-none"
           :style="{ width: `${goal.percent}%` }"
         ></div>
       </div>
@@ -47,7 +47,7 @@
         <div
           v-for="stage in stages"
           :key="stage.label"
-          class="rounded-8 bg-secondary px-10 py-9 transition-colors duration-motion-base hover:bg-hover motion-reduce:transition-none"
+          class="rounded-8 bg-secondary px-10 py-9 transition-colors duration-200 hover:bg-hover motion-reduce:transition-none"
         >
           <div class="flex items-center justify-between gap-8">
             <span class="text-xs text-secondary">{{ stage.label }}</span>
@@ -57,7 +57,7 @@
           </div>
           <div class="mt-7 h-5 overflow-hidden rounded-999 bg-muted">
             <div
-              class="h-full origin-left rounded-999 transition-[width] duration-motion-moderate ease-motion-standard motion-reduce:transition-none"
+              class="h-full origin-left rounded-999 transition-[width] duration-300 ease-[var(--w-motion-ease)] motion-reduce:transition-none"
               :class="stage.bar"
               :style="{ width: `${stage.percent}%` }"
             ></div>
@@ -81,7 +81,7 @@
 </template>
 
 <script lang="ts" setup>
-import { Card } from '@/components'
+import { Card } from '@/components/card'
 
 interface GoalStage {
   /** 统计口径 */

@@ -3,7 +3,7 @@
     class="grid min-w-0 grid-cols-[minmax(0,1.45fr)_minmax(300px,0.75fr)] gap-10 max-xl:grid-cols-1"
   >
     <section
-      class="min-w-0 overflow-hidden rounded-8 b-1-regular bg-container shadow-card"
+      class="min-w-0 overflow-hidden rounded-8 b-1-regular bg-container shadow-sm"
     >
       <div
         class="flex items-center justify-between gap-10 b-b-1-regular px-14 py-11"
@@ -26,7 +26,7 @@
         class="grid grid-cols-[minmax(0,1fr)_260px] gap-0 max-lg:grid-cols-1"
       >
         <div
-          class="min-w-0 b-r-1-regular p-14 max-lg:border-b-1 max-lg:border-r-0 max-lg:border-b-solid"
+          class="min-w-0 b-r-1-regular p-14 max-lg:(border-b-1 border-r-0 border-b-solid)"
         >
           <div class="h-176 flex items-end gap-8" aria-label="流程执行吞吐图">
             <div
@@ -81,7 +81,7 @@
               </div>
               <div class="h-5 overflow-hidden rounded-full bg-secondary">
                 <div
-                  class="h-full origin-left rounded-full bg-primary transition-transform duration-motion-slower"
+                  class="h-full origin-left rounded-full bg-primary transition-transform duration-500"
                   :style="{ width: latencyPercent(item) }"
                 ></div>
               </div>
@@ -95,7 +95,7 @@
     </section>
 
     <section
-      class="min-w-0 overflow-hidden rounded-8 b-1-regular bg-container shadow-card"
+      class="min-w-0 overflow-hidden rounded-8 b-1-regular bg-container shadow-sm"
     >
       <div
         class="flex items-center justify-between gap-8 b-b-1-regular px-14 py-11"
@@ -115,7 +115,7 @@
         <div
           v-for="alert in alerts"
           :key="alert.id"
-          class="group flex gap-9 rounded-6 px-8 py-8 transition-colors duration-motion-fast hover:bg-hover"
+          class="group flex gap-9 rounded-6 px-8 py-8 transition-colors duration-100 hover:bg-hover"
           :class="{ 'opacity-55': alert.acknowledged }"
         >
           <span

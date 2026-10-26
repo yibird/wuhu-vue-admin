@@ -41,7 +41,7 @@
         <a-button
           size="large"
           html-type="button"
-          class="shrink-0 transition-[border-color,box-shadow,transform] duration-motion-base hover:(-translate-y-1 border-primary! shadow-all-sm) active:translate-y-0 motion-reduce:(transform-none transition-none)"
+          class="shrink-0 transition-[border-color,box-shadow,transform] duration-200 hover:(-translate-y-1 border-primary! shadow-sm) active:translate-y-0 motion-reduce:(transform-none transition-none)"
         >
           {{ $t('login.sendCode') }}
         </a-button>
@@ -52,7 +52,7 @@
       size="large"
       block
       html-type="submit"
-      class="mt-20 h-44! font-medium transition-[transform,box-shadow,filter] duration-motion-base hover:(-translate-y-1 shadow-[0_10px_22px_rgb(var(--w-color-primary)_/_22%)] brightness-105) active:(translate-y-0 shadow-none brightness-100) motion-reduce:(transform-none transition-none)"
+      class="mt-20 h-44! font-medium transition-[transform,box-shadow,filter] duration-200 hover:(-translate-y-1 shadow-xl shadow-primary/22 brightness-105) active:(translate-y-0 shadow-none brightness-100) motion-reduce:(transform-none transition-none)"
       :loading="loading"
       :disabled="loading"
       >{{ $t('login.submit') }}</a-button

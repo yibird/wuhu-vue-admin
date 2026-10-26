@@ -31,7 +31,7 @@
     </template>
 
     <template #footer>
-      <div class="flex flex-col gap-10 sm:flex-row sm:items-center">
+      <div class="flex flex-col gap-10 sm:(flex-row items-center)">
         <div class="min-w-0 flex flex-1 items-center gap-8 text-xs">
           <Icon
             :name="isDirty ? 'i-lucide:circle-dot' : 'i-lucide:circle-check'"
@@ -71,7 +71,7 @@
         class="min-w-0 space-y-16"
         layout="vertical"
       >
-        <div class="b-b-1-regular pb-16 last:border-b-0 last:pb-0">
+        <div class="b-b-1-regular pb-16 last:(border-b-0 pb-0)">
           <div class="mb-12 flex items-start justify-between gap-12">
             <div>
               <div class="flex items-center gap-7 text-sm text-main font-700">
@@ -90,10 +90,10 @@
               v-for="item in projectLogoOptions"
               :key="item.icon"
               type="button"
-              class="group relative min-w-0 flex flex-col items-center gap-7 rounded-8 border-1 border-solid bg-container p-8 cursor-pointer transition-[border-color,background-color,box-shadow,transform] duration-motion-base hover:(-translate-y-1 border-primary/60 bg-hover shadow-all-sm)"
+              class="group relative min-w-0 flex flex-col items-center gap-7 rounded-8 border-1 border-solid bg-container p-8 cursor-pointer transition-[border-color,background-color,box-shadow,transform] duration-200 hover:(-translate-y-1 border-primary/60 bg-hover shadow-sm)"
               :class="
                 form.logo.icon === item.icon
-                  ? 'border-primary bg-primary/5 shadow-all-sm'
+                  ? 'border-primary bg-primary/5 shadow-sm'
                   : 'border-regular'
               "
               :aria-label="`选择${item.label}标识`"
@@ -101,7 +101,7 @@
               @click="updateLogo(item.icon, item.tone)"
             >
               <span
-                class="size-36 flex items-center justify-center rounded-8 border-1 border-solid transition-transform duration-motion-base group-hover:scale-105"
+                class="size-36 flex items-center justify-center rounded-8 border-1 border-solid transition-transform duration-200 group-hover:scale-105"
                 :class="item.class"
               >
                 <Icon :name="item.icon" :size="18" />
@@ -119,7 +119,7 @@
           </div>
         </div>
 
-        <div class="b-b-1-regular pb-16 last:border-b-0 last:pb-0">
+        <div class="b-b-1-regular pb-16 last:(border-b-0 pb-0)">
           <div class="mb-12 flex items-start justify-between gap-12">
             <div>
               <div class="flex items-center gap-7 text-sm text-main font-700">
@@ -176,7 +176,7 @@
           </div>
         </div>
 
-        <div class="b-b-1-regular pb-16 last:border-b-0 last:pb-0">
+        <div class="b-b-1-regular pb-16 last:(border-b-0 pb-0)">
           <div class="mb-12 flex items-start justify-between gap-12">
             <div>
               <div class="flex items-center gap-7 text-sm text-main font-700">
@@ -196,10 +196,10 @@
                 v-for="item in priorityOptions"
                 :key="item.value"
                 type="button"
-                class="w-full flex items-center gap-8 rounded-8 border-1 border-solid bg-container p-10 text-left cursor-pointer transition-[background-color,border-color,box-shadow,transform] duration-motion-base ease-motion-standard hover:(-translate-y-1 border-primary/36 bg-hover shadow-[0_8px_22px_rgb(0_0_0_/_8%)]) focus-visible:(-translate-y-1 border-primary/36 bg-hover shadow-[0_8px_22px_rgb(0_0_0_/_8%)] outline-2 outline-primary/35 outline-offset-2) active:translate-y-0 motion-reduce:(transform-none transition-none)"
+                class="w-full flex items-center gap-8 rounded-8 border-1 border-solid bg-container p-10 text-left cursor-pointer transition-[background-color,border-color,box-shadow,transform] duration-200 ease-[var(--w-motion-ease)] hover:(-translate-y-1 border-primary/36 bg-hover shadow-xl shadow-black/8) focus-visible:(-translate-y-1 border-primary/36 bg-hover shadow-xl shadow-black/8 outline-2 outline-primary/35 outline-offset-2) active:translate-y-0 motion-reduce:(transform-none transition-none)"
                 :class="
                   form.priority === item.value
-                    ? 'border-primary shadow-all-sm'
+                    ? 'border-primary shadow-sm'
                     : 'border-regular'
                 "
                 :aria-pressed="form.priority === item.value"
@@ -225,7 +225,7 @@
           </div>
         </div>
 
-        <div class="b-b-1-regular pb-16 last:border-b-0 last:pb-0">
+        <div class="b-b-1-regular pb-16 last:(border-b-0 pb-0)">
           <div class="mb-12 flex items-start justify-between gap-12">
             <div>
               <div class="flex items-center gap-7 text-sm text-main font-700">
@@ -246,10 +246,10 @@
               v-for="item in switchOptions"
               :key="item.key"
               type="button"
-              class="w-full box-border rounded-8 border-1 border-solid bg-container p-10 text-left cursor-pointer transition-[background-color,border-color,box-shadow,transform] duration-motion-base ease-motion-standard hover:(-translate-y-1 border-primary/36 bg-hover shadow-[0_8px_22px_rgb(0_0_0_/_8%)]) focus-visible:(-translate-y-1 border-primary/36 bg-hover shadow-[0_8px_22px_rgb(0_0_0_/_8%)] outline-2 outline-primary/35 outline-offset-2) active:translate-y-0 motion-reduce:(transform-none transition-none)"
+              class="w-full box-border rounded-8 border-1 border-solid bg-container p-10 text-left cursor-pointer transition-[background-color,border-color,box-shadow,transform] duration-200 ease-[var(--w-motion-ease)] hover:(-translate-y-1 border-primary/36 bg-hover shadow-xl shadow-black/8) focus-visible:(-translate-y-1 border-primary/36 bg-hover shadow-xl shadow-black/8 outline-2 outline-primary/35 outline-offset-2) active:translate-y-0 motion-reduce:(transform-none transition-none)"
               :class="
                 form[item.key]
-                  ? '-translate-y-1 border-primary/36 bg-primary/8 shadow-all-sm'
+                  ? '-translate-y-1 border-primary/36 bg-primary/8 shadow-sm'
                   : 'border-regular'
               "
               :aria-pressed="form[item.key]"
@@ -281,7 +281,7 @@
 
       <aside class="min-w-0">
         <div
-          class="sticky top-0 overflow-hidden rounded-8 b-1-muted bg-container p-14 shadow-[0_14px_34px_rgb(15 23 42_/_12%)]"
+          class="sticky top-0 overflow-hidden rounded-8 b-1-muted bg-container p-14 shadow-2xl shadow-ink/12"
         >
           <div class="mb-12 flex items-center gap-6 text-xs text-secondary">
             <Icon name="i-lucide:scan-eye" :size="14" />
@@ -301,7 +301,7 @@
 
           <div class="mt-18 flex items-center gap-10">
             <span
-              class="size-52 flex shrink-0 items-center justify-center rounded-12 border-1 border-solid shadow-all-sm transition-[border-color,background-color,color,transform] duration-motion-base ease-motion-standard motion-reduce:transition-none"
+              class="size-52 flex shrink-0 items-center justify-center rounded-12 border-1 border-solid shadow-sm transition-[border-color,background-color,color,transform] duration-200 ease-[var(--w-motion-ease)] motion-reduce:transition-none"
               :class="selectedLogo.class"
             >
               <Transition name="fade-pop" mode="out-in">

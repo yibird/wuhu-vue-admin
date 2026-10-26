@@ -1,6 +1,6 @@
 <template>
   <aside
-    class="min-h-0 min-w-0 overflow-hidden rounded-8 b-1-regular bg-container shadow-overlay"
+    class="min-h-0 min-w-0 overflow-hidden rounded-8 b-1-regular bg-container shadow-lg"
   >
     <div v-if="selectedNodeData" class="h-full min-h-0 flex flex-col">
       <div class="flex flex-none items-center gap-10 b-b-1-regular px-14 py-12">

@@ -1,17 +1,17 @@
 <template>
   <aside
     ref="siderRef"
-    class="relative h-full min-h-0 shrink-0 flex flex-col overflow-hidden border-0 b-r-1-regular bg-container transition-[width,min-width,max-height] duration-motion-base ease-motion-enter will-change-[width] motion-reduce:transition-none max-xl:h-auto max-xl:max-h-260 max-xl:w-full max-xl:min-w-0 max-xl:border-r-0 max-xl:border-b-1 max-md:max-h-230"
+    class="relative h-full min-h-0 shrink-0 flex flex-col overflow-hidden border-0 b-r-1-regular bg-container transition-[width,min-width,max-height] duration-200 ease-[var(--w-motion-ease-enter)] will-change-[width] motion-reduce:transition-none max-xl:(h-auto max-h-260 w-full min-w-0 border-r-0 border-b-1) max-md:max-h-230"
     :class="
       collapsed
         ? 'w-72 min-w-72 max-xl:max-h-56'
-        : 'w-320 min-w-320 max-2xl:w-300 max-2xl:min-w-300'
+        : 'w-320 min-w-320 max-2xl:(w-300 min-w-300)'
     "
     :style="asideStyle"
   >
     <Header v-model:collapsed="collapsed" @create="emits('create')" />
     <div
-      class="overflow-hidden px-10 transition-[max-height,opacity,padding] duration-motion-fast ease-motion-enter motion-reduce:transition-none"
+      class="overflow-hidden px-10 transition-[max-height,opacity,padding] duration-100 ease-[var(--w-motion-ease-enter)] motion-reduce:transition-none"
       :class="
         collapsed
           ? 'max-h-0 pb-0 opacity-0 pointer-events-none'
@@ -34,18 +34,16 @@
           size="large"
         >
           <template #labelRender="{ value }">
-            <div
-              class="flex-center gap-4 transition-colors duration-motion-fast"
-            >
+            <div class="flex-center gap-4 transition-colors duration-100">
               <Icon
                 :name="getViewOption(value).iconName"
                 :size="13"
-                class="shrink-0 transition-colors duration-motion-fast"
+                class="shrink-0 transition-colors duration-100"
                 :class="activeView === value ? 'text-primary' : ''"
               />
               <span class="truncate">{{ getViewOption(value).label }}</span>
               <span
-                class="min-w-16 rounded-full bg-muted px-4 text-10px text-muted leading-16px transition-[background-color,color] duration-motion-fast"
+                class="min-w-16 rounded-full bg-muted px-4 text-10px text-muted leading-16px transition-[background-color,color] duration-100"
                 :class="
                   activeView === value ? 'bg-primary/10 text-primary' : ''
                 "
@@ -81,7 +79,7 @@
       @dblclick="handleResizeReset"
     >
       <span
-        class="h-full w-2 bg-transparent transition-colors duration-motion-fast group-hover:bg-primary"
+        class="h-full w-2 bg-transparent transition-colors duration-100 group-hover:bg-primary"
         :class="isResizing ? 'bg-primary' : ''"
       />
     </div>

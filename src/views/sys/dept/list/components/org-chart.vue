@@ -115,7 +115,7 @@
       <Transition name="fade-slide-right">
         <aside
           v-if="selectedDept"
-          class="flex w-236 flex-none flex-col b-1-muted rounded-12 bg-container p-14 shadow-card"
+          class="flex w-236 flex-none flex-col b-1-muted rounded-12 bg-container p-14 shadow-sm"
         >
           <header class="flex items-start gap-8">
             <span
@@ -170,7 +170,7 @@
 import { Vue3TreeOrg } from 'vue3-tree-org'
 import 'vue3-tree-org/lib/vue3-tree-org.css'
 import { getDeptPageListApi, type SysDept, type DeptType } from '@/apis'
-import { Icon } from '@/components'
+import { Icon } from '@/components/icon'
 import { resolveDeptAccent } from '../data'
 import OrgNode from './org-node.vue'
 

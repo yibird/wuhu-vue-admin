@@ -11,7 +11,7 @@
       ref="textareaRef"
       v-model="model"
       data-testid="agent-prompt-input"
-      class="box-border block max-h-160 min-h-34 w-full resize-none overflow-y-auto border-0 bg-transparent px-2 py-5 text-15px text-main leading-24px outline-0 placeholder:text-placeholder disabled:cursor-not-allowed disabled:text-disabled"
+      class="box-border block max-h-160 min-h-34 w-full resize-none overflow-y-auto border-0 bg-transparent px-2 py-5 text-15px text-main leading-24px outline-0 placeholder:text-placeholder disabled:(cursor-not-allowed text-disabled)"
       :disabled="disabled"
       aria-label="Agent 输入框"
       aria-multiline="true"

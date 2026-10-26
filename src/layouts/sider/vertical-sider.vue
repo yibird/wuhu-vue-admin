@@ -4,23 +4,21 @@
     :collapsed="sider.collapsed"
     :collapsed-width="sider.collapsedWidth"
     :theme="siderTheme"
-    class="z-[var(--w-sider-z-index)] shadow-[var(--w-sider-vertical-shadow)]"
+    class="w-layout-sider"
     @update:collapsed="setCollapsed"
   >
     <div class="h-full flex flex-col">
       <Logo :collapsed="sider.collapsed" />
       <Search
         v-if="sider.showSearch"
-        :value="rawSearchValue"
+        v-model:value="searchValue"
         :collapsed="sider.collapsed"
-        @update:value="onSearchInput"
       />
       <Menu :items="items" :collapsed="sider.collapsed" :theme="siderTheme" />
     </div>
   </a-layout-sider>
 </template>
 <script lang="ts" setup>
-import { useDebounceFn } from '@vueuse/core'
 import { useAppStore, usePermissionStore } from '@/store'
 import { THEME_MODE } from '@/constants'
 import { useTheme } from '@/theme'
@@ -29,17 +27,7 @@ import { Menu, Logo, Search, matchesMenuTree } from './components'
 const { sider, setCollapsed } = useAppStore()
 const { menus } = usePermissionStore()
 const { themeMode } = useTheme()
-const rawSearchValue = shallowRef('')
 const searchValue = shallowRef('')
-
-const debouncedUpdate = useDebounceFn(() => {
-  searchValue.value = rawSearchValue.value
-}, 200)
-
-const onSearchInput = (value: string) => {
-  rawSearchValue.value = value
-  debouncedUpdate()
-}
 
 const siderTheme = computed(() =>
   themeMode.value === THEME_MODE.Dark ? THEME_MODE.Dark : THEME_MODE.Light
@@ -51,3 +39,9 @@ const items = computed(() => {
   return menus.value.filter((item) => matchesMenuTree(item, v))
 })
 </script>
+<style scoped>
+.w-layout-sider {
+  z-index: var(--w-sider-z-index);
+  box-shadow: var(--w-sider-vertical-shadow);
+}
+</style>

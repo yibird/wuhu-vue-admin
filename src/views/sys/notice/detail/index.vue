@@ -119,7 +119,7 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
 import { getNoticeRecordApi, type SysNotice } from '@/apis'
-import { Icon } from '@/components'
+import { Icon } from '@/components/icon'
 import { useRequest, useTabs } from '@/hooks'
 
 const route = useRoute()

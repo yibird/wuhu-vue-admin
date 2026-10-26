@@ -63,7 +63,7 @@
           />
         </a-form-item>
 
-        <div class="flex gap-16 max-sm:flex-col max-sm:gap-0">
+        <div class="flex gap-16 max-sm:(flex-col gap-0)">
           <a-form-item class="min-w-0 flex-1" label="排序" name="sort">
             <a-input-number
               v-model:value="form.sort"

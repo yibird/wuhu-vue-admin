@@ -82,7 +82,7 @@
 </template>
 
 <script lang="ts" setup>
-import { Icon } from '@/components'
+import { Icon } from '@/components/icon'
 import { useRequest } from '@/hooks'
 import { ProviderForm } from './components'
 import {

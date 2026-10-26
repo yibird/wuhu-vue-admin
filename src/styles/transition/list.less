@@ -10,8 +10,8 @@
   &-enter-active,
   &-leave-active {
     transition:
-      opacity var(--w-motion-duration-fast) var(--w-motion-ease-standard),
-      transform var(--w-motion-duration-base) var(--w-motion-ease-enter);
+      opacity 100ms var(--w-motion-ease),
+      transform 200ms var(--w-motion-ease-enter);
   }
 
   &-enter-from,
@@ -33,8 +33,7 @@
   }
 
   &-move {
-    transition: transform var(--w-motion-duration-base)
-      var(--w-motion-ease-enter);
+    transition: transform 200ms var(--w-motion-ease-enter);
   }
 }
 

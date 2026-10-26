@@ -9,7 +9,7 @@
       class="mb-16 flex min-w-0 items-center gap-12 rounded-8 b-1-regular bg-page p-12"
     >
       <span
-        class="size-48 flex flex-none items-center justify-center rounded-8 shadow-[inset_0_0_0_1px_rgb(15_23_42_/_6%)]"
+        class="size-48 flex flex-none items-center justify-center rounded-8 inset-ring-1 inset-ring-ink/6"
         :style="previewIconStyle"
       >
         <IconPreview :name="form.icon" :size="24" />
@@ -63,10 +63,10 @@
             <button
               v-for="color in colorOptions"
               :key="color"
-              class="size-24 cursor-pointer rounded-6 border-2 border-solid p-0 outline-none transition-[border-color,box-shadow,transform] duration-motion-base hover:scale-105 focus-visible:shadow-[0_0_0_2px_rgb(var(--w-color-primary)_/_24%)] motion-reduce:(transform-none transition-none)"
+              class="size-24 cursor-pointer rounded-6 border-2 border-solid p-0 outline-none transition-[border-color,box-shadow,transform] duration-200 hover:scale-105 focus-visible:(ring-2 ring-primary/24) motion-reduce:(transform-none transition-none)"
               :class="
                 form.iconBackground === color
-                  ? 'border-primary shadow-[0_0_0_2px_rgb(var(--w-color-primary)_/_16%)]'
+                  ? 'border-primary ring-2 ring-primary/16'
                   : 'border-regular'
               "
               :style="{ backgroundColor: color }"

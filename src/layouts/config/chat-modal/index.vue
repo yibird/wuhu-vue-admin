@@ -82,7 +82,7 @@
                 :class="item.role === 'user' ? 'justify-end' : 'justify-start'"
               >
                 <div
-                  class="max-w-[82%] rounded-10 px-12 py-10 shadow-all-sm"
+                  class="max-w-[82%] rounded-10 px-12 py-10 shadow-sm"
                   :class="
                     item.role === 'user'
                       ? 'bg-primary text-white rounded-tr-2'
@@ -105,7 +105,7 @@
 
               <div v-if="thinking" class="flex justify-start">
                 <div
-                  class="inline-flex items-center gap-6 rounded-10 bg-container px-12 py-9 text-sm text-secondary shadow-all-sm"
+                  class="inline-flex items-center gap-6 rounded-10 bg-container px-12 py-9 text-sm text-secondary shadow-sm"
                 >
                   <Icon
                     name="i-lucide:loader-circle"
@@ -122,7 +122,7 @@
             <div class="mx-auto max-w-680">
               <textarea
                 v-model="inputText"
-                class="box-border block max-h-120 min-h-74 w-full resize-none rounded-10 b-1-regular bg-container px-12 py-10 text-sm text-main outline-none transition-[border-color,box-shadow] placeholder:text-placeholder focus:(border-primary shadow-[0_0_0_2px_rgb(var(--w-color-primary)/10%)])"
+                class="box-border block max-h-120 min-h-74 w-full resize-none rounded-10 b-1-regular bg-container px-12 py-10 text-sm text-main outline-none transition-[border-color,box-shadow] placeholder:text-placeholder focus:(border-primary ring-2 ring-primary/10)"
                 placeholder="输入问题或选择快捷能力"
                 @keydown.enter="handleEnter"
               />

@@ -74,7 +74,7 @@ import {
   toRef,
   watch,
 } from 'vue'
-import { Icon } from '@/components'
+import { Icon } from '@/components/icon'
 import { useDesignerContext } from '../../hooks/useDesignerContext'
 import { useNodeBinding } from '../../hooks/useNodeBinding'
 import NodeActionBar from './node-action-bar.vue'

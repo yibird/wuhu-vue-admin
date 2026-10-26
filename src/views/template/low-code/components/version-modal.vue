@@ -107,7 +107,7 @@
 <script setup lang="ts">
 import { Modal, message } from 'antdv-next'
 import { computed, onBeforeUnmount, watch } from 'vue'
-import { Icon } from '@/components'
+import { Icon } from '@/components/icon'
 import { useDesignerContext } from '../hooks'
 import type { PublishedVersion } from '../hooks'
 

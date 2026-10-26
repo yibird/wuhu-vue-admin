@@ -14,10 +14,6 @@ export const useMenu = createSharedComposable(() => {
     () => previewRootMenuId.value ?? routeRootMenuId.value
   )
 
-  /**
-   * 当前根菜单的子项,供 Mix / Split 侧边栏复用
-   * 根菜单可能尚未注册(如 tabs 已持久化但菜单仍在异步加载),此时回退为空数组
-   */
   const activeRootMenuChildren = computed<IMenu[]>(() => {
     const id = activeRootMenuId.value
     if (!id) return []

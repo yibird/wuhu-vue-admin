@@ -7,7 +7,7 @@
     <template v-for="(unit, index) in timeUnits" :key="unit.key">
       <div class="w-72 sm:w-96">
         <div
-          class="flip-clock-card relative h-76 overflow-hidden rounded-8 b-1-regular bg-container shadow-all-sm sm:h-104"
+          class="flip-clock-card relative h-76 overflow-hidden rounded-8 b-1-regular bg-container shadow-sm sm:h-104"
         >
           <div class="flip-clock-half flip-clock-half--top" aria-hidden="true">
             <span
@@ -71,7 +71,7 @@
       <div
         v-if="index < timeUnits.length - 1"
         aria-hidden="true"
-        class="h-76 w-8 flex flex-col items-center justify-center gap-10 sm:h-104 sm:w-12"
+        class="h-76 w-8 flex flex-col items-center justify-center gap-10 sm:(h-104 w-12)"
       >
         <span class="size-4 rounded-full bg-primary sm:size-5" />
         <span class="size-4 rounded-full bg-primary sm:size-5" />

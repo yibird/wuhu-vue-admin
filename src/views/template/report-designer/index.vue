@@ -250,7 +250,7 @@
 <script setup lang="ts">
 import { message, Modal } from 'antdv-next'
 import { useEventListener } from '@vueuse/core'
-import { Icon } from '@/components'
+import { Icon } from '@/components/icon'
 import { useReportDesigner } from './hooks'
 import { DatasetModal, LeftPanel, RightPanel, SchemaModal } from './components'
 import type { ValidationResult } from './types'

@@ -64,31 +64,31 @@ function findTabElement(element: HTMLElement, key: string) {
   )
 }
 
-function scrollToActiveTab(
-  target: Target,
-  activeKey: ActiveKey,
-  behavior: ScrollBehavior
-) {
+/**
+ * 计算把当前激活 Tab 滚入视野所需的目标位置
+ *
+ * @returns 需要滚动时返回容器与目标 scrollLeft,否则 undefined
+ */
+function getRevealTarget(target: Target, activeKey: ActiveKey) {
   const targetEl = toValue(target)
   const key = toValue(activeKey)
-  if (!targetEl || !key) return
+  if (!targetEl || !key) return undefined
 
   const viewport = readViewport(targetEl)
-  if (!viewport || viewport.maxLeft <= 0) return
+  if (!viewport || viewport.maxLeft <= 0) return undefined
 
   const item = findTabElement(targetEl, key)
-  if (!item) return
+  if (!item) return undefined
 
   // offsetLeft/offsetWidth 相对 offsetParent,此处约定
   // `.layout-tabs-list__wrapper` 就是该 tab 元素的 offsetParent
   // (依赖 common.less 中 wrapper 的 position: relative)
-  const nextLeft = getScrollLeftToReveal(viewport, {
+  const left = getScrollLeftToReveal(viewport, {
     left: item.offsetLeft,
     right: item.offsetLeft + item.offsetWidth,
   })
-  if (nextLeft === undefined) return
 
-  targetEl.scrollTo({ left: nextLeft, behavior })
+  return left === undefined ? undefined : { element: targetEl, left }
 }
 
 /**
@@ -96,10 +96,10 @@ function scrollToActiveTab(
  */
 export function useRoll(target: Target, activeKey: ActiveKey) {
   let scheduledFrameId: number | undefined
+  let scrollFrameId: number | undefined
+  /** 首次定位直接落位,不播放动画 */
+  let isFirstRoll = true
   const preferredMotion = usePreferredReducedMotion()
-  /** 仅用户点击箭头翻页时使用平滑滚动 */
-  const userScrollBehavior = () =>
-    preferredMotion.value === 'reduce' ? 'auto' : 'smooth'
 
   const cancelScheduledRoll = () => {
     if (scheduledFrameId === undefined) return
@@ -107,16 +107,64 @@ export function useRoll(target: Target, activeKey: ActiveKey) {
     scheduledFrameId = undefined
   }
 
+  const cancelScrollAnimation = () => {
+    if (scrollFrameId === undefined) return
+    cancelAnimationFrame(scrollFrameId)
+    scrollFrameId = undefined
+  }
+
   /**
-   * 程序化定位使用 auto 滚动:平滑滚动会逐帧改动 scrollLeft,
-   * 而视口与内容尺寸变化都会触发定位,动画途中重算会互相打断并持续触发布局。
+   * 用 rAF 动画滚动到目标位置
+   *
+   * 翻页与 Tab 定位共用:原生 smooth 会被滚动节流或尺寸变化打断,
+   * 自绘动画可随时取消,重算时不会留下半程动画。
    */
-  const schedule = () => {
+  const animateScrollTo = (element: HTMLElement, left: number) => {
+    cancelScrollAnimation()
+
+    const start = element.scrollLeft
+    const distance = left - start
+    if (Math.abs(distance) <= SCROLL_TOLERANCE) return
+
+    if (
+      preferredMotion.value === 'reduce' ||
+      typeof requestAnimationFrame === 'undefined'
+    ) {
+      element.scrollLeft = left
+      return
+    }
+
+    const duration = 240
+    const startTime = performance.now()
+    const step = (now: number) => {
+      const progress = Math.min(1, (now - startTime) / duration)
+      const eased = 1 - (1 - progress) ** 3
+      element.scrollLeft = start + distance * eased
+      scrollFrameId = progress < 1 ? requestAnimationFrame(step) : undefined
+    }
+    scrollFrameId = requestAnimationFrame(step)
+  }
+
+  /**
+   * 定位到激活 Tab,动画与翻页保持一致
+   *
+   * @param animate 是否使用动画;首次定位与尺寸变化时直接落位,
+   *   避免刷新时整条 Tab 栏可见地滑动、以及窗口缩放中途反复重启动画
+   */
+  const schedule = (animate: boolean) => {
     cancelScheduledRoll()
+    cancelScrollAnimation()
 
     const roll = () => {
       scheduledFrameId = undefined
-      scrollToActiveTab(target, activeKey, 'auto')
+
+      const reveal = getRevealTarget(target, activeKey)
+      const shouldAnimate = animate && !isFirstRoll
+      isFirstRoll = false
+      if (!reveal) return
+
+      if (shouldAnimate) animateScrollTo(reveal.element, reveal.left)
+      else reveal.element.scrollLeft = reveal.left
     }
 
     if (typeof requestAnimationFrame === 'undefined') {
@@ -140,16 +188,18 @@ export function useRoll(target: Target, activeKey: ActiveKey) {
     )
     if (Math.abs(nextLeft - viewport.left) <= SCROLL_TOLERANCE) return
 
-    targetEl.scrollTo({
-      left: nextLeft,
-      behavior: userScrollBehavior(),
-    })
+    animateScrollTo(targetEl, nextLeft)
   }
 
-  watch([() => toValue(target), () => toValue(activeKey)], schedule, {
-    immediate: true,
-    flush: 'post',
-  })
+  // 切换激活 Tab 时带动画滚入视野
+  watch(
+    [() => toValue(target), () => toValue(activeKey)],
+    () => schedule(true),
+    {
+      immediate: true,
+      flush: 'post',
+    }
+  )
 
   /**
    * 上一次观测到的宽度,用于忽略尺寸没变化的重复回调:
@@ -173,11 +223,34 @@ export function useRoll(target: Target, activeKey: ActiveKey) {
         observedWidths.set(entry.target, width)
         widthChanged = true
       }
-      if (widthChanged) schedule()
+      // 尺寸变化只在必要时重定位,不播放动画
+      if (widthChanged) schedule(false)
     }
   )
 
-  onScopeDispose(cancelScheduledRoll)
+  // 用户手动滚动时立即停止翻页动画,避免与手势争夺 scrollLeft
+  watch(
+    () => toValue(target),
+    (targetEl, _, onCleanup) => {
+      if (!targetEl) return
+      targetEl.addEventListener('wheel', cancelScrollAnimation, {
+        passive: true,
+      })
+      targetEl.addEventListener('touchstart', cancelScrollAnimation, {
+        passive: true,
+      })
+      onCleanup(() => {
+        targetEl.removeEventListener('wheel', cancelScrollAnimation)
+        targetEl.removeEventListener('touchstart', cancelScrollAnimation)
+      })
+    },
+    { immediate: true }
+  )
+
+  onScopeDispose(() => {
+    cancelScheduledRoll()
+    cancelScrollAnimation()
+  })
 
   return {
     rollLeft: () => rollPage(-1),

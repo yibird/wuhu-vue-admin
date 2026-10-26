@@ -1,6 +1,6 @@
 <template>
   <section
-    class="pricing-hero page-enter page-enter--1 relative overflow-hidden rounded-16 b-1-regular bg-container px-24 py-32 shadow-[0_24px_70px_rgb(var(--w-color-primary)_/_10%)] max-sm:px-16 max-sm:py-24"
+    class="pricing-hero page-enter page-enter--1 relative overflow-hidden rounded-16 b-1-regular bg-container px-24 py-32 shadow-2xl shadow-primary/10 max-sm:(px-16 py-24)"
   >
     <!-- 背景动态光晕 -->
     <div class="pricing-hero__glow pricing-hero__glow--1" aria-hidden="true" />
@@ -42,10 +42,10 @@
             :key="option.value"
             type="button"
             role="tab"
-            class="relative min-w-100 cursor-pointer rounded-full px-16 py-9 text-sm transition-all duration-motion-base ease-motion-standard focus-visible:outline-2 focus-visible:outline-primary/60 focus-visible:outline-offset-2"
+            class="relative min-w-100 cursor-pointer rounded-full px-16 py-9 text-sm transition-all duration-200 ease-[var(--w-motion-ease)] focus-visible:(outline-2 outline-primary/60 outline-offset-2)"
             :class="
               props.billingCycle === option.value
-                ? 'bg-primary font-700 text-white shadow-[0_6px_24px_rgb(var(--w-color-primary)_/_45%)]'
+                ? 'bg-primary font-700 text-white shadow-xl shadow-primary/45'
                 : 'font-600 text-secondary hover:text-primary'
             "
             :aria-selected="props.billingCycle === option.value"

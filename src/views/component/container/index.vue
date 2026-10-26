@@ -4,7 +4,7 @@
       class="h-full min-h-full w-full p-16 md:p-20 overflow-x-hidden overflow-y-auto"
     >
       <section
-        class="mx-auto max-w-1280 rounded-8 b-1-muted bg-container p-16 shadow-all-sm md:p-20"
+        class="mx-auto max-w-1280 rounded-8 b-1-muted bg-container p-16 shadow-sm md:p-20"
       >
         <header
           class="mb-20 flex flex-wrap items-start justify-between gap-12 b-b-1-muted pb-14"
@@ -183,7 +183,8 @@
 
 <script setup lang="ts">
 import { usePreferredReducedMotion, useScroll, useToggle } from '@vueuse/core'
-import { Icon, LazyContainer, ResizeContainer } from '@/components'
+import { Icon } from '@/components/icon'
+import { LazyContainer, ResizeContainer } from '@/components/container'
 import type { ContainerSize } from '@/components/container'
 
 const lazyViewportRef = useTemplateRef<HTMLElement>('lazyViewportRef')

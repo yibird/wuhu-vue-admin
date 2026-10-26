@@ -51,7 +51,7 @@
       />
       <a-select
         v-model:value="sort"
-        class="ml-auto w-128 max-sm:ml-0 max-sm:w-full"
+        class="ml-auto w-128 max-sm:(ml-0 w-full)"
         :options="sortOptions"
       />
     </div>

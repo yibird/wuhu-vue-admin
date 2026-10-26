@@ -18,7 +18,7 @@
         <div
           v-for="alert in alerts"
           :key="alert.id"
-          class="relative min-w-0 rounded-8 px-4 py-10 focus-visible:(outline-none shadow-[inset_0_0_0_1px_rgb(var(--w-color-primary)_/_42%)]) sm:px-6"
+          class="relative min-w-0 rounded-8 px-4 py-10 focus-visible:(outline-none inset-ring-1 inset-ring-primary/42) sm:px-6"
           tabindex="0"
           role="listitem"
           @focus="handleItemFocus"
@@ -69,8 +69,9 @@
 </template>
 
 <script lang="ts" setup>
-import { Card, SlidingHighlight } from '@/components'
-import type { SlidingHighlightInstance } from '@/components'
+import { Card } from '@/components/card'
+import { SlidingHighlight } from '@/components/sliding-highlight'
+import type { SlidingHighlightInstance } from '@/components/sliding-highlight'
 
 type AlertLevel = 'critical' | 'high' | 'medium'
 

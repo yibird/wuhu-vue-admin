@@ -49,8 +49,9 @@
 
 <script setup lang="ts">
 import { message } from 'antdv-next'
-import { CodeEditor, Icon } from '@/components'
-import type { ApprovalWorkflowSchema } from '@/components'
+import { CodeEditor } from '@/components/code-editor'
+import { Icon } from '@/components/icon'
+import type { ApprovalWorkflowSchema } from '@/components/approval-designer'
 
 const props = defineProps<{
   /**

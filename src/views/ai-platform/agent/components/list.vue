@@ -83,7 +83,7 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
 import { message, Modal } from 'antdv-next'
-import { AnimatedGroup } from '@/components'
+import { AnimatedGroup } from '@/components/animated'
 import { useLoading } from '@/hooks'
 import Card from './card.vue'
 import CreateModal from './create-modal.vue'

@@ -1,5 +1,5 @@
-import { createApprovalNode } from '@/components'
-import type { ApprovalTemplateItem } from '@/components'
+import { createApprovalNode } from '@/components/approval-designer'
+import type { ApprovalTemplateItem } from '@/components/approval-designer'
 
 export const approvalDesignerTemplates: ApprovalTemplateItem[] = [
   {

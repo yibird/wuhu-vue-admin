@@ -13,9 +13,9 @@
       >
         <span
           :class="[
-            'relative box-border block h-60 w-full overflow-hidden rounded-7 border-2 border-solid bg-container shadow-[0_4px_12px_rgb(15_23_42_/_20%)] transition-[transform,border-color,box-shadow] duration-motion-base ease-motion-enter group-hover:(-translate-y-1 shadow-[0_8px_20px_rgb(15_23_42_/_20%)]) group-focus-visible:shadow-[0_0_0_2px_rgb(var(--w-color-primary)_/_24%)] group-active:translate-y-0 motion-reduce:(transform-none transition-none)',
+            'relative box-border block h-60 w-full overflow-hidden rounded-7 border-2 border-solid bg-container shadow-md shadow-ink/20 transition-[transform,border-color,box-shadow] duration-200 ease-[var(--w-motion-ease-enter)] group-hover:(-translate-y-1 shadow-xl shadow-ink/20) group-focus-visible:(ring-2 ring-primary/24) group-active:translate-y-0 motion-reduce:(transform-none transition-none)',
             app.menuMode === item.value
-              ? 'border-primary shadow-[0_6px_18px_rgb(var(--w-color-primary)_/_15%)]'
+              ? 'border-primary shadow-lg shadow-primary/15'
               : 'border-muted',
           ]"
         >
@@ -27,14 +27,14 @@
           />
           <span
             v-if="app.menuMode === item.value"
-            class="absolute right-5 top-5 size-18 flex items-center justify-center rounded-full bg-primary text-white shadow-[0_3px_8px_rgb(var(--w-color-primary)_/_28%)]"
+            class="absolute right-5 top-5 size-18 flex items-center justify-center rounded-full bg-primary text-white shadow-sm shadow-primary/28"
           >
             <Icon name="i-lucide:check" :size="12" />
           </span>
         </span>
         <span
           :class="[
-            'mt-8 block truncate text-center text-sm font-600 transition-colors duration-motion-base motion-reduce:transition-none',
+            'mt-8 block truncate text-center text-sm font-600 transition-colors duration-200 motion-reduce:transition-none',
             app.menuMode === item.value
               ? 'text-primary'
               : 'text-secondary group-hover:text-main',

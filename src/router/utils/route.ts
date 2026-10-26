@@ -78,6 +78,20 @@ export function getComponentName(path: string) {
 }
 
 /**
+ * 预加载视图路由组件
+ *
+ * 菜单路由的组件由 defineAsyncComponent 包装,守卫无法直接拿到内部 loader,
+ * 这里按路由路径提前触发同一个 loader,让页面 chunk 与会话恢复并行加载。
+ * 页面实际渲染时复用已加载的模块,不会重复请求。
+ *
+ * @param path 路由路径
+ * @returns 预加载 Promise,没有匹配的视图时返回 undefined
+ */
+export function prefetchRouteView(path: string) {
+  return moduleCache.get(normalizePath(path))?.()
+}
+
+/**
  * 路由组件加载态
  *
  * 动画类型跟随外观设置,作为内容区的「页面」渲染,加载时只覆盖内容区。

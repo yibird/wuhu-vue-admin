@@ -39,7 +39,7 @@
           :while-press="itemPress"
           :data-file-manager-item-id="item.id"
           :class="[
-            'file-grid__card group relative min-w-0 cursor-pointer rounded-6 border-1 border-solid bg-secondary p-10 text-left outline-none transition-[background-color,border-color,box-shadow] duration-motion-base hover:(border-primary bg-primary/10 shadow-all-sm) focus-visible:border-primary',
+            'file-grid__card group relative min-w-0 cursor-pointer rounded-6 border-1 border-solid bg-secondary p-10 text-left outline-none transition-[background-color,border-color,box-shadow] duration-200 hover:(border-primary bg-primary/10 shadow-sm) focus-visible:border-primary',
             isSelected(item)
               ? 'border-primary bg-primary/10 text-primary'
               : 'border-muted text-main',
@@ -348,8 +348,8 @@ function isImageFile(file: IFile) {
 function getPreviewClass(file: IFile, size: 'grid' | 'list') {
   const classes =
     size === 'grid'
-      ? 'file-grid__preview size-64 flex-center overflow-hidden rounded-4 transition-transform duration-motion-moderate ease-motion-enter group-hover:(-translate-y-2 scale-104) motion-reduce:transition-none'
-      : 'file-grid__preview size-42 flex-center shrink-0 overflow-hidden rounded-4 transition-transform duration-motion-moderate ease-motion-enter group-hover:(-translate-y-2 scale-104) motion-reduce:transition-none'
+      ? 'file-grid__preview size-64 flex-center overflow-hidden rounded-4 transition-transform duration-300 ease-[var(--w-motion-ease-enter)] group-hover:(-translate-y-2 scale-104) motion-reduce:transition-none'
+      : 'file-grid__preview size-42 flex-center shrink-0 overflow-hidden rounded-4 transition-transform duration-300 ease-[var(--w-motion-ease-enter)] group-hover:(-translate-y-2 scale-104) motion-reduce:transition-none'
   return isImageFile(file) && isFile(file)
     ? `${classes} bg-transparent`
     : classes
@@ -358,8 +358,8 @@ function getPreviewClass(file: IFile, size: 'grid' | 'list') {
 function getImageClass(file: IFile, size: 'grid' | 'list') {
   const classes =
     size === 'grid'
-      ? 'file-grid__image size-58 transition-[filter,transform] duration-motion-moderate ease-motion-standard group-hover:[filter:saturate(1.06)] motion-reduce:transition-none'
-      : 'file-grid__image size-36 transition-[filter,transform] duration-motion-moderate ease-motion-standard group-hover:[filter:saturate(1.06)] motion-reduce:transition-none'
+      ? 'file-grid__image size-58 transition-[filter,transform] duration-300 ease-[var(--w-motion-ease)] group-hover:[filter:saturate(1.06)] motion-reduce:transition-none'
+      : 'file-grid__image size-36 transition-[filter,transform] duration-300 ease-[var(--w-motion-ease)] group-hover:[filter:saturate(1.06)] motion-reduce:transition-none'
   return isImageFile(file) && isFile(file)
     ? `${classes} rounded-4 object-cover`
     : `${classes} object-cover`

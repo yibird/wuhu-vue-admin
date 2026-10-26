@@ -5,7 +5,7 @@
   >
     <button
       :aria-label="$t('common.auth.layout')"
-      class="size-36 flex cursor-pointer items-center justify-center rounded-8 border-0 bg-transparent text-main outline-none transition-[background-color,color,transform,box-shadow] duration-motion-base hover:(bg-hover text-primary -translate-y-1) active:translate-y-0 max-xl:hidden"
+      class="size-36 flex cursor-pointer items-center justify-center rounded-8 border-0 bg-transparent text-main outline-none transition-[background-color,color,transform,box-shadow] duration-200 hover:(bg-hover text-primary -translate-y-1) active:translate-y-0 max-xl:hidden"
       type="button"
     >
       <Icon name="i-lucide:panel-left" :size="20" />

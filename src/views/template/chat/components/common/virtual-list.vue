@@ -32,7 +32,7 @@
 
 <script setup lang="ts" generic="T">
 import { useVirtualizer } from '@tanstack/vue-virtual'
-import { Scrollbar } from '@/components'
+import { Scrollbar } from '@/components/scrollbar'
 import type { ScrollbarInstance } from '@/components/scrollbar'
 import type { ComponentPublicInstance, CSSProperties } from 'vue'
 import type { EventListeners } from 'overlayscrollbars'

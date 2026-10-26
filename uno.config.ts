@@ -25,6 +25,8 @@ export default defineConfig({
       warning: 'rgba(var(--w-color-warning))',
       error: 'rgba(var(--w-color-error))',
       info: 'rgba(var(--w-color-info))',
+      // 中性投影色,与原先 rgb(15 23 42) 保持一致
+      ink: 'rgb(15 23 42)',
     },
   },
   presets,

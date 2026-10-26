@@ -154,7 +154,7 @@
 <script setup lang="ts">
 import { h } from 'vue'
 import { Button, Progress, Tag } from 'antdv-next'
-import { Icon } from '@/components'
+import { Icon } from '@/components/icon'
 import {
   formatDateTime,
   formatDuration,

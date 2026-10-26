@@ -159,7 +159,8 @@
 
 <script setup lang="ts">
 import { message } from 'antdv-next'
-import { Icon, Scrollbar } from '@/components'
+import { Icon } from '@/components/icon'
+import { Scrollbar } from '@/components/scrollbar'
 import { useDesignerAi, useDesignerContext } from '../../hooks'
 
 const designer = useDesignerContext()

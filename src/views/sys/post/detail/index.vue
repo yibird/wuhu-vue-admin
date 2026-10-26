@@ -126,7 +126,7 @@ import {
   getDeptRecordApi,
   type SysDept,
 } from '@/apis'
-import { Icon } from '@/components'
+import { Icon } from '@/components/icon'
 import type { DeptPickerOption } from '@/features'
 import { useRequest, useTabs } from '@/hooks'
 import { toRouteTabKey } from '@/store/tabs/util'

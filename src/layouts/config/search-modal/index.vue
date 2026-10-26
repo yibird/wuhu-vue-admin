@@ -20,7 +20,7 @@
           <Transition name="fade-zoom" appear>
             <div
               v-show="open"
-              class="w-full origin-top translate-y-0 scale-100 transform-gpu overflow-hidden rounded-8 b-1-regular bg-overlay shadow-[0_28px_80px_rgb(15 23 42_/_28%)] will-change-[transform,opacity]"
+              class="w-full origin-top translate-y-0 scale-100 transform-gpu overflow-hidden rounded-8 b-1-regular bg-overlay shadow-2xl shadow-ink/28 will-change-[transform,opacity]"
             >
               <Search ref="searchRef" v-model.lazy="searchValue" />
               <List

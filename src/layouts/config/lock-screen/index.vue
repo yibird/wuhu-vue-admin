@@ -14,10 +14,10 @@
         >
           <div
             aria-hidden="true"
-            class="pointer-events-none absolute inset-16 shadow-all-sm max-sm:inset-8 max-sm:rounded-12"
+            class="pointer-events-none absolute inset-16 shadow-sm max-sm:(inset-8 rounded-12)"
           />
           <header
-            class="absolute left-20 top-24 z-1 flex items-center gap-16 sm:left-32 sm:top-30"
+            class="absolute left-20 top-24 z-1 flex items-center gap-16 sm:(left-32 top-30)"
           >
             <div class="min-w-0 flex items-center gap-10">
               <img
@@ -121,7 +121,7 @@
                   size="large"
                   data-testid="lock-screen-unlock"
                   :loading="submitting"
-                  class="h-44! min-w-220 rounded-8! shadow-[0_8px_20px_rgb(var(--w-color-primary)_/_18%)] transition-[transform,box-shadow] duration-motion-base hover:(-translate-y-1 shadow-[0_12px_24px_rgb(var(--w-color-primary)_/_24%)]) active:translate-y-0 motion-reduce:(transform-none transition-none)"
+                  class="h-44! min-w-220 rounded-8! shadow-xl shadow-primary/18 transition-[transform,box-shadow] duration-200 hover:(-translate-y-1 shadow-xl shadow-primary/24) active:translate-y-0 motion-reduce:(transform-none transition-none)"
                   @click="handleSubmit"
                 >
                   <template #icon>

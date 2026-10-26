@@ -41,10 +41,10 @@
             :while-press="categoryPress"
             :transition="categoryItemTransition"
             :class="[
-              'file-list__item group relative w-full min-w-0 flex cursor-pointer items-center overflow-hidden rounded-6 border-0 bg-transparent px-10 py-9 text-left text-regular outline-none transition-[background-color,color,box-shadow] duration-motion-base ease-motion-standard focus-visible:shadow-[0_0_0_2px_rgb(var(--w-color-primary)_/_18%)] motion-reduce:transition-none max-[1199px]:(min-w-132 bg-secondary px-12 py-9) max-[575px]:min-w-112',
+              'file-list__item group relative w-full min-w-0 flex cursor-pointer items-center overflow-hidden rounded-6 border-0 bg-transparent px-10 py-9 text-left text-regular outline-none transition-[background-color,color,box-shadow] duration-200 ease-[var(--w-motion-ease)] focus-visible:(ring-2 ring-primary/18) motion-reduce:transition-none max-[1199px]:(min-w-132 bg-secondary px-12 py-9) max-[575px]:min-w-112',
               activeCategory === item.value
                 ? 'file-list__item--active text-primary font-medium dark:text-main'
-                : 'hover:bg-hover hover:text-main',
+                : 'hover:(bg-hover text-main)',
             ]"
             @click="emits('update:activeCategory', item.value)"
           >
@@ -57,7 +57,7 @@
               :transition="categorySelectionTransition"
             />
             <span
-              class="relative z-1 size-28 flex-center shrink-0 rounded-6 text-secondary transition-[background-color,color,transform] duration-motion-moderate ease-motion-enter group-hover:(bg-primary/8 text-primary) motion-reduce:transition-none max-[575px]:size-24"
+              class="relative z-1 size-28 flex-center shrink-0 rounded-6 text-secondary transition-[background-color,color,transform] duration-300 ease-[var(--w-motion-ease-enter)] group-hover:(bg-primary/8 text-primary) motion-reduce:transition-none max-[575px]:size-24"
               :class="
                 activeCategory === item.value
                   ? 'bg-primary/12 text-primary'

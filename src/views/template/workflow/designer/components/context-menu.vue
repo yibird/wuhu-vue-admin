@@ -19,7 +19,7 @@
 
 <script setup lang="ts">
 import { h } from 'vue'
-import { Icon } from '@/components'
+import { Icon } from '@/components/icon'
 import type { VNode } from 'vue'
 import type {
   WorkflowContextActionKey,

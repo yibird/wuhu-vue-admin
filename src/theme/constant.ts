@@ -1,7 +1,6 @@
 export const THEME_TRANSITION_CLASS = 'w-theme-transitioning'
 export const PRIMARY_COLOR_VAR = '--w-color-primary'
 export const DEFAULT_PRIMARY_COLOR = '22 119 255'
-export const DEFAULT_PRIMARY_HEX = '#1677ff'
 export const VIEW_TRANSITION_PSEUDO_OLD = '::view-transition-old(root)'
 export const VIEW_TRANSITION_PSEUDO_NEW = '::view-transition-new(root)'
 

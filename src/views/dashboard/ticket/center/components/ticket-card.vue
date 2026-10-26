@@ -1,6 +1,6 @@
 <template>
   <article
-    class="group min-w-0 cursor-pointer overflow-hidden rounded-8 b-1-regular bg-container outline-none transition-[border-color,box-shadow,transform] duration-motion-base hover:(-translate-y-2 border-primary shadow-card)"
+    class="group min-w-0 cursor-pointer overflow-hidden rounded-8 b-1-regular bg-container outline-none transition-[border-color,box-shadow,transform] duration-200 hover:(-translate-y-2 border-primary shadow-sm)"
     :aria-label="`查看工单：${props.ticket.subject}`"
     role="button"
     tabindex="0"
@@ -10,7 +10,7 @@
   >
     <div class="flex min-w-0 items-start gap-12 p-14">
       <span
-        class="size-44 flex flex-none items-center justify-center rounded-8 bg-primary/10 text-primary transition-transform duration-motion-base group-hover:-rotate-3 group-hover:scale-105 motion-reduce:transition-none"
+        class="size-44 flex flex-none items-center justify-center rounded-8 bg-primary/10 text-primary transition-transform duration-200 group-hover:(-rotate-3 scale-105) motion-reduce:transition-none"
       >
         <Icon :name="categoryMeta.icon" :size="21" />
       </span>
@@ -65,7 +65,9 @@
       </div>
     </div>
 
-    <footer class="flex min-w-0 items-center gap-10 b-t-1-regular px-14 py-11">
+    <footer
+      class="flex min-w-0 items-center gap-10 b-t-1-secondary px-14 py-11"
+    >
       <span
         class="size-30 flex flex-none items-center justify-center rounded-full bg-fill text-xs text-main font-700"
       >

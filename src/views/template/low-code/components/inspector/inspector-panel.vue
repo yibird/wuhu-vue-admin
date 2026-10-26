@@ -228,7 +228,8 @@
 
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import { Icon, Scrollbar } from '@/components'
+import { Icon } from '@/components/icon'
+import { Scrollbar } from '@/components/scrollbar'
 import { validateExpression } from '../../core/expression'
 import { componentRegistry } from '../../core/registry'
 import { useDesignerContext } from '../../hooks'

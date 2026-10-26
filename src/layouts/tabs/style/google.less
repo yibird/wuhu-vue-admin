@@ -75,8 +75,7 @@
       content: '';
       background-color: var(--w-tabs-google-divider-color);
       opacity: 1;
-      transition: opacity var(--w-motion-duration-fast)
-        var(--w-motion-ease-standard);
+      transition: opacity 100ms var(--w-motion-ease);
     }
 
     &:last-child::after,
@@ -178,8 +177,7 @@
 
     &__pin {
       margin-left: var(--w-tabs-google-item-close-gap);
-      transition: color var(--w-motion-duration-base)
-        var(--w-motion-ease-standard);
+      transition: color 200ms var(--w-motion-ease);
     }
 
     &__close {
@@ -193,9 +191,8 @@
       background-color: transparent;
       border-radius: 50%;
       transition:
-        color var(--w-motion-duration-fast) var(--w-motion-ease-standard),
-        background-color var(--w-motion-duration-fast)
-          var(--w-motion-ease-standard);
+        color 100ms var(--w-motion-ease),
+        background-color 100ms var(--w-motion-ease);
 
       &:hover {
         color: var(--w-tabs-item-close-hover-color);

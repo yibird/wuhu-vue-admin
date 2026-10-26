@@ -35,7 +35,7 @@
           class="relative z-1 mt-12 h-7 overflow-hidden rounded-999 bg-white/60"
         >
           <div
-            class="h-full origin-left rounded-999 [background-color:rgb(var(--w-color-warning))] transition-[width] duration-motion-moderate ease-motion-standard motion-reduce:transition-none"
+            class="h-full origin-left rounded-999 [background-color:rgb(var(--w-color-warning))] transition-[width] duration-300 ease-[var(--w-motion-ease)] motion-reduce:transition-none"
             :style="{ width: `${topItem.value}%` }"
           ></div>
         </div>
@@ -51,18 +51,18 @@
         <div
           v-for="(item, index) in rankedItems"
           :key="item.id"
-          class="group relative min-w-0 rounded-8 px-4 py-9 focus-visible:(outline-none shadow-[inset_0_0_0_1px_rgb(var(--w-color-primary)_/_42%)]) sm:px-6"
+          class="group relative min-w-0 rounded-8 px-4 py-9 focus-visible:(outline-none inset-ring-1 inset-ring-primary/42) sm:px-6"
           tabindex="0"
           role="listitem"
           @focus="handleItemFocus"
           @blur="handleItemBlur"
         >
           <div
-            class="flex items-center gap-10 transition-transform duration-motion-base ease-motion-standard group-hover:translate-x-3 group-focus-visible:translate-x-3 motion-reduce:(transform-none transition-none)"
+            class="flex items-center gap-10 transition-transform duration-200 ease-[var(--w-motion-ease)] group-hover:translate-x-3 group-focus-visible:translate-x-3 motion-reduce:(transform-none transition-none)"
           >
             <span
               :class="[
-                'size-26 flex shrink-0 items-center justify-center rounded-8 text-xs font-800 transition-shadow duration-motion-base ease-motion-standard group-hover:shadow-[0_4px_10px_rgb(var(--w-color-primary)_/_18%)] group-focus-visible:shadow-[0_4px_10px_rgb(var(--w-color-primary)_/_18%)] motion-reduce:transition-none',
+                'size-26 flex shrink-0 items-center justify-center rounded-8 text-xs font-800 transition-shadow duration-200 ease-[var(--w-motion-ease)] group-hover:(shadow-md shadow-primary/18) group-focus-visible:(shadow-md shadow-primary/18) motion-reduce:transition-none',
                 index === 0
                   ? 'bg-primary/10 text-primary'
                   : index === 1
@@ -83,7 +83,7 @@
               </div>
               <div class="mt-7 h-5 overflow-hidden rounded-999 bg-secondary">
                 <div
-                  class="h-full origin-left rounded-999 bg-primary transition-[filter,transform,width] duration-motion-moderate ease-motion-standard group-hover:(scale-y-122 [filter:saturate(1.18)]) group-focus-visible:(scale-y-122 [filter:saturate(1.18)]) motion-reduce:(transform-none transition-none)"
+                  class="h-full origin-left rounded-999 bg-primary transition-[filter,transform,width] duration-300 ease-[var(--w-motion-ease)] group-hover:(scale-y-122 [filter:saturate(1.18)]) group-focus-visible:(scale-y-122 [filter:saturate(1.18)]) motion-reduce:(transform-none transition-none)"
                   :style="{ width: `${item.value}%` }"
                 ></div>
               </div>
@@ -111,8 +111,9 @@
   </a-border-beam>
 </template>
 <script lang="ts" setup>
-import { Card } from '@/components'
-import { SlidingHighlight, type SlidingHighlightInstance } from '@/components'
+import { Card } from '@/components/card'
+import { SlidingHighlight } from '@/components/sliding-highlight'
+import type { SlidingHighlightInstance } from '@/components/sliding-highlight'
 
 const highlightRef = useTemplateRef<SlidingHighlightInstance>('highlightRef')
 

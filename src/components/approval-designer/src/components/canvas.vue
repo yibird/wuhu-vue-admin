@@ -1,6 +1,6 @@
 <template>
   <section
-    class="min-h-0 min-w-0 grid grid-rows-[auto_minmax(0,1fr)] overflow-hidden rounded-8 b-1-regular bg-page shadow-overlay"
+    class="min-h-0 min-w-0 grid grid-rows-[auto_minmax(0,1fr)] overflow-hidden rounded-8 b-1-regular bg-page shadow-lg"
   >
     <header
       class="flex items-center justify-between gap-12 border-b border-regular bg-container px-14 py-11"
@@ -90,7 +90,7 @@
         class="approval-canvas-scroll relative h-full w-full min-h-full overflow-x-auto overflow-y-auto p-20"
       >
         <div
-          class="mx-auto min-w-max pb-40 transition-transform [transform-origin:top_center] [transition-duration:var(--w-motion-duration-base)] [transition-timing-function:var(--w-motion-ease-standard)]"
+          class="mx-auto min-w-max pb-40 transition-transform [transform-origin:top_center] [transition-duration:200ms] [transition-timing-function:var(--w-motion-ease)]"
           :style="canvasContentStyle"
         >
           <NodeCard
@@ -108,12 +108,12 @@
         </div>
         <div
           v-if="selecting"
-          class="approval-selection-rect pointer-events-none absolute left-0 top-0 z-60 rounded-8 b-dashed-2-primary/85 bg-primary/10 shadow-[0_0_0_1px_rgb(var(--w-color-primary)/24%),0_14px_32px_rgb(var(--w-color-primary)/12%)]"
+          class="approval-selection-rect pointer-events-none absolute left-0 top-0 z-60 rounded-8 b-dashed-2-primary/85 bg-primary/10 ring-1 ring-primary/24 shadow-2xl shadow-primary/12"
           :style="selectionRect"
         >
           <span
             v-if="marqueeSelectedIds.length > 0"
-            class="approval-selection-count absolute left-8 top-8 z-1 inline-flex items-center gap-5 rounded-6 b-1-primary/25 bg-container/96 px-8 py-4 text-11px font-700 text-primary shadow-card backdrop-blur-8"
+            class="approval-selection-count absolute left-8 top-8 z-1 inline-flex items-center gap-5 rounded-6 b-1-primary/25 bg-container/96 px-8 py-4 text-11px font-700 text-primary shadow-sm backdrop-blur-8"
           >
             <Icon name="i-lucide:mouse-pointer-2" :size="12" />
             已框选 {{ marqueeSelectedIds.length }} 个

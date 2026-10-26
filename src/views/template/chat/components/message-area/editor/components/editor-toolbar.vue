@@ -14,10 +14,8 @@
       </template>
       <button
         type="button"
-        class="button size-36 rounded-6 text-secondary transition-[background-color,box-shadow,transform,color] duration-motion-base hover:(-translate-y-1 bg-hover text-primary shadow-all-sm) active:(translate-y-0 scale-92)"
-        :class="
-          showEmojiPicker ? 'bg-primary/10 text-primary shadow-all-sm' : ''
-        "
+        class="button size-36 rounded-6 text-secondary transition-[background-color,box-shadow,transform,color] duration-200 hover:(-translate-y-1 bg-hover text-primary shadow-sm) active:(translate-y-0 scale-92)"
+        :class="showEmojiPicker ? 'bg-primary/10 text-primary shadow-sm' : ''"
         title="表情"
         aria-label="打开表情面板"
       >
@@ -28,7 +26,7 @@
     <Transition name="fade-pop">
       <span
         v-if="feedback"
-        class="pointer-events-none absolute -top-18 left-0 whitespace-nowrap rounded-full bg-primary/10 px-7 py-2 text-11px text-primary shadow-all-sm"
+        class="pointer-events-none absolute -top-18 left-0 whitespace-nowrap rounded-full bg-primary/10 px-7 py-2 text-11px text-primary shadow-sm"
       >
         {{ feedback }}
       </span>

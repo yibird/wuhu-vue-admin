@@ -22,7 +22,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { Icon } from '@/components'
+import { Icon } from '@/components/icon'
 import OutlineTree from './outline-tree.vue'
 import PalettePanel from './palette-panel.vue'
 

@@ -49,7 +49,7 @@
           <Icon
             name="i-lucide:lock-keyhole"
             :size="18"
-            class="text-secondary transition-[color,transform] duration-motion-base group-focus-within:text-primary"
+            class="text-secondary transition-[color,transform] duration-200 group-focus-within:text-primary"
           />
         </template>
       </a-input-password>
@@ -60,18 +60,18 @@
       <a-checkbox v-model:checked="rememberAccount">
         {{ $t('login.rememberMe') }}
       </a-checkbox>
-      <a
-        class="cursor-pointer text-link transition-[color,text-decoration-color] hover:(text-primary underline underline-offset-4)"
+      <span
+        class="text-primary cursor-pointer transition-all hover:(underline underline-offset-4)"
       >
         {{ $t('login.forgetPassword') }}
-      </a>
+      </span>
     </div>
     <a-button
       type="primary"
       size="large"
       block
       html-type="submit"
-      class="h-44! font-medium transition-[transform,box-shadow,filter] duration-motion-base hover:(-translate-y-1 brightness-105) active:(translate-y-0 shadow-none brightness-100)"
+      class="h-44! font-medium transition-all hover:(-translate-y-1 brightness-105) active:(translate-y-0 brightness-100)"
       data-testid="login-submit"
       :loading="loading"
       :disabled="loading"

@@ -205,7 +205,7 @@
 </template>
 
 <script setup lang="ts">
-import { Icon } from '@/components'
+import { Icon } from '@/components/icon'
 import type { DataRegion, Dataset, ReportParameter } from '../../types'
 
 const props = withDefaults(

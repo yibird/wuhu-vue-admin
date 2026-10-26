@@ -1,6 +1,6 @@
 <template>
   <div
-    class="grid h-full min-h-0 grid-cols-1 gap-10 overflow-y-auto md:grid-cols-3 xl:grid-cols-4 xl:overflow-hidden 2xl:grid-cols-6"
+    class="grid h-full min-h-0 grid-cols-1 gap-10 overflow-y-auto md:grid-cols-3 xl:(grid-cols-4 overflow-hidden) 2xl:grid-cols-6"
     aria-label="任务看板加载中"
     aria-busy="true"
   >

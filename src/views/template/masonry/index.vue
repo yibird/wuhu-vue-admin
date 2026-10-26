@@ -54,7 +54,7 @@
     >
       <div v-if="activeCard" class="flex flex-col gap-16 sm:flex-row">
         <div
-          class="h-220 w-full flex-none overflow-hidden rounded-6 bg-muted sm:h-280 sm:w-240"
+          class="h-220 w-full flex-none overflow-hidden rounded-6 bg-muted sm:(h-280 w-240)"
         >
           <img
             :src="activeCard.image"
@@ -110,7 +110,7 @@
 </template>
 
 <script setup lang="ts">
-import { Icon } from '@/components'
+import { Icon } from '@/components/icon'
 import { MasonryCard, MasonrySkeleton } from './components'
 import {
   createMasonryCards,

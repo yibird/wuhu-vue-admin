@@ -6,7 +6,7 @@
   >
     <button
       type="button"
-      class="size-28 grid-center rounded-4 text-secondary cursor-pointer transition-colors hover:bg-white hover:text-main"
+      class="size-28 grid-center rounded-4 text-secondary cursor-pointer transition-colors hover:(bg-white text-main)"
       title="更多操作"
       @click.stop
     >

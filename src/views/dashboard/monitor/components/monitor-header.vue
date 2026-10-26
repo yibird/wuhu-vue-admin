@@ -1,11 +1,11 @@
 <template>
   <section
     v-if="props.loading"
-    class="mb-12 overflow-hidden rounded-8 b-1-regular bg-container shadow-card"
+    class="mb-12 overflow-hidden rounded-8 b-1-regular bg-container shadow-sm"
     aria-label="监控摘要加载中"
     aria-busy="true"
   >
-    <div class="b-b-1-regular px-14 py-14 sm:px-18 sm:py-16">
+    <div class="b-b-1-regular px-14 py-14 sm:(px-18 py-16)">
       <div class="flex items-center justify-between gap-12">
         <div class="min-w-0">
           <a-skeleton-input active class="!w-118" />
@@ -18,7 +18,7 @@
       </div>
     </div>
     <div class="grid grid-cols-1 gap-0 sm:grid-cols-3">
-      <div v-for="item in 3" :key="item" class="px-14 py-12 sm:px-18 sm:py-14">
+      <div v-for="item in 3" :key="item" class="px-14 py-12 sm:(px-18 py-14)">
         <a-skeleton-input active size="small" class="!w-72" />
         <a-skeleton-input active size="large" class="!mt-8 !w-104" />
       </div>
@@ -27,10 +27,10 @@
 
   <a-border-beam v-else :duration="6" :line-width="3">
     <section
-      class="monitor-hero page-enter page-enter--1 relative mb-12 overflow-hidden rounded-8 b-1-regular bg-container shadow-card"
+      class="monitor-hero page-enter page-enter--1 relative mb-12 overflow-hidden rounded-8 b-1-regular bg-container shadow-sm"
     >
       <div
-        class="flex flex-wrap items-center justify-between gap-12 b-b-1-regular px-14 py-14 sm:px-18 sm:py-16"
+        class="flex flex-wrap items-center justify-between gap-12 b-b-1-regular px-14 py-14 sm:(px-18 py-16)"
       >
         <div class="min-w-0">
           <div class="flex flex-wrap items-center gap-10">
@@ -85,7 +85,7 @@
       </div>
 
       <div class="grid grid-cols-1 gap-0 sm:grid-cols-3">
-        <div class="px-14 py-12 sm:px-18 sm:py-14">
+        <div class="px-14 py-12 sm:(px-18 py-14)">
           <div class="text-xs text-secondary">健康评分</div>
           <div class="mt-6 flex items-end gap-6">
             <span class="monitor-hero__score text-xl font-800 sm:text-2xl">{{
@@ -95,7 +95,7 @@
           </div>
         </div>
         <div
-          class="b-y-1-regular px-14 py-12 sm:border-x-1 sm:border-y-0 sm:border-x-solid sm:px-18 sm:py-14"
+          class="b-y-1-[border-secondary] px-14 py-12 sm:(b-x-1-[border-secondary] border-y-0)"
         >
           <div class="text-xs text-secondary">运行服务</div>
           <div class="mt-6 text-xl text-main font-800 sm:text-2xl">
@@ -104,7 +104,7 @@
             {{ props.totalServiceCount }}
           </div>
         </div>
-        <div class="px-14 py-12 sm:px-18 sm:py-14">
+        <div class="px-14 py-12 sm:(px-18 py-14)">
           <div class="text-xs text-secondary">未处理告警</div>
           <div class="mt-6 text-xl text-main font-800 sm:text-2xl">
             {{ props.unresolvedAlertCount }}

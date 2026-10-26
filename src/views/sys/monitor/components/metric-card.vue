@@ -1,6 +1,6 @@
 <template>
   <div
-    class="group min-w-0 rounded-8 b-1-regular bg-secondary p-12 transition-[background-color,border-color,box-shadow,transform] duration-motion-base ease-motion-enter hover:(-translate-y-1 border-primary bg-hover shadow-all-sm) motion-reduce:transition-none motion-reduce:hover:translate-y-0"
+    class="group min-w-0 rounded-8 b-1-regular bg-secondary p-12 transition-[background-color,border-color,box-shadow,transform] duration-200 ease-[var(--w-motion-ease-enter)] hover:(-translate-y-1 border-primary bg-hover shadow-sm) motion-reduce:transition-none motion-reduce:hover:translate-y-0"
   >
     <div class="flex items-start justify-between gap-10">
       <div class="min-w-0">

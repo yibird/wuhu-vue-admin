@@ -82,7 +82,8 @@ import {
   getProjectPageListApi,
   getProjectSummaryApi,
 } from '@/apis'
-import { FormPlus, Icon } from '@/components'
+import { FormPlus } from '@/components/form-plus'
+import { Icon } from '@/components/icon'
 import { usePermission, useRequest, useTabs } from '@/hooks'
 import { ProjectForm } from './components'
 import {

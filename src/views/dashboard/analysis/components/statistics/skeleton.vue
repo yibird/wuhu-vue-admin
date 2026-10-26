@@ -1,6 +1,6 @@
 <template>
   <Card
-    class="min-h-483 max-md:min-h-539 overflow-hidden rounded-8 b-1-regular shadow-card"
+    class="min-h-483 max-md:min-h-539 overflow-hidden rounded-8 shadow-sm"
     variant="borderless"
     :styles="{ body: { padding: '0' } }"
     aria-hidden="true"
@@ -61,7 +61,7 @@
 </template>
 
 <script setup lang="ts">
-import { Card } from '@/components'
+import { Card } from '@/components/card'
 
 const chartBars = [42, 58, 48, 72, 54, 84, 64, 76, 50, 68, 56, 78]
 </script>

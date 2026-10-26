@@ -90,7 +90,7 @@
 
 <script setup lang="ts">
 import { message, Modal } from 'antdv-next'
-import { AnimatedGroup } from '@/components'
+import { AnimatedGroup } from '@/components/animated'
 import { useLoading } from '@/hooks'
 import ModelCard from './model-card.vue'
 import ModelConfigDrawer from './model-config-drawer.vue'

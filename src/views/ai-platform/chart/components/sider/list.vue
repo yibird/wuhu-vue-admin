@@ -30,7 +30,7 @@
           class="conversation-list-item min-w-0"
         >
           <article
-            class="group conversation-card relative min-h-48 w-full min-w-0 overflow-hidden rounded-8 b-1-transparent bg-container text-regular hover:(border-main shadow-all-sm) focus-within:(border-primary/35 bg-hover shadow-[0_0_0_2px_rgb(var(--w-color-primary)_/_8%)])"
+            class="group conversation-card relative min-h-48 w-full min-w-0 overflow-hidden rounded-8 b-1-transparent bg-container text-regular hover:(border-main shadow-sm) focus-within:(border-primary/35 bg-hover ring-2 ring-primary/8)"
             :class="
               item.id === activeId
                 ? 'border-primary/25! bg-selected! text-main'
@@ -54,7 +54,7 @@
                 "
               >
                 <span
-                  class="size-28 flex shrink-0 items-center justify-center rounded-7 bg-muted text-muted transition-[background-color,color,transform] duration-motion-fast ease-motion-enter group-hover:scale-105 motion-reduce:transform-none"
+                  class="size-28 flex shrink-0 items-center justify-center rounded-7 bg-muted text-muted transition-[background-color,color,transform] duration-100 ease-[var(--w-motion-ease-enter)] group-hover:scale-105 motion-reduce:transform-none"
                   :class="
                     item.id === activeId ? 'bg-primary/12 text-primary' : ''
                   "
@@ -63,7 +63,7 @@
                 </span>
 
                 <span
-                  class="min-w-0 flex-1 flex-col gap-4 overflow-hidden transition-[max-width,opacity,transform] duration-motion-fast ease-motion-enter motion-reduce:transition-none"
+                  class="min-w-0 flex-1 flex-col gap-4 overflow-hidden transition-[max-width,opacity,transform] duration-100 ease-[var(--w-motion-ease-enter)] motion-reduce:transition-none"
                   :class="
                     collapsed
                       ? 'hidden max-h-0 max-w-0 translate-x-4 opacity-0 pointer-events-none'
@@ -121,12 +121,12 @@
             </button>
             <div
               v-if="!collapsed"
-              class="absolute right-7 top-7 translate-x-4 flex items-center rounded-6 bg-container/92 p-1 opacity-0 shadow-all-sm backdrop-blur-6 transition-[opacity,transform] duration-motion-fast ease-motion-enter group-focus-within:(translate-x-0 opacity-100) group-hover:(translate-x-0 opacity-100) motion-reduce:(transform-none transition-none)"
+              class="absolute right-7 top-7 translate-x-4 flex items-center rounded-6 bg-container/92 p-1 opacity-0 shadow-sm backdrop-blur-6 transition-[opacity,transform] duration-100 ease-[var(--w-motion-ease-enter)] group-focus-within:(translate-x-0 opacity-100) group-hover:(translate-x-0 opacity-100) motion-reduce:(transform-none transition-none)"
             >
               <a-dropdown :trigger="['click']" :menu="getActionMenu(item)">
                 <button
                   type="button"
-                  class="size-22 inline-flex items-center justify-center rounded-5 border-0 bg-transparent p-0 text-muted cursor-pointer transition-[background-color,color,transform] duration-motion-fast hover:(bg-white text-main -translate-y-1) focus-visible:(bg-white text-main outline-none) active:(translate-y-0 scale-90) motion-reduce:(transform-none transition-none)"
+                  class="size-22 inline-flex items-center justify-center rounded-5 border-0 bg-transparent p-0 text-muted cursor-pointer transition-[background-color,color,transform] duration-100 hover:(bg-white text-main -translate-y-1) focus-visible:(bg-white text-main outline-none) active:(translate-y-0 scale-90) motion-reduce:(transform-none transition-none)"
                   :aria-label="`更多${item.title}操作`"
                   title="更多操作"
                 >
@@ -248,11 +248,11 @@ function handleAction(action: ChatActionKey, id: string) {
 <style scoped>
 .conversation-card {
   transition:
-    background-color var(--w-motion-duration-base) var(--w-motion-ease-spring),
-    border-color var(--w-motion-duration-base) var(--w-motion-ease-spring),
-    box-shadow var(--w-motion-duration-base) var(--w-motion-ease-spring),
-    color var(--w-motion-duration-base) var(--w-motion-ease-spring),
-    scale var(--w-motion-duration-base) var(--w-motion-ease-spring);
+    background-color 200ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    border-color 200ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 200ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    color 200ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    scale 200ms cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .conversation-card:active {

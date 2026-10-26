@@ -226,7 +226,7 @@ import { ProjectForm } from '../list/components'
 import { MemberForm } from '../member/components'
 import { MilestoneForm } from '../milestone/components'
 import { TaskForm } from '../task/components'
-import { Icon } from '@/components'
+import { Icon } from '@/components/icon'
 import { usePermission, useRequest, useTabs } from '@/hooks'
 import {
   formatDate,

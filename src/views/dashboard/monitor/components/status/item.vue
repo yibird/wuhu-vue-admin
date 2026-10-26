@@ -1,6 +1,6 @@
 <template>
   <div
-    class="min-w-0 overflow-hidden rounded-8 b-1-regular bg-secondary p-12 transition-[border-color,background-color,box-shadow,transform] duration-motion-base ease-motion-enter hover:(-translate-y-2 shadow-[0_6px_16px_rgb(var(--w-color-primary)_/_10%)]) active:(translate-y-0 scale-[0.995]) motion-reduce:transition-none motion-reduce:hover:translate-y-0 motion-reduce:active:scale-100"
+    class="min-w-0 overflow-hidden rounded-8 b-1-regular bg-secondary p-12 transition-[border-color,background-color,box-shadow,transform] duration-200 ease-[var(--w-motion-ease-enter)] hover:(-translate-y-2 shadow-lg shadow-primary/10) active:(translate-y-0 scale-[0.995]) motion-reduce:transition-none motion-reduce:hover:translate-y-0 motion-reduce:active:scale-100"
   >
     <div class="flex items-center justify-between gap-10">
       <div class="min-w-0">
@@ -44,7 +44,7 @@ import {
   getCssRgbVarAlpha,
   useEChartsTheme,
 } from '@/components/chart'
-import { Chart } from '@/components'
+import { Chart } from '@/components/chart'
 import type { MonitorTone, StatusItemProps } from '../types'
 import type { EChartsCoreOption } from 'echarts/core'
 

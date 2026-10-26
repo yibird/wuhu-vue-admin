@@ -12,9 +12,9 @@
 
 <script setup lang="ts">
 import { message } from 'antdv-next'
-import { ApprovalDesigner } from '@/components'
+import { ApprovalDesigner } from '@/components/approval-designer'
 import { approvalTemplates, approvalUsers, initialApprovalSchema } from './data'
-import type { ApprovalWorkflowSchema } from '@/components'
+import type { ApprovalWorkflowSchema } from '@/components/approval-designer'
 
 const schema = shallowRef<ApprovalWorkflowSchema>(
   structuredClone(initialApprovalSchema)

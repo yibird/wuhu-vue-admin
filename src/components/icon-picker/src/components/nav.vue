@@ -42,7 +42,7 @@
             class="group relative h-36 w-full min-w-0 flex cursor-pointer items-center gap-7 overflow-hidden rounded-5 border-0 px-8 text-left text-xs text-secondary focus-visible:(outline-none ring-2 ring-primary/15)"
             :class="
               activeKey === category.key
-                ? 'bg-primary/10 text-primary font-500 shadow-all-sm'
+                ? 'bg-primary/10 text-primary font-500 shadow-sm'
                 : 'hover:(bg-hover text-main)'
             "
             :aria-pressed="activeKey === category.key"
@@ -134,11 +134,10 @@ const totalCount = computed(
 
   &__item {
     transition:
-      color var(--w-motion-duration-base) var(--w-motion-ease-standard),
-      background-color var(--w-motion-duration-base)
-        var(--w-motion-ease-standard),
-      box-shadow var(--w-motion-duration-base) var(--w-motion-ease-standard),
-      transform var(--w-motion-duration-base) var(--w-motion-ease-enter);
+      color 200ms var(--w-motion-ease),
+      background-color 200ms var(--w-motion-ease),
+      box-shadow 200ms var(--w-motion-ease),
+      transform 200ms var(--w-motion-ease-enter);
 
     &:active {
       transform: scale(0.98);
@@ -150,8 +149,8 @@ const totalCount = computed(
     &-leave-active {
       transform-origin: center;
       transition:
-        opacity var(--w-motion-duration-fast) var(--w-motion-ease-standard),
-        transform var(--w-motion-duration-base) var(--w-motion-ease-enter);
+        opacity 100ms var(--w-motion-ease),
+        transform 200ms var(--w-motion-ease-enter);
     }
 
     &-enter-from,

@@ -1,6 +1,6 @@
 <template>
   <aside
-    class="min-h-0 flex flex-col b-l-1-regular bg-container max-xl:border-l-0 max-xl:border-t-1 max-xl:border-t-solid"
+    class="min-h-0 flex flex-col b-l-1-regular bg-container max-xl:(border-l-0 border-t-1 border-t-solid)"
   >
     <header class="flex-none b-b-1-regular px-12 py-11">
       <h3 class="mb-0 text-sm text-main font-700">处理属性</h3>

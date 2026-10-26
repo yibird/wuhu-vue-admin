@@ -56,7 +56,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { Icon } from '@/components'
+import { Icon } from '@/components/icon'
 import { ROOT_ID } from '../../core/schema'
 import { useDesignerContext } from '../../hooks'
 

@@ -1,6 +1,6 @@
 <template>
   <article
-    class="group relative min-w-0 cursor-pointer overflow-hidden rounded-8 b-1-regular bg-container shadow-card outline-none transition-[border-color,box-shadow,transform] duration-motion-base hover:-translate-y-2 hover:border-primary hover:shadow-overlay focus-visible:border-primary"
+    class="group relative min-w-0 cursor-pointer overflow-hidden rounded-8 b-1-regular bg-container shadow-sm outline-none transition-[border-color,box-shadow,transform] duration-200 hover:(-translate-y-2 border-primary shadow-lg) focus-visible:border-primary"
     :aria-label="'文章：' + props.item.title"
     role="button"
     tabindex="0"
@@ -10,7 +10,7 @@
   >
     <div class="flex min-w-0 items-start gap-12 p-14">
       <span
-        class="size-44 flex flex-none items-center justify-center rounded-8 shadow-[inset_0_0_0_1px_rgb(15_23_42_/_6%)] transition-transform duration-motion-base group-hover:-rotate-3 group-hover:scale-105"
+        class="size-44 flex flex-none items-center justify-center rounded-8 inset-ring-1 inset-ring-ink/6 transition-transform duration-200 group-hover:(-rotate-3 scale-105)"
         :style="iconStyle"
       >
         <Icon :name="props.item.icon" :size="22" />
@@ -107,7 +107,9 @@
       </div>
     </div>
 
-    <footer class="flex min-w-0 items-center gap-10 b-t-1-regular px-14 py-12">
+    <footer
+      class="flex min-w-0 items-center gap-10 b-t-1-secondary px-14 py-12"
+    >
       <span
         class="size-30 flex flex-none items-center justify-center rounded-full bg-primary/10 text-xs text-primary font-700"
       >

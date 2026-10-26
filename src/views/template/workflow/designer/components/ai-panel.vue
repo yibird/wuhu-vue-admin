@@ -1,6 +1,6 @@
 <template>
   <section
-    class="grid min-h-0 min-w-0 grid-rows-[auto_minmax(0,1fr)_auto] overflow-hidden rounded-8 b-1-regular bg-container shadow-overlay"
+    class="grid min-h-0 min-w-0 grid-rows-[auto_minmax(0,1fr)_auto] overflow-hidden rounded-8 b-1-regular bg-container shadow-lg"
     aria-label="AI 生成工作流"
   >
     <header
@@ -214,7 +214,7 @@
 </template>
 
 <script lang="ts" setup>
-import { Icon } from '@/components'
+import { Icon } from '@/components/icon'
 import { formatWorkflowSchema } from '../data'
 import type {
   WorkflowAiMessage,

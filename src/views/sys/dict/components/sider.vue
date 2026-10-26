@@ -33,7 +33,7 @@
           <div
             v-for="item in visibleDictionaries"
             :key="item.id"
-            class="group min-h-56 flex items-center gap-8 rounded-6 px-10 py-8 transition-[background-color,color,transform] duration-motion-base hover:translate-x-2 active:scale-98 motion-reduce:(transform-none transition-none)"
+            class="group min-h-56 flex items-center gap-8 rounded-6 px-10 py-8 transition-[background-color,color,transform] duration-200 hover:translate-x-2 active:scale-98 motion-reduce:(transform-none transition-none)"
             :class="
               item.id === selectedId
                 ? 'bg-primary/10 text-primary'

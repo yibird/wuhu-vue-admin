@@ -73,7 +73,7 @@
 import { useRouter } from 'vue-router'
 import { message, Modal } from 'antdv-next'
 import { useLoading } from '@/hooks'
-import { AnimatedGroup } from '@/components'
+import { AnimatedGroup } from '@/components/animated'
 import { articleItems } from '../../data'
 import ArticleCard from './article-card.vue'
 import ArticleToolbar from './article-toolbar.vue'

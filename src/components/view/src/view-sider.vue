@@ -102,10 +102,9 @@ function toggle() {
   min-height: 0;
   overflow: visible;
   transition:
-    width var(--w-motion-duration-moderate) var(--w-motion-ease-enter),
-    flex-basis var(--w-motion-duration-moderate) var(--w-motion-ease-enter),
-    margin-inline-end var(--w-motion-duration-moderate)
-      var(--w-motion-ease-enter);
+    width 300ms var(--w-motion-ease-enter),
+    flex-basis 300ms var(--w-motion-ease-enter),
+    margin-inline-end 300ms var(--w-motion-ease-enter);
 
   &__body {
     box-sizing: border-box;
@@ -120,8 +119,8 @@ function toggle() {
     min-height: 100%;
     overflow: hidden;
     transition:
-      opacity var(--w-motion-duration-base) var(--w-motion-ease-standard),
-      transform var(--w-motion-duration-moderate) var(--w-motion-ease-enter);
+      opacity 200ms var(--w-motion-ease),
+      transform 300ms var(--w-motion-ease-enter);
   }
 
   &__trigger {
@@ -164,7 +163,7 @@ function toggle() {
     &-icon {
       display: grid;
       place-items: center;
-      transition: scale var(--w-motion-duration-base) var(--w-motion-ease-enter);
+      transition: scale 200ms var(--w-motion-ease-enter);
     }
   }
 

@@ -111,7 +111,7 @@
 
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted } from 'vue'
-import { Icon } from '@/components'
+import { Icon } from '@/components/icon'
 import { componentRegistry } from '../../core/registry'
 import { useDesignerContext } from '../../hooks'
 

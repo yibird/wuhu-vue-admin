@@ -3,7 +3,7 @@
     role="button"
     tabindex="0"
     aria-label="查看作品详情"
-    class="group min-w-0 cursor-pointer overflow-hidden rounded-8 b-1-muted bg-container shadow-card outline-none transition-[border-color,box-shadow,transform] duration-motion-moderate ease-motion-standard hover:(-translate-y-2 border-primary/25 shadow-overlay) focus-visible:(border-primary shadow-overlay) active:translate-y-0 motion-reduce:(transform-none transition-none)"
+    class="group min-w-0 cursor-pointer overflow-hidden rounded-8 b-1-muted bg-container shadow-sm outline-none transition-[border-color,box-shadow,transform] duration-300 ease-[var(--w-motion-ease)] hover:(-translate-y-2 border-primary/25 shadow-lg) focus-visible:(border-primary shadow-lg) active:translate-y-0 motion-reduce:(transform-none transition-none)"
     @click="emits('select', card)"
     @keydown.enter.prevent="emits('select', card)"
     @keydown.space.prevent="emits('select', card)"
@@ -21,7 +21,7 @@
         :src="card.image"
         :alt="card.title"
         loading="lazy"
-        class="absolute inset-0 size-full object-cover transition-transform duration-motion-slow ease-motion-standard group-hover:scale-104 motion-reduce:transform-none"
+        class="absolute inset-0 size-full object-cover transition-transform duration-300 ease-[var(--w-motion-ease)] group-hover:scale-104 motion-reduce:transform-none"
       />
       <span
         class="absolute left-10 top-10 rounded-full bg-black/45 px-8 py-3 text-xs text-white backdrop-blur-sm"
@@ -53,7 +53,7 @@
 </template>
 
 <script setup lang="ts">
-import { Icon } from '@/components'
+import { Icon } from '@/components/icon'
 import type { MasonryCard } from '../types'
 
 const { card } = defineProps<{

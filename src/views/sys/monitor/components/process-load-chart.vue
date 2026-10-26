@@ -19,7 +19,7 @@
 </template>
 
 <script setup lang="ts">
-import { Chart } from '@/components'
+import { Chart } from '@/components/chart'
 import type { EChartsCoreOption } from 'echarts/core'
 import {
   getCssRgbVar,

@@ -104,12 +104,9 @@ import {
   type SysRole,
   type SysRoleUpdateReq,
 } from '@/apis'
-import {
-  FormPlus,
-  Icon,
-  type FormPlusInstance,
-  type FormPlusModel,
-} from '@/components'
+import { FormPlus } from '@/components/form-plus'
+import { Icon } from '@/components/icon'
+import type { FormPlusInstance, FormPlusModel } from '@/components/form-plus'
 import { useRequest, useTabs } from '@/hooks'
 import { toRouteTabKey } from '@/store/tabs/util'
 import { dataScopeMap, schemas } from '../list/config'

@@ -24,7 +24,7 @@
               <a-avatar
                 :src="item.avatar"
                 :size="38"
-                class="shrink-0 transition-transform duration-motion-base group-hover:scale-105"
+                class="shrink-0 transition-transform duration-200 group-hover:scale-105"
               />
               <div class="min-w-0 flex-1">
                 <div class="flex items-center justify-between gap-8">
@@ -59,7 +59,8 @@
 </template>
 
 <script lang="ts" setup>
-import { SlidingHighlight, Card } from '@/components'
+import { SlidingHighlight } from '@/components/sliding-highlight'
+import { Card } from '@/components/card'
 import TeamSkeleton from './skeleton.vue'
 import type { TeamItem } from './types'
 

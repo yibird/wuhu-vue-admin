@@ -142,7 +142,7 @@
 </template>
 
 <script lang="ts" setup>
-import { IconSelector } from '@/components'
+import { IconSelector } from '@/components/icon-picker'
 import type { SysMenu } from '@/apis'
 import type { MenuType } from '#/config'
 import type { FormInstance } from 'antdv-next'

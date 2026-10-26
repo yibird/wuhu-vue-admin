@@ -10,7 +10,7 @@
 </template>
 
 <script lang="ts" setup>
-import { Chart } from '@/components'
+import { Chart } from '@/components/chart'
 
 import { useChartAdapter } from '../../json-render/chart-adapter'
 import { useEChartsTheme } from '@/components/chart'

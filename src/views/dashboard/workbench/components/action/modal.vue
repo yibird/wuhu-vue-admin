@@ -47,7 +47,7 @@
           <div
             v-for="item in filteredActions"
             :key="item.id"
-            class="group min-w-0 flex items-center gap-10 rounded-8 border-1 border-solid p-10 transition-all hover:(-translate-y-1 border-primary/35 bg-primary/6 shadow-all-sm)"
+            class="group min-w-0 flex items-center gap-10 rounded-8 border-1 border-solid p-10 transition-all hover:(-translate-y-1 border-primary/35 bg-primary/6 shadow-sm)"
             :class="
               isSelected(item.id)
                 ? 'border-primary/35 bg-primary/6'

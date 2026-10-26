@@ -45,7 +45,7 @@
     <div class="min-h-0 flex flex-1 justify-center overflow-hidden">
       <div
         :class="[
-          'min-h-0 w-full transition-[max-width] duration-motion-base',
+          'min-h-0 w-full transition-[max-width] duration-200',
           props.previewWidthClass,
         ]"
       >

@@ -44,7 +44,7 @@
             v-for="platform in platforms"
             :key="platform.key"
             type="button"
-            class="flex flex-col items-center gap-6 rounded-10 b-1-muted bg-container px-8 py-10 transition-[background-color,border-color,transform] duration-motion-base hover:(-translate-y-1 border-primary bg-hover) active:translate-y-0 motion-reduce:(transform-none transition-none)"
+            class="flex flex-col items-center gap-6 rounded-10 b-1-muted bg-container px-8 py-10 transition-[background-color,border-color,transform] duration-200 hover:(-translate-y-1 border-primary bg-hover) active:translate-y-0 motion-reduce:(transform-none transition-none)"
             :title="platform.label"
             :aria-label="`分享到${platform.label}`"
             @click="emits('share', platform)"

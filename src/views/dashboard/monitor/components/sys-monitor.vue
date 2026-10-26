@@ -6,7 +6,7 @@
     description="关键资源使用率趋势"
     body-class="p-0"
   >
-    <div class="grid grid-cols-3 b-b-1-regular">
+    <div class="grid grid-cols-3 b-b-1-[border-secondary]">
       <div v-for="item in 3" :key="item" class="px-16 py-12">
         <a-skeleton-input active size="small" class="!w-46" />
         <a-skeleton-input active class="!mt-6 !w-72" />
@@ -31,7 +31,7 @@
     body-class="p-0"
   >
     <template #extra>
-      <div class="flex items-center gap-8 max-lg:flex-col max-lg:items-end">
+      <div class="flex items-center gap-8 max-lg:(flex-col items-end)">
         <a-select
           v-model:value="activeRange"
           :options="timeOptions"
@@ -81,7 +81,7 @@ import {
 } from '@/components/chart'
 import Card from './card.vue'
 import { metricLabels } from '../config'
-import { Chart } from '@/components'
+import { Chart } from '@/components/chart'
 import type { MonitorMetric, SysMonitorProps } from './types'
 import type { EChartsCoreOption } from 'echarts/core'
 
@@ -151,7 +151,7 @@ const chartOption = computed<EChartsCoreOption>(() => {
       splitLine: {
         lineStyle: {
           color: getCssRgbVarAlpha(
-            '--w-border-regular',
+            '--w-border-secondary',
             0.62,
             'rgba(148, 163, 184, 0.18)'
           ),

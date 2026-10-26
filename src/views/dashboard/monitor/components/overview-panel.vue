@@ -23,7 +23,7 @@
       <div
         v-for="item in items"
         :key="item.id"
-        class="group min-w-0 rounded-8 b-1-regular bg-secondary p-14 transition-[border-color,background-color,box-shadow,transform] duration-motion-base ease-motion-enter hover:(-translate-y-2 border-primary bg-hover shadow-[0_6px_16px_rgb(var(--w-color-primary)_/_10%)]) active:(translate-y-0 scale-[0.995]) motion-reduce:transition-none motion-reduce:hover:translate-y-0 motion-reduce:active:scale-100"
+        class="group min-w-0 rounded-8 b-1-regular bg-secondary p-14 transition-[border-color,background-color,box-shadow,transform] duration-200 ease-[var(--w-motion-ease-enter)] hover:(-translate-y-2 border-primary bg-hover shadow-lg shadow-primary/10) active:(translate-y-0 scale-[0.995]) motion-reduce:transition-none motion-reduce:hover:translate-y-0 motion-reduce:active:scale-100"
       >
         <div class="flex items-start justify-between gap-12">
           <div class="min-w-0">

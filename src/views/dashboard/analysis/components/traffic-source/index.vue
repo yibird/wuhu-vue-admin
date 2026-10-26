@@ -20,7 +20,7 @@
         <li
           v-for="item in items"
           :key="item.name"
-          class="flex items-center gap-8 rounded-8 px-4 py-7 transition-colors duration-motion-base hover:bg-hover motion-reduce:transition-none"
+          class="flex items-center gap-8 rounded-8 px-4 py-7 transition-colors duration-200 hover:bg-hover motion-reduce:transition-none"
         >
           <span
             class="size-8 shrink-0 rounded-999"
@@ -56,8 +56,8 @@
 </template>
 
 <script lang="ts" setup>
-import { Chart } from '@/components'
-import { Card } from '@/components'
+import { Chart } from '@/components/chart'
+import { Card } from '@/components/card'
 import { getCssRgbVarAlpha, useEChartsTheme } from '@/components/chart'
 import type { EChartsCoreOption } from 'echarts/core'
 

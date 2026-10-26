@@ -68,9 +68,12 @@
         :disabled="loading"
         >{{ $t('register.submit') }}</a-button
       >
-      <a-button type="link" @click="to('/login')">{{
-        $t('register.toLogin')
-      }}</a-button>
+      <button
+        class="px-4 text-primary cursor-pointer transition-all hover:(translate-x-1) active:translate-x-0"
+        @click="to('/login')"
+      >
+        {{ $t('register.toLogin') }}
+      </button>
     </div>
   </a-form>
 </template>

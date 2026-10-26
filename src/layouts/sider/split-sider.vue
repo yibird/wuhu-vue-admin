@@ -1,18 +1,18 @@
 <template>
   <div
-    class="relative flex h-full overflow-visible shadow-[var(--w-sider-shadow)] b-r-1-[rgb(var(--w-sider-border-color))] z-[var(--w-sider-z-index)]"
+    class="relative flex h-full overflow-visible shadow-sider b-r-1-[rgb(var(--w-sider-border-color))] z-[var(--w-sider-z-index)]"
   >
     <div
-      class="flex flex-col w-78 overflow-hidden bg-[rgb(var(--w-sider-bg))] b-r-1-[rgb(var(--w-border-regular))]"
+      class="flex flex-col w-78 overflow-hidden bg-[rgb(var(--w-sider-bg))] b-r-1-[border-regular]"
     >
-      <Logo collapsed class="b-b-1-[rgb(var(--w-border-regular))]" />
+      <Logo collapsed class="b-b-1-[border-regular]" />
       <div class="flex-1 py-10 flex flex-col gap-10">
         <div
           v-for="item in menus"
           :key="item.id"
           :data-active="rootId === item.id"
           :class="[
-            'group relative mx-8 cursor-pointer select-none rounded-6 px-5 py-10 text-center outline-none transition-[color,background-color,box-shadow,transform] duration-motion-moderate ease-motion-enter before:(pointer-events-none absolute -left-8 top-1/2 h-18 w-4 -translate-x-3 -translate-y-1/2 scale-y-40 rounded-r-4 bg-primary opacity-0 content-empty transition-[opacity,transform] duration-motion-moderate ease-motion-enter) data-[active=true]:before:(translate-x-0 scale-y-100 opacity-100) hover:(-translate-y-1 bg-primary/10 text-primary) active:(translate-y-0 scale-96) motion-reduce:(transform-none transition-none) motion-reduce:before:transition-none',
+            'group relative mx-8 cursor-pointer select-none rounded-6 px-5 py-10 text-center outline-none transition-[color,background-color,box-shadow,transform] duration-300 ease-[var(--w-motion-ease-enter)] before:(pointer-events-none absolute -left-8 top-1/2 h-18 w-4 -translate-x-3 -translate-y-1/2 scale-y-40 rounded-r-4 bg-primary opacity-0 content-empty transition-[opacity,transform] duration-300 ease-[var(--w-motion-ease-enter)]) data-[active=true]:before:(translate-x-0 scale-y-100 opacity-100) hover:(-translate-y-1 bg-primary/10 text-primary) active:(translate-y-0 scale-96) motion-reduce:(transform-none transition-none) motion-reduce:before:transition-none',
             rootId === item.id
               ? 'bg-primary/10 text-primary'
               : 'text-[rgb(var(--w-sider-item-color))] bg-[rgb(var(--w-sider-item-bg))]',
@@ -21,7 +21,7 @@
         >
           <div
             v-if="item.icon"
-            class="mb-6 text-center transition-[filter,transform] duration-motion-moderate ease-motion-enter group-hover:scale-110 motion-reduce:(transform-none transition-none)"
+            class="mb-6 text-center transition-[filter,transform] duration-300 ease-[var(--w-motion-ease-enter)] group-hover:scale-110 motion-reduce:(transform-none transition-none)"
             :class="{
               '-translate-y-1 scale-105 [filter:drop-shadow(0_3px_6px_rgb(var(--w-color-primary)_/_20%))]':
                 rootId === item.id,
