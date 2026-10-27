@@ -1,4 +1,4 @@
-import { AppError } from './app-error.ts'
+import { AppError } from './app.ts'
 
 /**
  * 业务错误

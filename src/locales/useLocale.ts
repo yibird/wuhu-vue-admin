@@ -16,6 +16,17 @@ const langs: Record<Locale, string> = {
   [LOCALE.EN]: 'en',
 }
 
+const UPDATE_NOTICE_LOCALES: Record<Locale, string> = {
+  [LOCALE.ZH_CN]: 'zh_CN',
+  [LOCALE.EN]: 'en_US',
+}
+
+export function setUpdateNoticeLocale(locale: Locale) {
+  window.pluginWebUpdateNotice_?.setLocale(
+    UPDATE_NOTICE_LOCALES[locale] ?? UPDATE_NOTICE_LOCALES[LOCALE.ZH_CN]
+  )
+}
+
 /**
  * 同步 `<html lang>`
  *
@@ -44,6 +55,8 @@ export function useLocale() {
     i18nLocale.value = appLocale.value
     setDocumentLang(appLocale.value)
   })
+
+  watch(appLocale, setUpdateNoticeLocale, { immediate: true })
 
   return {
     locale,

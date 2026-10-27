@@ -127,15 +127,13 @@ export const PAGE_ANIMATION_MODE = {
   IN_OUT: 'in-out',
 } as const
 
-export type ThemeMode = (typeof THEME_MODE)[keyof typeof THEME_MODE]
-export type Locale = (typeof LOCALE)[keyof typeof LOCALE]
-export type FontFamily = (typeof FONT_FAMILY)[keyof typeof FONT_FAMILY]
-export type MenuMode = (typeof MENU_MODE)[keyof typeof MENU_MODE]
-export type HeaderWidget = (typeof HEADER_WIDGET)[keyof typeof HEADER_WIDGET]
-export type TabTheme = (typeof TAB_THEME)[keyof typeof TAB_THEME]
-export type SiderTheme = (typeof SIDER_THEME)[keyof typeof SIDER_THEME]
-export type LoadingAnimation =
-  (typeof LOADING_ADNIMATION)[keyof typeof LOADING_ADNIMATION]
-export type PageAnimation = (typeof PAGE_ANIMATION)[keyof typeof PAGE_ANIMATION]
-export type PageAnimationMode =
-  (typeof PAGE_ANIMATION_MODE)[keyof typeof PAGE_ANIMATION_MODE]
+export type ThemeMode = ValueOf<typeof THEME_MODE>
+export type Locale = ValueOf<typeof LOCALE>
+export type FontFamily = ValueOf<typeof FONT_FAMILY>
+export type MenuMode = ValueOf<typeof MENU_MODE>
+export type HeaderWidget = ValueOf<typeof HEADER_WIDGET>
+export type TabTheme = ValueOf<typeof TAB_THEME>
+export type SiderTheme = ValueOf<typeof SIDER_THEME>
+export type LoadingAnimation = ValueOf<typeof LOADING_ADNIMATION>
+export type PageAnimation = ValueOf<typeof PAGE_ANIMATION>
+export type PageAnimationMode = ValueOf<typeof PAGE_ANIMATION_MODE>

@@ -46,7 +46,7 @@ const unauthorizedResponseHook: AfterResponseHook = async ({
 const businessResponseHook: AfterResponseHook = async ({ response: res }) => {
   if (!res.ok) return
 
-  const contentType = res.headers.get(HTTP_HEADER.CONTENT_TYPE) ?? ''
+  const contentType = res.headers.get(HTTP_HEADER.ContentType) ?? ''
   if (!contentType.toLowerCase().includes(CONTENT_TYPE.Json)) return
 
   const payload: unknown = await res

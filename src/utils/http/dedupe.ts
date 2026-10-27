@@ -1,9 +1,9 @@
 import type { Input, Options } from 'ky'
 
-import { REQUEST_METHOD } from '@/constants'
+import { HTTP_METHOD } from '@/constants'
 import { getToken } from './util'
 
-const DEFAULT_REQUEST_METHOD = REQUEST_METHOD.GET
+const DEFAULT_HTTP_METHOD = HTTP_METHOD.Get
 const RESPONSE_DEDUPE_INTERVAL = 1500
 
 export interface ApiRequestOptions extends Options {
@@ -30,8 +30,8 @@ export function buildRequestDedupKey(
 ): string | null {
   if (options.signal) return null
   if (options.responseType && options.responseType !== 'json') return null
-  const method = getRequestMethod(input, options)
-  const canUseAutoKey = method === REQUEST_METHOD.GET
+  const method = getHttpMethod(input, options)
+  const canUseAutoKey = method === HTTP_METHOD.Get
   const shouldDedupe = options.dedupe ?? canUseAutoKey
   if (!shouldDedupe) return null
   const customKey = options.dedupeKey?.trim()
@@ -84,12 +84,12 @@ export function dedupeResponse(
   return true
 }
 
-function getRequestMethod(input: Input, options: ApiRequestOptions): string {
+function getHttpMethod(input: Input, options: ApiRequestOptions): string {
   if (options.method) return String(options.method).toUpperCase()
   if (typeof Request !== 'undefined' && input instanceof Request) {
     return input.method.toUpperCase()
   }
-  return DEFAULT_REQUEST_METHOD
+  return DEFAULT_HTTP_METHOD
 }
 
 function getRequestUrl(input: Input): string {

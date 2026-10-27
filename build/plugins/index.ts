@@ -5,6 +5,7 @@ import { vuePlugin } from './vue.ts'
 import { autoImportPlugin } from './auto-import.ts'
 import { pwaPlugin } from './pwa.ts'
 import { loadingPlugin } from './loading.ts'
+import { updateNoticePlugin } from './update-notice'
 import type { PluginOption } from 'vite'
 
 interface CreatePluginOptions {
@@ -48,6 +49,7 @@ export async function createPlugin(options: CreatePluginOptions) {
     unocssPlugin(),
     pwaPlugin(),
     loadingPlugin(),
+    updateNoticePlugin(),
   ]
   const devPlugins = await getDevPlugins(options)
   const prodPlugins = await getProdPlugins(options)

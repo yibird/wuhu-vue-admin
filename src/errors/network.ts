@@ -1,4 +1,4 @@
-import { AppError } from './app-error.ts'
+import { AppError } from './app.ts'
 
 /**
  * 网络异常基类

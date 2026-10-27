@@ -39,8 +39,6 @@ function localFont(file: string) {
  * 系统字体显式声明 provider: none,避免无谓的 provider 解析与构建告警。
  */
 const fontFamilies: FontFamilies = [
-  // 默认字体:构建期预加载。本地字体的 src 没有 subset 元信息,
-  // 因此 preload 只能用 true,写成 { subsets: ['latin'] } 会静默失效
   {
     name: 'Outfit',
     src: localFont('OutfitVariable.woff2'),
@@ -67,8 +65,6 @@ const fontFamilies: FontFamilies = [
     weight: '100 700',
     global: true,
   },
-  // 第三方样式(jit-viewer 的 style.css)把 Lato 放在字体栈首位,
-  // 关闭 google provider 后不会被自动解析,这里显式自托管以保持原有渲染
   {
     name: 'Lato',
     src: localFont('LatoRegular.woff2'),
@@ -138,17 +134,6 @@ export function fontsPlugin(): Plugin[] {
   ]
 }
 
-/**
- * 字体 HTML 兜底插件
- *
- * 1. 编码声明归位:fontless 注入的 @font-face 样式由 Vite 前插到 <head> 最前面,
- *    会把 <meta charset> 挤到 1024 字节之外而失效(中文可能显示为乱码),
- *    这里把编码声明移回 <head> 开头,同时保留 preload 与样式的前置位置。
- * 2. 解析结果校验:fontless 解析失败时只打印告警,产物会静默缺少 @font-face
- *    (字体悄悄被系统字体顶替),这里做一次兜底校验,构建阶段直接中断。
- *
- * @returns Vite 插件
- */
 function fontHtmlGuardPlugin(): Plugin {
   const required = fontFamilies
     .filter(
@@ -169,7 +154,6 @@ function fontHtmlGuardPlugin(): Plugin {
     transformIndexHtml: {
       order: 'post',
       handler(html) {
-        // 开发环境每次请求都会走这里,但字体解析结果不会变,只校验一次
         if (!checked) {
           checked = true
           checkFontFaces(html, required, isBuild)

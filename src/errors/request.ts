@@ -1,4 +1,4 @@
-import { AppError } from './app-error.ts'
+import { AppError } from './app.ts'
 
 /**
  * 请求被取消(主动 cancel 或所属作用域销毁)时抛出的错误

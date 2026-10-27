@@ -61,7 +61,7 @@ import { message, notification } from 'antdv-next'
 import { useRoute } from 'vue-router'
 import { useAuth } from '@/hooks'
 import { getSafeRedirect, useGo } from '@/router'
-import { isApiError } from '@/utils'
+import { isApiError } from '@/errors'
 
 import type { Placement } from './components/types'
 import type { LoginRequest } from '@/apis'

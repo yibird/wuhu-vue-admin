@@ -1,5 +1,5 @@
 import { apiRequest } from '@/utils'
-import { REQUEST_METHOD } from '@/constants'
+import { HTTP_METHOD } from '@/constants'
 
 import type { ApiResult } from '#/http'
 import type {
@@ -11,7 +11,7 @@ import type {
 
 export function accountLoginApi(data: AccountLoginReq, signal?: AbortSignal) {
   return apiRequest<ApiResult<AuthResponse>>('/v1/auth/login', {
-    method: REQUEST_METHOD.POST,
+    method: HTTP_METHOD.Post,
     json: data,
     signal,
   })
@@ -19,7 +19,7 @@ export function accountLoginApi(data: AccountLoginReq, signal?: AbortSignal) {
 
 export function mobileLoginApi(data: MobileLoginReq, signal?: AbortSignal) {
   return apiRequest<ApiResult<AuthResponse>>('/v1/auth/login', {
-    method: REQUEST_METHOD.POST,
+    method: HTTP_METHOD.Post,
     json: data,
     signal,
   })
@@ -27,7 +27,7 @@ export function mobileLoginApi(data: MobileLoginReq, signal?: AbortSignal) {
 
 export function getAuthSessionApi(signal?: AbortSignal) {
   return apiRequest<ApiResult<AuthSession>>('/v1/auth/session', {
-    method: REQUEST_METHOD.GET,
+    method: HTTP_METHOD.Get,
     signal,
     dedupe: false,
   })

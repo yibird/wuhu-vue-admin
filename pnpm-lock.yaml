@@ -122,6 +122,9 @@ importers:
       '@univerjs/sheets':
         specifier: 1.1.0
         version: 1.1.0(react@18.3.1)(rxjs@7.8.2)
+      '@uppy/vue':
+        specifier: ^4.0.1
+        version: 4.0.1(@uppy/core@6.3.0)(@uppy/google-drive-picker@2.0.0(@uppy/core@6.3.0))(@uppy/google-photos-picker@2.0.0(@uppy/core@6.3.0))(vue@3.6.0-rc.4(typescript-native-bridge@6.0.3-bridge.18.tsgo.7.0.2))
       '@vue-flow/background':
         specifier: ^1.3.2
         version: 1.3.2(@vue-flow/core@1.48.2(vue@3.6.0-rc.4(typescript-native-bridge@6.0.3-bridge.18.tsgo.7.0.2)))(vue@3.6.0-rc.4(typescript-native-bridge@6.0.3-bridge.18.tsgo.7.0.2))
@@ -234,6 +237,9 @@ importers:
       '@iconify-json/lucide':
         specifier: ^1.2.146
         version: 1.2.147
+      '@plugin-web-update-notification/vite':
+        specifier: ^2.1.3
+        version: 2.1.3(vite@8.3.5(@types/node@26.6.5)(esbuild@0.27.4)(jiti@2.7.0)(less@4.9.1)(terser@5.51.2)(yaml@2.9.1))
       '@starweave-lab/unocss-preset':
         specifier: ^0.0.5
         version: 0.0.5
@@ -261,9 +267,6 @@ importers:
       conventional-changelog:
         specifier: ^8.1.3
         version: 8.1.3
-      cross-env:
-        specifier: ^10.1.0
-        version: 10.1.0
       cz-git:
         specifier: ^1.14.0
         version: 1.14.0
@@ -279,9 +282,6 @@ importers:
       lint-staged:
         specifier: ^17.6.0
         version: 17.6.0
-      oxfmt:
-        specifier: 0.74.0
-        version: 0.74.0(vite-plus@1.4.0(@types/node@26.6.5)(@vitest/ui@5.0.5(vitest@5.0.5))(@volar/typescript@2.4.28)(@vue/language-core@3.3.13)(esbuild@0.27.4)(jiti@2.7.0)(less@4.9.1)(terser@5.51.2)(typescript-native-bridge@6.0.3-bridge.18.tsgo.7.0.2)(vue-tsc@3.3.13(typescript-native-bridge@6.0.3-bridge.18.tsgo.7.0.2))(yaml@2.9.1))
       postcss-html:
         specifier: ^2.0.0
         version: 2.0.0(postcss@8.5.31)
@@ -1203,9 +1203,6 @@ packages:
   '@emotion/unitless@0.7.5':
     resolution: {integrity: sha512-OWORNpfjMsSSUBVrRBVGECkhWcULOAJz9ZW8uK9qgxD+87M7jHRcvh/A96XXNhXTLmKcoYSQtBEX7lHMO7YRwg==}
 
-  '@epic-web/invariant@1.0.0':
-    resolution: {integrity: sha512-lrTPqgvfFQtR/eY/qkIzp98OGdNJu0m5ji3q/nJI8v3SXkRKEnWiOxMmbvcSoAIzv/cGiuvRy57k4suKQSAdwA==}
-
   '@esbuild/aix-ppc64@0.27.4':
     resolution: {integrity: sha512-cQPwL2mp2nSmHHJlCyoXgHGhbEPMrEEU5xhkcy3Hs/O7nGZqEpZ2sUtLaL9MORLtDfRvVl2/3PAuEkYZH0Ty8Q==}
     engines: {node: '>=18'}
@@ -2099,6 +2096,14 @@ packages:
 
   '@pengzhanbo/utils@3.12.0':
     resolution: {integrity: sha512-7FO3v0z0FcAmWbVaG0UTd0nrKAtR+FdJ3Uoa7CGAO790Y9bsTyoDGn/FHhFZq5bNRWaq9FiwyA7SiKD4fdwm9Q==}
+
+  '@plugin-web-update-notification/core@2.1.3':
+    resolution: {integrity: sha512-1le5CIKCyA1M6Fy43R/rzcNE6VGnkRLIiZ4zjAYIyCZLWv2ZOoyuAcIMF0jBANuiEVBzjZz//sgeOhyXKVVFvA==}
+
+  '@plugin-web-update-notification/vite@2.1.3':
+    resolution: {integrity: sha512-SOO/FOq3bJA74U9r/1HvOj+oXEhjGh+MtqrP8/gkWZJ65Tal2lgOgR75ZLpX/uTae8IYJM7cph8W6rWzgca98g==}
+    peerDependencies:
+      vite: ^8.0.0 || ^7.0.0 || ^6.0.0 || ^5.0.0 || ^4.0.0 || ^3.0.0
 
   '@polka/url@1.0.0-next.29':
     resolution: {integrity: sha512-wwQAWhWSuHaag8c4q/KN/vCoeOJYshAIvMQwD4GpSb3OiZklFfvAgmj0VCBBImRpuF/aFgIRzllXlVX93Jevww==}
@@ -3024,6 +3029,10 @@ packages:
       '@tiptap/pm': 3.32.0
       vue: ^3.0.0
 
+  '@transloadit/prettier-bytes@2.0.0':
+    resolution: {integrity: sha512-GYzxSL3y9XlhwamBLkHT1y2jFrRsHkZZ1jNctn8NeMNyTtIbMK1Qf0f1koHkDdW+MwOUowCmpm8zP6ZpQ36G5w==}
+    engines: {node: '>=22'}
+
   '@trickfilm400/rollup-plugin-off-main-thread@3.0.0-pre1':
     resolution: {integrity: sha512-/67zpWDBLV+oYAEL682s1ktXL0HgqX76f6gaVGkGnVZlBbm1zd0v4Bz8MFF2GGhoX9rvfq3KSQHubFHwa6w6/Q==}
     engines: {node: '>=12'}
@@ -3310,6 +3319,55 @@ packages:
     resolution: {integrity: sha512-1kfKcuF8bAAf+ZDkvCYsDhAfAz+vM6d5SjntabPSrsv7O1h7++r93Nw/gOE30nrITKZ1UynLE0yXO0GQ2zmrkg==}
     peerDependencies:
       vite: ^5.0.0-0 || ^6.0.0-0 || ^7.0.0-0 || ^8.0.0-0
+
+  '@uppy/components@2.1.0':
+    resolution: {integrity: sha512-AgaJbABxlB/FGZh4jvWv7kEnuZVkr9vsnaP3B20wColUCy4ZXLV/rVU6rWuGW1zsE63EeBzF5inZmQ6OmTJlpg==}
+    peerDependencies:
+      '@uppy/core': ^6.3.0
+      '@uppy/google-drive-picker': ^2.0.0
+      '@uppy/google-photos-picker': ^2.0.0
+      '@uppy/image-editor': ^5.0.1
+      '@uppy/screen-capture': ^6.0.2
+      '@uppy/webcam': ^6.0.2
+    peerDependenciesMeta:
+      '@uppy/image-editor':
+        optional: true
+      '@uppy/screen-capture':
+        optional: true
+      '@uppy/webcam':
+        optional: true
+
+  '@uppy/core@6.3.0':
+    resolution: {integrity: sha512-D6+iERQrI194UZO9dOIJWrT5GtOtyR9k4Wh6VU7cXThEaRNvMQDqXj1GzHDs2TffnZ5pRxufwB84Os8uH3+bVA==}
+
+  '@uppy/google-drive-picker@2.0.0':
+    resolution: {integrity: sha512-i3XPwEWPCZJtHM9bYRIQ89cjIrSx6dqm3C81bb63Z0H3bet9Yz8E5BJS7ofyppJiOiJg19Vec4evx5QOCZ45aQ==}
+    peerDependencies:
+      '@uppy/core': ^6.0.0
+
+  '@uppy/google-photos-picker@2.0.0':
+    resolution: {integrity: sha512-mWad0IRAgZaAYCjIAytWS3t8MK3u3ZyAgXFgmeCqz15i3hXOXmrzlez/MEpMR9QJc9Hsju9yHShP/lKWF2tbIA==}
+    peerDependencies:
+      '@uppy/core': ^6.0.0
+
+  '@uppy/vue@4.0.1':
+    resolution: {integrity: sha512-N9AK5Qzp1gnlt1WVcVfGhOZwgJP8c6PsrkoTosojcdYtDx7AzGL+iUdlAqN4STkWyUH5BJs35RXdMRmCENHUlw==}
+    peerDependencies:
+      '@uppy/core': ^6.3.0
+      '@uppy/dashboard': ^6.0.2
+      '@uppy/screen-capture': ^6.0.2
+      '@uppy/status-bar': ^6.0.1
+      '@uppy/webcam': ^6.0.2
+      vue: '>=3.0.0'
+    peerDependenciesMeta:
+      '@uppy/dashboard':
+        optional: true
+      '@uppy/screen-capture':
+        optional: true
+      '@uppy/status-bar':
+        optional: true
+      '@uppy/webcam':
+        optional: true
 
   '@v-c/async-validator@1.0.2':
     resolution: {integrity: sha512-mKBfudW6vDQMC3EInRM4W5nDJZinMUJ7/kdTLU9T9c2gkQ6/Y9kR32i403guDotg4rFuXcjhrwi0GhG39K3BLg==}
@@ -4252,6 +4310,9 @@ packages:
   class-variance-authority@0.7.1:
     resolution: {integrity: sha512-Ka+9Trutv7G8M6WT6SeiRWz792K5qEqIGEGzXKhAE6xOWAY6pPH8U+9IY3oCMv6kqTmLsv7Xh/2w2RigkePMsg==}
 
+  classnames@2.5.1:
+    resolution: {integrity: sha512-saHYOzhIQs6wy2sVxTM6bUDsQO4F50V9RQ22qBpEdCW+I+/Wmke2HOl6lS6dTpdxVhb88/I6+Hs+438c3lfUow==}
+
   cli-cursor@3.1.0:
     resolution: {integrity: sha512-I/zHAwsKf9FqGoXM4WWRACob9+SNukZTd94DWF57E4toouRulbCxcUh6RKUEOQlYTHJnzkPMySvPNaaSLNfLZw==}
     engines: {node: '>=8'}
@@ -4515,11 +4576,6 @@ packages:
 
   cropperjs@2.3.1:
     resolution: {integrity: sha512-bgy+iHRFjsBxBCriXkTuFuHRJGSGZISuqDGhDQG7gLK0F7qOzhH06bdXzGf4b0bZSQ+mApakybiW9xvKnS9dbg==}
-
-  cross-env@10.1.0:
-    resolution: {integrity: sha512-GsYosgnACZTADcmEyJctkJIoqAhHjttw7RsFrVoJNXbsWWqaq6Ym+7kZjq6mS45O0jij6vtiReppKQEtqWy6Dw==}
-    engines: {node: '>=20'}
-    hasBin: true
 
   cross-spawn@7.0.6:
     resolution: {integrity: sha512-uV2QOWP2nWzsy2aMp8aRibhi9dlzF5Hgh5SHaB9OiTGEyDTiJJyx0uy51QXdyWbtAHNua4XJzUKca3OzKUd3vA==}
@@ -4894,6 +4950,9 @@ packages:
   eta@4.6.0:
     resolution: {integrity: sha512-lW6is4T1NFOYnmqGZIfvixqj7A7sSvScF+DN8EK6K58xI5MZ5UvYe0GjopxOXQtZvUn4eDdVuZ8XSoYWTMEKwA==}
     engines: {node: '>=20'}
+
+  eventemitter3@5.0.4:
+    resolution: {integrity: sha512-mlsTRyGaPBjPedk6Bvw+aqbsXDtoAyAzm5MO7JgU+yVRyMQ5O8bD4Kcci7BS85f93veegeCPkL8R4GLClnjLFw==}
 
   expand-tilde@2.0.2:
     resolution: {integrity: sha512-A5EmesHW6rfnZ9ysHQjPdJRni0SRar0tjtG5MNtm9n5TUvsYU8oozprtRD4AqHxcZWWlVuAmQo2nWKfN9oyjTw==}
@@ -5479,6 +5538,10 @@ packages:
     resolution: {integrity: sha512-5KoIu2Ngpyek75jXodFvnafB6DJgr3u8uuK0LEZJjrU19DrMD3EVERaR8sjz8CCGgpZvxPl9SuE1GMVPFHx1mw==}
     engines: {node: '>= 0.4'}
 
+  is-network-error@1.3.2:
+    resolution: {integrity: sha512-PhBY86zaxNZUuWP6h13Vu5oFe0XY6/UlKzQnYFELzGVHygP3MxmvTfYSG7GN3aIab/iWudSMgjSnG9Dq+nHrgA==}
+    engines: {node: '>=16'}
+
   is-number-object@1.1.1:
     resolution: {integrity: sha512-lZhclumE1G6VYD8VHe35wFaIif+CTy5SJIi5+3y4psDgWu4wPDoBhF8NxUOinEc7pHgiTsT6MaBb92rKhhD+Xw==}
     engines: {node: '>= 0.4'}
@@ -5909,6 +5972,9 @@ packages:
     resolution: {integrity: sha512-aU5EJuIN2WDemCcAp2vFBfp/m4EAhWJnUNSSw0ixs7/kXbd6Pg64EmwJkNdFhB8aWt1sH2CTXrLxo/iAGV3oPQ==}
     engines: {node: '>= 0.6'}
 
+  mime-match@1.0.2:
+    resolution: {integrity: sha512-VXp/ugGDVh3eCLOBCiHZMYWQaTNUHv2IJrut+yXA6+JbLPXHglHwfS/5A5L0ll+jkCY7fIzRJcH6OIunF+c6Cg==}
+
   mime-types@2.1.35:
     resolution: {integrity: sha512-ZDY+bPm5zTTF+YpCrAU9nK0UgICYPT0QtT1NZWFv4s++TNkcgVaT0g6+4R2uI4MjQjzysHB1zxuWL50hzaeXiw==}
     engines: {node: '>= 0.6'}
@@ -6011,12 +6077,20 @@ packages:
   n-gram@2.0.2:
     resolution: {integrity: sha512-S24aGsn+HLBxUGVAUFOwGpKs7LBcG4RudKU//eWzt/mQ97/NMKQxDWHyHx63UNWk/OOdihgmzoETn1tf5nQDzQ==}
 
+  namespace-emitter@2.0.1:
+    resolution: {integrity: sha512-N/sMKHniSDJBjfrkbS/tpkPj4RAbvW3mr8UAzvlMHyun93XEm83IAvhWtJVHo+RHn/oO8Job5YN4b+wRjSVp5g==}
+
   nan@2.30.0:
     resolution: {integrity: sha512-P5mokDkSvCGBz6mZDD/2l+w9QoICRXdCyZ9ONGmTePr40oihJg3Kpn0YU3twKd6PJnwSlLBWNQeOT6yWEV2c4A==}
 
   nanoid@3.3.20:
     resolution: {integrity: sha512-uKdg2G3GNCKQn9byYOpxbGqrT2fGO5KRt5J/8b3pok8rT6qxGWF6hxMyJiEYtAf+FVyYuD9hRaDqX5uPFYJ4ZQ==}
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
+    hasBin: true
+
+  nanoid@6.0.2:
+    resolution: {integrity: sha512-hIvVOb9Qr1p/9CNNLOe0OlWvgx/ziTsVwKN/GDSsuArN2K0wDiafP3s0SWmsm7o2BdnyS8Z9Z64NFBUbn6ziBg==}
+    engines: {node: ^22 || ^24 || >=26}
     hasBin: true
 
   needle@2.9.1:
@@ -6219,6 +6293,18 @@ packages:
     resolution: {integrity: sha512-LaNjtRWUBY++zB5nE/NwcaoMylSPk+S+ZHNB1TzdbMJMny6dynpAGt7X/tl/QYq3TIeE6nxHppbo2LGymrG5Pw==}
     engines: {node: '>=10'}
 
+  p-queue@9.3.5:
+    resolution: {integrity: sha512-Lki/zhXFVmDhesBUn/yHRLW9Bte7mE7xoFHzTR8sIomV7a2z+LxYAPkGvdfidNiu4fKSfjtawixxSHcZci5QcQ==}
+    engines: {node: '>=20'}
+
+  p-retry@8.0.1:
+    resolution: {integrity: sha512-NAigyu8hfvJe7MsS18mnc4is0MZtau3QMdBklaJKK23oBQb6occO3UPM3vHmTckW8KhfyjMZaUOqdTFEYliHgg==}
+    engines: {node: '>=22'}
+
+  p-timeout@7.0.2:
+    resolution: {integrity: sha512-prbX4Z3YszrFNgH+MW5Zoeq3baXrMtP/MQnFeET90UB/GtGcGDQ5Usg9OCy6ETjTTntOw1SL2z9fMPUppN3Guw==}
+    engines: {node: '>=20'}
+
   p-try@1.0.0:
     resolution: {integrity: sha512-U1etNYuMJoIz3ZXSrrySFjsXQTWOx2/jdi86L+2pRvph/qMKL6sbcCYdH23fqsbm8TH2Gn0OybpT4eSFlCVHww==}
     engines: {node: '>=4'}
@@ -6418,6 +6504,10 @@ packages:
   pretty-bytes@6.1.1:
     resolution: {integrity: sha512-mQUvGU6aUFQ+rNvTIAcZuWGRT9a6f6Yrg9bHs4ImKF+HZCEK+plBvnAZYSIQztknZF2qnzNtr6F8s0+IuptdlQ==}
     engines: {node: ^14.13.1 || >=16.0.0}
+
+  pretty-bytes@7.2.0:
+    resolution: {integrity: sha512-T2kroepGB5DRVbkN/nOpW03+VRWqdtJhZNuCW3wYk3chdPjgi4GcTBOaxWfHq1MIM0ypidxsSWbQaAiRpxnXmg==}
+    engines: {node: '>=20'}
 
   pretty-format@27.5.1:
     resolution: {integrity: sha512-Qb1gy5OrP5+zDf2Bvnzdl3jsTf1qXVMazbvCoKhtKqVs4/YK4ozX4gKQJJVyNe+cajNPn0KoC0MC3FUmaHWEmQ==}
@@ -6774,6 +6864,9 @@ packages:
 
   setprototypeof@1.2.0:
     resolution: {integrity: sha512-E5LDX7Wrp85Kil5bhZv46j8jOeboKq5JMmYM3gVGdGH8xFpPWXUMsNrlODCrkoxMEeNi/XZIwuRvY4XNwYMJpw==}
+
+  shallow-equal@3.1.0:
+    resolution: {integrity: sha512-pfVOw8QZIXpMbhBWvzBISicvToTiM5WBF1EeAUZDDSb5Dt29yl4AYbyywbJFSEsRUMr7gJaxqCdr4L3tQf9wVg==}
 
   sharp@0.35.5:
     resolution: {integrity: sha512-Ywn4OnzGukp7CDMrp08RQ50YKmuwG47brZgIVPTvBaaAfQlRlygrRqSrxdCiL9M+LlzLBiJ68IR1QqvzHyjC7g==}
@@ -7713,6 +7806,9 @@ packages:
 
   wide-align@1.1.5:
     resolution: {integrity: sha512-eDMORYaPNZ4sQIuuYPDHdQvf4gyCF9rEEV/yPxGfwPkRodwEgiMUUXTx/dex+Me0wxx53S+NgUHaP7y3MGlDmg==}
+
+  wildcard@1.1.2:
+    resolution: {integrity: sha512-DXukZJxpHA8LuotRwL0pP1+rS6CS7FF2qStDDE1C7DDg2rLud2PXRMuEDYIPhgEezwnlHNL4c+N6MfMTjCGTng==}
 
   word-wrap@1.2.5:
     resolution: {integrity: sha512-BN22B5eaMMI9UMtjrGd5g5eCYPpCPDUy0FJXbYsaT5zYxjFOckS53SQDE3pWkVoWpHXVb3BrYcEN4Twa55B5cA==}
@@ -8998,8 +9094,6 @@ snapshots:
 
   '@emotion/unitless@0.7.5': {}
 
-  '@epic-web/invariant@1.0.0': {}
-
   '@esbuild/aix-ppc64@0.27.4':
     optional: true
 
@@ -9557,6 +9651,13 @@ snapshots:
       '@noble/hashes': 1.8.0
 
   '@pengzhanbo/utils@3.12.0': {}
+
+  '@plugin-web-update-notification/core@2.1.3': {}
+
+  '@plugin-web-update-notification/vite@2.1.3(vite@8.3.5(@types/node@26.6.5)(esbuild@0.27.4)(jiti@2.7.0)(less@4.9.1)(terser@5.51.2)(yaml@2.9.1))':
+    dependencies:
+      '@plugin-web-update-notification/core': 2.1.3
+      vite: 8.3.5(@types/node@26.6.5)(esbuild@0.27.4)(jiti@2.7.0)(less@4.9.1)(terser@5.51.2)(yaml@2.9.1)
 
   '@polka/url@1.0.0-next.29': {}
 
@@ -10279,6 +10380,8 @@ snapshots:
       '@tiptap/extension-bubble-menu': 3.32.0(@tiptap/core@3.32.0(@tiptap/pm@3.32.0))(@tiptap/pm@3.32.0)
       '@tiptap/extension-floating-menu': 3.32.0(@floating-ui/dom@1.8.0)(@tiptap/core@3.32.0(@tiptap/pm@3.32.0))(@tiptap/pm@3.32.0)
 
+  '@transloadit/prettier-bytes@2.0.0': {}
+
   '@trickfilm400/rollup-plugin-off-main-thread@3.0.0-pre1':
     dependencies:
       ejs: 3.1.10
@@ -10790,6 +10893,58 @@ snapshots:
       - cac
       - ocache
       - srvx
+
+  '@uppy/components@2.1.0(@uppy/core@6.3.0)(@uppy/google-drive-picker@2.0.0(@uppy/core@6.3.0))(@uppy/google-photos-picker@2.0.0(@uppy/core@6.3.0))':
+    dependencies:
+      '@uppy/core': 6.3.0
+      '@uppy/google-drive-picker': 2.0.0(@uppy/core@6.3.0)
+      '@uppy/google-photos-picker': 2.0.0(@uppy/core@6.3.0)
+      clsx: 2.1.1
+      dequal: 2.0.3
+      preact: 10.29.8
+      pretty-bytes: 7.2.0
+    transitivePeerDependencies:
+      - preact-render-to-string
+
+  '@uppy/core@6.3.0':
+    dependencies:
+      '@transloadit/prettier-bytes': 2.0.0
+      classnames: 2.5.1
+      lodash: 4.18.1
+      mime-match: 1.0.2
+      namespace-emitter: 2.0.1
+      nanoid: 6.0.2
+      p-queue: 9.3.5
+      p-retry: 8.0.1
+      preact: 10.29.8
+    transitivePeerDependencies:
+      - preact-render-to-string
+
+  '@uppy/google-drive-picker@2.0.0(@uppy/core@6.3.0)':
+    dependencies:
+      '@uppy/core': 6.3.0
+      preact: 10.29.8
+    transitivePeerDependencies:
+      - preact-render-to-string
+
+  '@uppy/google-photos-picker@2.0.0(@uppy/core@6.3.0)':
+    dependencies:
+      '@uppy/core': 6.3.0
+      preact: 10.29.8
+    transitivePeerDependencies:
+      - preact-render-to-string
+
+  '@uppy/vue@4.0.1(@uppy/core@6.3.0)(@uppy/google-drive-picker@2.0.0(@uppy/core@6.3.0))(@uppy/google-photos-picker@2.0.0(@uppy/core@6.3.0))(vue@3.6.0-rc.4(typescript-native-bridge@6.0.3-bridge.18.tsgo.7.0.2))':
+    dependencies:
+      '@uppy/components': 2.1.0(@uppy/core@6.3.0)(@uppy/google-drive-picker@2.0.0(@uppy/core@6.3.0))(@uppy/google-photos-picker@2.0.0(@uppy/core@6.3.0))
+      '@uppy/core': 6.3.0
+      shallow-equal: 3.1.0
+      vue: 3.6.0-rc.4(typescript-native-bridge@6.0.3-bridge.18.tsgo.7.0.2)
+    transitivePeerDependencies:
+      - '@uppy/google-drive-picker'
+      - '@uppy/google-photos-picker'
+      - '@uppy/image-editor'
+      - preact-render-to-string
 
   '@v-c/async-validator@1.0.2': {}
 
@@ -11865,6 +12020,8 @@ snapshots:
     dependencies:
       clsx: 2.1.1
 
+  classnames@2.5.1: {}
+
   cli-cursor@3.1.0:
     dependencies:
       restore-cursor: 3.1.0
@@ -12189,11 +12346,6 @@ snapshots:
     dependencies:
       '@cropper/elements': 2.3.1
       '@cropper/utils': 2.3.1
-
-  cross-env@10.1.0:
-    dependencies:
-      '@epic-web/invariant': 1.0.0
-      cross-spawn: 7.0.6
 
   cross-spawn@7.0.6:
     dependencies:
@@ -12614,6 +12766,8 @@ snapshots:
   esutils@2.0.3: {}
 
   eta@4.6.0: {}
+
+  eventemitter3@5.0.4: {}
 
   expand-tilde@2.0.2:
     dependencies:
@@ -13236,6 +13390,8 @@ snapshots:
 
   is-negative-zero@2.0.3: {}
 
+  is-network-error@1.3.2: {}
+
   is-number-object@1.1.1:
     dependencies:
       call-bound: 1.0.4
@@ -13601,6 +13757,10 @@ snapshots:
 
   mime-db@1.54.0: {}
 
+  mime-match@1.0.2:
+    dependencies:
+      wildcard: 1.1.2
+
   mime-types@2.1.35:
     dependencies:
       mime-db: 1.52.0
@@ -13698,10 +13858,14 @@ snapshots:
 
   n-gram@2.0.2: {}
 
+  namespace-emitter@2.0.1: {}
+
   nan@2.30.0:
     optional: true
 
   nanoid@3.3.20: {}
+
+  nanoid@6.0.2: {}
 
   needle@2.9.1:
     dependencies:
@@ -13958,6 +14122,17 @@ snapshots:
     dependencies:
       p-limit: 3.1.0
 
+  p-queue@9.3.5:
+    dependencies:
+      eventemitter3: 5.0.4
+      p-timeout: 7.0.2
+
+  p-retry@8.0.1:
+    dependencies:
+      is-network-error: 1.3.2
+
+  p-timeout@7.0.2: {}
+
   p-try@1.0.0: {}
 
   p-try@2.2.0: {}
@@ -14107,6 +14282,8 @@ snapshots:
   pretty-bytes@5.6.0: {}
 
   pretty-bytes@6.1.1: {}
+
+  pretty-bytes@7.2.0: {}
 
   pretty-format@27.5.1:
     dependencies:
@@ -14558,6 +14735,8 @@ snapshots:
       es-object-atoms: 1.1.2
 
   setprototypeof@1.2.0: {}
+
+  shallow-equal@3.1.0: {}
 
   sharp@0.35.5(@types/node@26.6.5):
     dependencies:
@@ -15649,6 +15828,8 @@ snapshots:
     dependencies:
       string-width: 4.2.3
     optional: true
+
+  wildcard@1.1.2: {}
 
   word-wrap@1.2.5: {}
 

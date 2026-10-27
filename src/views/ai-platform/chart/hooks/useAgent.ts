@@ -2,7 +2,7 @@ import { computed, reactive, shallowRef } from 'vue'
 import { useClipboard } from '@vueuse/core'
 import { message, Modal } from 'antdv-next'
 import { allowMockFallback, resolveLlmConfig } from '@/apis'
-import { isApiError } from '@/utils'
+import { isApiError } from '@/errors'
 import {
   createInitialChats,
   createInitialMessagesByChatId,

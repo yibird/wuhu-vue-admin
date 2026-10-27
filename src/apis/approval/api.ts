@@ -1,6 +1,6 @@
 import { getBaseApi } from '@/apis/util'
 import { apiRequest } from '@/utils'
-import { REQUEST_METHOD } from '@/constants'
+import { HTTP_METHOD } from '@/constants'
 
 export type {
   ApprovalCategoryResp,
@@ -51,7 +51,7 @@ export const {
  */
 export function publishApprovalDefinitionApi(id: string) {
   return apiRequest<ApiResult<string>>('/approval/definition/publish', {
-    method: REQUEST_METHOD.POST,
+    method: HTTP_METHOD.Post,
     json: { id },
   })
 }
@@ -63,7 +63,7 @@ export function publishApprovalDefinitionApi(id: string) {
  */
 export function duplicateApprovalDefinitionApi(id: string) {
   return apiRequest<ApiResult<string>>('/approval/definition/duplicate', {
-    method: REQUEST_METHOD.POST,
+    method: HTTP_METHOD.Post,
     json: { id },
   })
 }
@@ -75,7 +75,7 @@ export function duplicateApprovalDefinitionApi(id: string) {
 export function getApprovalCategoryListApi() {
   return apiRequest<ApiResult<ApprovalCategoryResp[]>>(
     '/approval/category/getList',
-    { method: REQUEST_METHOD.GET }
+    { method: HTTP_METHOD.Get }
   )
 }
 
@@ -86,7 +86,7 @@ export function getApprovalCategoryListApi() {
  */
 export function createApprovalCategoryApi(data: CreateApprovalCategoryReq) {
   return apiRequest<ApiResult<string>>('/approval/category/create', {
-    method: REQUEST_METHOD.POST,
+    method: HTTP_METHOD.Post,
     json: data,
   })
 }
@@ -98,7 +98,7 @@ export function createApprovalCategoryApi(data: CreateApprovalCategoryReq) {
  */
 export function updateApprovalCategoryApi(data: UpdateApprovalCategoryReq) {
   return apiRequest<ApiResult<string>>('/approval/category/update', {
-    method: REQUEST_METHOD.POST,
+    method: HTTP_METHOD.Post,
     json: data,
   })
 }
@@ -110,7 +110,7 @@ export function updateApprovalCategoryApi(data: UpdateApprovalCategoryReq) {
  */
 export function deleteApprovalCategoryApi(ids: Array<string | number>) {
   return apiRequest<ApiResult<number>>('/approval/category/del', {
-    method: REQUEST_METHOD.POST,
+    method: HTTP_METHOD.Post,
     json: ids,
   })
 }
@@ -127,6 +127,6 @@ export const {
 export function getApprovalMonitorSummaryApi() {
   return apiRequest<ApiResult<ApprovalMonitorSummary>>(
     '/approval/monitor/getSummary',
-    { method: REQUEST_METHOD.GET }
+    { method: HTTP_METHOD.Get }
   )
 }
