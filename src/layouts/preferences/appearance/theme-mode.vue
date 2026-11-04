@@ -13,7 +13,7 @@
       >
         <span
           :class="[
-            'relative box-border block h-80 w-full overflow-hidden rounded-7 border-2 border-solid bg-container shadow-md shadow-ink/20 transition-[transform,box-shadow] duration-200 ease-[var(--w-motion-ease-enter)] group-hover:(-translate-y-1 shadow-xl shadow-ink/20) group-focus-visible:(ring-2 ring-primary/24) group-active:translate-y-0 motion-reduce:(transform-none transition-none)',
+            'relative box-border block h-80 w-full overflow-hidden rounded-7 border-2 border-solid bg-container shadow-md shadow-ink/20 transition-[transform,box-shadow] duration-200 ease-[var(--w-motion-ease-enter)] group-hover:(-translate-y-1 shadow-xl shadow-ink/20) group-focus-visible:(ring-2 ring-primary/24) group-active:translate-y-0 ',
             appThemeMode === item.value
               ? 'border-primary shadow-lg shadow-primary/15'
               : 'border-muted',
@@ -34,7 +34,7 @@
         </span>
         <span
           :class="[
-            'mt-8 block truncate text-center text-sm font-600 transition-colors duration-200 motion-reduce:transition-none',
+            'mt-8 block truncate text-center text-sm font-600 transition-colors duration-200 ',
             appThemeMode === item.value
               ? 'text-primary'
               : 'text-secondary group-hover:text-main',

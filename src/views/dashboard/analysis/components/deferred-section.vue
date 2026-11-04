@@ -23,8 +23,8 @@ withDefaults(
 
 <template>
   <LazyContainer :root-margin="rootMargin">
-    <template #placeholder>
-      <component :is="skeleton" />
+    <template #placeholder="{ visible }">
+      <component :is="skeleton" :class="{ 'skeleton-paused': !visible }" />
     </template>
     <Suspense>
       <component :is="section" />
@@ -34,3 +34,11 @@ withDefaults(
     </Suspense>
   </LazyContainer>
 </template>
+
+<style scoped>
+/* 离屏骨架暂停 pulse 动画,避免大量无限动画持续占用低性能设备的渲染资源 */
+.skeleton-paused,
+.skeleton-paused :deep(*) {
+  animation-play-state: paused;
+}
+</style>

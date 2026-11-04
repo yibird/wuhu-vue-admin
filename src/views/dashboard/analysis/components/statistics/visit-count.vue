@@ -1,5 +1,5 @@
 <template>
-  <Chart
+  <BasicChart
     :option="chartOption"
     :theme="EChartsTheme"
     autoresize
@@ -9,7 +9,7 @@
 
 <script lang="ts" setup>
 import { getCssRgbVarAlpha, useEChartsTheme } from '@/components/chart'
-import { Chart } from '@/components/chart'
+import { BasicChart } from '@/components/chart'
 import { bucketValue, buildBuckets } from './data'
 import type { StatisticsChartProps } from './types'
 import type { EChartsCoreOption } from 'echarts/core'

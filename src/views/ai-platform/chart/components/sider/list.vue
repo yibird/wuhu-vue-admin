@@ -54,7 +54,7 @@
                 "
               >
                 <span
-                  class="size-28 flex shrink-0 items-center justify-center rounded-7 bg-muted text-muted transition-[background-color,color,transform] duration-100 ease-[var(--w-motion-ease-enter)] group-hover:scale-105 motion-reduce:transform-none"
+                  class="size-28 flex shrink-0 items-center justify-center rounded-7 bg-muted text-muted transition-[background-color,color,transform] duration-100 ease-[var(--w-motion-ease-enter)] group-hover:scale-105"
                   :class="
                     item.id === activeId ? 'bg-primary/12 text-primary' : ''
                   "
@@ -63,7 +63,7 @@
                 </span>
 
                 <span
-                  class="min-w-0 flex-1 flex-col gap-4 overflow-hidden transition-[max-width,opacity,transform] duration-100 ease-[var(--w-motion-ease-enter)] motion-reduce:transition-none"
+                  class="min-w-0 flex-1 flex-col gap-4 overflow-hidden transition-[max-width,opacity,transform] duration-100 ease-[var(--w-motion-ease-enter)]"
                   :class="
                     collapsed
                       ? 'hidden max-h-0 max-w-0 translate-x-4 opacity-0 pointer-events-none'
@@ -121,12 +121,12 @@
             </button>
             <div
               v-if="!collapsed"
-              class="absolute right-7 top-7 translate-x-4 flex items-center rounded-6 bg-container/92 p-1 opacity-0 shadow-sm backdrop-blur-6 transition-[opacity,transform] duration-100 ease-[var(--w-motion-ease-enter)] group-focus-within:(translate-x-0 opacity-100) group-hover:(translate-x-0 opacity-100) motion-reduce:(transform-none transition-none)"
+              class="absolute right-7 top-7 translate-x-4 flex items-center rounded-6 bg-container/92 p-1 opacity-0 shadow-sm backdrop-blur-6 transition-[opacity,transform] duration-100 ease-[var(--w-motion-ease-enter)] group-focus-within:(translate-x-0 opacity-100) group-hover:(translate-x-0 opacity-100)"
             >
               <a-dropdown :trigger="['click']" :menu="getActionMenu(item)">
                 <button
                   type="button"
-                  class="size-22 inline-flex items-center justify-center rounded-5 border-0 bg-transparent p-0 text-muted cursor-pointer transition-[background-color,color,transform] duration-100 hover:(bg-white text-main -translate-y-1) focus-visible:(bg-white text-main outline-none) active:(translate-y-0 scale-90) motion-reduce:(transform-none transition-none)"
+                  class="size-22 inline-flex items-center justify-center rounded-5 border-0 bg-transparent p-0 text-muted cursor-pointer transition-[background-color,color,transform] duration-100 hover:(bg-white text-main -translate-y-1) focus-visible:(bg-white text-main outline-none) active:(translate-y-0 scale-90)"
                   :aria-label="`更多${item.title}操作`"
                   title="更多操作"
                 >

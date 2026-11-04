@@ -12,7 +12,7 @@
         class="shrink-0 inline-flex items-center gap-6 rounded-full b-1-muted bg-secondary px-8 py-4 text-11px text-secondary font-600"
       >
         <span
-          class="size-8 rounded-full b-1-regular ring-2 ring-[rgb(var(--w-bg-container))] transition-colors duration-200 motion-reduce:transition-none"
+          class="size-8 rounded-full b-1-regular ring-2 ring-[rgb(var(--w-bg-container))] transition-colors duration-200"
           :style="{ backgroundColor: colorPickerValue }"
         />
         当前
@@ -25,7 +25,7 @@
         :key="item.value"
         type="button"
         :class="[
-          'group min-w-0 flex cursor-pointer items-center justify-center gap-7 rounded-8 border-1 border-solid bg-container px-5 pb-8 pt-9 outline-none transition-[background-color,border-color,box-shadow,transform] duration-200 ease-[var(--w-motion-ease-enter)] hover:(-translate-y-1 border-primary bg-hover shadow-lg shadow-ink/20) focus-visible:(ring-2 ring-primary/24) active:translate-y-0 motion-reduce:(transform-none transition-none)',
+          'group min-w-0 flex cursor-pointer items-center justify-center gap-7 rounded-8 border-1 border-solid bg-container px-5 pb-8 pt-9 outline-none transition-[background-color,border-color,box-shadow,transform] duration-200 ease-[var(--w-motion-ease-enter)] hover:(-translate-y-1 border-primary bg-hover shadow-lg shadow-ink/20) focus-visible:(ring-2 ring-primary/24) active:translate-y-0 ',
           item.selected
             ? 'border-primary bg-primary/10 shadow-lg shadow-primary/13'
             : 'border-muted',
@@ -37,7 +37,7 @@
       >
         <span
           :class="[
-            'relative size-24 shrink-0 flex items-center justify-center rounded-full b-2-regular transition-[box-shadow,transform] duration-200 ease-[var(--w-motion-ease-enter)] group-hover:scale-105 motion-reduce:transition-none motion-reduce:group-hover:scale-100',
+            'relative size-24 shrink-0 flex items-center justify-center rounded-full b-2-regular transition-[box-shadow,transform] duration-200 ease-[var(--w-motion-ease-enter)] group-hover:scale-105',
             item.selected
               ? 'scale-105 ring-2 ring-primary/28'
               : 'ring-1 ring-[rgb(var(--w-border-muted))]',
@@ -59,7 +59,7 @@
 
     <div
       :class="[
-        'mt-8 min-h-52 flex items-center justify-between gap-12 rounded-8 border-1 border-solid bg-container px-10 py-8 transition-[background-color,border-color,box-shadow] duration-200 ease-[var(--w-motion-ease-enter)] hover:(border-primary bg-hover) motion-reduce:transition-none',
+        'mt-8 min-h-52 flex items-center justify-between gap-12 rounded-8 border-1 border-solid bg-container px-10 py-8 transition-[background-color,border-color,box-shadow] duration-200 ease-[var(--w-motion-ease-enter)] hover:(border-primary bg-hover) ',
         isCustomColor
           ? 'border-primary bg-primary/8 shadow-lg shadow-primary/10'
           : 'border-muted',
@@ -67,7 +67,7 @@
     >
       <div class="flex min-w-0 items-center gap-9">
         <span
-          class="size-30 shrink-0 flex items-center justify-center rounded-7 bg-primary/10 text-primary transition-colors duration-200 motion-reduce:transition-none"
+          class="size-30 shrink-0 flex items-center justify-center rounded-7 bg-primary/10 text-primary transition-colors duration-200"
         >
           <Icon name="i-lucide:pipette" :size="15" />
         </span>

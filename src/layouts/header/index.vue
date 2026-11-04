@@ -1,6 +1,6 @@
 <template>
   <a-layout-header
-    class="w-layout-header transition-[background-color,border-color,color] duration-300 ease-[var(--w-motion-ease-enter)] motion-reduce:transition-none"
+    class="w-layout-header transition-[background-color,border-color,color] duration-300 ease-[var(--w-motion-ease-enter)]"
   >
     <HeaderNav />
     <HeaderToolbar />

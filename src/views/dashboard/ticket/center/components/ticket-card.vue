@@ -10,7 +10,7 @@
   >
     <div class="flex min-w-0 items-start gap-12 p-14">
       <span
-        class="size-44 flex flex-none items-center justify-center rounded-8 bg-primary/10 text-primary transition-transform duration-200 group-hover:(-rotate-3 scale-105) motion-reduce:transition-none"
+        class="size-44 flex flex-none items-center justify-center rounded-8 bg-primary/10 text-primary transition-transform duration-200 group-hover:(-rotate-3 scale-105)"
       >
         <Icon :name="categoryMeta.icon" :size="21" />
       </span>

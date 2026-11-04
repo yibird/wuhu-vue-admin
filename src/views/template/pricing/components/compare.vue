@@ -29,7 +29,7 @@
           <div
             v-for="column in planColumns"
             :key="column.key"
-            class="min-w-0 b-l-1-muted px-16 py-14 text-center text-sm font-900 transition-colors duration-200 ease-[var(--w-motion-ease)] motion-reduce:transition-none"
+            class="min-w-0 b-l-1-muted px-16 py-14 text-center text-sm font-900 transition-colors duration-200 ease-[var(--w-motion-ease)]"
             :class="{
               'bg-gradient-to-b from-primary/12 to-primary/5 text-primary':
                 props.activePlanKey === column.key,
@@ -44,7 +44,7 @@
         <div
           v-for="item in props.features"
           :key="`${item.group}-${item.name}`"
-          class="group grid grid-cols-[minmax(210px,1.35fr)_repeat(3,minmax(150px,1fr))] b-t-1-muted transition-colors duration-200 ease-[var(--w-motion-ease)] hover:bg-primary/[0.025] motion-reduce:transition-none"
+          class="group grid grid-cols-[minmax(210px,1.35fr)_repeat(3,minmax(150px,1fr))] b-t-1-muted transition-colors duration-200 ease-[var(--w-motion-ease)] hover:bg-primary/[0.025]"
         >
           <div class="min-w-0 px-20 py-13 text-left">
             <small
@@ -59,7 +59,7 @@
           <div
             v-for="column in planColumns"
             :key="column.key"
-            class="min-w-0 b-l-1-muted px-16 py-13 text-center text-sm transition-[background-color,color] duration-300 ease-[var(--w-motion-ease)] motion-reduce:transition-none"
+            class="min-w-0 b-l-1-muted px-16 py-13 text-center text-sm transition-[background-color,color] duration-300 ease-[var(--w-motion-ease)]"
             :class="{
               'bg-primary/[0.06] text-primary font-700':
                 props.activePlanKey === column.key,

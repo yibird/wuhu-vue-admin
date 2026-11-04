@@ -23,7 +23,7 @@
         v-for="ticket in items"
         :key="ticket.id"
         type="button"
-        class="content-auto-110 w-full b-b-1-regular bg-transparent px-11 py-10 text-left transition-colors duration-100 hover:bg-hover motion-reduce:transition-none"
+        class="content-auto-110 w-full b-b-1-regular bg-transparent px-11 py-10 text-left transition-colors duration-100 hover:bg-hover"
         :class="{
           'bg-selected': ticket.id === selectedId,
         }"

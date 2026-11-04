@@ -1,7 +1,7 @@
 <template>
   <article
     ref="cardRef"
-    class="pricing-card group relative flex cursor-pointer flex-col overflow-hidden rounded-16 border-1 border-solid p-20 outline-none transition-[box-shadow,transform] duration-300 ease-[var(--w-motion-ease-enter)] hover:-translate-y-3 focus-visible:(outline-2 outline-primary/60 outline-offset-2) motion-reduce:transition-none max-sm:p-16"
+    class="pricing-card group relative flex cursor-pointer flex-col overflow-hidden rounded-16 border-1 border-solid p-20 outline-none transition-[box-shadow,transform] duration-300 ease-[var(--w-motion-ease-enter)] hover:-translate-y-3 focus-visible:(outline-2 outline-primary/60 outline-offset-2) max-sm:p-16"
     :class="{
       // 普通卡
       'border-muted pricing-card--normal shadow-xl shadow-ink/5 hover:(shadow-2xl shadow-primary/10)':

@@ -48,7 +48,7 @@
                   <Icon
                     name="i-lucide:refresh-cw"
                     :class="{
-                      'animate-spin motion-reduce:animate-none': refreshing,
+                      'animate-spin ': refreshing,
                     }"
                   />
                 </template>

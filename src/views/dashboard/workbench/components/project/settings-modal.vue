@@ -196,7 +196,7 @@
                 v-for="item in priorityOptions"
                 :key="item.value"
                 type="button"
-                class="w-full flex items-center gap-8 rounded-8 border-1 border-solid bg-container p-10 text-left cursor-pointer transition-[background-color,border-color,box-shadow,transform] duration-200 ease-[var(--w-motion-ease)] hover:(-translate-y-1 border-primary/36 bg-hover shadow-xl shadow-black/8) focus-visible:(-translate-y-1 border-primary/36 bg-hover shadow-xl shadow-black/8 outline-2 outline-primary/35 outline-offset-2) active:translate-y-0 motion-reduce:(transform-none transition-none)"
+                class="w-full flex items-center gap-8 rounded-8 border-1 border-solid bg-container p-10 text-left cursor-pointer transition-[background-color,border-color,box-shadow,transform] duration-200 ease-[var(--w-motion-ease)] hover:(-translate-y-1 border-primary/36 bg-hover shadow-xl shadow-black/8) focus-visible:(-translate-y-1 border-primary/36 bg-hover shadow-xl shadow-black/8 outline-2 outline-primary/35 outline-offset-2) active:translate-y-0"
                 :class="
                   form.priority === item.value
                     ? 'border-primary shadow-sm'
@@ -246,7 +246,7 @@
               v-for="item in switchOptions"
               :key="item.key"
               type="button"
-              class="w-full box-border rounded-8 border-1 border-solid bg-container p-10 text-left cursor-pointer transition-[background-color,border-color,box-shadow,transform] duration-200 ease-[var(--w-motion-ease)] hover:(-translate-y-1 border-primary/36 bg-hover shadow-xl shadow-black/8) focus-visible:(-translate-y-1 border-primary/36 bg-hover shadow-xl shadow-black/8 outline-2 outline-primary/35 outline-offset-2) active:translate-y-0 motion-reduce:(transform-none transition-none)"
+              class="w-full box-border rounded-8 border-1 border-solid bg-container p-10 text-left cursor-pointer transition-[background-color,border-color,box-shadow,transform] duration-200 ease-[var(--w-motion-ease)] hover:(-translate-y-1 border-primary/36 bg-hover shadow-xl shadow-black/8) focus-visible:(-translate-y-1 border-primary/36 bg-hover shadow-xl shadow-black/8 outline-2 outline-primary/35 outline-offset-2) active:translate-y-0"
               :class="
                 form[item.key]
                   ? '-translate-y-1 border-primary/36 bg-primary/8 shadow-sm'
@@ -301,7 +301,7 @@
 
           <div class="mt-18 flex items-center gap-10">
             <span
-              class="size-52 flex shrink-0 items-center justify-center rounded-12 border-1 border-solid shadow-sm transition-[border-color,background-color,color,transform] duration-200 ease-[var(--w-motion-ease)] motion-reduce:transition-none"
+              class="size-52 flex shrink-0 items-center justify-center rounded-12 border-1 border-solid shadow-sm transition-[border-color,background-color,color,transform] duration-200 ease-[var(--w-motion-ease)]"
               :class="selectedLogo.class"
             >
               <Transition name="fade-pop" mode="out-in">

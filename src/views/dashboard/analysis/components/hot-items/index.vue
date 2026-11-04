@@ -35,7 +35,7 @@
           class="relative z-1 mt-12 h-7 overflow-hidden rounded-999 bg-white/60"
         >
           <div
-            class="h-full origin-left rounded-999 [background-color:rgb(var(--w-color-warning))] transition-[width] duration-300 ease-[var(--w-motion-ease)] motion-reduce:transition-none"
+            class="h-full origin-left rounded-999 [background-color:rgb(var(--w-color-warning))] transition-[width] duration-300 ease-[var(--w-motion-ease)]"
             :style="{ width: `${topItem.value}%` }"
           ></div>
         </div>
@@ -58,11 +58,11 @@
           @blur="handleItemBlur"
         >
           <div
-            class="flex items-center gap-10 transition-transform duration-200 ease-[var(--w-motion-ease)] group-hover:translate-x-3 group-focus-visible:translate-x-3 motion-reduce:(transform-none transition-none)"
+            class="flex items-center gap-10 transition-transform duration-200 ease-[var(--w-motion-ease)] group-hover:translate-x-3 group-focus-visible:translate-x-3"
           >
             <span
               :class="[
-                'size-26 flex shrink-0 items-center justify-center rounded-8 text-xs font-800 transition-shadow duration-200 ease-[var(--w-motion-ease)] group-hover:(shadow-md shadow-primary/18) group-focus-visible:(shadow-md shadow-primary/18) motion-reduce:transition-none',
+                'size-26 flex shrink-0 items-center justify-center rounded-8 text-xs font-800 transition-shadow duration-200 ease-[var(--w-motion-ease)] group-hover:(shadow-md shadow-primary/18) group-focus-visible:(shadow-md shadow-primary/18) ',
                 index === 0
                   ? 'bg-primary/10 text-primary'
                   : index === 1
@@ -83,7 +83,7 @@
               </div>
               <div class="mt-7 h-5 overflow-hidden rounded-999 bg-secondary">
                 <div
-                  class="h-full origin-left rounded-999 bg-primary transition-[filter,transform,width] duration-300 ease-[var(--w-motion-ease)] group-hover:(scale-y-122 [filter:saturate(1.18)]) group-focus-visible:(scale-y-122 [filter:saturate(1.18)]) motion-reduce:(transform-none transition-none)"
+                  class="h-full origin-left rounded-999 bg-primary transition-[filter,transform,width] duration-300 ease-[var(--w-motion-ease)] group-hover:(scale-y-122 [filter:saturate(1.18)]) group-focus-visible:(scale-y-122 [filter:saturate(1.18)])"
                   :style="{ width: `${item.value}%` }"
                 ></div>
               </div>

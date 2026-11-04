@@ -1,3 +1,4 @@
+export { useBasicECharts } from './useBasicECharts'
 export { useECharts } from './useECharts'
 export {
   getCssRgbVar,

@@ -43,7 +43,7 @@
               </div>
               <div class="mt-7 h-5 overflow-hidden rounded-999 bg-secondary">
                 <div
-                  class="h-full origin-left rounded-999 bg-primary transition-[width] duration-300 ease-[var(--w-motion-ease)] motion-reduce:transition-none"
+                  class="h-full origin-left rounded-999 bg-primary transition-[width] duration-300 ease-[var(--w-motion-ease)]"
                   :style="{ width: `${barWidth(item)}%` }"
                 ></div>
               </div>

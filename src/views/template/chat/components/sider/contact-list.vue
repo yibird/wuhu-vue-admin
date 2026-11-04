@@ -34,7 +34,7 @@
             <template #itemRender="contact">
               <div>
                 <div
-                  class="group relative rounded-6 transition-[background-color,box-shadow,transform] duration-200 ease-[var(--w-motion-ease-enter)] hover:(translate-x-1 bg-hover shadow-sm) active:scale-99 motion-reduce:(transform-none transition-none)"
+                  class="group relative rounded-6 transition-[background-color,box-shadow,transform] duration-200 ease-[var(--w-motion-ease-enter)] hover:(translate-x-1 bg-hover shadow-sm) active:scale-99"
                 >
                   <button
                     type="button"
@@ -48,7 +48,7 @@
                           :src="contact.avatar"
                           :size="44"
                           round
-                          class="transition-transform duration-200 ease-[var(--w-motion-ease-enter)] group-hover:scale-105 motion-reduce:transform-none"
+                          class="transition-transform duration-200 ease-[var(--w-motion-ease-enter)] group-hover:scale-105"
                         />
                         <span
                           v-if="contact.status"

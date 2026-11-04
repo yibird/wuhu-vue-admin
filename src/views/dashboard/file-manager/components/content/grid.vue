@@ -348,8 +348,8 @@ function isImageFile(file: IFile) {
 function getPreviewClass(file: IFile, size: 'grid' | 'list') {
   const classes =
     size === 'grid'
-      ? 'file-grid__preview size-64 flex-center overflow-hidden rounded-4 transition-transform duration-300 ease-[var(--w-motion-ease-enter)] group-hover:(-translate-y-2 scale-104) motion-reduce:transition-none'
-      : 'file-grid__preview size-42 flex-center shrink-0 overflow-hidden rounded-4 transition-transform duration-300 ease-[var(--w-motion-ease-enter)] group-hover:(-translate-y-2 scale-104) motion-reduce:transition-none'
+      ? 'file-grid__preview size-64 flex-center overflow-hidden rounded-4 transition-transform duration-300 ease-[var(--w-motion-ease-enter)] group-hover:(-translate-y-2 scale-104) '
+      : 'file-grid__preview size-42 flex-center shrink-0 overflow-hidden rounded-4 transition-transform duration-300 ease-[var(--w-motion-ease-enter)] group-hover:(-translate-y-2 scale-104) '
   return isImageFile(file) && isFile(file)
     ? `${classes} bg-transparent`
     : classes
@@ -358,8 +358,8 @@ function getPreviewClass(file: IFile, size: 'grid' | 'list') {
 function getImageClass(file: IFile, size: 'grid' | 'list') {
   const classes =
     size === 'grid'
-      ? 'file-grid__image size-58 transition-[filter,transform] duration-300 ease-[var(--w-motion-ease)] group-hover:[filter:saturate(1.06)] motion-reduce:transition-none'
-      : 'file-grid__image size-36 transition-[filter,transform] duration-300 ease-[var(--w-motion-ease)] group-hover:[filter:saturate(1.06)] motion-reduce:transition-none'
+      ? 'file-grid__image size-58 transition-[filter,transform] duration-300 ease-[var(--w-motion-ease)] group-hover:[filter:saturate(1.06)] '
+      : 'file-grid__image size-36 transition-[filter,transform] duration-300 ease-[var(--w-motion-ease)] group-hover:[filter:saturate(1.06)] '
   return isImageFile(file) && isFile(file)
     ? `${classes} rounded-4 object-cover`
     : `${classes} object-cover`

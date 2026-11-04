@@ -20,7 +20,7 @@
         v-for="(faq, index) in props.faqs"
         :key="faq.question"
         type="button"
-        class="group w-full cursor-pointer overflow-hidden border-0 b-b-1-muted bg-transparent p-0 text-left outline-none transition-colors duration-200 ease-[var(--w-motion-ease)] last:border-b-0 hover:bg-primary/[0.03] focus-visible:(outline-2 outline-primary/60 outline-offset-2) motion-reduce:transition-none"
+        class="group w-full cursor-pointer overflow-hidden border-0 b-b-1-muted bg-transparent p-0 text-left outline-none transition-colors duration-200 ease-[var(--w-motion-ease)] last:border-b-0 hover:bg-primary/[0.03] focus-visible:(outline-2 outline-primary/60 outline-offset-2)"
         :aria-expanded="props.openIndex === index"
         @click="emits('toggle', index)"
       >
@@ -47,7 +47,7 @@
           </span>
         </span>
         <span
-          class="grid overflow-hidden transition-[grid-template-rows,opacity] duration-300 ease-[var(--w-motion-ease-enter)] motion-reduce:transition-none"
+          class="grid overflow-hidden transition-[grid-template-rows,opacity] duration-300 ease-[var(--w-motion-ease-enter)]"
           :class="
             props.openIndex === index
               ? 'grid-rows-[1fr] opacity-100'

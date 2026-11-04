@@ -63,7 +63,7 @@
                             :src="conv.avatar"
                             :size="44"
                             round
-                            class="transition-transform duration-200 ease-[var(--w-motion-ease-enter)] group-hover:scale-105 motion-reduce:transform-none"
+                            class="transition-transform duration-200 ease-[var(--w-motion-ease-enter)] group-hover:scale-105"
                           />
                           <span
                             v-if="conv.userInfo?.status"

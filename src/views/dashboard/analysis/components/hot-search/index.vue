@@ -2,7 +2,7 @@
   <a-border-beam :duration="8" :line-width="2" :size="140">
     <Card class="page-enter page-enter--4" title="热门搜索">
       <div class="h-380 w-full p-12 max-md:h-280">
-        <Chart
+        <BasicChart
           :option="chartOption"
           :theme="EChartsTheme"
           autoresize
@@ -14,7 +14,7 @@
 </template>
 
 <script lang="ts" setup>
-import { Chart } from '@/components/chart'
+import { BasicChart } from '@/components/chart'
 import { useEChartsTheme } from '@/components/chart'
 import { Card } from '@/components/card'
 import type { EChartsCoreOption } from 'echarts/core'

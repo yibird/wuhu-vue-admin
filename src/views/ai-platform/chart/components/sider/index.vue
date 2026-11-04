@@ -1,7 +1,7 @@
 <template>
   <aside
     ref="siderRef"
-    class="relative h-full min-h-0 shrink-0 flex flex-col overflow-hidden border-0 b-r-1-regular bg-container transition-[width,min-width,max-height] duration-200 ease-[var(--w-motion-ease-enter)] will-change-[width] motion-reduce:transition-none max-xl:(h-auto max-h-260 w-full min-w-0 border-r-0 border-b-1) max-md:max-h-230"
+    class="relative h-full min-h-0 shrink-0 flex flex-col overflow-hidden border-0 b-r-1-regular bg-container transition-[width,min-width,max-height] duration-200 ease-[var(--w-motion-ease-enter)] will-change-[width] max-xl:(h-auto max-h-260 w-full min-w-0 border-r-0 border-b-1) max-md:max-h-230"
     :class="
       collapsed
         ? 'w-72 min-w-72 max-xl:max-h-56'
@@ -11,7 +11,7 @@
   >
     <Header v-model:collapsed="collapsed" @create="emits('create')" />
     <div
-      class="overflow-hidden px-10 transition-[max-height,opacity,padding] duration-100 ease-[var(--w-motion-ease-enter)] motion-reduce:transition-none"
+      class="overflow-hidden px-10 transition-[max-height,opacity,padding] duration-100 ease-[var(--w-motion-ease-enter)]"
       :class="
         collapsed
           ? 'max-h-0 pb-0 opacity-0 pointer-events-none'

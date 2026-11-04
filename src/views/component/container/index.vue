@@ -63,7 +63,7 @@
               >
                 <template #placeholder>
                   <div
-                    class="h-180 animate-pulse rounded-6 b-1-muted bg-container p-16 motion-reduce:animate-none"
+                    class="h-180 animate-pulse rounded-6 b-1-muted bg-container p-16"
                     aria-hidden="true"
                   >
                     <div class="mb-12 h-14 w-2/5 rounded-3 bg-active" />

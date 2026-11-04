@@ -3,7 +3,7 @@
     <Transition name="fade-zoom" appear>
       <div
         v-if="open"
-        class="fixed inset-0 z-[2000] transform-gpu [background:rgb(var(--w-bg-page)_/_68%)] text-main backdrop-blur-10 will-change-[transform,opacity] motion-reduce:will-change-auto"
+        class="fixed inset-0 z-[2000] transform-gpu [background:rgb(var(--w-bg-page)_/_68%)] text-main backdrop-blur-10 will-change-[transform,opacity]"
       >
         <div
           role="dialog"
@@ -121,7 +121,7 @@
                   size="large"
                   data-testid="lock-screen-unlock"
                   :loading="submitting"
-                  class="h-44! min-w-220 rounded-8! shadow-xl shadow-primary/18 transition-[transform,box-shadow] duration-200 hover:(-translate-y-1 shadow-xl shadow-primary/24) active:translate-y-0 motion-reduce:(transform-none transition-none)"
+                  class="h-44! min-w-220 rounded-8! shadow-xl shadow-primary/18 transition-[transform,box-shadow] duration-200 hover:(-translate-y-1 shadow-xl shadow-primary/24) active:translate-y-0"
                   @click="handleSubmit"
                 >
                   <template #icon>

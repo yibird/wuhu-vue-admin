@@ -1,4 +1,5 @@
 import { Icon } from './icon'
+import { ActionButton } from './action-button'
 import {
   WView,
   WViewHeader,
@@ -11,6 +12,7 @@ import type { App, Component } from 'vue'
 
 const components: Record<string, Component> = {
   Icon,
+  ActionButton,
   WView,
   WViewHeader,
   WViewContent,

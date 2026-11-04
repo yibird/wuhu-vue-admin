@@ -16,7 +16,7 @@
       <article
         v-for="item in items"
         :key="item.label"
-        class="group min-w-0 overflow-hidden rounded-8 b-1-regular bg-container p-14 text-main transition-[transform,border-color] duration-300 hover:(-translate-y-1 border-primary/40) motion-reduce:transition-none motion-reduce:hover:translate-y-0"
+        class="group min-w-0 overflow-hidden rounded-8 b-1-regular bg-container p-14 text-main transition-[transform,border-color] duration-300 hover:(-translate-y-1 border-primary/40)"
       >
         <div class="flex items-start justify-between gap-10">
           <div class="min-w-0">

@@ -1,6 +1,6 @@
 <template>
   <div
-    class="b-t-1-muted px-16 py-14 transition-colors duration-200 ease-[var(--w-motion-ease)] motion-reduce:transition-none max-[1199px]:(border-t-0 b-l-1-muted px-16 py-12) max-[767px]:(border-l-0 b-t-1-muted px-12 py-12)"
+    class="b-t-1-muted px-16 py-14 transition-colors duration-200 ease-[var(--w-motion-ease)] max-[1199px]:(border-t-0 b-l-1-muted px-16 py-12) max-[767px]:(border-l-0 b-t-1-muted px-12 py-12)"
   >
     <div class="flex items-center justify-between gap-8">
       <div class="flex min-w-0 items-center gap-8">

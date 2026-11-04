@@ -36,7 +36,7 @@
             >
               <div
                 :class="[
-                  'group h-52 min-w-0 flex cursor-pointer items-center gap-12 rounded-4 px-8 text-secondary outline-none transition-[background-color,transform] duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:bg-hover focus-visible:bg-primary/10 active:scale-99 motion-reduce:(transform-none transition-none)',
+                  'group h-52 min-w-0 flex cursor-pointer items-center gap-12 rounded-4 px-8 text-secondary outline-none transition-[background-color,transform] duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:bg-hover focus-visible:bg-primary/10 active:scale-99 ',
                   selectedKeySet.has(row.key)
                     ? 'bg-primary/10 hover:bg-primary/20'
                     : '',
@@ -63,7 +63,7 @@
                   <button
                     v-if="row.hasChildren"
                     type="button"
-                    class="button size-26 shrink-0 rounded-4 text-muted transition-[background-color,color,transform] duration-200 ease-[var(--w-motion-ease)] hover:(bg-hover text-primary) focus-visible:(bg-primary/10 text-primary ring-2 ring-primary/16) motion-reduce:transition-none"
+                    class="button size-26 shrink-0 rounded-4 text-muted transition-[background-color,color,transform] duration-200 ease-[var(--w-motion-ease)] hover:(bg-hover text-primary) focus-visible:(bg-primary/10 text-primary ring-2 ring-primary/16)"
                     :class="{
                       'rotate-90 text-primary': expandedKeySet.has(row.key),
                     }"
@@ -87,7 +87,7 @@
                   <img
                     :src="getIcon(row.file)"
                     :alt="row.file.fileName"
-                    class="size-32 shrink-0 rounded-4 object-cover transition-[filter,transform] duration-200 ease-[var(--w-motion-ease-enter)] group-hover:(scale-104 saturate-110) motion-reduce:transition-none"
+                    class="size-32 shrink-0 rounded-4 object-cover transition-[filter,transform] duration-200 ease-[var(--w-motion-ease-enter)] group-hover:(scale-104 saturate-110)"
                     @error="handleIconError(row.file)"
                   />
                   <span
@@ -142,7 +142,7 @@
                     <button
                       type="button"
                       data-file-manager-action
-                      class="button size-30 translate-x-4 rounded-4 text-secondary opacity-0 transition-[background-color,color,opacity,transform] duration-200 ease-[var(--w-motion-ease)] group-focus-within:(translate-x-0 opacity-100) group-hover:(translate-x-0 opacity-100) hover:(bg-muted text-primary) focus-visible:(translate-x-0 bg-muted text-primary opacity-100) motion-reduce:transition-none"
+                      class="button size-30 translate-x-4 rounded-4 text-secondary opacity-0 transition-[background-color,color,opacity,transform] duration-200 ease-[var(--w-motion-ease)] group-focus-within:(translate-x-0 opacity-100) group-hover:(translate-x-0 opacity-100) hover:(bg-muted text-primary) focus-visible:(translate-x-0 bg-muted text-primary opacity-100)"
                       aria-label="更多操作"
                       @click.stop
                       @dblclick.stop

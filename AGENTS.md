@@ -315,11 +315,9 @@ interface UserProfile {
 
 ## 样式规范
 
-- 优先使用 UnoCSS 原子化 class。
-- 优先使用项目 UnoCSS 配置中的 shortcuts 和 rules。
+- 优先使用 UnoCSS 原子化 class,优先使用项目 UnoCSS 配置中的 shortcuts 和 rules。
 - `src/styles/token.less` 包含项目设计 Token 时，优先复用已有变量，保持视觉一致。
-- 不要随意创建重复的颜色、间距、圆角、阴影和动效 Token。
-- 主题相关样式应优先使用项目现有 CSS 自定义属性，不要硬编码与主题系统重复的值。
+- 不要随意创建重复的颜色、间距、圆角、阴影和动效 Token。主题相关样式应优先使用项目现有 CSS 自定义属性，不要硬编码与主题系统重复的值。禁止使用`motion-reduce:`类名。
 - 使用颜色透明度时，应遵循项目现有的 CSS 变量格式，避免错误地将 RGB 通道变量当作完整颜色使用。
 - scoped CSS 中优先使用 class selector，谨慎使用元素选择器和 `:deep()`。
 - 避免使用 `!important`；确有必要时，应确认无法通过合理的选择器或样式层级解决。

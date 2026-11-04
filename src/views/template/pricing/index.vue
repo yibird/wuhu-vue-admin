@@ -66,10 +66,10 @@
                 <article
                   v-for="addon in pricingAddons"
                   :key="addon.name"
-                  class="group relative grid min-w-0 grid-cols-[48px_minmax(0,1fr)] items-start gap-14 overflow-hidden rounded-12 b-1-muted bg-muted/40 p-16 transition-[border-color,box-shadow,transform] duration-200 ease-[var(--w-motion-ease)] hover:(-translate-y-2 border-primary/30 shadow-2xl shadow-primary/10) motion-reduce:transition-none"
+                  class="group relative grid min-w-0 grid-cols-[48px_minmax(0,1fr)] items-start gap-14 overflow-hidden rounded-12 b-1-muted bg-muted/40 p-16 transition-[border-color,box-shadow,transform] duration-200 ease-[var(--w-motion-ease)] hover:(-translate-y-2 border-primary/30 shadow-2xl shadow-primary/10)"
                 >
                   <span
-                    class="size-48 inline-flex items-center justify-center rounded-12 bg-primary/8 text-primary transition-[background-color,transform] duration-300 ease-[var(--w-motion-ease)] group-hover:(scale-110 bg-primary/15) motion-reduce:transition-none"
+                    class="size-48 inline-flex items-center justify-center rounded-12 bg-primary/8 text-primary transition-[background-color,transform] duration-300 ease-[var(--w-motion-ease)] group-hover:(scale-110 bg-primary/15)"
                   >
                     <Icon :name="addon.icon" :size="22" />
                   </span>

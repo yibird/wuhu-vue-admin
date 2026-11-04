@@ -75,7 +75,7 @@
               <Icon
                 name="i-lucide:refresh-cw"
                 :class="{
-                  'animate-spin motion-reduce:animate-none': props.refreshing,
+                  'animate-spin ': props.refreshing,
                 }"
               />
             </template>

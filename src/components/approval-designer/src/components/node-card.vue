@@ -17,7 +17,7 @@
     </Teleport>
 
     <div
-      class="approval-node group relative w-250 overflow-visible rounded-10 b-1-regular bg-container p-0 text-left shadow-sm transition-[transform,border-color,box-shadow,background-color] duration-200 ease-[var(--w-motion-ease-enter)] hover:(-translate-y-1 border-primary/60 shadow-xl shadow-ink/20) motion-reduce:transition-none motion-reduce:hover:translate-y-0"
+      class="approval-node group relative w-250 overflow-visible rounded-10 b-1-regular bg-container p-0 text-left shadow-sm transition-[transform,border-color,box-shadow,background-color] duration-200 ease-[var(--w-motion-ease-enter)] hover:(-translate-y-1 border-primary/60 shadow-xl shadow-ink/20)"
       :aria-selected="selected"
       :data-approval-node-id="node.id"
       :data-required="node.required ? 'true' : undefined"

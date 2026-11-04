@@ -63,7 +63,7 @@
             <button
               v-for="color in colorOptions"
               :key="color"
-              class="size-24 cursor-pointer rounded-6 border-2 border-solid p-0 outline-none transition-[border-color,box-shadow,transform] duration-200 hover:scale-105 focus-visible:(ring-2 ring-primary/24) motion-reduce:(transform-none transition-none)"
+              class="size-24 cursor-pointer rounded-6 border-2 border-solid p-0 outline-none transition-[border-color,box-shadow,transform] duration-200 hover:scale-105 focus-visible:(ring-2 ring-primary/24)"
               :class="
                 form.iconBackground === color
                   ? 'border-primary ring-2 ring-primary/16'
