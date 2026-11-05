@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { setupTabGuards } from '@/config/tab-guards'
 import { routes } from './routes'
-import { useRegisterRoutes } from './composable/useRegisterRoutes'
+import { useRegisterRoutes } from './hooks/useRegisterRoutes'
 import { plugins, setupRouterPlugins } from './plugins'
 import { setupGlobalRouteGuard } from './guard'
 import type { App } from 'vue'

@@ -1,5 +1,5 @@
 export { setupGlobalRouteGuard } from './guard'
-export { useGo } from './composable'
+export { useGo, useRoutePrefetch } from './hooks'
 export { plugins, setupRouterPlugins } from './plugins'
 export { router, setupRouter } from './setup'
 export {
@@ -8,6 +8,7 @@ export {
   isMenu,
   menuToRoute,
   normalizePath,
+  prefetchRouteView,
   toChildRoutePath,
 } from './utils'
 export type {
