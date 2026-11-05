@@ -1,37 +1,39 @@
 <template>
-  <section class="grid grid-cols-2 gap-10 xl:grid-cols-4 max-sm:grid-cols-1">
-    <Motion
-      v-for="(metric, index) in metrics"
-      :key="metric.label"
-      as="article"
-      :initial="{ opacity: 0, y: 8 }"
-      :animate="{ opacity: 1, y: 0 }"
-      :transition="{ duration: 0.24, delay: index * 0.035, ease: 'easeOut' }"
-      class="min-w-0 rounded-8 b-1-regular bg-container p-13 shadow-sm"
-    >
-      <a-skeleton v-if="loading" active :paragraph="{ rows: 1 }" />
-      <div v-else class="flex items-start gap-11">
-        <span
-          class="size-36 flex flex-none items-center justify-center rounded-6"
-          :class="metric.tone"
-        >
-          <Icon :name="metric.icon" :size="18" />
-        </span>
-        <div class="min-w-0 flex-1">
-          <div class="text-xs text-secondary">{{ metric.label }}</div>
-          <strong class="mt-3 block text-xl text-main font-750 leading-24px">
-            {{ metric.value }}
-          </strong>
-          <div class="mt-3 truncate text-xs text-secondary">
-            {{ metric.hint }}
+  <Skeleton name="workflow-monitor-overview" :loading="loading">
+    <section class="grid grid-cols-2 gap-10 xl:grid-cols-4 max-sm:grid-cols-1">
+      <Motion
+        v-for="(metric, index) in metrics"
+        :key="metric.label"
+        as="article"
+        :initial="{ opacity: 0, y: 8 }"
+        :animate="{ opacity: 1, y: 0 }"
+        :transition="{ duration: 0.24, delay: index * 0.035, ease: 'easeOut' }"
+        class="min-w-0 rounded-8 b-1-regular bg-container p-13 shadow-sm"
+      >
+        <div class="flex items-start gap-11">
+          <span
+            class="size-36 flex flex-none items-center justify-center rounded-6"
+            :class="metric.tone"
+          >
+            <Icon :name="metric.icon" :size="18" />
+          </span>
+          <div class="min-w-0 flex-1">
+            <div class="text-xs text-secondary">{{ metric.label }}</div>
+            <strong class="mt-3 block text-xl text-main font-750 leading-24px">
+              {{ metric.value }}
+            </strong>
+            <div class="mt-3 truncate text-xs text-secondary">
+              {{ metric.hint }}
+            </div>
           </div>
         </div>
-      </div>
-    </Motion>
-  </section>
+      </Motion>
+    </section>
+  </Skeleton>
 </template>
 
 <script setup lang="ts">
+import Skeleton from 'boneyard-js/vue'
 import { Motion } from 'motion-v'
 
 const props = defineProps<{

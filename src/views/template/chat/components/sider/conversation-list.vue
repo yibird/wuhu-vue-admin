@@ -180,8 +180,7 @@
 
 <script setup lang="ts">
 import { LayoutGroup, Motion } from 'motion-v'
-import { Scrollbar } from '@/components/scrollbar'
-import { Icon } from '@/components/icon'
+import { Scrollbar, Icon } from '@/components'
 import Search from './search.vue'
 import Tabs from './tabs.vue'
 import type { MenuProps } from 'antdv-next'

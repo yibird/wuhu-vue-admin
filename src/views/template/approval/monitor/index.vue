@@ -1,5 +1,5 @@
 <template>
-  <WView :full="true" :padding="0">
+  <View :full="true" :padding="0">
     <div class="h-full min-h-0 flex flex-col overflow-hidden bg-page">
       <header
         class="page-enter page-enter--1 flex flex-none flex-wrap items-center gap-10 b-b-1-regular bg-container px-12 py-10 sm:px-16"
@@ -148,7 +148,7 @@
         </a-spin>
       </a-drawer>
     </div>
-  </WView>
+  </View>
 </template>
 
 <script setup lang="ts">

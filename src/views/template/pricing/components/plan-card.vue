@@ -78,7 +78,7 @@
             {{ priceLabel }}
           </strong>
         </Transition>
-        <Transition name="fade-slide-inline" mode="out-in">
+        <Transition name="fade-slide" mode="out-in">
           <del
             v-if="originalPriceLabel"
             :key="originalPriceLabel"

@@ -146,8 +146,7 @@
 </template>
 
 <script setup lang="ts">
-import { Scrollbar } from '@/components/scrollbar'
-import { Icon } from '@/components/icon'
+import { Scrollbar, Icon } from '@/components'
 import Search from './search.vue'
 import Tabs from './tabs.vue'
 import { useContactGroups, type ContactGroupMode } from './hooks'

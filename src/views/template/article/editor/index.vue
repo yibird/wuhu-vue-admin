@@ -1,5 +1,5 @@
 <template>
-  <WView>
+  <View>
     <div class="full min-w-0 flex bg-page">
       <!-- Desktop document list -->
       <aside
@@ -136,7 +136,7 @@
         @update:keyword="(v) => (keyword = v)"
       />
     </a-drawer>
-  </WView>
+  </View>
 </template>
 
 <script setup lang="ts">

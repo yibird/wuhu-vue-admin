@@ -1,5 +1,5 @@
 <template>
-  <WView :full="true" :padding="0">
+  <View :full="true" :padding="0">
     <div class="h-full min-h-0 flex flex-col overflow-hidden bg-page">
       <!-- 菜单栏 -->
       <header
@@ -244,7 +244,7 @@
         <a-empty v-else description="没有发现阻塞问题" />
       </div>
     </a-modal>
-  </WView>
+  </View>
 </template>
 
 <script setup lang="ts">

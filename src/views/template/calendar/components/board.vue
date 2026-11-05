@@ -3,21 +3,11 @@
     ref="calendarRoot"
     class="calendar min-h-0 flex flex-col overflow-hidden rounded-8 b-1-regular bg-container"
   >
-    <template v-if="loading">
-      <div
-        class="flex items-center justify-between gap-12 b-b-1-regular px-14 py-12"
-      >
-        <div>
-          <a-skeleton-input active class="!w-112" />
-          <a-skeleton-input active size="small" class="!mt-6 !w-240" />
-        </div>
-        <a-skeleton-button active />
-      </div>
-      <div class="min-h-0 flex-1 p-14">
-        <a-skeleton active :paragraph="{ rows: 12 }" />
-      </div>
-    </template>
-    <template v-else>
+    <Skeleton
+      name="calendar-board"
+      :loading="loading"
+      class="min-h-0 flex-1 flex flex-col"
+    >
       <div
         class="flex items-center justify-between gap-12 b-b-1-regular px-14 py-12 max-md:(flex-col items-start)"
       >
@@ -63,11 +53,12 @@
           </div>
         </div>
       </div>
-    </template>
+    </Skeleton>
   </main>
 </template>
 
 <script setup lang="ts">
+import Skeleton from 'boneyard-js/vue'
 import { DayFlowCalendar } from '@dayflow/vue'
 import type { UseCalendarAppReturn } from '@dayflow/core'
 

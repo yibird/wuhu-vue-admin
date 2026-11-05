@@ -85,8 +85,7 @@
 <script setup lang="ts">
 import { Empty } from 'antdv-next'
 import { computed, ref } from 'vue'
-import { Icon } from '@/components/icon'
-import { Scrollbar } from '@/components/scrollbar'
+import { Icon, Scrollbar } from '@/components'
 import { MATERIAL_CATEGORY_ORDER } from '../../core/materials'
 import { componentRegistry, registryVersion } from '../../core/registry'
 import type { RegisteredComponent } from '../../core/registry'

@@ -1,5 +1,5 @@
 <template>
-  <WView class="chat-page">
+  <View class="chat-page">
     <div class="h-full min-h-0 flex overflow-hidden bg-container">
       <Nav
         v-model:active-key="activeKey"
@@ -126,7 +126,7 @@
         class="max-h-[70vh] w-full rounded-6 object-contain"
       />
     </a-modal>
-  </WView>
+  </View>
 </template>
 
 <script setup lang="ts">

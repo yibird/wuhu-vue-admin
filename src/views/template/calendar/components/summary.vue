@@ -1,18 +1,6 @@
 <template>
-  <div class="grid grid-cols-4 gap-12 max-lg:grid-cols-2 max-sm:grid-cols-1">
-    <template v-if="loading">
-      <article
-        v-for="item in 4"
-        :key="item"
-        class="min-h-108 rounded-8 b-1-regular bg-container p-14"
-        aria-hidden="true"
-      >
-        <a-skeleton-avatar active shape="square" size="small" />
-        <a-skeleton-input active class="!mt-12 !w-76" />
-        <a-skeleton-input active size="small" class="!mt-8 !w-130" />
-      </article>
-    </template>
-    <template v-else>
+  <Skeleton name="calendar-summary" :loading="loading">
+    <div class="grid grid-cols-4 gap-12 max-lg:grid-cols-2 max-sm:grid-cols-1">
       <article
         v-for="item in items"
         :key="item.label"
@@ -35,11 +23,12 @@
           {{ item.description }}
         </div>
       </article>
-    </template>
-  </div>
+    </div>
+  </Skeleton>
 </template>
 
 <script setup lang="ts">
+import Skeleton from 'boneyard-js/vue'
 import type { SummaryCard } from '../types'
 
 const { items, loading = false } = defineProps<{

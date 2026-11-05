@@ -1,5 +1,5 @@
 <template>
-  <WView :full="true" :padding="0" class="chart-designer-page">
+  <View :full="true" :padding="0" class="chart-designer-page">
     <main
       class="h-[calc(100dvh-90px)] min-h-0 min-w-0 grid grid-rows-[auto_minmax(0,1fr)] gap-12 overflow-hidden bg-page p-12 max-[980px]:p-8"
       :data-testid="CHART_DESIGNER_SELECTORS.page"
@@ -108,7 +108,7 @@
         @copy="copyShareUrl"
       />
     </main>
-  </WView>
+  </View>
 </template>
 
 <script setup lang="ts">

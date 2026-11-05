@@ -1,5 +1,5 @@
 <template>
-  <WView :full="true" :padding="0">
+  <View :full="true" :padding="0">
     <div
       ref="scrollRef"
       class="h-full w-full overflow-x-hidden overflow-y-auto bg-page"
@@ -24,18 +24,17 @@
           </a-tag>
         </header>
 
-        <MasonrySkeleton v-if="initialLoading" />
-
-        <a-masonry
-          v-else
-          :items="masonryItems"
-          :columns="{ xs: 1, sm: 2, md: 3, xl: 4, xxl: 5 }"
-          :gutter="[16, 16]"
-        >
-          <template #itemRender="{ data }">
-            <MasonryCard :card="data" @select="openCardDetail" />
-          </template>
-        </a-masonry>
+        <Skeleton name="masonry-grid" :loading="initialLoading">
+          <a-masonry
+            :items="masonryItems"
+            :columns="{ xs: 1, sm: 2, md: 3, xl: 4, xxl: 5 }"
+            :gutter="[16, 16]"
+          >
+            <template #itemRender="{ data }">
+              <MasonryCard :card="data" @select="openCardDetail" />
+            </template>
+          </a-masonry>
+        </Skeleton>
 
         <div ref="sentinelRef" class="h-1" aria-hidden="true" />
 
@@ -106,12 +105,13 @@
         </div>
       </div>
     </a-modal>
-  </WView>
+  </View>
 </template>
 
 <script setup lang="ts">
+import Skeleton from 'boneyard-js/vue'
 import { Icon } from '@/components/icon'
-import { MasonryCard, MasonrySkeleton } from './components'
+import { MasonryCard } from './components'
 import {
   createMasonryCards,
   LOAD_MORE_SIZE,

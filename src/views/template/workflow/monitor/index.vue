@@ -1,5 +1,5 @@
 <template>
-  <WView :full="true" :padding="0">
+  <View :full="true" :padding="0">
     <div class="h-full bg-page w-full overflow-x-hidden overflow-y-auto">
       <WorkflowMonitorHeader
         v-model:auto-refresh="autoRefresh"
@@ -17,7 +17,7 @@
       <main class="flex flex-col gap-10 p-12 sm:p-16">
         <WorkflowOverview
           :failure-count="failureCount"
-          :loading="isLoading"
+          :loading="loading"
           :running-count="runningCount"
           :success-rate="successRate"
           :unresolved-alert-count="unresolvedAlerts.length"
@@ -31,7 +31,7 @@
         />
         <ExecutionTable
           :instances="filteredInstances"
-          :loading="isLoading"
+          :loading="loading"
           @open="openInstance"
           @retry="retryInstance"
           @terminate="terminateInstance"
@@ -45,7 +45,7 @@
       @retry="retryInstance"
       @terminate="terminateInstance"
     />
-  </WView>
+  </View>
 </template>
 
 <script setup lang="ts">
@@ -60,7 +60,7 @@ import {
 } from './components'
 import { useWorkflowMonitor } from './hooks'
 
-const { isLoading } = useLoading({ delay: 260 })
+const { loading } = useLoading({ delay: 260 })
 const {
   alerts,
   autoRefresh,

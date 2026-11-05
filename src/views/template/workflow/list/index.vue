@@ -1,5 +1,5 @@
 <template>
-  <WView :full="true" :padding="0">
+  <View :full="true" :padding="0">
     <div class="h-full min-h-0 flex flex-col overflow-hidden bg-page">
       <WorkflowToolbar
         class="page-enter page-enter--1 flex-none"
@@ -17,45 +17,34 @@
       <main
         class="page-enter page-enter--2 min-h-0 flex-1 overflow-y-auto p-12 sm:p-16"
       >
-        <div
-          v-if="isLoading"
-          class="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6"
-        >
-          <div
-            v-for="index in 12"
-            :key="index"
-            class="h-292 rounded-8 b-1-regular bg-container p-14"
+        <Skeleton name="workflow-list" :loading="loading">
+          <a-empty
+            v-if="paginatedWorkflows.length === 0"
+            class="py-72"
+            description="没有符合筛选条件的流程"
           >
-            <a-skeleton active :paragraph="{ rows: 6 }" />
-          </div>
-        </div>
+            <a-button @click="clearFilters">清除筛选</a-button>
+          </a-empty>
 
-        <a-empty
-          v-else-if="paginatedWorkflows.length === 0"
-          class="py-72"
-          description="没有符合筛选条件的流程"
-        >
-          <a-button @click="clearFilters">清除筛选</a-button>
-        </a-empty>
-
-        <TransitionGroup
-          v-else
-          name="fade"
-          tag="div"
-          class="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6"
-        >
-          <WorkflowCard
-            v-for="workflow in paginatedWorkflows"
-            :key="workflow.id"
-            :workflow="workflow"
-            @action="handleCardAction"
-            @open="openDesigner"
-          />
-        </TransitionGroup>
+          <TransitionGroup
+            v-else
+            name="fade"
+            tag="div"
+            class="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6"
+          >
+            <WorkflowCard
+              v-for="workflow in paginatedWorkflows"
+              :key="workflow.id"
+              :workflow="workflow"
+              @action="handleCardAction"
+              @open="openDesigner"
+            />
+          </TransitionGroup>
+        </Skeleton>
       </main>
 
       <footer
-        v-if="!isLoading && filteredWorkflows.length > 0"
+        v-if="!loading && filteredWorkflows.length > 0"
         class="page-enter page-enter--3 flex flex-none justify-center b-t-1-regular px-12 py-10 sm:px-16"
       >
         <a-pagination
@@ -68,10 +57,11 @@
         />
       </footer>
     </div>
-  </WView>
+  </View>
 </template>
 
 <script setup lang="ts">
+import Skeleton from 'boneyard-js/vue'
 import message from 'antdv-next/dist/message/index'
 import Modal from 'antdv-next/dist/modal/index'
 import { useLoading, useTabs } from '@/hooks'
@@ -80,7 +70,7 @@ import { useWorkflowList } from './hooks'
 import type { WorkflowDefinition } from '../shared/types'
 
 const { openRouteTab } = useTabs()
-const { isLoading } = useLoading({ delay: 280 })
+const { loading } = useLoading({ delay: 280 })
 
 const {
   currentPage,

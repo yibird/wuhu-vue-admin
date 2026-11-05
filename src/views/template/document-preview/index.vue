@@ -1,11 +1,11 @@
 <template>
-  <WView class="full-flex">
+  <View class="full-flex">
     <div
       ref="viewerRef"
       data-testid="document-viewer"
       class="full min-h-0 min-w-0"
     />
-  </WView>
+  </View>
 </template>
 
 <script setup lang="ts">

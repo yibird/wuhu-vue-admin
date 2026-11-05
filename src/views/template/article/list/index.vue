@@ -1,7 +1,7 @@
 <template>
-  <WView :full="true" :padding="0">
+  <View :full="true" :padding="0">
     <ArticleList />
-  </WView>
+  </View>
 </template>
 
 <script setup lang="ts">

@@ -1,5 +1,5 @@
 <template>
-  <WView :full="true" :padding="0">
+  <View :full="true" :padding="0">
     <div class="h-full min-h-0 flex flex-col overflow-hidden bg-page">
       <header
         class="page-enter page-enter--1 flex flex-none flex-wrap items-center gap-10 b-b-1-regular bg-container px-12 py-10 sm:px-16"
@@ -49,42 +49,31 @@
       <main
         class="page-enter page-enter--2 min-h-0 flex-1 overflow-y-auto p-12 sm:p-16"
       >
-        <div
-          v-if="loading"
-          class="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5"
-        >
-          <div
-            v-for="index in 10"
-            :key="index"
-            class="h-252 rounded-8 b-1-regular bg-container p-14"
+        <Skeleton name="approval-my-list" :loading="loading">
+          <a-empty
+            v-if="list.length === 0"
+            class="py-72"
+            description="还没有审批流，先创建一个吧"
           >
-            <a-skeleton active :paragraph="{ rows: 5 }" />
+            <a-button type="primary" @click="createDefinition">
+              新建审批
+            </a-button>
+          </a-empty>
+
+          <div
+            v-else
+            class="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5"
+          >
+            <ApprovalCard
+              v-for="definition in list"
+              :key="definition.id"
+              :definition="definition"
+              @open="openDesigner"
+              @duplicate="duplicateDefinition"
+              @remove="removeDefinition"
+            />
           </div>
-        </div>
-
-        <a-empty
-          v-else-if="list.length === 0"
-          class="py-72"
-          description="还没有审批流，先创建一个吧"
-        >
-          <a-button type="primary" @click="createDefinition">
-            新建审批
-          </a-button>
-        </a-empty>
-
-        <div
-          v-else
-          class="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5"
-        >
-          <ApprovalCard
-            v-for="definition in list"
-            :key="definition.id"
-            :definition="definition"
-            @open="openDesigner"
-            @duplicate="duplicateDefinition"
-            @remove="removeDefinition"
-          />
-        </div>
+        </Skeleton>
       </main>
 
       <footer
@@ -102,10 +91,11 @@
         />
       </footer>
     </div>
-  </WView>
+  </View>
 </template>
 
 <script setup lang="ts">
+import Skeleton from 'boneyard-js/vue'
 import { Icon } from '@/components/icon'
 import { useTabs } from '@/hooks'
 import { ApprovalCard } from '../components'

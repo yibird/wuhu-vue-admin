@@ -1,5 +1,5 @@
 <template>
-  <WView :full="true" :padding="0">
+  <View :full="true" :padding="0">
     <div class="h-full min-h-0 flex flex-col overflow-hidden bg-page">
       <header
         class="page-enter page-enter--1 flex flex-none flex-wrap items-center gap-10 b-b-1-regular bg-container px-12 py-10 sm:px-16"
@@ -110,38 +110,27 @@
 
         <section class="min-h-0 flex flex-col overflow-hidden">
           <div class="min-h-0 flex-1 overflow-y-auto p-4">
-            <div
-              v-if="loading"
-              class="grid grid-cols-1 gap-12 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
-            >
-              <div
-                v-for="index in 8"
-                :key="index"
-                class="h-252 rounded-8 b-1-regular bg-container p-14"
-              >
-                <a-skeleton active :paragraph="{ rows: 5 }" />
-              </div>
-            </div>
-
-            <a-empty
-              v-else-if="list.length === 0"
-              class="py-72"
-              description="该分组下还没有审批流程"
-            />
-
-            <div
-              v-else
-              class="grid grid-cols-1 gap-12 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
-            >
-              <ApprovalCard
-                v-for="definition in list"
-                :key="definition.id"
-                :definition="definition"
-                @open="openDesigner"
-                @duplicate="duplicateDefinition"
-                @remove="removeDefinition"
+            <Skeleton name="approval-category-list" :loading="loading">
+              <a-empty
+                v-if="list.length === 0"
+                class="py-72"
+                description="该分组下还没有审批流程"
               />
-            </div>
+
+              <div
+                v-else
+                class="grid grid-cols-1 gap-12 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
+              >
+                <ApprovalCard
+                  v-for="definition in list"
+                  :key="definition.id"
+                  :definition="definition"
+                  @open="openDesigner"
+                  @duplicate="duplicateDefinition"
+                  @remove="removeDefinition"
+                />
+              </div>
+            </Skeleton>
           </div>
 
           <footer v-if="total > 0" class="flex flex-none justify-center pt-12">
@@ -187,10 +176,11 @@
         </a-form>
       </a-modal>
     </div>
-  </WView>
+  </View>
 </template>
 
 <script setup lang="ts">
+import Skeleton from 'boneyard-js/vue'
 import { message } from 'antdv-next'
 import { Motion } from 'motion-v'
 import { Icon } from '@/components/icon'

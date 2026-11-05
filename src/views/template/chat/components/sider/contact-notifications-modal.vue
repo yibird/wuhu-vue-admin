@@ -167,8 +167,7 @@
 </template>
 
 <script setup lang="ts">
-import { Icon } from '@/components/icon'
-import { Modal } from '@/components/modal'
+import { Icon, Modal } from '@/components'
 import { VirtualList } from '../common'
 import type {
   ContactNotification,

@@ -1,5 +1,5 @@
 <template>
-  <WView class="absolute overflow-hidden bg-page">
+  <View class="absolute overflow-hidden bg-page">
     <div class="h-full min-h-0 flex flex-col">
       <DesignerHeader
         @open-ai="openAi"
@@ -52,12 +52,11 @@
     <PreviewModal :open="previewOpen" @close="previewOpen = false" />
     <VersionModal :open="versionOpen" @close="versionOpen = false" />
     <PublishModal :open="publishOpen" @close="publishOpen = false" />
-  </WView>
+  </View>
 </template>
 
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
-import { WView } from '@/components/view'
 import {
   CanvasStage,
   DataDrawer,

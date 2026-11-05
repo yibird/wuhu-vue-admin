@@ -111,7 +111,7 @@
           </div>
         </div>
 
-        <Transition name="fade-slide-swap" mode="out-in">
+        <Transition name="fade-slide-right" mode="out-in">
           <div :key="conversation.id" class="flex-1 overflow-hidden">
             <MessageList
               ref="messageListRef"

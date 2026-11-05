@@ -2,7 +2,7 @@
   <div class="absolute inset-0 full">
     <div class="box-border h-full p-10 flex flex-col gap-12 overflow-hidden">
       <CalendarToolbar
-        :loading="isLoading"
+        :loading="loading"
         :active-view="activeView"
         :current-month-label="currentMonthLabel"
         :event-count-label="eventCountLabel"
@@ -14,14 +14,14 @@
         @previous="goToPrevious"
         @today="goToToday"
       />
-      <CalendarSummary :items="summaryCards" :loading="isLoading" />
+      <CalendarSummary :items="summaryCards" :loading="loading" />
       <div
         class="grid flex-1 overflow-y-auto grid-cols-[minmax(0,1fr)_320px] gap-12 max-[1100px]:grid-cols-1"
       >
         <CalendarBoard
           :calendar="calendar"
           :has-active-filters="hasActiveFilters"
-          :loading="isLoading"
+          :loading="loading"
           :visible-event-count="visibleEventCount"
           @create-event="openCreateEvent()"
         />
@@ -32,7 +32,7 @@
           :get-calendar-count="getCalendarCount"
           :has-active-filters="hasActiveFilters"
           :keyword="filters.keyword"
-          :loading="isLoading"
+          :loading="loading"
           :selected-event="selectedEventDetail"
           :status-options="eventStatusOptions"
           :statuses="filters.statuses"
@@ -85,7 +85,7 @@ import {
 } from './data'
 import type { CalendarEventDetail } from './types'
 import '@dayflow/core/dist/styles.css'
-const { isLoading } = useLoading({ delay: 280 })
+const { loading } = useLoading({ delay: 280 })
 const eventFormRef = shallowRef<InstanceType<typeof CalendarEventForm>>()
 
 const {

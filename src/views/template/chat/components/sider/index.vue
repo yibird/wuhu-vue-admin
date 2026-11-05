@@ -3,7 +3,7 @@
     class="relative min-w-240 max-w-450 h-full shrink-0 b-r-1-muted bg-container max-lg:(min-w-260 min-w-260)"
     :class="{ 'is-resizing': resizing }"
   >
-    <Transition name="fade-slide-swap" mode="out-in">
+    <Transition name="fade-slide-right" mode="out-in">
       <ConversationList
         v-if="activeKey === 'conversation'"
         key="conversation"

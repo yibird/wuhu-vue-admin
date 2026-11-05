@@ -2,54 +2,48 @@
   <aside
     class="h-full overflow-y-auto rounded-8 b-1-regular bg-container max-[1100px]:order--1"
   >
-    <div
-      v-if="loading"
-      class="p-14"
-      aria-label="日历侧栏加载中"
-      aria-busy="true"
-    >
-      <a-skeleton active :paragraph="{ rows: 12 }" />
-    </div>
-    <div
-      v-else
-      class="flex flex-col gap-16 p-14 w-full h-full overflow-x-hidden overflow-y-auto"
-    >
-      <CalendarFilterPanel
-        :active-filter-count="activeFilterCount"
-        :calendar-ids="calendarIds"
-        :calendar-types="calendarTypes"
-        :has-active-filters="hasActiveFilters"
-        :keyword="keyword"
-        :status-options="statusOptions"
-        :statuses="statuses"
-        @reset-filters="emits('resetFilters')"
-        @update-calendar-ids="emits('updateCalendarIds', $event)"
-        @update-keyword="emits('updateKeyword', $event)"
-        @update-statuses="emits('updateStatuses', $event)"
-      />
+    <Skeleton name="calendar-aside" :loading="loading" class="h-full">
+      <div
+        class="flex flex-col gap-16 p-14 w-full h-full overflow-x-hidden overflow-y-auto"
+      >
+        <CalendarFilterPanel
+          :active-filter-count="activeFilterCount"
+          :calendar-ids="calendarIds"
+          :calendar-types="calendarTypes"
+          :has-active-filters="hasActiveFilters"
+          :keyword="keyword"
+          :status-options="statusOptions"
+          :statuses="statuses"
+          @reset-filters="emits('resetFilters')"
+          @update-calendar-ids="emits('updateCalendarIds', $event)"
+          @update-keyword="emits('updateKeyword', $event)"
+          @update-statuses="emits('updateStatuses', $event)"
+        />
 
-      <CalendarUpcomingList
-        :has-active-filters="hasActiveFilters"
-        :upcoming-events="upcomingEvents"
-        @reset-filters="emits('resetFilters')"
-        @select-event-date="handleSelectEventDate"
-      />
+        <CalendarUpcomingList
+          :has-active-filters="hasActiveFilters"
+          :upcoming-events="upcomingEvents"
+          @reset-filters="emits('resetFilters')"
+          @select-event-date="handleSelectEventDate"
+        />
 
-      <CalendarEventDetailPanel
-        :selected-event="selectedEvent"
-        @delete-event="emits('deleteEvent', $event)"
-        @edit-event="emits('editEvent', $event)"
-      />
+        <CalendarEventDetailPanel
+          :selected-event="selectedEvent"
+          @delete-event="emits('deleteEvent', $event)"
+          @edit-event="emits('editEvent', $event)"
+        />
 
-      <CalendarCategoryStats
-        :calendar-types="calendarTypes"
-        :get-calendar-count="getCalendarCount"
-      />
-    </div>
+        <CalendarCategoryStats
+          :calendar-types="calendarTypes"
+          :get-calendar-count="getCalendarCount"
+        />
+      </div>
+    </Skeleton>
   </aside>
 </template>
 
 <script setup lang="ts">
+import Skeleton from 'boneyard-js/vue'
 import CalendarCategoryStats from './category-stats.vue'
 import CalendarEventDetailPanel from './event-detail-panel.vue'
 import CalendarFilterPanel from './filter-panel.vue'
