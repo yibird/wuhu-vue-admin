@@ -15,6 +15,15 @@ function createFontStack(family: string, fallback: string) {
   return `'${family}', '${fallback}', 'Noto Sans SC', ${systemFontStack}`
 }
 
+/**
+ * 中文字体栈
+ *
+ * 这些字体自带拉丁与中文子集,可以直接作为首选族;缺字时回退到系统中文/西文字体。
+ */
+function createCjkFontStack(family: string) {
+  return `'${family}', ${systemFontStack}`
+}
+
 export const monoFontStack =
   "'Roboto Mono', ui-monospace, 'SFMono-Regular', Menlo, Consolas, 'Liberation Mono', 'Courier New', monospace"
 
@@ -56,6 +65,28 @@ export const fontOptions: FontOption[] = [
     stack: createFontStack('Roboto Mono', 'Roboto Mono Fallback'),
     weight: 400,
     letterSpacing: '-0.02em',
+  },
+  // 以下三款为中文个性化字体,自带 unicode-range 子集(见 src/styles/index.ts 的样式引入)
+  {
+    label: '得意黑',
+    family: FONT_FAMILY.SmileySans,
+    stack: createCjkFontStack('Smiley Sans Oblique'),
+    weight: 400,
+    letterSpacing: '0',
+  },
+  {
+    label: '霞鹜漫黑',
+    family: FONT_FAMILY.LxgwMarkerGothic,
+    stack: createCjkFontStack('LXGW Marker Gothic'),
+    weight: 400,
+    letterSpacing: '0',
+  },
+  {
+    label: '霞鹜文楷',
+    family: FONT_FAMILY.LxgwWenKai,
+    stack: createCjkFontStack('LXGW WenKai Screen'),
+    weight: 400,
+    letterSpacing: '0',
   },
   {
     label: '微软雅黑',

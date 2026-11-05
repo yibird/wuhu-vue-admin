@@ -34,6 +34,12 @@ export const FONT_FAMILY = {
   SpaceGrotesk: 'space-grotesk',
   // Roboto Mono
   RobotoMono: 'roboto-mono',
+  // 得意黑
+  SmileySans: 'smiley-sans',
+  // 霞鹜漫黑
+  LxgwMarkerGothic: 'lxgw-marker-gothic',
+  // 霞鹜文楷
+  LxgwWenKai: 'lxgw-wen-kai',
   // 微软雅黑
   MicrosoftYaHei: 'microsoft-yahei',
 } as const
@@ -100,21 +106,35 @@ export const LOADING_ADNIMATION = {
  * 页面动画
  */
 export const PAGE_ANIMATION = {
-  // 从左滑动
+  // 滑动
   SlideLeft: 'slide-left',
-  // 从右滑动
   SlideRight: 'slide-right',
-  // 从上滑动
   SlideUp: 'slide-up',
-  // 从下滑动
   SlideDown: 'slide-down',
+
   // 淡入淡出
   Fade: 'fade',
-  // 放大
+  // 淡入缩放
   FadeScale: 'fade-scale',
-  // 横向反转
+  // 渐显放大
+  FadeZoom: 'fade-zoom',
+  // 默认渐显滑动（从下进入）
+  FadeSlide: 'fade-slide',
+  // 从下方渐显滑入
+  FadeSlideUp: 'fade-slide-up',
+  // 从上方渐显滑入
+  FadeSlideDown: 'fade-slide-down',
+  // 从右侧渐显滑入
+  FadeSlideLeft: 'fade-slide-left',
+  // 从左侧渐显滑入
+  FadeSlideRight: 'fade-slide-right',
+  // 弹性渐显
+  FadePop: 'fade-pop',
+  // 旋转渐显
+  FadeSpin: 'fade-spin',
+
+  // 翻转
   FlipX: 'flip-x',
-  // 竖向反转
   FlipY: 'flip-y',
 } as const
 

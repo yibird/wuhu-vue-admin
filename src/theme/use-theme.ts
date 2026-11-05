@@ -87,7 +87,8 @@ export const useTheme = createSharedComposable(() => {
         colorPrimary: primaryColor.value,
         colorLink: primaryColor.value,
         borderRadius: app.value.borderRadius,
-        fontFamily: font.value?.family,
+        // 必须传完整字体栈:family 是偏好设置里的枚举键(如 outfit),不是可用的字体族
+        fontFamily: font.value?.stack,
       },
     }
   })
@@ -103,7 +104,8 @@ export const useTheme = createSharedComposable(() => {
 
   const changeFont = (font: Font) => {
     if (isEqual(app.value.font, font)) return
-    app.value.font = font
+    // 存副本,避免 store 长期持有 fontOptions 里的共享对象
+    app.value.font = { ...font }
   }
 
   const changeColourWeakness = (colourWeakness: boolean) => {

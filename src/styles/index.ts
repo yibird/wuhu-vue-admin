@@ -1,5 +1,9 @@
 import 'virtual:uno.css'
 import './fonts.css'
+// 中文个性化字体:自带 unicode-range 子集,@font-face 常驻,浏览器只下载命中的子集
+import 'cn-fontsource-smiley-sans-oblique-regular/font.css'
+import 'cn-fontsource-lxgw-marker-gothic-regular/font.css'
+import 'cn-fontsource-lxgw-wen-kai-screen/font.css'
 import './token.css'
 import './app.css'
 import './transition/index.less'

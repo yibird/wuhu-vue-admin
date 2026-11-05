@@ -68,7 +68,9 @@ const createInitialState = (): AppStoreState => {
       themeMode: THEME_MODE.Light,
       themeColor: '22 119 255',
       locale: LOCALE.ZH_CN,
-      font: getFontFamilyOption(FONT_FAMILY.Outfit),
+      // 复制一份:持久化恢复时的 $patch 是深合并,直接引用 fontOptions 里的对象会被改写,
+      // 导致字体面板出现重复项(常量数组被持久化数据污染)
+      font: { ...getFontFamilyOption(FONT_FAMILY.Outfit) },
       menuMode: MENU_MODE.Vertical,
       pageCache: true,
       pageCacheMax: 10,
@@ -109,6 +111,10 @@ export const appStore = defineStore('wuhu-vue-admin:app', {
     omit: ['app.logo'],
     afterHydrate: ({ store }) => {
       store.app.logo = logo
+      // 字体以 family 为准重新解析:历史数据可能指向已下线的字体,未命中时回落到默认项
+      store.app.font = {
+        ...getFontFamilyOption(store.app.font?.family ?? FONT_FAMILY.Outfit),
+      }
     },
   },
 })
