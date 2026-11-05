@@ -15,7 +15,6 @@ const items: Array<{ label: string; value: StatPeriod }> = [
   { label: '日', value: 'day' },
 ]
 
-/** 周期状态由卡片持有,这里只负责受控切换 */
 const period = defineModel<StatPeriod>('period', { required: true })
 
 function handleChange(value: string | number) {

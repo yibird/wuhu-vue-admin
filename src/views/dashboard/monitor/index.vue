@@ -1,5 +1,5 @@
 <template>
-  <WView :full="true" :padding="0">
+  <View :full="true" :padding="0">
     <div class="w-full h-full overflow-x-hidden overflow-y-auto">
       <div class="page-view min-h-full bg-page p-10 sm:p-12">
         <MonitorHeader
@@ -7,7 +7,7 @@
           :critical-alert-count="criticalAlertCount"
           :health-score="healthScore"
           :last-refresh-at="lastRefreshAt"
-          :loading="isLoading"
+          :loading="loading"
           :refreshing="refreshing"
           :running-service-count="runningServiceCount"
           :total-service-count="serviceItems.length"
@@ -23,22 +23,22 @@
             <Overview
               class="page-enter page-enter--2"
               :items="overviewItems"
-              :loading="isLoading"
+              :loading="loading"
             />
             <Status
               class="page-enter page-enter--3"
               :items="statusItems"
-              :loading="isLoading"
+              :loading="loading"
             />
             <SysMonitor
               class="page-enter page-enter--4"
               :data="monitorData"
-              :loading="isLoading"
+              :loading="loading"
             />
             <ServiceHealth
               class="page-enter page-enter--5"
               :items="serviceItems"
-              :loading="isLoading"
+              :loading="loading"
               @action="handleServiceAction"
             />
           </main>
@@ -48,20 +48,20 @@
               v-model:active-severity="activeSeverity"
               class="page-enter page-enter--2"
               :items="unresolvedAlerts"
-              :loading="isLoading"
+              :loading="loading"
               @resolve="resolveAlert"
             />
             <SysInfo
               class="page-enter page-enter--3"
               :items="sysInfoItems"
-              :loading="isLoading"
+              :loading="loading"
               @copy="copySysInfo"
               @copy-all="copyAllSysInfo"
             />
             <RecommendApp
               class="page-enter page-enter--4"
               :items="appItems"
-              :loading="isLoading"
+              :loading="loading"
               @install="installApp"
               @open="openApp"
             />
@@ -75,7 +75,7 @@
       :app="appDetail"
       @install="installApp"
     />
-  </WView>
+  </View>
 </template>
 
 <script lang="ts" setup>
@@ -110,7 +110,7 @@ import type {
   SysInfoType,
 } from './components'
 
-const { isLoading } = useLoading()
+const { loading } = useLoading()
 const { copy, isSupported: isClipboardSupported } = useClipboard({
   legacy: true,
 })

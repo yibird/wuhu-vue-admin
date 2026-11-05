@@ -1,80 +1,90 @@
 <template>
-  <a-border-beam :duration="8" :line-width="2" :size="140">
-    <Card class="page-enter page-enter--7" title="成交排行">
-      <template #extra>
-        <a-radio-group v-model:value="metric" size="small">
-          <a-radio-button value="amount">销售额</a-radio-button>
-          <a-radio-button value="order">订单数</a-radio-button>
-        </a-radio-group>
-      </template>
+  <ViewSection
+    :loading="props.loading"
+    :skeleton-options="{ name: 'analysis-sales-ranking' }"
+  >
+    <a-border-beam :duration="8" :line-width="2" :size="140">
+      <Card class="page-enter page-enter--7" title="成交排行">
+        <template #extra>
+          <a-radio-group v-model:value="metric">
+            <a-radio-button value="amount">销售额</a-radio-button>
+            <a-radio-button value="order">订单数</a-radio-button>
+          </a-radio-group>
+        </template>
 
-      <SlidingHighlight
-        ref="highlightRef"
-        :inset="4"
-        pill-class-name="rounded-8 bg-hover"
-        role="list"
-      >
-        <div
-          v-for="(item, index) in rankedItems"
-          :key="item.id"
-          class="relative min-w-0 rounded-8 px-4 py-9 focus-visible:(outline-none inset-ring-1 inset-ring-primary/42) sm:px-6"
-          tabindex="0"
-          role="listitem"
-          @focus="handleItemFocus"
-          @blur="handleItemBlur"
+        <SlidingHighlight
+          ref="highlightRef"
+          :inset="4"
+          pill-class-name="rounded-8 bg-hover"
+          role="list"
         >
-          <div class="flex items-center gap-10">
-            <span
-              :class="[
-                'size-26 flex shrink-0 items-center justify-center rounded-8 text-xs font-800',
-                rankClass(index),
-              ]"
-            >
-              {{ String(index + 1).padStart(2, '0') }}
-            </span>
-            <div class="min-w-0 flex-1">
-              <div class="flex items-center justify-between gap-8">
-                <span class="min-w-0 truncate text-sm text-main font-700">
-                  {{ item.name }}
-                </span>
-                <span class="shrink-0 text-sm text-main font-800 tabular-nums">
-                  {{ formatValue(item) }}
-                </span>
+          <div
+            v-for="(item, index) in rankedItems"
+            :key="item.id"
+            class="relative min-w-0 rounded-8 px-4 py-9 focus-visible:(outline-none inset-ring-1 inset-ring-primary/42) sm:px-6"
+            tabindex="0"
+            role="listitem"
+            @focus="handleItemFocus"
+            @blur="handleItemBlur"
+          >
+            <div class="flex items-center gap-10">
+              <span
+                :class="[
+                  'size-26 flex-center shrink-0 rounded-8 text-xs font-800',
+                  rankClass(index),
+                ]"
+              >
+                {{ String(index + 1).padStart(2, '0') }}
+              </span>
+              <div class="min-w-0 flex-1">
+                <div class="flex items-center justify-between gap-8">
+                  <span class="min-w-0 truncate text-sm text-main font-700">
+                    {{ item.name }}
+                  </span>
+                  <span
+                    class="shrink-0 text-sm text-main font-800 tabular-nums"
+                  >
+                    {{ formatValue(item) }}
+                  </span>
+                </div>
+                <div class="mt-7 h-5 overflow-hidden rounded-999 bg-secondary">
+                  <div
+                    class="h-full origin-left rounded-999 bg-primary transition-[width] duration-300 ease-[var(--w-motion-ease)]"
+                    :style="{ width: `${barWidth(item)}%` }"
+                  ></div>
+                </div>
               </div>
-              <div class="mt-7 h-5 overflow-hidden rounded-999 bg-secondary">
-                <div
-                  class="h-full origin-left rounded-999 bg-primary transition-[width] duration-300 ease-[var(--w-motion-ease)]"
-                  :style="{ width: `${barWidth(item)}%` }"
-                ></div>
-              </div>
-            </div>
-            <div
-              class="shrink-0 flex items-center gap-3 text-xs font-700 tabular-nums"
-              :class="
-                item.change.startsWith('-') ? 'text-warning' : 'text-success'
-              "
-            >
-              <Icon
-                :name="
-                  item.change.startsWith('-')
-                    ? 'i-lucide:trending-down'
-                    : 'i-lucide:trending-up'
+              <div
+                class="shrink-0 flex items-center gap-3 text-xs font-700 tabular-nums"
+                :class="
+                  item.change.startsWith('-') ? 'text-warning' : 'text-success'
                 "
-                :size="13"
-              />
-              {{ item.change }}
+              >
+                <Icon
+                  :name="
+                    item.change.startsWith('-')
+                      ? 'i-lucide:trending-down'
+                      : 'i-lucide:trending-up'
+                  "
+                  :size="13"
+                />
+                {{ item.change }}
+              </div>
             </div>
           </div>
-        </div>
-      </SlidingHighlight>
-    </Card>
-  </a-border-beam>
+        </SlidingHighlight>
+      </Card>
+    </a-border-beam>
+  </ViewSection>
 </template>
 
 <script lang="ts" setup>
-import { SlidingHighlight } from '@/components/sliding-highlight'
+import { SlidingHighlight, ViewSection, Card } from '@/components'
 import type { SlidingHighlightInstance } from '@/components/sliding-highlight'
-import { Card } from '@/components/card'
+
+const props = withDefaults(defineProps<{ loading?: boolean }>(), {
+  loading: false,
+})
 
 type RankMetric = 'amount' | 'order'
 

@@ -1,121 +1,99 @@
 <template>
-  <section
-    v-if="props.loading"
-    class="mb-12 overflow-hidden rounded-8 b-1-regular bg-container shadow-sm"
-    aria-label="监控摘要加载中"
-    aria-busy="true"
-  >
-    <div class="b-b-1-regular px-14 py-14 sm:(px-18 py-16)">
-      <div class="flex items-center justify-between gap-12">
-        <div class="min-w-0">
-          <a-skeleton-input active class="!w-118" />
-          <a-skeleton-input active size="small" class="!mt-8 !w-220" />
-        </div>
-        <div class="flex gap-8">
-          <a-skeleton-button active size="small" class="!w-76" />
-          <a-skeleton-button active size="small" class="!w-82" />
-        </div>
-      </div>
-    </div>
-    <div class="grid grid-cols-1 gap-0 sm:grid-cols-3">
-      <div v-for="item in 3" :key="item" class="px-14 py-12 sm:(px-18 py-14)">
-        <a-skeleton-input active size="small" class="!w-72" />
-        <a-skeleton-input active size="large" class="!mt-8 !w-104" />
-      </div>
-    </div>
-  </section>
-
-  <a-border-beam v-else :duration="6" :line-width="3">
-    <section
-      class="monitor-hero page-enter page-enter--1 relative mb-12 overflow-hidden rounded-8 b-1-regular bg-container shadow-sm"
-    >
-      <div
-        class="flex flex-wrap items-center justify-between gap-12 b-b-1-regular px-14 py-14 sm:(px-18 py-16)"
+  <Skeleton name="monitor-header" :loading="!!props.loading">
+    <a-border-beam :duration="6" :line-width="3">
+      <section
+        class="monitor-hero page-enter page-enter--1 relative mb-12 overflow-hidden rounded-8 b-1-regular bg-container shadow-sm"
       >
-        <div class="min-w-0">
-          <div class="flex flex-wrap items-center gap-10">
-            <h1 class="m-0 text-md text-main font-700 sm:text-lg">
-              服务器监控
-            </h1>
-            <span
-              class="inline-flex items-center gap-5 rounded-999 px-9 py-4 text-xs"
-              :class="
-                props.criticalAlertCount > 0
-                  ? 'bg-error/10 text-error'
-                  : 'bg-success/10 text-success'
-              "
-            >
-              <Icon
-                :name="
+        <div
+          class="flex flex-wrap items-center justify-between gap-12 b-b-1-regular px-14 py-14 sm:(px-18 py-16)"
+        >
+          <div class="min-w-0">
+            <div class="flex flex-wrap items-center gap-10">
+              <h1 class="m-0 text-md text-main font-700 sm:text-lg">
+                服务器监控
+              </h1>
+              <span
+                class="inline-flex items-center gap-5 rounded-999 px-9 py-4 text-xs"
+                :class="
                   props.criticalAlertCount > 0
-                    ? 'i-lucide:circle-alert'
-                    : 'i-lucide:circle-check'
+                    ? 'bg-error/10 text-error'
+                    : 'bg-success/10 text-success'
                 "
-                :size="13"
-              />
-              {{ props.criticalAlertCount > 0 ? '需要处理' : '运行正常' }}
-            </span>
+              >
+                <Icon
+                  :name="
+                    props.criticalAlertCount > 0
+                      ? 'i-lucide:circle-alert'
+                      : 'i-lucide:circle-check'
+                  "
+                  :size="13"
+                />
+                {{ props.criticalAlertCount > 0 ? '需要处理' : '运行正常' }}
+              </span>
+            </div>
+            <div class="mt-5 text-xs text-secondary">
+              最近刷新 {{ props.lastRefreshAt }} · 自动刷新
+              {{ props.autoRefresh ? '已开启' : '已关闭' }}
+            </div>
           </div>
-          <div class="mt-5 text-xs text-secondary">
-            最近刷新 {{ props.lastRefreshAt }} · 自动刷新
-            {{ props.autoRefresh ? '已开启' : '已关闭' }}
+
+          <div
+            class="flex flex-wrap items-center justify-start gap-8 sm:justify-end"
+          >
+            <a-switch
+              :checked="props.autoRefresh"
+              @update:checked="emits('update:autoRefresh', $event)"
+            />
+            <span class="text-xs text-secondary">自动刷新</span>
+            <a-button :loading="props.refreshing" @click="emits('refresh')">
+              <template #icon>
+                <Icon
+                  name="i-lucide:refresh-cw"
+                  :class="{
+                    'animate-spin ': props.refreshing,
+                  }"
+                />
+              </template>
+              刷新
+            </a-button>
           </div>
         </div>
 
-        <div
-          class="flex flex-wrap items-center justify-start gap-8 sm:justify-end"
-        >
-          <a-switch
-            :checked="props.autoRefresh"
-            @update:checked="emits('update:autoRefresh', $event)"
-          />
-          <span class="text-xs text-secondary">自动刷新</span>
-          <a-button :loading="props.refreshing" @click="emits('refresh')">
-            <template #icon>
-              <Icon
-                name="i-lucide:refresh-cw"
-                :class="{
-                  'animate-spin ': props.refreshing,
-                }"
-              />
-            </template>
-            刷新
-          </a-button>
-        </div>
-      </div>
-
-      <div class="grid grid-cols-1 gap-0 sm:grid-cols-3">
-        <div class="px-14 py-12 sm:(px-18 py-14)">
-          <div class="text-xs text-secondary">健康评分</div>
-          <div class="mt-6 flex items-end gap-6">
-            <span class="monitor-hero__score text-xl font-800 sm:text-2xl">{{
-              props.healthScore
-            }}</span>
-            <span class="pb-2 text-xs text-secondary">/ 100</span>
+        <div class="grid grid-cols-1 gap-0 sm:grid-cols-3">
+          <div class="px-14 py-12 sm:(px-18 py-14)">
+            <div class="text-xs text-secondary">健康评分</div>
+            <div class="mt-6 flex items-end gap-6">
+              <span class="monitor-hero__score text-xl font-800 sm:text-2xl">{{
+                props.healthScore
+              }}</span>
+              <span class="pb-2 text-xs text-secondary">/ 100</span>
+            </div>
+          </div>
+          <div
+            class="b-y-1-[border-secondary] px-14 py-12 sm:(b-x-1-[border-secondary] border-y-0)"
+          >
+            <div class="text-xs text-secondary">运行服务</div>
+            <div class="mt-6 text-xl text-main font-800 sm:text-2xl">
+              {{ props.runningServiceCount }}
+              <span class="text-secondary">/</span>
+              {{ props.totalServiceCount }}
+            </div>
+          </div>
+          <div class="px-14 py-12 sm:(px-18 py-14)">
+            <div class="text-xs text-secondary">未处理告警</div>
+            <div class="mt-6 text-xl text-main font-800 sm:text-2xl">
+              {{ props.unresolvedAlertCount }}
+            </div>
           </div>
         </div>
-        <div
-          class="b-y-1-[border-secondary] px-14 py-12 sm:(b-x-1-[border-secondary] border-y-0)"
-        >
-          <div class="text-xs text-secondary">运行服务</div>
-          <div class="mt-6 text-xl text-main font-800 sm:text-2xl">
-            {{ props.runningServiceCount }}
-            <span class="text-secondary">/</span>
-            {{ props.totalServiceCount }}
-          </div>
-        </div>
-        <div class="px-14 py-12 sm:(px-18 py-14)">
-          <div class="text-xs text-secondary">未处理告警</div>
-          <div class="mt-6 text-xl text-main font-800 sm:text-2xl">
-            {{ props.unresolvedAlertCount }}
-          </div>
-        </div>
-      </div>
-    </section>
-  </a-border-beam>
+      </section>
+    </a-border-beam>
+  </Skeleton>
 </template>
 
 <script lang="ts" setup>
+import Skeleton from 'boneyard-js/vue'
+
 const props = defineProps<{
   criticalAlertCount: number
   lastRefreshAt: string

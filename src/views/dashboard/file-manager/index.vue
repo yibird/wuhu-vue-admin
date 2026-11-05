@@ -1,5 +1,5 @@
 <template>
-  <WView full :padding="false" class="bg-page">
+  <View full :padding="false" class="bg-page">
     <div
       class="h-full bg-page min-h-full grid gap-10 p-10 grid-cols-[minmax(220px,280px)_minmax(0,1fr)] max-[1199px]:grid-cols-1 max-[1199px]:grid-rows-[auto_minmax(0,1fr)] max-[575px]:(gap-8 p-8)"
     >
@@ -56,7 +56,7 @@
         />
       </main>
     </div>
-  </WView>
+  </View>
 </template>
 
 <script lang="ts" setup>

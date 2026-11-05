@@ -191,8 +191,7 @@
 
 <script lang="ts" setup>
 import { Motion } from 'motion-v'
-import { motions } from '@/components/animated'
-import { Icon } from '@/components/icon'
+import { motions, Icon } from '@/components'
 import { FILE_NODE_TYPE } from '../types'
 import {
   formatFileSize,

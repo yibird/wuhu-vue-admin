@@ -1,55 +1,59 @@
 <template>
-  <DynamicSkeleton v-if="loading" />
-  <section v-else class="page-enter page-enter--4 min-w-0">
-    <a-border-beam :duration="6" :line-width="3">
-      <Card class="shadow-none!" :styles="{ body: { padding: 0 } }">
-        <template #title>
-          <span class="text-base text-main font-700">团队动态</span>
-        </template>
-        <template #extra>
-          <a-button type="link" size="small">更多</a-button>
-        </template>
+  <Skeleton name="workbench-dynamic" :loading="loading">
+    <section class="page-enter page-enter--4 min-w-0">
+      <a-border-beam :duration="6" :line-width="3">
+        <Card class="shadow-none!" :styles="{ body: { padding: 0 } }">
+          <template #title>
+            <span class="text-base text-main font-700">团队动态</span>
+          </template>
+          <template #extra>
+            <a-button type="link" size="small">更多</a-button>
+          </template>
 
-        <SlidingHighlight
-          :inset="4"
-          pill-class-name="rounded-4 bg-hover"
-          class="p-20 flex flex-col"
-        >
-          <div
-            v-for="item in items"
-            :key="item.id"
-            class="content-auto-86 group flex gap-20 px-8 py-12 rounded-4"
+          <SlidingHighlight
+            :inset="4"
+            pill-class-name="rounded-4 bg-hover"
+            class="p-20 flex flex-col"
           >
-            <span
-              class="size-34 grid place-items-center rounded-full bg-muted text-secondary transition-[background-color,color] duration-200 group-hover:(bg-primary/10 text-primary)"
+            <div
+              v-for="item in items"
+              :key="item.id"
+              class="content-auto-86 group flex gap-20 px-8 py-12 rounded-4"
             >
-              <Icon :name="item.icon" :size="16" />
-            </span>
-            <div class="min-w-0">
-              <div class="min-w-0 flex flex-wrap items-center gap-x-6 gap-y-3">
-                <span class="text-sm text-main font-600">{{ item.name }}</span>
-                <span class="text-sm text-secondary">{{ item.action }}</span>
-                <span class="text-sm text-primary">{{ item.target }}</span>
-              </div>
-              <p class="mb-0 mt-5 text-sm text-secondary leading-22px">
-                {{ item.describe }}
-              </p>
-              <div class="mt-7 flex items-center gap-6 text-xs text-muted">
-                <Icon name="i-lucide:clock-3" :size="13" />
-                <span>{{ item.createdAt }}</span>
+              <span
+                class="size-34 grid place-items-center rounded-full bg-muted text-secondary transition-[background-color,color] duration-200 group-hover:(bg-primary/10 text-primary)"
+              >
+                <Icon :name="item.icon" :size="16" />
+              </span>
+              <div class="min-w-0">
+                <div
+                  class="min-w-0 flex flex-wrap items-center gap-x-6 gap-y-3"
+                >
+                  <span class="text-sm text-main font-600">{{
+                    item.name
+                  }}</span>
+                  <span class="text-sm text-secondary">{{ item.action }}</span>
+                  <span class="text-sm text-primary">{{ item.target }}</span>
+                </div>
+                <p class="mb-0 mt-5 text-sm text-secondary leading-22px">
+                  {{ item.describe }}
+                </p>
+                <div class="mt-7 flex items-center gap-6 text-xs text-muted">
+                  <Icon name="i-lucide:clock-3" :size="13" />
+                  <span>{{ item.createdAt }}</span>
+                </div>
               </div>
             </div>
-          </div>
-        </SlidingHighlight>
-      </Card>
-    </a-border-beam>
-  </section>
+          </SlidingHighlight>
+        </Card>
+      </a-border-beam>
+    </section>
+  </Skeleton>
 </template>
 
 <script lang="ts" setup>
-import { SlidingHighlight } from '@/components/sliding-highlight'
-import { Card } from '@/components/card'
-import DynamicSkeleton from './skeleton.vue'
+import Skeleton from 'boneyard-js/vue'
+import { SlidingHighlight, Card } from '@/components'
 import type { Dynamic } from './types'
 
 const { loading = false } = defineProps<{

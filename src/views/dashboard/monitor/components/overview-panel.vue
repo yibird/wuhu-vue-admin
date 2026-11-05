@@ -1,68 +1,58 @@
 <template>
-  <Card
-    v-if="loading"
-    title="资源概览"
-    icon="i-lucide:gauge"
-    description="核心资源、任务与应用概况"
-  >
-    <div class="grid grid-cols-1 gap-12 sm:grid-cols-2 2xl:grid-cols-4">
-      <div v-for="item in 4" :key="item" class="rounded-8 b-1-regular p-14">
-        <a-skeleton-input active size="small" class="!w-86" />
-        <a-skeleton-input active class="!mt-8 !w-92" />
-        <a-skeleton-input active size="small" class="!mt-12 !w-full" />
-      </div>
-    </div>
-  </Card>
-  <Card
-    v-else
-    title="资源概览"
-    icon="i-lucide:gauge"
-    description="核心资源、任务与应用概况"
-  >
-    <div class="grid grid-cols-1 gap-12 sm:grid-cols-2 2xl:grid-cols-4">
-      <div
-        v-for="item in items"
-        :key="item.id"
-        class="group min-w-0 rounded-8 b-1-regular bg-secondary p-14 transition-[border-color,background-color,box-shadow,transform] duration-200 ease-[var(--w-motion-ease-enter)] hover:(-translate-y-2 border-primary bg-hover shadow-lg shadow-primary/10) active:(translate-y-0 scale-[0.995])"
-      >
-        <div class="flex items-start justify-between gap-12">
-          <div class="min-w-0">
-            <div class="truncate text-sm text-secondary">{{ item.title }}</div>
-            <div class="mt-8 flex items-end gap-4 text-xl text-main font-700">
-              <NumberTicker :value="item.value" />
-              <span v-if="item.suffix" class="pb-3 text-xs text-secondary">
-                {{ item.suffix }}
-              </span>
+  <Skeleton name="monitor-overview" :loading="loading">
+    <Card
+      title="资源概览"
+      icon="i-lucide:gauge"
+      description="核心资源、任务与应用概况"
+    >
+      <div class="grid grid-cols-1 gap-12 sm:grid-cols-2 2xl:grid-cols-4">
+        <div
+          v-for="item in items"
+          :key="item.id"
+          class="group min-w-0 rounded-8 b-1-regular bg-secondary p-14 transition-[border-color,background-color,box-shadow,transform] duration-200 ease-[var(--w-motion-ease-enter)] hover:(-translate-y-2 border-primary bg-hover shadow-lg shadow-primary/10) active:(translate-y-0 scale-[0.995])"
+        >
+          <div class="flex items-start justify-between gap-12">
+            <div class="min-w-0">
+              <div class="truncate text-sm text-secondary">
+                {{ item.title }}
+              </div>
+              <div class="mt-8 flex items-end gap-4 text-xl text-main font-700">
+                <NumberTicker :value="item.value" />
+                <span v-if="item.suffix" class="pb-3 text-xs text-secondary">
+                  {{ item.suffix }}
+                </span>
+              </div>
             </div>
+            <span
+              :class="[
+                'h-36 w-36 flex shrink-0 items-center justify-center rounded-8',
+                toneClassMap[item.tone],
+              ]"
+            >
+              <Icon :name="item.icon" :size="18" />
+            </span>
           </div>
-          <span
-            :class="[
-              'h-36 w-36 flex shrink-0 items-center justify-center rounded-8',
-              toneClassMap[item.tone],
-            ]"
-          >
-            <Icon :name="item.icon" :size="18" />
-          </span>
-        </div>
-        <div class="mt-12 flex items-center justify-between gap-10">
-          <span class="min-w-0 truncate text-xs text-secondary">
-            {{ item.description }}
-          </span>
-          <span
-            :class="[
-              'shrink-0 rounded-999 px-8 py-3 text-xs',
-              toneClassMap[item.tone],
-            ]"
-          >
-            {{ item.trend }}
-          </span>
+          <div class="mt-12 flex items-center justify-between gap-10">
+            <span class="min-w-0 truncate text-xs text-secondary">
+              {{ item.description }}
+            </span>
+            <span
+              :class="[
+                'shrink-0 rounded-999 px-8 py-3 text-xs',
+                toneClassMap[item.tone],
+              ]"
+            >
+              {{ item.trend }}
+            </span>
+          </div>
         </div>
       </div>
-    </div>
-  </Card>
+    </Card>
+  </Skeleton>
 </template>
 
 <script lang="ts" setup>
+import Skeleton from 'boneyard-js/vue'
 import { NumberTicker } from '@/components/number-ticker'
 import Card from './card.vue'
 import type { MonitorTone, OverviewProps } from './types'

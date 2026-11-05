@@ -1,5 +1,5 @@
 <template>
-  <w-view :full="false" :padding="false" class="bg-page">
+  <View :full="false" :padding="false" class="bg-page">
     <div class="min-h-full w-full h-full overflow-x-hidden overflow-y-auto">
       <div
         class="page-view min-h-full w-full p-12 flex flex-col gap-12 overflow-x-hidden lg:p-16"
@@ -59,7 +59,7 @@
         </section>
 
         <Overview
-          :loading="isLoading"
+          :loading="loading"
           class="workbench-overview page-enter page-enter--2"
         />
 
@@ -77,7 +77,7 @@
           >
             <div class="grid-stack-item-content">
               <Project
-                :loading="isLoading"
+                :loading="loading"
                 :projects="projects"
                 @open-settings="openEditProjectSettings"
               />
@@ -92,7 +92,7 @@
             gs-w="8"
           >
             <div class="grid-stack-item-content">
-              <Dynamic :loading="isLoading" />
+              <Dynamic :loading="loading" />
             </div>
           </div>
 
@@ -104,7 +104,7 @@
             gs-w="8"
           >
             <div class="grid-stack-item-content">
-              <DataAnalysis :loading="isLoading" />
+              <DataAnalysis :loading="loading" />
             </div>
           </div>
 
@@ -117,7 +117,7 @@
           >
             <div class="grid-stack-item-content">
               <Action
-                :loading="isLoading"
+                :loading="loading"
                 @create-project="openCreateProjectSettings"
               />
             </div>
@@ -131,13 +131,13 @@
             gs-w="4"
           >
             <div class="grid-stack-item-content">
-              <Announcement :loading="isLoading" />
+              <Announcement :loading="loading" />
             </div>
           </div>
 
           <div class="grid-stack-item" gs-id="team" gs-x="8" gs-y="2" gs-w="4">
             <div class="grid-stack-item-content">
-              <Team :loading="isLoading" />
+              <Team :loading="loading" />
             </div>
           </div>
         </div>
@@ -150,7 +150,7 @@
       :project="selectedProject"
       @save="handleProjectSettingsSave"
     />
-  </w-view>
+  </View>
 </template>
 
 <script lang="ts" setup>
@@ -193,7 +193,7 @@ const projects = shallowRef<WorkbenchProject[]>(
     members: [...project.members],
   }))
 )
-const { isLoading } = useLoading()
+const { loading } = useLoading()
 
 const syncDragState = () => {
   grid.value?.enableMove(dragEnabled.value)
@@ -388,7 +388,7 @@ watch(dragEnabled, () => {
   syncDragState()
 })
 
-watch(isLoading, async (value) => {
+watch(loading, async (value) => {
   if (!value) await remeasureCards()
 })
 </script>

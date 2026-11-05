@@ -1,162 +1,162 @@
 <template>
-  <AnnouncementSkeleton v-if="loading" />
-  <section v-else class="page-enter page-enter--6 min-w-0">
-    <a-border-beam :duration="6" :line-width="3">
-      <Card class="shadow-none!" :styles="{ body: { padding: '12px' } }">
-        <template #title>
-          <div class="min-w-0 flex items-center gap-8">
-            <span class="text-base text-main font-700">通知公告</span>
-            <span
-              v-if="unreadCount > 0"
-              class="shrink-0 rounded-full bg-primary/10 px-7 py-2 text-xs text-primary"
-            >
-              {{ unreadCount }} 条未读
-            </span>
-          </div>
-        </template>
-        <template #extra>
-          <a-button
-            type="link"
-            size="small"
-            :disabled="unreadCount === 0"
-            @click="markAllAsRead"
-          >
-            全部已读
-          </a-button>
-        </template>
-
-        <SlidingHighlight
-          v-if="announcements.length"
-          :inset="4"
-          pill-class-name="rounded-6 bg-hover"
-          class="flex flex-col gap-5"
-        >
-          <button
-            v-for="item in announcements"
-            :key="item.id"
-            type="button"
-            class="group w-full min-w-0 flex gap-10 rounded-6 border-0 bg-transparent px-8 py-10 text-left outline-none transition-[background-color,box-shadow] duration-200 focus-visible:(bg-hover ring-2 ring-primary/18)"
-            :class="{ 'bg-primary/3': !isRead(item.id) }"
-            :aria-label="`查看公告：${item.title}`"
-            @click="openDetail(item)"
-          >
-            <span
-              class="size-32 shrink-0 grid place-items-center rounded-8 bg-muted text-secondary transition-[background-color,color,transform] duration-200 group-hover:(scale-105 bg-container text-primary)"
-            >
-              <Icon :name="item.icon" :size="16" />
-            </span>
-
-            <span class="min-w-0 flex-1">
-              <span class="flex items-center gap-6">
-                <span
-                  v-if="!isRead(item.id)"
-                  class="size-5 shrink-0 rounded-full bg-primary"
-                />
-                <span
-                  class="truncate text-sm"
-                  :class="
-                    isRead(item.id)
-                      ? 'text-regular font-500'
-                      : 'text-main font-650'
-                  "
-                >
-                  {{ item.title }}
-                </span>
-              </span>
+  <Skeleton name="workbench-announcement" :loading="loading">
+    <section class="page-enter page-enter--6 min-w-0">
+      <a-border-beam :duration="6" :line-width="3">
+        <Card class="shadow-none!" :styles="{ body: { padding: '12px' } }">
+          <template #title>
+            <div class="min-w-0 flex items-center gap-8">
+              <span class="text-base text-main font-700">通知公告</span>
               <span
-                class="mt-4 line-clamp-2 block text-xs text-secondary leading-18px"
+                v-if="unreadCount > 0"
+                class="shrink-0 rounded-full bg-primary/10 px-7 py-2 text-xs text-primary"
               >
-                {{ item.summary }}
+                {{ unreadCount }} 条未读
               </span>
-              <span class="mt-7 flex items-center gap-7 text-xs text-muted">
-                <span class="rounded-4 px-5 py-1" :class="item.categoryClass">
-                  {{ item.category }}
-                </span>
-                <time>{{ item.publishedAt }}</time>
-              </span>
-            </span>
-
-            <Icon
-              name="i-lucide:chevron-right"
-              :size="20"
-              class="self-center shrink-0 text-placeholder opacity-0 transition-[opacity,transform,color] duration-200 group-hover:(translate-x-1 text-primary opacity-100)"
-            />
-          </button>
-        </SlidingHighlight>
-
-        <a-empty
-          v-else
-          :image-style="{ height: '42px' }"
-          description="暂无公告"
-        />
-
-        <button
-          type="button"
-          class="mt-10 w-full flex-center gap-5 bg-white px-12 py-10 text-sm text-secondary rounded-6 outline-none cursor-pointer transition-all hover:(bg-primary/5 text-primary)"
-          @click="openNoticeCenter"
-        >
-          查看全部公告
-          <Icon name="i-lucide:arrow-right" :size="14" />
-        </button>
-      </Card>
-    </a-border-beam>
-  </section>
-
-  <a-modal
-    v-model:open="detailOpen"
-    centered
-    :width="560"
-    @after-close="clearSelectedAnnouncement"
-  >
-    <template #title>公告详情</template>
-
-    <article v-if="selectedAnnouncement" class="py-4">
-      <div class="flex items-start gap-12">
-        <span
-          class="size-38 shrink-0 grid place-items-center rounded-8 bg-muted text-primary"
-        >
-          <Icon :name="selectedAnnouncement.icon" :size="19" />
-        </span>
-        <div class="min-w-0 flex-1">
-          <h3 class="m-0 text-md text-main font-700 leading-24px">
-            {{ selectedAnnouncement.title }}
-          </h3>
-          <div
-            class="mt-8 flex flex-wrap items-center gap-8 text-xs text-muted"
-          >
-            <span
-              class="rounded-4 px-6 py-2"
-              :class="selectedAnnouncement.categoryClass"
+            </div>
+          </template>
+          <template #extra>
+            <a-button
+              type="link"
+              size="small"
+              :disabled="unreadCount === 0"
+              @click="markAllAsRead"
             >
-              {{ selectedAnnouncement.category }}
-            </span>
-            <span>{{ selectedAnnouncement.publisher }}</span>
-            <time>{{ selectedAnnouncement.publishedAt }}</time>
+              全部已读
+            </a-button>
+          </template>
+
+          <SlidingHighlight
+            v-if="announcements.length"
+            :inset="4"
+            pill-class-name="rounded-6 bg-hover"
+            class="flex flex-col gap-5"
+          >
+            <button
+              v-for="item in announcements"
+              :key="item.id"
+              type="button"
+              class="group w-full min-w-0 flex gap-10 rounded-6 border-0 bg-transparent px-8 py-10 text-left outline-none transition-[background-color,box-shadow] duration-200 focus-visible:(bg-hover ring-2 ring-primary/18)"
+              :class="{ 'bg-primary/3': !isRead(item.id) }"
+              :aria-label="`查看公告：${item.title}`"
+              @click="openDetail(item)"
+            >
+              <span
+                class="size-32 shrink-0 grid place-items-center rounded-8 bg-muted text-secondary transition-[background-color,color,transform] duration-200 group-hover:(scale-105 bg-container text-primary)"
+              >
+                <Icon :name="item.icon" :size="16" />
+              </span>
+
+              <span class="min-w-0 flex-1">
+                <span class="flex items-center gap-6">
+                  <span
+                    v-if="!isRead(item.id)"
+                    class="size-5 shrink-0 rounded-full bg-primary"
+                  />
+                  <span
+                    class="truncate text-sm"
+                    :class="
+                      isRead(item.id)
+                        ? 'text-regular font-500'
+                        : 'text-main font-650'
+                    "
+                  >
+                    {{ item.title }}
+                  </span>
+                </span>
+                <span
+                  class="mt-4 line-clamp-2 block text-xs text-secondary leading-18px"
+                >
+                  {{ item.summary }}
+                </span>
+                <span class="mt-7 flex items-center gap-7 text-xs text-muted">
+                  <span class="rounded-4 px-5 py-1" :class="item.categoryClass">
+                    {{ item.category }}
+                  </span>
+                  <time>{{ item.publishedAt }}</time>
+                </span>
+              </span>
+
+              <Icon
+                name="i-lucide:chevron-right"
+                :size="20"
+                class="self-center shrink-0 text-placeholder opacity-0 transition-[opacity,transform,color] duration-200 group-hover:(translate-x-1 text-primary opacity-100)"
+              />
+            </button>
+          </SlidingHighlight>
+
+          <a-empty
+            v-else
+            :image-style="{ height: '42px' }"
+            description="暂无公告"
+          />
+
+          <button
+            type="button"
+            class="mt-10 w-full flex-center gap-5 bg-white px-12 py-10 text-sm text-secondary rounded-6 outline-none cursor-pointer transition-all hover:(bg-primary/5 text-primary)"
+            @click="openNoticeCenter"
+          >
+            查看全部公告
+            <Icon name="i-lucide:arrow-right" :size="14" />
+          </button>
+        </Card>
+      </a-border-beam>
+    </section>
+
+    <a-modal
+      v-model:open="detailOpen"
+      centered
+      :width="560"
+      @after-close="clearSelectedAnnouncement"
+    >
+      <template #title>公告详情</template>
+
+      <article v-if="selectedAnnouncement" class="py-4">
+        <div class="flex items-start gap-12">
+          <span
+            class="size-38 shrink-0 grid place-items-center rounded-8 bg-muted text-primary"
+          >
+            <Icon :name="selectedAnnouncement.icon" :size="19" />
+          </span>
+          <div class="min-w-0 flex-1">
+            <h3 class="m-0 text-md text-main font-700 leading-24px">
+              {{ selectedAnnouncement.title }}
+            </h3>
+            <div
+              class="mt-8 flex flex-wrap items-center gap-8 text-xs text-muted"
+            >
+              <span
+                class="rounded-4 px-6 py-2"
+                :class="selectedAnnouncement.categoryClass"
+              >
+                {{ selectedAnnouncement.category }}
+              </span>
+              <span>{{ selectedAnnouncement.publisher }}</span>
+              <time>{{ selectedAnnouncement.publishedAt }}</time>
+            </div>
           </div>
         </div>
-      </div>
 
-      <p
-        class="mb-0 mt-18 whitespace-pre-line rounded-8 bg-muted p-14 text-sm text-regular leading-24px"
-      >
-        {{ selectedAnnouncement.content }}
-      </p>
-    </article>
+        <p
+          class="mb-0 mt-18 whitespace-pre-line rounded-8 bg-muted p-14 text-sm text-regular leading-24px"
+        >
+          {{ selectedAnnouncement.content }}
+        </p>
+      </article>
 
-    <template #footer>
-      <a-button @click="closeDetail">关闭</a-button>
-      <a-button type="primary" @click="openNoticeCenter">
-        前往公告中心
-      </a-button>
-    </template>
-  </a-modal>
+      <template #footer>
+        <a-button @click="closeDetail">关闭</a-button>
+        <a-button type="primary" @click="openNoticeCenter">
+          前往公告中心
+        </a-button>
+      </template>
+    </a-modal>
+  </Skeleton>
 </template>
 
 <script lang="ts" setup>
-import { SlidingHighlight } from '@/components/sliding-highlight'
-import { Card } from '@/components/card'
+import Skeleton from 'boneyard-js/vue'
+import { SlidingHighlight, Card } from '@/components'
 import { useTabs } from '@/hooks'
-import AnnouncementSkeleton from './skeleton.vue'
 import type { WorkbenchAnnouncement } from './types'
 
 const { loading = false } = defineProps<{

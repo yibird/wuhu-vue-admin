@@ -1,67 +1,70 @@
 <template>
-  <GanttSkeleton v-if="loading" />
-  <div v-else class="h-full min-h-0 min-w-0 flex flex-col gap-12">
-    <div
-      class="flex flex-wrap items-center justify-between gap-10 rounded-4 bg-container p-12"
-    >
-      <div class="min-w-0">
-        <div class="flex items-center gap-8 font-600 text-main">
-          <Icon name="i-lucide:chart-no-axes-gantt" />
-          甘特图
+  <Skeleton name="task-gantt" :loading="loading" class="h-full min-h-0">
+    <div class="h-full min-h-0 min-w-0 flex flex-col gap-12">
+      <div
+        class="flex flex-wrap items-center justify-between gap-10 rounded-4 bg-container p-12"
+      >
+        <div class="min-w-0">
+          <div class="flex items-center gap-8 font-600 text-main">
+            <Icon name="i-lucide:chart-no-axes-gantt" />
+            甘特图
+          </div>
+          <div class="mt-3 text-xs text-secondary">
+            共
+            {{ ganttTasks.length }}
+            个任务，拖拽任务条可调整排期，右键查看更多操作
+          </div>
         </div>
-        <div class="mt-3 text-xs text-secondary">
-          共
-          {{ ganttTasks.length }} 个任务，拖拽任务条可调整排期，右键查看更多操作
-        </div>
+
+        <a-radio-group v-model:value="viewMode" size="small">
+          <a-radio-button
+            v-for="item in viewModeOptions"
+            :key="item.value"
+            :value="item.value"
+          >
+            {{ item.label }}
+          </a-radio-button>
+        </a-radio-group>
       </div>
 
-      <a-radio-group v-model:value="viewMode" size="small">
-        <a-radio-button
-          v-for="item in viewModeOptions"
-          :key="item.value"
-          :value="item.value"
-        >
-          {{ item.label }}
-        </a-radio-button>
-      </a-radio-group>
-    </div>
+      <div class="min-h-320 min-w-0 flex-1 overflow-hidden">
+        <Gantt
+          class="h-full min-h-0"
+          :tasks="ganttTasks"
+          :view-mode="viewMode"
+          :options="ganttOptions"
+          empty-text="暂无任务甘特图"
+          @click="handleGanttClick"
+          @context-menu="handleGanttContextMenu"
+          @date-change="handleGanttDateChange"
+          @double-click="handleGanttDoubleClick"
+          @progress-change="handleGanttProgressChange"
+        />
+      </div>
 
-    <div class="min-h-320 min-w-0 flex-1 overflow-hidden">
-      <Gantt
-        class="h-full min-h-0"
-        :tasks="ganttTasks"
-        :view-mode="viewMode"
-        :options="ganttOptions"
-        empty-text="暂无任务甘特图"
-        @click="handleGanttClick"
-        @context-menu="handleGanttContextMenu"
-        @date-change="handleGanttDateChange"
-        @double-click="handleGanttDoubleClick"
-        @progress-change="handleGanttProgressChange"
+      <List
+        :items="sortedItems"
+        :selected-task-id="selectedTaskId"
+        @delete="emits('delete', $event)"
+        @edit="emits('edit', $event)"
+        @select="selectedTaskId = $event"
+      />
+
+      <ContextMenu
+        :open="contextMenuOpen"
+        :position="contextMenuPosition"
+        :task="contextMenuTask"
+        @delete="deleteContextTask"
+        @duplicate="duplicateContextTask"
+        @edit="editContextTask"
+        @mark-done="markContextTaskDone"
       />
     </div>
-
-    <List
-      :items="sortedItems"
-      :selected-task-id="selectedTaskId"
-      @delete="emits('delete', $event)"
-      @edit="emits('edit', $event)"
-      @select="selectedTaskId = $event"
-    />
-
-    <ContextMenu
-      :open="contextMenuOpen"
-      :position="contextMenuPosition"
-      :task="contextMenuTask"
-      @delete="deleteContextTask"
-      @duplicate="duplicateContextTask"
-      @edit="editContextTask"
-      @mark-done="markContextTaskDone"
-    />
-  </div>
+  </Skeleton>
 </template>
 
 <script lang="ts" setup>
+import Skeleton from 'boneyard-js/vue'
 import dayjs from 'dayjs'
 import { message } from 'antdv-next'
 import {
@@ -75,7 +78,6 @@ import { sortTasksByStatus, taskDateTimeFormat } from '../../constants'
 import type { Task, TaskActionEmits } from '../types'
 import ContextMenu from './context-menu.vue'
 import List from './list.vue'
-import GanttSkeleton from './skeleton.vue'
 import { useTaskGanttContextMenu } from './useTaskGanttContextMenu'
 import {
   createTaskId,

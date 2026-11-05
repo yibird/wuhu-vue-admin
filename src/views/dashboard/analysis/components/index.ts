@@ -27,17 +27,3 @@ export const SalesRanking = defineAsyncComponent(
 export const RiskAlerts = defineAsyncComponent(
   () => import('./risk-alerts/index.vue')
 )
-
-/**
- * 骨架屏与各自模块同目录维护，作为占位/兜底同步引入，
- * 避免占位内容再走一次异步加载
- */
-export { default as StatisticsSkeleton } from './statistics/skeleton.vue'
-export { default as VisitStatisticsSkeleton } from './visit-statistics/skeleton.vue'
-export { default as ConversionFunnelSkeleton } from './conversion-funnel/skeleton.vue'
-export { default as HotSearchSkeleton } from './hot-search/skeleton.vue'
-export { default as HotItemsSkeleton } from './hot-items/skeleton.vue'
-export { default as GoalProgressSkeleton } from './goal-progress/skeleton.vue'
-export { default as TrafficSourceSkeleton } from './traffic-source/skeleton.vue'
-export { default as SalesRankingSkeleton } from './sales-ranking/skeleton.vue'
-export { default as RiskAlertsSkeleton } from './risk-alerts/skeleton.vue'

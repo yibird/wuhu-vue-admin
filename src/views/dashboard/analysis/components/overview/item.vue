@@ -3,7 +3,7 @@
     <Card
       variant="outlined"
       size="small"
-      class="page-enter analysis-overview-card group overflow-hidden rounded-8 shadow-sm transition-[box-shadow,transform] duration-200 ease-[var(--w-motion-ease)] hover:(-translate-y-2 shadow-lg) focus-visible:(-translate-y-2 shadow-lg outline-2 outline-primary/48 outline-offset-2)"
+      class="page-enter group relative overflow-hidden rounded-8 shadow-sm transition-all hover:(-translate-y-2 shadow-lg) focus-visible:(-translate-y-2 shadow-lg outline-2 outline-primary/48 outline-offset-2)"
       tabindex="0"
       :styles="{ body: { padding: '14px' } }"
     >
@@ -42,23 +42,17 @@
 </template>
 
 <script lang="ts" setup>
-import { Card } from '@/components/card'
-import { NumberTicker } from '@/components/number-ticker'
+import { Card, NumberTicker } from '@/components'
 import ItemExtra from './item-extra.vue'
 import type { CardItemProps, StatPeriod } from './types.ts'
 
 const { item } = defineProps<CardItemProps>()
 
-/** 每张卡片独立选择周期 */
 const period = shallowRef<StatPeriod>('year')
 const periodValue = computed(() => item?.values[period.value] ?? 0)
 </script>
 
 <style lang="less" scoped>
-.analysis-overview-card {
-  position: relative;
-}
-
 .analysis-overview-icon {
   background: linear-gradient(
     135deg,

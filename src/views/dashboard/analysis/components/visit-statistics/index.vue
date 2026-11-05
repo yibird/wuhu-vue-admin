@@ -1,27 +1,36 @@
 <template>
-  <a-border-beam :duration="8" :line-width="2" :size="140">
-    <Card class="page-enter page-enter--4" title="最近访问">
-      <div class="h-380 w-full p-12 max-md:h-260">
-        <BasicChart
-          :option="chartOption"
-          :theme="EChartsTheme"
-          autoresize
-          class="full min-h-0"
-        />
-      </div>
-    </Card>
-  </a-border-beam>
+  <ViewSection
+    :loading="props.loading"
+    :skeleton-options="{ name: 'analysis-visit-statistics' }"
+  >
+    <a-border-beam :duration="8" :line-width="2" :size="140">
+      <Card class="page-enter page-enter--4" title="最近访问">
+        <div class="h-380 w-full p-12 max-md:h-260">
+          <BasicChart
+            :option="chartOption"
+            :theme="EChartsTheme"
+            autoresize
+            class="full min-h-0"
+          />
+        </div>
+      </Card>
+    </a-border-beam>
+  </ViewSection>
 </template>
 
 <script lang="ts" setup>
+import { ViewSection, Card } from '@/components'
 import { BasicChart } from '@/components/chart'
-import { Card } from '@/components/card'
 import {
   getCssRgbVar,
   getCssRgbVarAlpha,
   useEChartsTheme,
 } from '@/components/chart'
 import type { EChartsCoreOption } from 'echarts/core'
+
+const props = withDefaults(defineProps<{ loading?: boolean }>(), {
+  loading: false,
+})
 
 const { baseChartOption, EChartsTheme, getEChartsColor } = useEChartsTheme()
 

@@ -1,87 +1,73 @@
 <template>
-  <Card
-    v-if="props.loading"
-    title="告警中心"
-    icon="i-lucide:bell-ring"
-    description="待处理事件与风险提示"
-  >
-    <div class="flex flex-col gap-10">
-      <div v-for="item in 3" :key="item" class="rounded-8 b-1-regular p-12">
-        <a-skeleton active avatar :paragraph="{ rows: 2 }" />
-        <div class="mt-10 flex justify-between gap-10">
-          <a-skeleton-input active size="small" class="!w-90" />
-          <a-skeleton-button active size="small" />
-        </div>
-      </div>
-    </div>
-  </Card>
-  <Card
-    v-else
-    title="告警中心"
-    icon="i-lucide:bell-ring"
-    description="待处理事件与风险提示"
-  >
-    <template #extra>
-      <a-segmented
-        :value="activeSeverity"
-        :options="severityOptions"
-        @change="handleSeverityChange"
-      />
-    </template>
-
-    <TransitionGroup
-      name="list"
-      tag="div"
-      class="relative flex flex-col gap-10"
+  <Skeleton name="monitor-alert-center" :loading="props.loading">
+    <Card
+      title="告警中心"
+      icon="i-lucide:bell-ring"
+      description="待处理事件与风险提示"
     >
-      <div
-        v-for="item in filteredItems"
-        :key="item.id"
-        class="rounded-8 b-1-regular bg-secondary p-12 transition-[border-color,background-color,box-shadow,transform] duration-200 ease-[var(--w-motion-ease-enter)] hover:(-translate-y-2 shadow-lg shadow-primary/10) active:(translate-y-0 scale-[0.995])"
+      <template #extra>
+        <a-segmented
+          :value="activeSeverity"
+          :options="severityOptions"
+          @change="handleSeverityChange"
+        />
+      </template>
+
+      <TransitionGroup
+        name="list"
+        tag="div"
+        class="relative flex flex-col gap-10"
       >
-        <div class="flex items-start gap-10">
-          <span
-            :class="[
-              'mt-1 size-32 flex shrink-0 items-center justify-center rounded-8',
-              severityMeta[item.severity].class,
-            ]"
-          >
-            <Icon :name="severityMeta[item.severity].icon" :size="17" />
-          </span>
-          <div class="min-w-0 flex-1">
-            <div class="flex items-center justify-between gap-8">
-              <div class="truncate text-sm text-main font-700">
-                {{ item.title }}
+        <div
+          v-for="item in filteredItems"
+          :key="item.id"
+          class="rounded-8 b-1-regular bg-secondary p-12 transition-[border-color,background-color,box-shadow,transform] duration-200 ease-[var(--w-motion-ease-enter)] hover:(-translate-y-2 shadow-lg shadow-primary/10) active:(translate-y-0 scale-[0.995])"
+        >
+          <div class="flex items-start gap-10">
+            <span
+              :class="[
+                'mt-1 size-32 flex shrink-0 items-center justify-center rounded-8',
+                severityMeta[item.severity].class,
+              ]"
+            >
+              <Icon :name="severityMeta[item.severity].icon" :size="17" />
+            </span>
+            <div class="min-w-0 flex-1">
+              <div class="flex items-center justify-between gap-8">
+                <div class="truncate text-sm text-main font-700">
+                  {{ item.title }}
+                </div>
+                <span class="shrink-0 text-xs text-secondary">{{
+                  item.time
+                }}</span>
               </div>
-              <span class="shrink-0 text-xs text-secondary">{{
-                item.time
-              }}</span>
-            </div>
-            <div class="mt-5 text-xs text-secondary leading-18px">
-              {{ item.description }}
-            </div>
-            <div class="mt-10 flex items-center justify-between gap-10">
-              <span class="truncate text-xs text-secondary">
-                {{ item.source }}
-              </span>
-              <a-button size="small" @click="emits('resolve', item)">
-                处理
-              </a-button>
+              <div class="mt-5 text-xs text-secondary leading-18px">
+                {{ item.description }}
+              </div>
+              <div class="mt-10 flex items-center justify-between gap-10">
+                <span class="truncate text-xs text-secondary">
+                  {{ item.source }}
+                </span>
+                <a-button size="small" @click="emits('resolve', item)">
+                  处理
+                </a-button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <a-empty
-        v-if="filteredItems.length === 0"
-        key="empty"
-        class="py-24"
-        description="暂无告警"
-      />
-    </TransitionGroup>
-  </Card>
+        <a-empty
+          v-if="filteredItems.length === 0"
+          key="empty"
+          class="py-24"
+          description="暂无告警"
+        />
+      </TransitionGroup>
+    </Card>
+  </Skeleton>
 </template>
 
 <script lang="ts" setup>
+import Skeleton from 'boneyard-js/vue'
 import Card from './card.vue'
 import type {
   AlertCenterEmits,

@@ -29,6 +29,10 @@ const buckets = computed(() => (props.range ? buildBuckets(props.range) : []))
 const chartOption = computed<EChartsCoreOption>(() => {
   return {
     ...baseChartOption.value,
+    animationDuration: 1000,
+    animationEasing: 'cubicOut',
+    animationDurationUpdate: 600,
+    animationEasingUpdate: 'cubicOut',
     grid: {
       bottom: 58,
       left: 52,

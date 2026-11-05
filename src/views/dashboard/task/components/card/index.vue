@@ -1,43 +1,43 @@
 <template>
-  <CardSkeleton v-if="loading" />
-  <DragDropProvider
-    v-else
-    @drag-move="markDropPlaceholder"
-    @drag-end="handleDragEnd"
-    @drag-start="clearDropPlaceholder"
-  >
-    <div
-      class="relative grid h-full min-h-0 grid-cols-1 gap-10 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6 overflow-x-auto"
+  <Skeleton name="task-card" :loading="loading" class="h-full min-h-0">
+    <DragDropProvider
+      @drag-move="markDropPlaceholder"
+      @drag-end="handleDragEnd"
+      @drag-start="clearDropPlaceholder"
     >
-      <DraggableItem
-        v-for="(item, index) in visibleTaskStatus"
-        :id="getStageId(item.status)"
-        :key="item.status"
-        :index="index"
-        accept="task-stage"
-        class="min-h-0 min-w-0 xl:(max-h-full overflow-hidden)"
-        :group="stageSortableGroup"
-        handle-selector=".task-group-drag-handle"
-        type="task-stage"
+      <div
+        class="relative grid h-full min-h-0 grid-cols-1 gap-10 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6 overflow-x-auto"
       >
-        <Group
-          v-bind="item"
-          :items="groupItems[getTaskGroupId(item.status)] ?? []"
-          @delete="emits('delete', $event)"
-          @duplicate="emits('duplicate', $event)"
-          @edit="emits('edit', $event)"
-          @mark-done="emits('markDone', $event)"
-        />
-      </DraggableItem>
-    </div>
-  </DragDropProvider>
+        <DraggableItem
+          v-for="(item, index) in visibleTaskStatus"
+          :id="getStageId(item.status)"
+          :key="item.status"
+          :index="index"
+          accept="task-stage"
+          class="min-h-0 min-w-0 xl:(max-h-full overflow-hidden)"
+          :group="stageSortableGroup"
+          handle-selector=".task-group-drag-handle"
+          type="task-stage"
+        >
+          <Group
+            v-bind="item"
+            :items="groupItems[getTaskGroupId(item.status)] ?? []"
+            @delete="emits('delete', $event)"
+            @duplicate="emits('duplicate', $event)"
+            @edit="emits('edit', $event)"
+            @mark-done="emits('markDone', $event)"
+          />
+        </DraggableItem>
+      </div>
+    </DragDropProvider>
+  </Skeleton>
 </template>
 <script lang="ts" setup>
+import Skeleton from 'boneyard-js/vue'
 import { DragDropProvider } from '@dnd-kit/vue'
 import { arrayMove } from '@dnd-kit/helpers'
 import { DraggableItem } from '@/components/draggable'
 import Group from './group.vue'
-import CardSkeleton from './skeleton.vue'
 import { taskStatusList } from '../../constants'
 import type { DragEndEvent, DragMoveEvent } from '@dnd-kit/vue'
 import type {

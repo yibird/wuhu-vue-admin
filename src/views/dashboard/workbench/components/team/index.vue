@@ -1,67 +1,67 @@
 <template>
-  <TeamSkeleton v-if="loading" />
-  <section v-else class="page-enter page-enter--6 min-w-0">
-    <a-border-beam :duration="6" :line-width="3">
-      <Card class="shadow-none!" :styles="{ body: { padding: 0 } }">
-        <template #title>
-          <span class="text-base text-main font-700">协作团队</span>
-        </template>
-        <template #extra>
-          <a-button type="link" size="small">组织视图</a-button>
-        </template>
+  <Skeleton name="workbench-team" :loading="loading">
+    <section class="page-enter page-enter--6 min-w-0">
+      <a-border-beam :duration="6" :line-width="3">
+        <Card class="shadow-none!" :styles="{ body: { padding: 0 } }">
+          <template #title>
+            <span class="text-base text-main font-700">协作团队</span>
+          </template>
+          <template #extra>
+            <a-button type="link" size="small">组织视图</a-button>
+          </template>
 
-        <SlidingHighlight
-          :inset="4"
-          pill-class-name="rounded-8 bg-hover"
-          class="p-20 flex flex-col gap-10"
-        >
-          <div
-            v-for="item in items"
-            :key="item.id"
-            class="group rounded-8 p-10"
+          <SlidingHighlight
+            :inset="4"
+            pill-class-name="rounded-8 bg-hover"
+            class="p-20 flex flex-col gap-10"
           >
-            <div class="flex items-start gap-10">
-              <a-avatar
-                :src="item.avatar"
-                :size="38"
-                class="shrink-0 transition-transform duration-200 group-hover:scale-105"
-              />
-              <div class="min-w-0 flex-1">
-                <div class="flex items-center justify-between gap-8">
-                  <h3 class="m-0 truncate text-sm text-main font-700">
-                    {{ item.name }}
-                  </h3>
-                  <span class="shrink-0 text-xs text-secondary">
-                    {{ item.online }}/{{ item.members }} 在线
-                  </span>
-                </div>
-                <p class="mb-0 mt-4 truncate text-xs text-secondary">
-                  {{ item.desc }}
-                </p>
-                <div class="mt-9 flex items-center gap-8">
-                  <a-progress
-                    class="min-w-0 flex-1"
-                    :percent="item.progress"
-                    :show-info="false"
-                    :size="6"
-                  />
-                  <span class="w-36 text-right text-xs text-main font-600">
-                    {{ item.progress }}%
-                  </span>
+            <div
+              v-for="item in items"
+              :key="item.id"
+              class="group rounded-8 p-10"
+            >
+              <div class="flex items-start gap-10">
+                <a-avatar
+                  :src="item.avatar"
+                  :size="38"
+                  class="shrink-0 transition-transform duration-200 group-hover:scale-105"
+                />
+                <div class="min-w-0 flex-1">
+                  <div class="flex items-center justify-between gap-8">
+                    <h3 class="m-0 truncate text-sm text-main font-700">
+                      {{ item.name }}
+                    </h3>
+                    <span class="shrink-0 text-xs text-secondary">
+                      {{ item.online }}/{{ item.members }} 在线
+                    </span>
+                  </div>
+                  <p class="mb-0 mt-4 truncate text-xs text-secondary">
+                    {{ item.desc }}
+                  </p>
+                  <div class="mt-9 flex items-center gap-8">
+                    <a-progress
+                      class="min-w-0 flex-1"
+                      :percent="item.progress"
+                      :show-info="false"
+                      :size="6"
+                    />
+                    <span class="w-36 text-right text-xs text-main font-600">
+                      {{ item.progress }}%
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </SlidingHighlight>
-      </Card>
-    </a-border-beam>
-  </section>
+          </SlidingHighlight>
+        </Card>
+      </a-border-beam>
+    </section>
+  </Skeleton>
 </template>
 
 <script lang="ts" setup>
-import { SlidingHighlight } from '@/components/sliding-highlight'
-import { Card } from '@/components/card'
-import TeamSkeleton from './skeleton.vue'
+import Skeleton from 'boneyard-js/vue'
+import { SlidingHighlight, Card } from '@/components'
 import type { TeamItem } from './types'
 
 const { loading = false } = defineProps<{
