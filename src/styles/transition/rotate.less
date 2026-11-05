@@ -23,17 +23,3 @@
     will-change: transform, opacity;
   }
 }
-
-// ========================================
-// Reduced Motion
-// ========================================
-
-@media (prefers-reduced-motion: reduce) {
-  .rotate {
-    &-enter-active,
-    &-leave-active {
-      transition: none;
-      will-change: auto;
-    }
-  }
-}

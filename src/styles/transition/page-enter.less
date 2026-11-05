@@ -38,29 +38,3 @@
 .page-enter--7 {
   --w-page-enter-delay: 450ms;
 }
-
-// ========================================
-// Animation
-// ========================================
-
-@keyframes w-page-enter {
-  from {
-    opacity: 0;
-    transform: translateY(8px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-// ========================================
-// Reduced Motion
-// ========================================
-
-@media (prefers-reduced-motion: reduce) {
-  .page-enter {
-    animation: none;
-  }
-}

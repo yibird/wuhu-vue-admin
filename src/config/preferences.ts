@@ -122,36 +122,73 @@ export const loadingAnimationOptions = [
 ] as const
 
 export const pageAnimationOptions = [
+  // 滑动
   {
-    label: '从左滑动',
+    label: '从左滑入',
     value: PAGE_ANIMATION.SlideLeft,
   },
   {
-    label: '从右滑动',
+    label: '从右滑入',
     value: PAGE_ANIMATION.SlideRight,
   },
   {
-    label: '从上滑动',
+    label: '从上滑入',
     value: PAGE_ANIMATION.SlideUp,
   },
   {
-    label: '从下滑动',
+    label: '从下滑入',
     value: PAGE_ANIMATION.SlideDown,
   },
+
+  // 淡入淡出
   {
     label: '淡入淡出',
     value: PAGE_ANIMATION.Fade,
   },
   {
-    label: '放大',
+    label: '淡入缩放',
     value: PAGE_ANIMATION.FadeScale,
   },
   {
-    label: '横向反转',
+    label: '渐显放大',
+    value: PAGE_ANIMATION.FadeZoom,
+  },
+  {
+    label: '渐显滑动',
+    value: PAGE_ANIMATION.FadeSlide,
+  },
+  {
+    label: '从下方渐显滑入',
+    value: PAGE_ANIMATION.FadeSlideUp,
+  },
+  {
+    label: '从上方渐显滑入',
+    value: PAGE_ANIMATION.FadeSlideDown,
+  },
+  {
+    label: '从左侧渐显滑入',
+    value: PAGE_ANIMATION.FadeSlideLeft,
+  },
+  {
+    label: '从右侧渐显滑入',
+    value: PAGE_ANIMATION.FadeSlideRight,
+  },
+  {
+    label: '弹性弹出',
+    value: PAGE_ANIMATION.FadePop,
+  },
+  {
+    label: '旋转渐显',
+    value: PAGE_ANIMATION.FadeSpin,
+  },
+
+  // 翻转
+  {
+    label: '横向翻转',
     value: PAGE_ANIMATION.FlipX,
   },
   {
-    label: '竖向反转',
+    label: '纵向翻转',
     value: PAGE_ANIMATION.FlipY,
   },
 ] as const

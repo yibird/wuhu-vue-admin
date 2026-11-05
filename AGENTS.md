@@ -329,10 +329,11 @@ interface UserProfile {
 
 ### 公共组件
 
-- 业务代码按组件子路径导入，例如 `@/components/card`、`@/components/scrollbar`。
-- 不提供 `src/components/index.ts` 统一出口：barrel 会把图表、编辑器等重型依赖合并进公共 chunk，影响首屏加载。
-- 组件内部优先使用相对路径或组件子目录入口导入依赖。
-- 新增公共组件时保持组件子目录入口独立，不要在根目录重建 barrel。
+- 业务代码优先按组件子路径导入，例如 `@/components/card`、`@/components/scrollbar`。
+- `src/components/index.ts` 只作为**轻量组件**聚合出口：可写成 `import { Card, ViewSection } from '@/components'`，用于合并同一文件里的多个轻量组件导入。
+- chart、editor、code-editor、cropper、json-view、file-preview、gantt、icon-picker 等异步组件，以及静态依赖较重的 form-plus、date-picker、draggable，继续按子路径导入，不要加入聚合出口。
+- `src/components` 内部禁止引用 `@/components` 聚合出口，否则会形成 barrel 与组件之间的循环依赖；组件之间一律走子路径或相对路径。
+- 新增轻量公共组件时保持组件子目录入口独立，再按需补充到聚合出口。
 - 不要把仅属于单个业务页面的组件无条件提升为全局公共组件。
 - 公共组件应具有明确、稳定的使用场景，避免暴露不必要的内部细节。
 

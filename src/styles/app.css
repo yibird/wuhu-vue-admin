@@ -98,3 +98,8 @@ html.w-color-weakness-mode.w-grey-mode {
 .scroll-hover:hover::-webkit-scrollbar-thumb:hover {
   background-color: var(--scrollbar-thumb-hover);
 }
+
+/* boneyard 包裹层承担布局高度时,内容层需要继承高度 */
+[data-boneyard] > div {
+  height: 100%;
+}

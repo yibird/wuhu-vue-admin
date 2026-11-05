@@ -1,101 +1,176 @@
-// ========================================
-// Fade Transition
-// ========================================
-
-// 页面级过渡不加 will-change:整页提层会带来大图层与额外光栅化开销,
-// 浏览器对 transform / opacity 过渡本身也会自动合成
-.fade {
-  &-enter-active,
-  &-leave-active {
-    transition: opacity 300ms var(--w-motion-ease-enter);
-  }
-
-  &-enter-from,
-  &-leave-to {
-    opacity: 0;
-  }
-
-  &-enter-to,
-  &-leave-from {
-    opacity: 1;
-  }
-}
-
-// ========================================
-// Fade Scale Transition
-// ========================================
-
-.fade-scale {
-  &-enter-active,
-  &-leave-active {
-    transition:
-      transform 300ms var(--w-motion-ease),
-      opacity 300ms var(--w-motion-ease);
-  }
-
-  &-enter-from,
-  &-leave-to {
-    opacity: 0;
-    transform: scale(0.98);
-  }
-
-  &-enter-to,
-  &-leave-from {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-// ========================================
-// Fade Zoom Transition
-// ========================================
-
-.fade-zoom {
-  &-enter-active,
-  &-leave-active {
+// Fade Slide
+.fade-slide(@enter-x; @enter-y; @leave-x; @leave-y) {
+  &-enter-active {
     transition:
       opacity 300ms var(--w-motion-ease),
       transform 300ms var(--w-motion-ease-enter);
     will-change: opacity, transform;
   }
 
-  &-enter-from,
-  &-leave-to {
-    opacity: 0;
-    transform: translateY(-14px) scale(0.98);
+  &-leave-active {
+    transition:
+      opacity 200ms var(--w-motion-ease),
+      transform 200ms var(--w-motion-ease-exit);
+    will-change: opacity, transform;
   }
 
-  &-enter-to,
-  &-leave-from {
-    opacity: 1;
-    transform: translateY(0) scale(1);
+  &-enter-from {
+    opacity: 0;
+    transform: ~'translate3d(@{enter-x}, @{enter-y}, 0)';
+  }
+
+  &-leave-to {
+    opacity: 0;
+    transform: ~'translate3d(@{leave-x}, @{leave-y}, 0)';
   }
 }
 
 // ========================================
-// Reduced Motion
+// Fade(淡入)
+// ========================================
+.fade {
+  &-enter-active,
+  &-leave-active {
+    transition: opacity 300ms var(--w-motion-ease);
+  }
+
+  &-enter-from,
+  &-leave-to {
+    opacity: 0;
+  }
+}
+
+// ========================================
+// Fade Scale（淡入缩放）
 // ========================================
 
-@media (prefers-reduced-motion: reduce) {
-  .fade {
-    &-enter-active,
-    &-leave-active {
-      transition: none;
+.fade-scale {
+  &-enter-active,
+  &-leave-active {
+    transition:
+      opacity 200ms var(--w-motion-ease),
+      transform 200ms var(--w-motion-ease);
+  }
+
+  &-enter-from,
+  &-leave-to {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+}
+
+// ========================================
+// Fade Zoom（渐显放大）
+// ========================================
+
+.fade-zoom {
+  &-enter-active,
+  &-leave-active {
+    transition:
+      opacity 250ms var(--w-motion-ease),
+      transform 250ms var(--w-motion-ease-enter);
+  }
+
+  &-enter-from,
+  &-leave-to {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.98);
+  }
+}
+
+// ========================================
+// Fade Pop(渐显弹出)
+// ========================================
+.fade-pop {
+  &-enter-active {
+    transition:
+      opacity 200ms var(--w-motion-ease),
+      transform 300ms cubic-bezier(0.34, 1.56, 0.64, 1);
+    will-change: opacity, transform;
+  }
+
+  &-leave-active {
+    transition:
+      opacity 100ms var(--w-motion-ease),
+      transform 100ms var(--w-motion-ease-exit);
+    will-change: opacity, transform;
+  }
+
+  &-enter-from,
+  &-leave-to {
+    opacity: 0;
+    transform: translate3d(0, 4px, 0) scale(1.04);
+  }
+}
+
+// ========================================
+// Fade Spin(渐显旋转)
+// ========================================
+.fade-spin {
+  &-enter-active {
+    transition:
+      opacity 200ms var(--w-motion-ease-enter),
+      scale 200ms var(--w-motion-ease-enter),
+      rotate 200ms var(--w-motion-ease-enter);
+    will-change: opacity, scale, rotate;
+  }
+
+  &-leave-active {
+    transition:
+      opacity 100ms var(--w-motion-ease-exit),
+      scale 100ms var(--w-motion-ease-exit),
+      rotate 100ms var(--w-motion-ease-exit);
+    will-change: opacity, scale, rotate;
+  }
+
+  &-enter-from {
+    opacity: 0;
+    rotate: 90deg;
+    scale: 0.9;
+  }
+
+  &-leave-to {
+    opacity: 0;
+    rotate: calc(-1 * 90deg);
+    scale: 0.9;
+  }
+}
+
+// ========================================
+// Fade Slide(渐显滑动)
+// ========================================
+.fade-slide {
+  .fade-slide(0; 8px; 0; -4px);
+
+  &-up {
+    .fade-slide(0; 8px; 0; -4px);
+
+    &-left {
+      .fade-slide(-8px; 8px; 4px; -4px);
+    }
+
+    &-right {
+      .fade-slide(8px; 8px; -4px; -4px);
     }
   }
 
-  .fade-scale {
-    &-enter-active,
-    &-leave-active {
-      transition: none;
+  &-down {
+    .fade-slide(0; -8px; 0; 4px);
+
+    &-left {
+      .fade-slide(-8px; -8px; 4px; 4px);
+    }
+
+    &-right {
+      .fade-slide(8px; -8px; -4px; 4px);
     }
   }
 
-  .fade-zoom {
-    &-enter-active,
-    &-leave-active {
-      transition: none;
-      will-change: auto;
-    }
+  &-left {
+    .fade-slide(8px; 0; -4px; 0);
+  }
+
+  &-right {
+    .fade-slide(-8px; 0; 4px; 0);
   }
 }

@@ -2,12 +2,11 @@
 // Slide Transition
 // ========================================
 
-// 页面级过渡不加 will-change:整页提层会带来大图层与额外光栅化开销,
-// 浏览器对 transform / opacity 过渡本身也会自动合成
-.slide-base-transition() {
+.slide-transition() {
   transition:
     transform 300ms var(--w-motion-ease-enter),
     opacity 300ms var(--w-motion-ease);
+  will-change: opacity, transform;
 }
 
 .slide {
@@ -30,7 +29,7 @@
 
   &-enter-active,
   &-leave-active {
-    .slide-base-transition();
+    .slide-transition();
   }
 
   // ----------------------------------------
@@ -41,18 +40,18 @@
     &-enter-from,
     &-leave-to {
       opacity: 0;
-      transform: translateX(-40px);
+      transform: translate(-40px, -4px);
     }
 
     &-enter-to,
     &-leave-from {
       opacity: 1;
-      transform: translateX(0);
+      transform: translate(0, 0);
     }
 
     &-enter-active,
     &-leave-active {
-      .slide-base-transition();
+      .slide-transition();
     }
   }
 
@@ -75,7 +74,7 @@
 
     &-enter-active,
     &-leave-active {
-      .slide-base-transition();
+      .slide-transition();
     }
   }
 
@@ -98,7 +97,7 @@
 
     &-enter-active,
     &-leave-active {
-      .slide-base-transition();
+      .slide-transition();
     }
   }
 
@@ -121,28 +120,7 @@
 
     &-enter-active,
     &-leave-active {
-      .slide-base-transition();
-    }
-  }
-}
-
-// ========================================
-// Reduced Motion
-// ========================================
-
-@media (prefers-reduced-motion: reduce) {
-  .slide {
-    &-enter-active,
-    &-leave-active,
-    &-left-enter-active,
-    &-left-leave-active,
-    &-right-enter-active,
-    &-right-leave-active,
-    &-up-enter-active,
-    &-up-leave-active,
-    &-down-enter-active,
-    &-down-leave-active {
-      transition: none;
+      .slide-transition();
     }
   }
 }
