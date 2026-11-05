@@ -1,115 +1,116 @@
 <template>
-  <TableSkeleton v-if="loading" />
-  <div v-else class="h-full overflow-hidden bg-container rounded-4">
-    <a-table
-      :columns="columns"
-      :data-source="items"
-      :pagination="false"
-      :scroll="{ x: 1080, y: 'calc(100vh - 230px)' }"
-      row-key="id"
-      size="middle"
-    >
-      <template #bodyCell="{ column, record }">
-        <template v-if="column.key === 'title'">
-          <div class="min-w-0">
-            <div class="truncate text-main font-600">{{ record.title }}</div>
-            <div class="mt-3 max-w-360 truncate text-xs text-secondary">
-              {{ record.description }}
+  <Skeleton name="my-task-table" :loading="loading" class="h-full min-h-0">
+    <div class="h-full overflow-hidden bg-container rounded-4">
+      <a-table
+        :columns="columns"
+        :data-source="items"
+        :pagination="false"
+        :scroll="{ x: 1080, y: 'calc(100vh - 230px)' }"
+        row-key="id"
+        size="middle"
+      >
+        <template #bodyCell="{ column, record }">
+          <template v-if="column.key === 'title'">
+            <div class="min-w-0">
+              <div class="truncate text-main font-600">{{ record.title }}</div>
+              <div class="mt-3 max-w-360 truncate text-xs text-secondary">
+                {{ record.description }}
+              </div>
             </div>
-          </div>
-        </template>
-        <template v-else-if="column.key === 'priority'">
-          <a-tag :bordered="false" :color="priorityMeta(record).color">
-            <span class="inline-flex items-center gap-3">
-              <Icon :name="priorityMeta(record).icon" :size="12" />
-              {{ priorityMeta(record).label }}
-            </span>
-          </a-tag>
-        </template>
-        <template v-else-if="column.key === 'assignee'">
-          <div class="min-w-0 flex items-center gap-8">
+          </template>
+          <template v-else-if="column.key === 'priority'">
+            <a-tag :bordered="false" :color="priorityMeta(record).color">
+              <span class="inline-flex items-center gap-3">
+                <Icon :name="priorityMeta(record).icon" :size="12" />
+                {{ priorityMeta(record).label }}
+              </span>
+            </a-tag>
+          </template>
+          <template v-else-if="column.key === 'assignee'">
+            <div class="min-w-0 flex items-center gap-8">
+              <span
+                class="size-26 shrink-0 flex items-center justify-center rounded-full text-xs font-600"
+                :class="assigneeMeta(record).avatarClass"
+              >
+                {{ assigneeMeta(record).label.slice(0, 1) }}
+              </span>
+              <div class="min-w-0">
+                <div class="truncate text-xs text-main">
+                  {{ assigneeMeta(record).label }}
+                </div>
+                <div class="truncate text-11px text-secondary">
+                  {{ assigneeMeta(record).role }}
+                </div>
+              </div>
+            </div>
+          </template>
+          <template v-else-if="column.key === 'dueDate'">
             <span
-              class="size-26 shrink-0 flex items-center justify-center rounded-full text-xs font-600"
-              :class="assigneeMeta(record).avatarClass"
+              class="inline-flex items-center gap-4 text-xs"
+              :class="dueMeta(record).class"
+              :title="dueMeta(record).fullText"
             >
-              {{ assigneeMeta(record).label.slice(0, 1) }}
+              <Icon :name="dueMeta(record).icon" :size="13" />
+              {{ dueMeta(record).fullText }}
             </span>
+          </template>
+          <template v-else-if="column.key === 'module'">
             <div class="min-w-0">
               <div class="truncate text-xs text-main">
-                {{ assigneeMeta(record).label }}
+                {{ record.module || '-' }}
               </div>
-              <div class="truncate text-11px text-secondary">
-                {{ assigneeMeta(record).role }}
+              <div class="mt-3 flex flex-wrap gap-4">
+                <a-tag
+                  v-if="record.estimatedHours"
+                  :bordered="false"
+                  color="purple"
+                >
+                  {{ record.estimatedHours }}h
+                </a-tag>
+                <a-tag
+                  v-for="tag in record.tags ?? []"
+                  :key="tag"
+                  :bordered="false"
+                  color="default"
+                >
+                  {{ tag }}
+                </a-tag>
               </div>
             </div>
-          </div>
+          </template>
+          <template v-else-if="column.key === 'status'">
+            <a-tag :bordered="false" :color="statusMeta(record.status).color">
+              {{ statusMeta(record.status).text }}
+            </a-tag>
+          </template>
+          <template v-else-if="column.key === 'action'">
+            <a-button type="link" size="small" @click="emits('edit', record)">
+              <template #icon>
+                <Icon name="i-lucide:pencil" />
+              </template>
+              修改
+            </a-button>
+            <a-button
+              type="link"
+              size="small"
+              danger
+              @click="emits('delete', record)"
+            >
+              <template #icon>
+                <Icon name="i-lucide:trash-2" />
+              </template>
+              删除
+            </a-button>
+          </template>
         </template>
-        <template v-else-if="column.key === 'dueDate'">
-          <span
-            class="inline-flex items-center gap-4 text-xs"
-            :class="dueMeta(record).class"
-            :title="dueMeta(record).fullText"
-          >
-            <Icon :name="dueMeta(record).icon" :size="13" />
-            {{ dueMeta(record).fullText }}
-          </span>
-        </template>
-        <template v-else-if="column.key === 'module'">
-          <div class="min-w-0">
-            <div class="truncate text-xs text-main">
-              {{ record.module || '-' }}
-            </div>
-            <div class="mt-3 flex flex-wrap gap-4">
-              <a-tag
-                v-if="record.estimatedHours"
-                :bordered="false"
-                color="purple"
-              >
-                {{ record.estimatedHours }}h
-              </a-tag>
-              <a-tag
-                v-for="tag in record.tags ?? []"
-                :key="tag"
-                :bordered="false"
-                color="default"
-              >
-                {{ tag }}
-              </a-tag>
-            </div>
-          </div>
-        </template>
-        <template v-else-if="column.key === 'status'">
-          <a-tag :bordered="false" :color="statusMeta(record.status).color">
-            {{ statusMeta(record.status).text }}
-          </a-tag>
-        </template>
-        <template v-else-if="column.key === 'action'">
-          <a-button type="link" size="small" @click="emits('edit', record)">
-            <template #icon>
-              <Icon name="i-lucide:pencil" />
-            </template>
-            修改
-          </a-button>
-          <a-button
-            type="link"
-            size="small"
-            danger
-            @click="emits('delete', record)"
-          >
-            <template #icon>
-              <Icon name="i-lucide:trash-2" />
-            </template>
-            删除
-          </a-button>
-        </template>
-      </template>
-    </a-table>
-  </div>
+      </a-table>
+    </div>
+  </Skeleton>
 </template>
 
 <script lang="ts" setup>
+import Skeleton from 'boneyard-js/vue'
 import type { TableColumnsType } from 'antdv-next'
-import TableSkeleton from './skeleton.vue'
 import {
   getTaskAssigneeMeta,
   getTaskDueMeta,

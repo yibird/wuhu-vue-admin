@@ -1,36 +1,36 @@
 <template>
-  <CardSkeleton v-if="loading" />
-  <DragDropProvider
-    v-else
-    @drag-move="markDropPlaceholder"
-    @drag-end="handleDragEnd"
-    @drag-start="clearDropPlaceholder"
-  >
-    <AnimatedGroup
-      reduced-motion="user"
-      :items="visibleTaskStatus"
-      :get-key="(item: CardTaskStatus) => item.status"
-      class="relative grid h-full min-h-0 grid-cols-1 gap-10 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6 overflow-x-auto"
-      motion-class="min-h-0 min-w-0 xl:(max-h-full overflow-hidden)"
+  <Skeleton name="my-task-card" :loading="loading" class="h-full min-h-0">
+    <DragDropProvider
+      @drag-move="markDropPlaceholder"
+      @drag-end="handleDragEnd"
+      @drag-start="clearDropPlaceholder"
     >
-      <template #default="{ item }">
-        <Group
-          v-bind="item"
-          :items="groupItems[getTaskGroupId(item.status)] ?? []"
-          @delete="emits('delete', $event)"
-          @duplicate="emits('duplicate', $event)"
-          @edit="emits('edit', $event)"
-          @mark-done="emits('markDone', $event)"
-        />
-      </template>
-    </AnimatedGroup>
-  </DragDropProvider>
+      <AnimatedGroup
+        reduced-motion="user"
+        :items="visibleTaskStatus"
+        :get-key="(item: CardTaskStatus) => item.status"
+        class="relative grid h-full min-h-0 grid-cols-1 gap-10 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6 overflow-x-auto"
+        motion-class="min-h-0 min-w-0 xl:(max-h-full overflow-hidden)"
+      >
+        <template #default="{ item }">
+          <Group
+            v-bind="item"
+            :items="groupItems[getTaskGroupId(item.status)] ?? []"
+            @delete="emits('delete', $event)"
+            @duplicate="emits('duplicate', $event)"
+            @edit="emits('edit', $event)"
+            @mark-done="emits('markDone', $event)"
+          />
+        </template>
+      </AnimatedGroup>
+    </DragDropProvider>
+  </Skeleton>
 </template>
 <script lang="ts" setup>
+import Skeleton from 'boneyard-js/vue'
 import { DragDropProvider } from '@dnd-kit/vue'
 import { AnimatedGroup } from '@/components/animated'
 import Group from './group.vue'
-import CardSkeleton from './skeleton.vue'
 import { taskStatusList } from '../../constants'
 import type { DragEndEvent, DragMoveEvent } from '@dnd-kit/vue'
 import type {

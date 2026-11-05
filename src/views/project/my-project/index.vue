@@ -1,5 +1,5 @@
 <template>
-  <w-view :full="true" :padding="0">
+  <View :full="true" :padding="0">
     <div class="h-full min-h-0 flex flex-col gap-10 p-10">
       <header
         class="flex flex-wrap items-center gap-12 rounded-4 bg-container px-16 py-12"
@@ -147,13 +147,12 @@
         @success="onFormSuccess"
       />
     </div>
-  </w-view>
+  </View>
 </template>
 
 <script setup lang="ts">
 import { getProjectPageListApi } from '@/apis'
 import { Icon } from '@/components/icon'
-import { WView } from '@/components/view'
 import { usePagination, usePermission, useTabs } from '@/hooks'
 import { useAuthStore } from '@/store'
 import { ProjectForm } from '../list/components'

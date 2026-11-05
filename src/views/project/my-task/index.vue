@@ -1,5 +1,5 @@
 <template>
-  <WView>
+  <View>
     <div
       class="min-h-0 min-w-0 flex flex-col gap-10 w-full h-full overflow-x-hidden overflow-y-auto"
     >
@@ -8,7 +8,7 @@
         v-model:status="statusFilter"
         v-model:view="type"
         :filtered-task-count="filteredTasks.length"
-        :loading="isLoading"
+        :loading="loading"
         :status-options="filterStatusOptions"
         :task-count="tasks.length"
         :view-options="viewOptions"
@@ -21,7 +21,7 @@
         <Component
           :is="component"
           v-model:items="visibleTasks"
-          :loading="isLoading"
+          :loading="loading"
           v-bind="viewProps"
           @delete="confirmDeleteTask"
           @duplicate="duplicateTask"
@@ -42,7 +42,7 @@
     >
       <Form ref="formRef" v-model="formState" />
     </a-modal>
-  </WView>
+  </View>
 </template>
 
 <script lang="ts" setup>
@@ -84,7 +84,7 @@ const statusFilter = shallowRef<TaskFilterStatus>('all')
 const type = shallowRef<TaskViewType>('card')
 const modalOpen = shallowRef(false)
 const editingTask = shallowRef<Task | null>(null)
-const { isLoading } = useLoading()
+const { loading } = useLoading()
 const formRef = shallowRef<InstanceType<typeof Form>>()
 const formState = shallowReactive<TaskFormState>({
   title: '',
