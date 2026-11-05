@@ -5,7 +5,7 @@ import { vuePlugin } from './vue.ts'
 import { autoImportPlugin } from './auto-import.ts'
 import { pwaPlugin } from './pwa.ts'
 import { loadingPlugin } from './loading.ts'
-import { updateNoticePlugin } from './update-notice'
+import { updateNoticePlugin } from './update-notice.ts'
 import type { PluginOption } from 'vite'
 
 interface CreatePluginOptions {

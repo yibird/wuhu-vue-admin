@@ -46,5 +46,10 @@ export const lint = {
       },
     },
   ],
-  ignorePatterns: ['node_modules', 'dist', '**/*.mock.ts.*.mjs'],
+  ignorePatterns: [
+    'node_modules',
+    'dist',
+    '**/*.mock.ts.*.mjs',
+    'src/bones/**',
+  ],
 }
