@@ -8,6 +8,7 @@ import { plugins } from '@/plugins'
 import { i18n } from '@/locales'
 import App from './app.vue'
 import './styles'
+import './bones/registry'
 
 ;(async function bootstrap() {
   const app = createApp(App).use(pinia)

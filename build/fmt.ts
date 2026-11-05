@@ -14,6 +14,8 @@ export const fmt = {
     'components.d.ts',
     '*.timestamp-*.mjs',
     '**/*.mock.ts.*.mjs',
+    // boneyard 自动生成的骨骼与注册表
+    'src/bones/**',
   ],
   bracketSameLine: false,
 }
