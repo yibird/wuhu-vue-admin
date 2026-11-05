@@ -1,5 +1,5 @@
 <template>
-  <WView :full="true" :padding="0">
+  <View :full="true" :padding="0">
     <div class="h-full min-h-0 bg-page p-10">
       <div class="h-full min-h-0 flex overflow-hidden bg-container">
         <div
@@ -37,7 +37,7 @@
         </div>
       </div>
     </div>
-  </WView>
+  </View>
 </template>
 <script lang="ts" setup>
 import { App, Security, Login, Mail, Sms, Oss, Client } from './components'

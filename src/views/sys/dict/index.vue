@@ -1,15 +1,12 @@
 <template>
-  <WView
+  <View
     :full="true"
     :gap="10"
     :padding="10"
     class="bg-page"
     direction="horizontal"
   >
-    <WView.Sider
-      class="h-full overflow-hidden rounded-6 b-1-muted"
-      width="260px"
-    >
+    <ViewSider class="h-full overflow-hidden rounded-6 b-1-muted" width="260px">
       <Sider
         :data="dictionaries"
         :loading="dictLoading"
@@ -19,12 +16,10 @@
         @edit="openEditDict"
         @select="selectDictionary"
       />
-    </WView.Sider>
+    </ViewSider>
 
-    <WView :full="false" :gap="10" :padding="false" class="min-w-0 flex-1">
-      <WView.Header
-        class="shrink-0 rounded-6 b-1-muted bg-container px-14 py-10"
-      >
+    <View :full="false" :gap="10" :padding="false" class="min-w-0 flex-1">
+      <ViewHeader class="shrink-0 rounded-6 b-1-muted bg-container px-14 py-10">
         <DictHeader
           v-model:keyword="itemKeyword"
           v-model:status="itemStatus"
@@ -32,9 +27,9 @@
           @reset="resetItemSearch"
           @search="applyItemSearch"
         />
-      </WView.Header>
+      </ViewHeader>
 
-      <WView.Content
+      <ViewContent
         class="min-h-0 overflow-hidden rounded-6 b-1-muted bg-container"
       >
         <Content
@@ -45,15 +40,15 @@
         <div v-else class="h-full flex-center">
           <a-empty description="暂无字典数据" />
         </div>
-      </WView.Content>
-    </WView>
+      </ViewContent>
+    </View>
 
     <DictForm
       v-model:open="dictFormOpen"
       :id="editingDictId"
       @success="onDictSuccess"
     />
-  </WView>
+  </View>
 </template>
 
 <script setup lang="ts">
@@ -64,7 +59,6 @@ import {
   type SysDictTypeQuery,
   type SysDictType,
 } from '@/apis'
-import { WView } from '@/components/view'
 import { useRequest } from '@/hooks'
 import { Content, DictForm, Header as DictHeader, Sider } from './components'
 import type { DictItemFilters } from './components'

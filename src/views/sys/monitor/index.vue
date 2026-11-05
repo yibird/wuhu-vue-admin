@@ -1,5 +1,5 @@
 <template>
-  <WView :full="true" :padding="0">
+  <View :full="true" :padding="0">
     <div class="w-full h-full overflow-x-hidden overflow-y-auto">
       <div class="min-h-full bg-page p-10 sm:p-12">
         <header
@@ -184,7 +184,7 @@
         </a-descriptions>
       </template>
     </a-modal>
-  </WView>
+  </View>
 </template>
 
 <script setup lang="ts">
