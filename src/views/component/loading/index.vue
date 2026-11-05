@@ -1,5 +1,5 @@
 <template>
-  <WView :full="true" :padding="false" class="bg-page">
+  <View :full="true" :padding="false" class="bg-page">
     <div
       class="h-full min-h-full w-full p-16 md:p-20 overflow-x-hidden overflow-y-auto"
     >
@@ -52,12 +52,11 @@
       description="Wuhu-admin"
       full
     />
-  </WView>
+  </View>
 </template>
 
 <script setup lang="ts">
-import { Loading } from '@/components/loading'
-import { Icon } from '@/components/icon'
+import { Loading, Icon } from '@/components'
 import { LOADING_ADNIMATION } from '@/constants'
 import type { LoadingAnimation as LoadingAnimationValue } from '@/constants'
 

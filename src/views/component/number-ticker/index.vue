@@ -1,5 +1,5 @@
 <template>
-  <WView :full="true" :padding="false" class="bg-page">
+  <View :full="true" :padding="false" class="bg-page">
     <div
       class="h-full min-h-full w-full p-16 md:p-20 overflow-x-hidden overflow-y-auto"
     >
@@ -52,12 +52,11 @@
         </div>
       </section>
     </div>
-  </WView>
+  </View>
 </template>
 
 <script setup lang="ts">
-import { Icon } from '@/components/icon'
-import { NumberTicker } from '@/components/number-ticker'
+import { Icon, NumberTicker } from '@/components'
 
 const tickerValue = shallowRef(128560)
 

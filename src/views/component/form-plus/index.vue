@@ -1,5 +1,5 @@
 <template>
-  <WView :full="true" :padding="false" class="bg-page">
+  <View :full="true" :padding="false" class="bg-page">
     <div
       class="h-full min-h-full w-full overflow-x-hidden overflow-y-auto p-16 md:p-20"
     >
@@ -104,7 +104,7 @@
         </div>
       </section>
     </div>
-  </WView>
+  </View>
 </template>
 
 <script setup lang="ts">

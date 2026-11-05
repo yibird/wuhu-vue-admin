@@ -1,5 +1,5 @@
 <template>
-  <WView :full="true" :padding="false" class="bg-page">
+  <View :full="true" :padding="false" class="bg-page">
     <div
       class="h-full min-h-full w-full p-16 md:p-20 overflow-x-hidden overflow-y-auto"
     >
@@ -10,7 +10,7 @@
           class="mb-16 flex flex-wrap items-start justify-between gap-12 b-b-1-muted pb-14"
         >
           <div class="min-w-0">
-            <h1 class="m-0 text-xl text-main font-600">WView</h1>
+            <h1 class="m-0 text-xl text-main font-600">View</h1>
             <p class="mb-0 mt-6 text-sm leading-22 text-secondary">
               页面区域组件：统一处理布局、折叠状态和内容间距。
             </p>
@@ -29,13 +29,8 @@
         <div
           class="min-h-420 overflow-hidden rounded-6 b-1-regular bg-secondary p-12"
         >
-          <WView
-            :full="false"
-            :padding="12"
-            :gap="gap"
-            class="h-full min-h-396"
-          >
-            <WView.Header
+          <View :full="false" :padding="12" :gap="gap" class="h-full min-h-396">
+            <ViewHeader
               v-model:collapsed="headerCollapsed"
               collapsible
               class="rounded-6 b-1-muted bg-container p-12 shadow-b-sm"
@@ -48,23 +43,23 @@
                 </div>
                 <div class="min-w-0">
                   <div class="truncate text-md text-main font-600">
-                    WView.Header
+                    View.Header
                   </div>
                   <div class="mt-2 truncate text-xs text-secondary">
                     当前状态：{{ headerCollapsed ? '已收起' : '已展开' }}
                   </div>
                 </div>
               </div>
-            </WView.Header>
+            </ViewHeader>
 
-            <WView
+            <View
               :full="false"
               :padding="false"
               :gap="gap"
               direction="horizontal"
               class="min-h-0 flex-1"
             >
-              <WView.Sider
+              <ViewSider
                 v-model:collapsed="siderCollapsed"
                 collapsible
                 width="min(240px, 100%)"
@@ -90,17 +85,15 @@
                     </div>
                   </nav>
                 </template>
-              </WView.Sider>
+              </ViewSider>
 
-              <WView.Content
+              <ViewContent
                 class="min-h-180 rounded-6 b-1-muted bg-container p-16"
               >
                 <div class="h-full min-h-148">
                   <div class="flex items-center justify-between gap-8">
                     <div>
-                      <div class="text-md text-main font-600">
-                        WView.Content
-                      </div>
+                      <div class="text-md text-main font-600">View.Content</div>
                       <div class="mt-4 text-xs text-secondary">
                         内容区会自动占据剩余空间。
                       </div>
@@ -119,25 +112,23 @@
                     </div>
                   </div>
                 </div>
-              </WView.Content>
-            </WView>
+              </ViewContent>
+            </View>
 
-            <WView.Footer
+            <ViewFooter
               class="flex items-center justify-between gap-8 rounded-6 b-1-muted bg-container px-12 py-10 text-xs text-secondary"
             >
-              <span>WView.Footer</span>
+              <span>View.Footer</span>
               <span>底部区域不会参与内容收缩</span>
-            </WView.Footer>
-          </WView>
+            </ViewFooter>
+          </View>
         </div>
       </section>
     </div>
-  </WView>
+  </View>
 </template>
 
 <script setup lang="ts">
-import { WView } from '@/components/view'
-
 const headerCollapsed = shallowRef(false)
 const siderCollapsed = shallowRef(false)
 const gap = shallowRef(8)

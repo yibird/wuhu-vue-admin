@@ -1,5 +1,5 @@
 <template>
-  <WView :full="true" :padding="false" class="bg-page">
+  <View :full="true" :padding="false" class="bg-page">
     <div
       class="h-full min-h-full w-full p-16 md:p-20 overflow-x-hidden overflow-y-auto"
     >
@@ -178,13 +178,12 @@
         </div>
       </section>
     </div>
-  </WView>
+  </View>
 </template>
 
 <script setup lang="ts">
 import { usePreferredReducedMotion, useScroll, useToggle } from '@vueuse/core'
-import { Icon } from '@/components/icon'
-import { LazyContainer, ResizeContainer } from '@/components/container'
+import { Icon, LazyContainer, ResizeContainer } from '@/components'
 import type { ContainerSize } from '@/components/container'
 
 const lazyViewportRef = useTemplateRef<HTMLElement>('lazyViewportRef')
