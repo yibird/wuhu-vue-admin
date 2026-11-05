@@ -39,14 +39,10 @@ export const beforeErrorHook: BeforeErrorHook = async ({ error }) => {
 export const beforeError: BeforeErrorHook[] = [beforeErrorHook]
 
 function resolveResponseErrorInfo(error: Error): ResponseErrorInfo | undefined {
-  // 主动取消（useRequest.cancel / 重复请求中止）不提示
   if (error.name === 'AbortError') return undefined
 
   if (isHTTPError(error)) {
-    // ky 在 beforeError 前已消费响应体并将结果写入 error.data，
-    // 这里直接读取，不能再 clone / 读取 response body
     const payloadMessage = getPayloadMessage(error.data)
-
     return {
       status: error.response.status,
       message:

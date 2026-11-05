@@ -25,7 +25,7 @@ function isValidCredentials(credentials: LoginRequest) {
 
 export default defineMock([
   {
-    url: '/api/v1/auth/login',
+    url: '/api/auth/login',
     method: 'POST',
     body: ({ body }: MockRequest) => {
       const credentials = body as unknown as LoginRequest
@@ -38,7 +38,7 @@ export default defineMock([
     },
   },
   {
-    url: '/api/v1/auth/session',
+    url: '/api/auth/session',
     method: 'GET',
     body: ({ headers }: MockRequest) => {
       const authorization = headers.authorization

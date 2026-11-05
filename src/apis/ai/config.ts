@@ -3,7 +3,7 @@ import type { LlmConfig } from './types'
 /**
  * 默认对话补全路径,经 Vite 代理转发到网关,避免跨域与密钥外泄。
  */
-const DEFAULT_CHAT_URL = '/v1/ai/chat/completions'
+const DEFAULT_CHAT_URL = '/ai/chat/completions'
 
 /**
  * 默认模型标识。

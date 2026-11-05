@@ -10,7 +10,7 @@ import type {
 } from './types'
 
 export function accountLoginApi(data: AccountLoginReq, signal?: AbortSignal) {
-  return apiRequest<ApiResult<AuthResponse>>('/v1/auth/login', {
+  return apiRequest<ApiResult<AuthResponse>>('/auth/login', {
     method: HTTP_METHOD.Post,
     json: data,
     signal,
@@ -18,7 +18,7 @@ export function accountLoginApi(data: AccountLoginReq, signal?: AbortSignal) {
 }
 
 export function mobileLoginApi(data: MobileLoginReq, signal?: AbortSignal) {
-  return apiRequest<ApiResult<AuthResponse>>('/v1/auth/login', {
+  return apiRequest<ApiResult<AuthResponse>>('/auth/login', {
     method: HTTP_METHOD.Post,
     json: data,
     signal,
@@ -26,7 +26,7 @@ export function mobileLoginApi(data: MobileLoginReq, signal?: AbortSignal) {
 }
 
 export function getAuthSessionApi(signal?: AbortSignal) {
-  return apiRequest<ApiResult<AuthSession>>('/v1/auth/session', {
+  return apiRequest<ApiResult<AuthSession>>('/auth/session', {
     method: HTTP_METHOD.Get,
     signal,
     dedupe: false,
