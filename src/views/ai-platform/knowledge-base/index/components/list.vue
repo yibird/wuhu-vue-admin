@@ -1,5 +1,5 @@
 <template>
-  <WView :full="true" :padding="0">
+  <View :full="true" :padding="0">
     <div class="h-full min-h-0 flex flex-col overflow-hidden bg-page">
       <Toolbar
         class="page-enter page-enter--1"
@@ -17,49 +17,38 @@
         data-testid="ai-resource-scroll"
         class="page-enter page-enter--2 min-h-0 flex-1 p-12 overflow-y-auto overflow-x-hidden sm:p-16 lg:p-20"
       >
-        <div
-          v-if="isLoading"
-          class="grid grid-cols-1 gap-16 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4"
-        >
-          <div
-            v-for="index in 12"
-            :key="index"
-            class="h-270 rounded-8 b-1-regular bg-container p-14"
+        <Skeleton name="ai-knowledge-base-list" :loading="loading">
+          <a-empty
+            v-if="paginatedItems.length === 0"
+            class="h-full min-h-360 flex flex-col items-center justify-center"
+            :description="props.config.emptyText"
           >
-            <a-skeleton active :paragraph="{ rows: 5 }" />
-          </div>
-        </div>
+            <a-button @click="clearFilters">清除筛选</a-button>
+          </a-empty>
 
-        <a-empty
-          v-else-if="paginatedItems.length === 0"
-          class="h-full min-h-360 flex flex-col items-center justify-center"
-          :description="props.config.emptyText"
-        >
-          <a-button @click="clearFilters">清除筛选</a-button>
-        </a-empty>
-
-        <AnimatedGroup
-          v-else
-          id="knowledge-base-card-list"
-          reduced-motion="user"
-          :items="paginatedItems"
-          :get-key="(item: KnowledgeBaseItem) => item.id"
-          as="div"
-          class="grid grid-cols-1 gap-16 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4"
-          motion-as="div"
-          layout="position"
-          motion-class="min-w-0"
-        >
-          <template #default="{ item }">
-            <Card
-              class="h-full"
-              :item="item"
-              :status-labels="props.config.statusLabels"
-              :subject="props.config.totalText"
-              @action="handleCardAction"
-            />
-          </template>
-        </AnimatedGroup>
+          <AnimatedGroup
+            v-else
+            id="knowledge-base-card-list"
+            reduced-motion="user"
+            :items="paginatedItems"
+            :get-key="(item: KnowledgeBaseItem) => item.id"
+            as="div"
+            class="grid grid-cols-1 gap-16 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4"
+            motion-as="div"
+            layout="position"
+            motion-class="min-w-0"
+          >
+            <template #default="{ item }">
+              <Card
+                class="h-full"
+                :item="item"
+                :status-labels="props.config.statusLabels"
+                :subject="props.config.totalText"
+                @action="handleCardAction"
+              />
+            </template>
+          </AnimatedGroup>
+        </Skeleton>
       </main>
 
       <footer
@@ -67,7 +56,7 @@
         class="page-enter page-enter--3 flex flex-none justify-center b-t-1-regular bg-container px-12 py-10 sm:px-16"
       >
         <a-pagination
-          v-if="!isLoading && filteredItems.length > 0"
+          v-if="!loading && filteredItems.length > 0"
           v-model:current="currentPage"
           v-model:page-size="pageSize"
           :page-size-options="[12, 24, 36]"
@@ -80,10 +69,11 @@
 
       <CreateModal v-model:open="createModalOpen" @create="handleCreated" />
     </div>
-  </WView>
+  </View>
 </template>
 
 <script setup lang="ts">
+import Skeleton from 'boneyard-js/vue'
 import { useRouter } from 'vue-router'
 import { message, Modal } from 'antdv-next'
 import { AnimatedGroup } from '@/components/animated'
@@ -108,7 +98,7 @@ const props = defineProps<{
 
 const router = useRouter()
 const createModalOpen = shallowRef(false)
-const { isLoading } = useLoading({ delay: 220 })
+const { loading } = useLoading({ delay: 220 })
 
 const {
   currentPage,

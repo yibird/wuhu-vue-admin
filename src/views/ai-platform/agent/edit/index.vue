@@ -1,5 +1,5 @@
 <template>
-  <WView :full="true" :padding="0">
+  <View :full="true" :padding="0">
     <div class="h-full min-h-0 flex flex-col overflow-hidden bg-page">
       <header
         class="flex flex-none items-center justify-between gap-12 b-b-1-regular bg-container px-16 py-12"
@@ -287,7 +287,7 @@
         </div>
       </main>
     </div>
-  </WView>
+  </View>
 </template>
 
 <script setup lang="ts">

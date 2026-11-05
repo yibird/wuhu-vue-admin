@@ -1,5 +1,5 @@
 <template>
-  <WView :full="true" :padding="0">
+  <View :full="true" :padding="0">
     <div class="h-full min-h-0 flex overflow-hidden bg-page">
       <Sidebar
         v-model:active-key="activeKey"
@@ -74,7 +74,7 @@
         </main>
       </div>
     </div>
-  </WView>
+  </View>
 </template>
 
 <script setup lang="ts">
