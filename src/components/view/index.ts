@@ -1,26 +1,26 @@
-import View from './src/index.vue'
-import WViewHeader from './src/view-header.vue'
-import WViewContent from './src/view-content.vue'
-import WViewFooter from './src/view-footer.vue'
-import WViewSider from './src/view-sider.vue'
+import { default as ViewComponent } from './src/index.vue'
+import ViewHeader from './src/view-header.vue'
+import ViewContent from './src/view-content.vue'
+import ViewFooter from './src/view-footer.vue'
+import ViewSider from './src/view-sider.vue'
 export type {
-  WViewProps,
-  WViewSiderProps,
-  WViewHeaderProps,
-  WViewContentProps,
-  WViewFooterProps,
+  ViewProps,
+  ViewSiderProps,
+  ViewHeaderProps,
+  ViewContentProps,
+  ViewFooterProps,
 } from './src/types'
 
-const WView = View as typeof View & {
-  Header: typeof WViewHeader
-  Content: typeof WViewContent
-  Sider: typeof WViewSider
-  Footer: typeof WViewFooter
+const View = ViewComponent as typeof ViewComponent & {
+  Header: typeof ViewHeader
+  Content: typeof ViewContent
+  Sider: typeof ViewSider
+  Footer: typeof ViewFooter
 }
 
-WView.Header = WViewHeader
-WView.Content = WViewContent
-WView.Sider = WViewSider
-WView.Footer = WViewFooter
+View.Header = ViewHeader
+View.Content = ViewContent
+View.Sider = ViewSider
+View.Footer = ViewFooter
 
-export { WView, WViewHeader, WViewContent, WViewFooter, WViewSider }
+export { View, ViewHeader, ViewContent, ViewFooter, ViewSider }

@@ -8,7 +8,6 @@
 defineSlots<{
   default?: () => VNode | VNode[]
 }>()
-defineOptions({ name: 'WViewFooter' })
 </script>
 
 <style lang="less" scoped>

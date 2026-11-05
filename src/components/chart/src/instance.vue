@@ -37,8 +37,29 @@ const chartRef = useTemplateRef<{
  */
 let resizeTimer = 0
 
-const resizeChart = () => {
+/**
+ * 尺寸真正变化后才重绘
+ *
+ * ResizeObserver 在挂载时会先回调一次,此时容器尺寸与图表初始尺寸一致;
+ * 若不加判断,200ms 后触发的 resize 会打断图表入场动画,表现为动画非常快。
+ */
+const resizeChart = (entries: ResizeObserverEntry[]) => {
   if (!props.autoresize) return
+
+  const entry = entries[0]
+  const chart = chartRef.value?.chart
+  if (!entry || !chart) return
+
+  const width = Math.round(entry.contentRect.width)
+  const height = Math.round(entry.contentRect.height)
+  if (!width || !height) return
+  if (
+    width === Math.round(chart.getWidth()) &&
+    height === Math.round(chart.getHeight())
+  ) {
+    return
+  }
+
   window.clearTimeout(resizeTimer)
   resizeTimer = window.setTimeout(() => {
     chartRef.value?.chart?.resize()

@@ -51,7 +51,7 @@ export const componentsMenus: IMenu[] = [
           },
           {
             id: '314',
-            title: 'WView',
+            title: 'View',
             type: 2,
             rootId: '3',
             parentId: '31',

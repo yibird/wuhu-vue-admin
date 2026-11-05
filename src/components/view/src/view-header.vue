@@ -48,12 +48,12 @@ import { Icon } from '../../icon'
 import { getCssSize, viewContextKey } from './context'
 import type {
   ViewCollapseEmits,
-  WViewHeaderProps,
-  WViewHeaderSlots,
+  ViewHeaderProps,
+  ViewHeaderSlots,
 } from './types'
 import type { CSSProperties } from 'vue'
 
-const props = withDefaults(defineProps<WViewHeaderProps>(), {
+const props = withDefaults(defineProps<ViewHeaderProps>(), {
   collapsible: false,
   trigger: true,
   collapseLabel: '收起头部',
@@ -62,8 +62,8 @@ const props = withDefaults(defineProps<WViewHeaderProps>(), {
 
 const collapsed = defineModel<boolean>('collapsed', { default: false })
 const emits = defineEmits<ViewCollapseEmits>()
-const slots = defineSlots<WViewHeaderSlots>()
-defineOptions({ name: 'WViewHeader', inheritAttrs: false })
+const slots = defineSlots<ViewHeaderSlots>()
+defineOptions({ name: 'ViewHeader', inheritAttrs: false })
 
 const contentId = useId()
 const viewContext = inject(viewContextKey, null)

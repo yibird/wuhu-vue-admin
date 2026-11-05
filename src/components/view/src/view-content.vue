@@ -8,7 +8,7 @@
 defineSlots<{
   default?: () => VNode | VNode[]
 }>()
-defineOptions({ name: 'WViewContent' })
+defineOptions({ name: 'ViewContent' })
 </script>
 
 <style lang="less" scoped>

@@ -46,13 +46,9 @@
 import { computed, inject, useId, type CSSProperties } from 'vue'
 import { Icon } from '../../icon'
 import { getCssSize, toCssSize, viewContextKey } from './context'
-import type {
-  ViewCollapseEmits,
-  WViewSiderProps,
-  WViewSiderSlots,
-} from './types'
+import type { ViewCollapseEmits, ViewSiderProps, ViewSiderSlots } from './types'
 
-const props = withDefaults(defineProps<WViewSiderProps>(), {
+const props = withDefaults(defineProps<ViewSiderProps>(), {
   collapsible: false,
   trigger: true,
   collapseLabel: '收起侧栏',
@@ -63,8 +59,8 @@ const props = withDefaults(defineProps<WViewSiderProps>(), {
 
 const collapsed = defineModel<boolean>('collapsed', { default: false })
 const emits = defineEmits<ViewCollapseEmits>()
-const slots = defineSlots<WViewSiderSlots>()
-defineOptions({ name: 'WViewSider', inheritAttrs: false })
+const slots = defineSlots<ViewSiderSlots>()
+defineOptions({ name: 'ViewSider', inheritAttrs: false })
 
 const contentId = useId()
 const viewContext = inject(viewContextKey, null)

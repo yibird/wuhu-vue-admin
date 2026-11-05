@@ -101,7 +101,7 @@
 
 <script setup lang="ts">
 import { message } from 'antdv-next'
-import { WView } from '../../view'
+import { View } from '../../view'
 import {
   Canvas as ApprovalCanvas,
   Header as ApprovalHeader,
@@ -208,7 +208,7 @@ const emits = defineEmits<{
 
 const model = defineModel<ApprovalWorkflowSchema>({ required: true })
 
-const wrapperComponent = computed(() => (props.embedded ? 'div' : WView))
+const wrapperComponent = computed(() => (props.embedded ? 'div' : View))
 const wrapperProps = computed(() =>
   props.embedded
     ? { class: 'approval-designer-embedded h-full min-h-0 overflow-hidden' }

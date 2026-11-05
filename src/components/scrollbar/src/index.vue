@@ -32,11 +32,11 @@ const DEFAULT_OPTIONS = {
     autoHideDelay: 300,
   },
   update: {
-    // 侧边栏折叠等宽度动画期间,ResizeObserver/MutationObserver 会每帧触发;
-    // 去抖后只在动画结束后更新一次,避免整页滚动容器每帧都做同步样式计算
+    // 侧边栏折叠、路由切换等过程中 ResizeObserver/MutationObserver 会连续触发;
+    // 250ms 去抖让滚动容器在页面结构稳定后只更新一次
     debounce: {
-      mutation: 100,
-      resize: 100,
+      mutation: 250,
+      resize: 250,
       event: 100,
       env: 100,
     },

@@ -7,12 +7,9 @@
 <script lang="ts" setup>
 import { toCssSize, viewContextKey } from './context'
 import type { CSSProperties } from 'vue'
-import type { WViewProps } from './types'
+import type { ViewProps } from './types'
 
-defineOptions({
-  name: 'WView',
-})
-const props = withDefaults(defineProps<WViewProps>(), {
+const props = withDefaults(defineProps<ViewProps>(), {
   padding: true,
   full: true,
   direction: 'vertical',
