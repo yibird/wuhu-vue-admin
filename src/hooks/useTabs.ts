@@ -1,3 +1,4 @@
+import { onScopeDispose } from 'vue'
 import { createSharedComposable } from '@vueuse/core'
 import { storeToRefs } from 'pinia'
 import { useRoute, useRouter } from 'vue-router'
@@ -44,6 +45,15 @@ const useTabsNavigation = createSharedComposable(() => {
     })
   }
 
+  /** 延迟导航的 rAF 句柄,连续切换 Tab 时只保留最后一次 */
+  let navigationFrameId: number | undefined
+
+  const cancelNavigation = () => {
+    if (navigationFrameId === undefined) return
+    cancelAnimationFrame(navigationFrameId)
+    navigationFrameId = undefined
+  }
+
   watch(
     () => store.activeKey,
     (val) => {
@@ -51,9 +61,25 @@ const useTabsNavigation = createSharedComposable(() => {
         ? store.tabs.find((tab) => tab.key === val)
         : store.homeTab
       if (!tab) return
-      navigateTab(tab)
+
+      cancelNavigation()
+      if (typeof requestAnimationFrame === 'undefined') {
+        void navigateTab(tab)
+        return
+      }
+
+      // 等两帧再切路由:先让 Tab 激活态和顶部指示线完成首帧提交,
+      // 否则路由组件的激活/挂载会在同一个任务里阻塞线条过渡
+      navigationFrameId = requestAnimationFrame(() => {
+        navigationFrameId = requestAnimationFrame(() => {
+          navigationFrameId = undefined
+          void navigateTab(tab)
+        })
+      })
     }
   )
+
+  onScopeDispose(cancelNavigation)
 
   watch(
     () => route.fullPath,

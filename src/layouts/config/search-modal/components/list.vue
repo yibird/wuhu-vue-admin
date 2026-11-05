@@ -94,8 +94,11 @@
 
 <script setup lang="ts">
 import { onKeyStroke } from '@vueuse/core'
-import { Scrollbar, type ScrollbarInstance } from '@/components/scrollbar'
-import { SlidingHighlight } from '@/components/sliding-highlight'
+import {
+  Scrollbar,
+  type ScrollbarInstance,
+  SlidingHighlight,
+} from '@/components'
 import {
   getSearchMatch,
   getSearchTextSegments,

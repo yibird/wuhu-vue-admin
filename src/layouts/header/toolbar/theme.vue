@@ -6,7 +6,7 @@
     data-motion="spin"
     @click="toggleThemeWithAnimation"
   >
-    <Transition name="fade-icon" mode="out-in">
+    <Transition name="fade-spin" mode="out-in">
       <Icon
         v-if="themeMode === THEME_MODE.Dark"
         key="light"

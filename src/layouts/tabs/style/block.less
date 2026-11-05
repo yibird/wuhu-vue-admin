@@ -13,13 +13,14 @@
       background-color: rgb(var(--w-color-primary));
       transform: scaleX(0);
       transform-origin: left center;
-      transition: transform 200ms var(--w-motion-ease);
+      transition: transform 150ms var(--w-motion-ease);
     }
 
     &:hover::before,
     &-active::before,
     &.tab-item-active::before {
       transform: scaleX(1);
+      will-change: transform;
     }
   }
 

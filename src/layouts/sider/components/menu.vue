@@ -1,20 +1,23 @@
 <template>
   <Scrollbar class="flex-1">
-    <a-menu
-      :selected-keys="selectedKeys"
-      :open-keys="menuOpenKeys"
-      :inline-collapsed="inlineCollapsed"
-      :items="items"
-      :mode="mode"
-      :theme="theme"
-      @open-change="onOpenChange"
-      @click="onClick"
-      class="border-none!"
-    />
+    <div @mouseover="onMenuIntent" @focusin="onMenuIntent">
+      <a-menu
+        :selected-keys="selectedKeys"
+        :open-keys="menuOpenKeys"
+        :inline-collapsed="inlineCollapsed"
+        :items="items"
+        :mode="mode"
+        :theme="theme"
+        @open-change="onOpenChange"
+        @click="onClick"
+        class="border-none!"
+      />
+    </div>
   </Scrollbar>
 </template>
 <script lang="ts" setup>
 import { useTabs } from '@/hooks'
+import { useRoutePrefetch } from '@/router'
 import { Scrollbar } from '@/components/scrollbar'
 import { renderIcon, renderMenus } from '@/utils'
 import type { MenuProps } from './types'
@@ -41,6 +44,19 @@ const inlineCollapsed = computed(() =>
 )
 const theme = computed(() => props.theme)
 
+const { prefetchByMenuId } = useRoutePrefetch()
+
+/**
+ * 在鼠标移入/键盘聚焦优先加载目标路由 chunk,
+ * 把页面模块的下载与解析从点击任务中移出
+ */
+function onMenuIntent(event: Event) {
+  const target = event.target as HTMLElement | null
+  const item = target?.closest<HTMLElement>('.ant-menu-item')
+  const menuId = item?.dataset.menuId?.split('-').pop()
+  if (menuId) prefetchByMenuId(menuId)
+}
+
 const items = computed(() => {
   return renderMenus(
     props.items,
@@ -60,7 +76,6 @@ const items = computed(() => {
 
 const visibleMenuKeys = computed(() => {
   const keys = new Set<string>()
-
   const collectVisibleKeys = (menuItems: IMenu[]) => {
     for (const item of menuItems) {
       if ([1, 2].includes(item.type)) {

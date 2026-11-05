@@ -1,7 +1,7 @@
 <template>
   <div>
     <a-divider>菜单模式</a-divider>
-    <div class="grid grid-cols-4 gap-6">
+    <div class="grid grid-cols-4 gap-20">
       <button
         v-for="item in menuModeOptions"
         :key="item.value"

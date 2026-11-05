@@ -96,15 +96,20 @@ function getRevealTarget(target: Target, activeKey: ActiveKey) {
  */
 export function useRoll(target: Target, activeKey: ActiveKey) {
   let scheduledFrameId: number | undefined
+  let scheduledIdleId: number | undefined
   let scrollFrameId: number | undefined
-  /** 首次定位直接落位,不播放动画 */
   let isFirstRoll = true
   const preferredMotion = usePreferredReducedMotion()
 
   const cancelScheduledRoll = () => {
-    if (scheduledFrameId === undefined) return
-    cancelAnimationFrame(scheduledFrameId)
-    scheduledFrameId = undefined
+    if (scheduledFrameId !== undefined) {
+      cancelAnimationFrame(scheduledFrameId)
+      scheduledFrameId = undefined
+    }
+    if (scheduledIdleId !== undefined) {
+      cancelIdleCallback(scheduledIdleId)
+      scheduledIdleId = undefined
+    }
   }
 
   const cancelScrollAnimation = () => {
@@ -157,6 +162,7 @@ export function useRoll(target: Target, activeKey: ActiveKey) {
 
     const roll = () => {
       scheduledFrameId = undefined
+      scheduledIdleId = undefined
 
       const reveal = getRevealTarget(target, activeKey)
       const shouldAnimate = animate && !isFirstRoll
@@ -169,6 +175,13 @@ export function useRoll(target: Target, activeKey: ActiveKey) {
 
     if (typeof requestAnimationFrame === 'undefined') {
       roll()
+      return
+    }
+
+    // 首次定位和尺寸变化立即执行;切换 Tab 时延后到空闲帧,
+    // 避免滚动测量/写入与路由渲染、顶部指示线动画争抢主线程
+    if (animate && !isFirstRoll && typeof requestIdleCallback === 'function') {
+      scheduledIdleId = requestIdleCallback(roll, { timeout: 200 })
       return
     }
 
