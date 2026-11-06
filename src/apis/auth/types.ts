@@ -27,8 +27,3 @@ export interface AuthResponse {
   menus: IMenu[]
   userInfo: AuthUser
 }
-
-export interface AuthSession {
-  user: AuthUser
-  permissions: string[]
-}

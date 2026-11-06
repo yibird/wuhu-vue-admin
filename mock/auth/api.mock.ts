@@ -1,17 +1,14 @@
 import { defineMock, type MockRequest } from 'vite-plugin-mock-dev-server'
 import { apiErr, apiOk } from '#mock/helper'
 
-import type { AuthResponse, AuthSession, LoginRequest } from '@/apis'
+import type { AuthResponse, AuthUser, LoginRequest } from '@/apis'
 
 const accessToken = 'mock-admin-access-token'
-const session: AuthSession = {
-  user: {
-    id: '1',
-    account: 'admin',
-    name: '管理员',
-    roles: ['admin'],
-  },
-  permissions: ['*'],
+const user: AuthUser = {
+  id: '1',
+  account: 'admin',
+  name: '管理员',
+  roles: ['admin'],
 }
 
 function isValidCredentials(credentials: LoginRequest) {
@@ -33,19 +30,8 @@ export default defineMock([
       return apiOk<AuthResponse>({
         accessToken,
         menus: [],
-        userInfo: session.user,
+        userInfo: user,
       })
-    },
-  },
-  {
-    url: '/api/auth/session',
-    method: 'GET',
-    body: ({ headers }: MockRequest) => {
-      const authorization = headers.authorization
-      if (authorization !== `Bearer ${accessToken}`) {
-        return apiErr('会话已失效')
-      }
-      return apiOk(session)
     },
   },
 ])

@@ -1,6 +1,6 @@
 import { defineStore, storeToRefs } from 'pinia'
 import { message } from 'antdv-next'
-import { accountLoginApi, getAuthSessionApi, mobileLoginApi } from '@/apis'
+import { accountLoginApi, mobileLoginApi } from '@/apis'
 import { menus } from '@/config'
 import { HTTP_STATUS } from '@/constants'
 import { getToken, removeToken, setToken } from '@/utils'
@@ -20,6 +20,10 @@ export const authStore = defineStore('wuhu-vue-admin:auth', {
       loading: false,
       isAuthenticated: Boolean(accessToken),
     } as AuthStoreState
+  },
+  persist: {
+    // 只持久化用户信息;token 由 TOKEN_KEY 单独管理
+    pick: ['userInfo'],
   },
   actions: {
     /**
@@ -72,37 +76,6 @@ export const authStore = defineStore('wuhu-vue-admin:auth', {
         return true
       } finally {
         this.loading = false
-      }
-    },
-    /**
-     * 恢复本地 token 对应的会话
-     *
-     * 刷新页面后 userInfo 为空,不能直接重定向到登录页,否则会和
-     * 「已登录访问 /login 时跳回原路由」形成无限重定向。
-     *
-     * @returns 会话是否有效
-     */
-    async restoreSession() {
-      const token = getToken()
-      if (!token) {
-        this.$reset()
-        return false
-      }
-      if (this.userInfo) return true
-      try {
-        const res = await getAuthSessionApi()
-        if (res.code !== HTTP_STATUS.Ok || !res.data?.user) {
-          this.logout()
-          return false
-        }
-        this.accessToken = token
-        this.userInfo = res.data.user
-        this.isAuthenticated = true
-        permissionStore().setMenus(menus)
-        return true
-      } catch {
-        this.logout()
-        return false
       }
     },
     logout() {

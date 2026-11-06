@@ -2,7 +2,7 @@ import ky, { type Input } from 'ky'
 import { appEnv } from '../env'
 import { beforeRequest, beforeError, beforeRetry, afterResponse } from './hooks'
 import {
-  buildRequestDedupKey,
+  getRequestDedupKey,
   dedupeRequest,
   type ApiRequestOptions,
 } from './dedupe'
@@ -28,7 +28,7 @@ export function apiRequest<T>(
   options?: ApiRequestOptions
 ): Promise<T> {
   const { responseType = 'json', ...requestOptions } = options ?? {}
-  return dedupeRequest(buildRequestDedupKey(url, options), async () => {
+  return dedupeRequest(getRequestDedupKey(url, options), async () => {
     const response = await kyInstance(url, requestOptions)
     return parseApiResponse<T>(response, responseType)
   })

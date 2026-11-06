@@ -5,7 +5,7 @@ import {
   isTimeoutError,
   type BeforeErrorHook,
 } from 'ky'
-import { buildResponseDedupKey, dedupeResponse } from '../dedupe'
+import { getResponseDedupKey, dedupeResponse } from '../dedupe'
 
 interface ResponseErrorInfo {
   status: number | string
@@ -23,7 +23,7 @@ export const beforeErrorHook: BeforeErrorHook = async ({ error }) => {
 
     if (errorInfo) {
       dedupeResponse(
-        buildResponseDedupKey(errorInfo.status, errorInfo.message),
+        getResponseDedupKey(errorInfo.status, errorInfo.message),
         () => {
           message.error(errorInfo.message)
         }

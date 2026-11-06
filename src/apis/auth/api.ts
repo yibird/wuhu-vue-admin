@@ -2,33 +2,18 @@ import { apiRequest } from '@/utils'
 import { HTTP_METHOD } from '@/constants'
 
 import type { ApiResult } from '#/http'
-import type {
-  AccountLoginReq,
-  MobileLoginReq,
-  AuthResponse,
-  AuthSession,
-} from './types'
+import type { AccountLoginReq, MobileLoginReq, AuthResponse } from './types'
 
-export function accountLoginApi(data: AccountLoginReq, signal?: AbortSignal) {
+export function accountLoginApi(data: AccountLoginReq) {
   return apiRequest<ApiResult<AuthResponse>>('/auth/login', {
     method: HTTP_METHOD.Post,
     json: data,
-    signal,
   })
 }
 
-export function mobileLoginApi(data: MobileLoginReq, signal?: AbortSignal) {
+export function mobileLoginApi(data: MobileLoginReq) {
   return apiRequest<ApiResult<AuthResponse>>('/auth/login', {
     method: HTTP_METHOD.Post,
     json: data,
-    signal,
-  })
-}
-
-export function getAuthSessionApi(signal?: AbortSignal) {
-  return apiRequest<ApiResult<AuthSession>>('/auth/session', {
-    method: HTTP_METHOD.Get,
-    signal,
-    dedupe: false,
   })
 }
