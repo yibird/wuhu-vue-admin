@@ -1,6 +1,6 @@
 <template>
   <aside
-    class="min-h-0 grid grid-rows-[auto_minmax(0,1fr)] overflow-hidden rounded-8 b-1-regular bg-container shadow-sm"
+    class="min-h-0 grid grid-rows-[auto_minmax(0,1fr)] overflow-hidden rounded-8 b-1-secondary bg-container shadow-sm"
   >
     <header class="border-b border-regular px-12 py-10">
       <h2 class="m-0 text-14px font-700 text-primary">审批组件</h2>
@@ -26,7 +26,7 @@
           <a-button
             v-for="item in palette"
             :key="item.type"
-            class="h-auto min-h-58 w-full grid grid-cols-[32px_minmax(0,1fr)_auto] items-center gap-10 rounded-8 b-1-regular bg-container p-10 text-left transition hover:(border-primary bg-hover)"
+            class="h-auto min-h-58 w-full grid grid-cols-[32px_minmax(0,1fr)_auto] items-center gap-10 rounded-8 b-1-secondary bg-container p-10 text-left transition hover:(border-primary bg-hover)"
             :disabled="readonly"
             @click="emits('add', item)"
           >
@@ -57,7 +57,7 @@
           <a-button
             v-for="template in templates"
             :key="template.id"
-            class="block h-auto min-h-70 w-full rounded-8 b-1-regular bg-container p-10 text-left hover:(border-primary bg-hover)"
+            class="block h-auto min-h-70 w-full rounded-8 b-1-secondary bg-container p-10 text-left hover:(border-primary bg-hover)"
             :disabled="readonly"
             @click="emits('applyTemplate', template.id)"
           >

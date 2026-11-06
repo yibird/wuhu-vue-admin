@@ -5,7 +5,7 @@
     <button
       ref="triggerRef"
       type="button"
-      class="w-icon-picker-trigger__button box-border inline-flex w-full min-w-0 cursor-pointer items-center justify-between gap-8 rounded-6 b-1-regular bg-container px-11 text-left text-sm text-main transition-colors hover:border-primary disabled:cursor-not-allowed"
+      class="w-icon-picker-trigger__button box-border inline-flex w-full min-w-0 cursor-pointer items-center justify-between gap-8 rounded-6 b-1-secondary bg-container px-11 text-left text-sm text-main transition-colors hover:border-primary disabled:cursor-not-allowed"
       :class="{
         'h-24 text-xs': size === 'small',
         'h-32': size === 'middle',

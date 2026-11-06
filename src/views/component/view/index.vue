@@ -27,7 +27,7 @@
         </div>
 
         <div
-          class="min-h-420 overflow-hidden rounded-6 b-1-regular bg-secondary p-12"
+          class="min-h-420 overflow-hidden rounded-6 b-1-secondary bg-secondary p-12"
         >
           <View :full="false" :padding="12" :gap="gap" class="h-full min-h-396">
             <ViewHeader

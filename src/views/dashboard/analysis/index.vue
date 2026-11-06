@@ -1,9 +1,9 @@
 <template>
   <View :full="false" class="p-10 overflow-hidden">
     <div class="page-view flex flex-col gap-12">
-      <Skeleton name="analysis-overview" :loading="loading">
+      <ViewSection skeleton-name="analysis-overview" :loading="loading">
         <Overview :items="cards" />
-      </Skeleton>
+      </ViewSection>
       <Statistics :loading="loading" />
       <GoalProgress :loading="loading" />
       <div
@@ -26,7 +26,7 @@
 </template>
 
 <script lang="ts" setup>
-import Skeleton from 'boneyard-js/vue'
+import { ViewSection } from '@/components/view-section'
 import { useLoading } from '@/hooks'
 import {
   Overview,

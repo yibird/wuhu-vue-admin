@@ -1,6 +1,6 @@
 <template>
   <header
-    class="min-w-0 flex justify-between items-center gap-10 b-b-1-regular p-10 max-md:(flex flex-wrap justify-center)"
+    class="min-w-0 flex justify-between items-center gap-10 b-b-1-secondary p-10 max-md:(flex flex-wrap justify-center)"
   >
     <a-segmented
       v-model:value="activeTab"

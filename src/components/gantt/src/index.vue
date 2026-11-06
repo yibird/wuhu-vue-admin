@@ -1,6 +1,6 @@
 <template>
   <div
-    class="relative full min-h-0 overflow-hidden rounded-4 b-1-regular bg-container"
+    class="relative full min-h-0 overflow-hidden rounded-4 b-1-secondary bg-container"
     v-bind="$attrs"
     @contextmenu="handleContextMenu"
     @mousedown="handleContextMouseDown"

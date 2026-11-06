@@ -2,7 +2,7 @@
   <View :full="true" :padding="0">
     <div class="h-full min-h-0 flex flex-col overflow-hidden bg-page">
       <header
-        class="page-enter page-enter--1 flex flex-none flex-wrap items-center gap-10 b-b-1-regular bg-container px-12 py-10 sm:px-16"
+        class="page-enter page-enter--1 flex flex-none flex-wrap items-center gap-10 b-b-1-secondary bg-container px-12 py-10 sm:px-16"
       >
         <span
           class="size-38 flex flex-none items-center justify-center rounded-8 bg-primary/12 text-primary"
@@ -25,13 +25,13 @@
         class="page-enter page-enter--2 min-h-0 flex-1 grid grid-cols-1 gap-12 overflow-hidden p-12 lg:grid-cols-[260px_minmax(0,1fr)] sm:p-16"
       >
         <aside
-          class="min-h-0 flex flex-col overflow-hidden rounded-8 b-1-regular bg-container"
+          class="min-h-0 flex flex-col overflow-hidden rounded-8 b-1-secondary bg-container"
         >
-          <div class="flex-none px-12 pb-8 pt-10">
+          <div class="flex-none px-12 py-10">
             <div class="flex items-center gap-8">
               <h2 class="m-0 text-sm text-main font-700">分组列表</h2>
               <span
-                class="rounded-999 bg-secondary px-7 py-1 text-11px text-secondary"
+                class="rounded-999 bg-secondary px-8 text-11px text-secondary"
               >
                 {{ filteredCategories.length }}
               </span>
@@ -47,7 +47,9 @@
               </template>
             </a-input>
           </div>
-          <div class="min-h-0 flex-1 overflow-y-auto px-8 pb-10">
+          <div
+            class="min-h-0 flex-1 px-8 py-10 overflow-y-auto b-t-1-secondary"
+          >
             <a-spin :spinning="categoryLoading">
               <div
                 v-if="!categoryLoading && filteredCategories.length === 0"
@@ -109,11 +111,11 @@
         </aside>
 
         <section class="min-h-0 flex flex-col overflow-hidden">
-          <div class="min-h-0 flex-1 overflow-y-auto p-4">
-            <Skeleton name="approval-category-list" :loading="loading">
+          <div class="min-h-0 flex-1 overflow-y-auto p-6">
+            <a-spin :spinning="loading" class="block min-h-full">
               <a-empty
-                v-if="list.length === 0"
-                class="py-72"
+                v-if="!loading && list.length === 0"
+                class="h-full min-h-360 flex flex-col items-center justify-center"
                 description="该分组下还没有审批流程"
               />
 
@@ -130,7 +132,7 @@
                   @remove="removeDefinition"
                 />
               </div>
-            </Skeleton>
+            </a-spin>
           </div>
 
           <footer v-if="total > 0" class="flex flex-none justify-center pt-12">
@@ -180,7 +182,6 @@
 </template>
 
 <script setup lang="ts">
-import Skeleton from 'boneyard-js/vue'
 import { message } from 'antdv-next'
 import { Motion } from 'motion-v'
 import { Icon } from '@/components/icon'

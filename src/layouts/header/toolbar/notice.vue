@@ -13,17 +13,13 @@
       </button>
     </span>
     <template #content>
-      <Suspense timeout="0">
+      <ViewSection skeleton-name="notice-center" class="w-320">
         <NoticeCenter />
-        <template #fallback>
-          <div class="w-320 px-10 py-14">
-            <a-skeleton active :paragraph="{ rows: 4 }" />
-          </div>
-        </template>
-      </Suspense>
+      </ViewSection>
     </template>
   </a-popover>
 </template>
 <script lang="ts" setup>
+import { ViewSection } from '@/components/view-section'
 import { NoticeCenter } from '@/layouts/config'
 </script>

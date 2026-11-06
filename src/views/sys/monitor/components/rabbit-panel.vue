@@ -16,7 +16,7 @@
     <div class="mt-14 overflow-x-auto">
       <div class="min-w-850">
         <div
-          class="grid grid-cols-[minmax(210px,1.7fr)_120px_90px_90px_90px_110px_110px] gap-10 b-b-1-regular px-10 pb-9 text-xs text-secondary"
+          class="grid grid-cols-[minmax(210px,1.7fr)_120px_90px_90px_90px_110px_110px] gap-10 b-b-1-secondary px-10 pb-9 text-xs text-secondary"
         >
           <span>队列</span>
           <span>状态</span>

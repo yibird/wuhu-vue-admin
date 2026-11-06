@@ -1,6 +1,6 @@
 <template>
   <section
-    class="min-h-0 min-w-0 grid grid-rows-[auto_minmax(0,1fr)] overflow-hidden rounded-8 b-1-regular bg-container shadow-sm"
+    class="min-h-0 min-w-0 grid grid-rows-[auto_minmax(0,1fr)] overflow-hidden rounded-8 b-1-secondary bg-container shadow-sm"
     :data-testid="APPROVAL_WORKFLOW_SELECTORS.simulator"
   >
     <header class="border-b border-regular px-12 py-10">
@@ -17,7 +17,7 @@
             报销金额
             <input
               v-model.number="input.amount"
-              class="mt-5 h-30 w-full rounded-6 b-1-regular bg-fill px-8 text-13px text-primary outline-none focus:border-primary"
+              class="mt-5 h-30 w-full rounded-6 b-1-secondary bg-fill px-8 text-13px text-primary outline-none focus:border-primary"
               type="number"
             />
           </label>
@@ -25,7 +25,7 @@
             请假天数
             <input
               v-model.number="input.leaveDays"
-              class="mt-5 h-30 w-full rounded-6 b-1-regular bg-fill px-8 text-13px text-primary outline-none focus:border-primary"
+              class="mt-5 h-30 w-full rounded-6 b-1-secondary bg-fill px-8 text-13px text-primary outline-none focus:border-primary"
               type="number"
             />
           </label>
@@ -35,14 +35,14 @@
             申请人
             <input
               v-model="input.applicant"
-              class="mt-5 h-30 w-full rounded-6 b-1-regular bg-fill px-8 text-13px text-primary outline-none focus:border-primary"
+              class="mt-5 h-30 w-full rounded-6 b-1-secondary bg-fill px-8 text-13px text-primary outline-none focus:border-primary"
             />
           </label>
           <label class="block text-12px text-secondary">
             部门
             <input
               v-model="input.department"
-              class="mt-5 h-30 w-full rounded-6 b-1-regular bg-fill px-8 text-13px text-primary outline-none focus:border-primary"
+              class="mt-5 h-30 w-full rounded-6 b-1-secondary bg-fill px-8 text-13px text-primary outline-none focus:border-primary"
             />
           </label>
         </div>
@@ -56,7 +56,7 @@
             模拟
           </button>
           <button
-            class="h-30 flex-1 inline-flex items-center justify-center gap-6 rounded-6 b-1-regular bg-container text-12px text-regular hover:bg-hover"
+            class="h-30 flex-1 inline-flex items-center justify-center gap-6 rounded-6 b-1-secondary bg-container text-12px text-regular hover:bg-hover"
             type="button"
             @click="emits('validate')"
           >

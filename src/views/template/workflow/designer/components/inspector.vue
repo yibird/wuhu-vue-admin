@@ -1,9 +1,11 @@
 <template>
   <aside
-    class="min-h-0 min-w-0 overflow-hidden rounded-8 b-1-regular bg-container shadow-lg"
+    class="min-h-0 min-w-0 overflow-hidden rounded-8 b-1-secondary bg-container shadow-lg"
   >
     <div v-if="selectedNodeData" class="h-full min-h-0 flex flex-col">
-      <div class="flex flex-none items-center gap-10 b-b-1-regular px-14 py-12">
+      <div
+        class="flex flex-none items-center gap-10 b-b-1-secondary px-14 py-12"
+      >
         <span
           class="size-38 inline-flex shrink-0 items-center justify-center rounded-10"
           :style="{

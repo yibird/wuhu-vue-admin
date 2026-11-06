@@ -72,7 +72,7 @@
 
             <div class="mt-38 flex flex-col items-center">
               <div
-                class="size-56 flex items-center justify-center overflow-hidden rounded-full b-1-regular bg-primary/10 text-lg text-primary font-700"
+                class="size-56 flex items-center justify-center overflow-hidden rounded-full b-1-secondary bg-primary/10 text-lg text-primary font-700"
               >
                 <img
                   v-if="userAvatar"

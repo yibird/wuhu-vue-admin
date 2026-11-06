@@ -1,5 +1,9 @@
 <template>
-  <Skeleton name="my-task-gantt" :loading="loading" class="h-full min-h-0">
+  <ViewSection
+    skeleton-name="my-task-gantt"
+    :loading="loading"
+    class="h-full min-h-0"
+  >
     <div class="h-full min-h-0 min-w-0 flex flex-col gap-12">
       <div
         class="flex flex-wrap items-center justify-between gap-10 rounded-4 bg-container p-12"
@@ -60,11 +64,11 @@
         @mark-done="markContextTaskDone"
       />
     </div>
-  </Skeleton>
+  </ViewSection>
 </template>
 
 <script lang="ts" setup>
-import Skeleton from 'boneyard-js/vue'
+import { ViewSection } from '@/components/view-section'
 import dayjs from 'dayjs'
 import { message } from 'antdv-next'
 import {

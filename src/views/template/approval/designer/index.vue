@@ -2,7 +2,7 @@
   <View :full="true" :padding="0">
     <div class="h-full min-h-0 flex flex-col overflow-hidden bg-page">
       <header
-        class="flex flex-none flex-wrap items-center gap-12 b-b-1-regular bg-container px-14 py-10"
+        class="flex flex-none flex-wrap items-center gap-12 b-b-1-secondary bg-container px-14 py-10"
       >
         <a-button type="text" title="返回我的审批" @click="goBack">
           <template #icon><Icon name="i-lucide:arrow-left" /></template>
@@ -38,7 +38,7 @@
         </a-button>
       </header>
 
-      <div class="flex-none b-b-1-regular bg-container px-14 py-10">
+      <div class="flex-none b-b-1-secondary bg-container px-14 py-10">
         <a-steps
           :current="step"
           :items="stepItems"

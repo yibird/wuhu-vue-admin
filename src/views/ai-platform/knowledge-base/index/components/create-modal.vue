@@ -6,7 +6,7 @@
     title="新建知识库"
   >
     <div
-      class="mb-16 flex min-w-0 items-center gap-12 rounded-8 b-1-regular bg-page p-12"
+      class="mb-16 flex min-w-0 items-center gap-12 rounded-8 b-1-secondary bg-page p-12"
     >
       <span
         class="size-48 flex flex-none items-center justify-center rounded-8 inset-ring-1 inset-ring-ink/6"

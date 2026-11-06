@@ -1,5 +1,5 @@
 <template>
-  <section class="grid grid-cols-2 b-b-1-regular bg-container lg:grid-cols-4">
+  <section class="grid grid-cols-2 b-b-1-secondary bg-container lg:grid-cols-4">
     <div
       v-for="(item, index) in items"
       :key="item.key"

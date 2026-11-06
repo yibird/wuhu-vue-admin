@@ -2,7 +2,9 @@
   <aside
     class="min-h-0 flex flex-col b-r-1-regular bg-container max-lg:(border-b-1 border-b-solid border-r-0)"
   >
-    <header class="flex flex-none items-center gap-8 b-b-1-regular px-10 py-9">
+    <header
+      class="flex flex-none items-center gap-8 b-b-1-secondary px-10 py-9"
+    >
       <a-select
         :value="activeQueue"
         class="min-w-0 flex-1"
@@ -23,7 +25,7 @@
         v-for="ticket in items"
         :key="ticket.id"
         type="button"
-        class="content-auto-110 w-full b-b-1-regular bg-transparent px-11 py-10 text-left transition-colors duration-100 hover:bg-hover"
+        class="content-auto-110 w-full b-b-1-secondary bg-transparent px-11 py-10 text-left transition-colors duration-100 hover:bg-hover"
         :class="{
           'bg-selected': ticket.id === selectedId,
         }"

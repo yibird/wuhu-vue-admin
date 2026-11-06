@@ -1,5 +1,5 @@
 <template>
-  <Skeleton name="monitor-status" :loading="loading">
+  <ViewSection skeleton-name="monitor-status" :loading="loading">
     <Card
       title="系统状态"
       icon="i-lucide:server-cog"
@@ -9,11 +9,11 @@
         <Item v-for="item in items" :key="item.id" :item="item" />
       </div>
     </Card>
-  </Skeleton>
+  </ViewSection>
 </template>
 
 <script lang="ts" setup>
-import Skeleton from 'boneyard-js/vue'
+import { ViewSection } from '@/components/view-section'
 import Item from './item.vue'
 import Card from '../card.vue'
 import type { StatusProps } from '../types'

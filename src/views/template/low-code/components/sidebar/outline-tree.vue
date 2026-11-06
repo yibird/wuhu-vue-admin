@@ -1,6 +1,8 @@
 <template>
   <div class="h-full min-h-0 flex flex-col overflow-x-hidden overflow-hidden">
-    <div class="flex-between-center shrink-0 border-0 b-b-1-regular px-12 py-8">
+    <div
+      class="flex-between-center shrink-0 border-0 b-b-1-secondary px-12 py-8"
+    >
       <span class="text-xs text-muted">共 {{ nodeCount }} 个节点</span>
       <a-tooltip title="展开/收起全部">
         <button

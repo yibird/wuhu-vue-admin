@@ -8,7 +8,7 @@
       <div
         v-for="item in calendarTypes"
         :key="item.id"
-        class="w-full flex items-center gap-8 rounded-8 b-1-regular bg-container px-10 py-8 text-13px text-main"
+        class="w-full flex items-center gap-8 rounded-8 b-1-secondary bg-container px-10 py-8 text-13px text-main"
       >
         <span
           class="size-8 flex-none rounded-full"

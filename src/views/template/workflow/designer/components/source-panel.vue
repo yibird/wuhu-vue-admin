@@ -13,7 +13,7 @@
       class="grid h-[70vh] min-h-[480px] max-h-[760px] grid-rows-[auto_minmax(0,1fr)_auto] gap-12"
     >
       <header
-        class="flex items-center justify-between gap-14 rounded-10 b-1-regular bg-secondary px-14 py-12"
+        class="flex items-center justify-between gap-14 rounded-10 b-1-secondary bg-secondary px-14 py-12"
       >
         <div class="min-w-0 flex items-center gap-10">
           <span
@@ -52,10 +52,10 @@
       </header>
 
       <section
-        class="workflow-source-editor min-h-0 flex flex-col overflow-hidden rounded-10 b-1-regular bg-container shadow-sm"
+        class="workflow-source-editor min-h-0 flex flex-col overflow-hidden rounded-10 b-1-secondary bg-container shadow-sm"
       >
         <div
-          class="flex flex-none items-center justify-between gap-10 b-b-1-regular bg-secondary px-12 py-8"
+          class="flex flex-none items-center justify-between gap-10 b-b-1-secondary bg-secondary px-12 py-8"
         >
           <div class="min-w-0 flex items-center gap-7 text-xs text-secondary">
             <Icon name="i-lucide:braces" :size="14" class="text-primary" />

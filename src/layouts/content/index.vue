@@ -2,7 +2,7 @@
   <a-layout-content
     class="relative grid w-full min-h-full flex-1 overflow-hidden"
   >
-    <div class="relative h-full overflow-x-hidden">
+    <div class="w-page-transition relative h-full overflow-x-hidden">
       <ErrorBoundary :fallback="ContentError" stop-propagation>
         <IframeView v-if="isIframe" :src="iframeSrc" />
         <RouterView v-else v-slot="{ Component, route }">

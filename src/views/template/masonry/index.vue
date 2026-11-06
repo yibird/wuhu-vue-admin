@@ -24,7 +24,7 @@
           </a-tag>
         </header>
 
-        <Skeleton name="masonry-grid" :loading="initialLoading">
+        <ViewSection skeleton-name="masonry-grid" :loading="initialLoading">
           <a-masonry
             :items="masonryItems"
             :columns="{ xs: 1, sm: 2, md: 3, xl: 4, xxl: 5 }"
@@ -34,7 +34,7 @@
               <MasonryCard :card="data" @select="openCardDetail" />
             </template>
           </a-masonry>
-        </Skeleton>
+        </ViewSection>
 
         <div ref="sentinelRef" class="h-1" aria-hidden="true" />
 
@@ -109,7 +109,7 @@
 </template>
 
 <script setup lang="ts">
-import Skeleton from 'boneyard-js/vue'
+import { ViewSection } from '@/components/view-section'
 import { Icon } from '@/components/icon'
 import { MasonryCard } from './components'
 import {

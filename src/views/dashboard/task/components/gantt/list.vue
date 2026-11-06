@@ -6,7 +6,7 @@
       <div
         v-for="item in items"
         :key="item.id"
-        class="grid grid-cols-[240px_minmax(260px,1fr)_130px_190px_120px] items-center gap-12 rounded-4 b-1-regular bg-container px-12 py-10 transition-colors"
+        class="grid grid-cols-[240px_minmax(260px,1fr)_130px_190px_120px] items-center gap-12 rounded-4 b-1-secondary bg-container px-12 py-10 transition-colors"
         :class="item.id === selectedTaskId ? 'border-primary bg-selected' : ''"
         @click="emits('select', item.id)"
       >

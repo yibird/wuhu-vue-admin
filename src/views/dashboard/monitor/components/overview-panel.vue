@@ -1,5 +1,5 @@
 <template>
-  <Skeleton name="monitor-overview" :loading="loading">
+  <ViewSection skeleton-name="monitor-overview" :loading="loading">
     <Card
       title="资源概览"
       icon="i-lucide:gauge"
@@ -9,7 +9,7 @@
         <div
           v-for="item in items"
           :key="item.id"
-          class="group min-w-0 rounded-8 b-1-regular bg-secondary p-14 transition-[border-color,background-color,box-shadow,transform] duration-200 ease-[var(--w-motion-ease-enter)] hover:(-translate-y-2 border-primary bg-hover shadow-lg shadow-primary/10) active:(translate-y-0 scale-[0.995])"
+          class="group min-w-0 rounded-8 b-1-secondary bg-secondary p-14 transition-[border-color,background-color,box-shadow,transform] duration-200 ease-[var(--w-motion-ease-enter)] hover:(-translate-y-2 border-primary bg-hover shadow-lg shadow-primary/10) active:(translate-y-0 scale-[0.995])"
         >
           <div class="flex items-start justify-between gap-12">
             <div class="min-w-0">
@@ -48,11 +48,11 @@
         </div>
       </div>
     </Card>
-  </Skeleton>
+  </ViewSection>
 </template>
 
 <script lang="ts" setup>
-import Skeleton from 'boneyard-js/vue'
+import { ViewSection } from '@/components/view-section'
 import { NumberTicker } from '@/components/number-ticker'
 import Card from './card.vue'
 import type { MonitorTone, OverviewProps } from './types'

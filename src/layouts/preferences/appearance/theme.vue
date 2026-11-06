@@ -12,7 +12,7 @@
         class="shrink-0 inline-flex items-center gap-6 rounded-full b-1-muted bg-secondary px-8 py-4 text-11px text-secondary font-600"
       >
         <span
-          class="size-8 rounded-full b-1-regular ring-2 ring-[rgb(var(--w-bg-container))] transition-colors duration-200"
+          class="size-8 rounded-full b-1-secondary ring-2 ring-[rgb(var(--w-bg-container))] transition-colors duration-200"
           :style="{ backgroundColor: colorPickerValue }"
         />
         当前

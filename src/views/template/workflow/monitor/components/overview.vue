@@ -1,5 +1,5 @@
 <template>
-  <Skeleton name="workflow-monitor-overview" :loading="loading">
+  <ViewSection skeleton-name="workflow-monitor-overview" :loading="loading">
     <section class="grid grid-cols-2 gap-10 xl:grid-cols-4 max-sm:grid-cols-1">
       <Motion
         v-for="(metric, index) in metrics"
@@ -8,7 +8,7 @@
         :initial="{ opacity: 0, y: 8 }"
         :animate="{ opacity: 1, y: 0 }"
         :transition="{ duration: 0.24, delay: index * 0.035, ease: 'easeOut' }"
-        class="min-w-0 rounded-8 b-1-regular bg-container p-13 shadow-sm"
+        class="min-w-0 rounded-8 b-1-secondary bg-container p-13 shadow-sm"
       >
         <div class="flex items-start gap-11">
           <span
@@ -29,11 +29,11 @@
         </div>
       </Motion>
     </section>
-  </Skeleton>
+  </ViewSection>
 </template>
 
 <script setup lang="ts">
-import Skeleton from 'boneyard-js/vue'
+import { ViewSection } from '@/components/view-section'
 import { Motion } from 'motion-v'
 
 const props = defineProps<{

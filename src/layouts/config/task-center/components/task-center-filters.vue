@@ -1,5 +1,5 @@
 <template>
-  <section class="rounded-6 b-1-regular bg-container p-12">
+  <section class="rounded-6 b-1-secondary bg-container p-12">
     <div class="flex flex-wrap items-center justify-between gap-10">
       <div class="min-w-0">
         <h3 class="m-0 text-base text-main font-700">任务队列</h3>

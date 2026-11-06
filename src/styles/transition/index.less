@@ -5,3 +5,14 @@
 @import './rotate.less';
 @import './slide.less';
 @import './zoom.less';
+
+// ========================================
+// 页面内容区转场
+// 仅缩短页面级 Transition 的时长,其它浮层/列表转场保持原节奏
+// ========================================
+.w-page-transition {
+  > [class*='-enter-active'],
+  > [class*='-leave-active'] {
+    transition-duration: 180ms;
+  }
+}

@@ -1,6 +1,6 @@
 <template>
   <section
-    class="pricing-hero page-enter page-enter--1 relative overflow-hidden rounded-16 b-1-regular bg-container px-24 py-32 shadow-2xl shadow-primary/10 max-sm:(px-16 py-24)"
+    class="pricing-hero page-enter page-enter--1 relative overflow-hidden rounded-16 b-1-secondary bg-container px-24 py-32 shadow-2xl shadow-primary/10 max-sm:(px-16 py-24)"
   >
     <!-- 背景动态光晕 -->
     <div class="pricing-hero__glow pricing-hero__glow--1" aria-hidden="true" />
@@ -33,7 +33,7 @@
       <!-- 计费周期切换 pill -->
       <div class="shrink-0">
         <div
-          class="inline-flex items-center rounded-full b-1-regular bg-muted/80 p-4 backdrop-blur-sm"
+          class="inline-flex items-center rounded-full b-1-secondary bg-muted/80 p-4 backdrop-blur-sm"
           role="tablist"
           aria-label="计费周期"
         >

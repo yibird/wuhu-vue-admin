@@ -1,6 +1,6 @@
 <template>
   <header
-    class="flex-y-center gap-12 shrink-0 border-0 b-b-1-regular bg-container px-14 py-10"
+    class="flex-y-center gap-12 shrink-0 border-0 b-b-1-secondary bg-container px-14 py-10"
   >
     <div class="flex-y-center gap-10">
       <span

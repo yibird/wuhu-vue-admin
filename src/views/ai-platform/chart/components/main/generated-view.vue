@@ -1,5 +1,5 @@
 <template>
-  <div v-if="pending" class="rounded-12 b-1-regular bg-container p-14">
+  <div v-if="pending" class="rounded-12 b-1-secondary bg-container p-14">
     <div class="h-16 w-120 animate-pulse rounded-4 bg-muted" />
     <div class="mt-10 h-160 w-full animate-pulse rounded-8 bg-muted" />
   </div>
@@ -12,7 +12,7 @@
     <Renderer :spec="result.spec" :registry="registry" />
   </JSONUIProvider>
 
-  <div v-else class="rounded-12 b-1-regular bg-container overflow-hidden">
+  <div v-else class="rounded-12 b-1-secondary bg-container overflow-hidden">
     <div class="px-12 py-7 text-12px text-error">
       {{ result.error || '视图内容为空' }}
     </div>

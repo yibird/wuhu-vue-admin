@@ -1,8 +1,8 @@
 <template>
   <header
-    class="relative overflow-hidden rounded-8 b-1-regular bg-container px-18 py-16"
+    class="relative overflow-hidden rounded-8 b-1-secondary bg-container px-18 py-16"
   >
-    <Skeleton name="calendar-toolbar" :loading="loading">
+    <ViewSection skeleton-name="calendar-toolbar" :loading="loading">
       <div
         class="pointer-events-none absolute inset-0 opacity-80 [background:radial-gradient(circle_at_12%_0,rgb(var(--w-color-primary)_/_12%),transparent_32%),linear-gradient(135deg,rgb(var(--w-bg-container)),rgb(var(--w-bg-secondary)_/_48%))]"
       ></div>
@@ -54,12 +54,12 @@
           </a-button>
         </div>
       </div>
-    </Skeleton>
+    </ViewSection>
   </header>
 </template>
 
 <script setup lang="ts">
-import Skeleton from 'boneyard-js/vue'
+import { ViewSection } from '@/components/view-section'
 import type { CalendarSelectOption, CalendarView } from '../types'
 
 const {

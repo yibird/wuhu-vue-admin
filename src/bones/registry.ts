@@ -15,7 +15,6 @@ import _analysis_sales_ranking from './analysis-sales-ranking.bones.json'
 import _analysis_statistics from './analysis-statistics.bones.json'
 import _analysis_traffic_source from './analysis-traffic-source.bones.json'
 import _analysis_visit_statistics from './analysis-visit-statistics.bones.json'
-import _approval_category_list from './approval-category-list.bones.json'
 import _approval_my_list from './approval-my-list.bones.json'
 import _article_list from './article-list.bones.json'
 import _calendar_aside from './calendar-aside.bones.json'
@@ -35,6 +34,8 @@ import _my_task_card from './my-task-card.bones.json'
 import _my_task_gantt from './my-task-gantt.bones.json'
 import _my_task_table from './my-task-table.bones.json'
 import _my_task_toolbar from './my-task-toolbar.bones.json'
+import _notice_center_list from './notice-center-list.bones.json'
+import _notice_center from './notice-center.bones.json'
 import _task_card from './task-card.bones.json'
 import _task_gantt from './task-gantt.bones.json'
 import _task_table from './task-table.bones.json'
@@ -50,7 +51,7 @@ import _workbench_team from './workbench-team.bones.json'
 import _workflow_list from './workflow-list.bones.json'
 import _workflow_monitor_overview from './workflow-monitor-overview.bones.json'
 
-configureBoneyard({"color":"#e6eaf0","darkColor":"#1f1f1f","animate":"pulse"})
+configureBoneyard({"color":"rgba(0, 0, 0, 0.06)","darkColor":"#1f1f1f","animate":"pulse","transition":200})
 
 registerBones({
   "ai-agent-list": _ai_agent_list,
@@ -66,7 +67,6 @@ registerBones({
   "analysis-statistics": _analysis_statistics,
   "analysis-traffic-source": _analysis_traffic_source,
   "analysis-visit-statistics": _analysis_visit_statistics,
-  "approval-category-list": _approval_category_list,
   "approval-my-list": _approval_my_list,
   "article-list": _article_list,
   "calendar-aside": _calendar_aside,
@@ -86,6 +86,8 @@ registerBones({
   "my-task-gantt": _my_task_gantt,
   "my-task-table": _my_task_table,
   "my-task-toolbar": _my_task_toolbar,
+  "notice-center-list": _notice_center_list,
+  "notice-center": _notice_center,
   "task-card": _task_card,
   "task-gantt": _task_gantt,
   "task-table": _task_table,

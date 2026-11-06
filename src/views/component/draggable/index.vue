@@ -26,7 +26,7 @@
         >
           <template #item="{ element: item, index, isDragging, isDropTarget }">
             <div
-              class="h-54 flex items-center gap-10 rounded-6 b-1-regular bg-container px-12 transition-[border-color,box-shadow,transform]"
+              class="h-54 flex items-center gap-10 rounded-6 b-1-secondary bg-container px-12 transition-[border-color,box-shadow,transform]"
               :class="{
                 'z-100 shadow-lg scale-[1.01]': isDragging,
                 'border-primary bg-primary/5': isDropTarget,

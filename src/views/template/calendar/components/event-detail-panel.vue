@@ -1,5 +1,5 @@
 <template>
-  <section class="rounded-8 b-1-regular bg-container p-12">
+  <section class="rounded-8 b-1-secondary bg-container p-12">
     <div class="mb-10 flex items-center gap-8 text-sm text-main font-700">
       <Icon name="i-lucide:panel-right" :size="15" />
       日程详情

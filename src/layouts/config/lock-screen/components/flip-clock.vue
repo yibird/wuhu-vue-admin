@@ -7,7 +7,7 @@
     <template v-for="(unit, index) in timeUnits" :key="unit.key">
       <div class="w-72 sm:w-96">
         <div
-          class="flip-clock-card relative h-76 overflow-hidden rounded-8 b-1-regular bg-container shadow-sm sm:h-104"
+          class="flip-clock-card relative h-76 overflow-hidden rounded-8 b-1-secondary bg-container shadow-sm sm:h-104"
         >
           <div class="flip-clock-half flip-clock-half--top" aria-hidden="true">
             <span

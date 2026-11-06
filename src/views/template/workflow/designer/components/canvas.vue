@@ -1,6 +1,6 @@
 <template>
   <main
-    class="h-full min-h-0 min-w-0 grid grid-rows-[auto_minmax(0,1fr)] overflow-hidden rounded-12 b-1-regular bg-container shadow-sm max-[900px]:min-h-620 max-[900px]:mt-10 max-[900px]:ml-0"
+    class="h-full min-h-0 min-w-0 grid grid-rows-[auto_minmax(0,1fr)] overflow-hidden rounded-12 b-1-secondary bg-container shadow-sm max-[900px]:min-h-620 max-[900px]:mt-10 max-[900px]:ml-0"
   >
     <CanvasHeader
       v-model:active-tab="activeTab"
@@ -101,9 +101,9 @@
       class="min-h-0 bg-page p-14 w-full h-full overflow-x-hidden overflow-y-auto"
     >
       <div class="grid gap-12 xl:grid-cols-[minmax(0,1fr)_320px]">
-        <section class="min-w-0 rounded-10 b-1-regular bg-container">
+        <section class="min-w-0 rounded-10 b-1-secondary bg-container">
           <div
-            class="flex items-center justify-between gap-12 b-b-1-regular px-14 py-12"
+            class="flex items-center justify-between gap-12 b-b-1-secondary px-14 py-12"
           >
             <div class="min-w-0">
               <div class="truncate text-15px text-main font-700">测试用例</div>
@@ -208,7 +208,7 @@
           </div>
         </section>
 
-        <aside class="rounded-10 b-1-regular bg-container p-14">
+        <aside class="rounded-10 b-1-secondary bg-container p-14">
           <div class="text-15px text-main font-700">当前测试</div>
           <div class="mt-10 rounded-8 bg-secondary p-12">
             <div class="text-sm text-main font-700">
@@ -246,9 +246,9 @@
       v-else
       class="min-h-0 bg-page p-14 w-full h-full overflow-x-hidden overflow-y-auto"
     >
-      <section class="min-h-full rounded-10 b-1-regular bg-container">
+      <section class="min-h-full rounded-10 b-1-secondary bg-container">
         <div
-          class="flex items-center justify-between b-b-1-regular px-14 py-12"
+          class="flex items-center justify-between b-b-1-secondary px-14 py-12"
         >
           <div>
             <div class="text-15px text-main font-700">运行日志</div>

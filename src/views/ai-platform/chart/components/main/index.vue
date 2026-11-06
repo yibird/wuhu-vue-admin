@@ -247,7 +247,7 @@
           <div v-if="canContinue" class="flex justify-center pt-2">
             <button
               type="button"
-              class="h-34 inline-flex items-center gap-6 rounded-8 b-1-regular bg-container px-12 text-13px text-main cursor-pointer transition-colors hover:bg-hover"
+              class="h-34 inline-flex items-center gap-6 rounded-8 b-1-secondary bg-container px-12 text-13px text-main cursor-pointer transition-colors hover:bg-hover"
               @click="emits('continue-generation')"
             >
               <Icon name="i-lucide:corner-down-right" :size="15" />
@@ -271,14 +271,14 @@
       class="box-border mx-auto min-w-0 w-full max-w-1320 px-40 pb-18 max-2xl:max-w-1180 max-xl:px-28 max-md:px-16 max-sm:(px-10 pb-10)"
     >
       <div
-        class="box-border min-w-0 w-full rounded-18 b-1-regular bg-container p-12 shadow-lg"
+        class="box-border min-w-0 w-full rounded-18 b-1-secondary bg-container p-12 shadow-lg"
       >
         <div v-if="attachments.length" class="mb-8 flex flex-wrap gap-6">
           <button
             v-for="attachment in attachments"
             :key="attachment.id"
             type="button"
-            class="max-w-220 inline-flex items-center gap-6 rounded-full b-1-regular bg-container px-9 py-5 text-xs text-regular cursor-pointer transition-colors hover:bg-hover"
+            class="max-w-220 inline-flex items-center gap-6 rounded-full b-1-secondary bg-container px-9 py-5 text-xs text-regular cursor-pointer transition-colors hover:bg-hover"
             :aria-label="`移除附件：${attachment.name}`"
             :title="attachment.name"
             @click="emits('remove-attachment', attachment.id)"
@@ -297,7 +297,7 @@
             v-for="suggestion in suggestions"
             :key="suggestion.id"
             type="button"
-            class="shrink-0 inline-flex items-center gap-6 rounded-full b-1-regular bg-container px-10 py-6 text-xs text-regular cursor-pointer transition-colors hover:(border-primary bg-hover text-main)"
+            class="shrink-0 inline-flex items-center gap-6 rounded-full b-1-secondary bg-container px-10 py-6 text-xs text-regular cursor-pointer transition-colors hover:(border-primary bg-hover text-main)"
             @click="useSuggestion(suggestion.prompt)"
           >
             <Icon :name="suggestion.icon" :size="14" />

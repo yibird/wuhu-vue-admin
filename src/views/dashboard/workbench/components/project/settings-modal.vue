@@ -71,7 +71,7 @@
         class="min-w-0 space-y-16"
         layout="vertical"
       >
-        <div class="b-b-1-regular pb-16 last:(border-b-0 pb-0)">
+        <div class="b-b-1-secondary pb-16 last:(border-b-0 pb-0)">
           <div class="mb-12 flex items-start justify-between gap-12">
             <div>
               <div class="flex items-center gap-7 text-sm text-main font-700">
@@ -119,7 +119,7 @@
           </div>
         </div>
 
-        <div class="b-b-1-regular pb-16 last:(border-b-0 pb-0)">
+        <div class="b-b-1-secondary pb-16 last:(border-b-0 pb-0)">
           <div class="mb-12 flex items-start justify-between gap-12">
             <div>
               <div class="flex items-center gap-7 text-sm text-main font-700">
@@ -176,7 +176,7 @@
           </div>
         </div>
 
-        <div class="b-b-1-regular pb-16 last:(border-b-0 pb-0)">
+        <div class="b-b-1-secondary pb-16 last:(border-b-0 pb-0)">
           <div class="mb-12 flex items-start justify-between gap-12">
             <div>
               <div class="flex items-center gap-7 text-sm text-main font-700">
@@ -225,7 +225,7 @@
           </div>
         </div>
 
-        <div class="b-b-1-regular pb-16 last:(border-b-0 pb-0)">
+        <div class="b-b-1-secondary pb-16 last:(border-b-0 pb-0)">
           <div class="mb-12 flex items-start justify-between gap-12">
             <div>
               <div class="flex items-center gap-7 text-sm text-main font-700">

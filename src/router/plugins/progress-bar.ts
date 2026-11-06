@@ -28,6 +28,7 @@ export function createProgressBarPlugin(
   options: TopbarConfigOptions = {}
 ): RouterPlugin {
   let watcher: WatchStopHandle | undefined
+  let hideTimer: ReturnType<typeof setTimeout> | undefined
   const mergedOptions = {
     ...defaultOptions,
     ...options,
@@ -46,6 +47,10 @@ export function createProgressBarPlugin(
     name: 'progress-bar',
     hooks: {
       onBeforeEach() {
+        if (hideTimer) {
+          clearTimeout(hideTimer)
+          hideTimer = undefined
+        }
         const { animation } = useAppStore()
         if (!animation.value.enableProgressBar) return
         watchThemeColor()
@@ -53,12 +58,22 @@ export function createProgressBarPlugin(
         topbar.progress()
       },
       onAfterEach() {
-        topbar.hide()
+        // 导航结束到新页面入场之间还有离场动画与骨架屏,
+        // 延迟收起进度条,避免它比页面内容先消失、看起来像没生效
+        if (hideTimer) clearTimeout(hideTimer)
+        hideTimer = setTimeout(() => {
+          hideTimer = undefined
+          topbar.hide()
+        }, 300)
       },
     },
     onDispose() {
       watcher?.()
       watcher = undefined
+      if (hideTimer) {
+        clearTimeout(hideTimer)
+        hideTimer = undefined
+      }
     },
   }
 }

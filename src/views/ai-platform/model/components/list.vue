@@ -19,7 +19,7 @@
         data-testid="model-list-scroll"
         class="page-enter page-enter--2 min-h-0 flex-1 overflow-y-auto p-12 sm:p-16 lg:p-20"
       >
-        <Skeleton name="ai-model-list" :loading="loading">
+        <ViewSection skeleton-name="ai-model-list" :loading="loading">
           <a-empty
             v-if="paginatedItems.length === 0"
             class="h-full min-h-360 flex flex-col items-center justify-center"
@@ -49,7 +49,7 @@
               />
             </template>
           </AnimatedGroup>
-        </Skeleton>
+        </ViewSection>
       </main>
 
       <footer
@@ -78,7 +78,7 @@
 </template>
 
 <script setup lang="ts">
-import Skeleton from 'boneyard-js/vue'
+import { ViewSection } from '@/components/view-section'
 import { message, Modal } from 'antdv-next'
 import { AnimatedGroup } from '@/components/animated'
 import { useLoading } from '@/hooks'

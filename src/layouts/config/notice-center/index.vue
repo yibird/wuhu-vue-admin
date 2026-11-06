@@ -21,17 +21,16 @@
         :name="item.name"
         :tab="item.tab"
       >
-        <Suspense timeout="0">
+        <ViewSection skeleton-name="notice-center-list">
           <component :is="item.component" />
-          <template #fallback>
-            <a-skeleton active :paragraph="{ rows: 4 }" />
-          </template>
-        </Suspense>
+        </ViewSection>
       </a-tab-pane>
     </a-tabs>
   </div>
 </template>
 <script lang="ts" setup>
+import { ViewSection } from '@/components/view-section'
+
 const items = [
   {
     name: 'notify',

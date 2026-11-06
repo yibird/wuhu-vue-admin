@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex flex-wrap items-center gap-8 b-b-1-regular bg-secondary px-10 py-9"
+    class="flex flex-wrap items-center gap-8 b-b-1-secondary bg-secondary px-10 py-9"
   >
     <template v-if="showSelectControls">
       <a-select
@@ -90,7 +90,7 @@
     />
 
     <div
-      class="ml-auto flex items-center gap-2 rounded-8 b-1-regular bg-container p-3 max-lg:ml-0"
+      class="ml-auto flex items-center gap-2 rounded-8 b-1-secondary bg-container p-3 max-lg:ml-0"
     >
       <a-tooltip :title="locale.link">
         <button

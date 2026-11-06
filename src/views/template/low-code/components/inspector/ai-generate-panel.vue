@@ -1,7 +1,7 @@
 <template>
   <div class="min-h-0 flex-1 flex flex-col">
     <header
-      class="shrink-0 flex items-center justify-between gap-8 border-0 b-b-1-regular px-14 py-9"
+      class="shrink-0 flex items-center justify-between gap-8 border-0 b-b-1-secondary px-14 py-9"
     >
       <div class="min-w-0 flex-y-center gap-6">
         <Icon name="i-lucide:sparkles" :size="15" class="text-primary" />
@@ -128,7 +128,7 @@
     <footer class="shrink-0 b-t-1-regular p-10">
       <textarea
         v-model="prompt"
-        class="h-64 w-full resize-none rounded-6 b-1-regular bg-fill px-9 py-7 text-xs text-main outline-none focus:border-primary"
+        class="h-64 w-full resize-none rounded-6 b-1-secondary bg-fill px-9 py-7 text-xs text-main outline-none focus:border-primary"
         placeholder="例如：生成一个用户管理列表页，包含姓名、角色、状态、创建日期，顶部带搜索筛选"
         @keydown.ctrl.enter.prevent="generate"
         @keydown.meta.enter.prevent="generate"

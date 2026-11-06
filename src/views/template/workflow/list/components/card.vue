@@ -7,7 +7,7 @@
     :while-hover="{ y: -3 }"
     :while-press="{ scale: 0.995 }"
     :transition="{ type: 'spring', stiffness: 380, damping: 30, mass: 0.7 }"
-    class="group min-w-0 cursor-pointer overflow-hidden rounded-8 b-1-regular bg-container shadow-sm outline-none transition-[border-color,box-shadow] duration-200 hover:(border-primary shadow-lg) focus-visible:border-primary"
+    class="group min-w-0 cursor-pointer overflow-hidden rounded-8 b-1-secondary bg-container shadow-sm outline-none transition-[border-color,box-shadow] duration-200 hover:(border-primary shadow-lg) focus-visible:border-primary"
     @click="emits('open', workflow)"
   >
     <div class="flex items-start gap-12 px-14 pb-12 pt-14">

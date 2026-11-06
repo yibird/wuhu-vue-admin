@@ -13,7 +13,7 @@
     />
 
     <main class="min-h-0 flex-1 overflow-y-auto p-12 sm:p-16">
-      <Skeleton name="article-list" :loading="loading">
+      <ViewSection skeleton-name="article-list" :loading="loading">
         <a-empty
           v-if="paginatedItems.length === 0"
           class="h-full min-h-360 flex flex-col items-center justify-center"
@@ -38,7 +38,7 @@
             <ArticleCard :item="item" @action="handleCardAction" />
           </template>
         </AnimatedGroup>
-      </Skeleton>
+      </ViewSection>
     </main>
 
     <footer
@@ -59,7 +59,7 @@
 </template>
 
 <script setup lang="ts">
-import Skeleton from 'boneyard-js/vue'
+import { ViewSection } from '@/components/view-section'
 import { useRouter } from 'vue-router'
 import { message, Modal } from 'antdv-next'
 import { useLoading } from '@/hooks'

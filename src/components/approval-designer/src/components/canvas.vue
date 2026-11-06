@@ -1,6 +1,6 @@
 <template>
   <section
-    class="min-h-0 min-w-0 grid grid-rows-[auto_minmax(0,1fr)] overflow-hidden rounded-8 b-1-regular bg-page shadow-lg"
+    class="min-h-0 min-w-0 grid grid-rows-[auto_minmax(0,1fr)] overflow-hidden rounded-8 b-1-secondary bg-page shadow-lg"
   >
     <header
       class="flex items-center justify-between gap-12 border-b border-regular bg-container px-14 py-11"
@@ -48,7 +48,7 @@
           >电子签 {{ settings.enableSignature ? 'ON' : 'OFF' }}</span
         >
         <div
-          class="ml-4 inline-flex items-center overflow-hidden rounded-6 b-1-regular bg-container"
+          class="ml-4 inline-flex items-center overflow-hidden rounded-6 b-1-secondary bg-container"
         >
           <a-button
             class="border-0 rounded-none"

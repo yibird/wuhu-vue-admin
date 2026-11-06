@@ -27,7 +27,7 @@
         <div
           v-for="(actionId, index) in actionsOf(event.name)"
           :key="`${actionId}-${index}`"
-          class="rounded-6 b-1-regular bg-secondary p-10"
+          class="rounded-6 b-1-secondary bg-secondary p-10"
         >
           <div class="flex-between-center gap-6">
             <span class="inline-flex-y-center gap-6 text-xs text-main">

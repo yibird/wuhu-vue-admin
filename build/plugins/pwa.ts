@@ -3,7 +3,7 @@ import { VitePWA } from 'vite-plugin-pwa'
 export function pwaPlugin() {
   return VitePWA({
     registerType: 'autoUpdate',
-    // 超限的大 chunk（如 jit-viewer）只告警不中断构建，运行时按需请求
+    // 大体积路由 chunk（jit-viewer / univer）也纳入预缓存，保证离线可用
     showMaximumFileSizeToCacheInBytesWarning: true,
     manifest: {
       name: 'Wuhu Vue Admin',
@@ -21,7 +21,7 @@ export function pwaPlugin() {
       ],
     },
     workbox: {
-      maximumFileSizeToCacheInBytes: 4 * 1024 * 1024,
+      maximumFileSizeToCacheInBytes: 16 * 1024 * 1024,
       globIgnores: ['**/*.map'],
     },
   })

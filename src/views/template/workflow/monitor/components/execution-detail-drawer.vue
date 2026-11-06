@@ -116,7 +116,7 @@
               class="absolute left-14 top-28 h-[calc(100%-18px)] w-1 bg-secondary"
             ></span>
             <span
-              class="relative z-1 size-29 flex flex-none items-center justify-center rounded-full b-1-regular bg-container"
+              class="relative z-1 size-29 flex flex-none items-center justify-center rounded-full b-1-secondary bg-container"
               :class="[
                 step.status === 'success'
                   ? 'text-success'

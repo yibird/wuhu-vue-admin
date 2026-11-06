@@ -20,7 +20,7 @@
           <Transition name="fade-zoom" appear>
             <div
               v-show="open"
-              class="w-full origin-top translate-y-0 scale-100 transform-gpu overflow-hidden rounded-8 b-1-regular bg-overlay shadow-2xl shadow-ink/28 will-change-[transform,opacity]"
+              class="w-full origin-top translate-y-0 scale-100 transform-gpu overflow-hidden rounded-8 b-1-secondary bg-overlay shadow-2xl shadow-ink/28 will-change-[transform,opacity]"
             >
               <Search ref="searchRef" v-model.lazy="searchValue" />
               <List
@@ -33,7 +33,7 @@
               >
                 <span>按</span>
                 <kbd
-                  class="rounded-4 b-1-regular bg-secondary px-6 py-2 font-500 text-main leading-16px"
+                  class="rounded-4 b-1-secondary bg-secondary px-6 py-2 font-500 text-main leading-16px"
                 >
                   Esc
                 </kbd>

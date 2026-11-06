@@ -1,6 +1,6 @@
 <template>
   <div
-    class="h-full min-h-0 flex flex-col overflow-hidden rounded-6 b-1-regular bg-container"
+    class="h-full min-h-0 flex flex-col overflow-hidden rounded-6 b-1-secondary bg-container"
   >
     <template v-if="task">
       <div class="b-b-1-muted bg-secondary px-16 py-14">
@@ -68,7 +68,7 @@
       <Scrollbar class="min-h-0 flex-1" content-class="p-16">
         <p class="m-0 text-sm text-regular">{{ task.description }}</p>
 
-        <div class="mt-16 rounded-6 b-1-regular p-14">
+        <div class="mt-16 rounded-6 b-1-secondary p-14">
           <div class="flex items-center justify-between gap-12 text-sm">
             <span class="text-secondary">执行进度</span>
             <span class="text-main font-700">{{ task.progress }}%</span>

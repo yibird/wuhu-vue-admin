@@ -7,7 +7,7 @@
     @close="emits('close')"
   >
     <div class="grid h-full grid-rows-[auto_minmax(0,1fr)]">
-      <div class="flex gap-4 border-0 b-b-1-regular px-14 py-10">
+      <div class="flex gap-4 border-0 b-b-1-secondary px-14 py-10">
         <button
           v-for="item in tabs"
           :key="item.key"

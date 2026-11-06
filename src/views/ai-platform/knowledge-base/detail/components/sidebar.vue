@@ -2,7 +2,7 @@
   <aside
     class="h-full w-260 flex flex-none flex-col b-r-1-regular bg-container"
   >
-    <div class="flex-none b-b-1-regular p-14">
+    <div class="flex-none b-b-1-secondary p-14">
       <div class="mb-10 flex items-center gap-10">
         <span
           class="size-40 flex flex-none items-center justify-center rounded-8 bg-primary/10 text-primary"
@@ -18,7 +18,7 @@
           </p>
         </div>
       </div>
-      <div class="rounded-8 b-1-regular bg-page px-10 py-8">
+      <div class="rounded-8 b-1-secondary bg-page px-10 py-8">
         <div class="flex items-center justify-between text-xs">
           <span class="text-secondary">索引健康度</span>
           <strong class="text-success">96%</strong>

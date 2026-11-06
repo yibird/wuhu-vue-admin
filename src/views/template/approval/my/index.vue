@@ -2,7 +2,7 @@
   <View :full="true" :padding="0">
     <div class="h-full min-h-0 flex flex-col overflow-hidden bg-page">
       <header
-        class="page-enter page-enter--1 flex flex-none flex-wrap items-center gap-10 b-b-1-regular bg-container px-12 py-10 sm:px-16"
+        class="page-enter page-enter--1 flex flex-none flex-wrap items-center gap-10 b-b-1-secondary bg-container px-12 py-10 sm:px-16"
       >
         <span
           class="size-38 flex flex-none items-center justify-center rounded-8 bg-primary/12 text-primary"
@@ -49,7 +49,7 @@
       <main
         class="page-enter page-enter--2 min-h-0 flex-1 overflow-y-auto p-12 sm:p-16"
       >
-        <Skeleton name="approval-my-list" :loading="loading">
+        <ViewSection skeleton-name="approval-my-list" :loading="loading">
           <a-empty
             v-if="list.length === 0"
             class="py-72"
@@ -73,7 +73,7 @@
               @remove="removeDefinition"
             />
           </div>
-        </Skeleton>
+        </ViewSection>
       </main>
 
       <footer
@@ -95,7 +95,7 @@
 </template>
 
 <script setup lang="ts">
-import Skeleton from 'boneyard-js/vue'
+import { ViewSection } from '@/components/view-section'
 import { Icon } from '@/components/icon'
 import { useTabs } from '@/hooks'
 import { ApprovalCard } from '../components'

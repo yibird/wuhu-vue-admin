@@ -1,5 +1,5 @@
 <template>
-  <Skeleton name="workbench-data-analysis" :loading="loading">
+  <ViewSection skeleton-name="workbench-data-analysis" :loading="loading">
     <section class="page-enter page-enter--7 min-w-0">
       <a-border-beam :duration="6" :line-width="3">
         <Card class="shadow-none!" :styles="{ body: { padding: 0 } }">
@@ -62,7 +62,7 @@
             </div>
 
             <div
-              class="mt-16 rounded-8 b-1-regular bg-container p-12 transition-[border-color,box-shadow,transform] duration-200 hover:(-translate-y-1 border-primary shadow-sm)"
+              class="mt-16 rounded-8 b-1-secondary bg-container p-12 transition-[border-color,box-shadow,transform] duration-200 hover:(-translate-y-1 border-primary shadow-sm)"
             >
               <div class="flex items-center gap-8">
                 <span
@@ -84,11 +84,11 @@
         </Card>
       </a-border-beam>
     </section>
-  </Skeleton>
+  </ViewSection>
 </template>
 
 <script lang="ts" setup>
-import Skeleton from 'boneyard-js/vue'
+import { ViewSection } from '@/components/view-section'
 import { Card, NumberTicker } from '@/components'
 import type { AnalysisMetric, AnalysisRankItem } from './types'
 

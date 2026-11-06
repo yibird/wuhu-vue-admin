@@ -126,7 +126,6 @@ export const {
  */
 export function getApprovalMonitorSummaryApi() {
   return apiRequest<ApiResult<ApprovalMonitorSummary>>(
-    '/approval/monitor/getSummary',
-    { method: HTTP_METHOD.Get }
+    '/approval/monitor/getSummary'
   )
 }

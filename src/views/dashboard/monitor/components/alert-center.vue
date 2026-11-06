@@ -1,5 +1,5 @@
 <template>
-  <Skeleton name="monitor-alert-center" :loading="props.loading">
+  <ViewSection skeleton-name="monitor-alert-center" :loading="props.loading">
     <Card
       title="告警中心"
       icon="i-lucide:bell-ring"
@@ -21,7 +21,7 @@
         <div
           v-for="item in filteredItems"
           :key="item.id"
-          class="rounded-8 b-1-regular bg-secondary p-12 transition-[border-color,background-color,box-shadow,transform] duration-200 ease-[var(--w-motion-ease-enter)] hover:(-translate-y-2 shadow-lg shadow-primary/10) active:(translate-y-0 scale-[0.995])"
+          class="rounded-8 b-1-secondary bg-secondary p-12 transition-[border-color,background-color,box-shadow,transform] duration-200 ease-[var(--w-motion-ease-enter)] hover:(-translate-y-2 shadow-lg shadow-primary/10) active:(translate-y-0 scale-[0.995])"
         >
           <div class="flex items-start gap-10">
             <span
@@ -63,11 +63,11 @@
         />
       </TransitionGroup>
     </Card>
-  </Skeleton>
+  </ViewSection>
 </template>
 
 <script lang="ts" setup>
-import Skeleton from 'boneyard-js/vue'
+import { ViewSection } from '@/components/view-section'
 import Card from './card.vue'
 import type {
   AlertCenterEmits,

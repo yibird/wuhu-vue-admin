@@ -25,7 +25,7 @@
           <section
             v-for="dataset in datasets"
             :key="dataset.id"
-            class="rounded-7 b-1-regular bg-container"
+            class="rounded-7 b-1-secondary bg-container"
           >
             <header class="flex items-center gap-6 b-b-1-muted px-8 py-6">
               <Icon name="i-lucide:database" :size="14" class="text-primary" />
@@ -160,7 +160,7 @@
           <div
             v-for="parameter in parameters"
             :key="parameter.key"
-            class="rounded-7 b-1-regular p-8"
+            class="rounded-7 b-1-secondary p-8"
           >
             <div class="flex items-center gap-6">
               <code class="min-w-0 flex-1 truncate text-11px text-primary">

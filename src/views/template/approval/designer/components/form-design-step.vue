@@ -1,10 +1,10 @@
 <template>
   <section
-    class="form-designer h-full min-h-560 grid grid-cols-[250px_minmax(0,1fr)_300px] overflow-hidden rounded-10 b-1-regular bg-container max-[1200px]:grid-cols-[220px_minmax(0,1fr)_260px]"
+    class="form-designer h-full min-h-560 grid grid-cols-[250px_minmax(0,1fr)_300px] overflow-hidden rounded-10 b-1-secondary bg-container max-[1200px]:grid-cols-[220px_minmax(0,1fr)_260px]"
   >
     <!-- 左侧组件面板 -->
     <aside class="min-h-0 flex flex-col b-r-1-regular bg-container">
-      <div class="flex-none b-b-1-regular p-10">
+      <div class="flex-none b-b-1-secondary p-10">
         <a-input-search
           v-model:value="search"
           allow-clear
@@ -44,7 +44,7 @@
 
     <!-- 中间画布 -->
     <div class="min-h-0 flex flex-col overflow-hidden">
-      <div class="flex flex-none items-center gap-7 b-b-1-regular px-10 py-6">
+      <div class="flex flex-none items-center gap-7 b-b-1-secondary px-10 py-6">
         <span class="text-xs text-secondary">表单</span>
         <Icon name="i-lucide:chevron-right" :size="12" class="text-tertiary" />
         <span class="text-xs text-main">
@@ -141,7 +141,7 @@
           @click.self="selectField(-1)"
         >
           <div
-            class="rounded-8 b-1-regular bg-container p-20 shadow-sm"
+            class="rounded-8 b-1-secondary bg-container p-20 shadow-sm"
             @click.self="selectField(-1)"
           >
             <div
@@ -317,7 +317,7 @@
                       <a-slider v-else-if="field.type === 'slider'" disabled />
                       <span
                         v-else-if="field.type === 'color'"
-                        class="size-28 inline-block rounded-4 b-1-regular"
+                        class="size-28 inline-block rounded-4 b-1-secondary"
                         :style="{
                           backgroundColor: field.defaultValue || '#1677ff',
                         }"
@@ -350,7 +350,7 @@
 
     <!-- 右侧属性面板 -->
     <aside class="min-h-0 flex flex-col b-l-1-regular bg-container">
-      <div class="flex-none b-b-1-regular px-12 py-10">
+      <div class="flex-none b-b-1-secondary px-12 py-10">
         <h3 class="m-0 text-sm text-main font-700">
           {{ selectedField ? fieldTypeLabels[selectedField.type] : '表单属性' }}
         </h3>
@@ -635,7 +635,7 @@ const paletteGroups: PaletteGroup[] = [
     key: 'form',
     label: '表单',
     items: [
-      { type: 'text', label: '输入框', icon: 'i-lucide:input' },
+      { type: 'text', label: '输入框', icon: 'i-lucide:text-cursor-input' },
       { type: 'textarea', label: '文本域', icon: 'i-lucide:text' },
       { type: 'number', label: '数字输入框', icon: 'i-lucide:hash' },
       { type: 'radio', label: '单选框', icon: 'i-lucide:circle-dot' },

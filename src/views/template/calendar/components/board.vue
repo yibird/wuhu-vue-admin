@@ -1,15 +1,15 @@
 <template>
   <main
     ref="calendarRoot"
-    class="calendar min-h-0 flex flex-col overflow-hidden rounded-8 b-1-regular bg-container"
+    class="calendar min-h-0 flex flex-col overflow-hidden rounded-8 b-1-secondary bg-container"
   >
-    <Skeleton
-      name="calendar-board"
+    <ViewSection
+      skeleton-name="calendar-board"
       :loading="loading"
       class="min-h-0 flex-1 flex flex-col"
     >
       <div
-        class="flex items-center justify-between gap-12 b-b-1-regular px-14 py-12 max-md:(flex-col items-start)"
+        class="flex items-center justify-between gap-12 b-b-1-secondary px-14 py-12 max-md:(flex-col items-start)"
       >
         <div>
           <div class="flex items-center gap-8 text-sm text-main font-700">
@@ -53,12 +53,12 @@
           </div>
         </div>
       </div>
-    </Skeleton>
+    </ViewSection>
   </main>
 </template>
 
 <script setup lang="ts">
-import Skeleton from 'boneyard-js/vue'
+import { ViewSection } from '@/components/view-section'
 import { DayFlowCalendar } from '@dayflow/vue'
 import type { UseCalendarAppReturn } from '@dayflow/core'
 

@@ -1,5 +1,5 @@
 <template>
-  <Skeleton name="workbench-project" :loading="props.loading">
+  <ViewSection skeleton-name="workbench-project" :loading="props.loading">
     <section class="page-enter page-enter--3 min-w-0">
       <a-border-beam :duration="6" :line-width="3">
         <Card class="shadow-none!" :styles="{ body: { padding: 0 } }">
@@ -21,7 +21,7 @@
             <article
               v-for="item in projectItems"
               :key="item.id"
-              class="group min-w-0 rounded-8 b-1-regular bg-container p-14 transition-[border-color,background-color,box-shadow,transform] duration-200 hover:(-translate-y-1 border-primary bg-primary/5 shadow-sm)"
+              class="group min-w-0 rounded-8 b-1-secondary bg-container p-14 transition-[border-color,background-color,box-shadow,transform] duration-200 hover:(-translate-y-1 border-primary bg-primary/5 shadow-sm)"
             >
               <div class="min-w-0 flex items-start justify-between gap-12">
                 <div class="min-w-0 flex items-center gap-10">
@@ -117,11 +117,11 @@
         </Card>
       </a-border-beam>
     </section>
-  </Skeleton>
+  </ViewSection>
 </template>
 
 <script lang="ts" setup>
-import Skeleton from 'boneyard-js/vue'
+import { ViewSection } from '@/components/view-section'
 import { Card } from '@/components/card'
 import { getProjectLogoOption } from './data.ts'
 import type { Project } from './types.ts'

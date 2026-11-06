@@ -1,6 +1,6 @@
 <template>
   <section
-    class="w-full min-h-0 flex flex-1 flex-col overflow-hidden rounded-8 b-1-regular bg-overlay shadow-md"
+    class="w-full min-h-0 flex flex-1 flex-col overflow-hidden rounded-8 b-1-secondary bg-overlay shadow-md"
   >
     <header
       class="shrink-0 flex items-center justify-between gap-12 b-b-1-muted bg-secondary px-14 py-12"
@@ -19,7 +19,7 @@
         </div>
       </div>
       <kbd
-        class="shrink-0 rounded-4 b-1-regular bg-container px-6 py-3 text-11px text-muted leading-14px"
+        class="shrink-0 rounded-4 b-1-secondary bg-container px-6 py-3 text-11px text-muted leading-14px"
       >
         ↑↓
       </kbd>

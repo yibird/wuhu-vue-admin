@@ -18,7 +18,7 @@
     <div class="mt-14 overflow-x-auto">
       <div class="min-w-900">
         <div
-          class="grid grid-cols-[minmax(180px,1.6fr)_80px_100px_100px_100px_100px_90px] gap-10 b-b-1-regular px-10 pb-9 text-xs text-secondary"
+          class="grid grid-cols-[minmax(180px,1.6fr)_80px_100px_100px_100px_100px_90px] gap-10 b-b-1-secondary px-10 pb-9 text-xs text-secondary"
         >
           <span>进程</span>
           <span>PID</span>

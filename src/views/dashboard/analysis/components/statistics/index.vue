@@ -14,7 +14,7 @@
         }"
       >
         <div
-          class="flex flex-wrap items-center justify-between gap-12 b-b-1-regular bg-container px-14 py-12 sm:px-18"
+          class="flex flex-wrap items-center justify-between gap-12 b-b-1-secondary bg-container px-14 py-12 sm:px-18"
         >
           <div class="min-w-0">
             <div class="text-sm text-main font-700">经营趋势</div>

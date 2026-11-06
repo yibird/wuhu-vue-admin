@@ -1,5 +1,5 @@
 <template>
-  <Skeleton name="workbench-dynamic" :loading="loading">
+  <ViewSection skeleton-name="workbench-dynamic" :loading="loading">
     <section class="page-enter page-enter--4 min-w-0">
       <a-border-beam :duration="6" :line-width="3">
         <Card class="shadow-none!" :styles="{ body: { padding: 0 } }">
@@ -48,11 +48,11 @@
         </Card>
       </a-border-beam>
     </section>
-  </Skeleton>
+  </ViewSection>
 </template>
 
 <script lang="ts" setup>
-import Skeleton from 'boneyard-js/vue'
+import { ViewSection } from '@/components/view-section'
 import { SlidingHighlight, Card } from '@/components'
 import type { Dynamic } from './types'
 

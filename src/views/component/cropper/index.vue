@@ -37,7 +37,7 @@
             class="grid grid-cols-1 gap-12 lg:grid-cols-[minmax(0,1fr)_180px]"
           >
             <div
-              class="h-380 overflow-hidden rounded-6 b-1-regular bg-secondary"
+              class="h-380 overflow-hidden rounded-6 b-1-secondary bg-secondary"
             >
               <Cropper
                 ref="cropperRef"
@@ -47,7 +47,7 @@
               />
             </div>
             <div
-              class="h-180 overflow-hidden rounded-6 b-1-regular bg-secondary"
+              class="h-180 overflow-hidden rounded-6 b-1-secondary bg-secondary"
             >
               <img
                 v-if="croppedImage"

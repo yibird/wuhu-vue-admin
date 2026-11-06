@@ -17,7 +17,7 @@
     </Teleport>
 
     <div
-      class="approval-node group relative w-250 overflow-visible rounded-10 b-1-regular bg-container p-0 text-left shadow-sm transition-[transform,border-color,box-shadow,background-color] duration-200 ease-[var(--w-motion-ease-enter)] hover:(-translate-y-1 border-primary/60 shadow-xl shadow-ink/20)"
+      class="approval-node group relative w-250 overflow-visible rounded-10 b-1-secondary bg-container p-0 text-left shadow-sm transition-[transform,border-color,box-shadow,background-color] duration-200 ease-[var(--w-motion-ease-enter)] hover:(-translate-y-1 border-primary/60 shadow-xl shadow-ink/20)"
       :aria-selected="selected"
       :data-approval-node-id="node.id"
       :data-required="node.required ? 'true' : undefined"
@@ -62,7 +62,7 @@
       @click="emits('addAfter', node.id, 'approver')"
     >
       <span
-        class="approval-add-icon mt-0 inline-grid size-28 place-items-center rounded-full b-1-regular bg-container shadow-lg shadow-ink/10 transition"
+        class="approval-add-icon mt-0 inline-grid size-28 place-items-center rounded-full b-1-secondary bg-container shadow-lg shadow-ink/10 transition"
       >
         <Icon name="i-lucide:plus" :size="15" />
       </span>
@@ -72,7 +72,7 @@
       <div
         v-for="branch in node.branches"
         :key="branch.id"
-        class="approval-branch min-w-250 rounded-10 b-1-regular bg-fill p-10"
+        class="approval-branch min-w-250 rounded-10 b-1-secondary bg-fill p-10"
       >
         <div class="mb-10 flex items-start justify-between gap-8">
           <div class="min-w-0">
@@ -112,7 +112,7 @@
       @click="emits('addAfter', node.id, 'approver')"
     >
       <span
-        class="approval-add-icon mt-0 inline-grid size-28 place-items-center rounded-full b-1-regular bg-container shadow-lg shadow-ink/10 transition"
+        class="approval-add-icon mt-0 inline-grid size-28 place-items-center rounded-full b-1-secondary bg-container shadow-lg shadow-ink/10 transition"
       >
         <Icon name="i-lucide:plus" :size="15" />
       </span>

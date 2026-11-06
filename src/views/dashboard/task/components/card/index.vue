@@ -1,5 +1,9 @@
 <template>
-  <Skeleton name="task-card" :loading="loading" class="h-full min-h-0">
+  <ViewSection
+    skeleton-name="task-card"
+    :loading="loading"
+    class="h-full min-h-0"
+  >
     <DragDropProvider
       @drag-move="markDropPlaceholder"
       @drag-end="handleDragEnd"
@@ -30,10 +34,10 @@
         </DraggableItem>
       </div>
     </DragDropProvider>
-  </Skeleton>
+  </ViewSection>
 </template>
 <script lang="ts" setup>
-import Skeleton from 'boneyard-js/vue'
+import { ViewSection } from '@/components/view-section'
 import { DragDropProvider } from '@dnd-kit/vue'
 import { arrayMove } from '@dnd-kit/helpers'
 import { DraggableItem } from '@/components/draggable'

@@ -1,5 +1,5 @@
 <template>
-  <Skeleton name="monitor-service-health" :loading="loading">
+  <ViewSection skeleton-name="monitor-service-health" :loading="loading">
     <Card
       title="服务健康"
       icon="i-lucide:server"
@@ -9,7 +9,7 @@
         <div
           v-for="item in items"
           :key="item.id"
-          class="rounded-8 b-1-regular bg-secondary p-12 transition-[border-color,background-color,box-shadow,transform] duration-200 ease-[var(--w-motion-ease-enter)] hover:(-translate-y-2 shadow-lg shadow-primary/10) active:(translate-y-0 scale-[0.995])"
+          class="rounded-8 b-1-secondary bg-secondary p-12 transition-[border-color,background-color,box-shadow,transform] duration-200 ease-[var(--w-motion-ease-enter)] hover:(-translate-y-2 shadow-lg shadow-primary/10) active:(translate-y-0 scale-[0.995])"
         >
           <div class="flex items-start justify-between gap-10">
             <div class="min-w-0">
@@ -57,11 +57,11 @@
         </div>
       </div>
     </Card>
-  </Skeleton>
+  </ViewSection>
 </template>
 
 <script lang="ts" setup>
-import Skeleton from 'boneyard-js/vue'
+import { ViewSection } from '@/components/view-section'
 import Card from './card.vue'
 import type {
   ServiceHealthEmits,

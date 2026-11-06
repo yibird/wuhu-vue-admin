@@ -1,11 +1,11 @@
 <template>
-  <Skeleton name="monitor-header" :loading="!!props.loading">
+  <ViewSection skeleton-name="monitor-header" :loading="!!props.loading">
     <a-border-beam :duration="6" :line-width="3">
       <section
-        class="monitor-hero page-enter page-enter--1 relative mb-12 overflow-hidden rounded-8 b-1-regular bg-container shadow-sm"
+        class="monitor-hero page-enter page-enter--1 relative mb-12 overflow-hidden rounded-8 b-1-secondary bg-container shadow-sm"
       >
         <div
-          class="flex flex-wrap items-center justify-between gap-12 b-b-1-regular px-14 py-14 sm:(px-18 py-16)"
+          class="flex flex-wrap items-center justify-between gap-12 b-b-1-secondary px-14 py-14 sm:(px-18 py-16)"
         >
           <div class="min-w-0">
             <div class="flex flex-wrap items-center gap-10">
@@ -88,11 +88,11 @@
         </div>
       </section>
     </a-border-beam>
-  </Skeleton>
+  </ViewSection>
 </template>
 
 <script lang="ts" setup>
-import Skeleton from 'boneyard-js/vue'
+import { ViewSection } from '@/components/view-section'
 
 const props = defineProps<{
   criticalAlertCount: number

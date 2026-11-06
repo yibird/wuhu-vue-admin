@@ -1,5 +1,5 @@
 <template>
-  <Skeleton name="monitor-sys-monitor" :loading="props.loading">
+  <ViewSection skeleton-name="monitor-sys-monitor" :loading="props.loading">
     <Card
       title="系统监控"
       icon="i-lucide:chart-area"
@@ -17,7 +17,7 @@
         </div>
       </template>
 
-      <div class="grid grid-cols-3 gap-0 b-b-1-regular">
+      <div class="grid grid-cols-3 gap-0 b-b-1-secondary">
         <div class="min-w-0 px-16 py-12">
           <div class="text-xs text-secondary">当前</div>
           <div class="mt-4 text-lg text-main font-700">
@@ -46,11 +46,11 @@
         />
       </div>
     </Card>
-  </Skeleton>
+  </ViewSection>
 </template>
 
 <script lang="ts" setup>
-import Skeleton from 'boneyard-js/vue'
+import { ViewSection } from '@/components/view-section'
 import { NumberTicker } from '@/components/number-ticker'
 import {
   getCssRgbVar,

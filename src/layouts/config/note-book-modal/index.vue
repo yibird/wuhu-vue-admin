@@ -141,7 +141,7 @@
 
             <div class="min-h-0 flex-1 p-16">
               <div
-                class="h-full min-h-0 flex flex-col rounded-8 b-1-regular bg-container p-14"
+                class="h-full min-h-0 flex flex-col rounded-8 b-1-secondary bg-container p-14"
               >
                 <a-input
                   :value="activeNote.title"

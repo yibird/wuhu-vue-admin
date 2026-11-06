@@ -1,6 +1,6 @@
 <template>
   <section
-    class="min-h-0 min-w-0 grid grid-rows-[auto_minmax(0,1fr)] overflow-hidden rounded-8 b-1-regular bg-container shadow-sm"
+    class="min-h-0 min-w-0 grid grid-rows-[auto_minmax(0,1fr)] overflow-hidden rounded-8 b-1-secondary bg-container shadow-sm"
     :data-testid="APPROVAL_WORKFLOW_SELECTORS.inspector"
   >
     <header class="border-b border-regular px-12 py-10">
@@ -183,7 +183,7 @@
           <div
             v-for="branch in node.branches ?? []"
             :key="branch.id"
-            class="mb-10 rounded-6 b-1-regular bg-container p-10"
+            class="mb-10 rounded-6 b-1-secondary bg-container p-10"
           >
             <label class="block text-12px text-secondary">
               分支名称

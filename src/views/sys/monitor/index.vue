@@ -3,10 +3,10 @@
     <div class="w-full h-full overflow-x-hidden overflow-y-auto">
       <div class="min-h-full bg-page p-10 sm:p-12">
         <header
-          class="mb-12 overflow-hidden rounded-8 b-1-regular bg-container shadow-sm"
+          class="mb-12 overflow-hidden rounded-8 b-1-secondary bg-container shadow-sm"
         >
           <div
-            class="flex flex-wrap items-start justify-between gap-14 b-b-1-regular px-14 py-14 sm:(px-18 py-16)"
+            class="flex flex-wrap items-start justify-between gap-14 b-b-1-secondary px-14 py-14 sm:(px-18 py-16)"
           >
             <div class="min-w-0">
               <div class="flex flex-wrap items-center gap-10">

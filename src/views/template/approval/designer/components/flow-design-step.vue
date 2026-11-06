@@ -1,7 +1,7 @@
 <template>
   <section class="h-full min-h-0 flex flex-col gap-10 overflow-hidden">
     <div
-      class="flex flex-none flex-wrap items-center gap-8 rounded-8 b-1-regular bg-container px-12 py-9"
+      class="flex flex-none flex-wrap items-center gap-8 rounded-8 b-1-secondary bg-container px-12 py-9"
     >
       <div class="min-w-0 flex-1">
         <h2 class="m-0 text-sm text-main font-700">流程设计</h2>
@@ -52,7 +52,7 @@
           <div
             v-for="item in previewItems"
             :key="item.id"
-            class="rounded-7 b-1-regular bg-secondary px-10 py-8"
+            class="rounded-7 b-1-secondary bg-secondary px-10 py-8"
             :style="{ marginLeft: `${item.depth * 18}px` }"
           >
             <div class="flex items-center gap-7">

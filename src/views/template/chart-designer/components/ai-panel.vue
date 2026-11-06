@@ -1,6 +1,6 @@
 <template>
   <section
-    class="min-h-0 min-w-0 grid grid-rows-[auto_minmax(0,1fr)_auto] overflow-hidden rounded-8 b-1-regular bg-container shadow-sm"
+    class="min-h-0 min-w-0 grid grid-rows-[auto_minmax(0,1fr)_auto] overflow-hidden rounded-8 b-1-secondary bg-container shadow-sm"
   >
     <header class="border-b border-regular px-12 py-10">
       <div class="flex items-center justify-between gap-8">
@@ -61,7 +61,7 @@
     <footer class="border-t border-regular p-10">
       <textarea
         v-model="prompt"
-        class="h-68 w-full resize-none rounded-7 b-1-regular bg-fill px-10 py-8 text-13px text-primary outline-none focus:border-primary"
+        class="h-68 w-full resize-none rounded-7 b-1-secondary bg-fill px-10 py-8 text-13px text-primary outline-none focus:border-primary"
         placeholder="例如：生成一个销售经营大屏，包含 GMV、区域排行、渠道占比和趋势分析"
         @keydown.ctrl.enter.prevent="emits('generate')"
         @keydown.meta.enter.prevent="emits('generate')"

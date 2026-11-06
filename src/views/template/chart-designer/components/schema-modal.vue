@@ -29,7 +29,7 @@
           </a-button>
         </div>
       </div>
-      <div class="min-h-0 overflow-hidden rounded-8 b-1-regular">
+      <div class="min-h-0 overflow-hidden rounded-8 b-1-secondary">
         <CodeEditor v-model="draft" language="json" />
       </div>
     </div>

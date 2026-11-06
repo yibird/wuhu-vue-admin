@@ -1,6 +1,6 @@
 <template>
   <section class="h-full min-h-0 flex flex-col">
-    <header class="shrink-0 b-b-1-regular">
+    <header class="shrink-0 b-b-1-secondary">
       <div
         class="mx-auto max-w-960 flex items-center gap-12 px-20 py-16 sm:px-10"
       >

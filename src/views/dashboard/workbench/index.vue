@@ -39,7 +39,7 @@
             >
               <button
                 type="button"
-                class="size-34 flex-center rounded-6 b-1-regular bg-container text-regular cursor-pointer transition-[border-color,background-color,box-shadow,transform,color] duration-200 hover:(border-primary bg-primary/10 shadow-all -translate-y-1) active:translate-y-0"
+                class="size-34 flex-center rounded-6 b-1-secondary bg-container text-regular cursor-pointer transition-[border-color,background-color,box-shadow,transform,color] duration-200 hover:(border-primary bg-primary/10 shadow-all -translate-y-1) active:translate-y-0"
                 :class="{
                   'border-primary bg-primary/10 text-primary shadow-all':
                     dragEnabled,
@@ -410,6 +410,14 @@ watch(loading, async (value) => {
 }
 
 .workbench-grid {
+  /*
+   * GridStack 初始化前 item 拿不到列宽,会按内容收缩;骨架屏在挂载时测量容器高度,
+   * 会把这种压缩后的高度锁进 min-height。先按整行占位,初始化后由 GridStack 内联宽度覆盖。
+   */
+  > :deep(.grid-stack-item) {
+    width: 100%;
+  }
+
   &--drag {
     /* 编辑态:整块内容可拖(GridStack 已内置取消按钮等元素上的拖拽) */
     :deep(.grid-stack-item-content) {

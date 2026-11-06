@@ -82,7 +82,7 @@
 
           <div
             v-if="message.replyInfo"
-            class="max-w-full rounded-6 b-1-regular bg-primary/10 px-8 py-6 text-left text-xs text-secondary"
+            class="max-w-full rounded-6 b-1-secondary bg-primary/10 px-8 py-6 text-left text-xs text-secondary"
           >
             <div class="mb-2 text-primary">
               {{ message.replyInfo.senderName }}
@@ -98,7 +98,7 @@
               type="button"
               v-for="reaction in message.reactions"
               :key="reaction.emoji"
-              class="flex items-center gap-2 rounded-full b-1-regular bg-container px-6 py-2 cursor-pointer transition-colors hover:bg-hover focus-visible:(outline-2 outline-primary outline-offset-2)"
+              class="flex items-center gap-2 rounded-full b-1-secondary bg-container px-6 py-2 cursor-pointer transition-colors hover:bg-hover focus-visible:(outline-2 outline-primary outline-offset-2)"
               :aria-label="`${reaction.emoji} ${reaction.count} 个反应`"
               @click="$emit('reaction', reaction.emoji)"
             >
@@ -179,7 +179,7 @@
 
           <div
             v-if="showEmojiPicker"
-            class="absolute -top-72 z-3 rounded-8 b-1-regular bg-container p-8 shadow-md"
+            class="absolute -top-72 z-3 rounded-8 b-1-secondary bg-container p-8 shadow-md"
             :class="isMine ? 'right-0' : 'left-0'"
           >
             <div class="grid grid-cols-8 gap-4">

@@ -3,7 +3,13 @@ import { postprocess, presets, rules, shortcuts, transformers } from './unocss'
 
 export default defineConfig({
   blocklist: ['?'],
-  safelist: [],
+  safelist: [
+    // 审批 mock 数据中的动态图标名,UnoCSS 无法从组件模板静态提取
+    'i-lucide:stamp',
+    'i-lucide:badge-percent',
+    'i-lucide:banknote',
+    'i-lucide:handshake',
+  ],
   content: {
     pipeline: {
       include: ['src/**/*.{vue,ts,tsx}'],
@@ -25,7 +31,6 @@ export default defineConfig({
       warning: 'rgba(var(--w-color-warning))',
       error: 'rgba(var(--w-color-error))',
       info: 'rgba(var(--w-color-info))',
-      // 中性投影色,与原先 rgb(15 23 42) 保持一致
       ink: 'rgb(15 23 42)',
     },
   },

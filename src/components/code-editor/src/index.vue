@@ -1,7 +1,7 @@
 <template>
   <div
     ref="editorRef"
-    class="h-full min-h-0 overflow-hidden bg-container b-1-regular rounded-8"
+    class="h-full min-h-0 overflow-hidden bg-container b-1-secondary rounded-8"
   />
 </template>
 

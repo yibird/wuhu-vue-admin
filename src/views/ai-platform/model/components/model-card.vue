@@ -1,6 +1,6 @@
 <template>
   <article
-    class="group min-w-0 overflow-hidden rounded-8 b-1-regular bg-container shadow-sm transition-[border-color,box-shadow,transform] duration-200 hover:(-translate-y-2 border-primary shadow-lg)"
+    class="group min-w-0 overflow-hidden rounded-8 b-1-secondary bg-container shadow-sm transition-[border-color,box-shadow,transform] duration-200 hover:(-translate-y-2 border-primary shadow-lg)"
   >
     <header class="flex min-w-0 items-start gap-10 p-14 pb-12">
       <span

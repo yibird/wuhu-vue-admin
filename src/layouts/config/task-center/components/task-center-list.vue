@@ -1,6 +1,6 @@
 <template>
   <div
-    class="h-full min-h-0 flex flex-col overflow-hidden rounded-6 b-1-regular bg-container"
+    class="h-full min-h-0 flex flex-col overflow-hidden rounded-6 b-1-secondary bg-container"
   >
     <div class="flex items-center justify-between b-b-1-muted px-14 py-12">
       <span class="text-sm text-main font-700">任务列表</span>

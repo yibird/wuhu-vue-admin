@@ -1,5 +1,5 @@
 <template>
-  <Skeleton name="monitor-recommend-app" :loading="loading">
+  <ViewSection skeleton-name="monitor-recommend-app" :loading="loading">
     <Card
       title="应用中心"
       icon="i-lucide:package-plus"
@@ -9,7 +9,7 @@
         <div
           v-for="item in items"
           :key="item.id"
-          class="min-w-0 rounded-8 b-1-regular bg-secondary p-10 transition-[border-color,background-color,box-shadow,transform] duration-200 ease-[var(--w-motion-ease-enter)] hover:(-translate-y-2 border-primary bg-hover shadow-lg shadow-primary/10) active:(translate-y-0 scale-[0.995])"
+          class="min-w-0 rounded-8 b-1-secondary bg-secondary p-10 transition-[border-color,background-color,box-shadow,transform] duration-200 ease-[var(--w-motion-ease-enter)] hover:(-translate-y-2 border-primary bg-hover shadow-lg shadow-primary/10) active:(translate-y-0 scale-[0.995])"
         >
           <div class="flex items-center gap-10">
             <div
@@ -64,11 +64,11 @@
         </div>
       </div>
     </Card>
-  </Skeleton>
+  </ViewSection>
 </template>
 
 <script lang="ts" setup>
-import Skeleton from 'boneyard-js/vue'
+import { ViewSection } from '@/components/view-section'
 import Card from './card.vue'
 import type { MonitorTone, RecommendAppEmits, RecommendAppProps } from './types'
 

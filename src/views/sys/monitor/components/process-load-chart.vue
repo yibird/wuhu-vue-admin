@@ -1,5 +1,5 @@
 <template>
-  <div class="mt-12 overflow-hidden rounded-8 b-1-regular bg-secondary p-12">
+  <div class="mt-12 overflow-hidden rounded-8 b-1-secondary bg-secondary p-12">
     <div class="flex flex-wrap items-start justify-between gap-10">
       <div class="min-w-0">
         <div class="text-sm text-main font-700">进程负载对比</div>

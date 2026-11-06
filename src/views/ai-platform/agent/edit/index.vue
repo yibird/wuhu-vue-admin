@@ -2,7 +2,7 @@
   <View :full="true" :padding="0">
     <div class="h-full min-h-0 flex flex-col overflow-hidden bg-page">
       <header
-        class="flex flex-none items-center justify-between gap-12 b-b-1-regular bg-container px-16 py-12"
+        class="flex flex-none items-center justify-between gap-12 b-b-1-secondary bg-container px-16 py-12"
       >
         <div class="min-w-0 flex items-center gap-12">
           <a-button type="text" @click="goBack">
@@ -41,7 +41,7 @@
 
       <main class="min-h-0 flex-1 overflow-y-auto p-12 sm:p-16">
         <div class="grid grid-cols-1 gap-12 xl:grid-cols-[minmax(0,1fr)_360px]">
-          <section class="min-w-0 rounded-8 b-1-regular bg-container">
+          <section class="min-w-0 rounded-8 b-1-secondary bg-container">
             <a-tabs v-model:active-key="activeTab" class="px-14">
               <a-tab-pane key="profile" tab="基础信息">
                 <a-form :model="formState" layout="vertical" class="pb-14 pt-4">
@@ -155,7 +155,7 @@
 
               <a-tab-pane key="guardrails" tab="安全与发布">
                 <div class="pb-14 pt-4">
-                  <div class="mb-12 rounded-8 b-1-regular bg-page p-12">
+                  <div class="mb-12 rounded-8 b-1-secondary bg-page p-12">
                     <div class="mb-10 flex items-center justify-between gap-8">
                       <div>
                         <div class="text-sm text-main font-700">安全护栏</div>
@@ -181,7 +181,7 @@
                       <label
                         v-for="item in checklistOptions"
                         :key="item.value"
-                        class="flex gap-10 rounded-8 b-1-regular bg-page p-12"
+                        class="flex gap-10 rounded-8 b-1-secondary bg-page p-12"
                       >
                         <a-checkbox :value="item.value" />
                         <span class="min-w-0">
@@ -201,7 +201,7 @@
           </section>
 
           <aside class="min-w-0 space-y-12">
-            <section class="rounded-8 b-1-regular bg-container p-14">
+            <section class="rounded-8 b-1-secondary bg-container p-14">
               <div class="mb-12 flex items-start gap-10">
                 <span
                   class="size-44 flex flex-none items-center justify-center rounded-8 bg-primary/10 text-primary"
@@ -240,7 +240,7 @@
               </div>
             </section>
 
-            <section class="rounded-8 b-1-regular bg-container p-14">
+            <section class="rounded-8 b-1-secondary bg-container p-14">
               <div class="mb-12 flex items-center justify-between">
                 <h2 class="m-0 text-md text-main font-700">运行摘要</h2>
                 <Icon name="i-lucide:activity" class="text-primary" />
@@ -257,7 +257,7 @@
               </div>
             </section>
 
-            <section class="rounded-8 b-1-regular bg-container p-14">
+            <section class="rounded-8 b-1-secondary bg-container p-14">
               <div class="mb-12 flex items-center justify-between">
                 <h2 class="m-0 text-md text-main font-700">上线建议</h2>
                 <a-tag color="green" :bordered="false">生产检查</a-tag>

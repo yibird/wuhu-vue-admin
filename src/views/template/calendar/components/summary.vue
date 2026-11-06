@@ -1,10 +1,10 @@
 <template>
-  <Skeleton name="calendar-summary" :loading="loading">
+  <ViewSection skeleton-name="calendar-summary" :loading="loading">
     <div class="grid grid-cols-4 gap-12 max-lg:grid-cols-2 max-sm:grid-cols-1">
       <article
         v-for="item in items"
         :key="item.label"
-        class="group min-w-0 overflow-hidden rounded-8 b-1-regular bg-container p-14 text-main transition-[transform,border-color] duration-300 hover:(-translate-y-1 border-primary/40)"
+        class="group min-w-0 overflow-hidden rounded-8 b-1-secondary bg-container p-14 text-main transition-[transform,border-color] duration-300 hover:(-translate-y-1 border-primary/40)"
       >
         <div class="flex items-start justify-between gap-10">
           <div class="min-w-0">
@@ -24,11 +24,11 @@
         </div>
       </article>
     </div>
-  </Skeleton>
+  </ViewSection>
 </template>
 
 <script setup lang="ts">
-import Skeleton from 'boneyard-js/vue'
+import { ViewSection } from '@/components/view-section'
 import type { SummaryCard } from '../types'
 
 const { items, loading = false } = defineProps<{

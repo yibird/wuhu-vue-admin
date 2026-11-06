@@ -2,7 +2,7 @@
   <div class="flex w-full items-center justify-between gap-10">
     <div class="flex-y-center gap-8">
       <div
-        class="flex-y-center gap-4 rounded-8 b-1-regular bg-overlay px-6 py-4 shadow-lg"
+        class="flex-y-center gap-4 rounded-8 b-1-secondary bg-overlay px-6 py-4 shadow-lg"
       >
         <a-select
           :value="designer.previewDevice.value"
@@ -46,7 +46,7 @@
     </div>
 
     <div
-      class="flex-y-center gap-4 rounded-8 b-1-regular bg-overlay px-6 py-4 shadow-lg"
+      class="flex-y-center gap-4 rounded-8 b-1-secondary bg-overlay px-6 py-4 shadow-lg"
     >
       <a-tooltip title="缩小 (Ctrl+滚轮)">
         <button class="lc-toolbar-btn" type="button" @click="view.zoomOut()">

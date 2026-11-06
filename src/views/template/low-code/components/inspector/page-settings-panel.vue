@@ -20,7 +20,7 @@
         <span>主题色</span>
         <span class="flex-y-center gap-6">
           <input
-            class="size-24 shrink-0 cursor-pointer rounded-4 b-1-regular bg-transparent p-0"
+            class="size-24 shrink-0 cursor-pointer rounded-4 b-1-secondary bg-transparent p-0"
             type="color"
             :value="themeColor"
             @input="updateTheme('primaryColor', $event)"

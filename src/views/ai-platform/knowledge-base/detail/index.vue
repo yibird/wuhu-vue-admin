@@ -10,7 +10,7 @@
 
       <div class="min-w-0 flex-1 flex flex-col overflow-hidden">
         <header
-          class="flex flex-none flex-wrap items-center justify-between gap-12 b-b-1-regular bg-container px-16 py-12"
+          class="flex flex-none flex-wrap items-center justify-between gap-12 b-b-1-secondary bg-container px-16 py-12"
         >
           <div class="min-w-0 flex items-center gap-12">
             <a-button type="text" @click="goBack">
@@ -58,7 +58,7 @@
             <div
               v-for="stat in overviewStats"
               :key="stat.label"
-              class="rounded-8 b-1-regular bg-container p-12"
+              class="rounded-8 b-1-secondary bg-container p-12"
             >
               <div class="flex items-center justify-between gap-8">
                 <span class="text-xs text-secondary">{{ stat.label }}</span>

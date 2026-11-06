@@ -1,7 +1,9 @@
 <template>
-  <section class="overflow-hidden rounded-8 b-1-regular bg-container shadow-sm">
+  <section
+    class="overflow-hidden rounded-8 b-1-secondary bg-container shadow-sm"
+  >
     <header
-      class="flex flex-wrap items-center justify-between gap-12 b-b-1-regular px-14 py-13 sm:px-16"
+      class="flex flex-wrap items-center justify-between gap-12 b-b-1-secondary px-14 py-13 sm:px-16"
     >
       <div class="min-w-0 flex items-center gap-10">
         <span

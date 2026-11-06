@@ -17,7 +17,7 @@
       <div
         v-for="node in redis.nodes"
         :key="node.id"
-        class="rounded-8 b-1-regular bg-secondary p-12"
+        class="rounded-8 b-1-secondary bg-secondary p-12"
       >
         <div class="flex items-start justify-between gap-10">
           <div class="min-w-0">

@@ -2,7 +2,7 @@
   <div
     role="toolbar"
     aria-label="画布导航"
-    class="workflow-canvas-controls absolute bottom-14 left-1/2 z-5 flex -translate-x-1/2 items-center gap-4 rounded-12 b-1-regular bg-container p-5 shadow-lg backdrop-blur-10"
+    class="workflow-canvas-controls absolute bottom-14 left-1/2 z-5 flex -translate-x-1/2 items-center gap-4 rounded-12 b-1-secondary bg-container p-5 shadow-lg backdrop-blur-10"
   >
     <a-tooltip title="选择模式">
       <a-button

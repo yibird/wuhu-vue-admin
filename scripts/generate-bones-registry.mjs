@@ -25,6 +25,7 @@ const boneyardConfig = JSON.stringify({
   color: config.color,
   darkColor: config.darkColor,
   animate: config.animate,
+  transition: config.transition,
 })
 
 const output = [

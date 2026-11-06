@@ -10,7 +10,7 @@
     <button
       v-if="!collapsed"
       type="button"
-      class="h-36 w-full inline-flex items-center justify-center gap-6 rounded-8 b-1-regular bg-container px-0 text-main cursor-pointer transition-[border-color,background-color,box-shadow,color,transform] duration-200 ease-[var(--w-motion-ease-enter)] hover:(-translate-y-1 border-primary/35 bg-hover text-primary shadow-sm) focus-visible:(border-primary/35 ring-2 ring-primary/12 outline-none) active:(translate-y-0 scale-98)"
+      class="h-36 w-full inline-flex items-center justify-center gap-6 rounded-8 b-1-secondary bg-container px-0 text-main cursor-pointer transition-[border-color,background-color,box-shadow,color,transform] duration-200 ease-[var(--w-motion-ease-enter)] hover:(-translate-y-1 border-primary/35 bg-hover text-primary shadow-sm) focus-visible:(border-primary/35 ring-2 ring-primary/12 outline-none) active:(translate-y-0 scale-98)"
       title="新建会话"
       @click="emits('create')"
     >

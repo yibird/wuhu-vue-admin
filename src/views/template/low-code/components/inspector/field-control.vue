@@ -100,7 +100,7 @@
 
       <div v-else-if="field.type === 'color'" class="flex-y-center gap-6">
         <input
-          class="size-26 shrink-0 cursor-pointer rounded-4 b-1-regular bg-transparent p-0"
+          class="size-26 shrink-0 cursor-pointer rounded-4 b-1-secondary bg-transparent p-0"
           type="color"
           :value="colorValue"
           @input="onColorInput"

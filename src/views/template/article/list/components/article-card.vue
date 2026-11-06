@@ -1,6 +1,6 @@
 <template>
   <article
-    class="group relative min-w-0 cursor-pointer overflow-hidden rounded-8 b-1-regular bg-container shadow-sm outline-none transition-[border-color,box-shadow,transform] duration-200 hover:(-translate-y-2 border-primary shadow-lg) focus-visible:border-primary"
+    class="group relative min-w-0 cursor-pointer overflow-hidden rounded-8 b-1-secondary bg-container transition-all hover:(-translate-y-2 border-primary shadow-lg) focus-visible:border-primary"
     :aria-label="'文章：' + props.item.title"
     role="button"
     tabindex="0"
@@ -134,8 +134,7 @@
 </template>
 
 <script setup lang="ts">
-import { renderIcon } from '@/utils'
-import { getArticleIconForeground } from '../../icon-palette'
+import { getIconPaletteForeground, renderIcon } from '@/utils'
 import type { ArticleAction, ArticleItem } from '../../types'
 
 const props = defineProps<{
@@ -148,7 +147,7 @@ const emits = defineEmits<{
 
 const iconStyle = computed(() => ({
   backgroundColor: props.item.iconBackground,
-  color: getArticleIconForeground(props.item.iconBackground),
+  color: getIconPaletteForeground(props.item.iconBackground),
 }))
 
 const visibleTags = computed(() => props.item.tags.slice(0, 2))

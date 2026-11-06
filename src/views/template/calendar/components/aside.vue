@@ -1,8 +1,12 @@
 <template>
   <aside
-    class="h-full overflow-y-auto rounded-8 b-1-regular bg-container max-[1100px]:order--1"
+    class="h-full overflow-y-auto rounded-8 b-1-secondary bg-container max-[1100px]:order--1"
   >
-    <Skeleton name="calendar-aside" :loading="loading" class="h-full">
+    <ViewSection
+      skeleton-name="calendar-aside"
+      :loading="loading"
+      class="h-full"
+    >
       <div
         class="flex flex-col gap-16 p-14 w-full h-full overflow-x-hidden overflow-y-auto"
       >
@@ -38,12 +42,12 @@
           :get-calendar-count="getCalendarCount"
         />
       </div>
-    </Skeleton>
+    </ViewSection>
   </aside>
 </template>
 
 <script setup lang="ts">
-import Skeleton from 'boneyard-js/vue'
+import { ViewSection } from '@/components/view-section'
 import CalendarCategoryStats from './category-stats.vue'
 import CalendarEventDetailPanel from './event-detail-panel.vue'
 import CalendarFilterPanel from './filter-panel.vue'

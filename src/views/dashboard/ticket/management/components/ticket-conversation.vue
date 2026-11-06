@@ -3,7 +3,7 @@
     <a-empty v-if="!ticket" class="my-auto" description="请选择一条工单" />
 
     <template v-else>
-      <header class="flex-none b-b-1-regular px-16 py-14">
+      <header class="flex-none b-b-1-secondary px-16 py-14">
         <div class="flex flex-wrap items-center gap-7">
           <span class="text-xs text-secondary">{{ ticket.id }}</span>
           <a-tag
@@ -44,7 +44,7 @@
       </header>
 
       <div class="min-h-0 flex-1 overflow-y-auto">
-        <section class="b-b-1-regular px-16 py-14">
+        <section class="b-b-1-secondary px-16 py-14">
           <div class="mb-7 flex items-center justify-between">
             <h3 class="mb-0 text-sm text-main font-600">问题描述</h3>
             <span class="text-xs text-secondary"

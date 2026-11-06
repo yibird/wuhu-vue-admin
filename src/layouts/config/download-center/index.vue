@@ -20,7 +20,7 @@
 
     <div class="h-full min-h-0 overflow-hidden bg-page">
       <div class="h-full min-h-0 flex flex-col gap-12 p-14 max-sm:p-10">
-        <section class="rounded-8 b-1-regular bg-container p-14">
+        <section class="rounded-8 b-1-secondary bg-container p-14">
           <div
             class="grid grid-cols-[minmax(0,1fr)_260px] items-center gap-16 max-lg:grid-cols-1"
           >
@@ -61,7 +61,7 @@
             v-for="stat in stats"
             :key="stat.key"
             type="button"
-            class="min-w-0 rounded-8 b-1-regular bg-container p-12 text-left transition-colors hover:(border-primary bg-hover)"
+            class="min-w-0 rounded-8 b-1-secondary bg-container p-12 text-left transition-colors hover:(border-primary bg-hover)"
           >
             <div class="flex items-center justify-between gap-10">
               <div class="min-w-0">
@@ -80,7 +80,7 @@
           </button>
         </div>
 
-        <section class="rounded-8 b-1-regular bg-container p-12">
+        <section class="rounded-8 b-1-secondary bg-container p-12">
           <div
             class="grid grid-cols-[minmax(190px,1fr)_150px_150px_auto_auto] gap-10 max-lg:grid-cols-2 max-sm:grid-cols-1"
           >
@@ -131,7 +131,7 @@
           content-class="min-h-full grid grid-cols-[380px_minmax(0,1fr)] gap-12 max-lg:grid-cols-1 max-lg:grid-rows-[minmax(320px,42vh)_minmax(440px,1fr)]"
         >
           <section
-            class="h-full min-h-0 flex flex-col overflow-hidden rounded-8 b-1-regular bg-container"
+            class="h-full min-h-0 flex flex-col overflow-hidden rounded-8 b-1-secondary bg-container"
           >
             <div
               class="flex items-center justify-between b-b-1-muted px-14 py-12"
@@ -215,7 +215,7 @@
           </section>
 
           <section
-            class="h-full min-h-0 flex flex-col overflow-hidden rounded-8 b-1-regular bg-container"
+            class="h-full min-h-0 flex flex-col overflow-hidden rounded-8 b-1-secondary bg-container"
           >
             <template v-if="activeDownload">
               <div class="b-b-1-muted bg-secondary px-16 py-14">
@@ -279,7 +279,7 @@
                   </div>
                 </div>
 
-                <div class="mt-12 rounded-8 b-1-regular p-12">
+                <div class="mt-12 rounded-8 b-1-secondary p-12">
                   <div class="flex items-center gap-7 text-xs text-secondary">
                     <Icon name="i-lucide:shield-check" :size="15" />
                     <span>校验信息</span>

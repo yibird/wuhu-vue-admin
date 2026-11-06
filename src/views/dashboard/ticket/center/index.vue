@@ -17,7 +17,7 @@
         data-testid="ticket-center-scroll"
         class="min-h-0 flex-1 overflow-y-auto py-12"
       >
-        <Skeleton name="ticket-list" :loading="loading">
+        <ViewSection skeleton-name="ticket-list" :loading="loading">
           <a-empty
             v-if="paginatedTickets.length === 0"
             class="h-full min-h-360 flex flex-col items-center justify-center"
@@ -44,7 +44,7 @@
               <TicketCard class="h-full" :ticket="item" @open="openTicket" />
             </template>
           </AnimatedGroup>
-        </Skeleton>
+        </ViewSection>
       </main>
 
       <footer
@@ -78,7 +78,7 @@
 </template>
 
 <script setup lang="ts">
-import Skeleton from 'boneyard-js/vue'
+import { ViewSection } from '@/components/view-section'
 import { message } from 'antdv-next'
 import { AnimatedGroup } from '@/components/animated'
 import { useLoading } from '@/hooks'

@@ -19,7 +19,7 @@
                 v-for="mode in modes"
                 :key="mode"
                 type="button"
-                class="button h-34 rounded-6 b-1-regular text-sm transition-colors"
+                class="button h-34 rounded-6 b-1-secondary text-sm transition-colors"
                 :class="
                   activeMode === mode
                     ? 'border-primary bg-primary/10 text-primary'
@@ -122,7 +122,7 @@
             <div class="mx-auto max-w-680">
               <textarea
                 v-model="inputText"
-                class="box-border block max-h-120 min-h-74 w-full resize-none rounded-10 b-1-regular bg-container px-12 py-10 text-sm text-main outline-none transition-[border-color,box-shadow] placeholder:text-placeholder focus:(border-primary ring-2 ring-primary/10)"
+                class="box-border block max-h-120 min-h-74 w-full resize-none rounded-10 b-1-secondary bg-container px-12 py-10 text-sm text-main outline-none transition-[border-color,box-shadow] placeholder:text-placeholder focus:(border-primary ring-2 ring-primary/10)"
                 placeholder="输入问题或选择快捷能力"
                 @keydown.enter="handleEnter"
               />

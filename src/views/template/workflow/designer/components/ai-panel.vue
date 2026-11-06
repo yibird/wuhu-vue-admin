@@ -1,10 +1,10 @@
 <template>
   <section
-    class="grid min-h-0 min-w-0 grid-rows-[auto_minmax(0,1fr)_auto] overflow-hidden rounded-8 b-1-regular bg-container shadow-lg"
+    class="grid min-h-0 min-w-0 grid-rows-[auto_minmax(0,1fr)_auto] overflow-hidden rounded-8 b-1-secondary bg-container shadow-lg"
     aria-label="AI 生成工作流"
   >
     <header
-      class="flex items-center justify-between gap-8 b-b-1-regular px-12 py-10"
+      class="flex items-center justify-between gap-8 b-b-1-secondary px-12 py-10"
     >
       <div class="min-w-0 flex items-center gap-7">
         <Icon name="i-lucide:sparkles" :size="17" class="text-primary" />
@@ -78,7 +78,7 @@
 
       <section
         v-if="props.plan"
-        class="rounded-10 b-1-regular bg-secondary p-10"
+        class="rounded-10 b-1-secondary bg-secondary p-10"
       >
         <header class="flex items-start justify-between gap-8">
           <div class="min-w-0 flex flex-col gap-3">
@@ -110,7 +110,7 @@
           <li
             v-for="node in props.plan.nodes"
             :key="node.id"
-            class="flex items-center gap-7 rounded-7 b-1-regular bg-container px-8 py-6"
+            class="flex items-center gap-7 rounded-7 b-1-secondary bg-container px-8 py-6"
           >
             <Icon
               :name="node.icon"
@@ -174,7 +174,7 @@
     <footer class="b-t-1-regular p-10">
       <textarea
         v-model="prompt"
-        class="h-68 w-full resize-none rounded-7 b-1-regular bg-fill px-10 py-8 text-13px text-main outline-none focus:border-primary"
+        class="h-68 w-full resize-none rounded-7 b-1-secondary bg-fill px-10 py-8 text-13px text-main outline-none focus:border-primary"
         placeholder="例如：客户退款审批，金额 5000 以内自动通过，否则转人工审批并通知客户"
         @keydown.ctrl.enter.prevent="emits('generate')"
         @keydown.meta.enter.prevent="emits('generate')"
