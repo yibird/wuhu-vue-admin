@@ -16,10 +16,10 @@
     <div
       :class="[
         'page-container flex-center min-h-screen min-h-[100vh] w-full shrink-0 bg-container px-24 sm:px-48 xl:(w-520 xl:px-60 py-48)',
-        placement === 'right' && 'xl:b-l-1-[border-secondary]',
-        placement === 'left' && 'xl:b-r-1-[border-secondary]',
+        placement === 'right' && 'xl:b-l-1-[border-regular]',
+        placement === 'left' && 'xl:b-r-1-[border-regular]',
         {
-          'xl:(m-auto xl:min-h-0 xl:max-h-[calc(100vh-64px)] xl:rounded-8 border border-secondary)':
+          'xl:(m-auto xl:min-h-0 xl:max-h-[calc(100vh-64px)] xl:rounded-8 border border-regular)':
             placement === 'center',
         },
       ]"
