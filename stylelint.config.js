@@ -6,6 +6,8 @@ export default {
     'coverage/**',
     '.agents/**',
     '.claude/**',
+    // 字体脚本生成的扩展子集声明
+    'src/styles/fonts.extended.css',
   ],
   extends: [
     'stylelint-config-standard',

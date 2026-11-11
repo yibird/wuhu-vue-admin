@@ -22,7 +22,8 @@ export function pwaPlugin() {
     },
     workbox: {
       maximumFileSizeToCacheInBytes: 16 * 1024 * 1024,
-      globIgnores: ['**/*.map'],
+      // 扩展字体按 unicode-range 按需请求, 不进入安装期预缓存
+      globIgnores: ['**/*.map', '**/*Extended*.woff2'],
     },
   })
 }

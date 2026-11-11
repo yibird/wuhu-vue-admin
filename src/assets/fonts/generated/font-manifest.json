@@ -1,0 +1,130 @@
+{
+  "fonts": [
+    {
+      "family": "Outfit",
+      "weight": "400 900",
+      "source": "OutfitVariable.woff2",
+      "sourceBytes": 32228,
+      "sourceGlyphs": 249,
+      "axes": {},
+      "preload": true,
+      "core": {
+        "file": "OutfitCore.2c7f87f7.woff2",
+        "bytes": 21740,
+        "glyphs": 131,
+        "unicodeRange": "U+0020-007E, U+00A0, U+00A5, U+00A9, U+00B7, U+00D7, U+2013-2014, U+2018-2019, U+201C-201D, U+2022, U+2026, U+2191, U+2193"
+      },
+      "extended": {
+        "file": "OutfitExtended.faf4400f.woff2",
+        "bytes": 11056,
+        "glyphs": 120,
+        "unicodeRange": "U+00A1-00A4, U+00A6-00A8, U+00AA-00AC, U+00AE-00B6, U+00B8-00D6, U+00D8-00FF, U+0102, U+0131, U+0152-0153"
+      }
+    },
+    {
+      "family": "DM Sans",
+      "weight": "400 900",
+      "source": "DMSansVariable.woff2",
+      "sourceBytes": 36980,
+      "sourceGlyphs": 270,
+      "axes": {},
+      "preload": false,
+      "core": {
+        "file": "DMSansCore.d56b733c.woff2",
+        "bytes": 24176,
+        "glyphs": 140,
+        "unicodeRange": "U+0020-007E, U+00A0, U+00A5, U+00A9, U+00B7, U+00D7, U+2013-2014, U+2018-2019, U+201C-201D, U+2022, U+2026, U+2191, U+2193"
+      },
+      "extended": {
+        "file": "DMSansExtended.68aacac7.woff2",
+        "bytes": 13360,
+        "glyphs": 127,
+        "unicodeRange": "U+00A1-00A4, U+00A6-00A8, U+00AA-00AC, U+00AE-00B6, U+00B8-00D6, U+00D8-00FF, U+0102, U+0131, U+0152-0153"
+      }
+    },
+    {
+      "family": "Inter Variable",
+      "weight": "400 900",
+      "source": "InterVariable.woff2",
+      "sourceBytes": 48256,
+      "sourceGlyphs": 518,
+      "axes": {},
+      "preload": false,
+      "core": {
+        "file": "InterCore.597fe70e.woff2",
+        "bytes": 26028,
+        "glyphs": 207,
+        "unicodeRange": "U+0020-007E, U+00A0, U+00A5, U+00A9, U+00B7, U+00D7, U+2013-2014, U+2018-2019, U+201C-201D, U+2022, U+2026, U+2191, U+2193"
+      },
+      "extended": {
+        "file": "InterExtended.868f4e5c.woff2",
+        "bytes": 14024,
+        "glyphs": 135,
+        "unicodeRange": "U+00A1-00A4, U+00A6-00A8, U+00AA-00AC, U+00AE-00B6, U+00B8-00D6, U+00D8-00FF, U+0131, U+0152-0153"
+      }
+    },
+    {
+      "family": "Space Grotesk",
+      "weight": "400 700",
+      "source": "SpaceGroteskVariable.woff2",
+      "sourceBytes": 22320,
+      "sourceGlyphs": 291,
+      "axes": {},
+      "preload": false,
+      "core": {
+        "file": "SpaceGroteskCore.68a480c9.woff2",
+        "bytes": 12468,
+        "glyphs": 136,
+        "unicodeRange": "U+0020-007E, U+00A0, U+00A5, U+00A9, U+00B7, U+00D7, U+2013-2014, U+2018-2019, U+201C-201D, U+2022, U+2026, U+2191, U+2193"
+      },
+      "extended": {
+        "file": "SpaceGroteskExtended.35117405.woff2",
+        "bytes": 8100,
+        "glyphs": 135,
+        "unicodeRange": "U+00A1-00A4, U+00A6-00A8, U+00AA-00B6, U+00B8-00D6, U+00D8-00FF, U+0131, U+0152-0153"
+      }
+    },
+    {
+      "family": "Roboto Mono",
+      "weight": "400 700",
+      "source": "RobotoMonoVariable.woff2",
+      "sourceBytes": 32752,
+      "sourceGlyphs": 228,
+      "axes": {},
+      "preload": false,
+      "core": {
+        "file": "RobotoMonoCore.ca7ed4f0.woff2",
+        "bytes": 20100,
+        "glyphs": 109,
+        "unicodeRange": "U+0020-007E, U+00A0, U+00A5, U+00A9, U+00B7, U+00D7, U+2013-2014, U+2018-2019, U+201C-201D, U+2022, U+2026"
+      },
+      "extended": {
+        "file": "RobotoMonoExtended.6d5a045c.woff2",
+        "bytes": 15772,
+        "glyphs": 117,
+        "unicodeRange": "U+00A1-00A4, U+00A6-00A8, U+00AA-00B6, U+00B8-00D6, U+00D8-00FF, U+0131, U+0152-0153"
+      }
+    },
+    {
+      "family": "Lato",
+      "weight": "400",
+      "source": "LatoRegular.woff2",
+      "sourceBytes": 13980,
+      "sourceGlyphs": 224,
+      "axes": {},
+      "preload": false,
+      "core": {
+        "file": "LatoCore.7c45e39d.woff2",
+        "bytes": 8600,
+        "glyphs": 111,
+        "unicodeRange": "U+0020-007E, U+00A0, U+00A5, U+00A9, U+00B7, U+00D7, U+2013-2014, U+2018-2019, U+201C-201D, U+2022, U+2026"
+      },
+      "extended": {
+        "file": "LatoExtended.ba8676cf.woff2",
+        "bytes": 6268,
+        "glyphs": 118,
+        "unicodeRange": "U+00A1-00A4, U+00A6-00A8, U+00AA-00B6, U+00B8-00D6, U+00D8-00FF, U+0131, U+0152-0153"
+      }
+    }
+  ]
+}

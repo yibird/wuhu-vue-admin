@@ -51,5 +51,6 @@ export const lint = {
     'dist',
     '**/*.mock.ts.*.mjs',
     'src/bones/**',
+    'src/styles/fonts.extended.css',
   ],
 }

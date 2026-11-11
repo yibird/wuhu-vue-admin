@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { pathToFileURL } from 'node:url'
 import { fontless } from 'fontless'
@@ -22,12 +23,50 @@ const FONT_DIR = resolve(process.cwd(), 'src/assets/fonts')
 
 type FontFamilies = NonNullable<FontlessOptions['families']>
 
+interface GeneratedFont {
+  family: string
+  weight: string
+  preload: boolean
+  core: {
+    file: string
+    unicodeRange: string
+  }
+}
+
+interface FontManifest {
+  fonts: GeneratedFont[]
+}
+
 /**
- * @param file src/assets/fonts 下的字体文件名
+ * 子集字体清单
+ *
+ * 由 `pnpm fonts:optimize` 生成,文件名带内容指纹,只保留实际使用的字重区间。
+ */
+function readFontManifest(): FontManifest {
+  try {
+    return JSON.parse(
+      readFileSync(resolve(FONT_DIR, 'generated/font-manifest.json'), 'utf8')
+    ) as FontManifest
+  } catch {
+    throw new Error(
+      '缺少字体子集产物,请先执行 `pnpm fonts:optimize` 并提交 src/assets/fonts/generated'
+    )
+  }
+}
+
+const fontManifest = readFontManifest()
+
+/**
+ * @param file src/assets/fonts/generated 下的子集字体文件名
  * @returns 本地字体源,由 fontless 复制进产物并生成 @font-face
  */
 function localFont(file: string) {
-  return [{ url: pathToFileURL(resolve(FONT_DIR, file)).href, format: 'woff2' }]
+  return [
+    {
+      url: pathToFileURL(resolve(FONT_DIR, 'generated', file)).href,
+      format: 'woff2',
+    },
+  ]
 }
 
 /**
@@ -39,44 +78,16 @@ function localFont(file: string) {
  * 系统字体显式声明 provider: none,避免无谓的 provider 解析与构建告警。
  */
 const fontFamilies: FontFamilies = [
-  {
-    name: 'Outfit',
-    src: localFont('OutfitVariable.woff2'),
-    weight: '100 900',
-    preload: true,
+  // core 子集由 fontless 处理并生成 @font-face / preload;
+  // extended 子集在 src/styles/fonts.extended.css 中通过 unicode-range 按需加载。
+  ...fontManifest.fonts.map((font) => ({
+    name: font.family,
+    src: localFont(font.core.file),
+    weight: font.weight,
+    preload: font.preload,
     global: true,
-  },
-  // 备选字体:用户可在偏好设置中切换,@font-face 常驻但浏览器只下载实际使用的那一款
-  {
-    name: 'DM Sans',
-    src: localFont('DMSansVariable.woff2'),
-    weight: '100 1000',
-    global: true,
-  },
-  {
-    name: 'Space Grotesk',
-    src: localFont('SpaceGroteskVariable.woff2'),
-    weight: '300 700',
-    global: true,
-  },
-  {
-    name: 'Roboto Mono',
-    src: localFont('RobotoMonoVariable.woff2'),
-    weight: '100 700',
-    global: true,
-  },
-  {
-    name: 'Lato',
-    src: localFont('LatoRegular.woff2'),
-    weight: '400',
-    global: true,
-  },
-  {
-    name: 'Inter Variable',
-    src: localFont('InterVariable.woff2'),
-    weight: '100 900',
-    global: true,
-  },
+    unicodeRange: font.core.unicodeRange,
+  })),
   { name: 'Noto Sans SC', provider: 'none' },
   { name: 'Microsoft YaHei', provider: 'none' },
   { name: '-apple-system', provider: 'none' },
@@ -100,9 +111,13 @@ const fontFamilies: FontFamilies = [
  * fontless 要求至少保留一个 provider,故留用 npm 兜底 ——
  * 它只在解析未声明 src 的字体族时才读取 node_modules,本项目不会走到。
  *
- * 字体版本升级:从 fonts.googleapis.com 的 css2 接口按族与字重区间取回 CSS,
- * 下载其中标注为 latin 的 woff2 覆盖 src/assets/fonts 下的同名文件,
- * 并同步该族的 OFL 许可。
+ * 字体子集:src/assets/fonts 下的原始文件仅作为手动脚本的输入,
+ * 构建时只会引用 src/assets/fonts/generated 中的 core / extended 子集。
+ * 内容、字重或 OpenType 特性变化后需执行 `pnpm fonts:optimize` 并提交产物;
+ * 清单缺失时构建会直接报错提示。
+ *
+ * 字体版本升级:更新 src/assets/fonts 下的原始 woff2 与 OFL 许可,
+ * 然后重新执行 `pnpm fonts:optimize`。
  *
  * @returns Vite 插件数组
  */

@@ -16,6 +16,8 @@ export const fmt = {
     '**/*.mock.ts.*.mjs',
     // boneyard 自动生成的骨骼与注册表
     'src/bones/**',
+    // 字体脚本生成的扩展子集声明
+    'src/styles/fonts.extended.css',
   ],
   bracketSameLine: false,
 }
