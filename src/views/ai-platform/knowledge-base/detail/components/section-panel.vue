@@ -4,7 +4,7 @@
       <div class="flex flex-wrap items-start justify-between gap-12">
         <div class="min-w-0 flex items-start gap-12">
           <span
-            class="size-44 flex flex-none items-center justify-center rounded-8 bg-primary/10 text-primary"
+            class="size-44 flex flex-none items-center justify-center rounded-8 bg-primary/10 text-primary inset-ring-1 inset-ring-primary/10"
           >
             <Icon :name="props.section.icon" :size="22" />
           </span>
@@ -18,10 +18,18 @@
           </div>
         </div>
         <div class="flex flex-none items-center gap-8">
-          <a-button v-if="props.section.secondaryAction">
+          <a-button
+            v-if="props.section.secondaryAction"
+            :loading="runningAction === props.section.secondaryAction"
+            @click="handleAction(props.section.secondaryAction)"
+          >
             {{ props.section.secondaryAction }}
           </a-button>
-          <a-button type="primary">
+          <a-button
+            type="primary"
+            :loading="runningAction === props.section.primaryAction"
+            @click="handleAction(props.section.primaryAction)"
+          >
             <template #icon>
               <Icon name="i-lucide:plus" />
             </template>
@@ -46,7 +54,7 @@
             {{ getToneLabel(metric.tone) }}
           </span>
         </div>
-        <strong class="block text-xl text-main font-800">
+        <strong class="block text-xl text-main font-800 tabular-nums">
           {{ metric.value }}
         </strong>
         <p class="m-0 mt-6 text-xs text-secondary">{{ metric.helper }}</p>
@@ -70,6 +78,7 @@
         v-model:value="recallQuery"
         enter-button="运行测试"
         placeholder="输入业务问法"
+        @search="runRecallTest"
       />
       <div class="mt-12 grid grid-cols-1 gap-12 lg:grid-cols-2">
         <div class="rounded-8 bg-page px-12 py-10">
@@ -107,11 +116,11 @@
             筛选
           </a-button>
         </div>
-        <div class="divide-y-1 divide-color-2 divide-solid">
+        <div class="divide-y-1 divide-[rgb(var(--w-border-secondary))]">
           <article
             v-for="item in props.section.items"
             :key="item.title"
-            class="p-14 transition-colors duration-200 hover:bg-hover"
+            class="group p-14 transition-colors duration-200 hover:bg-hover"
           >
             <div class="flex items-start gap-12">
               <span
@@ -134,7 +143,11 @@
                 </p>
                 <div class="mt-8 text-xs text-secondary">{{ item.meta }}</div>
               </div>
-              <a-button type="text" size="small">
+              <a-button
+                type="text"
+                size="small"
+                class="shrink-0 opacity-60 transition-opacity duration-200 group-hover:opacity-100 focus-visible:opacity-100"
+              >
                 <template #icon>
                   <Icon name="i-lucide:arrow-up-right" />
                 </template>
@@ -170,17 +183,41 @@
 </template>
 
 <script setup lang="ts">
+import { message } from 'antdv-next'
+import { useKnowledgeActions } from '../use-knowledge-actions'
 import type { KnowledgeSectionWorkspace } from '../types'
 
 const props = defineProps<{
   section: KnowledgeSectionWorkspace
 }>()
 
+const { runningAction, runAction, pickFiles } = useKnowledgeActions()
+
 const recallQuery = shallowRef('如何配置审批流条件并限制审批人范围？')
 const recallTopK = shallowRef(5)
 const scoreThreshold = shallowRef(0.62)
 
 const showRecallTester = computed(() => props.section.key === 'recall')
+
+function handleAction(action: string) {
+  if (action.includes('导入')) {
+    pickFiles()
+    return
+  }
+  if (action === '运行测试') {
+    runRecallTest()
+    return
+  }
+  runAction(action)
+}
+
+function runRecallTest() {
+  if (!recallQuery.value.trim()) {
+    message.warning('请输入业务问法')
+    return
+  }
+  runAction('运行测试')
+}
 
 function getToneClass(
   tone: KnowledgeSectionWorkspace['metrics'][number]['tone']

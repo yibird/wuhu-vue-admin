@@ -36,13 +36,17 @@
           </div>
 
           <div class="flex flex-none items-center gap-8">
-            <a-button>
+            <a-button @click="pickFiles">
               <template #icon>
                 <Icon name="i-lucide:upload" />
               </template>
               导入
             </a-button>
-            <a-button type="primary">
+            <a-button
+              type="primary"
+              :loading="runningAction === '重建索引'"
+              @click="runAction('重建索引')"
+            >
               <template #icon>
                 <Icon name="i-lucide:refresh-cw" />
               </template>
@@ -51,7 +55,7 @@
           </div>
         </header>
 
-        <main class="min-h-0 flex-1 overflow-y-auto p-12 sm:p-16">
+        <main ref="mainEl" class="min-h-0 flex-1 overflow-y-auto p-12 sm:p-16">
           <div
             class="mb-12 grid grid-cols-1 gap-12 sm:grid-cols-2 xl:grid-cols-4"
           >
@@ -62,9 +66,15 @@
             >
               <div class="flex items-center justify-between gap-8">
                 <span class="text-xs text-secondary">{{ stat.label }}</span>
-                <Icon :name="stat.icon" class="text-primary" />
+                <span
+                  class="size-26 flex flex-none items-center justify-center rounded-6 bg-primary/8 text-primary"
+                >
+                  <Icon :name="stat.icon" :size="14" />
+                </span>
               </div>
-              <strong class="mt-8 block truncate text-xl text-main font-800">
+              <strong
+                class="mt-8 block truncate text-xl text-main font-800 tabular-nums"
+              >
                 {{ stat.value }}
               </strong>
             </div>
@@ -83,11 +93,18 @@ import { knowledgeBaseResources } from '../data'
 import SectionPanel from './components/section-panel.vue'
 import Sidebar from './components/sidebar.vue'
 import { knowledgeNavItems, knowledgeSectionMap } from './data'
+import { useKnowledgeActions } from './use-knowledge-actions'
 import type { KnowledgeDetailSectionKey } from './types'
 
 const route = useRoute()
 const router = useRouter()
 const activeKey = shallowRef<KnowledgeDetailSectionKey>('documents')
+const mainEl = useTemplateRef<HTMLElement>('mainEl')
+const { runningAction, runAction, pickFiles } = useKnowledgeActions()
+
+watch(activeKey, () => {
+  mainEl.value?.scrollTo({ top: 0 })
+})
 
 const routeId = computed(() =>
   typeof route.query.id === 'string' ? route.query.id : undefined
