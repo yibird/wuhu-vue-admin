@@ -1,6 +1,6 @@
 <template>
   <article
-    class="org-node w-172 cursor-pointer rounded-10 b-1-secondary bg-container px-10 py-9 text-left shadow-sm motion-interactive hover:(-translate-y-1 shadow-md)"
+    class="org-node w-172 cursor-pointer rounded-10 b-1-secondary bg-container px-10 py-9 text-left shadow-xs motion-interactive hover:(-translate-y-1 shadow-md)"
     :class="{
       'org-node--accent': root,
       'org-node--selected': selected,

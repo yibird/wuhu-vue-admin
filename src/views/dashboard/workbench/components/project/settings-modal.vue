@@ -90,10 +90,10 @@
               v-for="item in projectLogoOptions"
               :key="item.icon"
               type="button"
-              class="group relative min-w-0 flex flex-col items-center gap-7 rounded-8 border-1 border-solid bg-container p-8 cursor-pointer transition-[border-color,background-color,box-shadow,transform] duration-200 hover:(-translate-y-1 border-primary/60 bg-hover shadow-sm)"
+              class="group relative min-w-0 flex flex-col items-center gap-7 rounded-8 border-1 border-solid bg-container p-8 cursor-pointer transition-[border-color,background-color,box-shadow,transform] duration-200 hover:(-translate-y-1 border-primary/60 bg-hover shadow-xs)"
               :class="
                 form.logo.icon === item.icon
-                  ? 'border-primary bg-primary/5 shadow-sm'
+                  ? 'border-primary bg-primary/5 shadow-xs'
                   : 'border-regular'
               "
               :aria-label="`选择${item.label}标识`"
@@ -199,7 +199,7 @@
                 class="w-full flex items-center gap-8 rounded-8 border-1 border-solid bg-container p-10 text-left cursor-pointer transition-[background-color,border-color,box-shadow,transform] duration-200 ease-[var(--w-motion-ease)] hover:(-translate-y-1 border-primary/36 bg-hover shadow-xl shadow-black/8) focus-visible:(-translate-y-1 border-primary/36 bg-hover shadow-xl shadow-black/8 outline-2 outline-primary/35 outline-offset-2) active:translate-y-0"
                 :class="
                   form.priority === item.value
-                    ? 'border-primary shadow-sm'
+                    ? 'border-primary shadow-xs'
                     : 'border-regular'
                 "
                 :aria-pressed="form.priority === item.value"
@@ -249,7 +249,7 @@
               class="w-full box-border rounded-8 border-1 border-solid bg-container p-10 text-left cursor-pointer transition-[background-color,border-color,box-shadow,transform] duration-200 ease-[var(--w-motion-ease)] hover:(-translate-y-1 border-primary/36 bg-hover shadow-xl shadow-black/8) focus-visible:(-translate-y-1 border-primary/36 bg-hover shadow-xl shadow-black/8 outline-2 outline-primary/35 outline-offset-2) active:translate-y-0"
               :class="
                 form[item.key]
-                  ? '-translate-y-1 border-primary/36 bg-primary/8 shadow-sm'
+                  ? '-translate-y-1 border-primary/36 bg-primary/8 shadow-xs'
                   : 'border-regular'
               "
               :aria-pressed="form[item.key]"
@@ -301,7 +301,7 @@
 
           <div class="mt-18 flex items-center gap-10">
             <span
-              class="size-52 flex shrink-0 items-center justify-center rounded-12 border-1 border-solid shadow-sm transition-[border-color,background-color,color,transform] duration-200 ease-[var(--w-motion-ease)]"
+              class="size-52 flex shrink-0 items-center justify-center rounded-12 border-1 border-solid shadow-xs transition-[border-color,background-color,color,transform] duration-200 ease-[var(--w-motion-ease)]"
               :class="selectedLogo.class"
             >
               <Transition name="fade-pop" mode="out-in">

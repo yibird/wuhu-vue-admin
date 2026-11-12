@@ -45,7 +45,7 @@
           </div>
 
           <div
-            class="max-w-full rounded-12 px-12 py-8 break-words shadow-sm"
+            class="max-w-full rounded-12 px-12 py-8 break-words shadow-xs"
             :class="[
               isMine
                 ? 'bg-primary text-white rounded-tr-2px'
@@ -121,7 +121,7 @@
             </span>
             <button
               type="button"
-              class="button relative size-22 rounded-full transition-[background-color,box-shadow,opacity,transform,color] duration-200 hover:(-translate-y-1 bg-warning/10 text-warning shadow-sm) focus-visible:(outline-2 outline-warning outline-offset-2) active:(translate-y-0 scale-92)"
+              class="button relative size-22 rounded-full transition-[background-color,box-shadow,opacity,transform,color] duration-200 hover:(-translate-y-1 bg-warning/10 text-warning shadow-xs) focus-visible:(outline-2 outline-warning outline-offset-2) active:(translate-y-0 scale-92)"
               :class="[
                 favorite
                   ? 'bg-warning/10 text-warning opacity-100'
@@ -139,7 +139,7 @@
               <Transition name="fade-pop">
                 <span
                   v-if="favoritePulse"
-                  class="pointer-events-none absolute -top-22 left-0 whitespace-nowrap rounded-full bg-warning/10 px-7 py-2 text-11px text-warning shadow-sm"
+                  class="pointer-events-none absolute -top-22 left-0 whitespace-nowrap rounded-full bg-warning/10 px-7 py-2 text-11px text-warning shadow-xs"
                 >
                   {{ favoritePulseText }}
                 </span>
@@ -187,7 +187,7 @@
                 v-for="emoji in quickEmojis"
                 :key="emoji"
                 type="button"
-                class="button size-28 rounded-4 text-xl transition-[background-color,box-shadow,transform] duration-100 hover:(-translate-y-1 bg-hover shadow-sm) active:(translate-y-0 scale-92)"
+                class="button size-28 rounded-4 text-xl transition-[background-color,box-shadow,transform] duration-100 hover:(-translate-y-1 bg-hover shadow-xs) active:(translate-y-0 scale-92)"
                 :aria-label="`回应${emoji}`"
                 @click="handleReaction(emoji)"
               >

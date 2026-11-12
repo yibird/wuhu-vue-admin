@@ -113,7 +113,7 @@
         >
           <span
             v-if="marqueeSelectedIds.length > 0"
-            class="approval-selection-count absolute left-8 top-8 z-1 inline-flex items-center gap-5 rounded-6 b-1-primary/25 bg-container/96 px-8 py-4 text-11px font-700 text-primary shadow-sm backdrop-blur-8"
+            class="approval-selection-count absolute left-8 top-8 z-1 inline-flex items-center gap-5 rounded-6 b-1-primary/25 bg-container/96 px-8 py-4 text-11px font-700 text-primary shadow-xs backdrop-blur-8"
           >
             <Icon name="i-lucide:mouse-pointer-2" :size="12" />
             已框选 {{ marqueeSelectedIds.length }} 个

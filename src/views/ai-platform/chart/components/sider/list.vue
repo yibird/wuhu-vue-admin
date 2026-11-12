@@ -30,7 +30,7 @@
           class="conversation-list-item min-w-0"
         >
           <article
-            class="group conversation-card relative min-h-48 w-full min-w-0 overflow-hidden rounded-8 b-1-transparent bg-container text-regular hover:(border-main shadow-sm) focus-within:(border-primary/35 bg-hover ring-2 ring-primary/8)"
+            class="group conversation-card relative min-h-48 w-full min-w-0 overflow-hidden rounded-8 b-1-transparent bg-container text-regular hover:(border-main shadow-xs) focus-within:(border-primary/35 bg-hover ring-2 ring-primary/8)"
             :class="
               item.id === activeId
                 ? 'border-primary/25! bg-selected! text-main'
@@ -121,7 +121,7 @@
             </button>
             <div
               v-if="!collapsed"
-              class="absolute right-7 top-7 translate-x-4 flex items-center rounded-6 bg-container/92 p-1 opacity-0 shadow-sm backdrop-blur-6 transition-[opacity,transform] duration-100 ease-[var(--w-motion-ease-enter)] group-focus-within:(translate-x-0 opacity-100) group-hover:(translate-x-0 opacity-100)"
+              class="absolute right-7 top-7 translate-x-4 flex items-center rounded-6 bg-container/92 p-1 opacity-0 shadow-xs backdrop-blur-6 transition-[opacity,transform] duration-100 ease-[var(--w-motion-ease-enter)] group-focus-within:(translate-x-0 opacity-100) group-hover:(translate-x-0 opacity-100)"
             >
               <a-dropdown :trigger="['click']" :menu="getActionMenu(item)">
                 <button

@@ -42,7 +42,7 @@
             class="group relative h-36 w-full min-w-0 flex cursor-pointer items-center gap-7 overflow-hidden rounded-5 border-0 px-8 text-left text-xs text-secondary focus-visible:(outline-none ring-2 ring-primary/15)"
             :class="
               activeKey === category.key
-                ? 'bg-primary/10 text-primary font-500 shadow-sm'
+                ? 'bg-primary/10 text-primary font-500 shadow-xs'
                 : 'hover:(bg-hover text-main)'
             "
             :aria-pressed="activeKey === category.key"

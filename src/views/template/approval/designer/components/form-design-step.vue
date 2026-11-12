@@ -141,7 +141,7 @@
           @click.self="selectField(-1)"
         >
           <div
-            class="rounded-8 b-1-secondary bg-container p-20 shadow-sm"
+            class="rounded-8 b-1-secondary bg-container p-20 shadow-xs"
             @click.self="selectField(-1)"
           >
             <div
@@ -177,7 +177,7 @@
               >
                 <div
                   v-if="selectedIndex === index"
-                  class="absolute -top-32 left-0 z-20 flex items-center gap-2 rounded-6 b-1-primary bg-container px-4 py-3 shadow-sm"
+                  class="absolute -top-32 left-0 z-20 flex items-center gap-2 rounded-6 b-1-primary bg-container px-4 py-3 shadow-xs"
                 >
                   <span
                     class="flex cursor-grab items-center px-6 text-secondary active:cursor-grabbing"

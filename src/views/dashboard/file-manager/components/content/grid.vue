@@ -39,7 +39,7 @@
           :while-press="itemPress"
           :data-file-manager-item-id="item.id"
           :class="[
-            'file-grid__card group relative min-w-0 cursor-pointer rounded-6 border-1 border-solid bg-secondary p-10 text-left outline-none transition-[background-color,border-color,box-shadow] duration-200 hover:(border-primary bg-primary/10 shadow-sm) focus-visible:border-primary',
+            'file-grid__card group relative min-w-0 cursor-pointer rounded-6 border-1 border-solid bg-secondary p-10 text-left outline-none transition-[background-color,border-color,box-shadow] duration-200 hover:(border-primary bg-primary/10 shadow-xs) focus-visible:border-primary',
             isSelected(item)
               ? 'border-primary bg-primary/10 text-primary'
               : 'border-muted text-main',

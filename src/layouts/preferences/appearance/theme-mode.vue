@@ -27,7 +27,7 @@
           />
           <span
             v-if="appThemeMode === item.value"
-            class="absolute right-5 top-5 size-18 flex items-center justify-center rounded-full bg-primary text-white shadow-sm shadow-primary/28"
+            class="absolute right-5 top-5 size-18 flex items-center justify-center rounded-full bg-primary text-white shadow-xs shadow-primary/28"
           >
             <Icon name="i-lucide:check" :size="14" />
           </span>

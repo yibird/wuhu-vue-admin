@@ -34,7 +34,7 @@
             <template #itemRender="contact">
               <div>
                 <div
-                  class="group relative rounded-6 transition-[background-color,box-shadow,transform] duration-200 ease-[var(--w-motion-ease-enter)] hover:(translate-x-1 bg-hover shadow-sm) active:scale-99"
+                  class="group relative rounded-6 transition-[background-color,box-shadow,transform] duration-200 ease-[var(--w-motion-ease-enter)] hover:(translate-x-1 bg-hover shadow-xs) active:scale-99"
                 >
                   <button
                     type="button"

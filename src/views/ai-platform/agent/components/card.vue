@@ -1,6 +1,6 @@
 <template>
   <article
-    class="group min-w-0 flex flex-col cursor-pointer overflow-hidden rounded-8 b-1-secondary bg-container shadow-sm outline-none transition-[border-color,box-shadow,transform] duration-200 hover:(-translate-y-2) hover:border-primary hover:shadow-lg focus-visible:border-primary"
+    class="group min-w-0 flex flex-col cursor-pointer overflow-hidden rounded-8 b-1-secondary bg-container shadow-xs outline-none transition-all hover:(-translate-y-2 border-primary shadow-lg) focus-visible:border-primary"
     :aria-label="`${props.subject}：${props.item.name}`"
     role="button"
     tabindex="0"

@@ -1,6 +1,6 @@
 <template>
   <section
-    class="min-w-0 overflow-hidden rounded-8 b-1-secondary bg-container shadow-sm"
+    class="min-w-0 overflow-hidden rounded-8 b-1-secondary bg-container shadow-xs"
   >
     <div
       class="flex flex-wrap items-center justify-between gap-8 b-b-1-secondary px-14 py-11"

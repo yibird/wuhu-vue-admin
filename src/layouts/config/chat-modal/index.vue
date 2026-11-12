@@ -82,7 +82,7 @@
                 :class="item.role === 'user' ? 'justify-end' : 'justify-start'"
               >
                 <div
-                  class="max-w-[82%] rounded-10 px-12 py-10 shadow-sm"
+                  class="max-w-[82%] rounded-10 px-12 py-10 shadow-xs"
                   :class="
                     item.role === 'user'
                       ? 'bg-primary text-white rounded-tr-2'
@@ -105,7 +105,7 @@
 
               <div v-if="thinking" class="flex justify-start">
                 <div
-                  class="inline-flex items-center gap-6 rounded-10 bg-container px-12 py-9 text-sm text-secondary shadow-sm"
+                  class="inline-flex items-center gap-6 rounded-10 bg-container px-12 py-9 text-sm text-secondary shadow-xs"
                 >
                   <Icon
                     name="i-lucide:loader-circle"

@@ -3,7 +3,7 @@
     class="grid min-w-0 grid-cols-[minmax(0,1.45fr)_minmax(300px,0.75fr)] gap-10 max-xl:grid-cols-1"
   >
     <section
-      class="min-w-0 overflow-hidden rounded-8 b-1-secondary bg-container shadow-sm"
+      class="min-w-0 overflow-hidden rounded-8 b-1-secondary bg-container shadow-xs"
     >
       <div
         class="flex items-center justify-between gap-10 b-b-1-secondary px-14 py-11"
@@ -95,7 +95,7 @@
     </section>
 
     <section
-      class="min-w-0 overflow-hidden rounded-8 b-1-secondary bg-container shadow-sm"
+      class="min-w-0 overflow-hidden rounded-8 b-1-secondary bg-container shadow-xs"
     >
       <div
         class="flex items-center justify-between gap-8 b-b-1-secondary px-14 py-11"

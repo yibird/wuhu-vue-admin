@@ -13,7 +13,7 @@
         >
           <button
             :aria-label="item.label"
-            class="button size-38 bg-container b-1-secondary rounded-4 transition-all duration-200 hover:(-translate-y-1 border-primary bg-hover shadow-sm)"
+            class="button size-38 bg-container b-1-secondary rounded-4 transition-all duration-200 hover:(-translate-y-1 border-primary bg-hover shadow-xs)"
           >
             <img
               :src="item.icon"

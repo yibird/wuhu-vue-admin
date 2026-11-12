@@ -126,7 +126,7 @@
             <div class="px-8 py-1">
               <button
                 type="button"
-                class="button group w-full flex items-center gap-10 rounded-6 px-10 py-9 text-left transition-[background-color,box-shadow,transform] duration-200 ease-[var(--w-motion-ease-enter)] hover:(translate-x-1 bg-hover shadow-sm) active:scale-99 focus-visible:(outline-none bg-hover ring-2 ring-primary/24)"
+                class="button group w-full flex items-center gap-10 rounded-6 px-10 py-9 text-left transition-[background-color,box-shadow,transform] duration-200 ease-[var(--w-motion-ease-enter)] hover:(translate-x-1 bg-hover shadow-xs) active:scale-99 focus-visible:(outline-none bg-hover ring-2 ring-primary/24)"
                 @click="emits('showUser', member)"
               >
                 <span class="relative shrink-0">

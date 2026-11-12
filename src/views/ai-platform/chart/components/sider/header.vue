@@ -10,7 +10,7 @@
     <button
       v-if="!collapsed"
       type="button"
-      class="h-36 w-full inline-flex items-center justify-center gap-6 rounded-8 b-1-secondary bg-container px-0 text-main cursor-pointer transition-[border-color,background-color,box-shadow,color,transform] duration-200 ease-[var(--w-motion-ease-enter)] hover:(-translate-y-1 border-primary/35 bg-hover text-primary shadow-sm) focus-visible:(border-primary/35 ring-2 ring-primary/12 outline-none) active:(translate-y-0 scale-98)"
+      class="h-36 w-full inline-flex items-center justify-center gap-6 rounded-8 b-1-secondary bg-container px-0 text-main cursor-pointer transition-[border-color,background-color,box-shadow,color,transform] duration-200 ease-[var(--w-motion-ease-enter)] hover:(-translate-y-1 border-primary/35 bg-hover text-primary shadow-xs) focus-visible:(border-primary/35 ring-2 ring-primary/12 outline-none) active:(translate-y-0 scale-98)"
       title="新建会话"
       @click="emits('create')"
     >
@@ -24,7 +24,7 @@
 
     <button
       type="button"
-      class="size-36 inline-flex items-center justify-center rounded-8 border-0 bg-transparent px-0 text-regular cursor-pointer transition-[background-color,box-shadow,color,transform] duration-200 ease-[var(--w-motion-ease-enter)] hover:(-translate-y-1 bg-hover text-primary shadow-sm) focus-visible:(bg-hover text-primary ring-2 ring-primary/12 outline-none) active:(translate-y-0 scale-92)"
+      class="size-36 inline-flex items-center justify-center rounded-8 border-0 bg-transparent px-0 text-regular cursor-pointer transition-[background-color,box-shadow,color,transform] duration-200 ease-[var(--w-motion-ease-enter)] hover:(-translate-y-1 bg-hover text-primary shadow-xs) focus-visible:(bg-hover text-primary ring-2 ring-primary/12 outline-none) active:(translate-y-0 scale-92)"
       :class="{ 'w-40': collapsed }"
       :title="collapsed ? '展开侧栏' : '收起侧栏'"
       @click="collapsed = !collapsed"

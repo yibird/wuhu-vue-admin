@@ -1,7 +1,7 @@
 <template>
   <a-border-beam :duration="6" :line-width="3">
     <Card
-      class="overflow-hidden rounded-8 shadow-sm transition-[border-color,box-shadow,transform] duration-300 ease-[var(--w-motion-ease-enter)] hover:(-translate-y-2 shadow-lg)"
+      class="overflow-hidden rounded-8 shadow-xs transition-[border-color,box-shadow,transform] duration-300 ease-[var(--w-motion-ease-enter)] hover:(-translate-y-2 shadow-lg)"
       variant="borderless"
       :body-class="bodyClass"
       :styles="cardStyles"

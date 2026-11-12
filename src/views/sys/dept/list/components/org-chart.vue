@@ -115,7 +115,7 @@
       <Transition name="fade-slide-right">
         <aside
           v-if="selectedDept"
-          class="flex w-236 flex-none flex-col b-1-muted rounded-12 bg-container p-14 shadow-sm"
+          class="flex w-236 flex-none flex-col b-1-muted rounded-12 bg-container p-14 shadow-xs"
         >
           <header class="flex items-start gap-8">
             <span

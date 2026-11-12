@@ -1,7 +1,7 @@
 <template>
   <button
     type="button"
-    class="group mr-6 h-34 items-center rounded-full border-0 bg-active px-12 cursor-pointer outline-none transition-[background-color,box-shadow,transform] duration-200 ease-[var(--w-motion-ease-enter)] md:flex hover:(bg-hover shadow-sm) focus-visible:(ring-2 ring-primary/24) active:(scale-98 translate-y-0 shadow-none) max-md:hidden"
+    class="group mr-6 h-34 items-center rounded-full border-0 bg-active px-12 cursor-pointer outline-none transition-[background-color,box-shadow,transform] duration-200 ease-[var(--w-motion-ease-enter)] md:flex hover:(bg-hover shadow-xs) focus-visible:(ring-2 ring-primary/24) active:(scale-98 translate-y-0 shadow-none) max-md:hidden"
     @click="onClick"
     @pointerenter="preload"
     @focus="preload"

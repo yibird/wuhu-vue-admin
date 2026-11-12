@@ -3,7 +3,7 @@
     <button
       type="button"
       aria-label="打开用户菜单"
-      class="group size-32 flex items-center justify-center rounded-full border-0 bg-transparent p-0 cursor-pointer outline-none transition-[box-shadow,transform] duration-200 ease-[var(--w-motion-ease-enter)] hover:(-translate-y-1 shadow-sm) focus-visible:(ring-2 ring-primary/24) active:(scale-94 translate-y-0 shadow-none)"
+      class="group size-32 flex items-center justify-center rounded-full border-0 bg-transparent p-0 cursor-pointer outline-none transition-[box-shadow,transform] duration-200 ease-[var(--w-motion-ease-enter)] hover:(-translate-y-1 shadow-xs) focus-visible:(ring-2 ring-primary/24) active:(scale-94 translate-y-0 shadow-none)"
     >
       <a-avatar
         :size="30"

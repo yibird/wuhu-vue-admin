@@ -3,7 +3,7 @@
     role="button"
     tabindex="0"
     aria-label="查看作品详情"
-    class="group min-w-0 cursor-pointer overflow-hidden rounded-8 b-1-muted bg-container shadow-sm outline-none transition-[border-color,box-shadow,transform] duration-300 ease-[var(--w-motion-ease)] hover:(-translate-y-2 border-primary/25 shadow-lg) focus-visible:(border-primary shadow-lg) active:translate-y-0"
+    class="group min-w-0 cursor-pointer overflow-hidden rounded-8 b-1-muted bg-container shadow-xs outline-none transition-[border-color,box-shadow,transform] duration-300 ease-[var(--w-motion-ease)] hover:(-translate-y-2 border-primary/25 shadow-lg) focus-visible:(border-primary shadow-lg) active:translate-y-0"
     @click="emits('select', card)"
     @keydown.enter.prevent="emits('select', card)"
     @keydown.space.prevent="emits('select', card)"

@@ -2,7 +2,7 @@
   <ViewSection skeleton-name="workbench-overview" :loading="loading">
     <a-border-beam :duration="6" :line-width="3">
       <section
-        class="workbench-hero relative overflow-hidden rounded-4 b-1-secondary transition-all hover:(shadow-sm)"
+        class="workbench-hero relative overflow-hidden rounded-4 b-1-secondary transition-all hover:(shadow-xs)"
       >
         <div class="grid gap-0 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)]">
           <div class="min-w-0 p-16 sm:p-20">
@@ -51,7 +51,7 @@
             <div
               v-for="item in metrics"
               :key="item.title"
-              class="group min-w-0 b-r-1-[border-secondary] b-b-1-[border-secondary] p-14 transition-colors duration-200 hover:bg-hover last:border-r-0 sm:last:border-r-0 lg:nth-2:border-r-0 lg:nth-last-2:border-b-0 lg:last:border-b-0"
+              class="group min-w-0 b-r-1-[border-secondary] b-b-1-secondary p-14 transition-colors duration-200 hover:bg-hover last:border-r-0 sm:last:border-r-0 lg:nth-2:border-r-0 lg:nth-last-2:border-b-0 lg:last:border-b-0"
             >
               <div class="flex items-center justify-between gap-10">
                 <span class="truncate text-sm text-secondary">{{

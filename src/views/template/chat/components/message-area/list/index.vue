@@ -44,7 +44,7 @@
           >
             <a-avatar :size="36" round />
             <div
-              class="typing-bubble rounded-12 rounded-tl-2px bg-secondary px-13 py-10 shadow-sm"
+              class="typing-bubble rounded-12 rounded-tl-2px bg-secondary px-13 py-10 shadow-xs"
             >
               <span />
               <span />

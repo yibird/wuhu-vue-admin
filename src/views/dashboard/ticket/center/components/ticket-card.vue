@@ -1,6 +1,6 @@
 <template>
   <article
-    class="group min-w-0 cursor-pointer overflow-hidden rounded-8 b-1-secondary bg-container outline-none transition-[border-color,box-shadow,transform] duration-200 hover:(-translate-y-2 border-primary shadow-sm)"
+    class="group min-w-0 cursor-pointer overflow-hidden rounded-8 b-1-secondary bg-container outline-none transition-[border-color,box-shadow,transform] duration-200 hover:(-translate-y-2 border-primary shadow-xs)"
     :aria-label="`查看工单：${props.ticket.subject}`"
     role="button"
     tabindex="0"

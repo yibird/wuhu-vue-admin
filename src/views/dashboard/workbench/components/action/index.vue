@@ -19,7 +19,7 @@
               v-for="item in items"
               :key="item.id"
               type="button"
-              class="group min-w-0 rounded-8 b-1-secondary bg-container p-12 text-left outline-none transition-all hover:(-translate-y-1 border-primary bg-primary/5 shadow-sm) active:translate-y-0"
+              class="group min-w-0 rounded-8 b-1-secondary bg-container p-12 text-left outline-none transition-all hover:(-translate-y-1 border-primary bg-primary/5 shadow-xs) active:translate-y-0"
               @click="handleActionClick(item)"
             >
               <span
@@ -38,7 +38,7 @@
 
             <button
               type="button"
-              class="group min-w-0 rounded-8 b-dashed-1-regular bg-container p-12 text-left outline-none transition-[border-color,background-color,box-shadow,transform] duration-200 hover:(-translate-y-1 border-primary bg-hover shadow-sm) focus-visible:(border-primary ring-2 ring-primary/12) active:translate-y-0"
+              class="group min-w-0 rounded-8 b-dashed-1-regular bg-container p-12 text-left outline-none transition-[border-color,background-color,box-shadow,transform] duration-200 hover:(-translate-y-1 border-primary bg-hover shadow-xs) focus-visible:(border-primary ring-2 ring-primary/12) active:translate-y-0"
               @click="managerOpen = true"
             >
               <span

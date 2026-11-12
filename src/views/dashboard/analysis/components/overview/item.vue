@@ -3,7 +3,7 @@
     <Card
       variant="outlined"
       size="small"
-      class="page-enter group relative overflow-hidden rounded-8 shadow-sm transition-all hover:(-translate-y-2 shadow-lg) focus-visible:(-translate-y-2 shadow-lg outline-2 outline-primary/48 outline-offset-2)"
+      class="page-enter group relative overflow-hidden rounded-8 shadow-xs transition-all hover:(-translate-y-2 shadow-lg) focus-visible:(-translate-y-2 shadow-lg outline-2 outline-primary/48 outline-offset-2)"
       tabindex="0"
       :styles="{ body: { padding: '14px' } }"
     >

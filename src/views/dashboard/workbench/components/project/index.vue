@@ -21,12 +21,12 @@
             <article
               v-for="item in projectItems"
               :key="item.id"
-              class="group min-w-0 rounded-8 b-1-secondary bg-container p-14 transition-[border-color,background-color,box-shadow,transform] duration-200 hover:(-translate-y-1 border-primary bg-primary/5 shadow-sm)"
+              class="group min-w-0 rounded-8 b-1-secondary bg-container p-14 transition-[border-color,background-color,box-shadow,transform] duration-200 hover:(-translate-y-1 border-primary bg-primary/5 shadow-xs)"
             >
               <div class="min-w-0 flex items-start justify-between gap-12">
                 <div class="min-w-0 flex items-center gap-10">
                   <span
-                    class="size-46 flex shrink-0 items-center justify-center rounded-10 border-1 border-solid shadow-sm transition-transform duration-200 group-hover:(-translate-y-1 scale-105)"
+                    class="size-46 flex shrink-0 items-center justify-center rounded-10 border-1 border-solid shadow-xs transition-transform duration-200 group-hover:(-translate-y-1 scale-105)"
                     :class="item.logoClass"
                   >
                     <Icon :name="item.logo.icon" :size="21" />

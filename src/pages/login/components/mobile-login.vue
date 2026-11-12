@@ -41,7 +41,7 @@
         <a-button
           size="large"
           html-type="button"
-          class="shrink-0 transition-[border-color,box-shadow,transform] duration-200 hover:(-translate-y-1 border-primary! shadow-sm) active:translate-y-0"
+          class="shrink-0 transition-[border-color,box-shadow,transform] duration-200 hover:(-translate-y-1 border-primary! shadow-xs) active:translate-y-0"
         >
           {{ $t('login.sendCode') }}
         </a-button>

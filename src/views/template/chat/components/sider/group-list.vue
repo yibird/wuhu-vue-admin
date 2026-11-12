@@ -23,7 +23,7 @@
             <div>
               <button
                 type="button"
-                class="group block-button p-10 cursor-pointer motion-press transition-[background-color,box-shadow,transform] duration-200 ease-[var(--w-motion-ease-enter)] hover:(translate-x-1 bg-hover shadow-sm) active:scale-99 focus-visible:(outline-none bg-hover ring-2 ring-primary/24)"
+                class="group block-button p-10 cursor-pointer motion-press transition-[background-color,box-shadow,transform] duration-200 ease-[var(--w-motion-ease-enter)] hover:(translate-x-1 bg-hover shadow-xs) active:scale-99 focus-visible:(outline-none bg-hover ring-2 ring-primary/24)"
                 :aria-label="`打开群聊${group.title}`"
                 @click="handleSelect(group)"
               >

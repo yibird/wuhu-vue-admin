@@ -146,7 +146,7 @@
             class="size-18 flex shrink-0 items-center justify-center rounded-full transition-transform duration-200 ease-[var(--w-motion-ease)] group-hover:scale-110"
             :class="
               isRecommended
-                ? 'bg-primary text-white shadow-sm shadow-primary/40'
+                ? 'bg-primary text-white shadow-xs shadow-primary/40'
                 : 'bg-success/12 text-success'
             "
           >

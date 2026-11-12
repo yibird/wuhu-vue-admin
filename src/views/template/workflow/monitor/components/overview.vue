@@ -8,7 +8,7 @@
         :initial="{ opacity: 0, y: 8 }"
         :animate="{ opacity: 1, y: 0 }"
         :transition="{ duration: 0.24, delay: index * 0.035, ease: 'easeOut' }"
-        class="min-w-0 rounded-8 b-1-secondary bg-container p-13 shadow-sm"
+        class="min-w-0 rounded-8 b-1-secondary bg-container p-13 shadow-xs"
       >
         <div class="flex items-start gap-11">
           <span

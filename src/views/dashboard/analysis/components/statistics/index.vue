@@ -5,7 +5,7 @@
   >
     <a-border-beam :duration="6" :line-width="3">
       <Card
-        class="page-enter page-enter--3 overflow-hidden rounded-8 shadow-sm"
+        class="page-enter page-enter--3 overflow-hidden rounded-8 shadow-xs"
         variant="borderless"
         :styles="{
           body: {

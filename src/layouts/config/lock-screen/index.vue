@@ -14,7 +14,7 @@
         >
           <div
             aria-hidden="true"
-            class="pointer-events-none absolute inset-16 shadow-sm max-sm:(inset-8 rounded-12)"
+            class="pointer-events-none absolute inset-16 shadow-xs max-sm:(inset-8 rounded-12)"
           />
           <header
             class="absolute left-20 top-24 z-1 flex items-center gap-16 sm:(left-32 top-30)"
