@@ -10,9 +10,9 @@ import {
 
 interface UseThemeTransitionOptions {
   /**
-   * @desc 当前实际生效的主题
+   * @desc 读取当前实际生效的主题
    */
-  currentThemeMode: () => 'light' | 'dark'
+  currentThemeMode: () => typeof THEME_MODE.Light | typeof THEME_MODE.Dark
   /**
    * @desc 写入主题模式(通常是 store action)
    */
@@ -20,20 +20,18 @@ interface UseThemeTransitionOptions {
 }
 
 /**
- * 取主题切换动画的起点
- *
- * 鼠标点击用点击坐标;键盘触发(点击事件 detail 为 0)用元素中心;
- * 都取不到时用视口中心。
+ * 取揭示起点:鼠标点击用点击坐标,键盘触发用元素中心,都取不到时用视口中心
  *
  * @param event 触发事件
  */
 function getTransitionOrigin(event: Event) {
-  const maxX = window.innerWidth,
-    maxY = window.innerHeight
+  const maxX = window.innerWidth
+  const maxY = window.innerHeight
   const clamp = (x: number, y: number) => ({
     x: Math.min(Math.max(x, 0), maxX),
     y: Math.min(Math.max(y, 0), maxY),
   })
+
   if (event instanceof MouseEvent && event.detail > 0) {
     return clamp(event.clientX, event.clientY)
   }
@@ -45,27 +43,27 @@ function getTransitionOrigin(event: Event) {
 }
 
 /**
- * 生成覆盖整个视口的圆形裁剪动画关键帧
+ * 生成覆盖整个视口的圆形裁剪关键帧
+ *
+ * 切到暗色时旧快照从大圆收缩,切到亮色时新快照从小圆展开。
  *
  * @param x 圆心横坐标
  * @param y 圆心纵坐标
+ * @param isDark 是否切到暗色
  */
-const createThemeClipPath = (x: number, y: number) => {
+function createClipPathKeyframes(x: number, y: number, isDark: boolean) {
   const radius = Math.hypot(
     Math.max(x, window.innerWidth - x),
     Math.max(y, window.innerHeight - y)
   )
-  return [
-    `circle(0px at ${x}px ${y}px)`,
-    `circle(${radius}px at ${x}px ${y}px)`,
-  ]
+  const collapsed = `circle(0px at ${x}px ${y}px)`
+  const expanded = `circle(${radius}px at ${x}px ${y}px)`
+
+  return isDark ? [expanded, collapsed] : [collapsed, expanded]
 }
 
 /**
- * 取消上一次未完成的主题揭示动画
- *
- * View Transition 的伪元素动画挂在根节点上,重复点击时需要先清掉,
- * 否则新动画会叠加在旧动画之上。
+ * 取消上一次未完成的揭示动画,避免重复点击时新旧动画叠加
  *
  * @param root 根节点
  */
@@ -83,10 +81,34 @@ function cancelAnimations(root: HTMLElement) {
 }
 
 /**
- * 主题切换过渡动画
+ * 创建圆形揭示动画;根节点不支持 animate 时返回 undefined
  *
- * 优先使用 View Transitions + 圆形揭示;不支持或用户开启减少动效时直接切换。
- * 主题本身由 use-theme 的 watcher 写入 DOM,这里只负责动画编排。
+ * @param root 根节点
+ * @param origin 揭示起点
+ * @param isDark 是否切到暗色
+ */
+function createRevealAnimation(
+  root: HTMLElement,
+  origin: { x: number; y: number },
+  isDark: boolean
+) {
+  if (typeof root.animate !== 'function') return undefined
+
+  return root.animate(
+    { clipPath: createClipPathKeyframes(origin.x, origin.y, isDark) },
+    {
+      duration: DEFAULT_DURATION,
+      easing: DEFAULT_EASING,
+      fill: 'forwards',
+      pseudoElement: isDark
+        ? VIEW_TRANSITION_PSEUDO_OLD
+        : VIEW_TRANSITION_PSEUDO_NEW,
+    }
+  )
+}
+
+/**
+ * 主题切换过渡动画
  */
 export function useThemeTransition(options: UseThemeTransitionOptions) {
   let transitioning = false
@@ -94,58 +116,43 @@ export function useThemeTransition(options: UseThemeTransitionOptions) {
   /**
    * 带揭示动画地切换到指定主题
    *
-   * @param e 触发事件,用于确定揭示起点
-   * @param targetMode 目标主题
+   * @param event 触发事件,用于确定揭示起点
+   * @param mode 目标主题
    */
-  async function revealTo(e: Event, mode: 'light' | 'dark') {
+  async function revealTo(
+    event: Event,
+    mode: typeof THEME_MODE.Light | typeof THEME_MODE.Dark
+  ) {
     if (transitioning || options.currentThemeMode() === mode) return
-    const canAnimate = typeof document.startViewTransition === 'function'
-    if (!canAnimate) {
+    if (typeof document.startViewTransition !== 'function') {
       options.changeThemeMode(mode)
       return
     }
 
     transitioning = true
     const root = document.documentElement
-    const { x, y } = getTransitionOrigin(e)
+    const origin = getTransitionOrigin(event)
     const isDark = mode === THEME_MODE.Dark
     let transition: ViewTransition | undefined
     let animation: Animation | undefined
 
     try {
       cancelAnimations(root)
-      document.documentElement.classList.toggle(THEME_TRANSITION_CLASS, true)
+      root.classList.toggle(THEME_TRANSITION_CLASS, true)
       transition = document.startViewTransition(async () => {
-        // 同步 watcher 会把主题写到 DOM,nextTick 等组件把新主题渲染完再拍快照
         options.changeThemeMode(mode)
         await nextTick()
       })
-
       await transition.ready
 
-      if (typeof root.animate === 'function') {
-        const clipPath = createThemeClipPath(x, y)
-        animation = root.animate(
-          { clipPath: isDark ? clipPath.reverse() : clipPath },
-          {
-            duration: DEFAULT_DURATION,
-            easing: DEFAULT_EASING,
-            fill: 'forwards',
-            pseudoElement: isDark
-              ? VIEW_TRANSITION_PSEUDO_OLD
-              : VIEW_TRANSITION_PSEUDO_NEW,
-          }
-        )
-      }
-
+      animation = createRevealAnimation(root, origin, isDark)
       await Promise.allSettled([transition.finished, animation?.finished])
     } catch {
       transition?.skipTransition()
-      // 动画不可用时保证主题本身已经切换
       options.changeThemeMode(mode)
     } finally {
       animation?.cancel()
-      document.documentElement.classList.toggle(THEME_TRANSITION_CLASS, false)
+      root.classList.toggle(THEME_TRANSITION_CLASS, false)
       transitioning = false
     }
   }
@@ -153,14 +160,14 @@ export function useThemeTransition(options: UseThemeTransitionOptions) {
   /**
    * 在明暗主题之间切换(带揭示动画)
    *
-   * @param e 触发事件
+   * @param event 触发事件
    */
-  function toggleThemeWithAnimation(e: Event) {
+  function toggleThemeWithAnimation(event: Event) {
     const targetMode =
       options.currentThemeMode() === THEME_MODE.Dark
         ? THEME_MODE.Light
         : THEME_MODE.Dark
-    return revealTo(e, targetMode)
+    return revealTo(event, targetMode)
   }
 
   return {

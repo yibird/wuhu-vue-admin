@@ -1,4 +1,5 @@
 import { useI18n } from 'vue-i18n'
+import { ConfigProvider } from 'antdv-next'
 import zhCN from 'antdv-next/locale/zh_CN'
 import enGB from 'antdv-next/locale/en_GB'
 import { useAppStore } from '@/store'
@@ -57,6 +58,13 @@ export function useLocale() {
   })
 
   watch(appLocale, setUpdateNoticeLocale, { immediate: true })
+  watch(
+    () => locale.value,
+    (locale) => {
+      ConfigProvider.config({ locale })
+    },
+    { flush: 'sync', immediate: true }
+  )
 
   return {
     locale,
