@@ -37,7 +37,7 @@ export function useDict() {
    * @returns 所有字典类型数组
    */
   function getDictKeys() {
-    return Object.keys(dictMap)
+    return Object.keys(dictMap.value)
   }
 
   /**

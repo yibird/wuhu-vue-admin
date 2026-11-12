@@ -3,13 +3,10 @@ import { computed, ref, shallowRef } from 'vue'
 interface UseSearchHistoryOptions {
   /** LocalStorage 存储 key */
   storageKey: string
-
   /** 无存储数据时使用的初始记录 */
   initialRecords?: string[]
-
   /** 折叠状态下最多显示的记录数 */
   collapsedCount?: number
-
   /** 最多保留的历史记录数 */
   maxCount?: number
 }
@@ -65,12 +62,12 @@ export function useSearchHistory(options: UseSearchHistoryOptions) {
    * 更新历史记录并持久化到 LocalStorage。
    */
   function persist(nextRecords: string[]) {
-    if (records.value.length === nextRecords.length) {
-      const unchanged = records.value.every(
-        (record, index) => record === nextRecords[index]
-      )
-
-      if (unchanged) return
+    const current = records.value
+    if (
+      current.length === nextRecords.length &&
+      current.every((record, index) => record === nextRecords[index])
+    ) {
+      return
     }
 
     records.value = nextRecords

@@ -6,12 +6,9 @@ import { isCanceledError } from '@/errors'
  *
  * @returns 下载进度、下载状态、错误信息及下载控制方法
  */
-export async function useDownload() {
-  // 下载进度(0到1区间)
+export function useDownload() {
   const progress = ref(0)
-  // 下载状态
   const status = ref<'idle' | 'loading' | 'error' | 'done'>('idle')
-  // 错误
   const error = ref<unknown>(null)
 
   let controller: AbortController | null = null
@@ -20,6 +17,7 @@ export async function useDownload() {
     controller = new AbortController()
     status.value = 'loading'
     progress.value = 0
+    error.value = null
 
     try {
       const blob = await downloadWithProgress(
@@ -30,6 +28,7 @@ export async function useDownload() {
         controller.signal
       )
       onDone?.(blob)
+      status.value = 'done'
     } catch (e) {
       if (isCanceledError(e)) {
         status.value = 'idle'
@@ -37,6 +36,8 @@ export async function useDownload() {
       }
       error.value = e
       status.value = 'error'
+    } finally {
+      controller = null
     }
   }
 

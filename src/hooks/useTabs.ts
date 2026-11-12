@@ -21,6 +21,31 @@ function toRoutePath(path: string) {
 }
 
 /**
+ * 连续两帧后执行
+ *
+ * 先让 Tab 激活态与顶部指示线完成首帧提交,再切路由,
+ * 否则路由组件的激活/挂载会在同一个任务里阻塞线条过渡。
+ *
+ * @param callback 两帧后执行的回调
+ * @returns 取消函数,连续切换时用于丢弃上一次调度
+ */
+function runAfterTwoFrames(callback: () => void) {
+  let secondFrameId: number | undefined
+  const firstFrameId = requestAnimationFrame(() => {
+    secondFrameId = requestAnimationFrame(() => {
+      secondFrameId = undefined
+      callback()
+    })
+  })
+
+  return () => {
+    cancelAnimationFrame(firstFrameId)
+    if (secondFrameId !== undefined) cancelAnimationFrame(secondFrameId)
+    secondFrameId = undefined
+  }
+}
+
+/**
  * Tab 与路由的同步副作用,全局只注册一次
  *
  * useTabs() 目前有 20+ 处调用(布局、面包屑、搜索面板以及各详情页),
@@ -45,69 +70,49 @@ const useTabsNavigation = createSharedComposable(() => {
     })
   }
 
-  /** 延迟导航的 rAF 句柄,连续切换 Tab 时只保留最后一次 */
-  let navigationFrameId: number | undefined
-
-  const cancelNavigation = () => {
-    if (navigationFrameId === undefined) return
-    cancelAnimationFrame(navigationFrameId)
-    navigationFrameId = undefined
-  }
+  /** 延迟导航的取消函数,连续切换 Tab 时只保留最后一次 */
+  let cancelNavigation: (() => void) | undefined
 
   watch(
     () => store.activeKey,
-    (val) => {
-      const tab = val
-        ? store.tabs.find((tab) => tab.key === val)
+    (activeKey) => {
+      const tab = activeKey
+        ? store.tabs.find((item) => item.key === activeKey)
         : store.homeTab
       if (!tab) return
 
-      cancelNavigation()
+      cancelNavigation?.()
       if (typeof requestAnimationFrame === 'undefined') {
-        void navigateTab(tab)
+        navigateTab(tab)
         return
       }
-
-      // 等两帧再切路由:先让 Tab 激活态和顶部指示线完成首帧提交,
-      // 否则路由组件的激活/挂载会在同一个任务里阻塞线条过渡
-      navigationFrameId = requestAnimationFrame(() => {
-        navigationFrameId = requestAnimationFrame(() => {
-          navigationFrameId = undefined
-          void navigateTab(tab)
-        })
-      })
+      cancelNavigation = runAfterTwoFrames(() => navigateTab(tab))
     }
   )
 
-  onScopeDispose(cancelNavigation)
+  /**
+   * 路由变化时同步选中项
+   *
+   * 优先用 navigateTab 写入的 history state 恢复自定义 Tab;
+   * 直接通过 url 访问时,退回路由 meta 的菜单 id。
+   */
+  function syncActiveTabFromRoute() {
+    const stateKey = history.state?.tabKey as string | undefined
+    if (stateKey && stateKey === store.homeTab?.key) {
+      if (store.activeKey !== undefined) store.changeTab()
+      return
+    }
 
-  watch(
-    () => route.fullPath,
-    () => {
-      // 优先通过 history state 恢复自定义 Tab(navigateTab 导航时写入)
-      const stateKey = history.state?.tabKey as string | undefined
-      if (stateKey) {
-        // 首页 Tab 为虚拟 Tab,activeKey 为 undefined 时表示选中首页
-        if (stateKey === store.homeTab?.key) {
-          if (store.activeKey !== undefined) store.changeTab()
-          return
-        }
-        const tab = store.tabs.find((tab) => tab.key === stateKey)
-        if (tab && store.activeKey !== tab.key) {
-          store.changeTab(tab.key)
-        }
-        return
-      }
-      // 直接通过 url 访问时,根据路由 meta 的菜单 id 恢复菜单 Tab
-      const menuId = route.meta.id
-      if (!menuId) return
-      const tab = store.tabs.find((tab) => tab.key === String(menuId))
-      if (tab && store.activeKey !== tab.key) {
-        store.changeTab(tab.key)
-      }
-    },
-    { immediate: true }
-  )
+    const targetKey =
+      stateKey || (route.meta.id ? String(route.meta.id) : undefined)
+    if (!targetKey) return
+    const tab = store.tabs.find((item) => item.key === targetKey)
+    if (tab && store.activeKey !== tab.key) store.changeTab(tab.key)
+  }
+
+  watch(() => route.fullPath, syncActiveTabFromRoute, { immediate: true })
+
+  onScopeDispose(() => cancelNavigation?.())
 })
 
 export function useTabs() {
@@ -120,20 +125,19 @@ export function useTabs() {
   /**
    * 按路由 path 打开对应菜单 Tab
    *
-   * 页面内直接 router.push 不会建立 Tab（Tab 只在 openTab 时创建），
-   * 凡是「打开站内某个菜单页面」的入口都应走这里：
-   * 命中菜单则新增或激活对应 Tab，非菜单路由退化为普通跳转。
+   * 页面内直接 router.push 不会建立 Tab(Tab 只在 openTab 时创建),
+   * 凡是「打开站内某个菜单页面」的入口都应走这里:
+   * 命中菜单则新增或激活对应 Tab,非菜单路由退化为普通跳转。
    *
    * @param path 目标路由 path
    * @returns 是否命中菜单并打开了 Tab
    */
   async function openTabByPath(path: string) {
-    const menu = Reflect.get(permission.menuCache.pathMap, path)
+    const menu = permission.menuCache.pathMap[path]
     if (!menu) {
       await router.push(path)
       return false
     }
-
     return store.openTab(menu.id)
   }
 

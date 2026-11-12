@@ -288,14 +288,13 @@ export function useRangeSelection<T = HTMLElement>(
     snapshots: readonly RangeSelectionTargetSnapshot<T>[],
     rect: RangeSelectionRect
   ) {
-    const strategy = options.strategy ?? 'intersect'
-    return snapshots
-      .filter((snapshot) =>
-        strategy === 'contain'
-          ? contains(rect, snapshot.rect)
-          : intersects(rect, snapshot.rect)
-      )
-      .map((snapshot) => snapshot.target)
+    // 每帧执行:单次遍历,并把策略判断提到循环外
+    const hit = options.strategy === 'contain' ? contains : intersects
+    const selected: T[] = []
+    for (const snapshot of snapshots) {
+      if (hit(rect, snapshot.rect)) selected.push(snapshot.target)
+    }
+    return selected
   }
 
   function hasMoved(rect: RangeSelectionRect) {

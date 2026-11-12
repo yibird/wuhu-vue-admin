@@ -1,3 +1,5 @@
+import { noop } from './utils.ts'
+
 /**
  * 缓存条目
  */
@@ -168,6 +170,9 @@ export function subscribeCache(
 
 /**
  * 清空请求缓存
+ *
+ * 该 key 的在途请求结果会被一并丢弃:清空之后完成的旧请求不再写回缓存。
+ *
  * @param key 指定 key 时只清理该 key
  */
 export function clearRequestCache(key?: string): void {
@@ -215,14 +220,32 @@ export async function sharedRequest<R, P extends unknown[]>(
 
   const promise = execute()
   setPendingRequest(key, promise)
-  promise.then(
-    (result) => {
-      setPendingRequest(key, undefined)
-      setCacheData(key, result, params)
-    },
-    () => {
-      setPendingRequest(key, undefined)
-    }
-  )
+
+  /**
+   * 只有自己仍是当前在途请求时才收尾
+   *
+   * clearRequestCache 会摘掉 pending 记录,期间同 key 的新请求会写入自己的 promise。
+   * 旧请求若不校验身份就清理,会误删新请求的去重记录(导致重复请求),
+   * 并把已经清掉的缓存重新写回来。
+   *
+   * @returns 是否由本次请求完成收尾
+   */
+  const settle = () => {
+    if (getPendingRequest(key) !== promise) return false
+    setPendingRequest(key, undefined)
+    return true
+  }
+
+  void promise
+    .then(
+      (result) => {
+        if (settle()) setCacheData(key, result, params)
+      },
+      () => {
+        settle()
+      }
+    )
+    .catch(noop)
+
   return promise
 }
