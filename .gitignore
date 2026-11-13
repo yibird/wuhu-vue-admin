@@ -46,6 +46,7 @@ test-results/
 *.tar.gz
 *.rar
 
+.workbuddy-ai
 
 auto-imports.d.ts
 components.d.ts
