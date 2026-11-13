@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import { setupTabGuards } from '@/config/tab-guards'
 import { routes } from './routes'
 import { useRegisterRoutes } from './hooks/useRegisterRoutes'
 import { plugins, setupRouterPlugins } from './plugins'
@@ -16,7 +15,6 @@ export async function setupRouter(app: App) {
   if (!isRegistered.value) {
     await registerRoutes()
   }
-  setupTabGuards()
   setupGlobalRouteGuard(router)
   const routerPlugins = setupRouterPlugins(router, plugins)
   app.use(router)

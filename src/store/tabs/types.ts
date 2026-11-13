@@ -37,52 +37,27 @@ export interface TabStoreState {
 }
 
 /**
- * Tab 生命周期动作
- */
-export type TabGuardAction = 'open' | 'close'
-
-/**
  * Tab 关闭来源,用于区分单个关闭与批量关闭
  */
-export type TabGuardSource = 'single' | 'left' | 'right' | 'other' | 'all'
+export type TabCloseSource = 'single' | 'left' | 'right' | 'other' | 'all'
 
 /**
- * Tab 守卫上下文
+ * Tab 关闭守卫上下文
  */
-export interface TabGuardContext {
+export interface TabCloseContext {
   /**
-   * @desc 目标 Tab,打开时为将要新增或激活的 Tab,关闭时为将被关闭的 Tab
+   * @desc 将被关闭的 Tab
    */
   tab: ITab
   /**
-   * @desc 触发的生命周期动作
+   * @desc 关闭来源,单个关闭固定为 single
    */
-  action: TabGuardAction
-  /**
-   * @desc 关闭来源,打开动作固定为 single
-   */
-  source: TabGuardSource
+  source: TabCloseSource
 }
 
 /**
- * Tab 守卫处理函数,返回 false 表示拦截
+ * Tab 关闭守卫,返回 false 表示不允许关闭,支持异步判定
  */
-export type TabGuardHandler = (
-  context: TabGuardContext
+export type TabCloseGuard = (
+  context: TabCloseContext
 ) => boolean | Promise<boolean>
-
-/**
- * Tab 生命周期守卫
- *
- * 打开守卫建议集中登记(页面挂载前无法参与判定),关闭守卫可在页面内就近声明
- */
-export interface TabGuard {
-  /**
-   * @desc 打开前守卫,返回 false 时不新增也不激活该 Tab
-   */
-  beforeOpen?: TabGuardHandler
-  /**
-   * @desc 关闭前守卫,返回 false 时保留该 Tab
-   */
-  beforeClose?: TabGuardHandler
-}

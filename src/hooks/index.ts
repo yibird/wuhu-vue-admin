@@ -1,6 +1,7 @@
 export * from './usePermission'
 export * from './useDict'
 export * from './useTabs'
+export * from './onBeforeTabLeave'
 export * from './useSearchHistory'
 export * from './useAuth'
 export * from './useDeferred'

@@ -1,7 +1,7 @@
 import { defineStore, storeToRefs } from 'pinia'
 import { nextTick } from 'vue'
 import { permissionStore } from '../permission'
-import { canCloseTab, canOpenTab } from './guard'
+import { canCloseTab } from './guard'
 import {
   getTabIndex,
   menuToTab,
@@ -10,7 +10,7 @@ import {
   toRouteTabKey,
 } from './util'
 import type { IMenu, TabOption } from '#/config'
-import type { ITab, TabStoreState, TabTarget, TabGuardSource } from './types'
+import type { ITab, TabStoreState, TabTarget, TabCloseSource } from './types'
 
 const initialState = (): TabStoreState => ({
   tabs: [],
@@ -58,16 +58,14 @@ export const tabsStore = defineStore('wuhu-vue-admin:tabs', {
     /**
      * 打开 Tab,已存在则直接选中,不存在则根据菜单新增后选中
      *
-     * 新增与激活都会先经过打开守卫,守卫返回 false 时不产生任何变化
-     *
      * @param target Tab 操作目标
      * - string：Tab key
      * - number：Tab 下标
      * - ITab：Tab项，通过Tab key 定位对应 Tab
      * @returns 是否已打开
      */
-    async openTab(target: TabTarget) {
-      // 通过下标方式打开tab,属于站内切换,不触发打开守卫
+    openTab(target: TabTarget) {
+      // 通过下标方式打开tab,属于站内切换
       if (typeof target === 'number') {
         this.changeTab(target)
         return true
@@ -86,7 +84,7 @@ export const tabsStore = defineStore('wuhu-vue-admin:tabs', {
         // 如果tab不存在,则根据key从菜单列表中查询
         const menu = exists ? undefined : Reflect.get(menuCache.idMap, target)
         const tab = exists ?? (menu ? menuToTab(menu) : undefined)
-        if (!tab || !(await canOpenTab(tab))) return false
+        if (!tab) return false
         if (!exists) {
           this.tabs.push(tab)
         }
@@ -104,7 +102,7 @@ export const tabsStore = defineStore('wuhu-vue-admin:tabs', {
         ? undefined
         : Reflect.get(menuCache.pathMap, target.path)
       const tab = exists ?? (menu ? menuToTab(menu) : undefined)
-      if (!tab || !(await canOpenTab(tab))) return false
+      if (!tab) return false
       if (!exists) {
         this.tabs.push(tab)
       }
@@ -120,7 +118,7 @@ export const tabsStore = defineStore('wuhu-vue-admin:tabs', {
      * @param option 路由 Tab 参数
      * @returns 是否已打开
      */
-    async openRouteTab(option: TabOption) {
+    openRouteTab(option: TabOption) {
       const key = toRouteTabKey(option.path, option.query)
       const exists = this.tabs.find((tab) => tab.key === key)
       const { menuCache } = permissionStore()
@@ -131,7 +129,6 @@ export const tabsStore = defineStore('wuhu-vue-admin:tabs', {
         exists.title = option.title ?? exists.title
       }
       const tab = exists ?? toRouteTab(option, menu)
-      if (!(await canOpenTab(tab))) return false
       if (!exists) {
         this.tabs.push(tab)
       }
@@ -175,7 +172,8 @@ export const tabsStore = defineStore('wuhu-vue-admin:tabs', {
     /**
      * 关闭 Tab,关闭的是当前选中 Tab 时自动选中其左侧 Tab(无左侧 Tab 时回到首页)
      *
-     * 关闭前会执行关闭守卫,守卫返回 false 时保留该 Tab
+     * 关闭前会执行页面组件注册的关闭守卫,守卫返回 false 时保留该 Tab。
+     * 固定 Tab 不可关闭。
      *
      * @param target Tab 操作目标
      * - string：Tab key
@@ -186,7 +184,7 @@ export const tabsStore = defineStore('wuhu-vue-admin:tabs', {
     async closeTab(target: TabTarget) {
       const index = getTabIndex(this.tabs, target)
       const tab = this.tabs[index]
-      if (index === -1 || !tab) return false
+      if (index === -1 || !tab || tab.pin) return false
       if (!(await canCloseTab(tab, 'single'))) return false
 
       const wasActive = tab.key === this.activeKey
@@ -207,6 +205,7 @@ export const tabsStore = defineStore('wuhu-vue-admin:tabs', {
       const index = this.tabs.findIndex((item) => item.key === this.activeKey)
       if (index === -1) return false
       const tab = this.tabs[index]
+      if (tab.pin) return false
       if (!(await canCloseTab(tab, 'single'))) return false
 
       this.tabs.splice(index, 1)
@@ -216,7 +215,7 @@ export const tabsStore = defineStore('wuhu-vue-admin:tabs', {
     },
 
     /**
-     * 批量关闭 Tab,逐个执行关闭守卫,被守卫拒绝的 Tab 保留
+     * 批量关闭 Tab,逐个执行页面组件注册的关闭守卫,被守卫拒绝的 Tab 保留
      *
      * 固定 Tab 与关闭范围外的 Tab 不参与关闭,也不会触发守卫
      *
@@ -225,7 +224,7 @@ export const tabsStore = defineStore('wuhu-vue-admin:tabs', {
      * @returns 是否有 Tab 被关闭
      */
     async closeTabs(
-      source: TabGuardSource,
+      source: TabCloseSource,
       match: (tab: ITab, index: number) => boolean
     ) {
       const kept: ITab[] = []
