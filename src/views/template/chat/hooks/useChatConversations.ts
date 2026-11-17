@@ -102,7 +102,7 @@ export function useChatConversations() {
 
   function toggleConversationPinned(conversation: Conversation) {
     conversation.pinned = !conversation.pinned
-    conversations.value = [...conversations.value].sort(
+    conversations.value = conversations.value.toSorted(
       (a, b) => Number(b.pinned) - Number(a.pinned)
     )
   }

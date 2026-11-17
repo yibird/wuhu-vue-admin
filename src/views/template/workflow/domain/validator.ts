@@ -682,8 +682,8 @@ function validateTopologyIndexes(
     if (!isRecord(node) || typeof node.id !== 'string') return
     const expectedNext = [...(nextByNode.get(node.id) ?? [])].sort()
     const expectedPrev = [...(prevByNode.get(node.id) ?? [])].sort()
-    const actualNext = Array.isArray(node.next) ? [...node.next].sort() : []
-    const actualPrev = Array.isArray(node.prev) ? [...node.prev].sort() : []
+    const actualNext = Array.isArray(node.next) ? node.next.toSorted() : []
+    const actualPrev = Array.isArray(node.prev) ? node.prev.toSorted() : []
     if (
       !Array.isArray(node.next) ||
       actualNext.length !== expectedNext.length ||

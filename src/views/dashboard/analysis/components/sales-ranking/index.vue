@@ -159,7 +159,7 @@ const amountFormatter = new Intl.NumberFormat('zh-CN', {
 const orderFormatter = new Intl.NumberFormat('zh-CN')
 
 const rankedItems = computed(() =>
-  [...items].sort((left, right) => right[metric.value] - left[metric.value])
+  items.toSorted((left, right) => right[metric.value] - left[metric.value])
 )
 
 const maxValue = computed(() => rankedItems.value[0]?.[metric.value] ?? 1)

@@ -36,7 +36,7 @@ export function useArticleList(source: ArticleItem[]) {
       return matchesKeyword && matchesStatus && matchesCategory
     })
 
-    return [...result].sort((a, b) => {
+    return result.toSorted((a, b) => {
       if (sortBy.value === 'created-desc') {
         return b.createdAt.localeCompare(a.createdAt)
       }

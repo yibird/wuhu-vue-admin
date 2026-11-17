@@ -145,13 +145,9 @@ export const expressionFunctions: Record<string, ExpressionFunction> = {
     })
   },
   groupBy(value, key) {
-    const result: Record<string, unknown[]> = {}
-    for (const item of toArray(value)) {
-      const groupKey = String((item as UnknownRecord)[String(key)])
-      result[groupKey] ??= []
-      result[groupKey].push(item)
-    }
-    return result
+    return Object.groupBy(toArray(value), (item) =>
+      String((item as UnknownRecord)[String(key)])
+    )
   },
   includes(value, keyword) {
     if (typeof value === 'string') return value.includes(String(keyword))

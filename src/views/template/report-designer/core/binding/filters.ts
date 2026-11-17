@@ -47,7 +47,7 @@ export function applyRegionSort(
   sort: SortSpec[]
 ) {
   if (!sort.length) return rows
-  return [...rows].sort((left, right) => {
+  return rows.toSorted((left, right) => {
     for (const spec of sort) {
       const comparison = compare(left[spec.field], right[spec.field])
       if (comparison !== 0) return spec.desc ? -comparison : comparison

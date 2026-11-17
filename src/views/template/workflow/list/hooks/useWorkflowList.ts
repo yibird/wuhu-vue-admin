@@ -42,7 +42,7 @@ export function useWorkflowList() {
       return matchesKeyword && matchesStatus && matchesOwner
     })
 
-    return [...result].sort((a, b) => {
+    return result.toSorted((a, b) => {
       if (sortBy.value === 'runs-desc') return b.runCount - a.runCount
       if (sortBy.value === 'created-desc') {
         return b.createdAt.localeCompare(a.createdAt)

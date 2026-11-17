@@ -141,8 +141,7 @@ const initialRunLogs: WorkflowRunLog[] = [
   },
 ]
 
-const cloneSchema = (schema: WorkflowJsonSchema) =>
-  JSON.parse(JSON.stringify(schema)) as WorkflowJsonSchema
+const cloneSchema = (schema: WorkflowJsonSchema) => structuredClone(schema)
 
 const createNodeId = (kind: WorkflowNodeKind) =>
   `${kind}-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 6)}`

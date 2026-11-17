@@ -409,8 +409,8 @@ export function useReportDesigner() {
     }
     let nextRegions = current
     let changed = false
-    ;[...ranges]
-      .sort((left, right) => right.startRow - left.startRow)
+    ranges
+      .toSorted((left, right) => right.startRow - left.startRow)
       .forEach((range) => {
         const result = shiftRegions(
           nextRegions,

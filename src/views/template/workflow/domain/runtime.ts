@@ -142,10 +142,10 @@ async function executeWithTimeout(
 ) {
   const controller = new AbortController()
   let timeoutTimer: ReturnType<typeof setTimeout> | undefined
-  let rejectCancelled: ((reason?: unknown) => void) | undefined
+  const cancelled = Promise.withResolvers<never>()
   const abort = () => {
     controller.abort()
-    rejectCancelled?.(new DOMException('Execution cancelled', 'AbortError'))
+    cancelled.reject(new DOMException('Execution cancelled', 'AbortError'))
   }
   const timeout = new Promise<never>((_, reject) => {
     timeoutTimer = setTimeout(() => {
@@ -153,16 +153,13 @@ async function executeWithTimeout(
       reject(new Error('NODE_TIMEOUT'))
     }, timeoutMs)
   })
-  const cancelled = new Promise<never>((_, reject) => {
-    rejectCancelled = reject
-  })
   if (signal.aborted) abort()
   else signal.addEventListener('abort', abort, { once: true })
   try {
     return await Promise.race([
       executor({ ...context, signal: controller.signal }),
       timeout,
-      cancelled,
+      cancelled.promise,
     ])
   } catch (error) {
     if (!signal.aborted && controller.signal.aborted)
@@ -170,7 +167,6 @@ async function executeWithTimeout(
     throw error
   } finally {
     if (timeoutTimer) clearTimeout(timeoutTimer)
-    rejectCancelled = undefined
     signal.removeEventListener('abort', abort)
     controller.abort()
   }

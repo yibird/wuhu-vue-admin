@@ -393,7 +393,7 @@ export function computeEqualSpacing(
   threshold = 4
 ): { delta?: number; guides: AlignmentResult['guides'] } {
   if (siblings.length < 2) return { guides: [] }
-  const sorted = [...siblings].sort((a, b) =>
+  const sorted = siblings.toSorted((a, b) =>
     axis === 'x' ? a.rect.x - b.rect.x : a.rect.y - b.rect.y
   )
   const gaps: number[] = []

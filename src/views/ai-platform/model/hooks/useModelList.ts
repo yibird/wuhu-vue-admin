@@ -41,7 +41,7 @@ export function useModelList(source: ModelItem[]) {
       return matchesKeyword && matchesProvider && matchesStatus
     })
 
-    return [...result].sort((a, b) => {
+    return result.toSorted((a, b) => {
       if (sortBy.value === 'created-desc') {
         return b.createdAt.localeCompare(a.createdAt)
       }

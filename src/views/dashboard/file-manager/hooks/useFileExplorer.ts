@@ -190,7 +190,7 @@ export function useFileExplorer() {
   }
 
   function sortFileItems(items: IFile[], directoriesFirst: boolean) {
-    return [...items].sort((a, b) => {
+    return items.toSorted((a, b) => {
       if (directoriesFirst && a.type !== b.type) return a.type - b.type
 
       switch (sortBy.value) {

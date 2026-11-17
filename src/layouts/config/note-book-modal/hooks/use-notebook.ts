@@ -39,7 +39,7 @@ export function useNotebook(
   const keyword = shallowRef('')
 
   const sortedNotes = computed(() => {
-    return [...notes.value].sort((left, right) => {
+    return notes.value.toSorted((left, right) => {
       if (left.pinned !== right.pinned) return left.pinned ? -1 : 1
       return dayjs(right.updatedAt).valueOf() - dayjs(left.updatedAt).valueOf()
     })

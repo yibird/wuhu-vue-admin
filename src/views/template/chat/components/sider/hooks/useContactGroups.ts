@@ -110,7 +110,7 @@ function groupContactsByFriendGroup(
   contacts: Contact[],
   friendGroups: readonly FriendGroup[]
 ): ContactGroupView[] {
-  const configuredGroups = [...friendGroups].sort((a, b) => a.order - b.order)
+  const configuredGroups = friendGroups.toSorted((a, b) => a.order - b.order)
   const configuredGroupIds = new Set(configuredGroups.map((group) => group.id))
   const result = configuredGroups
     .map((group) => ({

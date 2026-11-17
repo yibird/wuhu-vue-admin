@@ -36,13 +36,7 @@ export interface Deferred<T> {
  * @returns 受控 Promise 及其 resolve/reject
  */
 export function createDeferred<T>(): Deferred<T> {
-  let resolve!: (value: T) => void
-  let reject!: (error: unknown) => void
-  const promise = new Promise<T>((resolveFn, rejectFn) => {
-    resolve = resolveFn
-    reject = rejectFn
-  })
-  return { promise, resolve, reject }
+  return Promise.withResolvers<T>()
 }
 
 /**

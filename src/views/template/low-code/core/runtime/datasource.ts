@@ -53,44 +53,38 @@ export async function executeQuery(
   if (!url) throw new Error(`数据源 ${dataSource.name} 未配置请求地址`)
 
   const method = dataSource.config.method ?? 'GET'
-  const controller = new AbortController()
   const timeout = dataSource.config.timeout ?? 15000
-  const timer = window.setTimeout(() => controller.abort(), timeout)
 
-  try {
-    const response = await fetch(buildUrl(url, params, method), {
-      method,
-      headers: {
-        'Content-Type': 'application/json',
-        ...dataSource.config.headers,
-      },
-      body:
-        method === 'GET' || method === 'DELETE'
-          ? undefined
-          : JSON.stringify(params),
-      signal: controller.signal,
-    })
+  const response = await fetch(buildUrl(url, params, method), {
+    method,
+    headers: {
+      'Content-Type': 'application/json',
+      ...dataSource.config.headers,
+    },
+    body:
+      method === 'GET' || method === 'DELETE'
+        ? undefined
+        : JSON.stringify(params),
+    signal: AbortSignal.timeout(timeout),
+  })
 
-    if (!response.ok) {
-      throw new Error(`请求失败: ${response.status} ${response.statusText}`)
-    }
-
-    const CONTENT_TYPE = response.headers.get('content-type') ?? ''
-    if (CONTENT_TYPE.includes('application/json')) {
-      const payload = (await response.json()) as Record<string, unknown>
-      // 兼容常见后端包装结构
-      if (
-        payload &&
-        typeof payload === 'object' &&
-        'data' in payload &&
-        Object.keys(payload).length <= 3
-      ) {
-        return payload.data
-      }
-      return payload
-    }
-    return response.text()
-  } finally {
-    window.clearTimeout(timer)
+  if (!response.ok) {
+    throw new Error(`请求失败: ${response.status} ${response.statusText}`)
   }
+
+  const CONTENT_TYPE = response.headers.get('content-type') ?? ''
+  if (CONTENT_TYPE.includes('application/json')) {
+    const payload = (await response.json()) as Record<string, unknown>
+    // 兼容常见后端包装结构
+    if (
+      payload &&
+      typeof payload === 'object' &&
+      'data' in payload &&
+      Object.keys(payload).length <= 3
+    ) {
+      return payload.data
+    }
+    return payload
+  }
+  return response.text()
 }

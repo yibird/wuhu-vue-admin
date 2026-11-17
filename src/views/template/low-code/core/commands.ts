@@ -179,7 +179,7 @@ export function createRemoveCommand(
     label,
     undo: () => {
       // 按原位置从小到大依次插回，保证顺序稳定
-      const ordered = [...removed].sort((a, b) => a.index - b.index)
+      const ordered = removed.toSorted((a, b) => a.index - b.index)
       for (const item of ordered) {
         index.insert(item.node, item.parentId, item.index)
       }
@@ -202,7 +202,7 @@ export function createBatchUpdateCommand(
   return {
     label,
     undo: () => {
-      for (const command of [...commands].reverse()) command.undo()
+      for (const command of commands.toReversed()) command.undo()
     },
     redo: () => {
       for (const command of commands) command.redo()

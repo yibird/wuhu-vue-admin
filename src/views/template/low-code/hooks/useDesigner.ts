@@ -477,7 +477,7 @@ export function useDesigner(): DesignerApi {
 
   function duplicateNodes(ids: string[]) {
     const created: string[] = []
-    for (const id of [...ids].reverse()) {
+    for (const id of ids.toReversed()) {
       const { entry, node } = createDuplicateCommand(
         activeIndex.value,
         id,
@@ -516,7 +516,7 @@ export function useDesigner(): DesignerApi {
       {
         label: '移动组件',
         undo: () => {
-          for (const move of [...moves].reverse()) move.entry.undo()
+          for (const move of moves.toReversed()) move.entry.undo()
         },
         redo: () => {
           for (const move of moves) move.entry.redo()
@@ -595,7 +595,7 @@ export function useDesigner(): DesignerApi {
       {
         label: '创建容器',
         undo: () => {
-          for (const move of [...moves].reverse()) move.entry.undo()
+          for (const move of moves.toReversed()) move.entry.undo()
           insert.undo()
         },
         redo: () => {

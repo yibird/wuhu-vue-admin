@@ -14,27 +14,43 @@
   height: 100%;
 
   span {
+    --stagger-time: 0.08s;
+
     width: 6px;
     height: 34px;
     background: var(--w-loading-primary);
     border-radius: 999px;
     animation: w-loading-bars-jump 0.86s ease-in-out infinite;
+  }
+}
 
-    &:nth-child(2) {
-      animation-delay: 0.08s;
-    }
+@supports (animation-delay: calc(sibling-index() * 0.1s)) {
+  .w-loading-bars span {
+    animation-delay: calc(sibling-index() * var(--stagger-time));
+  }
+}
 
-    &:nth-child(3) {
-      animation-delay: 0.16s;
-    }
+@supports not (animation-delay: calc(sibling-index() * 0.1s)) {
+  .w-loading-bars span:nth-child(2) {
+    animation-delay: 0.08s;
+  }
 
-    &:nth-child(4) {
-      animation-delay: 0.24s;
-    }
+  .w-loading-bars span:nth-child(3) {
+    animation-delay: 0.16s;
+  }
 
-    &:nth-child(5) {
-      animation-delay: 0.32s;
-    }
+  .w-loading-bars span:nth-child(4) {
+    animation-delay: 0.24s;
+  }
+
+  .w-loading-bars span:nth-child(5) {
+    animation-delay: 0.32s;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .w-loading-bars span {
+    animation: none;
   }
 }
 

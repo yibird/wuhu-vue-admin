@@ -191,9 +191,7 @@ watch(
     if (newTasks.length === 0) {
       lastTaskSignature = ''
       releaseGanttInstance()
-      if (ganttRef.value) {
-        ganttRef.value.innerHTML = ''
-      }
+      ganttRef.value?.replaceChildren()
       return
     }
 
@@ -288,7 +286,7 @@ onDeactivated(() => {
 onUnmounted(() => {
   stopObservingSize()
   releaseGanttInstance()
-  if (ganttRef.value) ganttRef.value.innerHTML = ''
+  ganttRef.value?.replaceChildren()
 })
 </script>
 

@@ -252,7 +252,7 @@ const filteredConversations = computed(() => {
     )
   }
 
-  return [...list].sort((a, b) => Number(b.pinned) - Number(a.pinned))
+  return list.toSorted((a, b) => Number(b.pinned) - Number(a.pinned))
 })
 
 const emptyStateLabel = computed(() => {
