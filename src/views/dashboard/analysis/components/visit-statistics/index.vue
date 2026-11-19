@@ -1,8 +1,5 @@
 <template>
-  <ViewSection
-    :loading="props.loading"
-    :skeleton-options="{ name: 'analysis-visit-statistics' }"
-  >
+  <Skeleton :loading="props.loading">
     <a-border-beam :duration="8" :line-width="2" :size="140">
       <Card class="page-enter page-enter--4" title="最近访问">
         <div class="h-380 w-full p-12 max-md:h-260">
@@ -15,11 +12,12 @@
         </div>
       </Card>
     </a-border-beam>
-  </ViewSection>
+  </Skeleton>
 </template>
 
 <script lang="ts" setup>
-import { ViewSection, Card } from '@/components'
+import { Skeleton } from 'skullet/vue'
+import { Card } from '@/components'
 import { BasicChart } from '@/components/chart'
 import {
   getCssRgbVar,

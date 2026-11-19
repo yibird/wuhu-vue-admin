@@ -1,5 +1,5 @@
 <template>
-  <ViewSection skeleton-name="workbench-announcement" :loading="loading">
+  <Skeleton :loading="loading">
     <section class="page-enter page-enter--6 min-w-0">
       <a-border-beam :duration="6" :line-width="3">
         <Card class="shadow-none!" :styles="{ body: { padding: '12px' } }">
@@ -150,11 +150,11 @@
         </a-button>
       </template>
     </a-modal>
-  </ViewSection>
+  </Skeleton>
 </template>
 
 <script lang="ts" setup>
-import { ViewSection } from '@/components/view-section'
+import { Skeleton } from 'skullet/vue'
 import { SlidingHighlight, Card } from '@/components'
 import { useTabs } from '@/hooks'
 import type { WorkbenchAnnouncement } from './types'

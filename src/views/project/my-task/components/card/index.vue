@@ -1,9 +1,5 @@
 <template>
-  <ViewSection
-    skeleton-name="my-task-card"
-    :loading="loading"
-    class="h-full min-h-0"
-  >
+  <Skeleton :loading="loading" class="h-full min-h-0">
     <DragDropProvider
       @drag-move="markDropPlaceholder"
       @drag-end="handleDragEnd"
@@ -28,10 +24,10 @@
         </template>
       </AnimatedGroup>
     </DragDropProvider>
-  </ViewSection>
+  </Skeleton>
 </template>
 <script lang="ts" setup>
-import { ViewSection } from '@/components/view-section'
+import { Skeleton } from 'skullet/vue'
 import { DragDropProvider } from '@dnd-kit/vue'
 import { AnimatedGroup } from '@/components/animated'
 import Group from './group.vue'

@@ -1,5 +1,5 @@
 <template>
-  <ViewSection skeleton-name="workflow-monitor-overview" :loading="loading">
+  <Skeleton :loading="loading">
     <section class="grid grid-cols-2 gap-10 xl:grid-cols-4 max-sm:grid-cols-1">
       <Motion
         v-for="(metric, index) in metrics"
@@ -29,11 +29,11 @@
         </div>
       </Motion>
     </section>
-  </ViewSection>
+  </Skeleton>
 </template>
 
 <script setup lang="ts">
-import { ViewSection } from '@/components/view-section'
+import { Skeleton } from 'skullet/vue'
 import { Motion } from 'motion-v'
 
 const props = defineProps<{

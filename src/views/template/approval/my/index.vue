@@ -49,7 +49,7 @@
       <main
         class="page-enter page-enter--2 min-h-0 flex-1 overflow-y-auto p-12 sm:p-16"
       >
-        <ViewSection skeleton-name="approval-my-list" :loading="loading">
+        <Skeleton :loading="loading">
           <a-empty
             v-if="list.length === 0"
             class="py-72"
@@ -73,7 +73,7 @@
               @remove="removeDefinition"
             />
           </div>
-        </ViewSection>
+        </Skeleton>
       </main>
 
       <footer
@@ -95,7 +95,7 @@
 </template>
 
 <script setup lang="ts">
-import { ViewSection } from '@/components/view-section'
+import { Skeleton } from 'skullet/vue'
 import { Icon } from '@/components/icon'
 import { useTabs } from '@/hooks'
 import { ApprovalCard } from '../components'

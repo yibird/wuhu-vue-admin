@@ -17,7 +17,7 @@
         data-testid="ai-resource-scroll"
         class="page-enter page-enter--2 min-h-0 flex-1 p-12 overflow-y-auto overflow-x-hidden sm:p-16 lg:p-20"
       >
-        <ViewSection skeleton-name="ai-agent-list" :loading="loading">
+        <Skeleton :loading="loading">
           <a-empty
             v-if="paginatedItems.length === 0"
             class="h-full min-h-360 flex flex-col items-center justify-center"
@@ -46,7 +46,7 @@
               />
             </template>
           </AnimatedGroup>
-        </ViewSection>
+        </Skeleton>
       </main>
 
       <footer
@@ -70,7 +70,7 @@
   </View>
 </template>
 <script setup lang="ts">
-import { ViewSection } from '@/components/view-section'
+import { Skeleton } from 'skullet/vue'
 import { useRouter } from 'vue-router'
 import { message, Modal } from 'antdv-next'
 import { AnimatedGroup } from '@/components/animated'

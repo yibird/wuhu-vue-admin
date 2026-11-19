@@ -1,5 +1,5 @@
 <template>
-  <ViewSection skeleton-name="workbench-overview" :loading="loading">
+  <Skeleton :loading="loading">
     <a-border-beam :duration="6" :line-width="3">
       <section
         class="workbench-hero relative overflow-hidden rounded-4 b-1-secondary transition-all hover:(shadow-xs)"
@@ -75,11 +75,11 @@
         </div>
       </section>
     </a-border-beam>
-  </ViewSection>
+  </Skeleton>
 </template>
 
 <script lang="ts" setup>
-import { ViewSection } from '@/components/view-section'
+import { Skeleton } from 'skullet/vue'
 import { NumberTicker } from '@/components/number-ticker'
 import type { OverviewMetric } from './types'
 

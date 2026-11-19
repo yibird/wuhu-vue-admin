@@ -17,7 +17,7 @@
       <main
         class="page-enter page-enter--2 min-h-0 flex-1 overflow-y-auto p-12 sm:p-16"
       >
-        <ViewSection skeleton-name="workflow-list" :loading="loading">
+        <Skeleton :loading="loading">
           <a-empty
             v-if="paginatedWorkflows.length === 0"
             class="py-72"
@@ -40,7 +40,7 @@
               @open="openDesigner"
             />
           </TransitionGroup>
-        </ViewSection>
+        </Skeleton>
       </main>
 
       <footer
@@ -61,7 +61,7 @@
 </template>
 
 <script setup lang="ts">
-import { ViewSection } from '@/components/view-section'
+import { Skeleton } from 'skullet/vue'
 import message from 'antdv-next/dist/message/index'
 import Modal from 'antdv-next/dist/modal/index'
 import { useLoading, useTabs } from '@/hooks'

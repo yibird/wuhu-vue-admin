@@ -62,11 +62,6 @@ export type {
   SlidingHighlightProps,
   SlidingHighlightSlots,
 } from './sliding-highlight'
-export { ViewSection } from './view-section'
-export type {
-  ViewSectionProps,
-  ViewSectionSkeletonOptions,
-} from './view-section'
 export { View, ViewContent, ViewFooter, ViewHeader, ViewSider } from './view'
 export type {
   ViewContentProps,

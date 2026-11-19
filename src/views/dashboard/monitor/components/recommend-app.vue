@@ -1,5 +1,5 @@
 <template>
-  <ViewSection skeleton-name="monitor-recommend-app" :loading="loading">
+  <Skeleton :loading="loading">
     <Card
       title="应用中心"
       icon="i-lucide:package-plus"
@@ -64,11 +64,11 @@
         </div>
       </div>
     </Card>
-  </ViewSection>
+  </Skeleton>
 </template>
 
 <script lang="ts" setup>
-import { ViewSection } from '@/components/view-section'
+import { Skeleton } from 'skullet/vue'
 import Card from './card.vue'
 import type { MonitorTone, RecommendAppEmits, RecommendAppProps } from './types'
 

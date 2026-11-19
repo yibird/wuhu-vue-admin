@@ -1,5 +1,5 @@
 <template>
-  <ViewSection skeleton-name="monitor-header" :loading="!!props.loading">
+  <Skeleton :loading="!!props.loading">
     <a-border-beam :duration="6" :line-width="3">
       <section
         class="monitor-hero page-enter page-enter--1 relative mb-12 overflow-hidden rounded-8 b-1-secondary bg-container shadow-xs"
@@ -88,11 +88,11 @@
         </div>
       </section>
     </a-border-beam>
-  </ViewSection>
+  </Skeleton>
 </template>
 
 <script lang="ts" setup>
-import { ViewSection } from '@/components/view-section'
+import { Skeleton } from 'skullet/vue'
 
 const props = defineProps<{
   criticalAlertCount: number

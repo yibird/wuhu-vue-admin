@@ -13,13 +13,13 @@
       </button>
     </span>
     <template #content>
-      <ViewSection skeleton-name="notice-center" class="w-320">
+      <Skeleton class="w-320">
         <NoticeCenter />
-      </ViewSection>
+      </Skeleton>
     </template>
   </a-popover>
 </template>
 <script lang="ts" setup>
-import { ViewSection } from '@/components/view-section'
+import { Skeleton } from 'skullet/vue'
 import { NoticeCenter } from '@/layouts/config'
 </script>

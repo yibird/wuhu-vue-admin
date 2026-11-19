@@ -1,8 +1,5 @@
 <template>
-  <ViewSection
-    :loading="props.loading"
-    :skeleton-options="{ name: 'analysis-risk-alerts' }"
-  >
+  <Skeleton :loading="props.loading">
     <a-border-beam :duration="8" :line-width="2" :size="140">
       <Card class="page-enter page-enter--6" title="异常预警">
         <template #extra>
@@ -70,11 +67,12 @@
         </SlidingHighlight>
       </Card>
     </a-border-beam>
-  </ViewSection>
+  </Skeleton>
 </template>
 
 <script lang="ts" setup>
-import { Card, SlidingHighlight, ViewSection } from '@/components'
+import { Skeleton } from 'skullet/vue'
+import { Card, SlidingHighlight } from '@/components'
 import type { SlidingHighlightInstance } from '@/components/sliding-highlight'
 
 const props = withDefaults(defineProps<{ loading?: boolean }>(), {

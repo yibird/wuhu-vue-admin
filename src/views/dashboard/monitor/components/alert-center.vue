@@ -1,5 +1,5 @@
 <template>
-  <ViewSection skeleton-name="monitor-alert-center" :loading="props.loading">
+  <Skeleton :loading="props.loading">
     <Card
       title="告警中心"
       icon="i-lucide:bell-ring"
@@ -63,11 +63,11 @@
         />
       </TransitionGroup>
     </Card>
-  </ViewSection>
+  </Skeleton>
 </template>
 
 <script lang="ts" setup>
-import { ViewSection } from '@/components/view-section'
+import { Skeleton } from 'skullet/vue'
 import Card from './card.vue'
 import type {
   AlertCenterEmits,

@@ -1,8 +1,5 @@
 <template>
-  <ViewSection
-    :loading="props.loading"
-    :skeleton-options="{ name: 'analysis-conversion-funnel' }"
-  >
+  <Skeleton :loading="props.loading">
     <a-border-beam :duration="8" :line-width="2" :size="140">
       <Card class="page-enter page-enter--5" title="转化漏斗">
         <div
@@ -50,11 +47,12 @@
         </div>
       </Card>
     </a-border-beam>
-  </ViewSection>
+  </Skeleton>
 </template>
 
 <script lang="ts" setup>
-import { Card, ViewSection } from '@/components'
+import { Skeleton } from 'skullet/vue'
+import { Card } from '@/components'
 import DealSummary from './deal-summary.vue'
 import InsightItem from './insight-item.vue'
 import StageItem from './stage-item.vue'

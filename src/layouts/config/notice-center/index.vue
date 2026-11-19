@@ -21,15 +21,15 @@
         :name="item.name"
         :tab="item.tab"
       >
-        <ViewSection skeleton-name="notice-center-list">
+        <Skeleton>
           <component :is="item.component" />
-        </ViewSection>
+        </Skeleton>
       </a-tab-pane>
     </a-tabs>
   </div>
 </template>
 <script lang="ts" setup>
-import { ViewSection } from '@/components/view-section'
+import { Skeleton } from 'skullet/vue'
 
 const items = [
   {

@@ -1,8 +1,5 @@
 <template>
-  <ViewSection
-    :loading="props.loading"
-    :skeleton-options="{ name: 'analysis-hot-items' }"
-  >
+  <Skeleton :loading="props.loading">
     <a-border-beam :duration="8" :line-width="2" :size="140">
       <Card class="page-enter page-enter--5" title="热门榜单">
         <div
@@ -115,10 +112,11 @@
         </SlidingHighlight>
       </Card>
     </a-border-beam>
-  </ViewSection>
+  </Skeleton>
 </template>
 <script lang="ts" setup>
-import { Card, SlidingHighlight, ViewSection } from '@/components'
+import { Skeleton } from 'skullet/vue'
+import { Card, SlidingHighlight } from '@/components'
 import { items } from './data'
 import type { SlidingHighlightInstance } from '@/components/sliding-highlight'
 

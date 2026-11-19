@@ -1,9 +1,5 @@
 <template>
-  <ViewSection
-    skeleton-name="task-card"
-    :loading="loading"
-    class="h-full min-h-0"
-  >
+  <Skeleton :loading="loading" class="h-full min-h-0">
     <DragDropProvider
       @drag-move="markDropPlaceholder"
       @drag-end="handleDragEnd"
@@ -34,10 +30,10 @@
         </DraggableItem>
       </div>
     </DragDropProvider>
-  </ViewSection>
+  </Skeleton>
 </template>
 <script lang="ts" setup>
-import { ViewSection } from '@/components/view-section'
+import { Skeleton } from 'skullet/vue'
 import { DragDropProvider } from '@dnd-kit/vue'
 import { arrayMove } from '@dnd-kit/helpers'
 import { DraggableItem } from '@/components/draggable'

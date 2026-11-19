@@ -1,8 +1,5 @@
 <template>
-  <ViewSection
-    :loading="props.loading"
-    :skeleton-options="{ name: 'analysis-hot-search' }"
-  >
+  <Skeleton :loading="props.loading">
     <a-border-beam :duration="8" :line-width="2" :size="140">
       <Card class="page-enter page-enter--4" title="热门搜索">
         <div class="h-380 w-full p-12 max-md:h-280">
@@ -15,13 +12,14 @@
         </div>
       </Card>
     </a-border-beam>
-  </ViewSection>
+  </Skeleton>
 </template>
 
 <script lang="ts" setup>
+import { Skeleton } from 'skullet/vue'
 import { BasicChart } from '@/components/chart'
 import { useEChartsTheme } from '@/components/chart'
-import { Card, ViewSection } from '@/components'
+import { Card } from '@/components'
 import type { EChartsCoreOption } from 'echarts/core'
 
 const props = withDefaults(defineProps<{ loading?: boolean }>(), {

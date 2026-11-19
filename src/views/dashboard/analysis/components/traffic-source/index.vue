@@ -1,8 +1,5 @@
 <template>
-  <ViewSection
-    :loading="props.loading"
-    :skeleton-options="{ name: 'analysis-traffic-source' }"
-  >
+  <Skeleton :loading="props.loading">
     <a-border-beam :duration="8" :line-width="2" :size="140">
       <Card class="page-enter page-enter--6" title="流量来源">
         <template #extra>
@@ -57,12 +54,13 @@
         </ul>
       </Card>
     </a-border-beam>
-  </ViewSection>
+  </Skeleton>
 </template>
 
 <script lang="ts" setup>
+import { Skeleton } from 'skullet/vue'
 import { BasicChart } from '@/components/chart'
-import { Card, ViewSection } from '@/components'
+import { Card } from '@/components'
 import { getCssRgbVarAlpha, useEChartsTheme } from '@/components/chart'
 import type { EChartsCoreOption } from 'echarts/core'
 

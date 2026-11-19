@@ -1,5 +1,5 @@
 <template>
-  <ViewSection skeleton-name="monitor-sys-monitor" :loading="props.loading">
+  <Skeleton :loading="props.loading">
     <Card
       title="系统监控"
       icon="i-lucide:chart-area"
@@ -46,11 +46,11 @@
         />
       </div>
     </Card>
-  </ViewSection>
+  </Skeleton>
 </template>
 
 <script lang="ts" setup>
-import { ViewSection } from '@/components/view-section'
+import { Skeleton } from 'skullet/vue'
 import { NumberTicker } from '@/components/number-ticker'
 import {
   getCssRgbVar,

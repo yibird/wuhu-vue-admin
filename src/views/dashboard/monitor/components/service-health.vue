@@ -1,5 +1,5 @@
 <template>
-  <ViewSection skeleton-name="monitor-service-health" :loading="loading">
+  <Skeleton :loading="loading">
     <Card
       title="服务健康"
       icon="i-lucide:server"
@@ -57,11 +57,11 @@
         </div>
       </div>
     </Card>
-  </ViewSection>
+  </Skeleton>
 </template>
 
 <script lang="ts" setup>
-import { ViewSection } from '@/components/view-section'
+import { Skeleton } from 'skullet/vue'
 import Card from './card.vue'
 import type {
   ServiceHealthEmits,

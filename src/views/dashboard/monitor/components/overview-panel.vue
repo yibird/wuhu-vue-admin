@@ -1,5 +1,5 @@
 <template>
-  <ViewSection skeleton-name="monitor-overview" :loading="loading">
+  <Skeleton :loading="loading">
     <Card
       title="资源概览"
       icon="i-lucide:gauge"
@@ -48,11 +48,11 @@
         </div>
       </div>
     </Card>
-  </ViewSection>
+  </Skeleton>
 </template>
 
 <script lang="ts" setup>
-import { ViewSection } from '@/components/view-section'
+import { Skeleton } from 'skullet/vue'
 import { NumberTicker } from '@/components/number-ticker'
 import Card from './card.vue'
 import type { MonitorTone, OverviewProps } from './types'

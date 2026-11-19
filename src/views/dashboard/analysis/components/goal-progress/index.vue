@@ -1,8 +1,5 @@
 <template>
-  <ViewSection
-    :loading="props.loading"
-    :skeleton-options="{ name: 'analysis-goal-progress' }"
-  >
+  <Skeleton :loading="props.loading">
     <a-border-beam :duration="8" :line-width="2" :size="140">
       <Card class="page-enter page-enter--4" title="销售目标达成">
         <template #extra>
@@ -82,11 +79,12 @@
         </div>
       </Card>
     </a-border-beam>
-  </ViewSection>
+  </Skeleton>
 </template>
 
 <script lang="ts" setup>
-import { Card, ViewSection } from '@/components'
+import { Skeleton } from 'skullet/vue'
+import { Card } from '@/components'
 import { compactFormatter, fullFormatter, goal, stages } from './data'
 
 const props = withDefaults(defineProps<{ loading?: boolean }>(), {

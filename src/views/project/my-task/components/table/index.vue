@@ -1,9 +1,5 @@
 <template>
-  <ViewSection
-    skeleton-name="my-task-table"
-    :loading="loading"
-    class="h-full min-h-0"
-  >
+  <Skeleton :loading="loading" class="h-full min-h-0">
     <div class="h-full overflow-hidden bg-container rounded-4">
       <a-table
         :columns="columns"
@@ -109,11 +105,11 @@
         </template>
       </a-table>
     </div>
-  </ViewSection>
+  </Skeleton>
 </template>
 
 <script lang="ts" setup>
-import { ViewSection } from '@/components/view-section'
+import { Skeleton } from 'skullet/vue'
 import type { TableColumnsType } from 'antdv-next'
 import {
   getTaskAssigneeMeta,

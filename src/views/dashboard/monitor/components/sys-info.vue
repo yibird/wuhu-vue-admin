@@ -1,5 +1,5 @@
 <template>
-  <ViewSection skeleton-name="monitor-sys-info" :loading="loading">
+  <Skeleton :loading="loading">
     <Card
       title="系统信息"
       icon="i-lucide:info"
@@ -39,11 +39,11 @@
       </div>
       <a-empty v-else />
     </Card>
-  </ViewSection>
+  </Skeleton>
 </template>
 
 <script lang="ts" setup>
-import { ViewSection } from '@/components/view-section'
+import { Skeleton } from 'skullet/vue'
 import Card from './card.vue'
 import type { SysInfoEmits, SysInfoProps } from './types'
 

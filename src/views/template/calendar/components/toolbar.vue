@@ -2,7 +2,7 @@
   <header
     class="relative overflow-hidden rounded-8 b-1-secondary bg-container px-18 py-16"
   >
-    <ViewSection skeleton-name="calendar-toolbar" :loading="loading">
+    <Skeleton :loading="loading">
       <div
         class="pointer-events-none absolute inset-0 opacity-80 [background:radial-gradient(circle_at_12%_0,rgb(var(--w-color-primary)_/_12%),transparent_32%),linear-gradient(135deg,rgb(var(--w-bg-container)),rgb(var(--w-bg-secondary)_/_48%))]"
       ></div>
@@ -54,12 +54,12 @@
           </a-button>
         </div>
       </div>
-    </ViewSection>
+    </Skeleton>
   </header>
 </template>
 
 <script setup lang="ts">
-import { ViewSection } from '@/components/view-section'
+import { Skeleton } from 'skullet/vue'
 import type { CalendarSelectOption, CalendarView } from '../types'
 
 const {

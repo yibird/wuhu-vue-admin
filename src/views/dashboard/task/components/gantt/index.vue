@@ -1,9 +1,5 @@
 <template>
-  <ViewSection
-    skeleton-name="task-gantt"
-    :loading="loading"
-    class="h-full min-h-0"
-  >
+  <Skeleton :loading="loading" class="h-full min-h-0">
     <div class="h-full min-h-0 min-w-0 flex flex-col gap-12">
       <div
         class="flex flex-wrap items-center justify-between gap-10 rounded-4 bg-container p-12"
@@ -64,11 +60,11 @@
         @mark-done="markContextTaskDone"
       />
     </div>
-  </ViewSection>
+  </Skeleton>
 </template>
 
 <script lang="ts" setup>
-import { ViewSection } from '@/components/view-section'
+import { Skeleton } from 'skullet/vue'
 import dayjs from 'dayjs'
 import { message } from 'antdv-next'
 import {

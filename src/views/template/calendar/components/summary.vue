@@ -1,5 +1,5 @@
 <template>
-  <ViewSection skeleton-name="calendar-summary" :loading="loading">
+  <Skeleton :loading="loading">
     <div class="grid grid-cols-4 gap-12 max-lg:grid-cols-2 max-sm:grid-cols-1">
       <article
         v-for="item in items"
@@ -24,11 +24,11 @@
         </div>
       </article>
     </div>
-  </ViewSection>
+  </Skeleton>
 </template>
 
 <script setup lang="ts">
-import { ViewSection } from '@/components/view-section'
+import { Skeleton } from 'skullet/vue'
 import type { SummaryCard } from '../types'
 
 const { items, loading = false } = defineProps<{

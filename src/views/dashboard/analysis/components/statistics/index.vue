@@ -1,8 +1,5 @@
 <template>
-  <ViewSection
-    :loading="props.loading"
-    :skeleton-options="{ name: 'analysis-statistics' }"
-  >
+  <Skeleton :loading="props.loading">
     <a-border-beam :duration="6" :line-width="3">
       <Card
         class="page-enter page-enter--3 overflow-hidden rounded-8 shadow-xs"
@@ -66,12 +63,13 @@
         </a-tabs>
       </Card>
     </a-border-beam>
-  </ViewSection>
+  </Skeleton>
 </template>
 
 <script lang="ts" setup>
+import { Skeleton } from 'skullet/vue'
 import { DateRangePicker } from '@/components/date-picker'
-import { Card, ViewSection } from '@/components'
+import { Card } from '@/components'
 import SalesRevenue from './sales-revenue.vue'
 import VisitCount from './visit-count.vue'
 import { rangeOptions, resolveRange } from './data'

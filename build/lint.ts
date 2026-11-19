@@ -50,7 +50,6 @@ export const lint = {
     'node_modules',
     'dist',
     '**/*.mock.ts.*.mjs',
-    'src/bones/**',
     'src/styles/fonts.extended.css',
   ],
 }

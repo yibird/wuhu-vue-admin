@@ -2,11 +2,7 @@
   <aside
     class="h-full overflow-y-auto rounded-8 b-1-secondary bg-container max-[1100px]:order--1"
   >
-    <ViewSection
-      skeleton-name="calendar-aside"
-      :loading="loading"
-      class="h-full"
-    >
+    <Skeleton :loading="loading" class="h-full">
       <div
         class="flex flex-col gap-16 p-14 w-full h-full overflow-x-hidden overflow-y-auto"
       >
@@ -42,12 +38,12 @@
           :get-calendar-count="getCalendarCount"
         />
       </div>
-    </ViewSection>
+    </Skeleton>
   </aside>
 </template>
 
 <script setup lang="ts">
-import { ViewSection } from '@/components/view-section'
+import { Skeleton } from 'skullet/vue'
 import CalendarCategoryStats from './category-stats.vue'
 import CalendarEventDetailPanel from './event-detail-panel.vue'
 import CalendarFilterPanel from './filter-panel.vue'

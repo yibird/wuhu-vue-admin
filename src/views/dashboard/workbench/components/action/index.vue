@@ -1,5 +1,5 @@
 <template>
-  <ViewSection skeleton-name="workbench-action" :loading="loading">
+  <Skeleton :loading="loading">
     <section class="page-enter page-enter--5 min-w-0">
       <a-border-beam :duration="6" :line-width="3">
         <Card class="shadow-none!" :styles="{ body: { padding: 0 } }">
@@ -63,11 +63,11 @@
       v-model:selected-ids="selectedActionIds"
       :actions="workbenchActions"
     />
-  </ViewSection>
+  </Skeleton>
 </template>
 
 <script lang="ts" setup>
-import { ViewSection } from '@/components/view-section'
+import { Skeleton } from 'skullet/vue'
 import { useTabs } from '@/hooks'
 import { Card } from '@/components/card'
 import { defaultWorkbenchActionIds, workbenchActions } from './data.ts'

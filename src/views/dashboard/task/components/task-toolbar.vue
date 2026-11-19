@@ -1,5 +1,5 @@
 <template>
-  <ViewSection skeleton-name="task-toolbar" :loading="!!props.loading">
+  <Skeleton :loading="!!props.loading">
     <div
       class="page-enter page-enter--1 flex flex-wrap items-center justify-between gap-12 rounded-4 bg-container p-12"
     >
@@ -37,11 +37,11 @@
         </a-radio-group>
       </div>
     </div>
-  </ViewSection>
+  </Skeleton>
 </template>
 
 <script setup lang="ts">
-import { ViewSection } from '@/components/view-section'
+import { Skeleton } from 'skullet/vue'
 import type { TaskFilterStatus, TaskViewOption, TaskViewType } from './types'
 
 const props = defineProps<{
