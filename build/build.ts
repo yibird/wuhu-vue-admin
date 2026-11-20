@@ -30,10 +30,6 @@ const chunkGroups: readonly ChunkGroup[] = [
     packagePrefixes: ['@vue/', '@intlify/'],
   },
 
-  // antdv-next / echarts 不手动分组：
-  // 手动分组会把整包（包括只在懒路由使用的组件）并入首屏预加载 chunk，
-  // 交给 Rolldown 按引用图自动切分，入口只带真正需要的部分。
-
   // ============================================================
   // Heavy feature modules
   // ============================================================
