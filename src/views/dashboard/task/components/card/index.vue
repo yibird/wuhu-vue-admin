@@ -6,7 +6,7 @@
       @drag-start="clearDropPlaceholder"
     >
       <div
-        class="relative grid h-full min-h-0 grid-cols-1 gap-10 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6 overflow-x-auto"
+        class="relative grid h-full min-h-0 grid-cols-1 gap-10 overflow-auto max-md:auto-rows-max md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6"
       >
         <DraggableItem
           v-for="(item, index) in visibleTaskStatus"
@@ -14,7 +14,7 @@
           :key="item.status"
           :index="index"
           accept="task-stage"
-          class="min-h-0 min-w-0 xl:(max-h-full overflow-hidden)"
+          class="task-stage-item min-h-0 min-w-0 xl:max-h-full"
           :group="stageSortableGroup"
           handle-selector=".task-group-drag-handle"
           type="task-stage"
@@ -270,12 +270,9 @@ function markDropPlaceholder(event: DragMoveEvent) {
 
     if (typeof source?.id !== 'number') return
 
-    const candidates = document.querySelectorAll<HTMLElement>(
-      `.task-card-item[data-w-draggable-id="${source.id}"]`
-    )
-    // 悬浮预览是 fixed 定位,留在列表中的那个才是占位卡片
-    const placeholder = [...candidates].find(
-      (element) => getComputedStyle(element).position !== 'fixed'
+    // 悬浮预览是 fixed 定位,留在列表中的占位克隆带 data-dnd-placeholder
+    const placeholder = document.querySelector<HTMLElement>(
+      '.task-card-item[data-dnd-placeholder="hidden"]'
     )
     if (placeholder === dropPlaceholder) return
 
@@ -332,3 +329,37 @@ function handleDragEnd(event: DragEndEvent) {
   emits('move', { id, ...target })
 }
 </script>
+
+<style scoped>
+/* 拖拽中的任务组浮起;占位克隆不参与阴影绘制 */
+.task-stage-item[data-w-draggable-dragging='true']:not([data-dnd-placeholder]) {
+  position: relative;
+  z-index: 10000 !important;
+  pointer-events: none;
+  will-change: transform;
+}
+
+/* box-shadow 比 drop-shadow 少一次整棵子树的轮廓模糊,拖拽时更省绘制 */
+.task-stage-item[data-w-draggable-dragging='true']:not([data-dnd-placeholder])
+  :deep(.task-group) {
+  box-shadow: 0 18px 30px rgb(15 23 42 / 22%);
+}
+
+/* 放置区域:恢复 dnd-kit 隐藏的占位克隆,显示为虚线高亮空框 */
+.task-stage-item[data-dnd-placeholder='hidden'] {
+  visibility: visible;
+}
+
+.task-stage-item[data-dnd-placeholder='hidden'] :deep(.task-group) {
+  outline: 1px dashed rgb(var(--w-color-primary));
+  outline-offset: -1px;
+  background-image: linear-gradient(
+    rgb(var(--w-color-primary) / 6%),
+    rgb(var(--w-color-primary) / 6%)
+  );
+}
+
+.task-stage-item[data-dnd-placeholder='hidden'] :deep(.task-group > *) {
+  visibility: hidden;
+}
+</style>

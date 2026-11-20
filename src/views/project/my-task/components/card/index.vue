@@ -9,7 +9,7 @@
         reduced-motion="user"
         :items="visibleTaskStatus"
         :get-key="(item: CardTaskStatus) => item.status"
-        class="relative grid h-full min-h-0 grid-cols-1 gap-10 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6 overflow-x-auto"
+        class="relative grid h-full min-h-0 grid-cols-1 gap-10 overflow-auto max-md:auto-rows-max md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6"
         motion-class="min-h-0 min-w-0 xl:(max-h-full overflow-hidden)"
       >
         <template #default="{ item }">
