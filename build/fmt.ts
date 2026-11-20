@@ -14,8 +14,9 @@ export const fmt = {
     'components.d.ts',
     '*.timestamp-*.mjs',
     '**/*.mock.ts.*.mjs',
-    // 字体脚本生成的扩展子集声明
-    'src/styles/fonts.extended.css',
+    // 字体脚本生成与第三方字体包自带的声明
+    'src/styles/fonts/fonts.extended.css',
+    'src/assets/fonts/cjk/**',
   ],
   bracketSameLine: false,
 }

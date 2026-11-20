@@ -7,7 +7,9 @@ export default {
     '.agents/**',
     '.claude/**',
     // 字体脚本生成的扩展子集声明
-    'src/styles/fonts.extended.css',
+    'src/styles/fonts/fonts.extended.css',
+    // 中文字体包自带的子集声明
+    'src/assets/fonts/cjk/**',
   ],
   extends: [
     'stylelint-config-standard',

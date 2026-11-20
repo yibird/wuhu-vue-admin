@@ -40,7 +40,7 @@ interface FontManifest {
 /**
  * 子集字体清单
  *
- * 由 `pnpm fonts:optimize` 生成,文件名带内容指纹,只保留实际使用的字重区间。
+ * 由字体子集脚本生成并随仓库提交,文件名带内容指纹,只保留实际使用的字重区间。
  */
 function readFontManifest(): FontManifest {
   try {
@@ -49,7 +49,7 @@ function readFontManifest(): FontManifest {
     ) as FontManifest
   } catch {
     throw new Error(
-      '缺少字体子集产物,请先执行 `pnpm fonts:optimize` 并提交 src/assets/fonts/generated'
+      '缺少字体子集产物,请恢复 src/assets/fonts/generated 或重新执行字体子集脚本'
     )
   }
 }
@@ -79,7 +79,7 @@ function localFont(file: string) {
  */
 const fontFamilies: FontFamilies = [
   // core 子集由 fontless 处理并生成 @font-face / preload;
-  // extended 子集在 src/styles/fonts.extended.css 中通过 unicode-range 按需加载。
+  // extended 子集在 src/styles/fonts/fonts.extended.css 中通过 unicode-range 按需加载。
   ...fontManifest.fonts.map((font) => ({
     name: font.family,
     src: localFont(font.core.file),
@@ -103,7 +103,7 @@ const fontFamilies: FontFamilies = [
  * 后台的字体切换发生在运行时(把 --w-font-family 写到 :root[data-font=...]),
  * 且这些变量声明由 UnoCSS 预检在 renderChunk 阶段注入,不经过模块 transform,
  * fontless 扫描不到使用点;`global` 让 @font-face 直接进 <head>,不依赖扫描。
- * 度量兜底族(size-adjust 等)因此也由 src/styles/fonts.css 静态维护。
+ * 度量兜底族(size-adjust 等)因此也由 src/styles/fonts/fonts.css 静态维护。
  *
  * 为什么关闭所有远程 provider:
  * unifont 在初始化 provider 时就会拉取 fonts.google.com 的元数据(约 10s,
@@ -113,11 +113,11 @@ const fontFamilies: FontFamilies = [
  *
  * 字体子集:src/assets/fonts 下的原始文件仅作为手动脚本的输入,
  * 构建时只会引用 src/assets/fonts/generated 中的 core / extended 子集。
- * 内容、字重或 OpenType 特性变化后需执行 `pnpm fonts:optimize` 并提交产物;
- * 清单缺失时构建会直接报错提示。
+ * 子集产物随仓库提交;内容、字重或 OpenType 特性变化后需使用外部字体重建流程
+ * 重新生成并提交产物,清单缺失时构建会直接报错提示。
  *
  * 字体版本升级:更新 src/assets/fonts 下的原始 woff2 与 OFL 许可,
- * 然后重新执行 `pnpm fonts:optimize`。
+ * 再重新生成 generated 子集。
  *
  * @returns Vite 插件数组
  */
